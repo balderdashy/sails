@@ -2,8 +2,8 @@
 
 
 
-$file = fopen ("http://localhost/crud.io/test.php", "r");
-//$file = fopen ("http://michaelmcneil.com", "r");
+$file = fopen ("http://dev.chatkin.com/crud.io/test.php", "r");
+//$file = fopen ("http://dev.chatkin.com/test.php", "r");
 if (!$file) {
     echo "<p>Unable to open remote file.\n";
     exit;
