@@ -1,31 +1,67 @@
 <?php
+class CRUD
+{
+	public function read($node) {
+		$output = "";
 
+		//
+		//TODO: check for http(s)
+		$url = $this->url . "/read/" . $node;
+//		$url = "http://" . $this->url . "/read/" . $node;
+		
+		$file = fopen ($url, "r");
+		if (!$file) {
+			echo "<p>Unable to open remote file.\n";
+			exit;
+		}
+		while (!feof ($file)) {
+			$output .= fgets ($file, 1024);
+		}
+		fclose($file);
+		return $output;
+	}
 
-
-$file = fopen ("http://dev.chatkin.com/crud.io/test.php", "r");
-//$file = fopen ("http://dev.chatkin.com/test.php", "r");
-if (!$file) {
-    echo "<p>Unable to open remote file.\n";
-    exit;
+	public function dump($node) {
+		echo $this->read($node);
+	}
 }
-while (!feof ($file)) {
-    $line = fgets ($file, 1024);
-    /* This only works if the title and its tags are on one line */
-//    if (preg_match ("@\<title\>(.*)\</title\>@i", $line, $out)) {
-//echo "*";
-
-if ($line=="AHH FUCK") {
-echo "hmm";
-}
-echo $line;
-
-       // $title = $line;
-
-//        break;
-//    }
-}
-fclose($file);
+?>
 
 
+
+
+
+
+<?php
+//
+// CRUD.io Configuration
+//
+
+$crud = new CRUD(array(
+	// options
+));
+
+// The URL of your CRUD.io server instance
+$crud->url = "http://dev.chatkin.com/crud.io";
 
 ?>
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title><?= $crud->read('title')?></title>
+	</head>
+	<body>
+		<h1 class="main-title"><?php $crud->dump('title'); ?></h1>
+		<?= $crud->read('navbar')?>
+		<div class="content">
+			<?= $crud->read('content-header')?>
+		</div>
+		<?= $crud->read('footer')?>
+	</body>
+</html>
