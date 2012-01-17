@@ -9,10 +9,10 @@ class CRUD
 	public function read($node) {
 		$output = "";
 
-		//
-		//TODO: check for http(s)
+		
+		// TODO: check if http(s) exists and delete if necessary
+		// TODO: check if trailing slash exists on url and delete if necessary
 		$url = $this->url . "/read/" . $node;
-//		$url = "http://" . $this->url . "/read/" . $node;
 
 		$file = fopen ($url, "r");
 		if (!$file) {
