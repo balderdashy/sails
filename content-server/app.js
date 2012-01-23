@@ -5,8 +5,20 @@
 
 var express = require('express')
   , routes = require('./routes')
+  , db = require('./model')
+  , fs = require('fs');
 
+// Bootstrap and sync database
+db.bootstrap();
+
+/*
+var app = module.exports = express.createServer({
+    key: fs.readFileSync('ssl/private.key.pem'),
+    cert: fs.readFileSync('ssl/combined.crt')
+});
+*/
 var app = module.exports = express.createServer();
+
 
 // Configuration
 
@@ -28,8 +40,8 @@ app.configure('production', function(){
 });
 
 // Routes
-
 app.get('/', routes.index);
+app.get('/read*', routes.read);
 
 app.listen(4000);
-//console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

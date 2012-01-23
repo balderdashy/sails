@@ -7,6 +7,7 @@ $crud = new CRUD(array(
 ));
 
 // The URL of your CRUD.io server instance
-$crud->url = "http://dev.chatkin.com/crud.io";
+//$crud->url = "http://dev.chatkin.com/crud.io";
+$crud->url = "http://localhost:4000";
 
 ?>
