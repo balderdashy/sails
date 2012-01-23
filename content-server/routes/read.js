@@ -38,6 +38,7 @@ function getContext(req) {
 	return context;
 }
 
+
 // Get schema+content based on context
 function getContentSchema(context, callback) {
 	db.Content.gatherByCollection(context.collection, function (content) {
@@ -56,6 +57,7 @@ function getContentSchema(context, callback) {
 		});
 	});
 }
+
 
 // Beam data back to CRUDclient
 function respond(content,res) {

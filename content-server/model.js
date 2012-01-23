@@ -19,10 +19,21 @@ exports.bootstrap = function () {
 	}, {
 		classMethods: {
 			gatherByCollection: function(collection,callback){
-				var results = Content.findAll();
-				
-				console.log("RESULTS:",results);
-				console.log("CALLBACK:",callback);
+				var results;
+
+				// If collection is null, grab everything
+//				if (!collection) {
+					results = Content.findAll();
+//				}
+//				// Otherwise, join the tables and grab the content for this collection
+//				else {
+//					results = Content.find({
+//						where: {
+//							Collection: collection
+//						}
+//					});
+//				}
+
 				results.on('success',callback);
 			}
 		}
