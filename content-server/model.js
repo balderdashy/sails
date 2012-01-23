@@ -20,9 +20,10 @@ exports.bootstrap = function () {
 		classMethods: {
 			gatherByCollection: function(collection,callback){
 				var results = Content.findAll();
+				
 				console.log("RESULTS:",results);
 				console.log("CALLBACK:",callback);
-				results.success(callback);
+				results.on('success',callback);
 			}
 		}
 	})

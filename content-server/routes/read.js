@@ -1,4 +1,5 @@
 var db = require('../model').db;
+var _ = require('underscore');
 
 
 /**
@@ -10,10 +11,13 @@ exports.read = function(req, res){
 	var context = getContext(req);
 
 	// Look up content schema for this context
-	var content = getContentSchema(context, function (){
+	getContentSchema(context, function (response){
+		console.log("MADE IT!",response);
+
 		// Return that infomration to crud client
-		respond(content,res);
+		respond(response,res);
 	});
+
 };
 
 
@@ -37,12 +41,18 @@ function getContext(req) {
 // Get schema+content based on context
 function getContentSchema(context, callback) {
 	db.Content.gatherByCollection(context.collection, function (content) {
-		console.log("dbcontent:",db);
-		console.log("CONTENT:",content);
+
+		// Process database response into simple map
+		var contentSchema = {};
+		 _.each(content,function(it) {
+			contentSchema[it.title] = it.payload
+		});
+
+		// Respond with content schema map
 		callback && callback({
 			success: true,
 			context: context,
-			content: content
+			content: contentSchema
 		});
 	});
 }
