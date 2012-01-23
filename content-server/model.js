@@ -13,21 +13,32 @@ exports.bootstrap = function () {
 
 	// Build models
 	var Content = exports.db.Content = sequelize.define('Content', {
-	  title: Sequelize.STRING,
-	  description: Sequelize.TEXT,
-	  payload: Sequelize.TEXT
+		title: Sequelize.STRING,
+		description: Sequelize.TEXT,
+		payload: Sequelize.TEXT
+	}, {
+		classMethods: {
+			gatherByCollection: function(collection,callback){
+				var results = Content.findAll();
+				console.log("RESULTS:",results);
+				console.log("CALLBACK:",callback);
+				results.success(callback);
+			}
+		}
 	})
 
-	var Collection = exports.db.Collection = sequelize.define('Collection', {
-	  title: Sequelize.STRING,
-	  description: Sequelize.TEXT
-	})
+var Collection = exports.db.Collection = sequelize.define('Collection', {
+	title: Sequelize.STRING,
+	description: Sequelize.TEXT
+})
 
-	// Build associations
-	Collection.hasMany(Content);
+// Build associations
+Collection.hasMany(Content);
 	Content.hasMany(Collection);
 
 	// Synchronize models with database
-	sequelize.sync();
+	sequelize.sync().success(function() {
+		console.log("DB Connection successful!");
+	});
 
 }
