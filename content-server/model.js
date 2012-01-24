@@ -20,10 +20,14 @@ exports.bootstrap = function () {
 		classMethods: {
 			gatherByCollection: function(collection,callback){
 				var results;
+				results = Content.findAll();
 
-				// If collection is null, grab everything
+				// If collection is null, grab data based on context (page/layout/domain)
 //				if (!collection) {
-					results = Content.findAll();
+					// TODO: grab data based on context (page/layout/domain)
+
+					// Grab everything
+//					results = Content.findAll();
 //				}
 //				// Otherwise, join the tables and grab the content for this collection
 //				else {

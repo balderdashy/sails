@@ -10,11 +10,19 @@
 <script type="text/javascript" src="Nag.js"></script>
 <script type="text/javascript" src="Socket.js"></script>
 
-<script type="text/javascript" src="crud.io.client.js"></script>
-<script type="text/javascript" src="http://dev.chatkin.com:8001/bundle"></script>
+<script type="text/javascript" src="/crud.io/sdks/browser/crud.io.client.js"></script>
+<script type="text/javascript">
+	var crud = new CRUD({
+		server: 'http://localhost:4000/'
+	});
+</script>
+
+<script type="text/javascript" src="https://chatkin.com/bundle"></script>
 </head>
 
 <body>
 	<h1>crud.io eats content for breakfast</h1>
+
+	<h1 class="main-title"><%= crud.io('title') %></h1>
 </body>
 </html>

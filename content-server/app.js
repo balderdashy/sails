@@ -4,7 +4,8 @@
  */
 
 var express = require('express')
-  , routes = require('./routes')
+  , routes = require('./routes/')
+  , router = require('./router')
   , db = require('./model')
   , fs = require('fs');
 
@@ -21,6 +22,9 @@ var app = module.exports = express.createServer();
 
 
 // Configuration
+
+// Enable JSONP
+app.enable("jsonp callback");
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
@@ -41,7 +45,8 @@ app.configure('production', function(){
 
 // Routes
 app.get('/', routes.index);
-app.get('/read*', routes.read);
+app.get('/read*', router.read);
+app.get('/context*', router.context);
 
 app.listen(4000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

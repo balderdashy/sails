@@ -5,3 +5,4 @@ var Log = {
 		}
 	}
 };
+log = Log.log;
