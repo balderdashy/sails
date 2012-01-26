@@ -18,26 +18,36 @@ exports.bootstrap = function () {
 		payload: Sequelize.TEXT
 	}, {
 		classMethods: {
-			gatherByCollection: function(collection,callback){
-				var results;
-				results = Content.findAll();
+			gatherByCollection: function(collectionName,callback){
+				console.log("Gathering by collection.",collectionName);
 
-				// If collection is null, grab data based on context (page/layout/domain)
-//				if (!collection) {
-					// TODO: grab data based on context (page/layout/domain)
+				
+				// TODO: actually do the join here-- this just gets the collection, 
+				//		It NEEDS to get the associated list of content nodes.
+				var results = Collection.find({
+					where: {
+						title: collectionName
+					}
+				});
 
-					// Grab everything
-//					results = Content.findAll();
-//				}
-//				// Otherwise, join the tables and grab the content for this collection
-//				else {
-//					results = Content.find({
-//						where: {
-//							Collection: collection
-//						}
-//					});
-//				}
-
+				results.on('success',callback);
+			},
+			
+			// TODO: support settings, page, and layout cues
+			gatherAll: function(context,callback) {
+				console.log("Gathering all.");
+				var results = Content.findAll();
+				results.on('success',callback);
+			},
+			
+			// Get a specific content node
+			get: function (nodeName, callback) {
+				console.log("Getting specific node.");
+				var results = Content.find({
+					where: {
+						title: nodeName
+					}
+				});
 				results.on('success',callback);
 			}
 		}
