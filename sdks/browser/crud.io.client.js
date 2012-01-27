@@ -29,7 +29,7 @@
 		else {
 			type = 'text';
 			payload =
-					"The node ('"+node+"') was not loaded. "+
+					"The node ("+node+") was not loaded. "+
 					"Make sure it is included in your CMS, "+
 					"or force another load with crud.get."
 		}
@@ -137,7 +137,7 @@
 	// Perform a direct JSONP request to CRUD.io server
 	CRUD.prototype.crudRequest = function (method,parameter,success,error) {
 		$.ajax({
-			url: this.server+"/"+method+"/"+parameter,
+			url: this.server+"/"+method+"/"+urlEscape(parameter),
 			dataType: "jsonp",
 			jsonpCallback: "_crudio",
 			cache: false,
@@ -176,6 +176,18 @@
 		_.defaults(this,properties);
 		this.cache = {};
 		this.load();
+	}
+
+	// Escape a parameter for use in the request URL
+	function urlEscape (parameter) {
+		// Replace spaces with dashes
+		parameter = parameter.replace(" ","-");
+
+		// Crud.io nodes are case insensitive
+		parameter = parameter.toLowerCase();
+
+		// Encode naughty characters
+		return encodeURIComponent(parameter);
 	}
 
 	// Default error handling
