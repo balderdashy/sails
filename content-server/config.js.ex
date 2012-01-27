@@ -3,3 +3,5 @@ exports.db = {
 	username: 'username',
 	password: 'passowrd'
 }
+
+exports.port = 4000;
