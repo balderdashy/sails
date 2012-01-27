@@ -1,41 +1,104 @@
-//////////////////////////////////////////////////
-// CRUD.io Javascript SDK
-// c. Mike McNeil 2011-2012
-//
-//
-//////////////////////////////////////////////////
+/**
+ * CRUD.io
+ * Browser SDK
+ * c. Michael McNeil 2012
+ *
+ * TODO: Use a localStorage cache to store non-secure requests to
+ *		the Content Cloud.  Only refresh a node if it goes stale.
+ *
+ */
 (function () {
-	var crud;
+	
+	CRUD = constructor;
 
-	CRUD = function (properties) {
-		var defaults = { };
-		_.defaults(this,defaults);
-		_.defaults(this,properties);
-		crud = this;
-	}
-
+	/**
+	 * Request a node from the Content Cloud.
+	 *
+	 * NOTE:
+	 * This is a safe way of accessing the functionality of CRUD.get, since
+	 * it prevents accessing nodes which were not already fetched on CRUD.io's
+	 * initialization.
+	 *
+	 * @param <type> $node
+	 * @param <type> $dontEcho
+	 * @return <type>
+	 */
 	CRUD.prototype.read = function(node,success,error) {
 		if (!node) node = "";
 		crudRequest(this.server+"read/"+node,success,error);
 	}
 
+	/**
+	 * Request a node from the Content Cloud.
+	 *
+	 * WARNING:
+	 * Make sure you're only accessing nodes which are included in this
+	 * page, collection or layout.  Otherwise, this is an inefficient method
+	 * of accessing data since you're hitting your Content Cloud for each
+	 * payload.
+	 *
+	 * @param <type> $node
+	 * @param <type> $dontEcho
+	 * @return <type>
+	 */
+	CRUD.prototype.get = function(node,success,error) {
+		if (!node) node = "";
+		crudRequest(this.server+"read/"+node,success,error);
+	}
 
+	/**
+	 * Called automatically during the initialization.
+	 * Loads applicable nodes from the Content Cloud.
+	 *
+	 * @param <type> $node
+	 * @param <type> $dontEcho
+	 * @return <type>
+	 */
 	CRUD.prototype.load = function(collection,success,error) {
 		if (!collection) collection = "";
 		crudRequest(this.server+"load/"+collection,success,error);
 	}
 
+	///////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	///////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////
+
+	// Construct a CRUD.io client instance
+	function constructor (properties) {
+		var defaults = { };
+		_.defaults(this,defaults);
+		_.defaults(this,properties);
+		this.cache = {};
+	}
 
 	// Perform a JSONP request to CRUD.io server
-	function crudRequest (url,success,error) {
+	CRUD.prototype.crudRequest = function (url,success,error) {
 		$.ajax({
 			url: url,
 			dataType: "jsonp",
 			jsonpCallback: "_crudio",
 			cache: false,
 			timeout: 5000,
-			success: success || crud.success || defaultSuccess,
-			error: error || crud.error || defaultError
+			success: success || this.success || defaultSuccess,
+			error: error || this.error || defaultError
 		});
 	}
 
