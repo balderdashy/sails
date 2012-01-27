@@ -4,14 +4,14 @@
 ?><!DOCTYPE html>
 <html>
 	<head>
-		<title><?= $crud->read('title')?></title>
+		<title><?php $crud->read('heading') ?></title>
 	</head>
 	<body>
-		<h1 class="main-title"><?php $crud->dump('title'); ?></h1>
-		<?= $crud->read('navbar')?>
+		<h1 class="main-title"><?php $crud->read('heading') ?></h1>
+		<?php $crud->read('heading')?>
 		<div class="content">
-			<?= $crud->read('content-header')?>
+			<?php $crud->read('heading')?>
 		</div>
-		<?= $crud->read('footer')?>
+		<?php $crud->read('headding')?>
 	</body>
 </html>

@@ -17,7 +17,10 @@ exports.getContentSchema = function(context, callback) {
 				// Process database response into simple map
 				var contentSchema = {};
 				_.each(content,function(it) {
-					contentSchema[it.title] = it.payload
+					contentSchema[it.title] = {
+						type:		it.type,
+						payload:	it.payload
+					}
 				});
 
 				// Respond with content schema map
@@ -39,7 +42,13 @@ exports.getContentSchema = function(context, callback) {
 				// Process database response into simple map
 				var contentSchema = {};
 				_.each(content,function(it) {
-					contentSchema[it.title] = it.payload
+					console.log("****************");
+					console.log(it);
+					console.log("****************");
+					contentSchema[it.title] = {
+						type:		it.type,
+						payload:	it.payload
+					}
 				});
 
 				// Respond with content schema map
@@ -51,6 +60,9 @@ exports.getContentSchema = function(context, callback) {
 		);
 	}
 }
+
+
+
 
 /**
  * Respond to read request for a specific node
@@ -73,7 +85,10 @@ exports.getNode = function(context,callback) {
 				else {
 					// Respond with content
 					var content = {};
-					content[node.title] = node.payload;
+					content[node.title] = {
+						type:		node.type,
+						payload:	node.payload
+					}
 
 					callback && callback(success(context,content));
 				}
@@ -84,6 +99,7 @@ exports.getNode = function(context,callback) {
 		);
 	}
 }
+
 
 
 
@@ -98,6 +114,9 @@ exports.respond = function (content,req,res) {
 		res.json(content);
 	}
 }
+
+
+
 
 
 // Get context based on request
@@ -118,6 +137,17 @@ exports.getContext = function (req) {
 }
 
 
+
+
+
+
+
+
+
+/**
+ * Returns a callback object representing the specified application context
+ * with the requested content and a success message
+ */
 function success(context,content) {
 	return {
 		success: true,
@@ -128,7 +158,7 @@ function success(context,content) {
 
 
 /**
- * Returns an error object representing the specified message
+ * Returns a callback object with an error containing the specified message
  */
 function error(msg) {
 	return {

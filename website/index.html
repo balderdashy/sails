@@ -13,7 +13,10 @@
 <script type="text/javascript" src="/crud.io/sdks/browser/crud.io.client.js"></script>
 <script type="text/javascript">
 	var crud = new CRUD({
-		server: 'http://localhost:4000/'
+		server: 'http://localhost:4000/',
+		success: function (msg) {
+			console.log(msg);
+		}
 	});
 </script>
 
