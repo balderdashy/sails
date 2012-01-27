@@ -25,7 +25,9 @@ Designers
 
 Developers
 ------------------
+- Perform CRUD operations on cloud-hosted data via a JSON API.
 - Configurable for multitenant or instanced use
+- Quickly add content management functionality to projects by circumventing proprietary CMS solutions
 - Crud.io is a lingua franca, featuring SDKs in multiple languages, templating engines, and frameworks, including:
   - PHP
   - ejs / node.js
