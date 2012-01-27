@@ -129,7 +129,7 @@ class CRUD
 		// Generate API URL from request
 		// TODO: check if http(s) exists and delete if necessary
 		// TODO: check if trailing slash exists on url and delete if necessary
-		$url = $this->url . "/".$method."/" . $parameter;
+		$url = $this->url . "/".$method."/" . $this->urlEscape($parameter);
 
 		$file = fopen ($url, "r");
 		if (!$file) {
@@ -174,6 +174,18 @@ class CRUD
 		else {
 			echo $payload;
 		}
+	}
+
+	// Escape a parameter for use in the request URL
+	private function urlEscape ($parameter) {
+		// Replace spaces with dashes
+		$parameter = str_replace(" ","-",$parameter);
+
+		// Crud.io nodes are case insensitive
+		$parameter = strtolower($parameter);
+
+		// Encode naughty characters
+		return urlencode($parameter);
 	}
 
 
