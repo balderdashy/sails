@@ -56,12 +56,8 @@ var generateClassMethods = function () { return {
 	}
 };
 
-
-
-
-
 exports.bootstrap = function () {
-	
+
 	// Connect to database
 	var sequelize = exports.sequelize = new Sequelize(config.db.database, config.db.username,config.db.password);
 
@@ -78,6 +74,7 @@ exports.bootstrap = function () {
 	Content = exports.db.Content = sequelize.define('Content', {
 		title: Sequelize.STRING,
 		description: Sequelize.TEXT,
+		type: Sequelize.TEXT,
 		payload: Sequelize.TEXT
 	}, {
 		classMethods: generateClassMethods()
@@ -90,14 +87,11 @@ exports.bootstrap = function () {
 	Content.hasMany(Collection);
 
 
-
 	///////////////////////////////////////////////////////////////////////////
 	// Connect and sync
 	///////////////////////////////////////////////////////////////////////////
 	sequelize.sync().success(function() {
 		console.log("DB Connection successful!");
 	});
-
-
 
 }

@@ -42,9 +42,6 @@ exports.getContentSchema = function(context, callback) {
 				// Process database response into simple map
 				var contentSchema = {};
 				_.each(content,function(it) {
-					console.log("****************");
-					console.log(it);
-					console.log("****************");
 					contentSchema[it.title] = {
 						type:		it.type,
 						payload:	it.payload

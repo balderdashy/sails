@@ -8,7 +8,7 @@
 	</head>
 	<body>
 		<h1 class="main-title"><?php $crud->read('heading') ?></h1>
-		<?php $crud->read('heading')?>
+		<?php $crud->read('navbar')?>
 		<div class="content">
 			<?php $crud->read('heading')?>
 		</div>

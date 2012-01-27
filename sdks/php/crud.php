@@ -1,12 +1,16 @@
 <?php
 /**
- * Description of crud
+ * CRUD.io
+ * PHP SDK
+ * c. Michael McNeil 2012
+ * 
+ * TODO: Use a server-wide cache to store non-secure requests to
+ *		the Content Cloud.  Only refresh a node if it goes stale.
  *
- * @author mike
  */
 class CRUD
 {
-	// Create empty cache
+	// Create empty page cache
 	private $cache = array();
 
 	public function  __construct($options=null) {
@@ -19,16 +23,14 @@ class CRUD
 		}
 		else {
 			throw new Exception (
-				'No CRUD.io content cloud specified.' .
+				'No CRUD.io Content Cloud specified.' .
 				'Please specify a "url" option in the SDK configuration.');
 		}
-
-		
 	}
 
 
 	/**
-	 * Request a node from the content cloud.
+	 * Request a node from the Content Cloud.
 	 *
 	 * NOTE:
 	 * This is a safe way of accessing the functionality of CRUD.get, since
@@ -58,12 +60,12 @@ class CRUD
 	
 
 	/**
-	 * Request a node from the content cloud.
+	 * Request a node from the Content Cloud.
 	 *
 	 * WARNING:
 	 * Make sure you're only accessing nodes which are included in this
 	 * page, collection or layout.  Otherwise, this is an inefficient method
-	 * of accessing data since you're hitting your content cloud for each
+	 * of accessing data since you're hitting your Content Cloud for each
 	 * payload.
 	 *
 	 * @param <type> $node
@@ -78,7 +80,7 @@ class CRUD
 			$payload = $this->cache[$node]['payload'];
 		}
 		else {
-			// If the node isn't in the cache, request it from content cloud
+			// If the node isn't in the cache, request it from Content Cloud
 			$readObject = $this->request('read',$node);
 
 			if (!$readObject['success']) {
@@ -99,7 +101,7 @@ class CRUD
 
 	/**
 	 * Called automatically during the initialization.
-	 * Loads applicable nodes from the content cloud.
+	 * Loads applicable nodes from the Content Cloud.
 	 *
 	 * @param <type> $node
 	 * @param <type> $dontEcho
@@ -131,7 +133,7 @@ class CRUD
 
 		$file = fopen ($url, "r");
 		if (!$file) {
-			$response = $this->buildError("Unable to access content cloud.");
+			$response = $this->buildError("Unable to access Content Cloud.");
 		}
 		else {
 			$buffer = "";
@@ -158,11 +160,12 @@ class CRUD
 	 */
 	private function output($payload,$type='text',$dontEcho=false) {
 
-		// TODO: observe and respond to type
-		// TODO: HTML escape or not
-		// TODO: control image output
-		// TODO: control embedded media output
+		// TODO: handle images
+		// TODO: support other types of media and other HTML <elements>
+		// TODO: support data URI with BSON
 
+		// Escape HTML inside payload if type=='text'
+		$payload = ($type=='text') ? htmlentities($payload) : $payload;
 
 		// Output or return $payload
 		if ($dontEcho) {
