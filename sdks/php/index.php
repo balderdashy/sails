@@ -1,6 +1,10 @@
 <?php
-	// Include necessary files-- framework will do this automatically
-	require('crud.php'); require('config.php');
+	// Get and start up crud SDK
+	require('crud.php');
+$crud = new CRUD(array(
+	// The URL of your CRUD.io server instance
+	'url' => "http://localhost:4000"
+));
 ?><!DOCTYPE html>
 <html>
 	<head>
