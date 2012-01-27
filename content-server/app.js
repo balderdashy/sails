@@ -7,7 +7,8 @@ var express = require('express')
   , routes = require('./routes/')
   , router = require('./router')
   , db = require('./model')
-  , fs = require('fs');
+  , fs = require('fs')
+  , config = require('./config');
 
 // Bootstrap and sync database
 db.bootstrap();
@@ -46,7 +47,7 @@ app.configure('production', function(){
 // Routes
 app.get('/', routes.index);
 app.get('/read*', router.read);
-app.get('/fetch*', router.fetch);
+app.get('/load*', router.load);
 
-app.listen(4000);
+app.listen(config.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

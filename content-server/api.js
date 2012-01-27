@@ -5,11 +5,13 @@ var _ = require('underscore');
 
 // Get schema+content based on context
 exports.getContentSchema = function(context, callback) {
-	var collection = context.param;
+	// Interpret request parameters in context
+	context.collection = context.param;
+	delete context.param;
 	
 	// If collection is specified, grab content for given collection
-	if (collection) {
-		db.Content.gatherByCollection(collection, function (content) {
+	if (context.collection) {
+		db.Content.gatherByCollection(context.collection, function (content) {
 			
 			console.log("\n\nDB RESPONDED:",content)
 
@@ -20,11 +22,7 @@ exports.getContentSchema = function(context, callback) {
 			});
 
 			// Respond with content schema map
-			callback && callback({
-				success: true,
-				context: context,
-				content: contentSchema
-			});
+			callback && callback(success(context,contentSchema));
 		});
 	}
 	else {
@@ -39,29 +37,37 @@ exports.getContentSchema = function(context, callback) {
 			});
 
 			// Respond with content schema map
-			callback && callback({
-				success: true,
-				context: context,
-				content: contentSchema
-			});
+			callback && callback(success(context,contentSchema));
 		});
 	}
 }
 
-
+/**
+ * Respond to read request for a specific node
+ */
 exports.getNode = function(context,callback) {
+	// Interpret request parameters in context
 	var nodeName = context.param;
-	db.Content.get(nodeName, function (content) {
-			
-			console.log("\n\nDB RESPONDED:",nodeName,content)
+	delete context.param;
 
-			// Respond with content
-			callback && callback({
-				success: true,
-				context: content.title,
-				content: content.payload
-			});
+	if (!nodeName) {
+		callback && callback(error('No node specified.'));
+	}
+	else {
+		db.Content.get(nodeName, function (node) {
+
+			if (!node || !node.title) {
+				callback && callback(error('No node by that name exists.'));
+			}
+			else {
+				// Respond with content
+				var content = {};
+				content[node.title] = node.payload;
+
+				callback && callback(success(context,content));
+			}
 		});
+	}
 }
 
 
@@ -75,5 +81,45 @@ exports.respond = function (content,req,res) {
 	}
 	else {
 		res.json(content);
+	}
+}
+
+
+// Get context based on request
+exports.getContext = function (req) {
+
+	// Grab param from request URL path (remove opening slash)
+	var param = req.route.params.length && req.route.params[0].substr(1);
+	param = (param=="" || !param) ? null : param;
+
+	// Establish context (what do we need to fetch?)
+	var context = {
+		domain: null, //todo
+		page: null, //todo
+		layout: null, //todo
+		param: param
+	};
+	return context;
+}
+
+
+function success(context,content) {
+	return {
+		success: true,
+		context: context,
+		content: content
+	}
+}
+
+
+/**
+ * Returns an error object representing the specified message
+ */
+function error(msg) {
+	return {
+		success: false,
+		error: {
+			message: msg
+		}
 	}
 }

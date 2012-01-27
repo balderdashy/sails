@@ -1,13 +1,13 @@
 var api = require('./api');
 
 /**
- * Respond with content for a context request
+ * Respond with content for a load context request
  * (update cache)
  */
-exports.fetch = function(req, res) {
+exports.load = function(req, res) {
 
 	// Get context based on request
-	var context = getContext(req);
+	var context = api.getContext(req);
 
 	// Look up content schema for this context
 	api.getContentSchema(context, function (content){
@@ -27,10 +27,10 @@ exports.fetch = function(req, res) {
 exports.read = function(req, res) {
 
 	// Get context based on request
-	var context = getContext(req);
+	var context = api.getContext(req);
 
 	// Look up content schema for this context
-	api.getNode(context, function (content){
+	api.getNode(context, function (content) {
 		console.log("Answered read request.",content);
 
 		// Return that infomration to crud client
@@ -38,23 +38,3 @@ exports.read = function(req, res) {
 	});
 
 };
-
-
-
-// Get context based on request
-function getContext(req) {
-
-	// Grab param from request URL path (remove opening slash)
-	var param = req.route.params.length && req.route.params[0].substr(1);
-	param = (param=="" || !param) ? null : param;
-	console.log("Requested: ",param);
-
-	// Establish context (what do we need to fetch?)
-	var context = {
-		domain: null, //todo
-		page: null, //todo
-		layout: null, //todo
-		param: param
-	};
-	return context;
-}
