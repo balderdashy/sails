@@ -12,24 +12,34 @@
 	CRUD = constructor;
 
 	/**
-	 * Request a node from the Content Cloud.
+	 * Returns the requested node payload.
 	 *
 	 * NOTE:
 	 * This is a safe way of accessing the functionality of CRUD.get, since
 	 * it prevents accessing nodes which were not already fetched on CRUD.io's
 	 * initialization.
-	 *
-	 * @param <type> $node
-	 * @param <type> $dontEcho
-	 * @return <type>
 	 */
-	CRUD.prototype.read = function(node,success,error) {
-		if (!node) node = "";
-		crudRequest(this.server+"read/"+node,success,error);
+	CRUD.prototype.read = function(node) {
+		var type,payload;
+		
+		if (typeof this.cache[node] != "undefined") {
+			type = this.cache[node].type;
+			payload = this.cache[node].payload;
+		}
+		else {
+			type = 'text';
+			payload =
+					"The node ('"+node+"') was not loaded. "+
+					"Make sure it is included in your CMS, "+
+					"or force another load with crud.get."
+		}
+
+		return this.output(payload,type);
 	}
 
 	/**
 	 * Request a node from the Content Cloud.
+	 * Trigger callback function when complete.
 	 *
 	 * WARNING:
 	 * Make sure you're only accessing nodes which are included in this
@@ -42,8 +52,42 @@
 	 * @return <type>
 	 */
 	CRUD.prototype.get = function(node,success,error) {
-		if (!node) node = "";
-		crudRequest(this.server+"read/"+node,success,error);
+		var type,payload,crud=this;
+
+		success = success || this.success || defaultSuccess;
+		error = error || this.error || defaultError;
+
+		if (!node) {
+			throw new Error('Missing parameter "node".');
+			error && error(crud.output("Unable to get from content cloud."));
+		}
+		else if (typeof this.cache[node] != "undefined") {
+			// Check cache first
+			type = this.cache[node].type;
+			payload = this.cache[node].payload;
+			success && success(this.output(payload,type));
+		}
+		else {
+			// If the node isn't in the cache, request it from Content Cloud
+			this.crudRequest('read',node,
+				function successCallback(readObject){
+					if (!readObject.success) {
+						// Handle errors
+						payload = readObject.error.message;
+						error && error(crud.output(payload));
+					}
+					else {
+						// Return requested node
+						type = readObject.content[node].type;
+						payload = readObject.content[node].payload;
+						success && success(crud.output(payload,type));
+					}
+				},
+				function errorCallback(readObject) {
+					error && error(crud.output("Unable to get from content cloud."));
+				});
+
+		}
 	}
 
 	/**
@@ -55,8 +99,52 @@
 	 * @return <type>
 	 */
 	CRUD.prototype.load = function(collection,success,error) {
-		if (!collection) collection = "";
-		crudRequest(this.server+"load/"+collection,success,error);
+		collection = collection || "";
+		var crud = this;
+
+		this.crudRequest('load',collection,
+			function successCallback(loadObject){
+				if (!loadObject.success) {
+					throw new Error(loadObject.error.message);
+					error && error(crud.output(loadObject.error.message));
+				}
+				else {
+					// Update cache with any changes/new nodes
+					this.cache = _.extend(crud.cache,loadObject.content);
+					success && success(crud.output(loadObject.content));
+				}
+			},
+			function errorCallback(loadObject) {
+				error && error(crud.output("Unable to load from content cloud."));
+			});	
+	}
+
+
+	// Fluff content payload into the desired format
+	CRUD.prototype.output = function (payload, type) {
+		type = type || 'text';
+
+		// TODO: handle images
+		// TODO: support other types of media and other HTML <elements>
+		// TODO: support data URI with BSON
+
+		// Escape HTML inside payload if type=='text'
+		payload = (type=='text') ? _.escape(payload) : payload;
+
+		return payload;
+	}
+
+	// Perform a direct JSONP request to CRUD.io server
+	CRUD.prototype.crudRequest = function (method,parameter,success,error) {
+		$.ajax({
+			url: this.server+"/"+method+"/"+parameter,
+			dataType: "jsonp",
+			jsonpCallback: "_crudio",
+			cache: false,
+			timeout: 5000,
+			success: success || this.success || defaultSuccess,
+			error: error || this.error || defaultError
+		});
 	}
 
 	///////////////////////////////////////////////////////////////
@@ -87,24 +175,11 @@
 		_.defaults(this,defaults);
 		_.defaults(this,properties);
 		this.cache = {};
-	}
-
-	// Perform a JSONP request to CRUD.io server
-	CRUD.prototype.crudRequest = function (url,success,error) {
-		$.ajax({
-			url: url,
-			dataType: "jsonp",
-			jsonpCallback: "_crudio",
-			cache: false,
-			timeout: 5000,
-			success: success || this.success || defaultSuccess,
-			error: error || this.error || defaultError
-		});
+		this.load();
 	}
 
 	// Default error handling
-	function defaultError(jqXHR, textStatus, errorThrown) {
-		log('error ' + textStatus + " " + errorThrown);
+	function defaultError(errorThrown) {
 		throw new Error(errorThrown);
 	}
 
