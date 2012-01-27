@@ -11,34 +11,44 @@ exports.getContentSchema = function(context, callback) {
 	
 	// If collection is specified, grab content for given collection
 	if (context.collection) {
-		db.Content.gatherByCollection(context.collection, function (content) {
-			
-			console.log("\n\nDB RESPONDED:",content)
+		db.Content.gatherByCollection(
+			context.collection,
+			function successCallback (content) {
+				// Process database response into simple map
+				var contentSchema = {};
+				_.each(content,function(it) {
+					contentSchema[it.title] = it.payload
+				});
 
-			// Process database response into simple map
-			var contentSchema = {};
-			_.each(content,function(it) {
-				contentSchema[it.title] = it.payload
-			});
-
-			// Respond with content schema map
-			callback && callback(success(context,contentSchema));
-		});
+				// Respond with content schema map
+				callback && callback(success(context,contentSchema));
+			},
+			function errorCallback (msg) {
+				callback && callback(error(msg));
+			}
+		);
 	}
 	else {
+		// TODO:
 		// Otherwise, use as much settings/cache/page/layout data as possible
 		// to determine the minimum amount of data to fetch
-		db.Content.gatherAll(context, function (content) {
+		db.Content.gatherByContext(
+			context,
+			function successCallback(content) {
 
-			// Process database response into simple map
-			var contentSchema = {};
-			_.each(content,function(it) {
-				contentSchema[it.title] = it.payload
-			});
+				// Process database response into simple map
+				var contentSchema = {};
+				_.each(content,function(it) {
+					contentSchema[it.title] = it.payload
+				});
 
-			// Respond with content schema map
-			callback && callback(success(context,contentSchema));
-		});
+				// Respond with content schema map
+				callback && callback(success(context,contentSchema));
+			},
+			function errorCallback (msg) {
+				callback && callback(error(msg));
+			}
+		);
 	}
 }
 
@@ -54,19 +64,24 @@ exports.getNode = function(context,callback) {
 		callback && callback(error('No node specified.'));
 	}
 	else {
-		db.Content.get(nodeName, function (node) {
+		db.Content.get(
+			nodeName,
+			function successCallback (node) {
+				if (!node || !node.title) {
+					callback && callback(error('No node by that name exists.'));
+				}
+				else {
+					// Respond with content
+					var content = {};
+					content[node.title] = node.payload;
 
-			if (!node || !node.title) {
-				callback && callback(error('No node by that name exists.'));
+					callback && callback(success(context,content));
+				}
+			},
+			function errorCallback (msg) {
+				callback && callback(error(msg));
 			}
-			else {
-				// Respond with content
-				var content = {};
-				content[node.title] = node.payload;
-
-				callback && callback(success(context,content));
-			}
-		});
+		);
 	}
 }
 
