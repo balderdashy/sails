@@ -6,13 +6,21 @@ Instead of settling on a proprietary content management system like Wordpress or
 In fact, you can make your existing static web pages editable in only a few seconds.
 
 
+General Benefits
+--------------------------------------------------------------------------
+- Make your website's text, HTML, images, javascript, CSS, and other media editable
+- Crud.io works on any server with PHP (which is most of them)
+- No proprietary jargon.  You choose the name for each content node.
+
+
+
 Designers
 ------------------
 - Make any static HTML editable
 - Design editable implementations of your mockups/wireframes using only HTML and CSS
 - Simple, easy to use CMS strips away the cruft and lets you manage *content*, not file permissions.
-- CRUD.io creates thumbnail images in every necessary dimension so you don't have to
-- CRUD.io works on almost any server
+- Crud.io creates thumbnail images in every necessary dimension so you don't have to
+
 
 
 Developers
@@ -29,14 +37,17 @@ Developers
 - Further optimize performance by serving Crud.io content with CloudFront
 
 
+
 Marketing / SEO
 ------------------
+- Manage and export your sitemap directly from the CMS
 - View granular analytics based on content, not pageviews (a must for single-page/AJAX-powered sites)
 - A/B testing is trivial-- just click a checkbox
 - Serve individualized content by region, date, time, or browser/OS
 - Crud.io automatically creates brandable landing pages for each piece of content which link back to their source
 - Each content node is accessabile via a semantic URL based on its title
 - Alt tags and title attributes are set automatically in the CMS
+
 
 
 
