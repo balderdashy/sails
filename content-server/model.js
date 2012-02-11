@@ -35,6 +35,7 @@ var generateClassMethods = function () { return {
 		},
 
 		// Get a set of nodes by context
+        // only get the nodes that are necessary for this page
 		// TODO: support settings, page, and layout cues
 		gatherByContext: function(context,successCallback,errorCallback) {
 			console.log("Gathering by context.");
@@ -56,42 +57,43 @@ var generateClassMethods = function () { return {
 	}
 };
 
+
 exports.bootstrap = function () {
 
-	// Connect to database
-	var sequelize = exports.sequelize = new Sequelize(config.db.database, config.db.username,config.db.password);
+    // Connect to database
+    var sequelize = exports.sequelize = new Sequelize(config.db.database, config.db.username,config.db.password);
 
 
-	///////////////////////////////////////////////////////////////////////////
-	// Define data model
-	///////////////////////////////////////////////////////////////////////////
-	Collection = exports.db.Collection = sequelize.define('Collection', {
-		title: Sequelize.STRING,
-		description: Sequelize.TEXT
-	})
+    ///////////////////////////////////////////////////////////////////////////
+    // Define data model
+    ///////////////////////////////////////////////////////////////////////////
+    Collection = exports.db.Collection = sequelize.define('Collection', {
+        title: Sequelize.STRING,
+        description: Sequelize.TEXT
+    })
 
 
-	Content = exports.db.Content = sequelize.define('Content', {
-		title: Sequelize.STRING,
-		description: Sequelize.TEXT,
-		type: Sequelize.TEXT,
-		payload: Sequelize.TEXT
-	}, {
-		classMethods: generateClassMethods()
-	});
+    Content = exports.db.Content = sequelize.define('Content', {
+        title: Sequelize.STRING,
+        description: Sequelize.TEXT,
+        type: Sequelize.TEXT,
+        payload: Sequelize.TEXT
+    }, {
+        classMethods: generateClassMethods()
+    });
 
-	///////////////////////////////////////////////////////////////////////////
-	// Build associations
-	///////////////////////////////////////////////////////////////////////////
-	Collection.hasMany(Content);
-	Content.hasMany(Collection);
+    ///////////////////////////////////////////////////////////////////////////
+    // Build associations
+    ///////////////////////////////////////////////////////////////////////////
+    Collection.hasMany(Content);
+    Content.hasMany(Collection);
 
 
-	///////////////////////////////////////////////////////////////////////////
-	// Connect and sync
-	///////////////////////////////////////////////////////////////////////////
-	sequelize.sync().success(function() {
-		console.log("DB Connection successful!");
-	});
+    ///////////////////////////////////////////////////////////////////////////
+    // Connect and sync
+    ///////////////////////////////////////////////////////////////////////////
+    sequelize.sync().success(function() {
+        console.log("DB Connection successful!");
+    });
 
 }

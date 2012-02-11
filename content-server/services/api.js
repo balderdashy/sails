@@ -1,4 +1,4 @@
-var db = require('./model').db;
+var db = require('../model').db;
 var _ = require('underscore');
 
 

@@ -90,8 +90,8 @@ class CRUD
 			}
 			else {
 				// Return requested node
-				$type = $readObject['content'][$node][$type];
-				$payload = $readObject['content'][$node][$payload];
+				$type = $readObject['content'][$node]['type'];
+				$payload = $readObject['content'][$node]['payload'];
 			}
 		}
 

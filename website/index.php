@@ -11,7 +11,7 @@ $crud = new CRUD(array(
 		<title><?php $crud->read('title') ?></title>
 
         <!-- Browser SDK -->
-        <script type="text/javascript" src="3rdpartylibs/underscore.js"></script>
+        <!--<script type="text/javascript" src="3rdpartylibs/underscore.js"></script>
         <script type="text/javascript" src="3rdpartylibs/backbone.js"></script>
         <script type="text/javascript" src="3rdpartylibs/socket.io.client.js"></script>
         <script type="text/javascript" src="3rdpartylibs/backbone-override.js"></script>
@@ -25,23 +25,24 @@ $crud = new CRUD(array(
 			var crud = new CRUD({
 				server: 'http://localhost:4000',
 				success: function (msg) {
-					console.log(msg);
+					Log.log(msg);
 				}
 			});
-		</script>
+		</script>-->
 	</head>
 	<body>
-		<h1><?php $crud->read('title'); ?></h1>
-		<p><?php $crud->read('short description'); ?></p>
 
-        <?php $crud->read('sign up for a trial'); ?>
+    <h1><?php $crud->read('title'); ?></h1>
+    <p><?php $crud->read('short description'); ?></p>
 
-        <?php $crud->read('download sdk'); ?>
+    <?php $crud->read('sign up for a trial'); ?>
 
-		<h3>There is also a browser SDK for accessing CRUD content with AJAX applications.</h3>
-		<h2>Paste your HTML and run our converter which automatically makes your webpage editable.</h2>
-		
-		
-		
-	</body>
+    <?php $crud->read('download sdk'); ?>
+
+    <h3>There is also a browser SDK for accessing CRUD content with AJAX applications.</h3>
+    <h2>Paste your HTML and run our converter which automatically makes your webpage editable.</h2>
+
+    <?php $crud->read('github-ribbon'); ?>
+
+    </body>
 </html>

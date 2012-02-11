@@ -4,11 +4,11 @@
  */
 
 var express = require('express')
-  , routes = require('./routes/')
-  , router = require('./router')
-  , db = require('./model')
-  , fs = require('fs')
-  , config = require('./config');
+    , cmsRouter = require('./cmsRouter')
+    , apiRouter = require('./apiRouter')
+    , db = require('./model')
+    , fs = require('fs')
+    , config = require('./config');
 
 // Bootstrap and sync database
 db.bootstrap();
@@ -21,15 +21,13 @@ var app = module.exports = express.createServer({
 */
 var app = module.exports = express.createServer();
 
-
 // Configuration
-
 // Enable JSONP
 app.enable("jsonp callback");
 
-app.configure(function(){
+app.configure(function() {
   app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
+  app.set('view engine', 'ejs');
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
@@ -41,13 +39,18 @@ app.configure('development', function(){
 });
 
 app.configure('production', function(){
-  app.use(express.errorHandler()); 
+  app.use(express.errorHandler());
 });
 
 // Routes
-app.get('/', routes.index);
-app.get('/read*', router.read);
-app.get('/load*', router.load);
 
+// API
+apiRouter.mapUrls(app);
+
+// CMS
+cmsRouter.mapUrls(app);
+
+
+// Start server
 app.listen(config.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
