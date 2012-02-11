@@ -2,9 +2,31 @@ var db = require('../model').db;
 var _ = require('underscore');
 
 
-///
-exports.fetch = function () {
-	// TODO://
+// Return a paginated list of content nodes
+// apply filter and paginate
+exports.fetch = function (params,callback) {
+	db.Content.fetch(null,
+		function successCallback(content) {
+
+			// Process database response into simple map
+			var contentSchema = {};
+			_.each(content,function(it) {
+				contentSchema[it.title] = {
+					type:		it.type,
+					payload:	it.payload
+				}
+			});
+
+			// Respond with content schema map
+			callback && callback({
+				success: true,
+				hasMore: false,
+				data: content
+			});
+		},
+		function errorCallback (msg) {
+			callback && callback(error(msg));
+		});
 }
 
 
@@ -144,8 +166,6 @@ exports.getContext = function (req) {
 
 
 
-
-
 /**
  * Returns a callback object representing the specified application context
  * with the requested content and a success message
@@ -157,7 +177,6 @@ function success(context,content) {
 		content: content
 	}
 }
-
 
 /**
  * Returns a callback object with an error containing the specified message

@@ -19,14 +19,14 @@ var Rows = Backbone.Collection.extend({
         if (!data) {
             return []; 
         }
-		else if (!data.content) {
+		else if (!data.data) {
 			Log.log("Data returned from server using invalid API.",data);
 			this.hasMore = false;
 			return data;
 		}
 		else {
 			this.hasMore = data.hasMore;
-			return data.content;
+			return data.data;
 		}
     },
 	

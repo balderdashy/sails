@@ -50,7 +50,7 @@ exports.mapUrls = function mapUrls (app) {
 	/**
      * Fetch paginated/filtered list of content nodes for use in CMS
      */
-    app.get("/content/fetch*",function(req, res) {
+    function fetchRequest (req, res) {
 
         // Look up content schema for this context
         api.fetch({
@@ -65,7 +65,7 @@ exports.mapUrls = function mapUrls (app) {
             // Return that information to crud client
             api.respond(content,req,res);
         });
-
-    });
+    }
+	app.get("/content/fetch*",fetchRequest);
 
 }
