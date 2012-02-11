@@ -1,27 +1,23 @@
-var db = require('../model').db;
 var _ = require('underscore');
 
 
 // Return a paginated list of content nodes
 // apply filter and paginate
 exports.fetch = function (params,callback) {
-	db.Content.fetch(null,
+	Content.fetch(params,
 		function successCallback(content) {
-
-			// Process database response into simple map
-			var contentSchema = {};
-			_.each(content,function(it) {
-				contentSchema[it.title] = {
-					type:		it.type,
-					payload:	it.payload
-				}
-			});
-
 			// Respond with content schema map
 			callback && callback({
 				success: true,
 				hasMore: false,
-				data: content
+				data: _.collect(content,function(it) {
+					return {
+						id:			it.id,
+						title:		it.title,
+						type:		it.type,
+						payload:	it.payload
+					}
+				})
 			});
 		},
 		function errorCallback (msg) {
@@ -38,7 +34,7 @@ exports.getContentSchema = function(context, callback) {
 	
 	// If collection is specified, grab content for given collection
 	if (context.collection) {
-		db.Content.gatherByCollection(
+		Content.gatherByCollection(
 			context.collection,
 			function successCallback (content) {
 				// Process database response into simple map
@@ -62,7 +58,7 @@ exports.getContentSchema = function(context, callback) {
 		// TODO:
 		// Otherwise, use as much settings/cache/page/layout data as possible
 		// to determine the minimum amount of data to fetch
-		db.Content.gatherByContext(
+		Content.gatherByContext(
 			context,
 			function successCallback(content) {
 
@@ -100,7 +96,7 @@ exports.getNode = function(context,callback) {
 		callback && callback(error('No node specified.'));
 	}
 	else {
-		db.Content.get(
+		Content.get(
 			nodeName,
 			function successCallback (node) {
 				if (!node || !node.title) {

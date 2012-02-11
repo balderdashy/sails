@@ -1,5 +1,3 @@
-var db = require('../model').db;
-
 exports.index = function (req, res, next ){
 	
 	// Fetch paginated page index

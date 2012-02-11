@@ -1,5 +1,4 @@
-var _ = require('underscore'),
-	db = require('../model').db;
+var _ = require('underscore');
 
 exports.index = function (req, res, next ) {
 

@@ -1,17 +1,19 @@
-
-/**
- * Module dependencies.
- */
-
-var express = require('express')
-    , cmsRouter = require('./cmsRouter')
-    , apiRouter = require('./apiRouter')
-    , db = require('./model')
-    , fs = require('fs')
+var   express = require('express')
+    , fs = require('fs');
+	
+var   db = require('./db')
     , config = require('./config');
+
 
 // Bootstrap and sync database
 db.bootstrap();
+
+// Create global objects for models
+// TODO: automatically grab all models from models directory
+Content = require("./models/Content").model;
+Collection = require("./models/Collection").model;
+
+
 
 /*
 var app = module.exports = express.createServer({
@@ -20,6 +22,16 @@ var app = module.exports = express.createServer({
 });
 */
 var app = module.exports = express.createServer();
+
+
+// Map Routes
+// API
+(apiRouter = require('./apiRouter')).mapUrls(app);
+
+// CMS
+(cmsRouter = require('./cmsRouter')).mapUrls(app);
+
+
 
 // Configuration
 // Enable JSONP
@@ -42,13 +54,6 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
-// Routes
-
-// API
-apiRouter.mapUrls(app);
-
-// CMS
-cmsRouter.mapUrls(app);
 
 
 // Start server

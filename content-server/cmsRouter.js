@@ -3,8 +3,8 @@ var _ = require('underscore'),
 		'home' : require('./controllers/indexController'),
 		'node' : require('./controllers/nodeController'),
 		'page' : require('./controllers/pageController')
-	},
-	model = require('./model');
+	};
+//	model = require('./model');
 
 
 
