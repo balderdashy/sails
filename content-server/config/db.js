@@ -1,6 +1,14 @@
 exports.Sequelize = Sequelize;
 exports.model = null;
 
+
+var datasource = exports.datasource = {
+	database: 'crud',
+	username: 'root',
+	password: '-'
+}
+
+
 /**
  * Database bootstrap
  * Connect and define associations and schema
@@ -9,9 +17,9 @@ exports.bootstrap = function () {
 
 	// Connect to database
 	var sequelize = exports.model = new Sequelize(
-		config.db.database, 
-		config.db.username,
-		config.db.password
+		datasource.database, 
+		datasource.username,
+		datasource.password
 	);
 	
 	// Connect and sync

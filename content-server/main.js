@@ -3,8 +3,8 @@ express = require('express');
 fs = require('fs');
 Sequelize = require("sequelize");
 _ = require('underscore');
-db = require('./db');
-config = require('./config');
+db = require('./config/db');
+config = require('./config/app');
 
 
 // Bootstrap and sync database

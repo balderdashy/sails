@@ -1,4 +1,4 @@
-var api = require('./services/api');
+var ApiService = require('./services/ApiService');
 var _ = require('underscore');
 
 // Set up routing table
@@ -11,14 +11,14 @@ exports.mapUrls = function mapUrls (app) {
 	function loadRequest(req, res) {
 
         // Get context based on request
-        var context = api.getContext(req);
+        var context = ApiService.getContext(req);
 
         // Look up content schema for this context
-        api.getContentSchema(context, function (content){
+        ApiService.getContentSchema(context, function (content){
             console.log("Answered read request.",content);
 
             // Return that information to crud client
-            api.respond(content,req,res);
+            ApiService.respond(content,req,res);
         });
 
     }
@@ -32,14 +32,14 @@ exports.mapUrls = function mapUrls (app) {
 	function readRequest(req, res) {
 
         // Get context based on request
-        var context = api.getContext(req);
+        var context = ApiService.getContext(req);
 
         // Look up content schema for this context
-        api.getNode(context, function (content) {
+        ApiService.getNode(context, function (content) {
             console.log("Answered read request.",content);
 
             // Return that infomration to crud client
-            api.respond(content,req,res);
+            ApiService.respond(content,req,res);
         });
 
     }
@@ -53,7 +53,7 @@ exports.mapUrls = function mapUrls (app) {
     function fetchRequest (req, res) {
 
         // Look up content schema for this context
-        api.fetch({
+        ApiService.fetch({
 			page: req.param('page') || 0,
 			max: req.param('max') || 15,
 			offset: req.param('offset') || 0,
@@ -63,7 +63,7 @@ exports.mapUrls = function mapUrls (app) {
             console.log("Answered fetch request.",content);
 
             // Return that information to crud client
-            api.respond(content,req,res);
+            ApiService.respond(content,req,res);
         });
     }
 	app.get("/content/fetch*",fetchRequest);
