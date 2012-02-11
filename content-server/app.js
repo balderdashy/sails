@@ -1,8 +1,10 @@
-var   express = require('express')
-    , fs = require('fs');
-	
-var   db = require('./db')
-    , config = require('./config');
+// Module Dependencies
+express = require('express');
+fs = require('fs');
+Sequelize = require("sequelize");
+_ = require('underscore');
+db = require('./db');
+config = require('./config');
 
 
 // Bootstrap and sync database
@@ -12,6 +14,11 @@ db.bootstrap();
 // TODO: automatically grab all models from models directory
 Content = require("./models/Content").model;
 Collection = require("./models/Collection").model;
+
+// Trigger associations
+Content.options.associate();
+Collection.options.associate();
+
 
 
 

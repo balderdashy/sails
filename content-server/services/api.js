@@ -1,5 +1,3 @@
-var _ = require('underscore');
-
 
 // Return a paginated list of content nodes
 // apply filter and paginate
@@ -155,9 +153,6 @@ exports.getContext = function (req) {
 	};
 	return context;
 }
-
-
-
 
 
 
