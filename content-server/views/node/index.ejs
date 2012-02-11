@@ -1,0 +1,31 @@
+<h1>Manage Nodes</h1>
+
+<a>Add new node</a>
+<ul class="nodes">
+	<% if (nodes) { for (var i in nodes) { %>
+	<li><%= nodes[i] %></li>
+	<% } } %>
+</ul>
+
+<!--
+<div class="table-wrapper content-section">
+	<h1 class="branded capped">Recent Activity<span class="asterisk"></span></h1>
+	<div class="filter-bar">
+	  <input type="text" placeholder="Filter responses" />
+	</div>
+	<table class="ui-table">
+	  <thead>
+		<tr>
+		  <th>Recipient</th>
+		  <th>Mobile User Responded</th>
+		  <th>Message Subject</th>
+		  <th>Button</th>
+		  <th>Message Sent</th>
+		  <th class="actionButtons">&nbsp;</th>
+		</tr>
+	  </thead>
+	  <tbody>
+	  </tbody>
+	</table>
+
+  </div>-->

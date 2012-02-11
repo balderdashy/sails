@@ -2,8 +2,48 @@
 <html>
 <head>
     <title><%- title %></title>
+	<link rel="stylesheet" type="text/css" media="all" href="/stylesheets/desktop.css"/>
+	
+<!--	<script type="text/javascript" src=""></script>-->
+		<!-- 3rd party libraries -->
+	<script type="text/javascript" src="/lib/3rdparty/jq.js"></script>
+	<script type="text/javascript" src="/lib/3rdparty/jquery-ui-1.8.16.custom.min.js"></script>
+	<script type="text/javascript" src="/lib/3rdparty/_.js"></script>
+	<script type="text/javascript" src="/lib/3rdparty/backbone.js"></script>
+	<script type="text/javascript" src="/lib/3rdparty/moment.js"></script>
+
+	<!-- App library -->
+	<script type="text/javascript" src="/lib/backbrace.js"></script>
+	<script type="text/javascript" src="/lib/Toggle.js"></script>
+	<script type="text/javascript" src="/lib/stubble.js"></script>
+	<script type="text/javascript" src="/lib/extensions.js"></script>
+
+	<script type="text/javascript" src="/lib/Row.js"></script>
+	<script type="text/javascript" src="/lib/Rows.js"></script>
+	<script type="text/javascript" src="/lib/RowView.js"></script>
+	<script type="text/javascript" src="/lib/TableView.js"></script>
 </head>
 <body>
-    <%- body %>
+	<h1 id="branding">
+		crud.io
+	</h1>
+	
+	<ul id="navbar">
+		<li><a  href="page">Manage Pages</a></li>
+		<li><a  href="node">Edit Content</a></li>
+		<li><a  href="logout">Logout</a></li>
+	</ul>
+	
+	<div id="main">
+		<%- body %>
+	</div>
+	
+	<ul id="footer">
+		<li>Manage Pages</li>
+		<li>Edit Content</li>
+		<li>Support</li>
+		<li>Account</li>
+		<li>CrudCloud</li>
+	</ul>
 </body>
 </html>
