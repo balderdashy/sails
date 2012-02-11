@@ -1,23 +1,22 @@
 var _ = require('underscore'),
 	db = require('../model').db;
 
-exports.index = function (req, res, next ){
+exports.index = function (req, res, next ) {
 
-	// Fetch paginated list of all nodes
-	db.Content.gatherByContext(null,function (content) {
-		content = _.collect(content,function(val,key) {
-			return {
-				title:		val.title,
-				type:		val.type,
-				payload:	val.payload
-			}
-		});
+//	// Fetch paginated list of all nodes
+//	db.Content.gatherByContext(null,function (content) {
+//		content = _.collect(content,function(val,key) {
+//			return {
+//				title:		val.title,
+//				type:		val.type,
+//				payload:	val.payload
+//			}
+//		});
 		
 		res.render('node/index', {
-			title: 'Manage Content | crud.io',
-			nodes: content
+			title: 'Manage Content | crud.io'
 		});
-	})
+//	})
 	
 }
 

@@ -1,5 +1,5 @@
 var TableView = Backbone.View.extend({
-	el: '.table-wrapper',
+	el: '.ui-list-wrapper',
 	
 	// Children must specify the following properties:
 //	collectionClass: CollectionClassName,
@@ -34,10 +34,10 @@ var TableView = Backbone.View.extend({
 		$(this.domReady);
 		
 		this.collection = new this.collectionClass;
-		this.wrapperEl = "div.table-wrapper";
+		this.wrapperEl = "div.ui-list-wrapper";
 		this.el = this.wrapperEl;
-		this.tableEl = "table.ui-table";
-		this.containerEl = "table.ui-table tbody";
+		this.tableEl = "div.ui-list";
+		this.containerEl = "div.ui-list ul";
 	},
 
 	// Fired when document is ready
@@ -150,6 +150,7 @@ var TableView = Backbone.View.extend({
 
 	// Messages loaded from server successfully via ajax
 	finishedLoading: function (collection,response) {
+		console.log("!!!!!!!!",response);
 		this.render();
 
 		window.clearTimeout(this.spinTimer);

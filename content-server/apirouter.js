@@ -6,9 +6,9 @@ exports.mapUrls = function mapUrls (app) {
 
     /**
      * Respond with content for a load context request
-     * (update cache)
+     * (update client cache)
      */
-    app.get("/load*",function(req, res) {
+	function loadRequest(req, res) {
 
         // Get context based on request
         var context = api.getContext(req);
@@ -21,13 +21,15 @@ exports.mapUrls = function mapUrls (app) {
             api.respond(content,req,res);
         });
 
-    });
+    }
+    app.get("/load*",loadRequest);
+	app.get("/content/load*",loadRequest);
 
 
     /**
      * Respond to read request for a specific node
      */
-    app.get("/read*", function(req, res) {
+	function readRequest(req, res) {
 
         // Get context based on request
         var context = api.getContext(req);
@@ -37,6 +39,30 @@ exports.mapUrls = function mapUrls (app) {
             console.log("Answered read request.",content);
 
             // Return that infomration to crud client
+            api.respond(content,req,res);
+        });
+
+    }
+    app.get("/read*", readRequest);
+    app.get("/content/read*", readRequest);
+	
+	
+	/**
+     * Fetch paginated/filtered list of content nodes for use in CMS
+     */
+    app.get("/content/fetch*",function(req, res) {
+
+        // Look up content schema for this context
+        api.fetch({
+			page: req.param('page') || 0,
+			max: req.param('max') || 15,
+			offset: req.param('offset') || 0,
+			sort: req.param('sort') || 'title',
+			order: req.param('order') || 'desc'
+		}, function (content){
+            console.log("Answered fetch request.",content);
+
+            // Return that information to crud client
             api.respond(content,req,res);
         });
 

@@ -40,8 +40,6 @@ var generateClassMethods = function () {
 		gatherByContext: function(context,successCallback,errorCallback) {
 			console.log("Gathering by context.");
 			
-			// TODO: Paginate and filter
-			
 			var results = Content.findAll();
 			results.on('success',successCallback);
 		},
@@ -56,7 +54,17 @@ var generateClassMethods = function () {
 				}
 			});
 			results.on('success',successCallback);
-		}
+		},
+		
+		// Get a paginated/filtered list of nodes
+		fetch: function(params,successCallback,errorCallback) {
+			console.log("Fetching content.");
+			
+			// TODO: Paginate and filter
+			
+			var results = Content.findAll();
+			results.on('success',successCallback);
+		},
 	}
 };
 

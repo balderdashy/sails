@@ -2,6 +2,11 @@ var db = require('../model').db;
 var _ = require('underscore');
 
 
+///
+exports.fetch = function () {
+	// TODO://
+}
+
 
 // Get schema+content based on context
 exports.getContentSchema = function(context, callback) {

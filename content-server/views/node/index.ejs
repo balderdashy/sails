@@ -1,12 +1,17 @@
+<script type="text/javascript" src="/sources/models/Content.js"></script>
+<script type="text/javascript" src="/sources/collections/Contents.js"></script>
+<script type="text/javascript" src="/sources/views/ContentsView.js"></script>
+
 <h1>Manage Nodes</h1>
 
 <a>Add new node</a>
-<ul class="nodes">
-	<%  for (var i in nodes) { %>
-	<li><%= nodes[i].title %></li>
-	<% } %>
-</ul>
-
+<div class="ui-list-wrapper">
+<div class="ui-list content-node-list">
+	<ul>
+		
+	</ul>
+</div>
+</div>
 <!--
 <div class="table-wrapper content-section">
 	<h1 class="branded capped">Recent Activity<span class="asterisk"></span></h1>
