@@ -2,9 +2,9 @@
 
 <a>Add new node</a>
 <ul class="nodes">
-	<% if (nodes) { for (var i in nodes) { %>
-	<li><%= nodes[i] %></li>
-	<% } } %>
+	<%  for (var i in nodes) { %>
+	<li><%= nodes[i].title %></li>
+	<% } %>
 </ul>
 
 <!--
