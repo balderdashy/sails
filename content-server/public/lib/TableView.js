@@ -1,5 +1,5 @@
 var TableView = Backbone.View.extend({
-	el: '.ui-list-wrapper',
+//	el: '.ui-list-wrapper',
 	
 	// Children must specify the following properties:
 //	collectionClass: CollectionClassName,
@@ -22,7 +22,7 @@ var TableView = Backbone.View.extend({
 	page: 0,
 	
 	// How many models to load at a time
-	perPage: 15,
+	perPage: 5,
 	
 
 	emptyText: "No data available.",
@@ -109,7 +109,7 @@ var TableView = Backbone.View.extend({
 
 		// Start loading
 		if (this.collection.url) {
-
+			
 			this.collection.fetch({
 				add: this.page > 0,
 				data: {
@@ -140,7 +140,7 @@ var TableView = Backbone.View.extend({
 			// If this is a "load more" request, display the inline spinner
 				var loadMoreButton = this.el.find(".loadMore");
 				loadMoreButton.text('');
-				$('<div class="empty-table"><img class="loader" src="/images/ajax-loader.gif"/></div>').appendTo(loadMoreButton).center();
+				$('<div class="empty-table"><img class="loader" src="/images/ajax-loader-small.gif"/></div>').appendTo(loadMoreButton).center();
 			}
 		}
 		else {
@@ -150,8 +150,8 @@ var TableView = Backbone.View.extend({
 
 	// Messages loaded from server successfully via ajax
 	finishedLoading: function (collection,response) {
-		console.log("!!!!!!!!",response);
-		this.render();
+		var me = this;
+		me.render();
 
 		window.clearTimeout(this.spinTimer);
 		var spinn = $(this.wrapperEl).children('.empty-table');
@@ -186,14 +186,15 @@ var TableView = Backbone.View.extend({
 
 	// Render the table ==> update the DOM
 	render: function () {
-		var me = this;
-		
+		var me = this;		
+
 		// Additive
 		if (this.page > 0) {
 			for (var index = this.perPage*this.page; index < this.perPage*(this.page+1); index++) {
 				if (this.collection.at(index)) {
 					new me.rowClass({
-						model: this.collection.at(index)
+						model: this.collection.at(index),
+						containerEl: me.containerEl
 					}).render();
 				}
 				else 
@@ -218,7 +219,8 @@ var TableView = Backbone.View.extend({
 			else {
 				this.collection.each(function(a) {
 					new me.rowClass({
-						model: a
+						model: a,
+						containerEl: me.containerEl
 					}).render();
 				});
 			}
@@ -235,6 +237,6 @@ var TableView = Backbone.View.extend({
 	
 	markup: {
 		root:"<%= hasMore %>",
-		loadMoreButton:"<a class='loadMore ui-button ui-theme-gray'>Load More...</a>"
+		loadMoreButton:"<a class='loadMore ui-button ui-theme-gray'>more</a>"
 	}
 });

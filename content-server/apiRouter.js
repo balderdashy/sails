@@ -3,6 +3,20 @@ var _ = require('underscore');
 
 // Set up routing table
 exports.mapUrls = function mapUrls (app) {
+	
+	/**
+     * Fetch paginated/filtered list of content nodes for use in CMS
+     */
+    function fetchRequest (req, res) {
+        ApiService.fetch(req.query, function (content){
+			
+            // Return that information to crud client
+            ApiService.respond(content,req,res);
+        });
+    }
+	app.get("/content/fetch*",fetchRequest);
+	
+	
 
     /**
      * Respond with content for a load context request
@@ -45,27 +59,4 @@ exports.mapUrls = function mapUrls (app) {
     }
     app.get("/read*", readRequest);
     app.get("/content/read*", readRequest);
-	
-	
-	/**
-     * Fetch paginated/filtered list of content nodes for use in CMS
-     */
-    function fetchRequest (req, res) {
-
-        // Look up content schema for this context
-        ApiService.fetch({
-			page: req.param('page') || 0,
-			max: req.param('max') || 15,
-			offset: req.param('offset') || 0,
-			sort: req.param('sort') || 'title',
-			order: req.param('order') || 'desc'
-		}, function (content){
-            console.log("Answered fetch request.",content);
-
-            // Return that information to crud client
-            ApiService.respond(content,req,res);
-        });
-    }
-	app.get("/content/fetch*",fetchRequest);
-
 }

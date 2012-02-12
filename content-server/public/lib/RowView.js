@@ -17,7 +17,7 @@ var RowView = Backbone.View.extend({
 	initialize: function(options) {
 		_.bindAll(this);
 		this.model = options.model;
-		this.containerEl = "table.ui-table tbody";
+		this.containerEl = options.containerEl;
 		this.el = null;
 		
 		// Add child's events
@@ -58,7 +58,8 @@ var RowView = Backbone.View.extend({
 		var map = this.model.attributes;
 		map = this.transform(map);
 
-		var html = $.stubble(template,map);
+		var html = _.template(template,map);
+		
 		return html;
 	},
 
@@ -81,19 +82,4 @@ var RowView = Backbone.View.extend({
 		// Remove from DOM
 		this.remove();
 	}
-})
-
-var Row = Backbone.Model.extend({
-	initialize: function(attrs) {
-		// Cast fields that must be integers
-		attrs.id = +attrs.id;
-		this.id = attrs.id;
-
-		this.body = attrs;
-		this.attributes = attrs;
-	},
-	defaults: {
-	},
-	rules: {
-}
 })

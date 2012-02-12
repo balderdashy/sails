@@ -57,15 +57,58 @@ var Content = exports.model = db.model.define('Content', {
 			});
 			results.on('success',successCallback);
 		},
+		
+		// Count a filtered list of nodes
+		countFilter: function(params,successCallback,errorCallback) {
+			console.log("Counting content.");
+			
+			// Generate WHERE clause from filter
+			var whereQuery,q;
+			if (params.filter) {
+				q = "%" + params.filter + "%";
+				whereQuery = [
+					" title LIKE ? OR description LIKE ? OR payload LIKE ? ", q,q,q,
+				];
+			}
+			else {
+				whereQuery= null;
+			}
+			
+			// Build query
+			var query = {
+				where: whereQuery,
+				order: params.sort+' '+params.order
+			};
+			
+			Content.count(query).on('success',successCallback);
+			
+		},
 
 		// Get a paginated/filtered list of nodes
-		fetch: function(params,successCallback,errorCallback) {
+		fetchFilter: function(params,successCallback,errorCallback) {
 			console.log("Fetching content.");
-
-			// TODO: Paginate and filter
-
-			var results = Content.findAll();
-			results.on('success',successCallback);
+			
+			// Generate WHERE clause from filter
+			var whereQuery,q;
+			if (params.filter) {
+				q = "%" + params.filter + "%";
+				whereQuery = [
+					" title LIKE ? OR description LIKE ? OR payload LIKE ? ", q,q,q,
+				];
+			}
+			else {
+				whereQuery= null;
+			}
+			
+			// Build query
+			var query = {
+				where: whereQuery,
+				order: params.sort+' '+params.order,
+				offset: params.offset,
+				limit: params.max
+			};
+			
+			Content.findAll(query).on('success',successCallback);
 		}
 	}
 });

@@ -28,13 +28,5 @@ var Rows = Backbone.Collection.extend({
 			this.hasMore = data.hasMore;
 			return data.data;
 		}
-    },
-	
-
-	/**
-	 * Sort by dateCreated by default
-	 */
-	comparator: function(model) {
-		return -model.get("dateCreated");
-	}
+    }
 })

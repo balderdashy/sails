@@ -1,6 +1,7 @@
 // Module Dependencies
 express = require('express');
 fs = require('fs');
+async = require('async');
 Sequelize = require("sequelize");
 _ = require('underscore');
 db = require('./config/db');

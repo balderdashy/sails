@@ -1,26 +1,73 @@
+/** 
+*  Prepend argument and increase function arity
+*  ("anti-curry")
+ */
+function prependArgument (fn,newArgument) {
+	return function (x) {
+		console.log("\n\nMODEL RETURNED::::::",x);
+		fn(newArgument,x);
+	}
+}
+
 
 // Return a paginated list of content nodes
 // apply filter and paginate
 exports.fetch = function (params,callback) {
-	Content.fetch(params,
-		function successCallback(content) {
-			// Respond with content schema map
+	
+	// Validate request
+	params.sort = (params.sort=='title') ? params.sort : 'title';
+	params.order = (params.order=='asc' || params.order=='desc') ? params.order : 'asc';
+	params.max = +params.max;
+	params.offset = +params.offset;
+	params.page = +params.page;
+	
+	if (_.isNaN(params.max) || params.max > 15 || params.max < 0)
+		params.max = 15;
+	if (_.isNaN(params.offset) || params.offset < 0)
+		params.offset = 0;
+	if (_.isNaN(params.page) || params.page < 0)
+		params.page = 0;
+	
+	// Wait for queries to finish
+	var queryObj;
+	async.parallel({
+		count: function(callback) {
+			Content.countFilter(params,
+			function successCallback(response) {
+				callback(null,response)
+			},
+			function errorCallback(message) {
+				callback(message,response)
+			});
+		},
+		fetch: function(callback) {
+			Content.fetchFilter(params,
+			function successCallback(response) {
+				callback(null,response)
+			},
+			function errorCallback(message) {
+				callback(message,response)
+			});
+		}
+	}, function done (err,resultMap) {
+		if (err) {
+			callback && callback(error(err));
+		}
+		else {
 			callback && callback({
 				success: true,
-				hasMore: false,
-				data: _.collect(content,function(it) {
+				data: _.collect(resultMap.fetch,function(it) {
 					return {
 						id:			it.id,
 						title:		it.title,
 						type:		it.type,
 						payload:	it.payload
 					}
-				})
+				}),
+				hasMore: (resultMap.count - (params.offset+params.max) ) > 0
 			});
-		},
-		function errorCallback (msg) {
-			callback && callback(error(msg));
-		});
+		}
+	});
 }
 
 
@@ -157,11 +204,23 @@ exports.getContext = function (req) {
 
 
 
+
 /**
  * Returns a callback object representing the specified application context
  * with the requested content and a success message
  */
 function success(context,content) {
+	return {
+		success: true,
+		context: context,
+		content: content
+	}
+}
+
+/**
+ * Returns a paginated version of the success response object
+ */
+function paginatedSuccess(context,content) {
 	return {
 		success: true,
 		context: context,

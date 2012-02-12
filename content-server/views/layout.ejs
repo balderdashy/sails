@@ -2,10 +2,10 @@
 <html>
 <head>
     <title><%- title %></title>
+	<link rel="stylesheet" type="text/css" media="all" href="/stylesheets/reset.css"/>
 	<link rel="stylesheet" type="text/css" media="all" href="/stylesheets/desktop.css"/>
 	
-<!--	<script type="text/javascript" src=""></script>-->
-		<!-- 3rd party libraries -->
+	<!-- 3rd party libraries -->
 	<script type="text/javascript" src="/lib/3rdparty/jq.js"></script>
 	<script type="text/javascript" src="/lib/3rdparty/jquery-ui-1.8.16.custom.min.js"></script>
 	<script type="text/javascript" src="/lib/3rdparty/_.js"></script>
@@ -24,15 +24,18 @@
 	<script type="text/javascript" src="/lib/TableView.js"></script>
 </head>
 <body>
-	<h1 id="branding">
-		crud.io
-	</h1>
-	
-	<ul id="navbar">
-		<li><a  href="page">Manage Pages</a></li>
-		<li><a  href="node">Edit Content</a></li>
-		<li><a  href="logout">Logout</a></li>
-	</ul>
+	<div id="topbar">
+		<h1 id="branding">
+			crud.io
+		</h1>
+
+		<ul id="navbar">
+			<li><a  href="page">pages</a></li>
+			<li><a  href="node">manage content</a></li>
+			<li><a  href="account">account</a></li>
+			<li><a  href="logout">logout</a></li>
+		</ul>
+	</div>
 	
 	<div id="main">
 		<%- body %>
