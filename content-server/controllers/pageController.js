@@ -2,7 +2,8 @@ exports.index = function (req, res, next ){
 	
 	// Fetch paginated page index
 	res.render('page/index', {
-		title: 'Manage Pages | crud.io'
+		title: 'Manage Pages | crud.io',
+		selected:'page'
 	});
 }
 

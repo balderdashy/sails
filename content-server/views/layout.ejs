@@ -30,23 +30,23 @@
 		</h1>
 
 		<ul id="navbar">
-			<li><a  href="page">pages</a></li>
-			<li><a  href="node">manage content</a></li>
-			<li><a  href="account">account</a></li>
-			<li><a  href="logout">logout</a></li>
+			<li><a <% if (typeof selected!='undefined' && selected=='page') { %> class='selected' <% } %> href="page">pages</a></li>
+			<li><a <% if (typeof selected!='undefined' && selected=='node') { %> class='selected' <% } %> href="node">manage content</a></li>
+			<li><a <% if (typeof selected!='undefined' && selected=='account') { %> class='selected' <% } %> href="account">account</a></li>
 		</ul>
 	</div>
 	
-	<div id="main">
+	<div id="content">
 		<%- body %>
 	</div>
 	
-	<ul id="footer">
-		<li>Manage Pages</li>
+	<div id="footer">
+		<a target="_blank" href="http://michaelmcneil.com" class="copyright">&copy; Mike McNeil 2012</a>
+<!--		<li>Manage Pages</li>
 		<li>Edit Content</li>
 		<li>Support</li>
 		<li>Account</li>
-		<li>CrudCloud</li>
-	</ul>
+		<li>CrudCloud</li>-->
+	</div>
 </body>
 </html>

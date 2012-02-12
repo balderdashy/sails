@@ -8,15 +8,10 @@ var ContentView = RowView.extend({
 		return map;
 	},
 	markup:{
-		row: '<li><%- title %></li>'
-//		row:
-//		'<tr>'+
-//		'<td class="image"><img src="{{imgSrc}}"/></td>'+
-//		'<td class="searchable data"><span>{{recipient}}</span></td>'+
-//		'<td class="data"><span class="{{notyet}}">{{dateCreated}}</span></td>'+
-//		'<td class="searchable data"><span>{{latitude}}</span></td>'+
-//		'<td class="searchable data"><span>{{longitude}}</span></td>'+
-//		'<td class="actionButtons">'+
-//		'</td></tr>'
+		row: '<li>'+
+			'<strong class="title property"><%- title %></strong>'+
+			'<span class="payload property"><%- payload %></span>'+
+			'<a class="content-type property"><%- type %></a>'+
+			'</li>'
 	}
 });

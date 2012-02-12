@@ -134,7 +134,7 @@ var TableView = Backbone.View.extend({
 			if (this.page == 0) {
 				// empty table and display loading spinner onload
 //				$(this.tableEl).hide();
-				$('<div class="empty-table"><img class="loader" src="/images/ajax-loader.gif"/></div>').appendTo(this.wrapperEl).center();
+				$('<div class="empty-table"><img class="loader" src="/images/ajax-loader-small.gif"/></div>').appendTo(this.wrapperEl).center();
 			}
 			else {
 			// If this is a "load more" request, display the inline spinner
