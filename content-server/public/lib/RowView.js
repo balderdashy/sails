@@ -7,6 +7,7 @@ var RowView = Backbone.View.extend({
 	markup: {},
 	/////////////////////////////////////////////////////////////////
 
+	originalOpacity: 0.75,
 
 	events: {
 		'click.row' : 'open',
@@ -28,19 +29,23 @@ var RowView = Backbone.View.extend({
 	},
 
 	ready: function () {
+		
 	},
 
 	mouseenter: function () {
-		$(this.el).addClass("hovered");
+		$(this.el).fadeTo(100,1);
+//		$(this.el).addClass("hovered");
 	},
 	mouseleave: function () {
-		$(this.el).removeClass("hovered");
+		$(this.el).fadeTo(100,this.originalOpacity);
+//		$(this.el).removeClass("hovered");
 	},
 
 	render: function () {
 		// Redraw all elements
 		var newElem = $(this.generateHTML()).appendTo(this.containerEl);
 		this.el = newElem;
+		$(this.el).fadeTo(1,this.originalOpacity);
 		this.delegateEvents();
 	},
 
