@@ -20,6 +20,8 @@ var ContentView = RowView.extend({
 	
 	
 	
+	
+	
 	saveEditor: function (object) {
 		this.model.save(object,{
 			success: this.rerender
@@ -27,14 +29,42 @@ var ContentView = RowView.extend({
 	},
 	openEditor: function (field){
 		var object = {};
-		object[field] = window.prompt("Enter new value");
-		object[field]= (field == 'type') ? 
-			object[field].toLowerCase() :
-			object[field];
-		this.saveEditor(object);
+		this.selected.toggle();
+
+//		object[field] = window.prompt("Enter new value");
+//		object[field]= (field == 'type') ? 
+//			object[field].toLowerCase() :
+//			object[field];
+//		this.saveEditor(object);
 	},
 	
 	open: function () {},
+	render: function () {
+		// Call parent function
+		RowView.prototype.render.call(this);
+		
+		this.originalHeight = $(this.el).height();
+		this.originalPaddingTop = $(this.el).css('padding-top');
+		this.originalPaddingBottom = $(this.el).css('padding-bottom');
+		this.selected = new Toggle(false,this.select,this.deselect)
+	},
+	select: function () {
+		console.log(this);
+		this.el.stop().css({
+			paddingTop: 0,
+			paddingBottom: 0
+		}).animate({
+			height: "200"
+		},200)
+	},
+	deselect: function () {
+		this.el.stop().css({
+			paddingTop: this.originalPaddingTop,
+			paddingBottom: this.originalPaddingBottom
+		}).animate({
+			height: this.originalHeight
+		},200)
+	},
 	transform: function (map) {
 		// Call parent function
 		RowView.prototype.transform.call(this, map);

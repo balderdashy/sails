@@ -19,6 +19,7 @@ var RowView = Backbone.View.extend({
 		_.bindAll(this);
 		this.model = options.model;
 		this.containerEl = options.containerEl;
+		this.collectionView = options.collectionView;
 		this.el = null;
 		
 		// Add child's events
@@ -58,7 +59,7 @@ var RowView = Backbone.View.extend({
 		$(this.el).fadeTo(1,this.originalOpacity);
 		
 		// Syntax highlight
-		hljs && $('pre code').each(function(i, e) {hljs.highlightBlock(e, '    ')});
+		hljs && $(this.el).find('pre code').each(function(i, e) {hljs.highlightBlock(e, '    ')});
 		this.delegateEvents();
 	},
 

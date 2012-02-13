@@ -27,11 +27,31 @@ div.ui-list ul li .property:hover {
 	cursor:pointer;
 }
 
+div.ui-list ul li {
+	padding-top: 1%;
+	padding-bottom: 1%;
+}
+
+
+/* top level divisions */
+div.ui-list ul li div.info {
+	height:100%;
+	padding: 0 1% 0 3%;
+	
+	
+	width:20%;
+	min-width: 40px;
+	display:block;
+	float:left;
+	overflow: hidden;
+}
 div.ui-list ul li .payload {
+	height:100%;
+	padding: 0 3%;
+	
 	width:48%;
 	margin:0;
 	line-height:1.1em;
-	padding: 1em 3%;
 	font-size: 11px;
 	color:#888;
 	border-left: 1px solid #e8e8e8;
@@ -40,6 +60,21 @@ div.ui-list ul li .payload {
 	float:left;
 }
 
+div.ui-list ul li a.content-type {
+	height:100%;
+	padding: 0 1%;
+	
+	width:20%;
+	min-width:30px;
+	font-size: 0.9em;
+	text-transform: uppercase;
+	text-align:center;
+	display:block;
+	float:right;
+	overflow: hidden;
+}
+
+/* sub-divisions */
 div.ui-list ul li span.payload {
 	font-weight: normal;
 	text-shadow: none;
@@ -64,17 +99,6 @@ div.ui-list ul li pre.payload code {
 /*	height:2em;*/
 }
 
-div.ui-list ul li div.info {
-	
-	width:20%;
-	min-width: 40px;
-	padding: 1em 1% 1em 3%;
-	display:block;
-	float:left;
-	overflow: hidden;
-	height:100%;
-}
-
 div.ui-list ul li div.info strong.title {}
 div.ui-list ul li div.info em.description {
 	display:block;
@@ -85,16 +109,6 @@ div.ui-list ul li div.info em.description {
 }
 
 
-div.ui-list ul li a.content-type {
-	width:20%;
-	min-width:30px;
-	padding: 1em 1%;
-	font-size: 0.9em;
-	text-transform: uppercase;
-	text-align:center;
-	display:block;
-	float:right;
-	overflow: hidden;
-}
+
 
 

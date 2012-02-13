@@ -194,7 +194,8 @@ var TableView = Backbone.View.extend({
 				if (this.collection.at(index)) {
 					new me.rowClass({
 						model: this.collection.at(index),
-						containerEl: me.containerEl
+						containerEl: me.containerEl,
+						collectionView: me
 					}).render();
 				}
 				else 
@@ -220,7 +221,8 @@ var TableView = Backbone.View.extend({
 				this.collection.each(function(a) {
 					new me.rowClass({
 						model: a,
-						containerEl: me.containerEl
+						containerEl: me.containerEl,
+						collectionView: me
 					}).render();
 				});
 			}
