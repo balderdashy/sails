@@ -46,6 +46,9 @@ var RowView = Backbone.View.extend({
 		var newElem = $(this.generateHTML()).appendTo(this.containerEl);
 		this.el = newElem;
 		$(this.el).fadeTo(1,this.originalOpacity);
+		
+		// Syntax highlight
+		hljs && $('pre code').each(function(i, e) {hljs.highlightBlock(e, '    ')});
 		this.delegateEvents();
 	},
 
@@ -58,22 +61,28 @@ var RowView = Backbone.View.extend({
 	// Return the HTML especially for this row
 	generateHTML: function () {
 		var template = this.markup.row;
+		var map = _.clone(this.model.attributes);
 
-		// Adapt attributes to work:
-		var map = this.model.attributes;
-		map = this.transform(map);
+		// Replace nulls with ""
+		var copy = {};
+		_.each(map,function(value,key) {
+			copy[key] = (value === null) ? "" : value;
+		});
 
-		var html = _.template(template,map);
-		
-		return html;
+		// Adapt specific attributes for this client view
+		copy = this.transform(copy);
+		return _.template(template,copy);
 	},
 
-	//  Adapt data-- by default, formats dates (can be overridden)
+	//  Adapt data-- 
 	transform: function (map) {
-		map.dateSent = moment(map.dateSent).from(moment());
-		map.dateModified = moment(map.dateModified).from(moment());
-		map.dateCreated = moment(map.dateCreated).from(moment());
 		return map;
+		
+//		// by default, formats dates (can be overridden)
+//		map.dateSent = moment(map.dateSent).from(moment());
+//		map.dateModified = moment(map.dateModified).from(moment());
+//		map.dateCreated = moment(map.dateCreated).from(moment());
+//		return copy;
 	},
 
 

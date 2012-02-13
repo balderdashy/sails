@@ -60,6 +60,7 @@ exports.fetch = function (params,callback) {
 					return {
 						id:			it.id,
 						title:		it.title,
+						description:it.description,
 						type:		it.type,
 						payload:	it.payload
 					}

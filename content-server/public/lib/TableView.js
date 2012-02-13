@@ -49,7 +49,7 @@ var TableView = Backbone.View.extend({
 		this.loadData();
 		
 		// Assign a keyup event that watches the search filter for google-like keyup search
-		this.searchBar = $(this.wrapperEl).find('.filter-bar input')
+		this.searchBar = $(this.wrapperEl).find('.ui-list-search')
 		this.searchBar.live('keyup',this.userTypedInSearchBar);
 	},
 	
@@ -61,7 +61,7 @@ var TableView = Backbone.View.extend({
 		
 		// Use timer to reduce # of requests
 		this.keyupTimer && window.clearTimeout(this.keyupTimer);
-		this.keyupTimer = window.setTimeout(this.filterBySearch, 50);
+		this.keyupTimer = window.setTimeout(this.filterBySearch, 200);
 	},
 	
 	
@@ -116,7 +116,7 @@ var TableView = Backbone.View.extend({
 					filter: this.filter(),	// arbitrary filter-- defined by inheritors
 					
 					// Built-in filtering
-					searchFilter: (this.filters && this.filters.searchFilter) || "",
+					filter: (this.filters && this.filters.searchFilter) || "",
 					labelFilters: (this.filters && this.filters.labelFilters) || [],
 					
 					// Pagination
