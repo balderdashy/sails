@@ -14,15 +14,14 @@ exports.read = function (req, res, next ){
 	});
 }
 
-exports.remove = function (req, res, next ){
+exports.update = function (req, res, next ){
 	console.log(req.params);
 	res.json({
 		params: req.params
 	});
 }
 
-
-exports.wiggles = function (req, res, next ){
+exports.remove = function (req, res, next ){
 	console.log(req.params);
 	res.json({
 		params: req.params

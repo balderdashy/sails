@@ -6,80 +6,81 @@ var _ = require('underscore'),
 	};
 
 var mappings = {
-	
-	  '/node': controllers.node.index
-	, '/nodes': controllers.node.index
-	, '/node/index': controllers.node.index
-	
-	, '/node/create': controllers.node.create
-	, '/node/add': controllers.node.create
-	, '/node/new': controllers.node.create
-	
-	, '/node/:id?': controllers.node.read
-	, '/node/read/:id?': controllers.node.read
-	, '/node/view/:id?': controllers.node.read
-	, '/node/show/:id?': controllers.node.read
-	, '/node/detail/:id?': controllers.node.read
-	
-	, '/node/edit/:id?': controllers.node.update
-	, '/node/modify/:id?': controllers.node.update
-	, '/node/update/:id?': controllers.node.update
-	
-	, '/node/delete/:id?': controllers.node.remove
-	, '/node/remove/:id?': controllers.node.remove
-	, '/node/destroy/:id?': controllers.node.remove
+	  '/nodes': controllers.node.index
 	
 	, '/sitemap': controllers.page.index
-	, '/page': controllers.page.index
-	, '/page/:id?': controllers.page.view
-	, '/page/view/:id?': controllers.page.view
 	
-	
-	// Application meta actions
 	, '/': controllers.meta.home
 	, '/500': controllers.meta.error
 	, '/404': controllers.meta.notfound
-	
-	
-	
-	// Handle wildcard requests
-	, '/:entity/:action/:id?': function (req,res,next) {
-		var entity = req.param('entity'),
-			action = req.param('action');
-			
-		if (entity && 
-			entity != "stylesheets" && 
-			entity != "lib" && 
-			entity != "sources" && 
-			entity != "images") {
-				
-			// Try to map to an entity
-			if (_.contains(_.keys(controllers),entity)) {
-				var controller = controllers[entity];
-				console.log("FOUUND",controller);
-				
-				// Try to map to a method
-				if (controller[action]) {
-					var method = controller[action];
-					return method(req,res,next);
-				}
-			}
-			
-			// If that fails, just display the 404 page
-			return res.json({
-				wildcard: 'fail'
-			});
-				//controllers.meta.notfound(req,res,next);
-		}
-		else {
-			next();
-		}
-	}
+	, '/:entity/:action?/:id?': handleWildcardRequest
 }
 
 // Set up routing table
 exports.mapUrls = function mapUrls (app) {
 	for (var r in mappings) {
 		app.get(r, mappings[r]);
+	}
+}
+
+/**
+ * Try to match up an arbitrary request with a controller and action
+ */
+function handleWildcardRequest (req,res,next) {
+	var entity = req.param('entity'),
+		action = req.param('action');
+
+	if (entity && 
+		entity != "stylesheets" && 
+		entity != "lib" && 
+		entity != "sources" && 
+		entity != "images") {
+
+		// Try to map to an entity
+		if (_.contains(_.keys(controllers),entity)) {
+			var controller = controllers[entity];
+
+			// Resolve to index if action is undefined
+			action = action || "index";
+
+			// Try to map to a method
+			if (! controller[action]) {
+				// Resolve to an appropriate, conventional synonym
+				action = 
+					(action == "delete") ? "remove" :
+					(action == "destroy") ? "remove" : 
+
+					(action == "edit") ? "update" : 
+					(action == "modify") ? "update" : 
+
+					(action == "view") ? "read" : 
+					(action == "show") ? "read" : 
+					(action == "detail") ? "read" : 
+
+					(action == "add") ? "create" : 
+					(action == "new") ? "create" : 
+					action;					
+				
+				// Attempt to parse id and resolve to read request
+				if (!_.isNaN(+action)) {
+					req.params.id = +action;
+					action = "read";
+				}
+				
+				// Pass corrected action down
+				req.params.action = action;
+			}
+
+			if (controller[action]) {
+				var method = controller[action];
+				return method(req,res,next);
+			}
+		}
+
+		// If that fails, just display the 404 page
+		return controllers.meta.notfound(req,res,next);
+	}
+	else {
+		next();
 	}
 }
