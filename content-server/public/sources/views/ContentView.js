@@ -6,21 +6,32 @@ var ContentView = RowView.extend({
 		"click .content-type": "clickedType"
 	},
 	clickedTitle: function () {
-		alert("edit tiel");
+		this.openEditor('title');
 	},
 	clickedDescription: function () {
-		alert("edit desc");
+		this.openEditor('description');
 	},
 	clickedPayload: function () {
-		this.model.set({
-			payload:'TESTING THIS'
-		});
-		this.model.save({},{
+		this.openEditor('payload');
+	},
+	clickedType: function () {
+		this.openEditor('type');
+	},
+	
+	
+	
+	saveEditor: function (object) {
+		this.model.save(object,{
 			success: this.rerender
 		});
 	},
-	clickedType: function () {
-		alert("edit type");
+	openEditor: function (field){
+		var object = {};
+		object[field] = window.prompt("Enter new value");
+		object[field]= (field == 'type') ? 
+			object[field].toLowerCase() :
+			object[field];
+		this.saveEditor(object);
 	},
 	
 	open: function () {},
@@ -31,7 +42,7 @@ var ContentView = RowView.extend({
 		var html;
 		
 		
-		html = (map.type=='html') ?
+		html = (map.type =='html') ?
 			'<pre class="payload property"><code class="html"><%- payload %></code></pre>' :
 			'<span class="payload property"><%- payload %></span>';
 		
