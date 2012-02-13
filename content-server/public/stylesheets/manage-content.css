@@ -9,7 +9,6 @@ a.create-node {
 	/*	margin-left:35px;*/
 
 	display:inline;
-	/*	width: 70px;*/
 	border-radius: 10px;
 	border: 3px solid #00B0F4;
 	background:#00B7FF url('/images/plus-icon.png') 9px center no-repeat;
@@ -35,7 +34,8 @@ div.ui-list ul li .payload {
 	padding: 1em 3%;
 	font-size: 11px;
 	color:#888;
-	border-right: 1px inset #e8e8e8;
+	border-left: 1px solid #e8e8e8;
+	border-right: 1px solid #e8e8e8;
 	display:block;
 	float:left;
 }
@@ -69,7 +69,6 @@ div.ui-list ul li div.info {
 	width:20%;
 	min-width: 40px;
 	padding: 1em 1% 1em 3%;
-	border-right: 1px inset #e8e8e8;
 	display:block;
 	float:left;
 	overflow: hidden;

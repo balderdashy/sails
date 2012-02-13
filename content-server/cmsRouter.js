@@ -1,5 +1,4 @@
-var _ = require('underscore'),
-	controllers = {
+var	controllers = {
 		'meta' : require('./controllers/MetaController'),
 		'node' : require('./controllers/NodeController'),
 		'page' : require('./controllers/PageController')
@@ -19,7 +18,7 @@ var mappings = {
 // Set up routing table
 exports.mapUrls = function mapUrls (app) {
 	for (var r in mappings) {
-		app.get(r, mappings[r]);
+		app.all(r, mappings[r]);
 	}
 }
 

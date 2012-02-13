@@ -1,5 +1,4 @@
 var ApiService = require('./services/ApiService');
-var _ = require('underscore');
 
 // Set up routing table
 exports.mapUrls = function mapUrls (app) {
