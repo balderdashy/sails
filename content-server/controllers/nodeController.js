@@ -1,27 +1,30 @@
 var _ = require('underscore');
 
-exports.index = function (req, res, next ) {
-
-//	// Fetch paginated list of all nodes
-//	db.Content.gatherByContext(null,function (content) {
-//		content = _.collect(content,function(val,key) {
-//			return {
-//				title:		val.title,
-//				type:		val.type,
-//				payload:	val.payload
-//			}
-//		});
-		
+exports.index = function (req, res, next ) {		
 		res.render('node/index', {
 			title: 'Manage Content | crud.io',
 			selected: 'node'
 		});
-//	})
-	
 }
 
-exports.view = function (req, res, next ){
-	res.render('node/view', {
-		title: 'Edit Content Node | crud.io'
+exports.read = function (req, res, next ){
+	console.log(req.params);
+	res.json({
+		params: req.params
+	});
+}
+
+exports.remove = function (req, res, next ){
+	console.log(req.params);
+	res.json({
+		params: req.params
+	});
+}
+
+
+exports.wiggles = function (req, res, next ){
+	console.log(req.params);
+	res.json({
+		params: req.params
 	});
 }
