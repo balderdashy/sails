@@ -1,3 +1,16 @@
+// NOTE:
+//
+// It's stupid that classic MVC frameworks only provide a validation API
+// at the model layer.  API parameters need love too!  Validation should be
+// provided at the controller layer.
+// 
+// It is also arguable that the view layer should contain validation for the 
+// data coming back over from the controller.
+// 
+// However, since most everything is likely to come back as AJAX or over 
+// socket.io anyway, we'll leave that out.
+//
+
 exports.index = function (req, res, next ) {		
 	res.render('node/index', {
 		title: 'Manage Content | crud.io',
@@ -47,6 +60,10 @@ exports.remove = function (req, res, next ){
 
 
 
+
+
+
+
 /**
  * Returns true if valid
  * if invalid, returns false and sends a JSON error response
@@ -70,7 +87,7 @@ function validateId(res,id) {
  * if invalid, returns false and sends a JSON error response
  */
 function validateVerb(res,verb,okVerbs) {
-	// TODO: HAXX
+	// TODO: remove haxx
 	return true;
 	
 	if (!_.contains(okVerbs,verb)) {
