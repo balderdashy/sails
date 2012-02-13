@@ -12,7 +12,12 @@ var ContentView = RowView.extend({
 		alert("edit desc");
 	},
 	clickedPayload: function () {
-		alert("edit payload");
+		this.model.set({
+			payload:'TESTING THIS'
+		});
+		this.model.save({},{
+			success: this.rerender
+		});
 	},
 	clickedType: function () {
 		alert("edit type");

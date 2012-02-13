@@ -40,6 +40,16 @@ var RowView = Backbone.View.extend({
 		$(this.el).fadeTo(100,this.originalOpacity);
 //		$(this.el).removeClass("hovered");
 	},
+	
+	rerender: function (){
+		var newElem = $(this.generateHTML());
+		this.el.replaceWith(newElem);
+		this.el = newElem;
+		
+		// Syntax highlight
+		hljs && $('pre code').each(function(i, e) {hljs.highlightBlock(e, '    ')});
+		this.delegateEvents();
+	},
 
 	render: function () {
 		// Redraw all elements

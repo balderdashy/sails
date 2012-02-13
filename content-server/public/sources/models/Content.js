@@ -1,5 +1,5 @@
 var Content = Row.extend({
-
+	
 	initialize: function(params) {
 		
 		// Cast fields that must be integers

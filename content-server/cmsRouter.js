@@ -27,7 +27,8 @@ exports.mapUrls = function mapUrls (app) {
  */
 function handleWildcardRequest (req,res,next) {
 	var entity = req.param('entity'),
-		action = req.param('action');
+		action = req.param('action'),
+		method = req.method;
 
 	if (entity && 
 		entity != "stylesheets" && 
@@ -35,12 +36,18 @@ function handleWildcardRequest (req,res,next) {
 		entity != "sources" && 
 		entity != "images") {
 
-		// Try to map to an entity
+		// Try to map to an entity (use backbone conventions)
 		if (_.contains(_.keys(controllers),entity)) {
 			var controller = controllers[entity];
 
-			// Resolve to index if action is undefined
-			action = action || "index";
+			// For undefined actions, resolve to:
+			// if GET: fetch
+			// if POST: create
+			action = action || (
+				(method=="GET") ? "fetch" :
+				(method=="POST") ? "create" :
+				action
+			);
 
 			// Try to map to a method
 			if (! controller[action]) {
@@ -60,10 +67,16 @@ function handleWildcardRequest (req,res,next) {
 					(action == "new") ? "create" : 
 					action;					
 				
-				// Attempt to parse id and resolve to read request
+				// Attempt to parse id from action to follow backbone conventions
 				if (!_.isNaN(+action)) {
 					req.params.id = +action;
-					action = "read";
+					
+					// if PUT: update
+					// if DELETE: remove
+					action = (
+						(method == "PUT") ? "update" :
+						(method == "DELETE") ? "remove" :
+						action);
 				}
 				
 				// Pass corrected action down

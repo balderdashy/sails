@@ -8,6 +8,7 @@ db = require('./config/db');
 config = require('./config/app');
 
 
+
 // Bootstrap and sync database
 db.bootstrap();
 
@@ -31,16 +32,6 @@ var app = module.exports = express.createServer({
 */
 var app = module.exports = express.createServer();
 
-
-// Map Routes
-// API
-(apiRouter = require('./apiRouter')).mapUrls(app);
-
-// CMS
-(cmsRouter = require('./cmsRouter')).mapUrls(app);
-
-
-
 // Configuration
 // Enable JSONP
 app.enable("jsonp callback");
@@ -61,6 +52,16 @@ app.configure('development', function(){
 app.configure('production', function(){
   app.use(express.errorHandler());
 });
+
+
+// Instantiate services
+ApiService = require('./services/ApiService');
+
+
+// Map Routes
+// *** NOTE: MUST BE AFTER app.configure in order for bodyparser to work ***
+(apiRouter = require('./apiRouter')).mapUrls(app);
+(cmsRouter = require('./cmsRouter')).mapUrls(app);
 
 
 

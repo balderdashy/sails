@@ -1,6 +1,6 @@
 var Contents = Rows.extend({
 
-	url: '/content/fetch',
+	url: '/node',
 	
 	model: Content,
 	

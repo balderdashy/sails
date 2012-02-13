@@ -18,6 +18,14 @@ exports.index = function (req, res, next ) {
 	});
 }
 
+exports.fetch = function (req, res, next ) {		
+	ApiService.fetch(req.query, function (content){
+
+		// Return that information to crud client
+		ApiService.respond(content,req,res);
+	});
+}
+
 exports.create = function (req, res, next ){
 	var valid = 
 	validateVerb(res,req.method,["PUT"]) &&
@@ -50,20 +58,16 @@ exports.read = function (req, res, next ){
 		where: {
 			id: id
 		}
-	}
-	).success(
+	}).success(
 	
 		function successCallback(model) {
 			if (model==null) {
-				res.json(error("Could not retrieve model with id="+id));
+				res.json(error("No such model (id="+id+ ") exists!"));
 			}
 			else {
-				var trimmedModel = {};
-				_.each(model.attributes,function(key) {
-					trimmedModel[key] = model[key];
-				});
+				
 				res.json(success({
-					model: trimmedModel
+					model: trimModel(model)
 				}));
 			}
 		}).error(
@@ -78,10 +82,39 @@ exports.update = function (req, res, next ){
 	var id = req.param('id'), valid = 
 	validateId(res,id) &&
 	validateVerb(res,req.method,["POST"]);
+
+	console.log(id,req.params,req.query,req.body);
+	if (!valid) return;
+	Node.find(
+	{
+		where: {
+			id: id
+		}
+	}).success(
 	
-	valid && res.json(success({
-		params: req.params
-	}));
+		function successCallback(model) {
+			if (model==null) {
+				res.json(error("No such model (id="+id+ ") exists!"));
+			}
+			else {
+				// Update properties using trimmed parameter set
+				var trimmedParams = trimParams(req.body,model);
+				model = _.extend(model,trimmedParams);
+				
+				// Persist update to DB
+				model.save().success(function(){
+					console.log("Model "+id+" updated.");
+					res.json(success(trimModel(model)));
+				}).error(function(response){
+					res.json(error(response));
+				})
+			}
+		}).error(
+	
+		function errorCallback(response) {
+			console.log("Error updating model.",response);
+			res.json(error(response));
+		});
 }
 
 exports.remove = function (req, res, next ){
@@ -96,8 +129,30 @@ exports.remove = function (req, res, next ){
 }
 
 
+/**
+ * Trim model for use in a JSON response
+ * (to lighten overhead and untangle any encoding recursion)
+ */
+function trimModel(model) {
+	var trimmedModel = {};
+	_.each(model.attributes,function(key) {
+		trimmedModel[key] = model[key];
+	});
+	return trimmedModel;
+}
 
-
+/**
+ * Trim parameter map to only those attributes which matter to the model
+ */
+function trimParams(params,model) {
+	var trimmedParams = {};
+	_.each(model.attributes,function(key) {
+		if (params[key]) {
+			trimmedParams[key] = params[key];
+		}
+	});
+	return trimmedParams;
+}
 
 
 
@@ -122,9 +177,13 @@ function validateId(res,id) {
 /**
  * Returns true if valid
  * if invalid, returns false and sends a JSON error response
+ * 
+ * Validating the verb will lock down access to the CMS
+ * (cannot use other verbs besides GET from JSONP)
  */
 function validateVerb(res,verb,okVerbs) {
-	// TODO: remove haxx
+		
+	// Skip this check now to enable JSONP access
 	return true;
 	
 	if (!_.contains(okVerbs,verb)) {

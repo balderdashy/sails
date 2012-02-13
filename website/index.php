@@ -11,10 +11,10 @@ $crud = new CRUD(array(
 		<title><?php $crud->read('title') ?></title>
 
         <!-- Browser SDK -->
-        <!--<script type="text/javascript" src="3rdpartylibs/underscore.js"></script>
+        <script type="text/javascript" src="3rdpartylibs/underscore.js"></script>
         <script type="text/javascript" src="3rdpartylibs/backbone.js"></script>
         <script type="text/javascript" src="3rdpartylibs/socket.io.client.js"></script>
-        <script type="text/javascript" src="3rdpartylibs/backbone-override.js"></script>
+<!--        <script type="text/javascript" src="3rdpartylibs/backbone-override.js"></script>-->
         <script type="text/javascript" src="3rdpartylibs/jquery.js"></script>
         <script type="text/javascript" src="Log.js"></script>
         <script type="text/javascript" src="Nag.js"></script>
@@ -28,7 +28,7 @@ $crud = new CRUD(array(
 					Log.log(msg);
 				}
 			});
-		</script>-->
+		</script>
 	</head>
 	<body>
 
