@@ -6,6 +6,6 @@ var Collection = exports.model = db.model.define('Collection', {
 		
 }, {
 	associate: function () {
-		Collection.hasMany(Content);
+		Collection.hasMany(Node);
 	}
 })

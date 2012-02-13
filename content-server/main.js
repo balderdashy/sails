@@ -13,11 +13,11 @@ db.bootstrap();
 
 // Create global objects for models
 // TODO: automatically grab all models from models directory
-Content = require("./models/Content").model;
+Node = require("./models/Node").model;
 Collection = require("./models/Collection").model;
 
 // Trigger associations
-Content.options.associate();
+Node.options.associate();
 Collection.options.associate();
 
 

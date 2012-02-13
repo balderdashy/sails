@@ -1,4 +1,4 @@
-var Content = exports.model = db.model.define('Content', {
+var Node = exports.model = db.model.define('Node', {
 		
 	title: Sequelize.STRING,
 		
@@ -11,7 +11,7 @@ var Content = exports.model = db.model.define('Content', {
 }, {
 			
 	associate: function () {
-		Content.hasMany(Collection);
+		Node.hasMany(Collection);
 	},
 		
 	classMethods: {
@@ -29,7 +29,7 @@ var Content = exports.model = db.model.define('Content', {
 
 				// Get the associated list of content nodes
 				if (collection && collection[0]) {
-					collection[0].getContents().on('success',successCallback);
+					collection[0].getNodes().on('success',successCallback);
 				}
 				else {
 					errorCallback('No collection with that name exists.');
@@ -42,7 +42,7 @@ var Content = exports.model = db.model.define('Content', {
 		gatherByContext: function(context,successCallback,errorCallback) {
 			console.log("Gathering by context.");
 
-			var results = Content.findAll();
+			var results = Node.findAll();
 			results.on('success',successCallback);
 		},
 
@@ -50,7 +50,7 @@ var Content = exports.model = db.model.define('Content', {
 		// Get a specific content node
 		get: function (nodeName, successCallback,errorCallback) {
 			console.log("Getting specific node.");
-			var results = Content.find({
+			var results = Node.find({
 				where: {
 					title: nodeName
 				}
@@ -80,7 +80,7 @@ var Content = exports.model = db.model.define('Content', {
 				order: params.sort+' '+params.order
 			};
 			
-			Content.count(query).on('success',successCallback);
+			Node.count(query).on('success',successCallback);
 			
 		},
 
@@ -108,7 +108,7 @@ var Content = exports.model = db.model.define('Content', {
 				limit: params.max
 			};
 			
-			Content.findAll(query).on('success',successCallback);
+			Node.findAll(query).on('success',successCallback);
 		}
 	}
 });

@@ -19,7 +19,7 @@ exports.fetch = function (params,callback) {
 	var queryObj;
 	async.parallel({
 		count: function(callback) {
-			Content.countFilter(params,
+			Node.countFilter(params,
 			function successCallback(response) {
 				callback(null,response)
 			},
@@ -28,7 +28,7 @@ exports.fetch = function (params,callback) {
 			});
 		},
 		fetch: function(callback) {
-			Content.fetchFilter(params,
+			Node.fetchFilter(params,
 			function successCallback(response) {
 				callback(null,response)
 			},
@@ -67,7 +67,7 @@ exports.getContentSchema = function(context, callback) {
 	
 	// If collection is specified, grab content for given collection
 	if (context.collection) {
-		Content.gatherByCollection(
+		Node.gatherByCollection(
 			context.collection,
 			function successCallback (content) {
 				// Process database response into simple map
@@ -91,7 +91,7 @@ exports.getContentSchema = function(context, callback) {
 		// TODO:
 		// Otherwise, use as much settings/cache/page/layout data as possible
 		// to determine the minimum amount of data to fetch
-		Content.gatherByContext(
+		Node.gatherByContext(
 			context,
 			function successCallback(content) {
 
@@ -129,7 +129,7 @@ exports.getNode = function(context,callback) {
 		callback && callback(error('No node specified.'));
 	}
 	else {
-		Content.get(
+		Node.get(
 			nodeName,
 			function successCallback (node) {
 				if (!node || !node.title) {

@@ -20,7 +20,12 @@ exports.index = function (req, res, next ) {
 
 exports.create = function (req, res, next ){
 	var valid = 
-		validateVerb(res,req.method,["PUT"]);
+	validateVerb(res,req.method,["PUT"]);
+	
+	var newNode = Node.build({
+		title: 'my awesome project',
+		description: 'woot woot. this will make me a rich man'
+	})
 	
 	return valid && res.json(success({
 		insertId: 1
@@ -29,8 +34,8 @@ exports.create = function (req, res, next ){
 
 exports.read = function (req, res, next ){
 	var id = req.param('id'), valid = 
-		validateId(res,id) &&
-		validateVerb(res,req.method,["GET"]);
+	validateId(res,id) &&
+	validateVerb(res,req.method,["GET"]);
 	
 	return valid && res.json(success({
 		test: true
@@ -39,8 +44,8 @@ exports.read = function (req, res, next ){
 
 exports.update = function (req, res, next ){
 	var id = req.param('id'), valid = 
-		validateId(res,id) &&
-		validateVerb(res,req.method,["POST"]);
+	validateId(res,id) &&
+	validateVerb(res,req.method,["POST"]);
 	
 	valid && res.json(success({
 		params: req.params
@@ -49,8 +54,8 @@ exports.update = function (req, res, next ){
 
 exports.remove = function (req, res, next ){
 	var id = req.param('id'), valid = 
-		validateId(res,id) &&
-		validateVerb(res,req.method,["DELETE"]);
+	validateId(res,id) &&
+	validateVerb(res,req.method,["DELETE"]);
 
 	
 	valid && res.json(success({
