@@ -26,17 +26,17 @@ exports.create = function (req, res, next ){
 	if (!valid) return;
 	Node.build(req.query).save().success(
 	
-	function successCallback(savedModel) {
-		console.log("Model saved to DB.",savedModel);
-		res.json(success({
-			insertId: savedModel.id
-		}));
-	}).error(
+		function successCallback(savedModel) {
+			console.log("Model saved to DB.",savedModel);
+			res.json(success({
+				insertId: savedModel.id
+			}));
+		}).error(
 	
-	function errorCallback(response) {
-		console.log("Error.  Could not save model to DB.",response);
-		res.json(error(response));
-	});
+		function errorCallback(response) {
+			console.log("Error.  Could not save model to DB.",response);
+			res.json(error(response));
+		});
 }
 
 exports.read = function (req, res, next ){
@@ -51,27 +51,27 @@ exports.read = function (req, res, next ){
 			id: id
 		}
 	}
-).success(
+	).success(
 	
-	function successCallback(model) {
-		if (model==null) {
-			res.json(error("Could not retrieve model with id="+id));
-		}
-		else {
-			var trimmedModel = {};
-			_.each(model.attributes,function(key) {
-				trimmedModel[key] = model[key];
-			});
-			res.json(success({
-				model: trimmedModel
-			}));
-		}
-	}).error(
+		function successCallback(model) {
+			if (model==null) {
+				res.json(error("Could not retrieve model with id="+id));
+			}
+			else {
+				var trimmedModel = {};
+				_.each(model.attributes,function(key) {
+					trimmedModel[key] = model[key];
+				});
+				res.json(success({
+					model: trimmedModel
+				}));
+			}
+		}).error(
 	
-	function errorCallback(response) {
-		console.log("Error retrieving model from DB.",response);
-		res.json(error(response));
-	});
+		function errorCallback(response) {
+			console.log("Error retrieving model from DB.",response);
+			res.json(error(response));
+		});
 }
 
 exports.update = function (req, res, next ){
@@ -147,8 +147,8 @@ function validateVerb(res,verb,okVerbs) {
  */
 function validateType(res,type) {
 	var validTypes = [
-		'html',
-		'text'
+	'html',
+	'text'
 	];
 	
 	if ( !type ){
