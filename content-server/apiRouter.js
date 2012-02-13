@@ -14,8 +14,8 @@ exports.mapUrls = function mapUrls (app) {
         });
     }
 	app.get("/content/fetch*",fetchRequest);
-	
-	
+
+
 
     /**
      * Respond with content for a load context request

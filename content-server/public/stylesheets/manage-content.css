@@ -23,55 +23,53 @@ a.create-node:hover {
 	background-color:#00A7EF;
 	border-color:#00A0E7;
 }
-div.ui-list ul li .property:hover {
-	cursor:pointer;
-}
 
-div.ui-list ul li {
-	padding-top: 1%;
-	padding-bottom: 1%;
-}
-
-
-/* top level divisions */
-div.ui-list ul li div.info {
+div.ui-list .section {
 	height:100%;
-	padding: 0 1% 0 3%;
-	
-	
-	width:20%;
-	min-width: 40px;
 	display:block;
 	float:left;
 	overflow: hidden;
 }
-div.ui-list ul li .payload {
-	height:100%;
-	padding: 0 3%;
+div.ui-list .section:hover {
+	cursor:pointer;
+}
+div.ui-list .inner-section {
+	padding-top:1em;
+	padding-bottom:1em;
+}
+
+/* top level divisions */
+div.ui-list div.info-column {
+	padding-right: 1%;
+	padding-left: 3%;
+	width:20%;
+	min-width: 40px;
+
+}
+div.ui-list .payload-column {
+	padding-right: 3%;
+	padding-left: 3%;
+	
+	border-left: 1px solid #e8e8e8;
+	border-right: 1px solid #e8e8e8;
 	
 	width:48%;
 	margin:0;
 	line-height:1.1em;
 	font-size: 11px;
 	color:#888;
-	border-left: 1px solid #e8e8e8;
-	border-right: 1px solid #e8e8e8;
-	display:block;
-	float:left;
 }
 
-div.ui-list ul li a.content-type {
-	height:100%;
-	padding: 0 1%;
+div.ui-list .type-column {
+	padding-right: 1%;
+	padding-left: 1%;
 	
 	width:20%;
 	min-width:30px;
 	font-size: 0.9em;
 	text-transform: uppercase;
 	text-align:center;
-	display:block;
 	float:right;
-	overflow: hidden;
 }
 
 /* sub-divisions */
@@ -82,10 +80,6 @@ div.ui-list ul li span.payload {
 	font-size: .9em;
 	font-style: italic;
 	line-height: 1.2em;
-	
-/*	overflow: hidden;
-	text-overflow:ellipsis;
-	white-space: nowrap;*/
 	word-wrap: break-word;
 }
 
@@ -99,8 +93,10 @@ div.ui-list ul li pre.payload code {
 /*	height:2em;*/
 }
 
-div.ui-list ul li div.info strong.title {}
-div.ui-list ul li div.info em.description {
+div.ui-list ul li div.info-column strong.title {
+	display:block;
+}
+div.ui-list ul li div.info-column em.description {
 	display:block;
 	margin-top:0.5em;
 	font-size:0.8em;
