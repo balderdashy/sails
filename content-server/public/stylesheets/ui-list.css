@@ -81,6 +81,7 @@ a.loadMore div.empty-table img {
 
 /* no content to display */
 div.emptytext {
+	margin:4em 0 1em;
 	text-align:center;
 	color:#888;
 	

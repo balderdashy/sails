@@ -1,12 +1,31 @@
 var Node = exports.model = db.model.define('Node', {
+	
+	id: {
+		type: Sequelize.INTEGER,
+		primaryKey: true,
+		unique: true,
+		autoIncrement: true
+	},
+	
+	title: {
+		type: Sequelize.STRING,
+		unique: true
+	},
 		
-	title: Sequelize.STRING,
+	description: {
+		type: Sequelize.TEXT,
+		allowNull: true
+	},
 		
-	description: Sequelize.TEXT,
+	type: {
+		type: Sequelize.TEXT,
+		allowNull: false
+	},
 		
-	type: Sequelize.TEXT,
-		
-	payload: Sequelize.TEXT
+	payload: {
+		type: Sequelize.TEXT,
+		allowNull: false
+	}
 		
 }, {
 			

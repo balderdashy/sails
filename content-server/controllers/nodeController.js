@@ -20,16 +20,23 @@ exports.index = function (req, res, next ) {
 
 exports.create = function (req, res, next ){
 	var valid = 
-	validateVerb(res,req.method,["PUT"]);
+	validateVerb(res,req.method,["PUT"]) &&
+	validateType(res,req.query.type);
 	
-	var newNode = Node.build({
-		title: 'my awesome project',
-		description: 'woot woot. this will make me a rich man'
-	})
+	if (!valid) return;
+	Node.build(req.query).save().success(
 	
-	return valid && res.json(success({
-		insertId: 1
-	}));
+	function successCallback(savedModel) {
+		console.log("Model saved to DB.",savedModel);
+		res.json(success({
+			insertId: savedModel.id
+		}));
+	}).error(
+	
+	function errorCallback(response) {
+		console.log("Error.  Could not save model to DB.",response);
+		res.json(error(response));
+	});
 }
 
 exports.read = function (req, res, next ){
@@ -106,6 +113,33 @@ function validateVerb(res,verb,okVerbs) {
 		return true;
 	}
 	
+}
+
+
+/**
+ * Returns true if valid
+ * if invalid, returns false and sends a JSON error response
+ */
+function validateType(res,type) {
+	var validTypes = [
+		'html',
+		'text'
+	];
+	
+	if ( !type ){
+		res.json(error("No content type specified."));
+		return false;
+	}
+	else if ( !_.contains(validTypes,type) ) {
+		res.json(error({
+			message:"'"+type+"' is not a valid type.",
+			validTypes: validTypes
+		}));
+		return false;
+	}
+	else {
+		return true;
+	}
 }
 
 /**
