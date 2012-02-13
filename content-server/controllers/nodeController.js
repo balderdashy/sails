@@ -44,9 +44,34 @@ exports.read = function (req, res, next ){
 	validateId(res,id) &&
 	validateVerb(res,req.method,["GET"]);
 	
-	return valid && res.json(success({
-		test: true
-	}));
+	if (!valid) return;
+	Node.find(
+	{
+		where: {
+			id: id
+		}
+	}
+).success(
+	
+	function successCallback(model) {
+		if (model==null) {
+			res.json(error("Could not retrieve model with id="+id));
+		}
+		else {
+			var trimmedModel = {};
+			_.each(model.attributes,function(key) {
+				trimmedModel[key] = model[key];
+			});
+			res.json(success({
+				model: trimmedModel
+			}));
+		}
+	}).error(
+	
+	function errorCallback(response) {
+		console.log("Error retrieving model from DB.",response);
+		res.json(error(response));
+	});
 }
 
 exports.update = function (req, res, next ){
