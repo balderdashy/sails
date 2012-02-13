@@ -1,0 +1,101 @@
+/* Content index */
+h1.manage-content {
+	float:left;
+	margin-bottom:1em;
+	display:none;
+}
+a.create-node {
+	float:left;
+	/*	margin-left:35px;*/
+
+	display:inline;
+	/*	width: 70px;*/
+	border-radius: 10px;
+	border: 3px solid #00B0F4;
+	background:#00B7FF url('/images/plus-icon.png') 9px center no-repeat;
+	color:white;
+	font-size: 1em;
+
+	padding: 5px 10px;
+	padding-left: 30px;
+	cursor:pointer;
+}
+a.create-node:hover {
+	background-color:#00A7EF;
+	border-color:#00A0E7;
+}
+div.ui-list ul li .property:hover {
+	cursor:pointer;
+}
+
+div.ui-list ul li .payload {
+	width:48%;
+	margin:0;
+	line-height:1.1em;
+	padding: 1em 3%;
+	font-size: 11px;
+	color:#888;
+	border-right: 1px inset #e8e8e8;
+	display:block;
+	float:left;
+}
+
+div.ui-list ul li span.payload {
+	font-weight: normal;
+	text-shadow: none;
+	color: #AAA;
+	font-size: .9em;
+	font-style: italic;
+	line-height: 1.2em;
+	
+/*	overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;*/
+	word-wrap: break-word;
+}
+
+div.ui-list ul li pre.payload code {
+	background:none!important;
+	
+	word-wrap: break-word;
+/*	overflow: hidden;*/
+/*	text-overflow:ellipsis;*/
+/*	white-space: no-wrap;*/
+/*	height:2em;*/
+}
+
+div.ui-list ul li div.info {
+	
+	width:20%;
+	min-width: 40px;
+	padding: 1em 1% 1em 3%;
+	border-right: 1px inset #e8e8e8;
+	display:block;
+	float:left;
+	overflow: hidden;
+	height:100%;
+}
+
+div.ui-list ul li div.info strong.title {}
+div.ui-list ul li div.info em.description {
+	display:block;
+	margin-top:0.5em;
+	font-size:0.8em;
+	color:#999;
+	font-style:normal;
+}
+
+
+div.ui-list ul li a.content-type {
+	width:20%;
+	min-width:30px;
+	padding: 1em 1%;
+	font-size: 0.9em;
+	text-transform: uppercase;
+	text-align:center;
+	display:block;
+	float:right;
+	overflow: hidden;
+}
+
+

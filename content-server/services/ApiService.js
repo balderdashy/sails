@@ -1,17 +1,4 @@
-/** 
-*  Prepend argument and increase function arity
-*  ("anti-curry")
- */
-function prependArgument (fn,newArgument) {
-	return function (x) {
-		console.log("\n\nMODEL RETURNED::::::",x);
-		fn(newArgument,x);
-	}
-}
-
-
-// Return a paginated list of content nodes
-// apply filter and paginate
+// Return a paginated list of content nodes apply filter and paginate
 exports.fetch = function (params,callback) {
 	
 	// Validate request
@@ -238,5 +225,15 @@ function error(msg) {
 		error: {
 			message: msg
 		}
+	}
+}
+
+/** 
+*  Prepend argument and increase function arity
+*  ("anti-curry")
+ */
+function prependArgument (fn,newArgument) {
+	return function (x) {
+		fn(newArgument,x);
 	}
 }

@@ -10,12 +10,13 @@ Music: Aphex Twin / Xtal
 pre code {
   display: block; padding: 0.5em;
   background-color: #f4f4f4;
+  font-family: Helvetica, Arial, sans-serif;
 }
 
 pre code,
 pre .ruby .subst,
 pre .lisp .title {
-  color: black;
+  color: #666;
 }
 
 pre .string,
@@ -95,8 +96,8 @@ pre .apache .tag,
 pre .xml .tag,
 pre .xml .title,
 pre .tex .command {
-  font-weight: bold;
-  color: navy;
+  font-weight: normal;
+  color: #15b;
 }
 
 pre .nginx .built_in {
