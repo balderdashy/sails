@@ -80,6 +80,10 @@ var ContentView = RowView.extend({
 		map.payload = _.template(payload,{
 			payload: map.payload
 		});
+		
+		// Add a prompt for empty tags which are inline
+		// (since it would be impossible to add a property to them otherwise)
+		map.title = (map.title && map.title.match(/.*\S.*/g)) || "(+)";
 		map.description = (map.description && map.description.match(/.*\S.*/g)) || "(+)";
 		return map;
 	},
