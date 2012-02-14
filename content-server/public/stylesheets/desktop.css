@@ -88,7 +88,7 @@ h1 {
 
 
 #content {
-	background:#f0f0f0;
+	background: url('/images/bg.png') #c0c0c0;
 	padding: 50px 20px 30px;
 	box-shadow: 0 3px 1px rgba(150,150,150,0.2);
 }

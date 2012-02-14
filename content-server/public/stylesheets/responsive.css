@@ -1,5 +1,5 @@
 .mobile-only {
-	display:none;
+	display:none!important;
 }
 
 @media screen and (max-width: 980px) {
@@ -18,8 +18,17 @@
 	#navbar {
 		display:none;
 	}
-	
-	.mobile-only {
-		display:block;
+	a.delete-nodes.wide {
+		display:none;
 	}
+	
+	a.delete-nodes {
+		clear:both;
+		margin-left: 0!important;
+		margin-top: 10px;
+	}
+	.mobile-only {
+		display:block!important;
+	}
+	
 }

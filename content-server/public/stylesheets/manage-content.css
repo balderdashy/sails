@@ -5,23 +5,45 @@ h1.manage-content {
 	display:none;
 }
 a.create-node {
+	
+	opacity:.7;
 	float:left;
-	/*	margin-left:35px;*/
-
 	display:inline;
 	border-radius: 10px;
-	border: 3px solid #00B0F4;
+	border: 2px solid #00B0F4;
 	background:#00B7FF url('/images/plus-icon.png') 9px center no-repeat;
 	color:white;
 	font-size: 1em;
 
-	padding: 5px 10px;
+	padding: 8px 13px;
 	padding-left: 30px;
 	cursor:pointer;
 }
 a.create-node:hover {
 	background-color:#00A7EF;
 	border-color:#00A0E7;
+}
+a.unusable {
+	display:none;
+}
+a.delete-nodes {
+	opacity:.7;
+	float:left;
+	margin-left:20px;
+	
+	display:inline;
+	border-radius: 10px;
+	border: 2px solid #ba2722;
+	background:#cb372a;
+	color:white;
+	font-size: 1em;
+
+	padding: 8px 13px;
+	cursor:pointer;
+}
+a.delete-nodes:hover {
+	background-color:#aa371a;
+	border-color:#aa2712;
 }
 
 div.ui-list .section {
@@ -39,21 +61,43 @@ div.ui-list .inner-section {
 }
 
 /* top level divisions */
+div.ui-list div.checkbox-column {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+
+	width:5%;
+	min-width:15px;
+	border-right: 1px solid #e8e8e8;
+	
+	text-align:center;
+}
+
+div.ui-list div.checkbox-column input {
+	
+	margin-top:2em;
+}
+
 div.ui-list div.info-column {
 	padding-right: 1%;
 	padding-left: 3%;
-	width:20%;
-	min-width: 40px;
+	width:25%;
+	min-width: 45px;
 
 }
 div.ui-list .payload-column {
-	padding-right: 3%;
-	padding-left: 3%;
+	padding-right: 1%;
+	padding-left: 1%;
 	
 	border-left: 1px solid #e8e8e8;
 	border-right: 1px solid #e8e8e8;
 	
-	width:48%;
+	width:47%;
+	min-width: 100px;
 	margin:0;
 	line-height:1.1em;
 	font-size: 11px;
@@ -64,12 +108,11 @@ div.ui-list .type-column {
 	padding-right: 1%;
 	padding-left: 1%;
 	
-	width:20%;
+	width:15%;
 	min-width:30px;
 	font-size: 0.9em;
 	text-transform: uppercase;
 	text-align:center;
-	float:right;
 }
 
 /* sub-divisions */
@@ -81,6 +124,7 @@ div.ui-list ul li span.payload {
 	font-style: italic;
 	line-height: 1.2em;
 	word-wrap: break-word;
+	
 }
 
 div.ui-list ul li pre.payload code {
@@ -108,3 +152,8 @@ div.ui-list ul li div.info-column em.description {
 
 
 
+
+/* darken text color when selected */
+div.ui-list li.selected .payload, div.ui-list li.selected .content-type, div.ui-list li.selected .description {
+	color:#444!important;
+}

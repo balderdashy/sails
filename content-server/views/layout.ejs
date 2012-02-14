@@ -39,14 +39,14 @@
 		</h1>
 
 		<ul id="navbar">
-			<li><a <% if (typeof selected!='undefined' && selected=='page') { %> class='selected' <% } %> href="/page">pages</a></li>
+			<li><a <% if (typeof selected!='undefined' && selected=='page') { %> class='selected' <% } %> href="/sitemap">pages</a></li>
 			<li><a <% if (typeof selected!='undefined' && selected=='node') { %> class='selected' <% } %> href="/nodes">manage content</a></li>
 			<li><a <% if (typeof selected!='undefined' && selected=='account') { %> class='selected' <% } %> href="/account">account</a></li>
 		</ul>
 		
 		<select class="mobile-only" id="navbar-dropdown">
-			<option <% if (typeof selected!='undefined' && selected=='page') { %> selected class='selected' <% } %> href="/page">pages</option>
-			<option <% if (typeof selected!='undefined' && selected=='node') { %> selected class='selected' <% } %> href="/node">manage content</option>
+			<option <% if (typeof selected!='undefined' && selected=='page') { %> selected class='selected' <% } %> href="/sitemap">pages</option>
+			<option <% if (typeof selected!='undefined' && selected=='node') { %> selected class='selected' <% } %> href="/nodes">manage content</option>
 			<option <% if (typeof selected!='undefined' && selected=='account') { %> selected class='selected' <% } %> href="/account">account</option>
 		</select>
 	</div>

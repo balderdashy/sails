@@ -1,9 +1,10 @@
 var ContentView = RowView.extend({
 	events: {
-		"click .title": "clickedTitle",
-		"click .description": "clickedDescription",
-		"click .payload": "clickedPayload",
-		"click .content-type": "clickedType"
+		"click .select": "clickedSelect",
+		"click .edit-title": "clickedTitle",
+		"click .edit-description": "clickedDescription",
+		"click .edit-payload": "clickedPayload",
+		"click .edit-content-type": "clickedType"
 	},
 	clickedTitle: function () {
 		this.openEditor('title');
@@ -17,6 +18,9 @@ var ContentView = RowView.extend({
 	clickedType: function () {
 		this.openEditor('type');
 	},
+	clickedSelect: function () {
+		this.selected.toggle();
+	},
 	
 	
 	
@@ -29,13 +33,13 @@ var ContentView = RowView.extend({
 	},
 	openEditor: function (field){
 		var object = {};
-		this.selected.toggle();
+		this.expanded.toggle();
 
-		object[field] = window.prompt("Enter new value");
-		object[field]= (field == 'type') ? 
-			object[field].toLowerCase() :
-			object[field];
-		this.saveEditor(object);
+//		object[field] = window.prompt("Enter new value",this.model.get(field));
+//		object[field]= (field == 'type') ? 
+//			object[field].toLowerCase() :
+//			object[field];
+//		this.saveEditor(object);
 	},
 	
 	open: function () {},
@@ -47,27 +51,47 @@ var ContentView = RowView.extend({
 		$(this.el).height(this.originalHeight);
 		this.originalPaddingTop = $(this.el).find(".property").css('padding-top');
 		this.originalPaddingBottom = $(this.el).find(".property").css('padding-bottom');
-		this.selected = new Toggle(false,this.select,this.deselect)
+		
+		this.selected = new Toggle(false,this.select,this.deselect);
+		this.expanded = new Toggle(false,this.expand,this.collapse);
 	},
-	select: function () {
+	
+	expand: function (){
 		$(this.el).find(".property").css({
 			paddingTop: 0,
 			paddingBottom: 0
 		});
 		this.el.stop().animate({
-			height: "200px"
+			height: "+=50px"
 		},200)
+		
 	},
-	deselect: function () {
+	
+	
+	collapse: function () {
 		$(this.el).find(".property").css({
 			paddingTop: this.originalPaddingTop,
 			paddingBottom: this.originalPaddingBottom
 		});
 		this.el.stop().animate({
 			height: this.originalHeight
-		},200,'linear',function() {
-//			$(this).removeAttr("style");
-		})
+		},200
+//		,'linear',function() {
+////			$(this).removeAttr("style");
+//		}
+		)
+		
+	},
+	
+	
+	select: function () {
+		$(this.el).find("input").prop('checked',true);
+		$(this.el).addClass('selected');
+	},
+	deselect: function () {
+		$(this.el).find("input").prop('checked',false);
+		$(this.el).removeClass('selected');
+		
 	},
 	transform: function (map) {
 		// Call parent function
@@ -89,18 +113,21 @@ var ContentView = RowView.extend({
 	},
 	markup:{
 		row: '<li>'+
+			'<div class="select checkbox-column section">'+
+			'<input type="checkbox"/>'+
+			'</div>'+
 			'<div class="info-column section">'+
 				'<div class="inner-section">'+
-				'<strong class="title property"><%- title %></strong>'+
-				'<em class="description property"><%- description %></em>'+
+				'<strong class="edit-title title property"><%- title %></strong>'+
+				'<em class="edit-description description property"><%- description %></em>'+
 				'</div>'+
 			'</div>'+
-			'<div class="payload-column section">'+
+			'<div class="edit-payload payload-column section">'+
 				'<div class="inner-section">'+
 				'<%= payload %>'+
 				'</div>'+
 			'</div>'+
-			'<div class="type-column section">'+
+			'<div class="edit-content-type type-column section">'+
 				'<div class="inner-section">'+
 				'<a class="content-type property"><%- type %></a>'+
 				'</div>'+

@@ -34,11 +34,15 @@ var RowView = Backbone.View.extend({
 	},
 
 	mouseenter: function () {
-		$(this.el).fadeTo(100,1);
+		if (!$(this.el).hasClass('selected')) {
+			$(this.el).fadeTo(100,1);
+		}
 //		$(this.el).addClass("hovered");
 	},
 	mouseleave: function () {
-		$(this.el).fadeTo(100,this.originalOpacity);
+		if (!$(this.el).hasClass('selected')) {
+			$(this.el).fadeTo(100,this.originalOpacity);
+		}
 //		$(this.el).removeClass("hovered");
 	},
 	
