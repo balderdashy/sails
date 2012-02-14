@@ -33,13 +33,13 @@ var ContentView = RowView.extend({
 	},
 	openEditor: function (field){
 		var object = {};
-		this.expanded.toggle();
+//		this.expanded.toggle();
 
-//		object[field] = window.prompt("Enter new value",this.model.get(field));
-//		object[field]= (field == 'type') ? 
-//			object[field].toLowerCase() :
-//			object[field];
-//		this.saveEditor(object);
+		object[field] = window.prompt("Enter new value",this.model.get(field));
+		object[field]= (field == 'type') ? 
+			object[field].toLowerCase() :
+			object[field];
+		this.saveEditor(object);
 	},
 	
 	open: function () {},

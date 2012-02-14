@@ -53,9 +53,9 @@ div.ui-list ul li {
 
 div.ui-list ul li.selected {
 /*	border-radius: 25px;*/
-	opacity: 0.6!important;
-	background:#e8e8e8;
-	border: 2px inset #ddd;
+	opacity: 0.8!important;
+	background:#e8f0f5;
+	border: 1px solid #aaa;
 }
 
 /* load more button */
