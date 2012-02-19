@@ -1,21 +1,3 @@
-// NOTE:
-//
-// It's stupid that classic MVC frameworks only provide a validation API
-// at the model layer.  API parameters need love too!  Validation should be
-// provided at the controller layer.
-// 
-// It is also arguable that the view layer should contain validation for the 
-// data coming back over from the controller.
-// 
-// However, since most everything is likely to come back as AJAX or over 
-// socket.io anyway, we'll leave that out.
-//
-
-// Optionally identify the controller here
-// Otherwise name will be based off of filename
-// CASE-INSENSITIVE
-//exports.name = 'node'
-
 exports.index = function (req, res, next ) {		
 	res.render('node/index', {
 		title: 'Manage Content | crud.io',
@@ -134,6 +116,19 @@ exports.remove = function (req, res, next ){
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Trim model for use in a JSON response
  * (to lighten overhead and untangle any encoding recursion)
@@ -158,7 +153,6 @@ function trimParams(params,model) {
 	});
 	return trimmedParams;
 }
-
 
 
 /**

@@ -12,25 +12,36 @@ config = require('./config/app');
 // Bootstrap and sync database
 db.bootstrap();
 
-// Create global objects for models
+// automatically grab all models from models directory
+// (if no 'id' attribute was provided, take a guess)
+// NOT CASE SENSITIVE
+global.modelNames = [];
+_.each(require('require-all')({
+		dirname: __dirname + '/models'
+		, filter: /(.+)\.js$/
+	}),function (model, filename) {
+	var className = model.id || filename;
+	className = capitalizeFirstLetter(className);
+	global.modelNames.push(className);
+	global[className] = model.model;
+});
 
-// TODO: automatically grab all models from models directory
-Node = require("./models/Node").model;
-Collection = require("./models/Collection").model;
-
-// Trigger associations
-Node.options.associate();
-Collection.options.associate();
+// Create domain associations
+_.each(modelNames,function (className) {
+	global[className].options.associate();
+});
 
 
 
-
+// HTTPs
 /*
 var app = module.exports = express.createServer({
     key: fs.readFileSync('ssl/private.key.pem'),
     cert: fs.readFileSync('ssl/combined.crt')
 });
 */
+
+// HTTP
 var app = module.exports = express.createServer();
 
 // Configuration
@@ -62,10 +73,18 @@ ApiService = require('./services/ApiService');
 // Map Routes
 // *** NOTE: MUST BE AFTER app.configure in order for bodyparser to work ***
 (apiRouter = require('./apiRouter')).mapUrls(app);
-(cmsRouter = require('./cmsRouter')).mapUrls(app);
+(router = require('./router')).mapUrls(app);
 
 
 
 // Start server
 app.listen(config.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+
+
+
+
+function capitalizeFirstLetter(string)
+{
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
