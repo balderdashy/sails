@@ -14,39 +14,31 @@ _.each(controllerFiles,function (controller, filename) {
 });
 
 // Custom mappings for specific urls
-var userMappings = {
-	
-	// Public API
-	  '/read*': controllers.node.readRequest
-	, '/load*': controllers.node.loadRequest
-	, '/content/fetch*': controllers.node.fetchRequest
-	, '/content/load*': controllers.node.loadRequest
-	, '/content/read*': controllers.node.readRequest
-	
-	
-	// Private (crud.io CMS) API
-	, '/nodes': controllers.node.index
-	, '/sitemap': controllers.page.index
-}
-
+var userMappings = require('./config/mappings').customMappings(controllers);
 
 // Default handling for 500, 404, home page, etc.
 var defaultMappings = {
 	'/': controllers.meta.home
 	, '/500': controllers.meta.error
 	, '/404': controllers.meta.notfound
-	, '/:entity/:action?/:id?': handleWildcardRequest
 }
 
 // Combine default mappings with user mappings
-var mappings = _.extend(userMappings,defaultMappings);
+// (allow user mappings to override defaults)
+var mappings = _.extend(defaultMappings,userMappings);
 
 // Set up routing table
 exports.mapUrls = function mapUrls (app) {
 	for (var r in mappings) {
 		app.all(r, mappings[r]);
 	}
+	
+	// Handle wildcard
+	app.all('/:entity/:action?/:id?', handleWildcardRequest);
 }
+
+
+
 
 /**
  * Try to match up an arbitrary request with a controller and action

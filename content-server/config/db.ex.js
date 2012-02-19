@@ -1,4 +1,3 @@
-exports.Sequelize = Sequelize;
 exports.model = null;
 
 
