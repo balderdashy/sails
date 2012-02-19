@@ -13,6 +13,7 @@ config = require('./config/app');
 db.bootstrap();
 
 // Create global objects for models
+
 // TODO: automatically grab all models from models directory
 Node = require("./models/Node").model;
 Collection = require("./models/Collection").model;

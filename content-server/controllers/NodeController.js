@@ -11,6 +11,11 @@
 // socket.io anyway, we'll leave that out.
 //
 
+// Optionally identify the controller here
+// Otherwise name will be based off of filename
+// CASE-INSENSITIVE
+//exports.name = 'node'
+
 exports.index = function (req, res, next ) {		
 	res.render('node/index', {
 		title: 'Manage Content | crud.io',

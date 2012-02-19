@@ -1,19 +1,40 @@
-var	controllers = {
-		'meta' : require('./controllers/MetaController'),
-		'node' : require('./controllers/NodeController'),
-		'page' : require('./controllers/PageController')
-	};
+// TODO: automatically grab all models from models directory
+//var	controllers = {
+//		'meta' : require('./controllers/MetaController'),
+//		'node' : require('./controllers/NodeController'),
+//		'page' : require('./controllers/PageController')
+//	};
 
-var mappings = {
-	  '/nodes': controllers.node.index
-	
+// automatically grab all models from models directory
+var controllerFiles = require('require-all')({
+	dirname: __dirname + '/controllers',
+	filter: /(.+Controller)\.js$/
+});
+
+// now map to provided domain class names
+// (if no 'name' attribute was provided, take a guess)
+// NOT CASE SENSITIVE
+var controllers = {};
+_.each(controllerFiles,function (controller, filename) {
+	var className = controller.name || filename.replace(/Controller/, "");
+	className = className.toLowerCase();
+	controllers[className] = controller;
+});
+
+var userMappings = {
+	'/nodes': controllers.node.index
 	, '/sitemap': controllers.page.index
-	
-	, '/': controllers.meta.home
+}
+
+var defaultMappings = {
+	'/': controllers.meta.home
 	, '/500': controllers.meta.error
 	, '/404': controllers.meta.notfound
 	, '/:entity/:action?/:id?': handleWildcardRequest
 }
+
+// Combine default mappings with user mappings
+var mappings = _.extend(userMappings,defaultMappings);
 
 // Set up routing table
 exports.mapUrls = function mapUrls (app) {
