@@ -66,15 +66,20 @@ app.configure('production', function(){
 });
 
 
-// Instantiate services
-ApiService = require('./services/ApiService');
+// Automatically grab and instantiate services from directory
+// CASE SENSITIVE :: USES FILENAME (i.e. ApiService)
+_.each(require('require-all')({
+		dirname: __dirname + '/services'
+		, filter: /(.+)\.js$/
+	}),function (service, filename) {
+	var serviceName = filename;
+	global[serviceName] = service;
+});
 
 
 // Map Routes
 // *** NOTE: MUST BE AFTER app.configure in order for bodyparser to work ***
-(apiRouter = require('./apiRouter')).mapUrls(app);
 (router = require('./router')).mapUrls(app);
-
 
 
 // Start server

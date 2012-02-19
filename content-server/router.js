@@ -15,7 +15,17 @@ _.each(controllerFiles,function (controller, filename) {
 
 // Custom mappings for specific urls
 var userMappings = {
-	'/nodes': controllers.node.index
+	
+	// Public API
+	  '/read*': controllers.node.readRequest
+	, '/load*': controllers.node.loadRequest
+	, '/content/fetch*': controllers.node.fetchRequest
+	, '/content/load*': controllers.node.loadRequest
+	, '/content/read*': controllers.node.readRequest
+	
+	
+	// Private (crud.io CMS) API
+	, '/nodes': controllers.node.index
 	, '/sitemap': controllers.page.index
 }
 

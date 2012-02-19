@@ -118,6 +118,62 @@ exports.remove = function (req, res, next ){
 
 
 
+///////////////////////////////////////////////////////
+// Public API requests
+///////////////////////////////////////////////////////
+exports.loadRequest = function (req,res,next) {
+        // Get context based on request
+        var context = ApiService.getContext(req);
+
+        // Look up content schema for this context
+        ApiService.getContentSchema(context, function (content){
+            console.log("Answered load request.",content);
+
+            // Return that information to crud client
+            ApiService.respond(content,req,res);
+        });
+}
+
+exports.readRequest = function (req,res,next) {
+        // Get context based on request
+        var context = ApiService.getContext(req);
+
+        // Look up content schema for this context
+        ApiService.getNode(context, function (content) {
+            console.log("Answered read request.",content);
+
+            // Return that infomration to crud client
+            ApiService.respond(content,req,res);
+        });
+}
+exports.fetchRequest = function (req, res, next ) {		
+	ApiService.fetch(req.query, function (content){
+
+		// Return that information to crud client
+		ApiService.respond(content,req,res);
+	});
+}
+///////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
