@@ -23,10 +23,13 @@ var PanelView = Backbone.View.extend({
 	
 	initialize: function(options) {
 		_.bindAll(this);
-		$(this.render);
+		$(this.ready);
+	},
+	ready: function() {
+		this.el = $("body");
+		this.render();
 	},
 	render: function() {
-		this.el = $("body");
 		this.delegateEvents();
 	}
 });

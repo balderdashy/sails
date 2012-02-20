@@ -125,7 +125,6 @@ var ContentView = RowView.extend({
 
 			this.selected = new Toggle(false,this.select,this.deselect);
 			this.expanded = new Toggle(false,this.expand,this.collapse);
-			
 		}
 	},
 	
