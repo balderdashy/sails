@@ -60,6 +60,32 @@ div.ui-list .inner-section {
 	padding-bottom:1em;
 }
 
+/* Editor */
+div.ui-list .inner-section textarea.editor {
+	width:96%;
+	border-color: #bbb;
+	color: #888;
+	height: 10em;
+	padding: 1em 2%;
+	resize: none
+}
+div.ui-list .inner-section a.editor {
+	display:block;
+	float:right;
+	font-size: 1.15em;
+	padding: 1em 1em 1em 0;
+}
+div.ui-list .inner-section a.save.editor {
+	font-weight:bold;
+}
+div.ui-list .inner-section a.cancel.editor {
+	color: #aaa;
+/*	color: #aa371a;*/
+/*	color: #aa371a;*/
+}
+
+
+
 /* top level divisions */
 div.ui-list div.checkbox-column {
 	-webkit-touch-callout: none;
@@ -84,7 +110,7 @@ div.ui-list div.checkbox-column input {
 
 div.ui-list div.info-column {
 	padding-right: 1%;
-	padding-left: 3%;
+	padding-left: 1%;
 	width:25%;
 	min-width: 45px;
 
@@ -108,11 +134,15 @@ div.ui-list .type-column {
 	padding-right: 1%;
 	padding-left: 1%;
 	
-	width:15%;
+	width:16%;
 	min-width:30px;
 	font-size: 0.9em;
-	text-transform: uppercase;
+/*	text-transform: uppercase;*/
 	text-align:center;
+}
+
+div.ui-list .type-column .type.property {
+/*	font-weight:bold;*/
 }
 
 /* sub-divisions */

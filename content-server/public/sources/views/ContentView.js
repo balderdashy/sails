@@ -1,45 +1,76 @@
 var ContentView = RowView.extend({
+	editing: {},
 	events: {
 		"click .select": "clickedSelect",
 		"click .edit-title": "clickedTitle",
 		"click .edit-description": "clickedDescription",
 		"click .edit-payload": "clickedPayload",
-		"click .edit-content-type": "clickedType"
+		"click .cancel":"clickedCancel",
+		"click .save":"clickedSave",
+		"click .edit-type": "clickedType"
 	},
-	clickedTitle: function () {
-		this.openEditor('title');
+	clickedTitle: function (e) {
+		this.openEditor('title',e.currentTarget);
 	},
-	clickedDescription: function () {
-		this.openEditor('description');
+	clickedDescription: function (e) {
+		this.openEditor('description',e.currentTarget);
 	},
-	clickedPayload: function () {
-		this.openEditor('payload');
+	
+	clickedPayload: function (e) {
+		this.openEditor('payload',e.currentTarget);
 	},
-	clickedType: function () {
-		this.openEditor('type');
+	clickedSave: function (e) {
+		this.saveEditor('payload');
+		e.stopPropagation();
 	},
-	clickedSelect: function () {
+	clickedCancel: function (e) {
+		this.closeEditor('payload');
+		e.stopPropagation();
+	},
+	
+	
+	clickedType: function (e) {
+		this.openEditor('type',e.currentTarget);
+	},
+	clickedSelect: function (e) {
 		this.selected.toggle();
 	},
 	
+	updateField: function (fieldName,newValue) {
+		
+	},
 	
-	
-	
-	
-	saveEditor: function (object) {
+	saveEditor: function (fieldName) {
+		var object = {};
+		var editorEl = $(this.el).find('.editor.'+fieldName);
+		var editorValue = editorEl.val();
+		object[fieldName]= (fieldName == 'type') ? 
+							editorValue.toLowerCase() :
+							editorValue;
+						
+		var me = this;
 		this.model.save(object,{
-			success: this.rerender
+			success: function () {
+				me.closeEditor(fieldName);
+			}
 		});
 	},
-	openEditor: function (field){
-		var object = {};
-//		this.expanded.toggle();
-
-		object[field] = window.prompt("Enter new value",this.model.get(field));
-		object[field]= (field == 'type') ? 
-			object[field].toLowerCase() :
-			object[field];
-		this.saveEditor(object);
+	closeEditor: function (fieldName) {
+		console.log("Closing editor...");
+		this.editing[fieldName] = null;
+		this.expanded.setOff();
+		this.rerender();
+		this.collapse()
+	},
+	openEditor: function (fieldName,element){
+		var editorEl = $(this.el).find('.property.'+fieldName);
+		if (editorEl.length > 0) {
+			console.log("Opening editor...",editorEl);
+			this.editing[fieldName] = editorEl.html();
+			this.expanded.setOn();
+			this.rerender();
+			this.expand();
+		}
 	},
 	
 	open: function () {},
@@ -47,40 +78,44 @@ var ContentView = RowView.extend({
 		// Call parent function
 		RowView.prototype.render.call(this);
 		
-		this.originalHeight = $(this.el).height();
-		$(this.el).height(this.originalHeight);
-		this.originalPaddingTop = $(this.el).find(".property").css('padding-top');
-		this.originalPaddingBottom = $(this.el).find(".property").css('padding-bottom');
-		
-		this.selected = new Toggle(false,this.select,this.deselect);
-		this.expanded = new Toggle(false,this.expand,this.collapse);
+		// First-time render
+		if (!this.originalHeight) {
+			this.originalHeight = $(this.el).height();
+			$(this.el).height(this.originalHeight);
+			this.originalPaddingTop = $(this.el).find(".property").css('padding-top');
+			this.originalPaddingBottom = $(this.el).find(".property").css('padding-bottom');
+
+			this.selected = new Toggle(false,this.select,this.deselect);
+			this.expanded = new Toggle(false,this.expand,this.collapse);
+		}
 	},
 	
-	expand: function (){
-		$(this.el).find(".property").css({
-			paddingTop: 0,
-			paddingBottom: 0
-		});
-		this.el.stop().animate({
-			height: "+=50px"
-		},200)
+	rerender: function () {
+		// Call parent function
+		RowView.prototype.rerender.call(this);
 		
+		$(this.el).height($(this.el).height());
 	},
 	
+	expand: function (callback){
+//		$(this.el).find(".property").css({
+//			paddingTop: 0,
+//			paddingBottom: 0
+//		});
+//		this.el.stop().animate({
+//			height: this.originalHeight+50
+//		},200,'swing',callback);
+		
+	},
 	
 	collapse: function () {
-		$(this.el).find(".property").css({
-			paddingTop: this.originalPaddingTop,
-			paddingBottom: this.originalPaddingBottom
-		});
-		this.el.stop().animate({
-			height: this.originalHeight
-		},200
-//		,'linear',function() {
-////			$(this).removeAttr("style");
-//		}
-		)
-		
+//		$(this.el).find(".property").css({
+//			paddingTop: this.originalPaddingTop,
+//			paddingBottom: this.originalPaddingBottom
+//		});
+//		this.el.stop().animate({
+//			height: this.originalHeight
+//		},200);
 	},
 	
 	
@@ -93,14 +128,25 @@ var ContentView = RowView.extend({
 		$(this.el).removeClass('selected');
 		
 	},
+	
+	// Override mapping of data into view
 	transform: function (map) {
 		// Call parent function
 		RowView.prototype.transform.call(this, map);
 		
-		var payload = (map.type =='html') ?
-			'<pre class="payload property"><code class="html"><%- payload %></code></pre>' :
-			'<span class="payload property"><%- payload %></span>';
+		var type = (this.editing.type) ?
+					this.markup.type.editor :
+					this.markup.type.text;
+		map.type = _.template(type,{
+			type: map.type
+		});
 		
+		var payload = (this.editing.payload) ?
+						this.markup.payload.editor :
+							((map.type =='html') ?
+							this.markup.payload.html :
+							this.markup.payload.text);
+		console.log(payload);
 		map.payload = _.template(payload,{
 			payload: map.payload
 		});
@@ -112,6 +158,16 @@ var ContentView = RowView.extend({
 		return map;
 	},
 	markup:{
+		inlineEditor: '',
+		payload: {
+			html:'<pre class="payload property"><code class="html"><%- payload %></code></pre>',
+			text:'<span class="payload property"><%- payload %></span>',
+			editor: '<textarea class="editor payload"><%- payload %></textarea><a class="save editor">publish</a><a class="cancel editor">cancel</a>'
+		},
+		type: {
+			text: '<a class="type property"><%- type %></a>',
+			editor: '<input class="editor type" type="text"/>'
+		},
 		row: '<li>'+
 			'<div class="select checkbox-column section">'+
 			'<input type="checkbox"/>'+
@@ -127,9 +183,9 @@ var ContentView = RowView.extend({
 				'<%= payload %>'+
 				'</div>'+
 			'</div>'+
-			'<div class="edit-content-type type-column section">'+
+			'<div class="edit-type type-column section">'+
 				'<div class="inner-section">'+
-				'<a class="content-type property"><%- type %></a>'+
+				'<%= type %>'+
 				'</div>'+
 			'</div>'+
 			'</li>'
