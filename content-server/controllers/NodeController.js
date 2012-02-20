@@ -14,12 +14,13 @@ exports.fetch = function (req, res, next ) {
 }
 
 exports.create = function (req, res, next ){
+	console.log("****** create request");
 	var valid = 
-	validateVerb(res,req.method,["PUT"]) &&
-	validateType(res,req.query.type);
+		validateVerb(res,req.method,["POST"]) &&
+		validateType(res,req.body.type);
 	
 	if (!valid) return;
-	Node.build(req.query).save().success(
+	Node.build(req.body).save().success(
 	
 		function successCallback(savedModel) {
 			console.log("Model saved to DB.",savedModel);
@@ -39,6 +40,7 @@ exports.read = function (req, res, next ){
 	validateId(res,id) &&
 	validateVerb(res,req.method,["GET"]);
 	
+	console.log(id,req.params,req.query,req.body);
 	if (!valid) return;
 	Node.find(
 	{
@@ -56,6 +58,7 @@ exports.read = function (req, res, next ){
 				res.json(success({
 					model: trimModel(model)
 				}));
+	
 			}
 		}).error(
 	
@@ -66,9 +69,10 @@ exports.read = function (req, res, next ){
 }
 
 exports.update = function (req, res, next ){
+	console.log("****** update request");
 	var id = req.param('id'), valid = 
 	validateId(res,id) &&
-	validateVerb(res,req.method,["POST"]);
+	validateVerb(res,req.method,["PUT"]);
 
 	console.log(id,req.params,req.query,req.body);
 	if (!valid) return;

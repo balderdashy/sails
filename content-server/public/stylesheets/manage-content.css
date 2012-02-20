@@ -66,19 +66,23 @@ div.ui-list .inner-section textarea.editor {
 	border-color: #bbb;
 	color: #888;
 	height: 10em;
-	padding: 1em 2%;
+	padding: 3px 2%;
 	resize: none
 }
-div.ui-list .inner-section a.editor {
+div.ui-list .inner-section textarea.editor.description {
+	margin-top:10px;
+	height:4em;
+}
+div.ui-list .inner-section a.editor-btn {
 	display:block;
 	float:right;
-	font-size: 1.15em;
+	font-size: 12px;
 	padding: 1em 1em 1em 0;
 }
-div.ui-list .inner-section a.save.editor {
+div.ui-list .inner-section a.save.editor-btn {
 	font-weight:bold;
 }
-div.ui-list .inner-section a.cancel.editor {
+div.ui-list .inner-section a.cancel.editor-btn {
 	color: #aaa;
 /*	color: #aa371a;*/
 /*	color: #aa371a;*/

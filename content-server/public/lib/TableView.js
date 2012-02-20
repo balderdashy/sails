@@ -185,11 +185,21 @@ var TableView = Backbone.View.extend({
 	},
 
 	// Render the table ==> update the DOM
-	render: function () {
+	// If node is specified, don't refresh everything
+	render: function (node) {
 		var me = this;		
 
 		// Additive
-		if (this.page > 0) {
+		if (node) {
+			// Generate view for new node
+			new me.rowClass({
+				model: node,
+				containerEl: me.containerEl,
+				collectionView: me
+			}).render();
+		}
+		// Paged render (additive)
+		else if (this.page > 0) {
 			for (var index = this.perPage*this.page; index < this.perPage*(this.page+1); index++) {
 				if (this.collection.at(index)) {
 					new me.rowClass({

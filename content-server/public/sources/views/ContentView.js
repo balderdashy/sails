@@ -1,13 +1,16 @@
 var ContentView = RowView.extend({
-	editing: {},
 	events: {
 		"click .select": "clickedSelect",
 		"click .edit-title": "clickedTitle",
 		"click .edit-description": "clickedDescription",
 		"click .edit-payload": "clickedPayload",
+		"click .edit-type": "clickedType",
+		
 		"click .cancel":"clickedCancel",
 		"click .save":"clickedSave",
-		"click .edit-type": "clickedType"
+		"change select.type.editor":"selectedFromDropdown",
+		"keydown input.editor":"pressedKey"
+		
 	},
 	clickedTitle: function (e) {
 		this.openEditor('title',e.currentTarget);
@@ -19,16 +22,7 @@ var ContentView = RowView.extend({
 	clickedPayload: function (e) {
 		this.openEditor('payload',e.currentTarget);
 	},
-	clickedSave: function (e) {
-		this.saveEditor('payload');
-		e.stopPropagation();
-	},
-	clickedCancel: function (e) {
-		this.closeEditor('payload');
-		e.stopPropagation();
-	},
-	
-	
+		
 	clickedType: function (e) {
 		this.openEditor('type',e.currentTarget);
 	},
@@ -36,9 +30,49 @@ var ContentView = RowView.extend({
 		this.selected.toggle();
 	},
 	
-	updateField: function (fieldName,newValue) {
-		
+	// Finished editing events
+	clickedSave: function (e) {
+		var fieldName = $(e.currentTarget).attr('data-field');
+		this.saveEditor(fieldName);
+		e.stopPropagation();
 	},
+	clickedCancel: function (e) {
+		var fieldName = $(e.currentTarget).attr('data-field');
+		this.closeEditor(fieldName);
+		e.stopPropagation();
+	},
+	pressedKey: function (e) {
+		// If <ENTER> submit button
+		var KEY_ENTER = 13, KEY_ESC = 27,
+		code = (e.keyCode ? e.keyCode : e.which);
+		if (code == KEY_ESC) {
+			// User pressed escape
+			var fieldName = $(e.currentTarget).attr('data-field');
+			this.closeEditor(fieldName);
+			e.stopPropagation();
+		}
+		else if (code != KEY_ENTER || e.shiftKey) {
+			// User pressed some other key (or SHIFT+ENTER)
+		}
+		else {
+			// User pressed enter
+			var fieldName = $(e.currentTarget).attr('data-field');
+			this.saveEditor(fieldName);
+			e.stopPropagation();
+		}
+	},
+	selectedFromDropdown: function (e) {
+		var fieldName = $(e.currentTarget).attr('data-field');
+		this.saveEditor(fieldName);
+		e.stopPropagation();
+	},
+	
+	ready: function () {
+		this.editing = {};
+	},
+	
+	
+	updateField: function (fieldName,newValue) {},
 	
 	saveEditor: function (fieldName) {
 		var object = {};
@@ -49,14 +83,17 @@ var ContentView = RowView.extend({
 							editorValue;
 						
 		var me = this;
-		this.model.save(object,{
-			success: function () {
+		this.model.set(object);
+		this.model.save({},{
+			success: function (response) {
 				me.closeEditor(fieldName);
+			},
+			error: function(response) {
+				Log.log("ERROR",response);
 			}
 		});
 	},
 	closeEditor: function (fieldName) {
-		console.log("Closing editor...");
 		this.editing[fieldName] = null;
 		this.expanded.setOff();
 		this.rerender();
@@ -65,7 +102,7 @@ var ContentView = RowView.extend({
 	openEditor: function (fieldName,element){
 		var editorEl = $(this.el).find('.property.'+fieldName);
 		if (editorEl.length > 0) {
-			console.log("Opening editor...",editorEl);
+			Log.log("Opening editor...",editorEl);
 			this.editing[fieldName] = editorEl.html();
 			this.expanded.setOn();
 			this.rerender();
@@ -75,6 +112,7 @@ var ContentView = RowView.extend({
 	
 	open: function () {},
 	render: function () {
+		
 		// Call parent function
 		RowView.prototype.render.call(this);
 		
@@ -87,6 +125,7 @@ var ContentView = RowView.extend({
 
 			this.selected = new Toggle(false,this.select,this.deselect);
 			this.expanded = new Toggle(false,this.expand,this.collapse);
+			
 		}
 	},
 	
@@ -134,6 +173,28 @@ var ContentView = RowView.extend({
 		// Call parent function
 		RowView.prototype.transform.call(this, map);
 		
+		// Add a prompt for empty tags which are inline
+		// (since it would be impossible to add a property to them otherwise)
+//		map.title = (map.title && map.title.match(/.*\S.*/g)) || "(+)";
+//		map.description = (map.description && map.description.match(/.*\S.*/g)) || "(+)";
+		
+		
+		var title = (this.editing.title) ?
+					this.markup.title.editor :
+					this.markup.title.text;
+		map.title = _.template(title,{
+			title:  (map.title && map.title.match(/.*\S.*/g)) || "",
+			displayTitle:  (map.title && map.title.match(/.*\S.*/g)) || "(+)"
+		});
+		
+		var description = (this.editing.description) ?
+					this.markup.description.editor :
+					this.markup.description.text;
+		map.description = _.template(description,{
+			displayDescription: (map.description && map.description.match(/.*\S.*/g)) || "(Add a description)",
+			description: (map.description && map.description.match(/.*\S.*/g)) || ""
+		});
+		
 		var type = (this.editing.type) ?
 					this.markup.type.editor :
 					this.markup.type.text;
@@ -143,30 +204,37 @@ var ContentView = RowView.extend({
 		
 		var payload = (this.editing.payload) ?
 						this.markup.payload.editor :
-							((map.type =='html') ?
+							((this.model.get('type') =='html') ?
 							this.markup.payload.html :
 							this.markup.payload.text);
-		console.log(payload);
 		map.payload = _.template(payload,{
 			payload: map.payload
 		});
 		
-		// Add a prompt for empty tags which are inline
-		// (since it would be impossible to add a property to them otherwise)
-		map.title = (map.title && map.title.match(/.*\S.*/g)) || "(+)";
-		map.description = (map.description && map.description.match(/.*\S.*/g)) || "(+)";
 		return map;
 	},
 	markup:{
-		inlineEditor: '',
 		payload: {
 			html:'<pre class="payload property"><code class="html"><%- payload %></code></pre>',
 			text:'<span class="payload property"><%- payload %></span>',
-			editor: '<textarea class="editor payload"><%- payload %></textarea><a class="save editor">publish</a><a class="cancel editor">cancel</a>'
+			editor: '<textarea class="editor payload"><%- payload %></textarea>'+
+					'<a data-field="payload" class="save editor-btn">publish</a><a data-field="payload"  class="cancel editor-btn">cancel</a>'
 		},
 		type: {
 			text: '<a class="type property"><%- type %></a>',
-			editor: '<input class="editor type" type="text"/>'
+			editor: '<select data-field="type" class="editor type">'+
+					'<option value="text">text</option>'+
+					'<option value="html">html</option>'+
+					'</select>'
+		},
+		title: {
+			text: '<strong class="edit-title title property"><%- title %></strong>',//'<a class="title property"><%- title %></a>',
+			editor: '<input data-field="title" class="editor title" value="<%- title %>" type="text"/>'
+		},
+		description: {
+			text: '<em class="edit-description description property"><%- displayDescription %></em>', //'<a class="description property"><%- description %></a>',
+			editor: '<textarea class="editor description" type="text"><%- description %></textarea>'+
+					'<a data-field="description" class="save editor-btn">publish</a><a data-field="description" class="cancel editor-btn">cancel</a>'
 		},
 		row: '<li>'+
 			'<div class="select checkbox-column section">'+
@@ -174,8 +242,8 @@ var ContentView = RowView.extend({
 			'</div>'+
 			'<div class="info-column section">'+
 				'<div class="inner-section">'+
-				'<strong class="edit-title title property"><%- title %></strong>'+
-				'<em class="edit-description description property"><%- description %></em>'+
+				'<%= title %>'+
+				'<%= description %>'+
 				'</div>'+
 			'</div>'+
 			'<div class="edit-payload payload-column section">'+
