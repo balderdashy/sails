@@ -17,6 +17,7 @@ var PanelView = Backbone.View.extend({
 		});
 		contentsView.collection.add(emptyNode);
 		contentsView.render(emptyNode);
+		
 	},
 	
 	

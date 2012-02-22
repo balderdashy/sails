@@ -222,8 +222,8 @@ var ContentView = RowView.extend({
 		type: {
 			text: '<a class="type property"><%- type %></a>',
 			editor: '<select data-field="type" class="editor type">'+
-					'<option value="text">text</option>'+
-					'<option value="html">html</option>'+
+					'<option <% if (type=="text") print ("selected"); %> value="text">text</option>'+
+					'<option <% if (type=="html") print ("selected"); %> value="html">html</option>'+
 					'</select>'
 		},
 		title: {
