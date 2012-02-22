@@ -16,8 +16,7 @@ var PanelView = Backbone.View.extend({
 			title: _.uniqueId('Unsaved Node ')
 		});
 		contentsView.collection.add(emptyNode);
-		contentsView.render(emptyNode);
-		
+		contentsView.render(emptyNode);	
 	},
 	
 	
@@ -31,7 +30,13 @@ var PanelView = Backbone.View.extend({
 		this.render();
 	},
 	render: function() {
+		if (contentsView.selected.length > 0) {
+			$("a.delete-nodes").show();
+		}
+		else {
+			$("a.delete-nodes").hide();
+		}
 		this.delegateEvents();
 	}
 });
-new PanelView;
+manageContentView = new PanelView;

@@ -13,6 +13,7 @@ var ContentView = RowView.extend({
 		"keydown .editor":"pressedKey"
 		
 	},
+	
 	clickedTitle: function (e) {
 		this.openEditor('title',e.currentTarget);
 	},
@@ -188,11 +189,14 @@ var ContentView = RowView.extend({
 	select: function () {
 		$(this.el).find("input").prop('checked',true);
 		$(this.el).addClass('selected');
+		contentsView.selected.add(this.model);
+		manageContentView.render();
 	},
 	deselect: function () {
 		$(this.el).find("input").prop('checked',false);
 		$(this.el).removeClass('selected');
-		
+		contentsView.selected.remove(this.model);
+		manageContentView.render();
 	},
 	
 	// Override mapping of data into view

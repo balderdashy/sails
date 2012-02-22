@@ -34,6 +34,7 @@ var TableView = Backbone.View.extend({
 		$(this.domReady);
 		
 		this.collection = new this.collectionClass;
+		this.selected = new this.collectionClass;
 		this.wrapperEl = "div.ui-list-wrapper";
 		this.el = this.wrapperEl;
 		this.tableEl = "div.ui-list";
