@@ -82,16 +82,23 @@ var ContentView = RowView.extend({
 							editorValue;
 						
 		var me = this;
-		this.model.set(object);
 		
+		var previousValue = {};
+		previousValue[fieldName] = me.model.get(fieldName);
 		me.model.busy[fieldName] = true;
 		
 		// Optional latency for testing
 //		window.setTimeout(function() {
 			me.model.busy[fieldName] = false;
-			me.model.save({},{
-				success: function (response) {
-					me.closeEditor(fieldName);
+			me.model.save(object,{
+				success: function (model,response) {
+					if (response.success) {
+						me.closeEditor(fieldName);
+					}
+					else {
+						me.model.set(previousValue);
+						$(me.el).find('.editor.'+fieldName).select();
+					}
 				},
 				error: function(response) {
 					Log.log("ERROR",response);
@@ -248,7 +255,8 @@ var ContentView = RowView.extend({
 			editor: '<select data-field="type" class="editor type">'+
 					'<option <% if (type=="text") print ("selected"); %> value="text">text</option>'+
 					'<option <% if (type=="html") print ("selected"); %> value="html">html</option>'+
-					'</select>',
+					'</select>'+
+					'<a data-field="type" class="type cancel editor-btn">cancel</a>',
 			busy: '<img class="spinner" src="/images/ajax-loader-small.gif" />'
 		},
 		title: {
@@ -280,29 +288,6 @@ var ContentView = RowView.extend({
 			'<div class="edit-type type-column section">'+
 				'<div class="inner-section">'+
 				'<%= type %>'+
-				'</div>'+
-			'</div>'+
-			'</li>',
-		
-		busy: '<li>'+
-			'<div class="select checkbox-column section">'+
-//			'<input type="checkbox"/>'+
-			'</div>'+
-			'<div class="info-column section">'+
-				'<div class="inner-section">'+
-//				'<%= title %>'+
-//				'<%= description %>'+
-				'</div>'+
-			'</div>'+
-			'<div class="edit-payload payload-column section">'+
-				'<div class="inner-section">'+
-				'<img class="spinner" src="/images/ajax-loader-small.gif" />'+
-//				'<%= payload %>'+
-				'</div>'+
-			'</div>'+
-			'<div class="edit-type type-column section">'+
-				'<div class="inner-section">'+
-//				'<%= type %>'+
 				'</div>'+
 			'</div>'+
 			'</li>'

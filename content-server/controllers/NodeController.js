@@ -103,6 +103,7 @@ exports.update = function (req, res, next ){
 		}).error(
 	
 		function errorCallback(response) {
+			new Error('Duplicate model.');
 			console.log("Error updating model.",response);
 			res.json(error(response));
 		});

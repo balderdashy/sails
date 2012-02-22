@@ -88,6 +88,11 @@ div.ui-list .inner-section a.cancel.editor-btn {
 /*	color: #aa371a;*/
 }
 
+/* cancel button for content type editor should not be floated */
+div.ui-list .inner-section a.cancel.editor-btn.type {
+	float:none;
+	padding: 0.45em 0 0 0;
+}
 
 
 /* top level divisions */
