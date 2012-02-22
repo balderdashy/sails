@@ -93,6 +93,14 @@ h1 {
 	box-shadow: 0 3px 1px rgba(150,150,150,0.2);
 }
 
+img.spinner {
+	padding: 0.5em;
+	margin: 0 auto;
+	display:block;
+}
+
+
+
 #footer {
 	padding:1em 0 3em;
 	color:#999;

@@ -9,6 +9,9 @@ var Content = Row.extend({
 		}
 		
 		this.attributes = _.extend(this.attributes,params);
+		
+		// Map of which fields are busy
+		this.busy={};
 	},
 
 

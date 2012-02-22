@@ -51,8 +51,6 @@ var RowView = Backbone.View.extend({
 		this.el.replaceWith(newElem);
 		this.el = newElem;
 		
-		// Syntax highlight
-		hljs && $('pre code').each(function(i, e) {hljs.highlightBlock(e, '    ')});
 		this.delegateEvents();
 	},
 
@@ -62,8 +60,6 @@ var RowView = Backbone.View.extend({
 		this.el = newElem;
 		$(this.el).fadeTo(1,this.originalOpacity);
 		
-		// Syntax highlight
-		hljs && $(this.el).find('pre code').each(function(i, e) {hljs.highlightBlock(e, '    ')});
 		this.delegateEvents();
 	},
 
@@ -76,6 +72,7 @@ var RowView = Backbone.View.extend({
 	// Return the HTML especially for this row
 	generateHTML: function () {
 		var template = this.markup.row;
+		
 		var map = _.clone(this.model.attributes);
 
 		// Replace nulls with ""
@@ -110,5 +107,11 @@ var RowView = Backbone.View.extend({
 
 		// Remove from DOM
 		this.remove();
+	},
+	
+	// Child should override
+	markup: {
+		row:'<li>content</li>',
+		busy: '<li>busy....</li>'
 	}
 })

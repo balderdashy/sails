@@ -9,7 +9,8 @@ var ContentView = RowView.extend({
 		"click .cancel":"clickedCancel",
 		"click .save":"clickedSave",
 		"change select.type.editor":"selectedFromDropdown",
-		"keydown input.editor":"pressedKey"
+		
+		"keydown .editor":"pressedKey"
 		
 	},
 	clickedTitle: function (e) {
@@ -42,6 +43,7 @@ var ContentView = RowView.extend({
 		e.stopPropagation();
 	},
 	pressedKey: function (e) {
+		
 		// If <ENTER> submit button
 		var KEY_ENTER = 13, KEY_ESC = 27,
 		code = (e.keyCode ? e.keyCode : e.which);
@@ -71,9 +73,6 @@ var ContentView = RowView.extend({
 		this.editing = {};
 	},
 	
-	
-	updateField: function (fieldName,newValue) {},
-	
 	saveEditor: function (fieldName) {
 		var object = {};
 		var editorEl = $(this.el).find('.editor.'+fieldName);
@@ -84,14 +83,24 @@ var ContentView = RowView.extend({
 						
 		var me = this;
 		this.model.set(object);
-		this.model.save({},{
-			success: function (response) {
-				me.closeEditor(fieldName);
-			},
-			error: function(response) {
-				Log.log("ERROR",response);
-			}
-		});
+		
+		me.model.busy[fieldName] = true;
+		
+		// Optional latency for testing
+//		window.setTimeout(function() {
+			me.model.busy[fieldName] = false;
+			me.model.save({},{
+				success: function (response) {
+					me.closeEditor(fieldName);
+				},
+				error: function(response) {
+					Log.log("ERROR",response);
+				}
+			});
+//		},1000);
+		
+		// Show loading animation
+		this.rerender();
 	},
 	closeEditor: function (fieldName) {
 		this.editing[fieldName] = null;
@@ -100,12 +109,14 @@ var ContentView = RowView.extend({
 		this.collapse()
 	},
 	openEditor: function (fieldName,element){
-		var editorEl = $(this.el).find('.property.'+fieldName);
-		if (editorEl.length > 0) {
-			Log.log("Opening editor...",editorEl);
-			this.editing[fieldName] = editorEl.html();
+		var editeeEl = $(this.el).find('.property.'+fieldName);
+		if (editeeEl.length > 0) {
+			this.editing[fieldName] = editeeEl.html();
 			this.expanded.setOn();
 			this.rerender();
+			
+			var editorEl = $(this.el).find('.editor.'+fieldName);
+			$(editorEl).select();
 			this.expand();
 		}
 	},
@@ -126,13 +137,23 @@ var ContentView = RowView.extend({
 			this.selected = new Toggle(false,this.select,this.deselect);
 			this.expanded = new Toggle(false,this.expand,this.collapse);
 		}
+		
+		// Syntax highlight
+		hljs && $('pre code').each(function(i, e) {hljs.highlightBlock(e, '    ')});
 	},
 	
 	rerender: function () {
-		// Call parent function
-		RowView.prototype.rerender.call(this);
+		this.updateHTML();
 		
 		$(this.el).height($(this.el).height());
+		
+		// Syntax highlight
+		hljs && $('pre code').each(function(i, e) {hljs.highlightBlock(e, '    ')});
+	},
+	
+	updateHTML: function () {
+		// Call parent function
+		RowView.prototype.rerender.call(this);
 	},
 	
 	expand: function (callback){
@@ -172,21 +193,19 @@ var ContentView = RowView.extend({
 		// Call parent function
 		RowView.prototype.transform.call(this, map);
 		
-		// Add a prompt for empty tags which are inline
-		// (since it would be impossible to add a property to them otherwise)
-//		map.title = (map.title && map.title.match(/.*\S.*/g)) || "(+)";
-//		map.description = (map.description && map.description.match(/.*\S.*/g)) || "(+)";
-		
-		
-		var title = (this.editing.title) ?
+		var title = (this.model.busy.title) ?
+					this.markup.title.busy :
+					(this.editing.title) ?
 					this.markup.title.editor :
 					this.markup.title.text;
 		map.title = _.template(title,{
 			title:  (map.title && map.title.match(/.*\S.*/g)) || "",
-			displayTitle:  (map.title && map.title.match(/.*\S.*/g)) || "(+)"
+			displayTitle:  (map.title && map.title.match(/.*\S.*/g)) || "(Add a title)"
 		});
 		
-		var description = (this.editing.description) ?
+		var description = (this.model.busy.description) ?
+					this.markup.description.busy :
+					(this.editing.description) ?
 					this.markup.description.editor :
 					this.markup.description.text;
 		map.description = _.template(description,{
@@ -194,14 +213,18 @@ var ContentView = RowView.extend({
 			description: (map.description && map.description.match(/.*\S.*/g)) || ""
 		});
 		
-		var type = (this.editing.type) ?
+		var type = (this.model.busy.type) ?
+					this.markup.type.busy :
+					(this.editing.type) ?
 					this.markup.type.editor :
 					this.markup.type.text;
 		map.type = _.template(type,{
 			type: map.type
 		});
 		
-		var payload = (this.editing.payload) ?
+		var payload = (this.model.busy.payload) ?
+						this.markup.payload.busy :
+						(this.editing.payload) ?
 						this.markup.payload.editor :
 							((this.model.get('type') =='html') ?
 							this.markup.payload.html :
@@ -216,24 +239,28 @@ var ContentView = RowView.extend({
 		payload: {
 			html:'<pre class="payload property"><code class="html"><%- payload %></code></pre>',
 			text:'<span class="payload property"><%- payload %></span>',
-			editor: '<textarea class="editor payload"><%- payload %></textarea>'+
-					'<a data-field="payload" class="save editor-btn">publish</a><a data-field="payload"  class="cancel editor-btn">cancel</a>'
+			editor: '<textarea data-field="payload" class="editor payload"><%- payload %></textarea>'+
+					'<a data-field="payload" class="save editor-btn">publish</a><a data-field="payload"  class="cancel editor-btn">cancel</a>',
+			busy: '<img class="spinner" src="/images/ajax-loader-small.gif" />'
 		},
 		type: {
 			text: '<a class="type property"><%- type %></a>',
 			editor: '<select data-field="type" class="editor type">'+
 					'<option <% if (type=="text") print ("selected"); %> value="text">text</option>'+
 					'<option <% if (type=="html") print ("selected"); %> value="html">html</option>'+
-					'</select>'
+					'</select>',
+			busy: '<img class="spinner" src="/images/ajax-loader-small.gif" />'
 		},
 		title: {
 			text: '<strong class="edit-title title property"><%- title %></strong>',//'<a class="title property"><%- title %></a>',
-			editor: '<input data-field="title" class="editor title" value="<%- title %>" type="text"/>'
+			editor: '<input data-field="title" class="editor title" value="<%- title %>" type="text"/>',
+			busy: '<img class="spinner" src="/images/ajax-loader-small.gif" />'
 		},
 		description: {
 			text: '<em class="edit-description description property"><%- displayDescription %></em>', //'<a class="description property"><%- description %></a>',
-			editor: '<textarea class="editor description" type="text"><%- description %></textarea>'+
-					'<a data-field="description" class="save editor-btn">publish</a><a data-field="description" class="cancel editor-btn">cancel</a>'
+			editor: '<textarea data-field="description" class="editor description" type="text"><%- description %></textarea>'+
+					'<a data-field="description" class="save editor-btn">publish</a><a data-field="description" class="cancel editor-btn">cancel</a>',
+			busy: '<img class="spinner" src="/images/ajax-loader-small.gif" />'
 		},
 		row: '<li>'+
 			'<div class="select checkbox-column section">'+
@@ -253,6 +280,29 @@ var ContentView = RowView.extend({
 			'<div class="edit-type type-column section">'+
 				'<div class="inner-section">'+
 				'<%= type %>'+
+				'</div>'+
+			'</div>'+
+			'</li>',
+		
+		busy: '<li>'+
+			'<div class="select checkbox-column section">'+
+//			'<input type="checkbox"/>'+
+			'</div>'+
+			'<div class="info-column section">'+
+				'<div class="inner-section">'+
+//				'<%= title %>'+
+//				'<%= description %>'+
+				'</div>'+
+			'</div>'+
+			'<div class="edit-payload payload-column section">'+
+				'<div class="inner-section">'+
+				'<img class="spinner" src="/images/ajax-loader-small.gif" />'+
+//				'<%= payload %>'+
+				'</div>'+
+			'</div>'+
+			'<div class="edit-type type-column section">'+
+				'<div class="inner-section">'+
+//				'<%= type %>'+
 				'</div>'+
 			'</div>'+
 			'</li>'
