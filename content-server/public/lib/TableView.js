@@ -18,6 +18,8 @@ var TableView = Backbone.View.extend({
 		searchFilter: ''
 	},
 	
+	emptyContainerClass: 'empty-collection',
+	
 	// Start on page 0, user can activate LoadMore to get more pages
 	page: 0,
 	
@@ -135,13 +137,13 @@ var TableView = Backbone.View.extend({
 			if (this.page == 0) {
 				// empty table and display loading spinner onload
 //				$(this.tableEl).hide();
-				$('<div class="empty-table"><img class="loader" src="/images/ajax-loader-small.gif"/></div>').appendTo(this.wrapperEl).center();
+				$('<div class="'+this.emptyContainerClass+'"><img class="loader" src="/images/ajax-loader-small.gif"/></div>').appendTo(this.wrapperEl).center();
 			}
 			else {
 			// If this is a "load more" request, display the inline spinner
 				var loadMoreButton = this.el.find(".loadMore");
 				loadMoreButton.text('');
-				$('<div class="empty-table"><img class="loader" src="/images/ajax-loader-small.gif"/></div>').appendTo(loadMoreButton).center();
+				$('<div class="'+this.emptyContainerClass+'"><img class="loader" src="/images/ajax-loader-small.gif"/></div>').appendTo(loadMoreButton).center();
 			}
 		}
 		else {
@@ -155,17 +157,17 @@ var TableView = Backbone.View.extend({
 		me.render();
 
 		window.clearTimeout(this.spinTimer);
-		var spinn = $(this.wrapperEl).children('.empty-table');
+		var spinn = $(this.wrapperEl).children('.'+this.emptyContainerClass);
 
 
 		// Finished loading, remove spinner
 		if (spinn.length > 0) {
 //			$(this.tableEl).fadeIn(350);
-			$(".empty-table").fadeOut(150,function () {
+			$("."+this.emptyContainerClass).fadeOut(150,function () {
 				$(this).remove();
 			});
 		} else {
-			$(".empty-table").hide();
+			$("."+this.emptyContainerClass).hide();
 			$(this.tableEl).show();
 		}
 	},
