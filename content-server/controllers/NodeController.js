@@ -13,14 +13,17 @@ exports.fetch = function (req, res, next ) {
 	});
 }
 
-exports.create = function (req, res, next ){
+exports.create = function (req, res, next) {
 	console.log("****** create request");
 	var valid = 
 		validateVerb(res,req.method,["POST"]) &&
 		validateType(res,req.body.type);
 	
+	// Update properties using trimmed parameter set
+	var model = trimParams(req.body,Node);
+	
 	if (!valid) return;
-	Node.build(req.body).save().success(
+	Node.build(model).save().success(
 	
 		function successCallback(savedModel) {
 			console.log("Model saved to DB.",savedModel);
@@ -69,7 +72,6 @@ exports.read = function (req, res, next ){
 }
 
 exports.update = function (req, res, next ){
-	console.log("****** update request");
 	var id = req.param('id'), valid = 
 	validateId(res,id) &&
 	validateVerb(res,req.method,["PUT"]);
@@ -89,7 +91,7 @@ exports.update = function (req, res, next ){
 			}
 			else {
 				// Update properties using trimmed parameter set
-				var trimmedParams = trimParams(req.body,model);
+				var trimmedParams = trimParams(req.body,Node);
 				model = _.extend(model,trimmedParams);
 				
 				// Persist update to DB
@@ -203,11 +205,11 @@ function trimModel(model) {
 }
 
 /**
- * Trim parameter map to only those attributes which matter to the model
+ * Trim parameter map to only those attributes which matter to the specified domain class
  */
 function trimParams(params,model) {
 	var trimmedParams = {};
-	_.each(model.attributes,function(key) {
+	_.each(model.rawAttributes,function(value,key) {
 		if (params[key]) {
 			trimmedParams[key] = params[key];
 		}

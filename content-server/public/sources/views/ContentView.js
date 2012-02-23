@@ -1,4 +1,7 @@
 var ContentView = RowView.extend({
+	// Keep track of pending XHR requests so they can be aborted if necessary
+	xhr: {},
+
 	events: {
 		"click .select": "clickedSelect",
 		"click .edit-title": "clickedTitle",
@@ -76,6 +79,7 @@ var ContentView = RowView.extend({
 	
 	saveEditor: function (fieldName) {
 		var object = {};
+		console.log("FIELDNAME: ",fieldName)
 		var editorEl = $(this.el).find('.editor.'+fieldName);
 		var editorValue = editorEl.val();
 		object[fieldName]= (fieldName == 'type') ? 
@@ -91,20 +95,24 @@ var ContentView = RowView.extend({
 		// Optional latency for testing
 //		window.setTimeout(function() {
 			me.model.busy[fieldName] = false;
-			me.model.save(object,{
+			// Cancel existing request
+			this.xhr.update && this.xhr.update.abort();
+			this.xhr.update = me.model.save(object,{
 				success: function (model,response) {
 					if (response.success) {
 						me.closeEditor(fieldName);
 					}
 					else {
+						Log.log("ERROR",response);
 						me.model.set(previousValue);
 						$(me.el).find('.editor.'+fieldName).select();
 					}
 				},
-				error: function(response) {
+				error: function(model,response) {
 					Log.log("ERROR",response);
 				}
 			});
+			console.log(this.xhr.update);
 //		},1000);
 		
 		// Show loading animation
