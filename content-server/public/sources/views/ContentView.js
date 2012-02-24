@@ -100,15 +100,19 @@ var ContentView = RowView.extend({
 				success: function (model,response) {
 					if (response.success) {
 						me.closeEditor(fieldName);
+						// Turn off loading animation
+						me.model.busy[fieldName] = false;
+						me.rerender();
 					}
 					else {
 						Log.log("ERROR",response);
-						me.model.set(previousValue);
+//						me.model.set(previousValue);
+						// Turn off loading animation
+						me.model.busy[fieldName] = false;
+						me.rerender();
 						$(me.el).find('.editor.'+fieldName).select();
 					}
-					// Turn off loading animation
-					me.model.busy[fieldName] = false;
-					me.rerender();
+					
 				},
 				error: function(model,response) {
 					Log.log("ERROR",response);
@@ -144,10 +148,10 @@ var ContentView = RowView.extend({
 	},
 	
 	open: function () {},
-	render: function () {
+	render: function (options) {
 		
 		// Call parent function
-		RowView.prototype.render.call(this);
+		RowView.prototype.render.call(this,options);
 		
 		// First-time render
 		if (!this.originalHeight) {

@@ -54,9 +54,15 @@ var RowView = Backbone.View.extend({
 		this.delegateEvents();
 	},
 
-	render: function () {
-		// Redraw all elements
-		var newElem = $(this.generateHTML()).appendTo(this.containerEl);
+	render: function (options) {
+		// Redraw element
+		var newElem;
+		if (options && options.prepend) {
+			newElem = $(this.generateHTML()).prependTo(this.containerEl);
+		}
+		else {
+			newElem = $(this.generateHTML()).appendTo(this.containerEl);
+		}
 		this.el = newElem;
 		$(this.el).fadeTo(1,this.originalOpacity);
 		

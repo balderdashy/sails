@@ -191,15 +191,19 @@ var TableView = Backbone.View.extend({
 	// If node is specified, don't refresh everything
 	render: function (node) {
 		var me = this;		
-
+		var view = null;
+		
 		// Additive
 		if (node) {
 			// Generate view for new node
-			new me.rowClass({
+			view = new me.rowClass({
 				model: node,
 				containerEl: me.containerEl,
 				collectionView: me
-			}).render();
+			});
+			view.render({
+				prepend:true
+			});
 		}
 		// Paged render (additive)
 		else if (this.page > 0) {
@@ -247,6 +251,8 @@ var TableView = Backbone.View.extend({
 		$(this.generateHTML()).appendTo(this.wrapperEl);
 
 		this.delegateEvents();
+		
+		return view;
 	},
 	
 	

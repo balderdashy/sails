@@ -2,8 +2,8 @@
 exports.fetch = function (params,callback) {
 	
 	// Validate request
-	params.sort = (params.sort=='title') ? params.sort : 'title';
-	params.order = (params.order=='asc' || params.order=='desc') ? params.order : 'asc';
+	params.sort = (params.sort != null) ? params.sort : 'updatedAt';
+	params.order = (params.order=='asc' || params.order=='desc') ? params.order : 'desc';
 	params.max = +params.max;
 	params.offset = +params.offset;
 	params.page = +params.page;

@@ -15,9 +15,20 @@ var PanelView = Backbone.View.extend({
 			type: 'text',
 			title: _.uniqueId('Unsaved Node ')
 		});
-		contentsView.collection.create(emptyNode);
-		
-		contentsView.render(emptyNode);	
+		contentsView.collection.add(emptyNode,{
+			at: 0
+		});
+		emptyNode.save({},{
+			success: function (model,response) {
+				Log.log(model);
+				var emptyView = contentsView.render(model);	
+				emptyView.openEditor('title');
+//				$(emptyView.el).find('.editor.title').select();
+			},
+			error: function (model,response) {
+				Log.log("ERROR",response);
+			}
+		});
 	},
 	
 	
