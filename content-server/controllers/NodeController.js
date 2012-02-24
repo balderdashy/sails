@@ -28,7 +28,7 @@ exports.create = function (req, res, next) {
 		function successCallback(savedModel) {
 			console.log("Model saved to DB.",savedModel);
 			res.json(success({
-				insertId: savedModel.id
+				id: savedModel.id
 			}));
 		}).error(
 	

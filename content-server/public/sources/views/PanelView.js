@@ -15,7 +15,8 @@ var PanelView = Backbone.View.extend({
 			type: 'text',
 			title: _.uniqueId('Unsaved Node ')
 		});
-		contentsView.collection.add(emptyNode);
+		contentsView.collection.create(emptyNode);
+		
 		contentsView.render(emptyNode);	
 	},
 	
