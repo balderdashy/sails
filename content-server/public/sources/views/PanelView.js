@@ -12,23 +12,29 @@ var PanelView = Backbone.View.extend({
 	
 	onClickCreateNode: function (e) {		
 		var emptyNode = new Content({
-			type: 'text',
-			title: _.uniqueId('Unsaved Node ')
+			type: 'text'
+			, title: _.uniqueId('Unsaved Node ')
 		});
 		contentsView.collection.add(emptyNode,{
 			at: 0
 		});
-		emptyNode.save({},{
-			success: function (model,response) {
-				Log.log(model);
-				var emptyView = contentsView.render(model);	
+		
+		
+		// TODO: DONT SAVE THE NODE UNTIL THE USER HITS ENTER
+		// AND ITS BEEN VALIDATED
+		
+		
+//		emptyNode.save({},{
+//			success: function (model,response) {
+//				Log.log(model);
+				var emptyView = contentsView.render(emptyNode);	
 				emptyView.openEditor('title');
 //				$(emptyView.el).find('.editor.title').select();
-			},
-			error: function (model,response) {
-				Log.log("ERROR",response);
-			}
-		});
+//			},
+//			error: function (model,response) {
+//				Log.log("ERROR",response);
+//			}
+//		});
 	},
 	
 	

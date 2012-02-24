@@ -22,20 +22,34 @@ exports.create = function (req, res, next) {
 	// Update properties using trimmed parameter set
 	var model = trimParams(req.body,Node);
 	
+//	console.log("MODEL.TITLE::::",model.title);
+//	if (!model.title) {
+//		model.title = _.uniqueId("Untitled Node ")+"_"+generateGuid();
+//	}
+	
 	if (!valid) return;
 	Node.build(model).save().success(
 	
 		function successCallback(savedModel) {
 			console.log("Model saved to DB.",savedModel);
 			res.json(success({
-				id: savedModel.id
+				id: savedModel.id,
+				title: savedModel.title
 			}));
 		}).error(
 	
 		function errorCallback(response) {
 			console.log("Error.  Could not save model to DB.",response);
 			res.json(error(response));
-		});
+		})
+		
+		
+		function generateGuid() {
+			var S4 = function() {
+			return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+			};
+			return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+		}
 }
 
 exports.read = function (req, res, next ){
