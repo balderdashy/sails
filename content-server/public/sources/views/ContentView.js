@@ -79,7 +79,7 @@ var ContentView = RowView.extend({
 	
 	saveEditor: function (fieldName) {
 		var object = {};
-		console.log("FIELDNAME: ",fieldName)
+		Log.log("FIELDNAME: ",fieldName)
 		var editorEl = $(this.el).find('.editor.'+fieldName);
 		var editorValue = editorEl.val();
 		object[fieldName]= (fieldName == 'type') ? 
@@ -94,10 +94,9 @@ var ContentView = RowView.extend({
 		
 		// Optional latency for testing
 //		window.setTimeout(function() {
-			me.model.busy[fieldName] = false;
 			// Cancel existing request
-			this.xhr.update && this.xhr.update.abort();
-			this.xhr.update = me.model.save(object,{
+			me.xhr.update && me.xhr.update.abort();
+			me.xhr.update = me.model.save(object,{
 				success: function (model,response) {
 					if (response.success) {
 						me.closeEditor(fieldName);
@@ -107,12 +106,19 @@ var ContentView = RowView.extend({
 						me.model.set(previousValue);
 						$(me.el).find('.editor.'+fieldName).select();
 					}
+					// Turn off loading animation
+					me.model.busy[fieldName] = false;
+					me.rerender();
 				},
 				error: function(model,response) {
 					Log.log("ERROR",response);
+					
+					// Turn off loading animation
+					me.model.busy[fieldName] = false;
+					me.rerender();
 				}
 			});
-			console.log(this.xhr.update);
+			Log.log(me.xhr.update);
 //		},1000);
 		
 		// Show loading animation
