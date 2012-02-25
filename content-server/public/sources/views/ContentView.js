@@ -207,13 +207,13 @@ var ContentView = RowView.extend({
 	select: function () {
 		$(this.el).find("input").prop('checked',true);
 		$(this.el).addClass('selected');
-		contentsView.selected.add(this.model);
+		contentsView.selectedViews.push(this);
 		manageContentView.render();
 	},
 	deselect: function () {
 		$(this.el).find("input").prop('checked',false);
 		$(this.el).removeClass('selected');
-		contentsView.selected.remove(this.model);
+		contentsView.selectedViews = _.without(contentsView.selectedViews,this);
 		manageContentView.render();
 	},
 	
@@ -312,6 +312,7 @@ var ContentView = RowView.extend({
 				'<%= type %>'+
 				'</div>'+
 			'</div>'+
-			'</li>'
+			'</li>',
+		busy: '<li><img class="spinner" src="/images/ajax-loader-small.gif" /></li>'
 	}
 });

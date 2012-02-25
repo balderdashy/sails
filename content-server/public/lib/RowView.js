@@ -77,7 +77,7 @@ var RowView = Backbone.View.extend({
 
 	// Return the HTML especially for this row
 	generateHTML: function () {
-		var template = this.markup.row;
+		var template = (this.isBusy) ? this.markup.busy : this.markup.row;
 		
 		var map = _.clone(this.model.attributes);
 

@@ -36,7 +36,7 @@ var TableView = Backbone.View.extend({
 		$(this.domReady);
 		
 		this.collection = new this.collectionClass;
-		this.selected = new this.collectionClass;
+		this.selectedViews = [];
 		this.wrapperEl = "div.ui-list-wrapper";
 		this.el = this.wrapperEl;
 		this.tableEl = "div.ui-list";
@@ -116,7 +116,7 @@ var TableView = Backbone.View.extend({
 			this.collection.fetch({
 				add: this.page > 0,
 				data: {
-					filter: this.filter(),	// arbitrary filter-- defined by inheritors
+//					filter: this.filter(),	// arbitrary filter-- defined by inheritors
 					
 					// Built-in filtering
 					filter: (this.filters && this.filters.searchFilter) || "",

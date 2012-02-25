@@ -4,25 +4,25 @@
 *
 */
 
-body {
-	font: 14px Helvetica, Arial, sans-serif; 
+body { 
+	font: 14px Helvetica, Arial, sans-serif;  
 }
 
 /* Style */
 html {
-	background:#e0e0e0;
+	background:#e0e0e0;    
 }
 
 a {
-	color: #00B7FF;
+	color: #00B7FF; 
 }
 
-h1 {
+h1 {   
 	font-size: 28px;
 	font-weight:bold;
 	margin: 20px 0 15px;
 	color:#444;
-	text-shadow: 0 0 5px rgba(150,150,150, 0.6);
+	text-shadow: 0 0 5px rgba(150,150,150, 0.6); 
 }
 
 
@@ -34,7 +34,7 @@ h1 {
 	position:fixed;
 	top:0; left:0;
 	z-index:100;
-	box-shadow: 0 2px 2px rgba(100,100,100,0.5);
+	box-shadow: 0 2px 2px rgba(100,100,100,0.5); 
 }
 
 #branding {

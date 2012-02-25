@@ -2,7 +2,8 @@ var PanelView = Backbone.View.extend({
 	el: 'body',
 	events: {
 		'change #navbar-dropdown':'onSelectNav',
-		'click a.create-node':'onClickCreateNode'
+		'click a.create-node':'onClickCreateNode',
+		'click a.delete-nodes':'onClickDeleteNodes'
 	},
 	
 	onSelectNav: function (e) {
@@ -37,6 +38,10 @@ var PanelView = Backbone.View.extend({
 //		});
 	},
 	
+	onClickDeleteNodes: function (e) {
+		contentsView.deleteAllSelected();
+	},
+	
 	
 	
 	initialize: function(options) {
@@ -48,7 +53,7 @@ var PanelView = Backbone.View.extend({
 		this.render();
 	},
 	render: function() {
-		if (contentsView.selected.length > 0) {
+		if (contentsView.selectedViews.length > 0) {
 			$("a.delete-nodes").show();
 		}
 		else {
