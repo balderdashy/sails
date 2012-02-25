@@ -1,9 +1,9 @@
-// automatically grab all models from models directory
+// automatically grab all models from models directory 
 // and map to provided domain class names
-// (if no 'id' attribute was provided, take a guess)
+// (if no 'id' attribute was provided, take a guess) 
 // NOT CASE SENSITIVE
 var controllers = {},
-	controllerFiles = require('require-all')({
+	controllerFiles = require('require-all')({ 
 	dirname: __dirname + '/controllers',
 	filter: /(.+Controller)\.js$/
 });

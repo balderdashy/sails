@@ -4,7 +4,7 @@ fs = require('fs');
 async = require('async');
 Sequelize = require("sequelize");
 _ = require('underscore');
-db = require('./config/db');
+db = require('./config/db'); 
 config = require('./config/app');
 
 
