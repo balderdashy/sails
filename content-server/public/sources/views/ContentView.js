@@ -217,6 +217,15 @@ var ContentView = RowView.extend({
 		manageContentView.render();
 	},
 	
+	busyfy: function () {
+		this.busy = true;
+		this.rerender();
+	},
+	debusyfy: function () {
+		this.busy = false;
+		this.rerender();
+	},
+	
 	// Override mapping of data into view
 	transform: function (map) {
 		// Call parent function
@@ -313,6 +322,6 @@ var ContentView = RowView.extend({
 				'</div>'+
 			'</div>'+
 			'</li>',
-		busy: '<li><img class="spinner" src="/images/ajax-loader-small.gif" /></li>'
+		busy: '<li class="busy"><img class="spinner" src="/images/ajax-loader-small.gif" /></li>'
 	}
 });

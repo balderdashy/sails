@@ -34,15 +34,15 @@ var RowView = Backbone.View.extend({
 	},
 
 	mouseenter: function () {
-		if (!$(this.el).hasClass('selected')) {
-			$(this.el).fadeTo(100,1);
-		}
+//		if (!$(this.el).hasClass('selected')) {
+			$(this.el).filter(":not(.selected,.busy)").fadeTo(100,1);
 //		$(this.el).addClass("hovered");
 	},
 	mouseleave: function () {
-		if (!$(this.el).hasClass('selected')) {
-			$(this.el).fadeTo(100,this.originalOpacity);
-		}
+//		if (!$(this.el).hasClass('selected')) {
+//			$(this.el).fadeTo(100,this.originalOpacity);
+			$(this.el).filter(":not(.selected,.busy)").fadeTo(100,this.originalOpacity);
+//		}
 //		$(this.el).removeClass("hovered");
 	},
 	
@@ -77,7 +77,7 @@ var RowView = Backbone.View.extend({
 
 	// Return the HTML especially for this row
 	generateHTML: function () {
-		var template = (this.isBusy) ? this.markup.busy : this.markup.row;
+		var template = (this.busy) ? this.markup.busy : this.markup.row;
 		
 		var map = _.clone(this.model.attributes);
 

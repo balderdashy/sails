@@ -51,6 +51,12 @@ div.ui-list ul li {
 	margin-right: 5px;
 }
 
+div.ui-list ul li.busy {
+	height:2em;
+	opacity: 0.4;
+	overflow:hidden;
+}
+
 div.ui-list ul li.selected {
 /*	border-radius: 25px;*/
 	opacity: 0.8!important;

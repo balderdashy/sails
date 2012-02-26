@@ -15,34 +15,44 @@ var ContentsView = TableView.extend({
 	
 	
 	deleteAllSelected: function () {
+		var me = this;
 		var selectedModels = _.pluck(this.selectedViews, 'model');
 		
-		// Remove selected models
-		this.collection.remove(selectedModels,{
-			success:function(model,response) {
-				console.log("SUCCESS",response);
-			},
-			error: function (model,response) {
-				console.log("ERROR",response);
-				
-			}
-		});
+		// TODO: Prevent delete if these models are already pending deletion or don't exist
+		
+//		// Remove selected models
+//		this.collection.remove(selectedModels,{
+//			success:function(model,response) {
+//				console.log("SUCCESS",response);
+//			},
+//			error: function (model,response) {
+//				console.log("ERROR",response);
+//				
+//			}
+//		});
 		
 		// Mark selected nodes as busy
-		this.selected.each(function(selectedModel) {
+		_.each(this.selectedViews,function(selectedView) {
+			selectedView.busyfy();
+		},this);
+		
+		// Issue delete all request to server
+		// TODO: extrapolate this to the model
+		var selectedModelIds = _.pluck(selectedModels, 'id');
+		
+		// TODO: talk to server with as small a JSON request as possible
+		$.post('/node/deleteAll',{
+			models: selectedModelIds
+		},function (response) {
+			Log.log(response);
+			// remove selected models from collection
+			me.collection.remove(selectedModels);
 			
+			// Rerender collection
+			me.render();
 		});
 		
 		
-		// Delete models from serverside
-		
-		
-		
-			// Empty "selected" collection (might happen anyways)
-
-
-			// Reload view		
-			this.loadData();
 	}
 });
 

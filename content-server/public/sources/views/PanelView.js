@@ -53,11 +53,13 @@ var PanelView = Backbone.View.extend({
 		this.render();
 	},
 	render: function() {
-		if (contentsView.selectedViews.length > 0) {
-			$("a.delete-nodes").show();
-		}
-		else {
-			$("a.delete-nodes").hide();
+		if (contentsView) {
+			if (contentsView.selectedViews.length > 0) {
+				$("a.delete-nodes").show();
+			}
+			else {
+				$("a.delete-nodes").hide();
+			}
 		}
 		this.delegateEvents();
 	}
