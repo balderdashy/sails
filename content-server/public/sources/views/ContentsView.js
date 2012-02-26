@@ -14,7 +14,7 @@ var ContentsView = TableView.extend({
 	rowClass:ContentView,
 	
 	
-	deleteAllSelected: function () {
+	deleteAllSelected: function (callback) {
 		var me = this;
 		var selectedModels = _.pluck(this.selectedViews, 'model');
 		
@@ -40,11 +40,15 @@ var ContentsView = TableView.extend({
 		// TODO: extrapolate this to the model
 		var selectedModelIds = _.pluck(selectedModels, 'id');
 		
+		// Empty list of selected views
+		this.selectedViews = [];
+		
 		// TODO: talk to server with as small a JSON request as possible
 		$.post('/node/deleteAll',{
 			models: selectedModelIds
 		},function (response) {
 			Log.log(response);
+			
 			// remove selected models from collection
 			me.collection.remove(selectedModels);
 			
@@ -52,6 +56,7 @@ var ContentsView = TableView.extend({
 			// TODO: Do this more elegantly
 			me.page = 0;
 			me.loadData();
+			callback && callback();
 		});
 		
 		

@@ -39,7 +39,10 @@ var PanelView = Backbone.View.extend({
 	},
 	
 	onClickDeleteNodes: function (e) {
-		contentsView.deleteAllSelected();
+		var me = this;
+		contentsView.deleteAllSelected(function () {
+			me.render();
+		});
 	},
 	
 	
