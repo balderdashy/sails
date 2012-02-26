@@ -49,7 +49,9 @@ var ContentsView = TableView.extend({
 			me.collection.remove(selectedModels);
 			
 			// Rerender collection
-			me.render();
+			// TODO: Do this more elegantly
+			me.page = 0;
+			me.loadData();
 		});
 		
 		

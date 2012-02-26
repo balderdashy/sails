@@ -137,6 +137,41 @@ exports.remove = function (req, res, next ){
 }
 
 
+exports.deleteAll = function (req,res,next) {
+	var valid = validateVerb(res,req.method,["POST"]);
+
+	if (!valid) return;
+	
+	
+	
+	Node.findAll(
+	{
+		where: {
+			id: req.body.models
+		}
+	}).success(
+	
+		function successCallback(models) {
+			if (models==null) {
+				res.json(error("At least one of the models is invalid!"));
+			}
+			else {
+				_.each(models,function (m) {
+					m.destroy();
+				});
+				console.log("SUCCESS!  Deleted model.");
+				res.json(success(trimModel(models)));
+			}
+		}).error(
+	
+		function errorCallback(response) {
+			new Error('Error deleting model.');
+			console.log("Error deleting model.",response);
+			res.json(error(response));
+		});
+}
+
+
 
 
 ///////////////////////////////////////////////////////
