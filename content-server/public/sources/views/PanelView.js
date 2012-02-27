@@ -56,7 +56,7 @@ var PanelView = Backbone.View.extend({
 		this.render();
 	},
 	render: function() {
-		if (contentsView) {
+		if (typeof contentsView != "undefined") {
 			if (contentsView.selectedViews.length > 0) {
 				$("a.delete-nodes").show();
 			}
