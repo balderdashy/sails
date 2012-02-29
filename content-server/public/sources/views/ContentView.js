@@ -171,7 +171,7 @@ var ContentView = RowView.extend({
 	rerender: function () {
 		this.updateHTML();
 		
-		$(this.el).height($(this.el).height());
+//		$(this.el).height($(this.el).height());
 		
 		// Syntax highlight
 		hljs && $('pre code').each(function(i, e) {hljs.highlightBlock(e, '    ')});
@@ -256,6 +256,7 @@ var ContentView = RowView.extend({
 					(this.editing.type) ?
 					this.markup.type.editor :
 					this.markup.type.text;
+				
 		map.type = _.template(type,{
 			type: map.type
 		});
