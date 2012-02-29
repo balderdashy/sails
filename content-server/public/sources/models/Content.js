@@ -17,8 +17,8 @@ var Content = Row.extend({
 
 	defaults: {
 		type: 'text',
-		description: 'Short description about this content node for the publisher.',
-		payload: '(add content here)'
+		description: null,//'(+) add a description',
+		payload: '(+) add your content'
 	},
 
 

@@ -14,7 +14,7 @@ var PanelView = Backbone.View.extend({
 	onClickCreateNode: function (e) {		
 		var emptyNode = new Content({
 			type: 'text'
-			, title: _.uniqueId('Unsaved Node ')
+			, title: _.uniqueId('Untitled Node ')
 		});
 		contentsView.collection.add(emptyNode,{
 			at: 0
