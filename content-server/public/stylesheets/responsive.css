@@ -1,5 +1,5 @@
 .mobile-only {
-	display:none!important;
+	display:none;
 }
 
 @media screen and (max-width: 980px) {
@@ -18,7 +18,22 @@
 	#navbar {
 		display:none;
 	}
-	a.delete-nodes.wide {
+	
+	a.create-node {
+		margin-bottom: 1em;
+	}
+	
+	input.ui-list-search {
+		width:auto;
+		display:block;
+		float:none!important;
+		margin-left:0;
+		margin-right:0;
+		margin-top:1em;
+		clear:both;
+	}
+	
+/*	a.delete-nodes.wide {
 		display:none;
 	}
 	
@@ -26,9 +41,9 @@
 		clear:both;
 		margin-left: 0!important;
 		margin-top: 10px;
-	}
+	}*/
 	.mobile-only {
-		display:block!important;
+		display:block;
 	}
 	
 }

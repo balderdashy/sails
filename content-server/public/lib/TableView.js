@@ -193,6 +193,8 @@ var TableView = Backbone.View.extend({
 		var me = this;		
 		var view = null;
 		
+		$(this.wrapperEl).find('.emptytext').remove();
+		
 		// Additive
 		if (node) {
 			// Generate view for new node
@@ -222,7 +224,6 @@ var TableView = Backbone.View.extend({
 		// Complete reset
 		else {
 			$(this.containerEl).empty();
-			$(this.wrapperEl).find('.emptytext').remove();
 			if (this.collection.length == 0) {
 				var msg;
 				if (this.anyFilters()) {

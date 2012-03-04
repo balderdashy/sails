@@ -79,7 +79,6 @@ var ContentView = RowView.extend({
 	
 	saveEditor: function (fieldName) {
 		var object = {};
-		Log.log("FIELDNAME: ",fieldName)
 		var editorEl = $(this.el).find('.editor.'+fieldName);
 		var editorValue = editorEl.val();
 		object[fieldName]= (fieldName == 'type') ? 
@@ -122,7 +121,7 @@ var ContentView = RowView.extend({
 					me.rerender();
 				}
 			});
-			Log.log(me.xhr.update);
+//			Log.log(me.xhr.update);
 //		},1000);
 		
 		// Show loading animation
@@ -159,18 +158,37 @@ var ContentView = RowView.extend({
 			$(this.el).height(this.originalHeight);
 			this.originalPaddingTop = $(this.el).find(".property").css('padding-top');
 			this.originalPaddingBottom = $(this.el).find(".property").css('padding-bottom');
-
-			this.selected = new Toggle(false,this.select,this.deselect);
+			
+			this.selected = new Toggle(this.isChecked(),this.select,this.deselect);
 			this.expanded = new Toggle(false,this.expand,this.collapse);
+			
+			// Rerender to take action on selected/deselected state
+			this.rerender();
 		}
-		
-		// Syntax highlight
-		hljs && $('pre code').each(function(i, e) {hljs.highlightBlock(e, '    ')});
+
+	},
+	
+	isChecked: function () {
+		var modelIndexList = _.pluck(_.pluck(contentsView.selectedViews,"model"),"id");
+//		Log.log("RAN ISCHECKED:",modelIndexList);
+//		Log.log("Current id:",this.model.id,"ok?",_.indexOf(modelIndexList,this.model.id));
+		return _.indexOf(modelIndexList,this.model.id) >= 0;
 	},
 	
 	rerender: function () {
 		this.updateHTML();
 		
+		// Check node if necessary
+		if (this.isChecked()) {
+			$(this.el).find("input").prop('checked',true);
+			$(this.el).addClass('selected');
+		}
+		else {
+			$(this.el).find("input").prop('checked',false);
+			$(this.el).removeClass('selected');
+		}
+		
+		// Recalculate height to stretch nodes
 		$(this.el).height($(this.el).height());
 		
 		// Syntax highlight
@@ -205,15 +223,17 @@ var ContentView = RowView.extend({
 	
 	
 	select: function () {
-		$(this.el).find("input").prop('checked',true);
-		$(this.el).addClass('selected');
 		contentsView.selectedViews.push(this);
+		this.model.set({checked:true});
+		
+		this.rerender();
 		manageContentView.render();
 	},
 	deselect: function () {
-		$(this.el).find("input").prop('checked',false);
-		$(this.el).removeClass('selected');
 		contentsView.selectedViews = _.without(contentsView.selectedViews,this);
+		this.model.set({checked:false});
+		
+		this.rerender();
 		manageContentView.render();
 	},
 	
@@ -247,7 +267,7 @@ var ContentView = RowView.extend({
 					this.markup.description.editor :
 					this.markup.description.text;
 		map.description = _.template(description,{
-			displayDescription: (map.description && map.description.match(/.*\S.*/g)) || "(Add a description)",
+			displayDescription: (map.description && map.description.match(/.*\S.*/g)) || "(+) add a description",
 			description: (map.description && map.description.match(/.*\S.*/g)) || ""
 		});
 		
@@ -256,6 +276,7 @@ var ContentView = RowView.extend({
 					(this.editing.type) ?
 					this.markup.type.editor :
 					this.markup.type.text;
+				
 		map.type = _.template(type,{
 			type: map.type
 		});

@@ -47,7 +47,6 @@ var ContentsView = TableView.extend({
 		$.post('/node/deleteAll',{
 			models: selectedModelIds
 		},function (response) {
-			Log.log(response);
 			
 			// remove selected models from collection
 			me.collection.remove(selectedModels);
