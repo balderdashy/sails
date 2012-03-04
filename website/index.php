@@ -3,7 +3,7 @@
 	require('../sdks/php/crud.php');
 $crud = new CRUD(array(
 	// The URL of your CRUD.io server instance
-	'url' => "http://crud.site:4000"
+	'url' => "http://crud.io:4000"
 ));
 ?><!DOCTYPE html>
 <html>
@@ -32,17 +32,15 @@ $crud = new CRUD(array(
 	</head>
 	<body>
 
-    <h1><?php $crud->read('Hey'); ?></h1>
-    <p><?php $crud->read('Hey'); ?></p>
+    <h1><?php $crud->read('heading'); ?></h1>
+    <p><?php $crud->read('description'); ?></p>
 
-    <?php $crud->read('Hey'); ?>
-
-    <?php $crud->read('Hey'); ?>
+    <?php $crud->read('description'); ?>
 
     <h3>There is also a browser SDK for accessing CRUD content with AJAX applications.</h3>
     <h2>Paste your HTML and run our converter which automatically makes your webpage editable.</h2>
 
-    <?php $crud->read('Hey'); ?>
+    <?php $crud->read('description'); ?>
 
     </body>
 </html>
