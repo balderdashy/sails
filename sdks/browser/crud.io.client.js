@@ -175,7 +175,7 @@
 		_.defaults(this,defaults);
 		_.defaults(this,properties);
 		this.cache = {};
-		this.load();
+		this.load(null,this.success,this.error);
 	}
 
 	// Escape a parameter for use in the request URL
