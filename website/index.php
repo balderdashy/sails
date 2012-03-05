@@ -22,12 +22,12 @@ $crud = new CRUD(array(
         <script type="text/javascript" src="../sdks/browser/crud.io.client.js"></script>
 		<script type="text/javascript">
             // Prepare the browser SDK
-//			var crud = new CRUD({
-//				server: 'http://localhost:4000',
-//				success: function (msg) {
-//					Log.log(msg);
-//				}
-//			});
+			var crud = new CRUD({
+				server: 'http://crud.io:4000',
+				success: function (msg) {
+					Log.log(msg);
+				}
+			});
 		</script>
 	</head>
 	<body>
