@@ -176,21 +176,21 @@
 
 	// TODO: replace memory cache with a localStorage version
 	// with a fallback to the legacy memory cache
-	CRUD.prototype.cache = {
-		initialize: function () {
-			_.bindAll(this);
-			
-			// Set up the appropriate type of cache
-			// if localstorage cache doesn't exist, create it'
-			
-		},
-		get: function (nodeName) {
-		
-		},
-		set: function (nodeName) {
-		
-		}
-	}
+//	CRUD.prototype.cache = {
+//		initialize: function () {
+//			_.bindAll(this);
+//			
+//			// Set up the appropriate type of cache
+//			// if localstorage cache doesn't exist, create it'
+//			
+//		},
+//		get: function (nodeName) {
+//		
+//		},
+//		set: function (nodeName) {
+//		
+//		}
+//	}
 
 	// Construct a CRUD.io client instance
 	function constructor (properties) {
