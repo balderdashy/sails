@@ -110,7 +110,7 @@
 				}
 				else {
 					
-					//TODO:
+					// TODO: advanced cache
 //					if (loadObject.version && loadObject.version > cache.currentVersion)
 					
 					// Update cache with any changes/new nodes
