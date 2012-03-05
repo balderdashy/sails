@@ -109,8 +109,12 @@
 					error && error(crud.output(loadObject.error.message));
 				}
 				else {
+					
+					//TODO:
+//					if (loadObject.version && loadObject.version > cache.currentVersion)
+					
 					// Update cache with any changes/new nodes
-					this.cache = _.extend(crud.cache,loadObject.content);
+					crud.cache = _.extend(crud.cache,loadObject.content);
 					success && success(crud.output(loadObject.content));
 				}
 			},
@@ -140,7 +144,7 @@
 			url: this.server+"/"+method+"/"+urlEscape(parameter),
 			dataType: "jsonp",
 			jsonpCallback: "_crudio",
-			cache: false,
+//			cache: false,
 			timeout: 5000,
 			success: success || this.success || defaultSuccess,
 			error: error || this.error || defaultError
@@ -169,12 +173,37 @@
 	///////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////
 
+
+	// TODO: replace memory cache with a localStorage version
+	// with a fallback to the legacy memory cache
+	CRUD.prototype.cache = {
+		initialize: function () {
+			_.bindAll(this);
+			
+			// Set up the appropriate type of cache
+			// if localstorage cache doesn't exist, create it'
+			
+		},
+		get: function (nodeName) {
+		
+		},
+		set: function (nodeName) {
+		
+		}
+	}
+
 	// Construct a CRUD.io client instance
 	function constructor (properties) {
 		var defaults = { };
 		_.defaults(this,defaults);
 		_.defaults(this,properties);
+		
+		// Legacy cache (for browsers that don't support localStorage)
 		this.cache = {};
+		
+		// todo: new cache
+//		this.cache.initialize();
+		
 		this.load(null,this.success,this.error);
 	}
 
