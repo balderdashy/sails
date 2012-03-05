@@ -144,7 +144,7 @@
 			url: this.server+"/"+method+"/"+urlEscape(parameter),
 			dataType: "jsonp",
 			jsonpCallback: "_crudio",
-			cache: false,
+			cache: true,
 			timeout: 5000,
 			success: success || this.success || defaultSuccess,
 			error: error || this.error || defaultError
