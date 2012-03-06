@@ -104,6 +104,8 @@
 	CRUD.prototype.load = function(collection,success,error) {
 		collection = collection || "";
 		var crud = this;
+		
+		// While request is made, go ahead and 
 
 		this.crudRequest('load',collection,
 			function successCallback(loadObject){
@@ -124,6 +126,8 @@
 				}
 			},
 			function errorCallback(loadObject) {
+				// TODO: Return stuff from local storage for offline access
+				
 				error && error(crud.output("Unable to load from content cloud."));
 			});	
 	}
