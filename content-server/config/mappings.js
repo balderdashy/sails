@@ -19,6 +19,9 @@ exports.customMappings = function (controllers) {
 		, '/content/read*': controllers.node.readRequest
 
 
+		// JS SDK
+		, '/crud.io.client.js': controllers.sdk.javascript
+
 		// Private (crud.io CMS) convenience mappings
 		, '/nodes': controllers.node.index
 		, '/sitemap': controllers.page.index

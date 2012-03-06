@@ -65,6 +65,9 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
+// By convention, serve .js files using the ejs engine
+ app.register('.js', require('ejs'));
+
 
 // Automatically grab and instantiate services from directory
 // CASE SENSITIVE :: USES FILENAME (i.e. ApiService)

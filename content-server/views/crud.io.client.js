@@ -3,8 +3,7 @@
  * Browser SDK
  * c. Michael McNeil 2012
  *
- * TODO: Use a localStorage cache to store non-secure requests to
- *		the Content Cloud.  Only refresh a node if it goes stale.
+ * TODO: Only refresh a node if it goes stale.
  *
  */
 (function () {
@@ -22,9 +21,11 @@
 	CRUD.prototype.read = function(node) {
 		var type,payload;
 		
-		if (typeof this.cache[node] != "undefined") {
-			type = this.cache[node].type;
-			payload = this.cache[node].payload;
+		var nodeValue = this.cache.get(node);
+		
+		if (nodeValue) {
+			type = nodeValue.type;
+			payload = nodeValue.payload;
 		}
 		else {
 			type = 'text';
@@ -114,7 +115,9 @@
 //					if (loadObject.version && loadObject.version > cache.currentVersion)
 					
 					// Update cache with any changes/new nodes
-					crud.cache = _.extend(crud.cache,loadObject.content);
+					crud.cache.memcache = _.extend(crud.cache.memcache,loadObject.content);
+					crud.cache.persist();
+					
 					success && success(crud.output(loadObject.content));
 				}
 			},
@@ -174,23 +177,58 @@
 	///////////////////////////////////////////////////////////////
 
 
-	// TODO: replace memory cache with a localStorage version
-	// with a fallback to the legacy memory cache
-//	CRUD.prototype.cache = {
-//		initialize: function () {
-//			_.bindAll(this);
-//			
-//			// Set up the appropriate type of cache
-//			// if localstorage cache doesn't exist, create it'
-//			
-//		},
-//		get: function (nodeName) {
-//		
-//		},
-//		set: function (nodeName) {
-//		
-//		}
-//	}
+	// localStorage cache with a fallback to memory
+	var Cache = function () {
+		this.localStorageNamespace= 'crud_io';
+		this.memcache= {};
+		this.localStorageEnabled= true;
+		
+		this.initialize = function () {
+			_.bindAll(this);
+			
+			// Initialize cache
+			this.refresh();
+		}
+		
+		this.get = function (nodeName) {
+			this.refresh();
+			if (typeof this.memcache[nodeName] != "undefined") {
+				return this.memcache[nodeName];
+			}
+			else {
+				return null;
+			}
+		}
+		
+		this.set = function (nodeName,value) {
+			this.memcache[nodeName] = value;
+			this.persist();
+		}
+		
+		
+		// Persist memcache to localStorage
+		this.persist = function () {
+			if (this.localStorageEnabled && typeof localStorage != 'undefined') {
+				localStorage.setItem(this.localStorageNamespace,JSON.stringify(this.memcache));
+			}
+		}
+		
+		
+		// Refresh memcache state from localStorage
+		this.refresh = function () {
+			if (this.localStorageEnabled && typeof localStorage != 'undefined') {
+				var localStoreCache = localStorage.getItem(this.localStorageNamespace);
+				if (typeof localStoreCache != "undefined") {
+					this.memcache = JSON.parse(localStoreCache);
+				}
+				else {
+					this.memcache = {};
+					console.log("MEMCACHE",this.memcache);
+					this.persist();
+				}
+			}
+		}
+	}
 
 	// Construct a CRUD.io client instance
 	function constructor (properties) {
@@ -198,11 +236,8 @@
 		_.defaults(this,defaults);
 		_.defaults(this,properties);
 		
-		// Legacy cache (for browsers that don't support localStorage)
-		this.cache = {};
-		
-		// todo: new cache
-//		this.cache.initialize();
+		// Initialize cache
+		this.cache = new Cache();
 		
 		this.load(null,this.success,this.error);
 	}
