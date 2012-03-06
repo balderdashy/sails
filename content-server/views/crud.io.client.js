@@ -9,6 +9,8 @@
 (function () {
 	
 	CRUD = constructor;
+	
+	CRUD.prototype.server = <%= serverUrl %>
 
 	/**
 	 * Returns the requested node payload.
