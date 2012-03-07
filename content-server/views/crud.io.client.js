@@ -187,7 +187,7 @@
 	var Cache = function () {
 		this.localStorageNamespace= 'crud_io';
 		this.memcache= {};
-		this.localStorageEnabled= true;
+		this.localStorageEnabled= false;
 		
 		this.initialize = function () {
 			_.bindAll(this);
