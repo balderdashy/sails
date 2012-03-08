@@ -52,7 +52,13 @@ Marketing / SEO
 
 
 
-
+Installation
+------------------
+sudo npm install -g express
+sudo npm install -g socket.io
+sudo npm install -g underscore
+sudo npm install -g sequelize
+sudo npm install -g async
 
 
 License
