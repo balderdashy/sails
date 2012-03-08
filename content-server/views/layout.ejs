@@ -40,7 +40,7 @@
 
 		<ul id="navbar">
 <!--			<li><a <% if (typeof selected!='undefined' && selected=='page') { %> class='selected' <% } %> href="/sitemap">pages</a></li>-->
-			<li><a <% if (typeof selected!='undefined' && selected=='node') { %> class='selected' <% } %> href="/nodes">manage content</a></li>
+			<li><a <% if ((typeof selected!='undefined' && (selected=='node' || selected==null)) || (typeof selected=='undefined')) { %> class='selected' <% } %> href="/nodes">manage content</a></li>
 <!--			<li><a <% if (typeof selected!='undefined' && selected=='account') { %> class='selected' <% } %> href="/account">account</a></li>-->
 		</ul>
 		
