@@ -60,5 +60,10 @@ exports.basic = function (req,res,next) {
  * Check whether the user is NOT logged in
  */
 exports.reverse = function (req,res,next) {
-	next();
+	if (!req.session.authenticated) {
+		next();
+	}
+	else {
+		res.redirect('/');
+	}
 }

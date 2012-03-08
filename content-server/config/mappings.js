@@ -36,7 +36,8 @@ exports.customMappings = function (controllers) {
 exports.authMappings = function (controllers) {
 	return {
 		// Private CMS actions
-		'/node*': controllers.auth.basic
+		'/': controllers.auth.basic
+		, '/node*': controllers.auth.basic
 		, '/page*': controllers.auth.basic
 		
 		// Private (crud.io CMS) convenience mappings
