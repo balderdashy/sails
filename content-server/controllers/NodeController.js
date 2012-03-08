@@ -1,4 +1,5 @@
 exports.index = function (req, res, next ) {		
+	
 	res.render('node/index', {
 		title: 'Manage Content | crud.io',
 		selected: 'node'

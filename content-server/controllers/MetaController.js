@@ -19,13 +19,13 @@ exports.home = function (req, res, next ) {
 }
 
 exports.error = function (req, res, next ) {
-	res.render('index', {
+	res.render('500', {
 		title: 'Error (500) | crud.io'
 	});
 }
 
 exports.notfound = function (req, res, next ) {
-	res.render('index', {
+	res.render('404', {
 		title: 'Not Found (404) | crud.io'
 	});
 }

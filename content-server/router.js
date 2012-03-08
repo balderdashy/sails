@@ -14,7 +14,9 @@ _.each(controllerFiles,function (controller, filename) {
 });
 
 // Custom mappings for specific urls
-var userMappings = require('./config/mappings').customMappings(controllers);
+var mappingConfig = require('./config/mappings'),
+	userMappings = mappingConfig.customMappings(controllers),
+	authMappings = mappingConfig.authMappings(controllers);
 
 // Default handling for 500, 404, home page, etc.
 var defaultMappings = {
@@ -25,12 +27,22 @@ var defaultMappings = {
 
 // Combine default mappings with user mappings
 // (allow user mappings to override defaults)
-var mappings = _.extend(defaultMappings,userMappings);
+var urlMappings = _.extend(defaultMappings,userMappings);
 
 // Set up routing table
 exports.mapUrls = function mapUrls (app) {
-	for (var r in mappings) {
-		app.all(r, mappings[r]);
+	for (var path in urlMappings) {
+		
+		// Default to no security
+		// TODO: configurable
+		var defaultAuthMiddleware = controllers.auth.none,
+			authMiddleware = authMappings[path] || 
+				defaultAuthMiddleware;
+		
+		var action = urlMappings[path];
+		
+		// Map route
+		app.all(path, authMiddleware, action);
 	}
 	
 	// Handle wildcard
