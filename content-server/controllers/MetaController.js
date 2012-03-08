@@ -13,7 +13,7 @@
 //exports.id = 'meta'
 
 exports.home = function (req, res, next ) {
-	res.render('index', {
+	res.render('node/index', {
 		title: 'crud.io'
 	});
 }
