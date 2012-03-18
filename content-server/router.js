@@ -1,22 +1,30 @@
-// automatically grab all models from models directory 
-// and map to provided domain class names
-// (if no 'id' attribute was provided, take a guess) 
-// NOT CASE SENSITIVE
+// Instantiate all controller modules
 var controllers = {},
 controllerFiles = require('require-all')({ 
 	dirname: __dirname + '/controllers',
 	filter: /(.+Controller)\.js$/
 });
 _.each(controllerFiles,function (controller, filename) {
+	// If no 'id' attribute was provided, take a guess based on the filename
 	var className = controller.id || filename.replace(/Controller/, "");
 	className = className.toLowerCase();
 	controllers[className] = controller;
 });
 
+
+
 // Custom mappings for specific urls
 var mappingConfig = require('./config/mappings'),
-userMappings = mappingConfig.customMappings(controllers),
-authMappings = mappingConfig.authMappings(controllers);
+	userMappings = mappingConfig.customMappings(controllers);
+	
+// TODO: Build role dictionary
+
+// TODO: Build permission tree
+var authMappings = mappingConfig.authMappings(controllers);
+
+// Default to no security (TODO: configurable)
+var defaultAuthMiddleware = controllers.auth.none;
+
 
 // Default handling for 500, 404, home page, etc.
 var defaultMappings = {
@@ -25,13 +33,11 @@ var defaultMappings = {
 	'/404': controllers.meta.notfound
 }
 
-// Combine default mappings with user mappings
-// (allow user mappings to override defaults)
+
+// Intersect default mappings with user mappings
 var urlMappings = _.extend(defaultMappings,userMappings);
 
-// Default to no security
-// TODO: configurable
-var defaultAuthMiddleware = controllers.auth.none;
+
 
 // Set up routing table
 exports.mapUrls = function mapUrls (app) {
@@ -57,15 +63,14 @@ exports.mapUrls = function mapUrls (app) {
 }
 
 
+
 // Convert a socket.io client event callback to ExpressJS request semantics
-function socketIOToExpress (handler) {
-	
+function socketIOToExpress (handler) {	
 	var req = {},
 		res = {
 			handler: handler
 		},
 		next = function (){};
-		
 	console.log("!!!!!!!!!!",handler);
 	
 	// TODO: ACTUALLY GET A HOLD OF THE REQ/RES OBJECTS HERE
@@ -101,27 +106,29 @@ function handleWildcardRequest (req,res,next) {
 	method = req.method;
 
 	if (entity && 
+		
+		// TODO: get smarter about how static assets are served, 
+		// this should be customizable
 		entity != "stylesheets" && 
 		entity != "lib" && 
 		entity != "sources" && 
 		entity != "images") {
 
-		// Try to map to an entity (use backbone conventions)
+		// Map route to action
 		if (_.contains(_.keys(controllers),entity)) {
 			var controller = controllers[entity];
 
-			// For undefined actions, resolve to:
-			// if GET: fetch
-			// if POST: create
+			// If action is unspecified, default to index			
+			// If index is unspecified, default to Backbone semantics
 			action = action || (
+				(controller['index']) ? "index" :
 				(method=="GET") ? "fetch" :
 				(method=="POST") ? "create" :
 				action
 				);
-
-			// Try to map to a method
+					
+			// If action doesn't match, try a conventional synonym
 			if (! controller[action]) {
-				// Resolve to an appropriate, conventional synonym
 				action = 
 				(action == "delete") ? "remove" :
 				(action == "destroy") ? "remove" : 
@@ -137,22 +144,22 @@ function handleWildcardRequest (req,res,next) {
 				(action == "new") ? "create" : 
 				action;					
 				
-				// Attempt to parse id from action to follow backbone conventions
+				// Attempt to parse resource id from parameters
 				if (!_.isNaN(+action)) {
 					req.params.id = +action;
 					
-					// if PUT: update
-					// if DELETE: remove
+					// Default to Backbone semantics
 					action = (
 						(method == "PUT") ? "update" :
 						(method == "DELETE") ? "remove" :
 						action);
 				}
 				
-				// Pass corrected action down
+				// Decide on best guess for action name
 				req.params.action = action;
 			}
 
+			// If the action matches now, 
 			if (controller[action]) {
 				method = controller[action];
 				return method(req,res,next);
