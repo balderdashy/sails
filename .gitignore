@@ -1,5 +1,1 @@
-node_modules
-ssl
-.DS_STORE
-*~
-.idea
+config/db.js

@@ -1,7 +1,0 @@
-**/public/**/*
-
-# unnecessary, but retained as references for next time I need to change something
-#**/*.css
-#**/public/**/*.js
-#**/public/**/*.png
-#**/public/**/*.jpeg
