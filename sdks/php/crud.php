@@ -145,7 +145,8 @@ class CRUD
 		$url = $this->url . "/".$method."/" . $this->urlEscape($parameter);
 
 		try {
-			$file = fopen ($url, "r");
+			// Suppress php warnings when fopen fails
+			$file = @fopen ($url, "r");
 			if (!$file) {
 				$response = $this->buildError("Unable to access Content Cloud.");
 			}
