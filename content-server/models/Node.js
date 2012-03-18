@@ -28,11 +28,14 @@ var Node = exports.model = db.model.define('Node', {
 	}
 		
 }, {
-			
+		
+	// Relationship with other models
 	associate: function () {
 		Node.hasMany(Collection);
 	},
 		
+	
+	// Special queries for this model
 	classMethods: {
 
 		// Get a set of nodes that belong to a specified collection

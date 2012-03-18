@@ -1,3 +1,6 @@
+
+
+
 exports.index = function (req, res, next ) {		
 	
 	res.render('node/index', {
