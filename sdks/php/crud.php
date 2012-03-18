@@ -117,18 +117,25 @@ class CRUD
 		$loadObject = $this->request('load',$collection);
 
 		if (!$loadObject['success']) {
-			// Handle errors
-			throw new Exception($loadObject['error']['message']);
+			// Only fire an error if there is a severe problem where the
+			// entirepage shouldn't be allowed to load
+//			throw new Exception($loadObject['error']['message']);
 		}
-		else {
-			// Update cache with any changes/new nodes
-			$this->cache = array_merge($this->cache,$loadObject['content']);
-		}
+
+		// Update cache with any changes/new nodes
+		$this->cache = array_merge($this->cache,$loadObject['content']);
+		
 	}
 	
 
 	/**
 	 * Make a request to the Content Cloud
+	 * 
+	 * file_get_contents() would be a nicer solution,
+	 * but it requires PHP version >= 4.3
+	 * 
+	 * A resource about other methods of implementing REST calls w/ PHP:
+	 * http://developer.yahoo.com/php/howto-reqRestPhp.html
 	 */
 	private function request($method, $parameter=null) {
 
