@@ -121,10 +121,10 @@ class CRUD
 			// entirepage shouldn't be allowed to load
 //			throw new Exception($loadObject['error']['message']);
 		}
-
-		// Update cache with any changes/new nodes
-		$this->cache = array_merge($this->cache,$loadObject['content']);
-		
+		else {
+			// Update cache with any changes/new nodes
+			$this->cache = array_merge($this->cache,$loadObject['content']);
+		}
 	}
 	
 
