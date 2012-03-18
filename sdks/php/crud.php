@@ -6,7 +6,9 @@
  * 
  * TODO: Use a server-wide cache to store non-secure requests to
  *		the Content Cloud.  Only refresh a node if it goes stale.
- *
+ *		-TODO: session cache
+ *		-TODO: filesystem cache (https://github.com/nicolasff/phpredis)
+ * 
  */
 class CRUD
 {
@@ -42,6 +44,8 @@ class CRUD
 	 * @return <type>
 	 */
 	public function read($node, $dontEcho=false) {
+		$node = strtolower($node);
+		
 		// Check cache first
 		if (isset($this->cache[$node])) {
 			$type = $this->cache[$node]['type'];
@@ -66,13 +70,15 @@ class CRUD
 	 * Make sure you're only accessing nodes which are included in this
 	 * page, collection or layout.  Otherwise, this is an inefficient method
 	 * of accessing data since you're hitting your Content Cloud for each
-	 * payload.
+	 * payload.  This is a synchronous, blocking process which could severely 
+	 * slow down your application if used incorrectly.
 	 *
 	 * @param <type> $node
 	 * @param <type> $dontEcho
 	 * @return <type>
 	 */
 	public function get($node, $dontEcho=false) {
+		$node = strtolower($node);
 		
 		// Check cache first
 		if (isset($this->cache[$node])) {
@@ -100,7 +106,7 @@ class CRUD
 
 
 	/**
-	 * Called automatically during the initialization.
+	 * Called automatically during SDK initialization.
 	 * Loads applicable nodes from the Content Cloud.
 	 *
 	 * @param <type> $node
@@ -122,12 +128,12 @@ class CRUD
 	
 
 	/**
-	 * Make a request to the CRUD.io Cloud Server
+	 * Make a request to the Content Cloud
 	 */
 	private function request($method, $parameter=null) {
 
 		// Generate API URL from request
-		// TODO: check if http(s) exists and delete if necessary
+		// TODO: check if http[s] exists and delete if necessary
 		// TODO: check if trailing slash exists on url and delete if necessary
 		$url = $this->url . "/".$method."/" . $this->urlEscape($parameter);
 
@@ -156,7 +162,7 @@ class CRUD
 
 
 	/**
-	 * Output payload differently depending on content-type and dontEcho flag
+	 * Respond w/ payload differently depending on content-type and dontEcho flag
 	 */
 	private function output($payload,$type='text',$dontEcho=false) {
 

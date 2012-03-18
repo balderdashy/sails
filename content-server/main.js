@@ -17,7 +17,7 @@ db.bootstrap();
 
 // automatically grab all models from models directory
 // (if no 'id' attribute was provided, take a guess)
-// NOT CASE SENSITIVE
+// CASE INSENSITIVE
 global.modelNames = [];
 _.each(require('require-all')({
 	dirname: __dirname + '/models'

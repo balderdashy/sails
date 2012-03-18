@@ -3,7 +3,10 @@
  * Browser SDK
  * c. Michael McNeil 2012
  *
- * TODO: Only refresh a node if it goes stale.
+ * TODO: Localstorage cache
+ *	LS access by remote scripts is not supported cross-platform at the moment 
+ *	(mobile safari, for example)
+ *	Some kind of graceful degredation library will need to be included as a dependency.
  *
  */
 (function () {
@@ -22,6 +25,7 @@
 	 */
 	CRUD.prototype.read = function(node) {
 		var type,payload;
+		node = validateNode(node);
 		
 		var nodeValue = this.cache.get(node);
 		
@@ -56,6 +60,7 @@
 	 */
 	CRUD.prototype.get = function(node,success,error) {
 		var type,payload,crud=this;
+		node = validateNode(node);
 
 		success = success || this.success || defaultSuccess;
 		error = error || this.error || defaultError;
@@ -103,6 +108,7 @@
 	 */
 	CRUD.prototype.load = function(collection,success,error) {
 		collection = collection || "";
+		collection = validateCollection(collection);
 		var crud = this;
 		
 		// While request is made, go ahead and 
@@ -268,6 +274,18 @@
 	// Default success callback handling
 	function defaultSuccess(data) {
 		log("No callback handler was specified, but I'll tell you what the server said anyway:",data);
+	}
+	
+	// Return the normalized node name
+	function validateNode(node) {
+		// Node names are case insensitive
+		return node.toLowerCase();
+	}
+	
+	// Return the normalized collection name
+	function validateCollection(collection) {
+		// Collection names are case insensitive
+		return collection.toLowerCase();
 	}
 
 })();
