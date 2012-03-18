@@ -99,9 +99,14 @@ _.each(require('require-all')({
 });
 
 
+// Listen for websocket connections (and rejects) through socket.io
+io = require('socket.io').listen(app);
+ 
+
 // Map Routes
 // *** NOTE: MUST BE AFTER app.configure in order for bodyparser to work ***
 (router = require('./router')).mapUrls(app);
+
 
 
 // Start server
