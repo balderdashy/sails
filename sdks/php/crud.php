@@ -144,22 +144,27 @@ class CRUD
 		// TODO: check if trailing slash exists on url and delete if necessary
 		$url = $this->url . "/".$method."/" . $this->urlEscape($parameter);
 
-		$file = fopen ($url, "r");
-		if (!$file) {
-			$response = $this->buildError("Unable to access Content Cloud.");
-		}
-		else {
-			$buffer = "";
-			while (!feof ($file)) {
-				$buffer .= fgets ($file, 1024);
+		try {
+			$file = fopen ($url, "r");
+			if (!$file) {
+				$response = $this->buildError("Unable to access Content Cloud.");
 			}
-			fclose($file);
+			else {
+				$buffer = "";
+				while (!feof ($file)) {
+					$buffer .= fgets ($file, 1024);
+				}
+				fclose($file);
 
-			// Decode JSON response from server
-			$response = json_decode($buffer,true);
-			if (!$response) {
-				$response = $this->buildError("Unable to parse content request.");
+				// Decode JSON response from server
+				$response = json_decode($buffer,true);
+				if (!$response) {
+					$response = $this->buildError("Unable to parse content request.");
+				}
 			}
+		}
+		catch (Exception $e) {
+			$response = $this->buildError("Unable to access Content Cloud. The server might be disabled or offline.");
 		}
 		
 		// Return response object
