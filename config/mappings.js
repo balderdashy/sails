@@ -10,7 +10,6 @@
 exports.customMappings = function (controllers) {
 	
 	return {
-		
 		// Authentication mappings
 		'/login' :controllers.auth.login
 		, '/logout' :controllers.auth.logout
@@ -24,7 +23,6 @@ exports.customMappings = function (controllers) {
 //
 exports.authMappings = function (controllers) {
 	return {
-	
 		// Authentication mappings
 		'/login' : controllers.auth.reverse
 		, '/logout' : controllers.auth.basic
