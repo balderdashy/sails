@@ -13,19 +13,19 @@
 //exports.id = 'meta'
 
 exports.home = function (req, res, next ) {
-	res.render('node/index', {
-		title: 'crud.io'
+	res.render('index', {
+		title: 'Sails Framework'
 	});
 }
 
 exports.error = function (req, res, next ) {
 	res.render('500', {
-		title: 'Error (500) | crud.io'
+		title: 'Error (500)'
 	});
 }
 
 exports.notfound = function (req, res, next ) {
 	res.render('404', {
-		title: 'Not Found (404) | crud.io'
+		title: 'Not Found (404)'
 	});
 }

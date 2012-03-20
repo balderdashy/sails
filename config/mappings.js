@@ -10,6 +10,7 @@
 exports.customMappings = function (controllers) {
 	
 	return {
+		
 		// Authentication mappings
 		'/login' :controllers.auth.login
 		, '/logout' :controllers.auth.logout

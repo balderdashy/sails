@@ -3,55 +3,17 @@
 <head>
     <title><%- title %></title>
 	<link rel="stylesheet" type="text/css" media="all" href="/stylesheets/reset.css"/>
-	<link rel="stylesheet" title="Dark" media="all" href="/stylesheets/highlight/magula.css">
-	
-	<link rel="stylesheet" type="text/css" media="all" href="/stylesheets/ui-list.css"/>
-	<link rel="stylesheet" type="text/css" media="all" href="/stylesheets/desktop.css"/>
+	<link rel="stylesheet" type="text/css" media="all" href="/stylesheets/layout.css"/>
 	<link rel="stylesheet" type="text/css" media="all" href="/stylesheets/responsive.css"/>
-	<link rel="stylesheet" type="text/css" media="all" href="/stylesheets/manage-content.css"/>
-	
-	<!-- 3rd party libraries -->
-	<script type="text/javascript" src="/lib/3rdparty/jq.js"></script>
-	<script type="text/javascript" src="/lib/3rdparty/jquery-ui-1.8.16.custom.min.js"></script>
-	<script type="text/javascript" src="/lib/3rdparty/_.js"></script>
-	<script type="text/javascript" src="/lib/3rdparty/backbone.js"></script>
-	<script type="text/javascript" src="/lib/3rdparty/moment.js"></script>
-	<script type="text/javascript" src="/lib/3rdparty/highlight.pack.js"></script>
 	
 	<!-- Compiled socket.io SDK -->
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-
-	<!-- App library -->
-	<script type="text/javascript" src="/lib/backbrace.js"></script>
-	<script type="text/javascript" src="/lib/Toggle.js"></script>
-	<script type="text/javascript" src="/lib/stubble.js"></script>
-	<script type="text/javascript" src="/lib/extensions.js"></script>
-
-	<script type="text/javascript" src="/lib/Row.js"></script>
-	<script type="text/javascript" src="/lib/Rows.js"></script>
-	<script type="text/javascript" src="/lib/RowView.js"></script>
-	<script type="text/javascript" src="/lib/TableView.js"></script>
-	
-	<!-- Layout -->
-	<script type="text/javascript" src="/sources/views/PanelView.js"></script>
 </head>
 <body>
 	<div id="topbar">
 		<h1 id="branding">
-			crud.io
+			sails.js
 		</h1>
-
-		<ul id="navbar">
-<!--			<li><a <% if (typeof selected!='undefined' && selected=='page') { %> class='selected' <% } %> href="/sitemap">pages</a></li>-->
-			<li><a <% if ((typeof selected!='undefined' && (selected=='node' || selected==null)) || (typeof selected=='undefined')) { %> class='selected' <% } %> href="/nodes">manage content</a></li>
-<!--			<li><a <% if (typeof selected!='undefined' && selected=='account') { %> class='selected' <% } %> href="/account">account</a></li>-->
-		</ul>
-		
-		<select class="mobile-only" id="navbar-dropdown">
-<!--			<option <% if (typeof selected!='undefined' && selected=='page') { %> selected class='selected' <% } %> href="/sitemap">pages</option>-->
-			<option <% if (typeof selected!='undefined' && selected=='node') { %> selected class='selected' <% } %> href="/nodes">manage content</option>
-<!--			<option <% if (typeof selected!='undefined' && selected=='account') { %> selected class='selected' <% } %> href="/account">account</option>-->
-		</select>
 	</div>
 	
 	<div id="content">
@@ -59,13 +21,7 @@
 	</div>
 	
 	<div id="footer">
-		<a target="_blank" href="http://michaelmcneil.com" class="copyright">&copy; Mike McNeil 2012</a>
-<!--		<li>Manage Pages</li>
-		<li>Edit Content</li>
-		<li>Support</li>
-		<li>Account</li>
-		<li>CrudCloud</li>-->
+		<a target="_blank" href="http://sailsjs.com" class="copyright">&copy; Sails Framework 2012</a>
 	</div>
-<!--	<script type="text/javascript" src="https://chatkin.com/bundle"></script>-->
 </body>
 </html>
