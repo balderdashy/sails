@@ -4,8 +4,9 @@
 // at the model layer.  API parameters need love too!  Validation should be
 // provided at the controller layer.
 // 
-// It is also arguable that the view layer should contain validation for the 
-// data coming back over from the controller.
+// The view layer should contain validation/marshalling for the 
+// data coming back over from the controller, as far as the presentation.
+// Excessively long strings should be ellipsized.
 // 
 // Optionally identify the controller here
 // Otherwise name will be based off of filename
