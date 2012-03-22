@@ -16,21 +16,37 @@ _.each(controllerFiles,function (controller, filename) {
 // Custom mappings for specific urls
 var mappingConfig = require('./config/mappings'),
 	userMappings = mappingConfig.customMappings(controllers);
+
+// Custom permission tree
+var permissionConfig = require('./config/permissions');
 	
 // TODO: Build role dictionary
 
-// TODO: Build permission tree
-var authMappings = mappingConfig.authMappings(controllers);
+// Get permission tree
+var permissionTree = permissionConfig.permissionTree(controllers);
+
 
 // Default to no security (TODO: configurable)
 var defaultAuthMiddleware = controllers.auth.none;
 
+// TODO: traverse permission tree and build middleware for the requested action
+function buildAuthMiddleware (route) {
+	
+	console.log("Building authentication middleware for route:",route)
+	
+	// TODO: Traverse permission tree using controller and action from route
+//	permissionTree[route.controller];
+	
+	return function (req,res,next) {
+		next();
+	}
+}
 
 // Default handling for 500, 404, home page, etc.
 var defaultMappings = {
-	'/': controllers.meta.home, 
-	'/500': controllers.meta.error, 
-	'/404': controllers.meta.notfound
+	'/': {controller:'meta',action:'home'},
+	'/500': {controller:'meta',action:'error'}, 
+	'/404': {controller:'meta',action:'notfound'}
 }
 
 
@@ -46,8 +62,10 @@ exports.mapUrls = function mapUrls (app) {
 	// Map standard AJAX and REST routes
 	for (var path in urlMappings) {
 		
-		var authMiddleware = authMappings[path] || defaultAuthMiddleware,
-			action = urlMappings[path];
+		var route = urlMappings[path],
+			controller = controllers[route.controller],
+			action = controller[route.action],
+			authMiddleware = buildAuthMiddleware(route) || defaultAuthMiddleware;
 		
 		// Map route
 		app.all(path, authMiddleware, action);
@@ -63,7 +81,6 @@ exports.mapUrls = function mapUrls (app) {
 }
 
 
-
 // Convert a socket.io client event callback to ExpressJS request semantics
 function socketIOToExpress (handler) {	
 	var req = {},
@@ -71,7 +88,6 @@ function socketIOToExpress (handler) {
 			handler: handler
 		},
 		next = function (){};
-	console.log("!!!!!!!!!!",handler);
 	
 	// TODO: ACTUALLY GET A HOLD OF THE REQ/RES OBJECTS HERE
 	// or, alternatively, wrap every controller method in proprietary crd
@@ -92,7 +108,7 @@ function newWebsocketClientConnects (socket) {
 		console.log("MAPPED " + path + " to " + urlMappings[path]);
 		
 		// Map route using emulated express request
-		socket.on(path, socketIOToExpress(urlMappings[path]));
+//		socket.on(path, socketIOToExpress(urlMappings[path]));
 	}
 }
 

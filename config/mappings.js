@@ -12,8 +12,14 @@ exports.customMappings = function (controllers) {
 	return {
 		
 		// Authentication mappings
-		'/login' :controllers.auth.login
-		, '/logout' :controllers.auth.logout
+		'/login': {
+			controller: 'auth',
+			action: 'login'
+		}
+		, '/logout': {
+			controller: 'auth',
+			action: 'logout'
+		}
 	}
 };
 
@@ -22,13 +28,13 @@ exports.customMappings = function (controllers) {
 // *********************
 // Protect a url path expression using a specified middleware method
 //
-exports.authMappings = function (controllers) {
-	return {
-		// Authentication mappings
-		'/login' : controllers.auth.reverse
-		, '/logout' : controllers.auth.basic
-	}
-}
+//exports.authMappings = function (controllers) {
+//	return {
+//		// Authentication mappings
+//		'/login' : controllers.auth.reverse
+//		, '/logout' : controllers.auth.basic
+//	}
+//}
 
 
 

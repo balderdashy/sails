@@ -1,2 +1,2 @@
-// Port to run the content API server and dashboard
-exports.port = 4000;
+// Port to run the server on
+exports.port = 4001;

@@ -14,13 +14,13 @@ exports.login = function (req, res, next ) {
 	}
 	else if (secretAttempt && secretAttempt.length>0) {
 		res.render('auth/login', {
-			title: 'Login | crud.io',
+			title: 'Login | Sails Framework',
 			loginError: 'That secret is incorrect.'
 		});
 	}
 	else {
 		res.render('auth/login', {
-			title: 'Login | crud.io'
+			title: 'Login | Sails Framework'
 		});
 	}
 }
@@ -32,38 +32,3 @@ exports.logout = function (req, res, next ) {
 	res.redirect('/');
 }
 
-/////////////////////////////////////////////////
-// AUTH MIDDLEWARE
-// TODO: extract this into a framework-side thing
-/////////////////////////////////////////////////
-/**
- * Check nothing
- */
-exports.none = function (req,res,next) {
-	next();
-}
-
-/**
- * Check whether the user has basic auth
- */
-exports.basic = function (req,res,next) {
-	if (req.session.authenticated) {
-		next();
-	}
-	else {
-		res.redirect('/login');
-	}
-	
-}
-
-/**
- * Check whether the user is NOT logged in
- */
-exports.reverse = function (req,res,next) {
-	if (!req.session.authenticated) {
-		next();
-	}
-	else {
-		res.redirect('/');
-	}
-}
