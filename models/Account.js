@@ -20,6 +20,7 @@ var Account = exports.model = db.model.define('Account', {
 	// Relationship with other models
 	associate: function () {
 		Account.hasMany(Role);
+		Account.hasMany(Policy);
 	},
 
 

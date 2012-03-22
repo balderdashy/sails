@@ -30,6 +30,7 @@ var Policy = exports.model = db.model.define('Policy', {
 
 	// Relationship with other models
 	associate: function () {
+		Policy.hasMany(Account);
 		Policy.hasMany(Role);
 	},
 

@@ -23,7 +23,7 @@ var permissionConfig = require('./config/permissions');
 // TODO: Build role dictionary
 
 // Get permission tree
-var permissionTree = permissionConfig.permissionTree(controllers);
+var permissionTree = permissionConfig.permissionTree(AuthenticationService);
 
 
 // Default to no security (TODO: configurable)
