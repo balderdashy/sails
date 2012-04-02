@@ -1,3 +1,4 @@
+var policy = AuthenticationService;
 
 // Behavior is inherited from parent unless otherwise specified
 exports.acTree = function () {
@@ -12,7 +13,7 @@ exports.acTree = function () {
 //			'*': false,
 
 			summary: true,
-			detail: false
+			detail: policy.any
 		}
 		
 	}
@@ -29,7 +30,7 @@ exports.defaultAcTree = function () {
 	return {
 		auth: {
 			login: true,
-			logout: AuthenticationService.reverse
+			logout: policy.inverse
 		},
 		meta: {
 			denied: true,

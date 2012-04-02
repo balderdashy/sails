@@ -11,8 +11,11 @@ exports.none = function (req,res,next) {
 /**
  * Check whether the user is logged in AT ALL
  */
-exports.basic = function (req,res,next) {
+exports.any = function (req,res,next) {
+	// Remember where the user was trying to go so she can be redirected back
+	req.session.reroutedFrom = req.url;
 	console.log(req.session);
+	
 	if (req.session.authenticated) {
 		next();
 	}
@@ -25,7 +28,7 @@ exports.basic = function (req,res,next) {
 /**
  * Check whether the user is *NOT* logged in AT ALL
  */
-exports.reverse = function (req,res,next) {
+exports.inverse = function (req,res,next) {
 	if (!req.session.authenticated) {
 		next();
 	}

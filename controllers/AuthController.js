@@ -1,6 +1,7 @@
 
 exports.login = function (req, res, next ) {
-	console.log("STATE:",req.session);
+	
+	console.log("SESSION STATE:",req.session);
 	
 	var secret = "abc123",
 		stakeholderSecret = "roganchrisadam1",
@@ -13,7 +14,8 @@ exports.login = function (req, res, next ) {
 		// Store authenticated state in session
 		req.session.authenticated = true;
 		req.session.role = "developer";
-		res.redirect('/');
+		
+		redirectToLoggedInHome(req,res,next);
 	}
 	else if (secretCorrectForStakeholder) {
 				
@@ -21,7 +23,7 @@ exports.login = function (req, res, next ) {
 		req.session.authenticated = true;
 		req.session.role = "stakeholder";
 		
-		res.redirect('/');
+		redirectToLoggedInHome(req,res,next);
 	}
 	else if (secretAttempt && secretAttempt.length>0) {
 		res.render('auth/login', {
@@ -33,6 +35,16 @@ exports.login = function (req, res, next ) {
 		res.render('auth/login', {
 			title: 'Login | Sails Framework'
 		});
+	}
+}
+
+function redirectToLoggedInHome (req,res,next) {
+	if (req.session.reroutedFrom) {
+		res.redirect(req.session.reroutedFrom);
+		req.session.reroutedFrom = null;
+	}
+	else {
+		res.redirect('/');
 	}
 }
 
