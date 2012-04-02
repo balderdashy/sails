@@ -7,7 +7,7 @@
 // 
 // You can override default url mappings (404,500,home) here as well.
 //
-exports.customMappings = function (controllers) {
+exports.customMappings = function () {
 	
 	return {
 		
@@ -20,8 +20,18 @@ exports.customMappings = function (controllers) {
 			controller: 'auth',
 			action: 'logout'
 		}
+		, '/403': '/login'
 	}
 };
+
+
+exports.defaultMappings = function () {
+	return {
+		'/': {controller:'meta',action:'home'},
+		'/500': {controller:'meta',action:'error'}, 
+		'/404': {controller:'meta',action:'notfound'}
+	};
+}
 
 
 // Container security mappings

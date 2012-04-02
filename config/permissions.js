@@ -1,22 +1,39 @@
 
-
-
 // Behavior is inherited from parent unless otherwise specified
-exports.permissionTree = function (everyone) {
+exports.acTree = function () {
 	
 	return {
 		// app-wide default behavior
-		'*': everyone.allow,
+		'*': true,
 
 		// Controller authentication patterns
 		example: {
 			// Default behavior for this controller
-			'*': everyone.deny,
+//			'*': false,
 
-			summary: 'allow',
-			detail: 'allow'
+			summary: true,
+			detail: false
+		}
+		
+	}
+}
+
+
+// Default AcTree
+exports.acTree = function () {
+	return {
+		auth: {
+			login: true,
+			logout: AuthenticationService.reverse
+		},
+		meta: {
+			denied: true,
+			error: true,
+			notfound: true
+			// 403 is hard-coded enabled
 		}
 	}
+	
 }
 
 

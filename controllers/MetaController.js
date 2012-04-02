@@ -30,3 +30,9 @@ exports.notfound = function (req, res, next ) {
 		title: 'Not Found (404)'
 	});
 }
+
+exports.denied = function (req, res, next ) {
+	res.render('403', {
+		title: 'Access Denied (403)'
+	});
+}
