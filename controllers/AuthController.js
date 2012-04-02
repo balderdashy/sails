@@ -15,7 +15,7 @@ exports.login = function (req, res, next ) {
 		req.session.authenticated = true;
 		req.session.role = "developer";
 		
-		redirectToLoggedInHome(req,res,next);
+		redirectToOriginalDestination(req,res,next);
 	}
 	else if (secretCorrectForStakeholder) {
 				
@@ -23,7 +23,7 @@ exports.login = function (req, res, next ) {
 		req.session.authenticated = true;
 		req.session.role = "stakeholder";
 		
-		redirectToLoggedInHome(req,res,next);
+		redirectToOriginalDestination(req,res,next);
 	}
 	else if (secretAttempt && secretAttempt.length>0) {
 		res.render('auth/login', {
@@ -38,7 +38,8 @@ exports.login = function (req, res, next ) {
 	}
 }
 
-function redirectToLoggedInHome (req,res,next) {
+// Handle routing back to original destination after login
+function redirectToOriginalDestination (req,res,next) {
 	if (req.session.reroutedFrom) {
 		res.redirect(req.session.reroutedFrom);
 		req.session.reroutedFrom = null;
@@ -52,6 +53,7 @@ exports.logout = function (req, res, next ) {
 	
 	// Log user out if session exists
 	req.session.authenticated = false;
+	console.log(req.session);
 	res.redirect('/');
 }
 

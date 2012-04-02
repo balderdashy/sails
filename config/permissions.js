@@ -29,8 +29,8 @@ exports.acTree = function () {
 exports.defaultAcTree = function () {
 	return {
 		auth: {
-			login: true,
-			logout: policy.inverse
+			login: policy.inverse,
+			logout: policy.any
 		},
 		meta: {
 			denied: true,
