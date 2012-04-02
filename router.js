@@ -13,7 +13,6 @@ _.each(controllerFiles,function (controller, filename) {
 	}
 	controllers[className] = controller;
 });
-console.log(controllers);
 
 
 // Custom mappings for specific urls
@@ -57,7 +56,7 @@ exports.mapUrls = function mapUrls (app) {
 			// Map route
 			app.all(path, (function (controllerName,actionName) {
 				return function (req,res,next) {
-//					console.log("\nCONTROLLER\n"+controllerName,"\nACTION\n"+actionName);
+//					console.log("controllerName",controllerName,"actionName",actionName);
 					accessControlMiddleware(controllerName,actionName,req,res,next);
 				}
 			})(controller.id,route.action), action);
@@ -198,7 +197,7 @@ function newWebsocketClientConnects (socket) {
 
 // Load user access control configuration file
 var permissionConfig = require('./config/permissions'),
-	acTree = permissionConfig.acTree();
+	acTree = _.extend(permissionConfig.defaultAcTree(), permissionConfig.acTree());
 
 // Route incoming requests based on credentials
 function accessControlMiddleware (controllerName,actionName,req,res,next) {

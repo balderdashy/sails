@@ -19,8 +19,13 @@ exports.acTree = function () {
 }
 
 
+
+
+
+
+
 // Default AcTree
-exports.acTree = function () {
+exports.defaultAcTree = function () {
 	return {
 		auth: {
 			login: true,

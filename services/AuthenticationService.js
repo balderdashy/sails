@@ -12,11 +12,12 @@ exports.none = function (req,res,next) {
  * Check whether the user is logged in AT ALL
  */
 exports.basic = function (req,res,next) {
+	console.log(req.session);
 	if (req.session.authenticated) {
 		next();
 	}
 	else {
-		res.redirect('/login');
+		res.redirect('/403');
 	}
 	
 }

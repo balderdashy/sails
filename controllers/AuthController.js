@@ -1,14 +1,25 @@
 
 exports.login = function (req, res, next ) {
+	console.log("STATE:",req.session);
 	
 	var secret = "abc123",
+		stakeholderSecret = "roganchrisadam1",
 		secretAttempt = req.body && req.body.secret,
-		secretCorrect = secretAttempt && secret == secretAttempt;
+		secretCorrectForAdmin = secretAttempt && secret == secretAttempt,
+		secretCorrectForStakeholder = secretAttempt && stakeholderSecret == secretAttempt;
 	
-	if (secretCorrect) {
+	if (secretCorrectForAdmin) {
 		
 		// Store authenticated state in session
 		req.session.authenticated = true;
+		req.session.role = "developer";
+		res.redirect('/');
+	}
+	else if (secretCorrectForStakeholder) {
+				
+		// Store authenticated state in session
+		req.session.authenticated = true;
+		req.session.role = "stakeholder";
 		
 		res.redirect('/');
 	}
