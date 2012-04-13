@@ -14,11 +14,11 @@ var Policy = exports.model = db.model.define('Policy', {
 		type: Sequelize.STRING
 	},
 	
-	// To what kind of thing?
-	// Defaults to controller
-	targetModel: {
-		type: Sequelize.STRING
-	},
+//	// To what kind of thing?
+//	// Defaults to controller
+//	targetModel: {
+//		type: Sequelize.STRING
+//	},
 	
 	// To which instance?
 	// Usually the id route parameter
@@ -30,8 +30,8 @@ var Policy = exports.model = db.model.define('Policy', {
 
 	// Relationship with other models
 	associate: function () {
-		Policy.hasMany(Account);
-		Policy.hasMany(Role);
+		Policy.belongsTo(Account);
+		Policy.belongsTo(Role);
 	},
 
 

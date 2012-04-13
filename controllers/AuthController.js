@@ -1,5 +1,6 @@
 
 exports.login = function (req, res, next ) {	
+	
 	var secret = "abc123",
 		stakeholderSecret = "roganchrisadam1",
 		secretAttempt = req.body && req.body.secret,
@@ -35,7 +36,8 @@ exports.login = function (req, res, next ) {
 	}
 }
 
-// Handle routing back to original destination after login
+// Handle routing back to original destination in session
+// if no original destination is stored, redirect to home page
 function redirectToOriginalDestination (req,res,next) {
 	if (req.session.reroutedFrom) {
 		res.redirect(req.session.reroutedFrom);
