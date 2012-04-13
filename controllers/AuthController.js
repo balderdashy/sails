@@ -1,8 +1,5 @@
 
-exports.login = function (req, res, next ) {
-	
-	console.log("SESSION STATE:",req.session);
-	
+exports.login = function (req, res, next ) {	
 	var secret = "abc123",
 		stakeholderSecret = "roganchrisadam1",
 		secretAttempt = req.body && req.body.secret,
@@ -53,7 +50,6 @@ exports.logout = function (req, res, next ) {
 	
 	// Log user out if session exists
 	req.session.authenticated = false;
-	console.log(req.session);
 	res.redirect('/');
 }
 

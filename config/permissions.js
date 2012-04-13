@@ -1,7 +1,10 @@
 var policy = AuthenticationService;
 
-// Behavior is inherited from parent unless otherwise specified
-exports.acTree = function () {
+
+
+// Behavior is inherited from default access settings unless otherwise specified
+// User access settings
+exports.accessControlTree = function () {
 	
 	return {
 		// app-wide default behavior
@@ -22,11 +25,8 @@ exports.acTree = function () {
 
 
 
-
-
-
-// Default AcTree
-exports.defaultAcTree = function () {
+// Default access settings
+exports.defaultAccessControlTree = function () {
 	return {
 		auth: {
 			login: policy.inverse,
@@ -36,7 +36,7 @@ exports.defaultAcTree = function () {
 			denied: true,
 			error: true,
 			notfound: true
-			// 403 is hard-coded enabled
+			// 403 is hard-coded to be enabled
 		}
 	}
 	

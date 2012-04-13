@@ -197,7 +197,7 @@ function newWebsocketClientConnects (socket) {
 
 // Load user access control configuration file
 var permissionConfig = require('./config/permissions'),
-	acTree = _.extend(permissionConfig.defaultAcTree(), permissionConfig.acTree());
+	accessControlTree = _.extend(permissionConfig.defaultAccessControlTree(), permissionConfig.accessControlTree());
 
 // Route incoming requests based on credentials
 function accessControlMiddleware (controllerName,actionName,req,res,next) {
@@ -206,7 +206,7 @@ function accessControlMiddleware (controllerName,actionName,req,res,next) {
 	var routePlan;
 	
 	// Traverse access control tree to determine where to route this request
-	var controller = acTree[controllerName]
+	var controller = accessControlTree[controllerName]
 	if (controller && (!_.isUndefined(controller[actionName]) || !_.isUndefined(controller['*']))) {
 		var action = controller[actionName]
 		if (!_.isUndefined(action)) {
@@ -221,7 +221,7 @@ function accessControlMiddleware (controllerName,actionName,req,res,next) {
 	}
 	else {
 		// Use app default
-		routePlan = !_.isUndefined(acTree['*']) ? acTree['*'] : true;
+		routePlan = !_.isUndefined(accessControlTree['*']) ? accessControlTree['*'] : true;
 	}
 	
 	// Rereoute if necessary (exit middleware)
