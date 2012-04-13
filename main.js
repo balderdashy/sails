@@ -8,6 +8,9 @@ db = require('./config/db');
 config = require('./config/app');
 var MemoryStore = express.session.MemoryStore;
 
+// Run common.js
+require('./common.js');
+
 // Build session store
 sessionStore = new MemoryStore();
 
@@ -25,7 +28,7 @@ _.each(require('require-all')({
 	filter: /(.+)\.js$/
 }),function (model, filename) {
 	var className = model.id || filename;
-	className = capitalizeFirstLetter(className);
+	className = className.toCapitalized();
 	global.modelNames.push(className);
 	global[className] = model.model;
 });
@@ -57,7 +60,7 @@ app.configure(function() {
 	app.set('view engine', 'ejs');
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
-	app.use(express.static(__dirname + '/public'));
+	app.use(express['static'](__dirname + '/public'));
   
 	// Session / cookie support
 	app.use(express.cookieParser());
@@ -112,11 +115,3 @@ io = require('socket.io').listen(app);
 // Start server
 app.listen(config.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
-
-
-
-
-function capitalizeFirstLetter(string)
-{
-	return string.charAt(0).toUpperCase() + string.slice(1);
-}
