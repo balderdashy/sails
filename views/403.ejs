@@ -1,1 +1,13 @@
 403
+Access Denied
+
+
+<br/>
+<p>
+	<% if (!Session.authenticated) { %>
+		Care to <a href="/login">log in</a> or <a href="/register">register</a>?
+	<% } else { %>
+		Care to <a href="/logout">log in as a different user</a>?
+	<% } %>
+	
+</p>

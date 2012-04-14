@@ -13,7 +13,7 @@ exports.accessControlTree = function () {
 		// Controller authentication patterns
 		example: {
 			// Default behavior for this controller
-//			'*': false,
+			'*': policy.only('developer'),
 
 			summary: true,
 			detail: policy.any
@@ -30,6 +30,7 @@ exports.defaultAccessControlTree = function () {
 	return {
 		auth: {
 			login: policy.inverse,
+			register: policy.inverse,
 			logout: policy.any
 		},
 		meta: {

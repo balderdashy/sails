@@ -1,3 +1,25 @@
 <h1>It works!</h1>
 
 <p>You've successfully installed the Sails Framework.</p>
+
+<ul>
+	<% _.each(controllers, function (value,key,list) { %>
+	<li><a href="<%- key %>"><%- key %></a></li>
+	<% }); %>
+</ul>
+
+<br/><br/><br/><br/><br/><br/><br/>
+
+<div>
+	<% if (!Session.authenticated) { %>
+		<a href="/login">Login</a>
+		<a href="/register">Register</a>
+	<% } else { %>
+		<a href="/logout">Logout</a>
+	<% } %>
+</div>
+
+<!--
+<textarea>
+	<%- JSON.stringify(Session) %>
+</textarea>-->

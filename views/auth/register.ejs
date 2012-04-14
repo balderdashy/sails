@@ -1,0 +1,14 @@
+<h1>Register for this Sails Application</h1>
+
+<form action="/register" method="post">
+	<label for="password">Choose your password</label><br/>
+	
+	<input name="submitted" value="true" type="hidden"/>
+	
+	<input name="username" value="TESTUSER" type="hidden"/>
+	
+	<input name="password" placeholder="" id="password" type="password"/>
+	<% if (validationErrors['password']) { %>
+	<span class="error"><%- validationErrors['password'] %></span>
+	<% } %>
+</form>

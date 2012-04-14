@@ -48,6 +48,7 @@ h1 {
 	width: 100px;
 	float:left;
 }
+#branding a {color:white;}
 
 #navbar {
 	overflow:auto;
@@ -119,3 +120,12 @@ img.spinner {
 }
 
 
+
+input.error {
+	border-color: red;
+}
+span.error {
+	display:block;
+	font-size: 85%;
+	color:red;
+}

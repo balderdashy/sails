@@ -1,5 +1,5 @@
 // Instantiate all controller modules
-var controllers = {},
+controllers = {},
 controllerFiles = require('require-all')({ 
 	dirname: __dirname + '/controllers',
 	filter: /(.+Controller)\.js$/
@@ -30,7 +30,6 @@ var urlMappings = _.extend(defaultMappings,userMappings);
 // Set up routing table
 exports.mapUrls = function mapUrls (app) {
 	
-	
 	// Map standard AJAX and REST routes
 	for (var path in urlMappings) {
 		var route = urlMappings[path],
@@ -57,6 +56,11 @@ exports.mapUrls = function mapUrls (app) {
 			app.all(path, (function (controllerName,actionName) {
 				return function (req,res,next) {
 //					console.log("controllerName",controllerName,"actionName",actionName);
+				
+					// Share session object with views
+					res.local('Session',req.session);
+					
+					// Run access control middleware
 					accessControlMiddleware(controllerName,actionName,req,res,next);
 				}
 			})(controller.id,route.action), action);

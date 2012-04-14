@@ -22,7 +22,6 @@ exports.any = function (req,res,next) {
 	else {
 		res.redirect('/403');
 	}
-	
 }
 
 /**
@@ -33,6 +32,25 @@ exports.inverse = function (req,res,next) {
 		next();
 	}
 	else {
+		// Access denied
 		res.redirect('/');
+	}
+}
+
+
+/**
+ * Check whether the logged-in user is of a specific type
+ */
+exports.only = function(type) {
+	return function (req,res,next) {
+		// Remember where the user was trying to go so she can be redirected back
+		req.session.reroutedFrom = req.url;
+	
+		if (req.session.authenticated && req.session.type == type) {
+			next();
+		}
+		else {
+			res.redirect('/403');
+		}
 	}
 }

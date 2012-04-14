@@ -20,7 +20,11 @@ exports.customMappings = function () {
 			controller: 'auth',
 			action: 'logout'
 		}
-		, '/403': '/login'
+		, '/register': {
+			controller: 'auth',
+			action: 'register'
+		}
+//		, '/403': '/login'
 	}
 };
 
@@ -29,7 +33,8 @@ exports.defaultMappings = function () {
 	return {
 		'/': {controller:'meta',action:'home'},
 		'/500': {controller:'meta',action:'error'}, 
-		'/404': {controller:'meta',action:'notfound'}
+		'/404': {controller:'meta',action:'notfound'},
+		'/403': {controller:'meta',action:'denied'}
 	};
 }
 

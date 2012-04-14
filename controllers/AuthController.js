@@ -1,39 +1,61 @@
 
 exports.login = function (req, res, next ) {	
+	console.log(req.session);
 	
-	var secret = "abc123",
-		stakeholderSecret = "roganchrisadam1",
-		secretAttempt = req.body && req.body.secret,
-		secretCorrectForAdmin = secretAttempt && secret == secretAttempt,
-		secretCorrectForStakeholder = secretAttempt && stakeholderSecret == secretAttempt;
+	var secretAttempt = req.body && req.body.secret;
 	
-	if (secretCorrectForAdmin) {
-		
-		// Store authenticated state in session
-		req.session.authenticated = true;
-		req.session.role = "developer";
-		
-		redirectToOriginalDestination(req,res,next);
-	}
-	else if (secretCorrectForStakeholder) {
-				
-		// Store authenticated state in session
-		req.session.authenticated = true;
-		req.session.role = "stakeholder";
-		
-		redirectToOriginalDestination(req,res,next);
-	}
-	else if (secretAttempt && secretAttempt.length>0) {
-		res.render('auth/login', {
-			title: 'Login | Sails Framework',
-			loginError: 'That secret is incorrect.'
+	if (secretAttempt) {
+		Account.find({where: {password: secretAttempt}}).success(function (account) {
+			
+			if (account) {
+				// Store authenticated state in session
+				req.session.authenticated = true;
+				req.session.type = "stakeholder";
+				redirectToOriginalDestination(req,res,next);
+			}
+			else {
+				// UNKNOWN USER
+				res.render('auth/login', {
+					title: 'Login | Sails Framework',
+					loginError: (secretAttempt && secretAttempt.length>0) ? 'That password is incorrect.' : undefined
+				});
+			}
+		}).error(function() {
+			console.log("An error occured while logging in!");
 		});
 	}
 	else {
 		res.render('auth/login', {
-			title: 'Login | Sails Framework'
+			title: 'Login | Sails Framework',
+			loginError: (secretAttempt && secretAttempt.length>0) ? 'Please specify a password.' : undefined
 		});
 	}
+	
+//	secretCorrectForAdmin = secretAttempt && ,
+//	secretCorrectForStakeholder = secretAttempt && stakeholderSecret == secretAttempt;
+//	
+//	if (secretCorrectForAdmin) {
+//		
+//		// Store authenticated state in session
+//		req.session.authenticated = true;
+//		req.session.type = "developer";
+//		
+//		redirectToOriginalDestination(req,res,next);
+//	}
+//	else if (secretCorrectForStakeholder) {
+//				
+//		// Store authenticated state in session
+//		req.session.authenticated = true;
+//		req.session.type = "stakeholder";
+//		
+//		redirectToOriginalDestination(req,res,next);
+//	}
+//	else {
+//		res.render('auth/login', {
+//			title: 'Login | Sails Framework',
+//			loginError: (secretAttempt && secretAttempt.length>0) ? 'That secret is incorrect.' : undefined
+//		});
+//	}
 }
 
 // Handle routing back to original destination in session
@@ -49,9 +71,42 @@ function redirectToOriginalDestination (req,res,next) {
 }
 
 exports.logout = function (req, res, next ) {
-	
+	// Clear reroutedFrom tracer
+	req.session.reroutedFrom = null;
 	// Log user out if session exists
 	req.session.authenticated = false;
-	res.redirect('/');
+	res.redirect('/login');
+}
+
+exports.register = function (req, res, next ) {
+	
+	var attempt = req.body && req.body.submitted;
+	
+	// Register new account object
+	if (attempt) {
+		var account = Account.build({
+			username:req.body.username,
+			password:req.body.password
+		});
+		
+		account.save().success(
+			function successCallback() {
+				console.log("SAVED!");
+				req.flash("Registered new account!");
+				res.redirect('/');
+			}).error(
+			function errorCallback () {
+				console.log("Could not save new account!");
+				res.redirect('/500');
+			});
+	}
+	else {
+		res.render('auth/register', {
+			title: 'Register | Sails Framework',
+			validationErrors: {
+				secret: (attempt && req.body.length > 0) ? 'That secret is invalid.' : undefined
+			}
+		});
+	}
 }
 
