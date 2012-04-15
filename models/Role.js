@@ -1,10 +1,12 @@
-var Account = exports.model = Model.extend({
+var Role = exports.model = Model.extend({
 	
-	username: STRING,
-	password: STRING,
+	name: STRING,
 	
+	belongsTo: [ 
+		'Account', 
+//		'Tenant'
+	],
 	hasMany: [ 
-		'Role', 
 //		'Policy'
 	],
 	
