@@ -54,12 +54,7 @@ exports.mapUrls = function mapUrls (app) {
 			
 			// Map route
 			app.all(path, everyRequest,(function (controllerName,actionName) {
-				return function (req,res,next) {
-//					console.log("controllerName",controllerName,"actionName",actionName);
-				
-					// Share session object with views
-					res.local('Session',req.session);
-					
+				return function (req,res,next) {					
 					// Run access control middleware
 					accessControlMiddleware(controllerName,actionName,req,res,next);
 				}
@@ -83,12 +78,19 @@ exports.mapUrls = function mapUrls (app) {
 
 
 
+// Executed on every request
 function everyRequest(req,res,next) {
-	// Executed on every request
 	debug.debug(req.session);
+	
+	// Share session object with views
+	res.local('Session',req.session);
+	
+	// Sane default for title outlet
+	res.local('title',req.url);
 	
 	next();
 }
+
 
 
 /**
@@ -252,7 +254,7 @@ function reroute (routePlan,req,res,next) {
 		next();
 	}
 	else if (routePlan === false) {
-		res.redirect('/403');
+		res.render('403',{title:'Access Denied'});
 	}
 	// if the routePlan is a function, treat it as basic middleware
 	else if (_.isFunction(routePlan)) {

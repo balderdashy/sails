@@ -20,7 +20,7 @@ exports.any = function (req,res,next) {
 		next();
 	}
 	else {
-		res.redirect('/403');
+		res.render('403',{title:'Access Denied'});
 	}
 }
 
@@ -50,7 +50,7 @@ exports.only = function(type) {
 			next();
 		}
 		else {
-			res.redirect('/403');
+			res.render('403',{title:'Access Denied'});
 		}
 	}
 }
