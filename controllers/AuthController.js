@@ -61,8 +61,7 @@ _.extend(exports,AuthController = {
 					password:req.body.password
 				})).
 				add(Role.create ({
-					name: 'BASIC ROLE',
-					password:req.body.password
+					name: 'BASIC ROLE'
 				})).
 				run().success(function successCallback() {
 					req.flash("Registered new account!");
@@ -74,8 +73,8 @@ _.extend(exports,AuthController = {
 //						});
 
 					res.redirect('/');
-				}).error(function () {
-					debug.error("Could not save new account!");
+				}).error(function (error) {
+					debug.error("Could not save new account!",error);
 					res.redirect('/500');
 				});
 		}
