@@ -6,7 +6,10 @@ Account = Model.extend({
 	hasMany: [ 'Role' ],
 	
 	classMethods: {
-		doSomething: function() {}
+		hasRole: function (accountId, roleName) {
+			// TODO
+			return true;
+		}
 	},
 	instanceMethods: {
 		doSomethingWithThisInstance: function () {}

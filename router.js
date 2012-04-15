@@ -266,7 +266,6 @@ function reroute (routePlan,req,res,next) {
 	// TODO: complex condition routePlan objects
 }
 
-
 // TODO: Build role dictionary
 
 // Get permission tree

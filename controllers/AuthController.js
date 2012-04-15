@@ -76,7 +76,7 @@ _.extend(exports,AuthController = {
 				req.flash("Your account was registered successfully!");
 				res.redirect('/');
 			})
-			.error(function(){
+			.error(function() {
 				debug.debug("REGISTRATION FAILED!!!!");
 				
 				req.flash("An error occured while processing your registration.");

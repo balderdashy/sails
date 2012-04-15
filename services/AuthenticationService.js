@@ -66,7 +66,7 @@ exports.policy = {
 
 			// Check if this Account has the specified role
 			var hasPermission = req.session.authenticated;
-			hasPermission &= true;
+			hasPermission &= Account.hasRole(req.session.account,roleName);
 
 			if (hasPermission) {
 				next();
