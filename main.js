@@ -41,27 +41,32 @@ sessionStore = new MemoryStore();
 // Bootstrap and sync database
 db.bootstrap();
 
+
 // automatically grab all models from models directory
 // (if no 'id' attribute was provided, take a guess)
 // CASE INSENSITIVE
 global.modelNames = [];
 _.each(require('require-all')({
 	dirname: __dirname + '/models'
-	, 
-	filter: /(.+)\.js$/
+	,  filter: /(.+)\.js$/
 }),function (model, filename) {
 	var className = model.id || filename;
 	className = className.toCapitalized();
 	global.modelNames.push(className);
+	
+	// Process model
 	global[className] = model.model;
 });
 
-// Create domain associations
+// Set up ORM with DB
 _.each(modelNames,function (className) {
-	global[className].options.associate();
+	global[className] = global[className].initialize(className);
 });
 
-
+// Create/verify domain associations
+_.each(modelNames,function (className) {
+	global[className].createAssociations();
+});
 
 // HTTPs
 /*
