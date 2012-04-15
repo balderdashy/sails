@@ -54,29 +54,32 @@ _.extend(exports,AuthController = {
 	
 		// Register new account object
 		if (attempt) {
-//			var account = );
-			new QueryChainer().
-				add(Account.create ({
-					username:req.body.username,
-					password:req.body.password
-				})).
-				add(Role.create ({
-					name: 'BASIC ROLE'
-				})).
-				run().success(function successCallback() {
-					req.flash("Registered new account!");
-
-//						account.setRoles([]).success(function() {
-//						}).error(function() {
-//							debug.error("Could not save new account!");
-//							res.redirect('/500');
-//						});
-
-					res.redirect('/');
-				}).error(function (error) {
-					debug.error("Could not save new account!",error);
-					res.redirect('/500');
-				});
+			
+			var account = Account.build ({
+				username:req.body.username,
+				password:req.body.password
+			}),
+			role = Role.build ({
+				name: 'BASIC ROLE'
+			});
+			
+			new Sequelize.Utils.QueryChainer()
+			.add(account.save())
+			.add(role.save())
+			.add(account.setRoles([role]))
+			.runSerially()
+			.success(function(){
+				debug.debug("REGISTRATION SUCCEEDED and user logged in.");
+				req.session.authenticated = true;
+				req.session.type = "stakeholder";
+				
+				req.flash("Registered new account!");
+				res.redirect('/');
+			})
+			.error(function(){
+				debug.debug("REGISTRATION FAILED!!!!");
+				res.redirect('/register');
+			});
 		}
 		else {
 			res.render('auth/register', {

@@ -70,6 +70,7 @@ _.each(global.modelNames,function (className) {
 });
 
 // Sync again to absorb any new tables created due to N->N associations
+// TODO wait until this is finished before proceeding
 db.sync();
 
 
