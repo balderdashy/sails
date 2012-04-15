@@ -3,8 +3,7 @@ var Account = exports.model = Model.extend({
 	username: STRING,
 	password: STRING,
 	
-	hasMany: [ 
-		'Role', 
+	hasMany: [ 'Role' 
 //		'Policy'
 	],
 	

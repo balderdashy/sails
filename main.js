@@ -41,7 +41,6 @@ sessionStore = new MemoryStore();
 // Bootstrap and sync database
 db.bootstrap();
 
-
 // automatically grab all models from models directory
 // (if no 'id' attribute was provided, take a guess)
 // CASE INSENSITIVE
@@ -59,14 +58,17 @@ _.each(require('require-all')({
 });
 
 // Set up ORM with DB
-_.each(modelNames,function (className) {
+_.each(global.modelNames,function (className) {
 	global[className] = global[className].initialize(className);
 });
 
 // Create/verify domain associations
-_.each(modelNames,function (className) {
+_.each(global.modelNames,function (className) {
 	global[className].createAssociations();
 });
+
+// Sync again to absorb any new tables created due to N->N associations
+db.sync();
 
 // HTTPs
 /*

@@ -34,7 +34,7 @@ Model = {
 		
 		// Parse fields
 		this.sails.fields = {};
-		_.each(classObject,function (method,methodName) {
+		_.each(classObject,function (type,propertyName) {
 			if (_.any([
 				Sequelize.STRING,
 				Sequelize.TEXT,
@@ -43,9 +43,11 @@ Model = {
 				Sequelize.BOOLEAN,
 				Sequelize.DATE
 			],function(dataType) {
-				return method == dataType;
+				return type == dataType;
 			})) {
-				this.sails.fields[methodName] = method;
+				this.sails.fields[propertyName] = {
+					type: type
+				};
 			}
 		}, this);
 		
@@ -66,6 +68,8 @@ Model = {
 	
 	// Set up the new domain class to actually do something with the orm
 	initialize: function (modelName) {
+		// Remember name
+		this.sails.modelName = modelName;
 		
 		// Build actual model using ORM
 		return _.extend(this,db.model.define(modelName,this.sails.fields,this.sails.options));
@@ -77,20 +81,24 @@ Model = {
 			if (!global[associatedDomain]) {
 				throw Error('You\'re trying to make an assocation with a model ('+associatedDomain+') that doesn\'t exist!');
 			}
-			this.hasMany(global[associatedDomain]);
+			console.log("TRYING TO HASMANY: ",this.sails.modelName + " -> " + associatedDomain);
+			debug.debug("FOREIGN DOMAIN CLASS:\n",global[associatedDomain]);
+			debug.debug("MY DOMAIN CLASS:\n",global[this.sails.modelName]);
+			global[this.sails.modelName].hasMany(global[associatedDomain],{});
 		}, this);
 		_.each(this.sails.hasOne,function(associatedDomain) {
 			if (!global[associatedDomain]) {
 				throw Error('You\'re trying to make an assocation with a model ('+associatedDomain+') that doesn\'t exist!');
 			}
-			this.hasOne(global[associatedDomain]);
+			global[this.sails.modelName].hasOne(global[associatedDomain]);
 		}, this);
 		_.each(this.sails.belongsTo,function(associatedDomain) {
 			if (!global[associatedDomain]) {
 				throw Error('You\'re trying to make an assocation with a model ('+associatedDomain+') that doesn\'t exist!');
 			}
-			this.belongsTo(global[associatedDomain]);
+			global[this.sails.modelName].belongsTo(global[associatedDomain]);
 		}, this);
 		
+		console.log("\n\n\n\nMADE IT",this.sails.modelName);
 	}
 }
