@@ -4,16 +4,39 @@ fs = require('fs');
 async = require('async');
 Sequelize = require("sequelize");
 _ = require('underscore');
-db = require('./config/db'); 
-config = require('./config/app');
 var MemoryStore = express.session.MemoryStore;
 
-// Run common.js
+
+// // TODO: remove these and use require.js-style dependency management
+// Instantiate all library modules
+libraries = {},
+libFiles = require('require-all')({ 
+	dirname: __dirname + '/lib',
+	filter: /(.+)\.js$/
+});
+_.each(libFiles,function (library, filename) {
+	// If no 'id' attribute was provided, take a guess based on the filename
+	var className = library.id || filename;
+	className = className.toLowerCase();
+	if (!library.id) {
+		library.id = className;
+	}
+	libraries[className] = library;
+});
+
+
+// Configuration
+db = require('./config/db'); 
+config = require('./config/app');
+debug = require('./config/log').debug;
+
+
+// Run common.js for quick app-wide logic additions
 require('./common.js');
+
 
 // Build session store
 sessionStore = new MemoryStore();
-
 
 // Bootstrap and sync database
 db.bootstrap();

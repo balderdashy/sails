@@ -14,7 +14,6 @@
 //exports.id = 'meta'
 
 exports.home = function (req, res, next ) {
-	console.log(req.session);
 	res.render('index', {
 		title: 'Sails Framework',
 		controllers: controllers

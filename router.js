@@ -39,7 +39,7 @@ exports.mapUrls = function mapUrls (app) {
 		// A string means this route is a redirect
 		if (_.isString(route)) {
 			// Map route
-			app.all(path, (function (redirectRoute) {
+			app.all(path, everyRequest,(function (redirectRoute) {
 				return function (req,res,next) { 
 					// Prevent redirect loops by refusing to redirect from 403 anywhere else
 					console.log("Redirecting to "+redirectRoute+" from " + req.url+ "...");
@@ -53,7 +53,7 @@ exports.mapUrls = function mapUrls (app) {
 			action = controller[route.action];	
 			
 			// Map route
-			app.all(path, (function (controllerName,actionName) {
+			app.all(path, everyRequest,(function (controllerName,actionName) {
 				return function (req,res,next) {
 //					console.log("controllerName",controllerName,"actionName",actionName);
 				
@@ -73,13 +73,22 @@ exports.mapUrls = function mapUrls (app) {
 //	io.sockets.on('connection', newWebsocketClientConnects);
 	
 	
-	// Handle wildcard
-	app.all('/:entity/:action?/:id?', function (req,res,next) {
+	// Handle all other cases (wildcard)
+	app.all('/:entity/:action?/:id?', everyRequest,function (req,res,next) {
+			
+			// Run the access control middleware
 			accessControlMiddleware(req.param('entity'),req.param('action'),req,res,next);
 		}, handleWildcardRequest);
 }
 
 
+
+function everyRequest(req,res,next) {
+	// Executed on every request
+	debug.debug(req.session);
+	
+	next();
+}
 
 
 /**

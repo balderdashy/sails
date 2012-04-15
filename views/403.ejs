@@ -4,10 +4,12 @@ Access Denied
 
 <br/>
 <p>
+	You don't have permission to view this page.
+</p>
+<p>
 	<% if (!Session.authenticated) { %>
-		Care to <a href="/login">log in</a> or <a href="/register">register</a>?
+		Please <a href="/login">log in</a> or <a href="/register">register</a>.
 	<% } else { %>
-		Care to <a href="/logout">log in as a different user</a>?
+		Care to <a href="/logout">log in as a different user</a> with the proper permissions?
 	<% } %>
-	
 </p>
