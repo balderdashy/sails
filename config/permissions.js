@@ -1,4 +1,4 @@
-var policy = AuthenticationService;
+var policy = AuthenticationService.policy;
 
 
 

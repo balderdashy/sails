@@ -11,16 +11,14 @@ _.extend(exports,AuthController = {
 					password: secretAttempt
 				}
 			}).success(function (account) {
-				console.log(account);
 				
 				if (account) {
 					// Store authenticated state in session
-					req.session.authenticated = true;
-					req.session.type = "stakeholder";
-					redirectToOriginalDestination(req,res,next);
+					AuthenticationService.session.link(req,account);
+					AuthenticationService.session.redirectToOriginalDestination(req,res,next);
 				}
 				else {
-					// UNKNOWN USER
+					// Unknown user
 					res.render('auth/login', {
 						title: 'Login | Sails Framework',
 						loginError: (secretAttempt && secretAttempt.length>0) ? 'That password is incorrect.' : undefined
@@ -42,7 +40,7 @@ _.extend(exports,AuthController = {
 	// Logout of an Account
 	logout: function (req,res,next) {
 		req.session.reroutedFrom = null;
-		req.session.authenticated = false;
+		AuthenticationService.session.unlink(req);
 		res.redirect('/login');
 	},
 	
@@ -52,6 +50,9 @@ _.extend(exports,AuthController = {
 	register: function (req,res,next) {
 		var attempt = req.body && req.body.submitted;
 	
+		// Register and log in as a particular role
+		var registerAs = "user";
+	
 		// Register new account object
 		if (attempt) {
 			
@@ -60,7 +61,7 @@ _.extend(exports,AuthController = {
 				password:req.body.password
 			}),
 			role = Role.build ({
-				name: 'BASIC ROLE'
+				name: registerAs
 			});
 			
 			new Sequelize.Utils.QueryChainer()
@@ -70,14 +71,15 @@ _.extend(exports,AuthController = {
 			.runSerially()
 			.success(function(){
 				debug.debug("REGISTRATION SUCCEEDED and user logged in.");
-				req.session.authenticated = true;
-				req.session.type = "stakeholder";
 				
-				req.flash("Registered new account!");
+				AuthenticationService.session.link(req,account);
+				req.flash("Your account was registered successfully!");
 				res.redirect('/');
 			})
 			.error(function(){
 				debug.debug("REGISTRATION FAILED!!!!");
+				
+				req.flash("An error occured while processing your registration.");
 				res.redirect('/register');
 			});
 		}
@@ -85,7 +87,7 @@ _.extend(exports,AuthController = {
 			res.render('auth/register', {
 				title: 'Register | Sails Framework',
 				validationErrors: {
-					secret: (attempt && req.body.length > 0) ? 'That secret is invalid.' : undefined
+					secret: (attempt && req.body.password.length > 0) ? 'Validation errors.' : undefined
 				}
 			});
 		};

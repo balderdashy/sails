@@ -43,8 +43,8 @@ require('./model.js');
 // Build session store
 sessionStore = new MemoryStore();
 
-// Bootstrap and sync database
-db.bootstrap();
+// Setup sequelize
+db.initialize();
 
 // automatically grab all models from models directory
 // (if no 'id' attribute was provided, take a guess)
@@ -74,7 +74,8 @@ _.each(global.modelNames,function (className) {
 db.sync();
 
 
-
+// Run boostrap script
+db.bootstrap();
 
 
 
