@@ -1,20 +1,9 @@
-var Role = exports.model = Model.extend({
+Role = Model.extend({
 	
-	nameJ: STRING,
+	name: STRING,
 	
-	belongsTo: [ 
-		'Account'
-////		'Tenant'
-	],
-	hasMany: [ 
-		'Account'
-//		'Policy'
-	],
+	hasMany: [ 'Account' ],
 	
-	classMethods: {
-		doSomeqething: function() {}
-	},
-	instanceMethods: {
-		doSomethinqtqewgWithThisInstance: function () {}
-	}
+	classMethods: {},
+	instanceMethods: {}
 });

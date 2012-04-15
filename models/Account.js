@@ -1,11 +1,9 @@
-var Account = exports.model = Model.extend({
+Account = Model.extend({
 	
 	username: STRING,
 	password: STRING,
 	
-	hasMany: [ 'Role' 
-//		'Policy'
-	],
+	hasMany: [ 'Role' ],
 	
 	classMethods: {
 		doSomething: function() {}

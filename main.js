@@ -34,6 +34,8 @@ debug = require('./config/log').debug;
 // Run common.js for quick app-wide logic additions
 require('./common.js');
 
+// Import model library
+require('./model.js');
 
 // Build session store
 sessionStore = new MemoryStore();
@@ -52,9 +54,6 @@ _.each(require('require-all')({
 	var className = model.id || filename;
 	className = className.toCapitalized();
 	global.modelNames.push(className);
-	
-	// Process model
-	global[className] = model.model;
 });
 
 // Set up ORM with DB
@@ -64,7 +63,7 @@ _.each(global.modelNames,function (className) {
 
 // Create/verify domain associations
 _.each(global.modelNames,function (className) {
-	global[className].createAssociations();
+	Model.createAssociations(global[className]);
 });
 
 // Sync again to absorb any new tables created due to N->N associations
