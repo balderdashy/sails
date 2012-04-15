@@ -65,15 +65,12 @@ exports.policy = {
 			req.session.reroutedFrom = req.url;
 
 			// Check if this Account has the specified role
-			var hasPermission = req.session.authenticated;
-			hasPermission &= Account.hasRole(req.session.account,roleName);
-
-			if (hasPermission) {
+			Account.hasRole(req.session.account,roleName,
+			function() {
 				next();
-			}
-			else {
+			}, function () {
 				res.render('403',{title:'Access Denied'});
-			}
+			});
 		}
 	}
 }
