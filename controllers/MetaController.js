@@ -13,27 +13,30 @@
 // CASE-INSENSITIVE
 //exports.id = 'meta'
 
-exports.home = function (req, res, next ) {
-	res.render('index', {
-		title: 'Sails Framework',
-		controllers: controllers
-	});
-}
 
-exports.error = function (req, res, next ) {
-	res.render('500', {
-		title: 'Error (500)'
-	});
-}
+_.extend(exports,MetaController = {
+	home: function (req, res, next ) {
+		res.render('index', {
+			title: 'Sails Framework',
+			controllers: controllers
+		});
+	},
 
-exports.notfound = function (req, res, next ) {
-	res.render('404', {
-		title: 'Not Found (404)'
-	});
-}
+	error: function (req, res, next ) {
+		res.render('500', {
+			title: 'Error (500)'
+		});
+	},
 
-exports.denied = function (req, res, next ) {
-	res.render('403', {
-		title: 'Access Denied (403)'
-	});
-}
+	notfound: function (req, res, next ) {
+		res.render('404', {
+			title: 'Not Found (404)'
+		});
+	},
+
+	denied: function (req, res, next ) {
+		res.render('403', {
+			title: 'Access Denied (403)'
+		});
+	}
+});

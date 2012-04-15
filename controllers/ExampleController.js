@@ -1,42 +1,48 @@
-
-exports.index = function (req, res, next ) {
-	var accountDetail;
+_.extend(exports,ExampleController = {
 	
-	Account.build({
-		username: 'blah',
-		password: 'password'
-	}).save().
-	success(function successCallback(savedModel) {
-//		console.log("Model saved to DB.",savedModel);
-		accountDetail = success({
-			id: savedModel.id,
-			title: savedModel.title
-		});
+
+	index: function (req, res, next ) {
+		var accountDetail;
+	
+		Account.build({
+			username: 'blah',
+			password: 'password'
+		}).save().
+			success(function successCallback(savedModel) {
+			//		console.log("Model saved to DB.",savedModel);
+			accountDetail = success({
+				id: savedModel.id,
+				title: savedModel.title
+			});
 		
-		// Render view
-		res.render('example', {
-			title: 'example',
-			account: accountDetail
+			// Render view
+			res.render('example', {
+				title: 'example',
+				account: accountDetail
+			});
+		}).
+			error(function errorCallback(response) {
+			debug.error("Error.  Could not save model to DB.",response);
+			res.json(error(response));
 		});
-	}).
-	error(function errorCallback(response) {
-		console.log("Error.  Could not save model to DB.",response);
-		res.json(error(response));
-	});
-}
+	},
+	
 
-exports.summary = function (req, res, next ) {
-	res.render('example', {
-		title: 'example/summary'
-	});
-}
 
-exports.detail = function (req, res, next ) {
-	res.render('example', {
-		title: 'example/detail'
-	});
-}
+	summary: function (req, res, next ) {
+		res.render('example', {
+			title: 'example/summary'
+		});
+	},
 
+
+
+	detail: function (req, res, next ) {
+		res.render('example', {
+			title: 'example/detail'
+		});
+	}
+});
 
 
 function error (response) {
@@ -53,3 +59,4 @@ function success (response) {
 		success: true
 	}, response);
 }
+

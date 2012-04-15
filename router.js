@@ -23,9 +23,9 @@ var mappingConfig = require('./config/mappings'),
 // Default handling for 500, 404, home page, etc.
 var defaultMappings = mappingConfig.defaultMappings();
 
-
 // Intersect default mappings with user mappings
 var urlMappings = _.extend(defaultMappings,userMappings);
+
 
 // Set up routing table
 exports.mapUrls = function mapUrls (app) {
@@ -41,14 +41,14 @@ exports.mapUrls = function mapUrls (app) {
 			// Map route
 			app.all(path, everyRequest,(function (redirectRoute) {
 				return function (req,res,next) { 
-					// Prevent redirect loops by refusing to redirect from 403 anywhere else
-					console.log("Redirecting to "+redirectRoute+" from " + req.url+ "...");
+					debug.debug("Redirecting to "+redirectRoute+" from " + req.url+ "...");
 					res.redirect(redirectRoute);
 				}
 			})(route));
 		}
+		
+		// An object means this route route maps directly to a controller
 		else {
-			// An object means this route route maps directly to a controller
 			controller = controllers[route.controller];
 			action = controller[route.action];	
 			
@@ -62,8 +62,7 @@ exports.mapUrls = function mapUrls (app) {
 		}
 		
 	}
-	
-	
+		
 	// TODO: When a socket.io client connects, listen for the actions in the routing table
 //	io.sockets.on('connection', newWebsocketClientConnects);
 	
@@ -75,6 +74,7 @@ exports.mapUrls = function mapUrls (app) {
 			accessControlMiddleware(req.param('entity'),req.param('action'),req,res,next);
 		}, handleWildcardRequest);
 }
+
 
 
 

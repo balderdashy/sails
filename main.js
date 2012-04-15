@@ -9,11 +9,11 @@ var MemoryStore = express.session.MemoryStore;
 
 // // TODO: remove these and use require.js-style dependency management
 // Instantiate all library modules
-libraries = {},
-libFiles = require('require-all')({ 
-	dirname: __dirname + '/lib',
-	filter: /(.+)\.js$/
-});
+var libraries = {},
+	libFiles = require('require-all')({ 
+		dirname: __dirname + '/lib',
+		filter: /(.+)\.js$/
+	});
 _.each(libFiles,function (library, filename) {
 	// If no 'id' attribute was provided, take a guess based on the filename
 	var className = library.id || filename;
@@ -25,10 +25,13 @@ _.each(libFiles,function (library, filename) {
 });
 
 
+// Set up log
+debug = libraries.logger.debug;
+
 // Configuration
 db = require('./config/db'); 
 config = require('./config/app');
-debug = require('./config/log').debug;
+require('./config/log');
 
 
 // Run common.js for quick app-wide logic additions
@@ -68,6 +71,13 @@ _.each(global.modelNames,function (className) {
 
 // Sync again to absorb any new tables created due to N->N associations
 db.sync();
+
+
+
+
+
+
+
 
 // HTTPs
 /*
