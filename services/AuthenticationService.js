@@ -52,7 +52,8 @@ exports.policy = {
 			next();
 		}
 		else {
-			// Access denied
+			// Access denied, but it would be weird to show a 403 page since the user is logged in
+			// TODO: display a page explaining that these pages are inaccessible to authed users, and asking if the user would like to logout
 			res.redirect('/');
 		}
 	},

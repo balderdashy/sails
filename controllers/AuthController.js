@@ -1,4 +1,4 @@
-_.extend(exports,AuthController = {
+_.extend(exports,{
 	
 	// Login to an Account
 	login: function (req,res,next) {
@@ -56,20 +56,10 @@ _.extend(exports,AuthController = {
 		// Register new account object
 		if (attempt) {
 			
-			var account = Account.build ({
+			var account = Account.create ({
 				username:req.body.username,
 				password:req.body.password
-			}),
-			role = Role.build ({
-				name: registerAs
-			});
-			
-			new Sequelize.Utils.QueryChainer()
-			.add(account.save())
-			.add(role.save())
-			.add(account.setRoles([role]))
-			.runSerially()
-			.success(function(){
+			}).success(function(){
 				debug.debug("REGISTRATION SUCCEEDED and user logged in.");
 				
 				AuthenticationService.session.link(req,account);
