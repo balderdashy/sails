@@ -6,6 +6,8 @@ Account = Model.extend({
 	hasMany: [ 'Role' ],
 	
 	classMethods: {
+		
+		
 		hasRole: function (accountId, roleName,thenCallback,elseCallback) {
 			if (!accountId) {
 				return elseCallback();

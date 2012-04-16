@@ -265,23 +265,3 @@ function reroute (routePlan,req,res,next) {
 	
 	// TODO: complex condition routePlan objects
 }
-
-// TODO: Build role dictionary
-
-// Get permission tree
-//var permissionTree = permissionConfig.permissionTree(AuthenticationService);
-// Default to no security (TODO: configurable)
-//var defaultAuthMiddleware = controllers.auth.none;
-
-//// TODO: traverse permission tree and build middleware for the requested action
-//function buildAuthMiddleware (route) {
-//	
-//	console.log("Building authentication middleware for route:",route)
-//	
-//	// TODO: Traverse permission tree using controller and action from route
-////	permissionTree[route.controller];
-//	
-//	return function (req,res,next) {
-//		next();
-//	}
-//}
