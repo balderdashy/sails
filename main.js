@@ -103,6 +103,8 @@ app.configure(function() {
 	app.use(express.methodOverride());
 	app.use(express['static'](__dirname + '/public'));
   
+  
+  
 	// Session / cookie support
 	app.use(express.cookieParser());
 	app.use(express.session({
@@ -116,13 +118,14 @@ app.configure(function() {
 	app.use(app.router);
 });
 
+
+// Set up error handling
 app.configure('development', function(){
 	app.use(express.errorHandler({
 		dumpExceptions: true, 
 		showStack: true
 	})); 
 });
-
 app.configure('production', function(){
 	app.use(express.errorHandler());
 });
@@ -149,8 +152,9 @@ io = require('socket.io').listen(app);
 
 // Map Routes
 // *** NOTE: MUST BE AFTER app.configure in order for bodyparser to work ***
-(router = require('./router')).mapUrls(app);
-
+(router = require('./router'));
+router.mapExpressRequests(app);
+router.mapSocketRequests(io);
 
 
 // Start server

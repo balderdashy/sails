@@ -1,9 +1,9 @@
+// Some basic authentication middleware is bundled in the AuthenticationService
 var policy = AuthenticationService.policy;
 
 
 
-// Behavior is inherited from default access settings unless otherwise specified
-// User access settings
+// User access settings are inherited from defaults, which you can override here
 exports.accessControlTree = function () {
 	
 	return {
@@ -21,7 +21,6 @@ exports.accessControlTree = function () {
 		
 	}
 }
-
 
 
 

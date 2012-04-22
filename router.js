@@ -1,9 +1,9 @@
 // Instantiate all controller modules
 controllers = {},
-controllerFiles = require('require-all')({ 
-	dirname: __dirname + '/controllers',
-	filter: /(.+Controller)\.js$/
-});
+	controllerFiles = require('require-all')({ 
+		dirname: __dirname + '/controllers',
+		filter: /(.+Controller)\.js$/
+	});
 _.each(controllerFiles,function (controller, filename) {
 	// If no 'id' attribute was provided, take a guess based on the filename
 	var className = controller.id || filename.replace(/Controller/, "");
@@ -11,13 +11,15 @@ _.each(controllerFiles,function (controller, filename) {
 	if (!controller.id) {
 		controller.id = className;
 	}
+	
 	controllers[className] = controller;
+	
 });
 
 
 // Custom mappings for specific urls
 var mappingConfig = require('./config/mappings'),
-	userMappings = mappingConfig.customMappings();
+userMappings = mappingConfig.customMappings();
 
 
 // Default handling for 500, 404, home page, etc.
@@ -27,19 +29,19 @@ var defaultMappings = mappingConfig.defaultMappings();
 var urlMappings = _.extend(defaultMappings,userMappings);
 
 
-// Set up routing table
-exports.mapUrls = function mapUrls (app) {
+// Set up routing table for standard http(s) requests
+exports.mapExpressRequests = function mapExpressRequests (app) {
 	
 	// Map standard AJAX and REST routes
 	for (var path in urlMappings) {
 		var route = urlMappings[path],
-			controller,
-			action;
+		controller, action;
 		
 		// A string means this route is a redirect
 		if (_.isString(route)) {
+			
 			// Map route
-			app.all(path, everyRequest,(function (redirectRoute) {
+			app.all(path,(function (redirectRoute) {
 				return function (req,res,next) { 
 					debug.debug("Redirecting to "+redirectRoute+" from " + req.url+ "...");
 					res.redirect(redirectRoute);
@@ -53,183 +55,91 @@ exports.mapUrls = function mapUrls (app) {
 			action = controller[route.action];	
 			
 			// Map route
-			app.all(path, everyRequest,(function (controllerName,actionName) {
-				return function (req,res,next) {					
-					// Run access control middleware
-					accessControlMiddleware(controllerName,actionName,req,res,next);
-				}
-			})(controller.id,route.action), action);
+			app.all(path,translateExpressRequest(controller.id,route.action));
 		}
-		
 	}
-		
-	// TODO: When a socket.io client connects, listen for the actions in the routing table
-	io.sockets.on('connection', newWebsocketClientConnects);
-	
-	
+
 	// Handle all other cases (wildcard)
-	app.all('/:entity/:action?/:id?', everyRequest,function (req,res,next) {
-			
-			// Run the access control middleware
-			accessControlMiddleware(req.param('entity'),req.param('action'),req,res,next);
-		}, handleWildcardRequest);
+	app.all('/:entity/:action?/:id?', handleWildcardRequest());
 }
 
-
-// Convert a socket.io client event callback to ExpressJS request semantics
-function socketIOToExpress (controller,action) {	
-	var req = {},
-		res = {
-			handler: handler
-		},
-		next = function (){};
-	
-	// TODO: ACTUALLY GET A HOLD OF THE REQ/RES OBJECTS HERE
-	// or, alternatively, wrap every controller method in proprietary crd
-	// 
-	
-	console.log("****************","TRIGGERED "+handler);
-	
-	return function (req,res,next){};
-//	handler(req,res,next);
-}
-
-
-// Called when a new socket.io client connects to the server
-function newWebsocketClientConnects (socket) {
-	// Map socket.io routes
-	for (var path in urlMappings) {
-		
-		var route = urlMappings[path],
-			controller,
-			action;
-		
-		console.log("MAPPED " + path + " to ",urlMappings[path]);
-		
-		
-		
-		(function (controllerName,actionName) {
-				return function (req,res,next) {					
-					// Run access control middleware
-					accessControlMiddleware(controllerName,actionName,req,res,next);
-				}
-			})(controller.id,route.action)
-		
-		// A string means this route is a redirect
-		if (_.isString(route)) {
-
-			// TODO: redirect
-		}
-		
-		// An object means this route route maps directly to a controller
-		else {
-			controller = controllers[route.controller];
-			action = controller[route.action];	
-			
-			// Emulate express semantics
-			var expressContext = socketIOToExpress(socket);
-			
-			// Invoke access control middleware
-			var authMiddleware = function(req,res,next) {accessControlMiddleware(route.controller,route.action,req,res,next);}
-			
-			
-			// Build virtual express route
-			// TODO
-			// Combine action and auth middleware
-//			middleware(emulatedExpressContext.req,emulatedExpressContext.res,emulatedExpressContext.next)
-			var virtualRoute = function(req,res,next){};
-			
-			// Assign socket event handler
-			socket.on(path, virtualRoute);
-		}
-		
+function applyAuthMiddleware(controllerName,actionName) {
+	return function (req,res,next) {
+		// Run access control middleware
+		accessControlMiddleware(controllerName,actionName,req,res,next);
 	}
 }
 
 
-
-// Executed on every request
-function everyRequest(req,res,next) {
-	debug.debug(req.session);
-	
-	// Share session object with views
-	res.local('Session',req.session);
-	
-	// Sane default for title outlet
-	res.local('title',req.url);
-	
-	next();
+// Convert an ExpressJS request to Sails' request semantics
+function translateExpressRequest (controllerName,actionName) {
+	return function (req,res,next) {
+		
+		// Generate and bind request context
+		new Context(controllerName,actionName,req,res,next);
+	}
 }
-
 
 
 /**
- * Try to match up an arbitrary request with a controller and action
+ * Use resourceful routing when the route is not explicitly defined
+ * (tries to match up an arbitrary request with a controller and action)
+ * (also supports backbone semantics)
  */
-function handleWildcardRequest (req,res,next) {
-	
-	var entity = req.param('entity'),
-	action = req.param('action'),
-	method = req.method;
-
-	if (entity && 
+function handleWildcardRequest () {
+	return function (req,res,next) {
+		var entity = req.param('entity'),
+		actionName = req.param('action'),
+		method = req.method;
 		
-		// TODO: get smarter about how static assets are served, 
-		// this should be customizable
-		entity != "stylesheets" && 
-		entity != "lib" && 
-		entity != "sources" && 
-		entity != "images") {
-
 		// Map route to action
 		if (_.contains(_.keys(controllers),entity)) {
 			var controller = controllers[entity];
 
 			// If action is unspecified, default to index			
 			// If index is unspecified, default to Backbone semantics
-			action = action || (
+			actionName = actionName || (
 				(controller['index']) ? "index" :
 				(method=="GET") ? "fetch" :
 				(method=="POST") ? "create" :
-				action
+				actionName
 				);
-					
+
 			// If action doesn't match, try a conventional synonym
-			if (! controller[action]) {
-				action = 
-				(action == "delete") ? "remove" :
-				(action == "destroy") ? "remove" : 
+			if (! controller[actionName]) {
+				actionName = 
+				(actionName == "delete") ? "remove" :
+				(actionName == "destroy") ? "remove" : 
 
-				(action == "edit") ? "update" : 
-				(action == "modify") ? "update" : 
+				(actionName == "edit") ? "update" : 
+				(actionName == "modify") ? "update" : 
 
-				(action == "view") ? "read" : 
-				(action == "show") ? "read" : 
-				(action == "detail") ? "read" : 
+				(actionName == "view") ? "read" : 
+				(actionName == "show") ? "read" : 
+				(actionName == "detail") ? "read" : 
 
-				(action == "add") ? "create" : 
-				(action == "new") ? "create" : 
-				action;					
-				
+				(actionName == "add") ? "create" : 
+				(actionName == "new") ? "create" : 
+				actionName;					
+
 				// Attempt to parse resource id from parameters
-				if (!_.isNaN(+action)) {
-					req.params.id = +action;
-					
+				if (!_.isNaN(+actionName)) {
+					req.params.id = +actionName;
+
 					// Default to Backbone semantics
-					action = (
+					actionName = (
 						(method == "PUT") ? "update" :
 						(method == "DELETE") ? "remove" :
-						action);
+						actionName);
 				}
 				
-				// Decide on best guess for action name
-				req.params.action = action;
+				req.params.action = actionName;
 			}
 
 			// If the action matches now, 
-			if (controller[action]) {
-				method = controller[action];
-				return method(req,res,next);
+			if (controller[actionName]) {
+				req.params.action = actionName;
+				return (translateExpressRequest(entity,actionName))(req,res,next);
 			}
 		}
 		else {
@@ -237,19 +147,104 @@ function handleWildcardRequest (req,res,next) {
 		}
 
 		// If that fails, just display the 404 page
-		return controllers.meta.notfound(req,res,next);
-	}
-	else {
-		next();
-	}
-	
+		return (translateExpressRequest("meta", "notfound"))(req,res,next);	
+	}	
 }
+
+
+
+
+
+
+// Set up routing table for socket requests
+exports.mapSocketRequests = function (io) {
+	// When a socket.io client connects, listen for the actions in the routing table
+	io.sockets.on('connection', function(socket) {
+		debug.debug("New socket.io client connected!");
+	
+		// Map socket.io routes
+		for (var path in urlMappings) {
+		
+			var route = urlMappings[path],
+			controller,
+			action;
+		
+			debug.debug("MAPPED " + path + " to ",urlMappings[path]);
+		
+		
+			// A string means this route is a redirect
+			if (_.isString(route)) {
+
+			// TODO: redirect
+			}
+		
+			// An object means this route route maps directly to a controller
+			else {
+			//			controller = controllers[route.controller];
+			//			action = controller[route.action];	
+			//			
+			//			// Emulate express semantics
+			//			var expressContext = socketIOToExpress(socket);
+			//			
+			//			// Invoke access control middleware
+			//			var authMiddleware = function(req,res,next) {accessControlMiddleware(route.controller,route.action,req,res,next);}
+			//			
+			//			
+			//			// Build virtual express route
+			//			// TODO
+			//			// Combine action and auth middleware
+			////			middleware(emulatedExpressContext.req,emulatedExpressContext.res,emulatedExpressContext.next)
+			//			var virtualRoute = function(req,res,next){};
+			//			
+			//			// Assign socket event handler
+			//			socket.on(path, virtualRoute);
+			}
+		
+		}
+	});
+}
+
+
+// Convert a socket.io client event callback to Sails' request semantics
+function translateSocketRequest (controller,action) {	
+	var req = {},
+	res = {
+		handler: handler
+	},
+	next = function (){};
+	
+	// TODO: ACTUALLY GET A HOLD OF THE REQ/RES OBJECTS HERE
+	// or, alternatively, wrap every controller method to achieve a 
+	// unified context (this.session, this.flash(), this.param(),
+	// this.json(), this.render(), this.redirect(), etc.)
+	console.log("****************","TRIGGERED "+handler);
+	
+	return function (req,res,next){};
+//	handler(req,res,next);
+}
+
+
+
+// Executed on every request
+//function everyRequest(req,res,next) {
+//	
+//	
+//	// Share session object with views
+//	res.local('Session',req.session);
+//	debug.debug(req);
+//	//	res.local('Request',JSON.stringify(req));
+//	
+//	// Sane default for title outlet
+//	res.local('title',req.url);
+//	
+//	next();
+//}
 
 
 
 // Load user access control configuration file
 var permissionConfig = require('./config/permissions'),
-	accessControlTree = _.extend(permissionConfig.defaultAccessControlTree(), permissionConfig.accessControlTree());
+accessControlTree = _.extend(permissionConfig.defaultAccessControlTree(), permissionConfig.accessControlTree());
 
 // Route incoming requests based on credentials
 function accessControlMiddleware (controllerName,actionName,req,res,next) {
@@ -291,14 +286,87 @@ function reroute (routePlan,req,res,next) {
 		next();
 	}
 	else if (routePlan === false) {
-		res.render('403',{title:'Access Denied'});
+		res.render('403',{
+			title:'Access Denied'
+		});
 	}
 	// if the routePlan is a function, treat it as basic middleware
 	else if (_.isFunction(routePlan)) {
 		routePlan(req,res,next);
 	}
 	
-	// TODO: Role-aware route plans ("user", "admin", ["user","editor"], etc.)
+// TODO: Role-aware route plans ("user", "admin", ["user","editor"], etc.)
 	
-	// TODO: complex condition routePlan objects
+// TODO: complex condition routePlan objects
+}
+
+
+
+
+
+
+
+
+
+function Context(controllerName,actionName,req,res,next) {
+	this.controller = controllerName;
+	this.action = actionName;
+	
+	
+	/**
+	* Preprocessing and controller code is executed from the context of an object 
+	* in the request (for express, this == req.context)
+	*/	
+	// Share session object with views
+	res.locals({
+		Session: req.session,
+		title: config.appName + " | " + actionName.toCapitalized()
+	});
+
+	// Run auth middleware
+	//	accessControlMiddleware(this.controller,this.action);
+
+	// Validate parameters
+	// TODO
+
+	// Do action from the present context
+//	console.log(this);
+
+	
+	
+	this.render=function(path,data){
+		data = data || {};
+		
+		// If no path provided, get default
+		if (!path) {
+			path = controllerName+"/"+actionName;
+		}
+		// If view path was provided, use it
+		else if (_.isString(path)) { }
+		else {
+			// If a map of data is provided as the first argument, use it
+			data = (_.isObject(path)) ? path : data;
+		}
+		
+		// Set view data
+		res.locals(data);
+		
+		// Template and render view
+		debug.debug("Rendering view:",path);
+		res.render(path);
+	}
+	this.redirect=function(){
+
+	}
+	this.json=function(){
+
+	}
+	this.req=req;
+	this.res=res;
+	this.next=next;
+	
+	// Excute action in request context
+	console.log("BINDING: controllers[controllerName][actionName]: ",controllers[controllerName][actionName],controllerName,actionName,controllers);
+	var exec=_.bind(controllers[controllerName][actionName],this);
+	exec();
 }

@@ -7,7 +7,8 @@ Account = Model.extend({
 	
 	classMethods: {
 		
-		
+		// If this account has the specified Role, run thenCallback
+		// otherwise perform the elseCallback
 		hasRole: function (accountId, roleName,thenCallback,elseCallback) {
 			if (!accountId) {
 				return elseCallback();

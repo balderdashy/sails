@@ -1,8 +1,9 @@
 _.extend(exports,{
 	
 	// Login to an Account
-	login: function (req,res,next) {
-		var secretAttempt = req.body && req.body.secret;
+	login: function () {
+		console.log(this);
+		var secretAttempt = this.req.body && this.req.body.secret;
 
 		if (secretAttempt) {
 			
@@ -14,12 +15,12 @@ _.extend(exports,{
 				
 				if (account) {
 					// Store authenticated state in session
-					AuthenticationService.session.link(req,account);
-					AuthenticationService.session.redirectToOriginalDestination(req,res,next);
+					AuthenticationService.session.link(this.req,account);
+					AuthenticationService.session.redirectToOriginalDestination(this.req,this.res,this.next);
 				}
 				else {
 					// Unknown user
-					res.render('auth/login', {
+					this.res.render('auth/login', {
 						title: 'Login | Sails Framework',
 						loginError: (secretAttempt && secretAttempt.length>0) ? 'That password is incorrect.' : undefined
 					});
@@ -29,7 +30,7 @@ _.extend(exports,{
 			});
 		}
 		else {
-			res.render('auth/login', {
+			this.res.render('auth/login', {
 				title: 'Login | Sails Framework',
 				loginError: (secretAttempt && secretAttempt.length>0) ? 'Please specify a password.' : undefined
 			});
@@ -38,17 +39,17 @@ _.extend(exports,{
 	
 	
 	// Logout of an Account
-	logout: function (req,res,next) {
-		req.session.reroutedFrom = null;
-		AuthenticationService.session.unlink(req);
-		res.redirect('/login');
+	logout: function () {
+		this.req.session.reroutedFrom = null;
+		AuthenticationService.session.unlink(this.req);
+		this.res.redirect('/login');
 	},
 	
 	
 	
 	// Register for an Account
-	register: function (req,res,next) {
-		var attempt = req.body && req.body.submitted;
+	register: function () {
+		var attempt = this.req.body && this.req.body.submitted;
 	
 		// Register and log in as a particular role
 		var registerAs = "user";
@@ -57,27 +58,27 @@ _.extend(exports,{
 		if (attempt) {
 			
 			var account = Account.create ({
-				username:req.body.username,
-				password:req.body.password
+				username:this.req.body.username,
+				password:this.req.body.password
 			}).success(function(){
 				debug.debug("REGISTRATION SUCCEEDED and user logged in.");
 				
-				AuthenticationService.session.link(req,account);
-				req.flash("Your account was registered successfully!");
-				res.redirect('/');
+				AuthenticationService.session.link(this.req,account);
+				this.req.flash("Your account was registered successfully!");
+				this.res.redirect('/');
 			})
 			.error(function() {
 				debug.debug("REGISTRATION FAILED!!!!");
 				
-				req.flash("An error occured while processing your registration.");
-				res.redirect('/register');
+				this.req.flash("An error occured while processing your registration.");
+				this.res.redirect('/register');
 			});
 		}
 		else {
-			res.render('auth/register', {
+			this.render('auth/register', {
 				title: 'Register | Sails Framework',
 				validationErrors: {
-					secret: (attempt && req.body.password.length > 0) ? 'Validation errors.' : undefined
+					secret: (attempt && this.req.body.password.length > 0) ? 'Validation errors.' : undefined
 				}
 			});
 		};
