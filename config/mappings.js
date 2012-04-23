@@ -24,7 +24,7 @@ exports.customMappings = function () {
 			controller: 'auth',
 			action: 'register'
 		}
-		, '/403': '/login'
+//		, '/403': '/login'
 	}
 };
 

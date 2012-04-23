@@ -1,18 +1,18 @@
-_.extend(exports,ExampleController = {
+_.extend(exports,{
 	
 
-	index: function () {
-		this.render();
+	index: function (req,res) {
+		res.render();
 
 	},
 
-	summary: function () {
-		this.render();
+	summary: function (req,res) {
+		res.render();
 	},
 
 
 
-	detail: function () {
-		this.render();
+	detail: function (req,res) {
+		res.render();
 	}
 });

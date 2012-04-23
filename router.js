@@ -63,6 +63,7 @@ exports.mapExpressRequests = function mapExpressRequests (app) {
 	app.all('/:entity/:action?/:id?', handleWildcardRequest());
 }
 
+
 function applyAuthMiddleware(controllerName,actionName) {
 	return function (req,res,next) {
 		// Run access control middleware
@@ -76,7 +77,55 @@ function translateExpressRequest (controllerName,actionName) {
 	return function (req,res,next) {
 		
 		// Generate and bind request context
-		new Context(controllerName,actionName,req,res,next);
+		this.controller = controllerName;
+		this.action = actionName;
+	
+		res.e_render = res.render;
+		res.render=function(path,data){
+			data = data || {};
+		
+			// If no path provided, get default
+			if (!path) {
+				path = controllerName+"/"+actionName;
+			}
+			// If view path was provided, use it
+			else if (_.isString(path)) { }
+			else {
+				// If a map of data is provided as the first argument, use it
+				data = (_.isObject(path)) ? path : data;
+			}
+		
+			// Set view data
+			res.locals(data);
+		
+			// Template and render view
+			debug.debug("Rendering view:",path);
+			res.e_render(path);
+		}
+//	
+//		/**
+//		* Preprocessing and controller code is executed from the context of an object 
+//		* in the request (for express, this == req.context)
+//		*/	
+//		// Share session object with views
+		res.locals({
+			Session: req.session,
+			title: config.appName + " | " + actionName.toCapitalized()
+		});
+//
+		// Run auth middleware
+		accessControlMiddleware(this.controller,this.action,req,res,function() {
+			
+			// Validate parameters
+			// TODO
+			// parameterMiddleware(req,res,function() {
+			// 
+			// });
+		
+			// Excute action in request context
+			//	console.log("BINDING: controllers[controllerName][actionName]: ",controllers[controllerName][actionName],controllerName,actionName,controllers);
+			controllers[controllerName][actionName](req,res);
+		});
 	}
 }
 
@@ -143,7 +192,7 @@ function handleWildcardRequest () {
 			}
 		}
 		else {
-			// No controller by that entity name exists
+		// No controller by that entity name exists
 		}
 
 		// If that fails, just display the 404 page
@@ -303,70 +352,65 @@ function reroute (routePlan,req,res,next) {
 
 
 
-
-
-
-
-
-function Context(controllerName,actionName,req,res,next) {
-	this.controller = controllerName;
-	this.action = actionName;
-	
-	
-	/**
-	* Preprocessing and controller code is executed from the context of an object 
-	* in the request (for express, this == req.context)
-	*/	
-	// Share session object with views
-	res.locals({
-		Session: req.session,
-		title: config.appName + " | " + actionName.toCapitalized()
-	});
-
-	// Run auth middleware
-	//	accessControlMiddleware(this.controller,this.action);
-
-	// Validate parameters
-	// TODO
-
-	// Do action from the present context
-//	console.log(this);
-
-	
-	
-	this.render=function(path,data){
-		data = data || {};
-		
-		// If no path provided, get default
-		if (!path) {
-			path = controllerName+"/"+actionName;
-		}
-		// If view path was provided, use it
-		else if (_.isString(path)) { }
-		else {
-			// If a map of data is provided as the first argument, use it
-			data = (_.isObject(path)) ? path : data;
-		}
-		
-		// Set view data
-		res.locals(data);
-		
-		// Template and render view
-		debug.debug("Rendering view:",path);
-		res.render(path);
-	}
-	this.redirect=function(){
-
-	}
-	this.json=function(){
-
-	}
-	this.req=req;
-	this.res=res;
-	this.next=next;
-	
-	// Excute action in request context
-	console.log("BINDING: controllers[controllerName][actionName]: ",controllers[controllerName][actionName],controllerName,actionName,controllers);
-	var exec=_.bind(controllers[controllerName][actionName],this);
-	exec();
-}
+//
+//function Context(controllerName,actionName,req,res,next) {
+//	this.controller = controllerName;
+//	this.action = actionName;
+//	
+//	this.render=function(path,data){
+//		data = data || {};
+//		
+//		// If no path provided, get default
+//		if (!path) {
+//			path = controllerName+"/"+actionName;
+//		}
+//		// If view path was provided, use it
+//		else if (_.isString(path)) { }
+//		else {
+//			// If a map of data is provided as the first argument, use it
+//			data = (_.isObject(path)) ? path : data;
+//		}
+//		
+//		// Set view data
+//		res.locals(data);
+//		
+//		// Template and render view
+//		debug.debug("Rendering view:",path);
+//		res.render(path);
+//	}
+//	
+//	this.redirect=function(){
+//
+//	}
+//	this.json=function(){
+//
+//	}
+//	this.req=req;
+//	this.res=res;
+//	this.next=next;
+//	
+//	/**
+//	* Preprocessing and controller code is executed from the context of an object 
+//	* in the request (for express, this == req.context)
+//	*/	
+//	// Share session object with views
+//	res.locals({
+//		Session: req.session,
+//		title: config.appName + " | " + actionName.toCapitalized()
+//	});
+//
+//	// Run auth middleware
+//	accessControlMiddleware(this.controller,this.action,req,res,next);
+//
+//	// Validate parameters
+//	// TODO
+//
+//	// Do action from the present context
+//	//	console.log(this);
+//	
+//	
+//	// Excute action in request context
+//	//	console.log("BINDING: controllers[controllerName][actionName]: ",controllers[controllerName][actionName],controllerName,actionName,controllers);
+//	var exec=_.bind(controllers[controllerName][actionName],this);
+//	exec();
+//}

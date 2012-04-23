@@ -5,24 +5,24 @@ _.extend(exports,{
 	// CASE-INSENSITIVE
 	id: 'meta',
 	
-	home: function () {
-		this.render();
+	home: function (req,res) {
+		res.render();
 	},
 
-	error: function () {
-		this.render('500', {
+	error: function (req,res) {
+		res.render('500', {
 			title: 'Error (500)'
 		});
 	},
 
-	notfound: function () {
-		this.render('404', {
+	notfound: function (req,res) {
+		res.render('404', {
 			title: 'Not Found (404)'
 		});
 	},
 
-	denied: function () {
-		this.render('403', {
+	denied: function (req,res) {
+		res.render('403', {
 			title: 'Access Denied (403)'
 		});
 	}
