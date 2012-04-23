@@ -8,22 +8,30 @@ var datasource = exports.datasource = {
 }
 
 
+// Execute custom application logic 
+// (i.e. automatically register a couple of admin users for testing)
+exports.bootstrap = function () {
+	
+}
+
+
+exports.sync = function () {
+	// Connect and sync
+	sequelize.sync().success(function() {
+		console.log("ORM sync successful!");
+	});
+}
+
 /**
  * Database bootstrap
  * Connect and define associations and schema
  */
-exports.bootstrap = function () {
+exports.initialize = function () {
 
 	// Connect to database
-	var sequelize = exports.model = new Sequelize(
+	sequelize = exports.model = new Sequelize(
 		datasource.database, 
 		datasource.username,
 		datasource.password
 	);
-	
-	// Connect and sync
-	sequelize.sync().success(function() {
-		console.log("DB Connection successful!");
-	});
-
 }
