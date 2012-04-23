@@ -24,7 +24,11 @@ exports.customMappings = function () {
 			controller: 'auth',
 			action: 'register'
 		}
-//		, '/403': '/login'
+		, '/tj': {
+			controller: 'example',
+			action: 'testjson'
+		}
+		, '/403': '/login'
 	}
 };
 

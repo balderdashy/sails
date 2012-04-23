@@ -6,7 +6,8 @@ _.extend(exports,{
 	id: 'meta',
 	
 	home: function (req,res) {
-		res.render();
+//		console.log("HIT HOME -------->",res);
+		res.render('meta/home');
 	},
 
 	error: function (req,res) {

@@ -7,10 +7,17 @@
 		}
 	};
 	
-	var socket = Sails.socket.server = io.connect(Sails.socket.url);
+	socket = Sails.socket.server = io.connect(Sails.socket.url);
 	
 	socket.on('connect',function(d) {
 		debug.debug("Socket connection established.");
+		
+		debug.debug("Emitting event to "+window.location.pathname);
+		socket.emit(window.location.pathname,{
+			hi: true
+		}, function (data) {
+			console.log(data);
+		});
 	})
 	
 })();

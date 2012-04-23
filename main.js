@@ -154,7 +154,7 @@ io = require('socket.io').listen(app);
 // *** NOTE: MUST BE AFTER app.configure in order for bodyparser to work ***
 (router = require('./router'));
 router.mapExpressRequests(app);
-router.mapSocketRequests(io);
+router.mapSocketRequests(app,io);
 
 
 // Start server

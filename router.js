@@ -29,6 +29,78 @@ var defaultMappings = mappingConfig.defaultMappings();
 var urlMappings = _.extend(defaultMappings,userMappings);
 
 
+
+
+// Set up routing table for socket requests
+exports.mapSocketRequests = function (app,io) {
+	// When a socket.io client connects, listen for the actions in the routing table
+	io.sockets.on('connection', function(socket) {
+		debug.debug("New socket.io client connected!");
+	
+		// Map socket.io routes
+		for (var path in urlMappings) {
+		
+			var route = urlMappings[path],
+			controller,
+			action;
+		
+		
+			// A string means this route is a redirect
+			if (_.isString(route)) {
+
+				// redirect
+				
+				// TODO:
+//				socket.on(route,)
+			}
+		
+			// An object means this route route maps directly to a controller
+			else {
+				
+				// Emulate express semantics and handle request
+				socket.on(path,translateSocketRequest(socket,route.controller, route.action,
+					function(controllerName,actionName,req,res) {
+						res.app = app;
+						(controllers[controllerName][actionName])(req,res);
+					}));
+				
+
+//				// Invoke access control middleware
+//				var authMiddleware = function(req,res,next) {accessControlMiddleware(route.controller,route.action,req,res,next);}
+//
+//
+//				// Build virtual express route
+//				// TODO
+//				// Combine action and auth middleware
+//	//			middleware(emulatedExpressContext.req,emulatedExpressContext.res,emulatedExpressContext.next)
+//				var virtualRoute = function(req,res,next){};
+//
+//				// Assign socket event handler
+//				socket.on(path, virtualRoute);
+			}
+		
+		}
+	});
+}
+
+
+// Convert a socket.io client event callback to Sails' request semantics
+var socketInterpreter = require("./lib/interpreter");
+function translateSocketRequest (sock,controllerName,actionName,callback) {		
+	return function(data,fn){
+		var req={},
+			res=socketInterpreter.res;
+		res.send = function(body) {
+			console.log("!");
+			fn(body);
+		}
+		callback(controllerName, actionName,req,res);
+	}
+}
+
+
+
+
 // Set up routing table for standard http(s) requests
 exports.mapExpressRequests = function mapExpressRequests (app) {
 	
@@ -64,12 +136,12 @@ exports.mapExpressRequests = function mapExpressRequests (app) {
 }
 
 
-function applyAuthMiddleware(controllerName,actionName) {
-	return function (req,res,next) {
-		// Run access control middleware
-		accessControlMiddleware(controllerName,actionName,req,res,next);
-	}
-}
+
+
+
+
+
+
 
 
 // Convert an ExpressJS request to Sails' request semantics
@@ -102,17 +174,13 @@ function translateExpressRequest (controllerName,actionName) {
 			debug.debug("Rendering view:",path);
 			res.e_render(path);
 		}
-//	
-//		/**
-//		* Preprocessing and controller code is executed from the context of an object 
-//		* in the request (for express, this == req.context)
-//		*/	
-//		// Share session object with views
+
+		// Always share some data with views
 		res.locals({
 			Session: req.session,
 			title: config.appName + " | " + actionName.toCapitalized()
 		});
-//
+
 		// Run auth middleware
 		accessControlMiddleware(this.controller,this.action,req,res,function() {
 			
@@ -205,89 +273,6 @@ function handleWildcardRequest () {
 
 
 
-// Set up routing table for socket requests
-exports.mapSocketRequests = function (io) {
-	// When a socket.io client connects, listen for the actions in the routing table
-	io.sockets.on('connection', function(socket) {
-		debug.debug("New socket.io client connected!");
-	
-		// Map socket.io routes
-		for (var path in urlMappings) {
-		
-			var route = urlMappings[path],
-			controller,
-			action;
-		
-			debug.debug("MAPPED " + path + " to ",urlMappings[path]);
-		
-		
-			// A string means this route is a redirect
-			if (_.isString(route)) {
-
-			// TODO: redirect
-			}
-		
-			// An object means this route route maps directly to a controller
-			else {
-			//			controller = controllers[route.controller];
-			//			action = controller[route.action];	
-			//			
-			//			// Emulate express semantics
-			//			var expressContext = socketIOToExpress(socket);
-			//			
-			//			// Invoke access control middleware
-			//			var authMiddleware = function(req,res,next) {accessControlMiddleware(route.controller,route.action,req,res,next);}
-			//			
-			//			
-			//			// Build virtual express route
-			//			// TODO
-			//			// Combine action and auth middleware
-			////			middleware(emulatedExpressContext.req,emulatedExpressContext.res,emulatedExpressContext.next)
-			//			var virtualRoute = function(req,res,next){};
-			//			
-			//			// Assign socket event handler
-			//			socket.on(path, virtualRoute);
-			}
-		
-		}
-	});
-}
-
-
-// Convert a socket.io client event callback to Sails' request semantics
-function translateSocketRequest (controller,action) {	
-	var req = {},
-	res = {
-		handler: handler
-	},
-	next = function (){};
-	
-	// TODO: ACTUALLY GET A HOLD OF THE REQ/RES OBJECTS HERE
-	// or, alternatively, wrap every controller method to achieve a 
-	// unified context (this.session, this.flash(), this.param(),
-	// this.json(), this.render(), this.redirect(), etc.)
-	console.log("****************","TRIGGERED "+handler);
-	
-	return function (req,res,next){};
-//	handler(req,res,next);
-}
-
-
-
-// Executed on every request
-//function everyRequest(req,res,next) {
-//	
-//	
-//	// Share session object with views
-//	res.local('Session',req.session);
-//	debug.debug(req);
-//	//	res.local('Request',JSON.stringify(req));
-//	
-//	// Sane default for title outlet
-//	res.local('title',req.url);
-//	
-//	next();
-//}
 
 
 
@@ -352,7 +337,8 @@ function reroute (routePlan,req,res,next) {
 
 
 
-//
+// TODO: support scope injection in controller code
+// 
 //function Context(controllerName,actionName,req,res,next) {
 //	this.controller = controllerName;
 //	this.action = actionName;
