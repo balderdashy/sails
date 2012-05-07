@@ -15,24 +15,26 @@ ConnectSession = require('connect').middleware.session.Session;
 
 // // TODO: remove these and use require.js-style dependency management
 // Instantiate all library modules
-var libraries = {},
-	libFiles = require('require-all')({ 
-		dirname: __dirname + '/lib',
-		filter: /(.+)\.js$/
-	});
-_.each(libFiles,function (library, filename) {
-	// If no 'id' attribute was provided, take a guess based on the filename
-	var className = library.id || filename;
-	className = className.toLowerCase();
-	if (!library.id) {
-		library.id = className;
-	}
-	libraries[className] = library;
-});
+//var libraries = {},
+//	libFiles = require('require-all')({ 
+//		dirname: __dirname + '/lib',
+//		filter: /(.+)\.js$/
+//	});
+//_.each(libFiles,function (library, filename) {
+//	// If no 'id' attribute was provided, take a guess based on the filename
+//	var className = library.id || filename;
+//	className = className.toLowerCase();
+//	if (!library.id) {
+//		library.id = className;
+//	}
+//	libraries[className] = library;
+//});
 
 
-// Set up log
-debug = libraries.logger.debug;
+
+
+// Set up logger
+debug = require('./lib/logger.js').debug;
 
 // Configuration
 db = require('./config/db'); 
@@ -41,10 +43,10 @@ require('./config/log');
 
 
 // Run common.js for quick app-wide logic additions
-require('./common.js');
+require('./lib/common.js');
 
 // Import model library
-require('./model.js');
+require('./lib/model.js');
 
 // Setup sequelize
 db.initialize();
@@ -133,7 +135,7 @@ app.configure('production', function(){
 });
 
 // By convention, serve .js files using the ejs engine
-app.register('.js', require('ejs'));
+app.register('.js', ejs);
 
 
 // Automatically grab and instantiate services from directory
@@ -154,7 +156,7 @@ io = require('socket.io').listen(app);
 
 // Map Routes
 // *** NOTE: MUST BE AFTER app.configure in order for bodyparser to work ***
-(router = require('./router'));
+(router = require('./lib/router'));
 router.mapExpressRequests(app);
 router.mapSocketRequests(app,io);
 
