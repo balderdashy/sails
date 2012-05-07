@@ -71,6 +71,7 @@ _.extend(exports,{
 				// if callback is provided, errors will be passed into it
 				// else errors will be thrown
 				myMsg.send(function(err){ 
+					debug.debug(err,"\n","Message sent successfully.");
 					res.redirect('/');
 				});
 			})
