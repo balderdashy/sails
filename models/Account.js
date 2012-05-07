@@ -24,6 +24,23 @@ Account = Model.extend({
 		}
 	},
 	instanceMethods: {
+		
+		setRoleByName: function(roleName,callback) {
+			if (!roleName) return callback();
+			
+			var self = this;
+			Role.find({where: {name: roleName}}).success(function(role){
+				if (role) {
+					self.setRoles([role]).success(function(){
+						callback();
+					});
+				}
+				else {
+					throw new Error ("No such role ('"+roleName+"') exists!");
+				}
+			})
+		},
+		
 		doSomethingWithThisInstance: function () {}
 	}
 });

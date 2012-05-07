@@ -77,6 +77,43 @@ _.extend(exports,{
 				}
 			});
 		};
+	},
+	
+	
+	// Register as an admin
+	registerAdmin: function (req,res) {
+		var attempt = req.body && req.body.submitted;
+		
+		// Register new account object
+		if (attempt) {
+			
+			var account = Account.create ({
+				username:req.body.username,
+				password:req.body.password
+			}).success(function(a){
+				a.setRoleByName('admin',function(){
+					debug.debug("REGISTRATION SUCCEEDED and user logged in.");		
+
+					AuthenticationService.session.link(req,a);
+					req.flash("Your account was registered successfully!");
+					res.redirect('/');
+				});
+			})
+			.error(function() {
+				debug.debug("REGISTRATION FAILED!!!!");
+				
+				req.flash("An error occured while processing your registration.");
+				res.redirect('/register');
+			});
+		}
+		else {
+			res.render('auth/registerAdmin', {
+				title: 'Register | Sails Framework',
+				validationErrors: {
+					secret: (attempt && req.body.password.length > 0) ? 'Validation errors.' : undefined
+				}
+			});
+		};
 	}
 	
 });

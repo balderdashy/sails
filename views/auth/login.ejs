@@ -3,7 +3,7 @@
 <form action="/login" method="post">
 	<input type="hidden" name="submitted"/>
 	<label for="secret">Your password</label><br/>
-	<input name="secret" placeholder="What's your password?" id="secret" type="password"/>
+	<input tabindex="1" name="secret" placeholder="What's your password?" id="secret" type="password"/>
 	<% if (loginError) { %>
 	<span class="error"><%- loginError %></span>
 	<% } %>
