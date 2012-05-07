@@ -5,6 +5,7 @@ fs = require('fs');
 async = require('async');
 Sequelize = require("sequelize");
 _ = require('underscore');
+Email = require("email").Email;
 
 // Connect dependency requirements
 sessionStore = new express.session.MemoryStore();

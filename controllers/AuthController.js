@@ -60,7 +60,19 @@ _.extend(exports,{
 				
 				AuthenticationService.session.link(req,account);
 				req.flash("Your account was registered successfully!");
-				res.redirect('/');
+				
+				var myMsg = new Email(
+				{ from: "bot@sailsjs.com"
+				, to:   "michael.r.mcneil@gmail.com"
+				, subject: "Knock knock..."
+				, body: "Who's there?"
+				});
+
+				// if callback is provided, errors will be passed into it
+				// else errors will be thrown
+				myMsg.send(function(err){ 
+					res.redirect('/');
+				});
 			})
 			.error(function() {
 				debug.debug("REGISTRATION FAILED!!!!");
