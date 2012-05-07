@@ -84,13 +84,26 @@ _.extend(exports,{
 	registerAdmin: function (req,res) {
 		var attempt = req.body && req.body.submitted;
 		
+		function error() {
+			debug.debug("REGISTRATION FAILED!!!!");
+				
+			req.flash("An error occured while processing your registration.");
+			res.redirect('/auth/registerAdmin');
+		}
+		
 		// Register new account object
 		if (attempt) {
 			
-			var account = Account.create ({
+			var account = Account.build({
 				username:req.body.username,
 				password:req.body.password
-			}).success(function(a){
+			});
+			console.log("VALIDATING:",account.validate,account.validate());
+			if (account.validate()) {
+				return error();
+			}
+			
+			account.save().success(function(a){
 				a.setRoleByName('admin',function(){
 					debug.debug("REGISTRATION SUCCEEDED and user logged in.");		
 
@@ -99,12 +112,7 @@ _.extend(exports,{
 					res.redirect('/');
 				});
 			})
-			.error(function() {
-				debug.debug("REGISTRATION FAILED!!!!");
-				
-				req.flash("An error occured while processing your registration.");
-				res.redirect('/register');
-			});
+			.error(error);
 		}
 		else {
 			res.render('auth/registerAdmin', {

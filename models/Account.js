@@ -1,7 +1,20 @@
 Account = Model.extend({
 	
-	username: STRING,
-	password: STRING,
+	username: {
+		type: STRING,
+		validate: {
+			len: [3,25]
+		}
+	},
+	password: {
+		type:STRING,
+		validate: {
+			len: {
+				args: [3,25],
+				msg: "hmm"
+			}
+		}
+	},
 	
 	hasMany: [ 'Role' ],
 	
