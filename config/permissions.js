@@ -7,18 +7,16 @@ var policy = AuthenticationService.policy;
 exports.accessControlTree = function () {
 	
 	return {
-		// app-wide default behavior
-		'*': true,
-
-		// Controller authentication patterns
-		example: {
-			// Default behavior for this controller
-			'*': policy.only('developer'),
-
-			summary: true,
-			detail: policy.any
-		}
 		
+		'*': true,
+		
+		settings: {
+			"*":policy.any
+		},
+		
+		admin: {
+			'*': policy.only('admin')
+		}
 	}
 }
 

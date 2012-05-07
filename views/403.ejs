@@ -1,15 +1,10 @@
-403
-Access Denied
+<h1>Access denied.</h1>
 
 
-<br/>
-<p>
-	You don't have permission to view this page.
-</p>
-<p>
 	<% if (!session.authenticated) { %>
-		Please <a href="/login">log in</a> or <a href="/register">register</a>.
+<p>You have to be logged in to do that!</p>
+<p>Please <a href="/login">log in</a> or <a href="/register">register</a>.</p>
 	<% } else { %>
-		Care to <a href="/logout">log in as a different user</a> with the proper permissions?
+<p>	You don't have permission to view this page.</p>
+<p>Care to <a href="/logout">log in as a different user</a> with the proper permissions?</p>
 	<% } %>
-</p>

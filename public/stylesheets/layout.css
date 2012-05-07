@@ -21,6 +21,11 @@ a {
 	color: #00B7FF; 
 }
 
+input {
+	padding: 0.5em;
+	width: 50%;
+}
+
 h1 {   
 	font-size: 28px;
 	font-weight:bold;

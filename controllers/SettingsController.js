@@ -5,17 +5,6 @@ _.extend(exports,{
 		res.render();
 
 	},
-
-	summary: function (req,res) {
-		res.render();
-	},
-
-
-
-	detail: function (req,res) {
-		res.render();
-	},
-	
 	
 	testjson: function (req,res) {
 		res.json({

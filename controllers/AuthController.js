@@ -48,10 +48,7 @@ _.extend(exports,{
 	// Register for an Account
 	register: function (req,res) {
 		var attempt = req.body && req.body.submitted;
-	
-		// Register and log in as a particular role
-		var registerAs = "user";
-	
+		
 		// Register new account object
 		if (attempt) {
 			
