@@ -3,7 +3,10 @@ Account = Model.extend({
 	username: {
 		type: STRING,
 		validate: {
-			len: [3,25]
+			len: {
+				args: [3,25],
+				msg: "Username must be between 3 and 25 characters."
+			}
 		}
 	},
 	password: {
@@ -11,7 +14,7 @@ Account = Model.extend({
 		validate: {
 			len: {
 				args: [3,25],
-				msg: "hmm"
+				msg: "Password must be between 3 and 25 characters."
 			}
 		}
 	},

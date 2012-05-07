@@ -71,10 +71,7 @@ _.extend(exports,{
 		}
 		else {
 			res.render('auth/register', {
-				title: 'Register | Sails Framework',
-				validationErrors: {
-					secret: (attempt && req.body.password.length > 0) ? 'Validation errors.' : undefined
-				}
+				title: 'Register | Sails Framework'
 			});
 		};
 	},
@@ -98,7 +95,6 @@ _.extend(exports,{
 				username:req.body.username,
 				password:req.body.password
 			});
-			console.log("VALIDATING:",account.validate,account.validate());
 			if (account.validate()) {
 				return error();
 			}
@@ -116,10 +112,7 @@ _.extend(exports,{
 		}
 		else {
 			res.render('auth/registerAdmin', {
-				title: 'Register | Sails Framework',
-				validationErrors: {
-					secret: (attempt && req.body.password.length > 0) ? 'Validation errors.' : undefined
-				}
+				title: 'Register | Sails Framework'
 			});
 		};
 	}
