@@ -43,7 +43,7 @@ exports.mapSocketRequests = function (app,io) {
 		for (var path in urlMappings) {
 		
 			var route = urlMappings[path],
-				controller, action;
+			controller, action;
 		
 		
 			// A string means this route is a redirect
@@ -64,20 +64,24 @@ exports.mapSocketRequests = function (app,io) {
 			// so this route route maps directly to a controller
 				
 			// Emulate express semantics and handle request
-			socket.on(path,translateSocketRequest(socket,route.controller, route.action,
-				function(controllerName,actionName,req,res) {
-					res.app = app;
-					(controllers[controllerName][actionName])(req,res);
-				}));
+			socket.on(path,
+				(function (controllerName,actionName) {
+					return function (data,fn) {
+						var expressContext = socketInterpreter.interpret(data,fn);
+						return (processSocketRequest(controllerName,actionName))(expressContext.req,expressContext.res,app);
+					}
+				})(route.controller,route.action) );
 		}
 		
 		// Map wildcard routes
-		socket.on("*",translateSocketRequest(socket,null,null,
-			function(controllerName,actionName,req,res) {
-				res.app = app;
-				var r = handleWildcardRequest(req,res);
-				(controllers[r.controller][r.action])(req,res);
-			}));
+		socket.on("*",
+			(function (controllerName,actionName) {
+				return function (data,fn) {
+					var expressContext = socketInterpreter.interpret(data,fn);
+					var r = handleWildcardRequest(expressContext.req,expressContext.res);
+					return (processSocketRequest(r.controller,r.action))(expressContext.req,expressContext.res,app);
+				}
+			})(route.controller,route.action) );
 	});
 }
 
@@ -108,14 +112,14 @@ exports.mapExpressRequests = function mapExpressRequests (app) {
 			action = controller[route.action];	
 			
 			// Map route
-			app.all(path,translateExpressRequest(controller.id,route.action));
+			app.all(path,processExpressRequest(controller.id,route.action));
 		}
 	}
 
 	// Handle all other cases (wildcard)
 	app.all('/:entity/:action?/:id?', function(req,res,next) {
 		var route = handleWildcardRequest(req,res,next);
-		return (translateExpressRequest(route.controller,route.action))(req,res,next);
+		return (processExpressRequest(route.controller,route.action))(req,res,next);
 	});
 }
 
@@ -123,10 +127,29 @@ exports.mapExpressRequests = function mapExpressRequests (app) {
 
 
 // Convert a socket.io client event callback to Sails' request semantics
-function translateSocketRequest (sock,controllerName,actionName,callback) {		
-	return function(data,fn){
-		var context = socketInterpreter.interpret(data,fn);
-		callback(controllerName, actionName,context.req,context.res);
+function processSocketRequest (controllerName,actionName) {		
+	return function(req,res,app){
+		
+		res.app = app;
+		
+		// Save controller and action to req.params
+		req.params.action = actionName;
+		req.params.controller = controllerName;
+		
+		// Run auth middleware
+		//		accessControlMiddleware(controllerName,actionName,req,res,function() {
+		//			
+		//			// Validate parameters
+		//			// TODO
+		//			// parameterMiddleware(req,res,function() {
+		//			// 
+		//			// });
+		//		
+		//			// Excute action in request context
+		//			controllers[controllerName][actionName](req,res);
+		////			callback(controllerName, actionName,expressContext.req,expressContext.res);
+		//		});
+		controllers[controllerName][actionName](req,res);
 	}
 }
 
@@ -134,13 +157,19 @@ function translateSocketRequest (sock,controllerName,actionName,callback) {
 
 // Convert an ExpressJS request to Sails' request semantics
 // and render response
-function translateExpressRequest (controllerName,actionName) {
+function processExpressRequest (controllerName,actionName) {
+	
+	// Generate and bind request context
 	return function (req,res,next) {
 		
-		// Generate and bind request context
+		// Save controller and action to req.params and request context
 		this.controller = controllerName;
 		this.action = actionName;
+		req.params.action = this.action;
+		req.params.controller = this.controller;
 	
+	
+		// Enhance Express's render() method to automatically render-by-route
 		res.e_render = res.render;
 		res.render=function(path,data){
 			data = data || {};
@@ -163,12 +192,14 @@ function translateExpressRequest (controllerName,actionName) {
 			debug.debug("Rendering view:",path);
 			res.e_render(path);
 		}
+		
 
 		// Always share some data with views
 		res.locals({
 			Session: req.session,
 			title: config.appName + " | " + actionName.toCapitalized()
 		});
+		
 
 		// Run auth middleware
 		accessControlMiddleware(this.controller,this.action,req,res,function() {
