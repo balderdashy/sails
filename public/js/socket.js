@@ -12,18 +12,19 @@
 	socket.on('connect',function(d) {
 		debug.debug("Socket connection established.");
 		
-		debug.debug("Emitting event to "+window.location.pathname);
-		socket.emit(window.location.pathname,{
-			hi: true
-		}, function (data) {
-			try {
-				data = JSON.parse(data);
-				console.log("Received JSON: ",data);
-			}
-			catch (e) {
-				console.log("Received non-JSON: ",data);	
-			}
-		});
+		// FOR TESTING
+//		debug.debug("Emitting event to "+window.location.pathname);
+//		socket.emit(window.location.pathname,{
+//			hi: true
+//		}, function (data) {
+//			try {
+//				data = JSON.parse(data);
+//				console.log("Received JSON: ",data);
+//			}
+//			catch (e) {
+//				console.log("Received non-JSON: ",data);	
+//			}
+//		});
 	})
 	
 })();
