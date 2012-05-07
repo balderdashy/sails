@@ -1,3 +1,5 @@
+var socketInterpreter = require("./lib/interpreter");
+
 // Instantiate all controller modules
 controllers = {},
 	controllerFiles = require('require-all')({ 
@@ -54,7 +56,7 @@ exports.mapSocketRequests = function (app,io) {
 				// In case the user created a redirect loop, hopcount halts execution
 				hopcount++;
 				if (hopcount > 1000) {
-					throw new Error ("Over 1000 string redirects in URL mapping!  You probably have a redirect loop.  Please check your url mappings.");
+					throw new Error ("Over 1000 redirects detected!  You probably have a redirect loop.  Please check your url mappings.");
 				}
 			}
 		
@@ -67,26 +69,9 @@ exports.mapSocketRequests = function (app,io) {
 					res.app = app;
 					(controllers[controllerName][actionName])(req,res);
 				}));
-
-
-		//				// Invoke access control middleware
-		//				var authMiddleware = function(req,res,next) {accessControlMiddleware(route.controller,route.action,req,res,next);}
-		//
-		//
-		//				// Build virtual express route
-		//				// TODO
-		//				// Combine action and auth middleware
-		//	//			middleware(emulatedExpressContext.req,emulatedExpressContext.res,emulatedExpressContext.next)
-		//				var virtualRoute = function(req,res,next){};
-		//
-		//				// Assign socket event handler
-		//				socket.on(path, virtualRoute);
 		}
-
-
 		
-		
-		// TODO: Map wildcard routes
+		// Map wildcard routes
 		socket.on("*",translateSocketRequest(socket,null,null,
 			function(controllerName,actionName,req,res) {
 				res.app = app;
@@ -128,41 +113,22 @@ exports.mapExpressRequests = function mapExpressRequests (app) {
 	}
 
 	// Handle all other cases (wildcard)
-	app.all('/:entity/:action?/:id?', generateExpressWildcardHandler());
+	app.all('/:entity/:action?/:id?', function(req,res,next) {
+		var route = handleWildcardRequest(req,res,next);
+		return (translateExpressRequest(route.controller,route.action))(req,res,next);
+	});
 }
 
 
 
 
 // Convert a socket.io client event callback to Sails' request semantics
-var socketInterpreter = require("./lib/interpreter");
 function translateSocketRequest (sock,controllerName,actionName,callback) {		
 	return function(data,fn){
-		var req={},
-		res=socketInterpreter.res;
-		res.send = function(body) {
-			fn(body);
-		}
-		callback(controllerName, actionName,req,res);
+		var context = socketInterpreter.interpret(data,fn);
+		callback(controllerName, actionName,context.req,context.res);
 	}
 }
-
-
-
-
-
-/**
- * Return a request handler for the given wildcard route
- */
-function generateExpressWildcardHandler() {
-	return function(req,res,next) {
-		var route = handleWildcardRequest(req,res,next);
-		return (translateExpressRequest(route.controller,route.action))(req,res,next);
-	};
-}
-
-
-
 
 
 
@@ -219,6 +185,7 @@ function translateExpressRequest (controllerName,actionName) {
 		});
 	}
 }
+
 
 
 /**
@@ -296,6 +263,11 @@ function handleWildcardRequest (req,res,next) {
 		action: "notfound"
 	};
 }
+
+
+
+
+
 
 
 
