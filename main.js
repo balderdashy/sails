@@ -14,26 +14,6 @@ ConnectSession = require('connect').middleware.session.Session;
 
 
 
-// // TODO: remove these and use require.js-style dependency management
-// Instantiate all library modules
-//var libraries = {},
-//	libFiles = require('require-all')({ 
-//		dirname: __dirname + '/lib',
-//		filter: /(.+)\.js$/
-//	});
-//_.each(libFiles,function (library, filename) {
-//	// If no 'id' attribute was provided, take a guess based on the filename
-//	var className = library.id || filename;
-//	className = className.toLowerCase();
-//	if (!library.id) {
-//		library.id = className;
-//	}
-//	libraries[className] = library;
-//});
-
-
-
-
 // Set up logger
 debug = require('./lib/logger.js').debug;
 
