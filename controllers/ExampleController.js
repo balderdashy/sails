@@ -19,7 +19,7 @@ _.extend(exports,{
 	
 	testjson: function (req,res) {
 		res.json({
-			stuff: "there it is",
+			stuff: "there it is!",
 			things: "and more things"
 		});
 	}

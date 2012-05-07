@@ -1,0 +1,3 @@
+{
+	"authenticated":<% if (session.authenticated) { %>true<% } else { %>false<% } %>
+}

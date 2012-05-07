@@ -52,9 +52,13 @@ exports.policy = {
 			next();
 		}
 		else {
-			// Access denied, but it would be weird to show a 403 page since the user is logged in
-			// TODO: display a page explaining that these pages are inaccessible to authed users, and asking if the user would like to logout
-			res.redirect('/');
+			// Some pages should only be accessible when you're not logged in, 
+			// but it's weird to show a 403 page!
+			// TODO: display a page explaining that these pages are inaccessible 
+			// to authed users, and asking if the user would like to logout
+//			res.redirect('/');
+			
+			res.render('403',{title:'Access Denied'});
 		}
 	},
 
@@ -62,6 +66,7 @@ exports.policy = {
 	// Check whether the logged-in user is of a specific type
 	only: function(roleName) {
 		return function (req,res,next) {
+
 			// Remember where the user was trying to go so she can be redirected back
 			req.session.reroutedFrom = req.url;
 
@@ -77,7 +82,6 @@ exports.policy = {
 }
 
 
-
 /**
  * Session management helper
  */
@@ -87,12 +91,22 @@ exports.session = {
 	link: function (req,account) {
 		req.session.authenticated = true;
 		req.session.account = account.id;
+		
+		// Manually save session if this is a socket request
+		if (req._socketIOPretender) {
+			req.session.save();
+		}
 	},
 	
 	// Disconnect the current session from all Accounts
 	unlink: function (req) {
 		req.session.authenticated = false;
 		delete req.session.account;
+		
+		// Manually save session if this is a socket request
+		if (req._socketIOPretender) {
+			req.session.save();
+		}
 	},
 	
 	// Handle routing back to original destination in session

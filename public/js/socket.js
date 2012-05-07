@@ -16,7 +16,13 @@
 		socket.emit(window.location.pathname,{
 			hi: true
 		}, function (data) {
-			console.log("Received: ",data);
+			try {
+				data = JSON.parse(data);
+				console.log("Received JSON: ",data);
+			}
+			catch (e) {
+				console.log("Received non-JSON: ",data);	
+			}
 		});
 	})
 	

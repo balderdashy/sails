@@ -67,7 +67,7 @@ exports.mapSocketRequests = function (app,io) {
 			socket.on(path,
 				(function (controllerName,actionName) {
 					return function (data,fn) {
-						var expressContext = socketInterpreter.interpret(data,fn);
+						var expressContext = socketInterpreter.interpret(data,fn,socket,app);
 						return (processSocketRequest(controllerName,actionName))(expressContext.req,expressContext.res,app);
 					}
 				})(route.controller,route.action) );
@@ -77,7 +77,7 @@ exports.mapSocketRequests = function (app,io) {
 		socket.on("*",
 			(function (controllerName,actionName) {
 				return function (data,fn) {
-					var expressContext = socketInterpreter.interpret(data,fn);
+					var expressContext = socketInterpreter.interpret(data,fn,socket,app);
 					var r = handleWildcardRequest(expressContext.req,expressContext.res);
 					return (processSocketRequest(r.controller,r.action))(expressContext.req,expressContext.res,app);
 				}
@@ -130,29 +130,66 @@ exports.mapExpressRequests = function mapExpressRequests (app) {
 function processSocketRequest (controllerName,actionName) {		
 	return function(req,res,app){
 		
-		res.app = app;
+		// Mark this as a socket.io request, not XHR (even if it is)
+		enhanceRequest(req,res,controllerName,actionName);
+		req.xhr = req.isAjax = false;
+		req.isSocket = true;
+		
 		
 		// Save controller and action to req.params
 		req.params.action = actionName;
 		req.params.controller = controllerName;
 		
+		// TODO: Perform parameter validation middleware
+		
 		// Run auth middleware
-		//		accessControlMiddleware(controllerName,actionName,req,res,function() {
-		//			
-		//			// Validate parameters
-		//			// TODO
-		//			// parameterMiddleware(req,res,function() {
-		//			// 
-		//			// });
-		//		
-		//			// Excute action in request context
-		//			controllers[controllerName][actionName](req,res);
-		////			callback(controllerName, actionName,expressContext.req,expressContext.res);
-		//		});
-		controllers[controllerName][actionName](req,res);
+		accessControlMiddleware(controllerName,actionName,req,res,function() {
+			controllers[controllerName][actionName](req,res);
+		});
 	}
 }
 
+// General Sails.js enhancements to express request
+function enhanceRequest (req,res,controllerName,actionName) {
+	req.isAjax = req.xhr;
+	
+	// Enhance Express's render() method to automatically render-by-route
+	res.e_render = res.render;
+	res.render=function(path,data){
+		data = data || {};
+
+		// If no path provided, get default
+		if (!path) {
+			path = controllerName+"/"+actionName;
+		}
+		// If view path was provided, use it
+		else if (_.isString(path)) { }
+		else {
+			// If a map of data is provided as the first argument, use it
+			data = (_.isObject(path)) ? path : data;
+		}
+
+		// Set view data
+		res.locals && res.locals(data);
+
+		// If extension is not specified, and it exists,
+		// and if this is an ajax or socket request, use the JSON view equivalent				
+		fs.stat(app.settings.views+"/"+path+'.json', function(err, stat) {
+			var fileExists = err == null;
+			
+			if (fileExists && path.split(".").length == 1 && (req.isAjax || req.isSocket)) {
+				path = path+'.json';
+				debug.debug("Rendering JSON view:",path);
+			}
+			else {
+				debug.debug("Rendering view:",path);
+			}
+
+			// Template and render view
+			res.e_render(path);
+		});
+	}
+}
 
 
 // Convert an ExpressJS request to Sails' request semantics
@@ -168,35 +205,12 @@ function processExpressRequest (controllerName,actionName) {
 		req.params.action = this.action;
 		req.params.controller = this.controller;
 	
-	
-		// Enhance Express's render() method to automatically render-by-route
-		res.e_render = res.render;
-		res.render=function(path,data){
-			data = data || {};
-		
-			// If no path provided, get default
-			if (!path) {
-				path = controllerName+"/"+actionName;
-			}
-			// If view path was provided, use it
-			else if (_.isString(path)) { }
-			else {
-				// If a map of data is provided as the first argument, use it
-				data = (_.isObject(path)) ? path : data;
-			}
-		
-			// Set view data
-			res.locals(data);
-		
-			// Template and render view
-			debug.debug("Rendering view:",path);
-			res.e_render(path);
-		}
+		enhanceRequest(req,res,controllerName,actionName);
 		
 
 		// Always share some data with views
 		res.locals({
-			Session: req.session,
+			session: req.session,
 			title: config.appName + " | " + actionName.toCapitalized()
 		});
 		
@@ -220,10 +234,10 @@ function processExpressRequest (controllerName,actionName) {
 
 
 /**
- * Use resourceful routing when the route is not explicitly defined
- * (tries to match up an arbitrary request with a controller and action)
- * (also supports backbone semantics)
- */
+	 * Use resourceful routing when the route is not explicitly defined
+	 * (tries to match up an arbitrary request with a controller and action)
+	 * (also supports backbone semantics)
+	 */
 function handleWildcardRequest (req,res,next) {
 	
 	var entity = req.param('entity'),
@@ -367,66 +381,69 @@ function reroute (routePlan,req,res,next) {
 
 
 
-// TODO: support scope injection in controller code
-// 
-//function Context(controllerName,actionName,req,res,next) {
-//	this.controller = controllerName;
-//	this.action = actionName;
-//	
-//	this.render=function(path,data){
-//		data = data || {};
-//		
-//		// If no path provided, get default
-//		if (!path) {
-//			path = controllerName+"/"+actionName;
-//		}
-//		// If view path was provided, use it
-//		else if (_.isString(path)) { }
-//		else {
-//			// If a map of data is provided as the first argument, use it
-//			data = (_.isObject(path)) ? path : data;
-//		}
-//		
-//		// Set view data
-//		res.locals(data);
-//		
-//		// Template and render view
-//		debug.debug("Rendering view:",path);
-//		res.render(path);
-//	}
-//	
-//	this.redirect=function(){
-//
-//	}
-//	this.json=function(){
-//
-//	}
-//	this.req=req;
-//	this.res=res;
-//	this.next=next;
-//	
-//	/**
-//	* Preprocessing and controller code is executed from the context of an object 
-//	* in the request (for express, this == req.context)
-//	*/	
-//	// Share session object with views
-//	res.locals({
-//		Session: req.session,
-//		title: config.appName + " | " + actionName.toCapitalized()
-//	});
-//
-//	// Run auth middleware
-//	accessControlMiddleware(this.controller,this.action,req,res,next);
-//
-//	// Validate parameters
-//	// TODO
-//
-//	// Do action from the present context
-//	//	console.log(this);
-//	
-//	
-//	// Excute action in request context
-//	//	console.log("BINDING: controllers[controllerName][actionName]: ",controllers[controllerName][actionName],controllerName,actionName,controllers);
-//	var exec=_.bind(controllers[controllerName][actionName],this);
-//	exec();
-//}
+
+
+
+	// TODO: support scope injection in controller code
+	// 
+	//function Context(controllerName,actionName,req,res,next) {
+	//	this.controller = controllerName;
+	//	this.action = actionName;
+	//	
+	//	this.render=function(path,data){
+	//		data = data || {};
+	//		
+	//		// If no path provided, get default
+	//		if (!path) {
+	//			path = controllerName+"/"+actionName;
+	//		}
+	//		// If view path was provided, use it
+	//		else if (_.isString(path)) { }
+	//		else {
+	//			// If a map of data is provided as the first argument, use it
+	//			data = (_.isObject(path)) ? path : data;
+	//		}
+	//		
+	//		// Set view data
+	//		res.locals(data);
+	//		
+	//		// Template and render view
+	//		debug.debug("Rendering view:",path);
+	//		res.render(path);
+	//	}
+	//	
+	//	this.redirect=function(){
+	//
+	//	}
+	//	this.json=function(){
+	//
+	//	}
+	//	this.req=req;
+	//	this.res=res;
+	//	this.next=next;
+	//	
+	//	/**
+	//	* Preprocessing and controller code is executed from the context of an object 
+	//	* in the request (for express, this == req.context)
+	//	*/	
+	//	// Share session object with views
+	//	res.locals({
+	//		Session: req.session,
+	//		title: config.appName + " | " + actionName.toCapitalized()
+	//	});
+	//
+	//	// Run auth middleware
+	//	accessControlMiddleware(this.controller,this.action,req,res,next);
+	//
+	//	// Validate parameters
+	//	// TODO
+	//
+	//	// Do action from the present context
+	//	//	console.log(this);
+	//	
+	//	
+	//	// Excute action in request context
+	//	//	console.log("BINDING: controllers[controllerName][actionName]: ",controllers[controllerName][actionName],controllerName,actionName,controllers);
+	//	var exec=_.bind(controllers[controllerName][actionName],this);
+	//	exec();
+	//}
