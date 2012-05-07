@@ -90,7 +90,7 @@ var app = module.exports = express.createServer({
 */
 
 // HTTP
-var app = module.exports = express.createServer();
+app = module.exports = express.createServer();
 
 // Configuration
 // Enable JSONP

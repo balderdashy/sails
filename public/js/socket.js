@@ -16,7 +16,7 @@
 		socket.emit(window.location.pathname,{
 			hi: true
 		}, function (data) {
-			console.log(data);
+			console.log("Received: ",data);
 		});
 	})
 	

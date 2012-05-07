@@ -41,64 +41,60 @@ exports.mapSocketRequests = function (app,io) {
 		for (var path in urlMappings) {
 		
 			var route = urlMappings[path],
-			controller,
-			action;
+				controller, action;
 		
 		
 			// A string means this route is a redirect
-			if (_.isString(route)) {
-
-				// redirect
+			var hopcount = 0;
+			while (_.isString(route)) {
 				
-				// TODO:
-//				socket.on(route,)
+				// redirect to actual route
+				route = urlMappings[route];
+				
+				// In case the user created a redirect loop, hopcount halts execution
+				hopcount++;
+				if (hopcount > 1000) {
+					throw new Error ("Over 1000 string redirects in URL mapping!  You probably have a redirect loop.  Please check your url mappings.");
+				}
 			}
 		
-			// An object means this route route maps directly to a controller
-			else {
+			// At this point, we can assume this route is an object,
+			// so this route route maps directly to a controller
 				
-				// Emulate express semantics and handle request
-				socket.on(path,translateSocketRequest(socket,route.controller, route.action,
-					function(controllerName,actionName,req,res) {
-						res.app = app;
-						(controllers[controllerName][actionName])(req,res);
-					}));
-				
+			// Emulate express semantics and handle request
+			socket.on(path,translateSocketRequest(socket,route.controller, route.action,
+				function(controllerName,actionName,req,res) {
+					res.app = app;
+					(controllers[controllerName][actionName])(req,res);
+				}));
 
-//				// Invoke access control middleware
-//				var authMiddleware = function(req,res,next) {accessControlMiddleware(route.controller,route.action,req,res,next);}
-//
-//
-//				// Build virtual express route
-//				// TODO
-//				// Combine action and auth middleware
-//	//			middleware(emulatedExpressContext.req,emulatedExpressContext.res,emulatedExpressContext.next)
-//				var virtualRoute = function(req,res,next){};
-//
-//				// Assign socket event handler
-//				socket.on(path, virtualRoute);
-			}
-		
+
+		//				// Invoke access control middleware
+		//				var authMiddleware = function(req,res,next) {accessControlMiddleware(route.controller,route.action,req,res,next);}
+		//
+		//
+		//				// Build virtual express route
+		//				// TODO
+		//				// Combine action and auth middleware
+		//	//			middleware(emulatedExpressContext.req,emulatedExpressContext.res,emulatedExpressContext.next)
+		//				var virtualRoute = function(req,res,next){};
+		//
+		//				// Assign socket event handler
+		//				socket.on(path, virtualRoute);
 		}
+
+
+		
+		
+		// TODO: Map wildcard routes
+		socket.on("*",translateSocketRequest(socket,null,null,
+			function(controllerName,actionName,req,res) {
+				res.app = app;
+				var r = handleWildcardRequest(req,res);
+				(controllers[r.controller][r.action])(req,res);
+			}));
 	});
 }
-
-
-// Convert a socket.io client event callback to Sails' request semantics
-var socketInterpreter = require("./lib/interpreter");
-function translateSocketRequest (sock,controllerName,actionName,callback) {		
-	return function(data,fn){
-		var req={},
-			res=socketInterpreter.res;
-		res.send = function(body) {
-			console.log("!");
-			fn(body);
-		}
-		callback(controllerName, actionName,req,res);
-	}
-}
-
-
 
 
 // Set up routing table for standard http(s) requests
@@ -132,7 +128,37 @@ exports.mapExpressRequests = function mapExpressRequests (app) {
 	}
 
 	// Handle all other cases (wildcard)
-	app.all('/:entity/:action?/:id?', handleWildcardRequest());
+	app.all('/:entity/:action?/:id?', generateExpressWildcardHandler());
+}
+
+
+
+
+// Convert a socket.io client event callback to Sails' request semantics
+var socketInterpreter = require("./lib/interpreter");
+function translateSocketRequest (sock,controllerName,actionName,callback) {		
+	return function(data,fn){
+		var req={},
+		res=socketInterpreter.res;
+		res.send = function(body) {
+			fn(body);
+		}
+		callback(controllerName, actionName,req,res);
+	}
+}
+
+
+
+
+
+/**
+ * Return a request handler for the given wildcard route
+ */
+function generateExpressWildcardHandler() {
+	return function(req,res,next) {
+		var route = handleWildcardRequest(req,res,next);
+		return (translateExpressRequest(route.controller,route.action))(req,res,next);
+	};
 }
 
 
@@ -140,11 +166,8 @@ exports.mapExpressRequests = function mapExpressRequests (app) {
 
 
 
-
-
-
-
 // Convert an ExpressJS request to Sails' request semantics
+// and render response
 function translateExpressRequest (controllerName,actionName) {
 	return function (req,res,next) {
 		
@@ -203,73 +226,76 @@ function translateExpressRequest (controllerName,actionName) {
  * (tries to match up an arbitrary request with a controller and action)
  * (also supports backbone semantics)
  */
-function handleWildcardRequest () {
-	return function (req,res,next) {
-		var entity = req.param('entity'),
-		actionName = req.param('action'),
-		method = req.method;
+function handleWildcardRequest (req,res,next) {
+	
+	var entity = req.param('entity'),
+	actionName = req.param('action'),
+	method = req.method;
 		
-		// Map route to action
-		if (_.contains(_.keys(controllers),entity)) {
-			var controller = controllers[entity];
+	// Map route to action
+	if (_.contains(_.keys(controllers),entity)) {
+		var controller = controllers[entity];
 
-			// If action is unspecified, default to index			
-			// If index is unspecified, default to Backbone semantics
-			actionName = actionName || (
-				(controller['index']) ? "index" :
-				(method=="GET") ? "fetch" :
-				(method=="POST") ? "create" :
-				actionName
-				);
+		// If action is unspecified, default to index			
+		// If index is unspecified, default to Backbone semantics
+		actionName = actionName || (
+			(controller['index']) ? "index" :
+			(method=="GET") ? "fetch" :
+			(method=="POST") ? "create" :
+			actionName
+			);
 
-			// If action doesn't match, try a conventional synonym
-			if (! controller[actionName]) {
-				actionName = 
-				(actionName == "delete") ? "remove" :
-				(actionName == "destroy") ? "remove" : 
+		// If action doesn't match, try a conventional synonym
+		if (! controller[actionName]) {
+			actionName = 
+			(actionName == "delete") ? "remove" :
+			(actionName == "destroy") ? "remove" : 
 
-				(actionName == "edit") ? "update" : 
-				(actionName == "modify") ? "update" : 
+			(actionName == "edit") ? "update" : 
+			(actionName == "modify") ? "update" : 
 
-				(actionName == "view") ? "read" : 
-				(actionName == "show") ? "read" : 
-				(actionName == "detail") ? "read" : 
+			(actionName == "view") ? "read" : 
+			(actionName == "show") ? "read" : 
+			(actionName == "detail") ? "read" : 
 
-				(actionName == "add") ? "create" : 
-				(actionName == "new") ? "create" : 
-				actionName;					
+			(actionName == "add") ? "create" : 
+			(actionName == "new") ? "create" : 
+			actionName;					
 
-				// Attempt to parse resource id from parameters
-				if (!_.isNaN(+actionName)) {
-					req.params.id = +actionName;
-
-					// Default to Backbone semantics
-					actionName = (
-						(method == "PUT") ? "update" :
-						(method == "DELETE") ? "remove" :
-						actionName);
-				}
+			// Attempt to parse resource id from parameters
+			if (!_.isNaN(+actionName)) {
+				req.params.id = +actionName;
 				
-				req.params.action = actionName;
-			}
 
-			// If the action matches now, 
-			if (controller[actionName]) {
-				req.params.action = actionName;
-				return (translateExpressRequest(entity,actionName))(req,res,next);
+				// Default to Backbone semantics
+				actionName = (
+					(method == "PUT") ? "update" :
+					(method == "DELETE") ? "remove" :
+					actionName);
 			}
-		}
-		else {
-		// No controller by that entity name exists
+				
+			req.params.action = actionName;
 		}
 
-		// If that fails, just display the 404 page
-		return (translateExpressRequest("meta", "notfound"))(req,res,next);	
-	}	
+		// If the action matches now, 
+		if (controller[actionName]) {
+			req.params.action = actionName;
+			return {
+				controller: entity,
+				action: actionName
+			};
+		}
+	}
+	else {
+	// No controller by that entity name exists
+	}
+
+	// If that fails, just display the 404 page
+	return {
+		controller: "meta",
+		action: "notfound"
+	};
 }
-
-
-
 
 
 
@@ -308,6 +334,7 @@ function accessControlMiddleware (controllerName,actionName,req,res,next) {
 	// Rereoute if necessary (exit middleware)
 	reroute(routePlan,req,res,next);
 }
+
 
 // Reroute as a result of access control
 function reroute (routePlan,req,res,next) {
