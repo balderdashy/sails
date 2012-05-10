@@ -95,9 +95,19 @@
 		
 		var DropdownComponent = Mast.Component.extend({
 			template: '.dropdown.template',
-			events: {click:'openMenu'},
+			events: {
+				click:'openMenu'
+			},
+			init: function() {
+				
+			},
 			openMenu: function(){
 				this.pattern.setTemplate('.dropdown-expanded.template');
+				_.defer(this.$el.clickoutside,this.closeMenu,this.$el);
+			},
+			
+			closeMenu: function () {
+				this.pattern.setTemplate('.dropdown.template');
 			}
 		});
 	

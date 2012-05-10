@@ -50,6 +50,25 @@
 		: jQuery("<p>").append(this.eq(0).clone()).html();
 	};
 	
+	// Add clickoutside event to jQuery
+	jQuery.fn.clickoutside = function(callback,context) {
+		var outside = 1, self = $(context);
+		self.cb = callback;
+		context.click(function() {
+			outside = 0;
+		});
+		
+		
+		$(document).bind('click',function (e) {
+			outside && self.cb();
+			outside = 1;
+			$(this).unbind(e);
+		});
+		
+		
+		return $(context);
+	}
+	
 	// Set up template settings
 	_.templateSettings = {
 		interpolate : /\{\{(.+?)\}\}/g,
@@ -173,7 +192,7 @@
 			// Autorender is off by default
 			// By default, append to the outlet, don't replace it
 			this.autorender!==false && 
-				(this.replaceOutlet ? this.replace() : this.append());
+			(this.replaceOutlet ? this.replace() : this.append());
 			
 			// Trigger init event
 			_.result(this,'init');
