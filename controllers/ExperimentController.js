@@ -2,8 +2,8 @@ _.extend(exports,{
 	
 
 	index: function (req,res) {
+		console.log(req.params.id);
 		res.render();
-
 	},
 	
 	testjson: function (req,res) {
