@@ -16,7 +16,7 @@
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 
 
-<!--		<script type="text/javascript" src="/js/mast.js"></script>-->
+		<script type="text/javascript" src="/js/mast.js"></script>
 
 	</head>
 	<body>
@@ -41,9 +41,20 @@
 			<%- body %>
 		</div>
 
-		<div style="display:none;" id="template-library">
-			<%- partial('dropdown',{}) %>
-			<%- partial('meta/templates/test',{}) %>
+		<div style="display:none;" id="mast-template-library">
+			<%
+			// Get all files in template dir
+			var dir = 'meta/templates', completeDir = 'views/'+dir;
+			fs.readdirSync(completeDir).forEach(function(filename) {
+
+				if ((filename === 'index.js') || (filename[0] === '_')) { return; }
+
+				filename = path.basename(filename, path.extname(filename));
+				var filepath = path.join(dir, filename);
+
+				%>
+				<%- partial(filepath,{}) %>
+			<% }); %>
 		</div>
 		
 		<div id="footer">

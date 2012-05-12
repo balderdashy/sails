@@ -19,7 +19,7 @@ _.extend(exports,{
 				}
 				else {
 					// Unknown user
-					res.render('auth/login', {
+					res.view('auth/login', {
 						title: 'Login | Sails Framework',
 						loginError: (secretAttempt && secretAttempt.length>0) ? 'That password is incorrect.' : null
 					});
@@ -29,7 +29,7 @@ _.extend(exports,{
 			});
 		}
 		else {
-			res.render('auth/login', {
+			res.view('auth/login', {
 				loginError: (secretAttempt && secretAttempt.length>0) ? 'Please specify a password.' : null
 			});
 		}
@@ -40,7 +40,7 @@ _.extend(exports,{
 	logout: function (req,res,next) {
 		req.session.reroutedFrom = null;
 		AuthenticationService.session.unlink(req);
-		res.redirect('/login');
+		res.view('/login');
 	},
 	
 	
@@ -72,18 +72,18 @@ _.extend(exports,{
 				// else errors will be thrown
 				myMsg.send(function(err){ 
 					debug.debug(err,"\n","Message sent successfully.");
-					res.redirect('/');
+					res.view('/');
 				});
 			})
 			.error(function() {
 				debug.debug("REGISTRATION FAILED!!!!");
 				
 				req.flash("An error occured while processing your registration.");
-				res.redirect('/register');
+				res.view('/register');
 			});
 		}
 		else {
-			res.render('auth/register', {
+			res.view('auth/register', {
 				title: 'Register | Sails Framework'
 			});
 		};
@@ -124,7 +124,7 @@ _.extend(exports,{
 			.error(error);
 		}
 		else {
-			res.render('auth/registerAdmin', {
+			res.view('auth/registerAdmin', {
 				title: 'Register | Sails Framework'
 			});
 		};

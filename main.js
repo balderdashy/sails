@@ -2,6 +2,7 @@
 express = require('express');
 ejs = require('ejs');
 fs = require('fs');
+path = require('path');
 async = require('async');
 Sequelize = require("sequelize");
 _ = require('underscore');

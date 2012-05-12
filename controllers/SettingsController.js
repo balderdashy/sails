@@ -2,7 +2,7 @@ _.extend(exports,{
 	
 
 	index: function (req,res) {
-		res.render();
+		res.view();
 
 	},
 	

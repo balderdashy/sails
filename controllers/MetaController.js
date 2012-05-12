@@ -7,23 +7,23 @@ _.extend(exports,{
 	
 	home: function (req,res) {
 
-		res.render('meta/home');
+		res.view('meta/home');
 	},
 
 	error: function (req,res) {
-		res.render('500', {
+		res.view('500', {
 			title: 'Error (500)'
 		});
 	},
 
 	notfound: function (req,res) {
-		res.render('404', {
+		res.view('404', {
 			title: 'Not Found (404)'
 		});
 	},
 
 	denied: function (req,res) {
-		res.render('403', {
+		res.view('403', {
 			title: 'Access Denied (403)'
 		});
 	}

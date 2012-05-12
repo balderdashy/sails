@@ -18,7 +18,7 @@
 				click:'openMenu'
 			},
 			init: function() {
-				
+				//
 			},
 			openMenu: function(){
 				this.pattern.setTemplate('.dropdown-expanded.template');
@@ -52,8 +52,10 @@
 		});	
 		
 		b=new Mast.Component({
-			model: new Mast.Model({name:'te1'}),
-			template: '.test.template',
+			pattern: new Mast.Pattern({
+				model: new Mast.Model({name:'te1'}),
+				template: '.test.template'
+			}),
 	
 			outlet:'.outlet0',
 			
@@ -65,13 +67,9 @@
 		
 		
 		
-		// Now reset them again by calling render
-		a.render();
-		b.render();
-		
-		
-		// But you don't have to force a component to render-- 
-		// it'll do it on its own when its template or model changes
+		// When you create a new Component, it renders to the DOM automatically
+		// And subsequently, you don't have to force a component to render-- 
+		// it'll do it on its own when its Pattern (template or model) changes.
 		
 		
 		// First, let's try changing the model
@@ -84,6 +82,22 @@
 		// This is great for instances when a whole bunch of HTML needs to change 
 		a.pattern.setTemplate('.test1.template');
 		b.pattern.setTemplate('.test1.template');
+		
+		
+		
+		// Now let's try creating a Table
+		// A Table is basically just a Component which contains 
+		// a homogenous list of sub-Components
+		t = new Mast.Table({
+			template: '#mast-template-testtable',
+			model: null,
+			
+			collection: new Mast.Collection,
+			rowtemplate: '#mast-template-testtable-row',
+			outlet: '.outlet0',
+			autorender: false
+		});
+		
 		
 	});
 	

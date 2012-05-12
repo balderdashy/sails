@@ -178,19 +178,22 @@
 					this.pattern = new Mast.Pattern({
 						template: this.template,
 						model: this.model ? this.model : new Mast.Model
-					}).on('change',this.render);
+					});
 				}
 			}
 			else {
 				if (this.template || this.model) {
 					debug.warn ('A template selector and/or model was specified '+
 						' even though a pattern was also specified!! \n'+
-						'Ignoring and using the specified pattern...');
+						'Ignoring extra attributes and using the specified pattern...');
 				}
 			}
 			
-			// Autorender is off by default
-			// By default, append to the outlet, don't replace it
+			// Watch for changes to pattern
+			this.pattern.on('change',this.render);
+			
+			// Autorender is on by default
+			// Default render type is "append", but you can also specify "replaceOutlet""
 			this.autorender!==false && 
 			(this.replaceOutlet ? this.replace() : this.append());
 			
@@ -255,7 +258,9 @@
 	
 	
 	
-	
+	Mast.Table = Mast.Component.extend({
+		
+	});
 	
 		
 //	Row = Mast.Model.extend({
