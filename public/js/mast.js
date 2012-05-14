@@ -271,12 +271,13 @@
 			
 			// Free the memory for this component and remove it from the DOM
 			destroy: function () {
+				this.undelegateEvents();
 				this.$el.remove();
 			},
 			
 			// Determine the proper outlet selector and ensure that it is valid
 			_verifyOutlet: function (outlet,context) {
-//				console.log("!!!!",context);
+				//				console.log("!!!!",context);
 				outlet = outlet || this.outlet;
 			
 				if (!outlet) {
@@ -316,6 +317,7 @@
 		// collection, both on the clientside and over the Socket using
 		// Backbone REST-style semantics.
 		Table: {
+			
 			initialize: function (attributes,options,dontRender){
 				
 				// Initialize main component
@@ -323,19 +325,28 @@
 				
 				_.bindAll(this);
 				
+				// Watch for and announce statechange events
+				this.on('afterRenderRow',this.afterRenderRow);
+				
 				// Verify rowtemplate
 				if (!this.rowtemplate) {
 					throw new Error("No rowtemplate specified!");
 				}
 				
-				// Parent's render is disabled, so we have to take of that here
 				// Autorender is on by default
 				// Default render type is "append", but you can also specify "replaceOutlet""
-				!dontRender && this.autorender!==false && 
-				(this.replaceOutlet ? this.replace() : this.append());
+				if (!dontRender && this.autorender!==false) {
+					if (this.replaceOutlet) {
+						this.replace()
+					}
+					else {
+						this.append();
+					}
+				}
 				
 			},
 			
+			// Render the Table, its subcomponents, and all rows
 			render: function () {
 				// Render main pattern
 				Mast.Component.prototype.render.call(this,true);
@@ -352,9 +363,32 @@
 					this.$rowoutlet = this._verifyOutlet(this.rowoutlet,this.$el);
 				}
 				
-				// Empty the row outlet
+				// Empty and append rows to the outlet
 				this.$rowoutlet.empty();
+				this._appendRows();
 				
+				// Listen for row DOM events and redelegate events
+				this._listenToRows();
+				this.delegateEvents();
+			},
+			
+			// Render the given row in place
+			renderRow: function (id) {
+				this._replaceRow(id,this._generateRowElement(this.patterns[id]));
+			},
+			
+			// Lookup the element for the id'th row
+			getRowEl: function (id) {
+				return this.getRowsEl().eq(id);
+			},
+			
+			// Lookup $ set of all rows
+			getRowsEl: function () {
+				return this.$rowoutlet.children();
+			},
+
+			// Update and render patterns from collection
+			_appendRows: function() {
 				// Update and render patterns from collection
 				var self = this;
 				this.patterns = this.collection.map(function(model,index){
@@ -373,51 +407,54 @@
 					// rendering later on
 					return pattern;
 				});
-				
-				// Listen for row events and redelegate events
-				_.each(this.rowevents,function(fn,ev) {
-					ev += " ."+Mast.rowCSSClass;
-					var handler = function(e) {
-						var index = this._getRowIndex(e);
-						return this[fn](index,e);
-					};
-					handler = _.bind(handler,this);
-					
-					this.events[ev] = handler;
-				},this);
-				this.delegateEvents();
 			},
 			
-			// Render the given row in place
-			renderRow: function (id) {
-				this._replaceRow(
-					id,
-					this._generateRowElement(this.patterns[id])
-					);
+			// Delegate row events
+			_listenToRows: function () {
+				this.undelegateEvents();
+				_.each(this.rowevents,function(fn,ev) {
+					var delegateEventSplitter = /^(\S+)\s*(.*)$/;
+					var match = ev.match(delegateEventSplitter);
+					var eventName = match[1], selector = match[2];
+					
+					
+					// Inject row CSS class selector
+					ev = eventName + 
+					" ." + Mast.rowCSSClass+
+					((selector) ? (" " + selector) : "");
+					
+					if (!_.isFunction(fn)) {
+						fn = this[fn];
+					}
+					
+					var handler = function(e) {
+						var index = this._getRowIndex(e);
+						return fn(index,e);
+					};
+					handler = _.bind(handler,this);
+					this.events[ev] = handler;
+				},this);
 			},
 			
 			// Append newly generated row element to rowoutlet
 			_appendRow: function($el){
 				this.$rowoutlet.append($el);
+				this.trigger('afterRenderRow',$el.index());
 			},
 			
 			// Replace the given row with the new element
 			_replaceRow: function(id,$el){
-				var oldEl = this._getRowEl(id);
+				var oldEl = this.getRowEl(id);
 				oldEl.replaceWith($el);
 			},
 			
-			_getRowEl: function (id) {
-				return this.$rowoutlet.children().eq(id);
-			},
-			
+			// Generate element and add CSS identifier class
 			_generateRowElement: function (pattern) {
-				// Generate element and add row class
 				var $element = $(pattern.generate());
 				return $element.addClass(Mast.rowCSSClass);
 			},
 			
-			// Given the event object, return the index of this row
+			// Given the event object, return the index of this row's element
 			_getRowIndex: function (e) {
 				return $(e.currentTarget).index();
 			}
@@ -426,93 +463,94 @@
 		
 		
 		// Mast.raise() instantiates the Mast library with the specified options
-		raise: function (options,readyfn) {
+		raise: function (options,afterLoadFn) {
 			
 			
 			// Convert options.routes into a format Backbone's router will accept
 			// (can't have key:function(){} style routes, must use a string function name)
-			var routerConfig = {routes:{}};
-			var indexRoute = null;
-			if (options.routes) {
-				_.each(options.routes,function(action,query) {
-					if (query=="routes") return;
-					// Save index route for the end
-					if (query=="index") {
-						indexRoute = action;
-					}
-					routerConfig.routes[query] = query;
-					routerConfig[query] = action;
-				});
-				
-				// Define default (index) route
-				routerConfig.routes[""] = "index";
-				routerConfig.index = indexRoute;
-			}
-			
-			// Extend and instantiate main router
-			var AppRouter = Mast.Router.extend(routerConfig);
-			Mast.app = new AppRouter();
-			
-			// Mast makes the assumption that you want to trigger
-			// the route handler.  This can be overridden
-			Mast.navigate = function(query,options) {
-				return Mast.app.navigate(query,_.extend({
-					trigger:true
-				},options));
-			}
-			
-			// when document is ready
-			$(function(){
-				// Launch history manager 
-				Mast.history.start();
+			var routerConfig = {
+				routes:{}
+		};
+		var indexRoute = null;
+		if (options.controller) {
+			_.each(options.controller,function(action,query) {
+				if (query=="routes") return;
+				// Save index route for the end
+				if (query=="index") {
+					indexRoute = action;
+				}
+				routerConfig.routes[query] = query;
+				routerConfig[query] = action;
 			});
+				
+			// Define default (index) route
+			routerConfig.routes[""] = "index";
+			routerConfig.index = indexRoute;
+		}
+			
+		// Extend and instantiate main router
+		var AppRouter = Mast.Router.extend(routerConfig);
+		Mast.app = new AppRouter();
+			
+		// Mast makes the assumption that you want to trigger
+		// the route handler.  This can be overridden
+		Mast.navigate = function(query,options) {
+			return Mast.app.navigate(query,_.extend({
+				trigger:true
+			},options));
+		}
+			
+		// when document is ready
+		$(function(){
+			// Launch history manager 
+			Mast.history.start();
+		});
 
 	
-			// Initialize Socket
-			// Override default base URL if one was specified
-			this.Socket.baseurl = options.baseurl || this.Socket.baseurl;
-			this.Socket.initialize();
+		// Initialize Socket
+		// Override default base URL if one was specified
+		this.Socket.baseurl = options.baseurl || this.Socket.baseurl;
+		this.Socket.initialize();
 	
 	
-			// Add outerHtml to jQuery
-			jQuery.fn.outerHTML = function(s) {
-				return s
-				? this.before(s).remove()
-				: jQuery("<p>").append(this.eq(0).clone()).html();
-			};
-			
-			
+		// Add outerHtml to jQuery
+		jQuery.fn.outerHTML = function(s) {
+			return s
+			? this.before(s).remove()
+			: jQuery("<p>").append(this.eq(0).clone()).html();
+		};
 					
 			
-			// Prepare template library
-			// HTML templates can be manually assigned here
-			// otherwise they can be loaded from DOM elements
-			// or from a URL
-			Mast.TemplateLibrary = {}
+		// Prepare template library
+		// HTML templates can be manually assigned here
+		// otherwise they can be loaded from DOM elements
+		// or from a URL
+		Mast.TemplateLibrary = {}
 			
-			// TODO: Go ahead and absorb all of the templates in the library 
-			// right from the get-go
+		// TODO: Go ahead and absorb all of the templates in the library 
+		// right from the get-go
 			
-			// Set up template settings
-			_.templateSettings = {
-				//				variable: 'data',
-				interpolate : /\{\{(.+?)\}\}/g,
-				escape : /\{\{(-.+?)\}\}/g,
-				evaluate : /\{\%(.+?)\%\}/g
-			};
+		// Set up template settings
+		_.templateSettings = {
+			//				variable: 'data',
+			interpolate : /\{\{(.+?)\}\}/g,
+			escape : /\{\{(-.+?)\}\}/g,
+			evaluate : /\{\%(.+?)\%\}/g
+		};
 				
 				
-			// Extend Backbone structures
-			Mast.Pattern = Mast.View.extend(Mast.Pattern);
-			Mast.Component = Mast.Pattern.extend(Mast.Component);
-			Mast.Table = Mast.Component.extend(Mast.Table);
+		// Extend Backbone structures
+		Mast.Pattern = Mast.View.extend(Mast.Pattern);
+		Mast.Component = Mast.Pattern.extend(Mast.Component);
+		Mast.Table = Mast.Component.extend(Mast.Table);
 			
-			// When Mast and $.document are ready, execute ready callback
-			$(function(){
-				_.defer(readyfn);
-			})
+		// When Mast and $.document are ready, 
+		// trigger afterLoad callback (if specified)
+		$(function(){
+			afterLoadFn && _.defer(afterLoadFn);
+		})
 			
-		}
+	}
 	},
 	Backbone.Events);
 

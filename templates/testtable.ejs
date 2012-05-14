@@ -24,9 +24,10 @@
 </style>
 
 <div class="testtable" id="mast-template-testtable">
+	<a class="deselectAll">Deselect All</a>
 	<ul class="row-outlet"></ul>
 </div>
 
 <li class="row {% if (highlighted) { %} highlighted {% } %}" id="mast-template-testtable-row">
-	{{id}} | {{title}} | {{value}}
+	{{id}} | {{title}} | {{value}} | <a class="doDelete" style="cursor:pointer;">x</a>
 </li>

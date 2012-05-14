@@ -1,234 +1,24 @@
 <style type="text/css">
-	.sandbox {
-		overflow:auto;
+	.clear {
+		clear:both;
 	}
 </style>
 <div class="container">
 	<div class="sandbox"></div>
+	<div class="clear"></div>
 </div>
 
 
 
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.8.19/jquery-ui.min.js"></script>
+
+
+<script type="text/javascript" src="/js/AppController.js"></script>
 <script type="text/javascript">
-
-	var AppController = {
-			
-		// Default route
-		index: function(query,page) {
-				
-			// Empty container
-			$(".sandbox").empty();
-				
-			// Define a reusable dropdown component
-			DropdownComponent = Mast.Component.extend({
-				template: '.dropdown',
-				events: {
-					click:'openMenu'
-					, clickoutside: 'closeMenu'
-				},
-				init: function() {
-					//
-				},
-				openMenu: function(e){
-					debug.debug("Opened menu.");
-					this.pattern.setTemplate('.dropdown-expanded');
-					e.stopImmediatePropagation();
-				},
-
-				closeMenu: function () {
-					debug.debug("Closed menu.");
-					this.pattern.setTemplate('.dropdown');
-				},
-
-				// Triggered after each render
-				afterRender: function () {}
-			});
-
-			// Create some components
-			a=new Mast.Component({
-				events: {},
-
-				// Subcomponents to register
-				subcomponents: [
-					{
-						component: DropdownComponent,
-						outlet: ".ddown"
-					},
-					{
-						component: DropdownComponent,
-						outlet: ".ddown"
-					}
-				],
-
-				model: new Mast.Model({
-					name:'THING1 rendered!  Appended a dropdown component as well.'
-				}),
-
-				template: '.test',
-
-				outlet:'.sandbox',
-
-				// Triggered after each render
-				afterRender: function () {
-					this.$el.draggable();
-				}
-			});	
-
-			b=new Mast.Component({
-
-				// Subcomponents to register
-				subcomponents: [
-					{
-						component: DropdownComponent,
-						outlet: ".ddown"
-					}
-				],
-
-				pattern: new Mast.Pattern({
-					model: new Mast.Model({name:'te1'}),
-					template: '.test'
-				}),
-
-				outlet:'.sandbox',
-
-				// Triggered after each render
-				afterRender: function () {
-					this.$el.draggable();
-				}
-			});
-
-
-			// When you create a new Component, it renders to the DOM automatically
-			// And subsequently, you don't have to force a component to render-- 
-			// it'll do it on its own when its Pattern (template or model) changes.
-
-
-			// First, let's try changing the model
-			// an event is created at the model and bubbles up to the view
-			a.pattern.set('name','Changed THING1\'s model.');
-			b.pattern.model.set('name','Changed THING2\'s model.');
-
-
-			// Now let's change the template-- notice how the DOM automatically updates
-			// This is great for instances when a whole bunch of HTML needs to change 
-			a.pattern.setTemplate('.test1');
-			b.pattern.setTemplate('.test1');
-
-			// You can render components as many times as you want!
-			a.render();
-			a.render();
-			a.render();
-			a.render();
-			a.render();
-				
-			// OK that was fun-- so lets move on to another example
-			// We'll create a "Next Example" link
-			// which will use the Mast.Router to manage the browser history stack
-			// and move on to the next stage of the example app
-			new Mast.Component({
-				events: {
-					click: function(e) {
-						Mast.navigate('tableExample');
-					}
-				},
-				template: '#mast-template-button',
-				model: new Mast.Model({
-					label: 'Next experiment >'
-				}),
-				outlet: '.sandbox'
-			});
-		},
-			
-			
-		tableExample: function(query,page){
-			
-			// Empty container
-			$(".sandbox").empty();
-				
-			// Now let's try creating a Table
-			// A Table is basically just a Component which contains 
-			// a homogenous list of sub-Components
-			var generateSampleRow = function (x){
-				return new Mast.Model({
-					id: x,
-					title: 'Sample',
-					value: Math.floor(Math.random()*5000),
-					highlighted: false
-				});
-			};
-			t = new Mast.Table({
-					
-				autorender: false,
-					
-				events:{
-					'clickoutside': 'deselectAll'
-				}
-					
-				// Row events are triggered when any of the
-				// child rows fire a DOM event
-				, rowevents: {
-					'mousedown': 'toggleRow'
-				}
-					
-				, template: '#mast-template-testtable'
-					
-				, model: null
-					
-				, outlet: '.sandbox'
-			
-				, collection: new Mast.Collection([
-					generateSampleRow(0),
-					generateSampleRow(1),
-					generateSampleRow(2),
-					generateSampleRow(3)])
-					
-				, rowtemplate: '#mast-template-testtable-row'
-					
-				, rowoutlet: '.row-outlet'
-			
-				, deselectAll: function(e) {
-					_.each(this.patterns,function(pattern){
-						pattern.set('highlighted',false);
-					});
-				}
-			
-				, toggleRow: function(rowId, e){
-					if (this.patterns[rowId].get('highlighted')) {
-						this.patterns[rowId].set('highlighted',false);
-					}
-					else {
-						this.patterns[rowId].set('highlighted',true);
-					}
-					e.stopImmediatePropagation();
-				}
-			});
-				
-				
-			// Now append the table to its outlet
-			t.append();
-				
-			// We can allow the user to continue on now
-			new Mast.Component({
-				events: {
-					click: function(e) {
-						Mast.navigate('index');
-					}
-				},
-				template: '#mast-template-button',
-				model: new Mast.Model({
-					label: '< Previous experiment'
-				}),
-				outlet: '.sandbox'
-			});
-		}
-	}
-
+	// Instantiate the Mast library
 	Mast.raise({
-		routes: AppController,
+		controller: AppController,
 		baseurl: 'http://localhost:5008'
-	},function() {
-		// Any special, pre-routing app initialization code goes here
 	});
 	
 </script>
