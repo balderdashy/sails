@@ -174,7 +174,7 @@ var AppController = {
 			// child rows fire a DOM event
 			, 
 			rowevents: {
-				'click .doDelete': 'deleteRow'
+				'click .doDelete': 'removeRow'
 				,'click': 'toggleRow'
 			}
 					
@@ -198,24 +198,27 @@ var AppController = {
 			
 			, 
 			deselectAll: function(e) {
-				_.each(this.patterns,function(pattern){
-					pattern.set('highlighted',false);
+				this.collection.each(function(model){
+					debug.debug(model);
+					model.set('highlighted',false);
 				});
 			}
 			
 			, 
 			toggleRow: function(rowId, e){
-				debug.debug("TOGGLEROW!");
-				if (this.patterns[rowId].get('highlighted')) {
-					this.patterns[rowId].set('highlighted',false);
+				if (this.collection.at(rowId).get('highlighted')) {
+					debug.debug("Dimming row "+rowId);
+					this.collection.at(rowId).set('highlighted',false);
 				}
 				else {
-					this.patterns[rowId].set('highlighted',true);
+					debug.debug("Highlighting row "+rowId);
+					this.collection.at(rowId).set('highlighted',true);
 				}
 			}
 			
-			,deleteRow: function(rowId,e) {
+			,removeRow: function(rowId,e) {
 				debug.debug("Deleting row "+rowId);
+				this.deleteRow(rowId);
 				e.stopImmediatePropagation();
 			}
 			

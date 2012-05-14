@@ -129,8 +129,7 @@
 			get: function(key) {
 				return this.model.get(key);
 			},
-		
-		
+			
 			_normalizeData: function (data) {
 				var modelData = this.model && this.model.toJSON && this.model.toJSON();
 				return data ? _.extend(_.clone(modelData), data) : modelData || {};
@@ -328,6 +327,18 @@
 				// Watch for and announce statechange events
 				this.on('afterRenderRow',this.afterRenderRow);
 				
+				// Watch for collection changes
+				var self = this;
+				this.collection.on('remove',function(model,collection,status) {
+					self.render();
+				});
+				this.collection.on('change',function(model,status) {
+					self.renderRow(model);
+				});
+				this.collection.on('add',function() {
+					self.render();
+				});
+				
 				// Verify rowtemplate
 				if (!this.rowtemplate) {
 					throw new Error("No rowtemplate specified!");
@@ -373,8 +384,16 @@
 			},
 			
 			// Render the given row in place
-			renderRow: function (id) {
-				this._replaceRow(id,this._generateRowElement(this.patterns[id]));
+			renderRow: function (model,status) {
+//				var id = this._getRowIndexFromEl(el);
+//				debug.debug("RENDERING ROW!!!!!",arguments);
+				this._replaceRow(this.collection.indexOf(model),this._generateRowElement(model));
+			},
+			
+			
+			
+			deleteRow: function (id) {
+				this.collection.remove(this.collection.at(id));
 			},
 			
 			// Lookup the element for the id'th row
@@ -391,27 +410,16 @@
 			_appendRows: function() {
 				// Update and render patterns from collection
 				var self = this;
-				this.patterns = this.collection.map(function(model,index){
-					var pattern = new Mast.Pattern({
-						model: model,
-						template: self.rowtemplate
-					});
-					
-					// Watch each pattern for changes
-					pattern.on('change',_.bind(self.renderRow,self,index));
+				this.collection.each(function(model,index){
 					
 					// Append the row
-					self._appendRow(self._generateRowElement(pattern));
-					
-					// And keep track of the pattern for more efficient 
-					// rendering later on
-					return pattern;
+					var el = self._generateRowElement(model);
+					self._appendRow(el);
 				});
 			},
 			
 			// Delegate row events
 			_listenToRows: function () {
-				this.undelegateEvents();
 				_.each(this.rowevents,function(fn,ev) {
 					var delegateEventSplitter = /^(\S+)\s*(.*)$/;
 					var match = ev.match(delegateEventSplitter);
@@ -428,7 +436,7 @@
 					}
 					
 					var handler = function(e) {
-						var index = this._getRowIndex(e);
+						var index = this._getRowIndexFromEvent(e);
 						return fn(index,e);
 					};
 					handler = _.bind(handler,this);
@@ -449,14 +457,37 @@
 			},
 			
 			// Generate element and add CSS identifier class
-			_generateRowElement: function (pattern) {
+			_generateRowElement: function (model) {
+				var pattern = new Mast.Pattern({
+					template: this.rowtemplate,
+					model: model
+				});
 				var $element = $(pattern.generate());
 				return $element.addClass(Mast.rowCSSClass);
 			},
 			
 			// Given the event object, return the index of this row's element
-			_getRowIndex: function (e) {
-				return $(e.currentTarget).index();
+			_getRowIndexFromEvent: function (e) {
+//				console.log("?",e,$(e.currentTarget).is('.'+Mast.rowCSSClass),$(e.currentTarget).parents('.'+Mast.rowCSSClass),$(e.currentTarget),$(e.currentTarget).index());
+				var $target = $(e.currentTarget),
+					rowSelector = '.'+Mast.rowCSSClass;
+					
+				if ($target.is(rowSelector)) {
+					return $target.index();
+				}
+				else {
+					var $targetRow = $target.parentsUntil($(e.delegateTarget),rowSelector);
+					if (!$targetRow) {
+						throw new Error("Invalid row structure!  Couldn't select a row in this delegate.");
+					}
+					return $targetRow.index();
+				}
+				
+			},
+			
+			_getRowIndexFromEl: function (el) {
+				var $target = $(el);
+				return $target.index();
 			}
 		},
 		
