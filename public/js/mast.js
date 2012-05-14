@@ -128,7 +128,7 @@
 				this.absorbTemplate(this.template);
 			
 				// Listen for changes in model and bubble them up
-				this.model.on('change',function(model,parameters){
+				this.model && this.model.on('change',function(model,parameters){
 					self.trigger('change');
 				});
 			
@@ -360,6 +360,12 @@
 				// stub
 			},
 			
+			// Default HTML to display if table is empty and no emptytemplate
+			// is specified
+			emptyHTML: "<span>There are no rows available.</span>",
+			
+			
+			
 			// Determine the proper outlet selector and ensure that it is valid
 			_verifyOutlet: function (outlet,context) {
 				//				console.log("!!!!",context);
@@ -469,7 +475,12 @@
 				
 				// Empty and append rows to the outlet
 				this.$rowoutlet.empty();
-				this._appendRows();
+				if (this.collection.length > 0 ){
+					this._appendRows();
+				}
+				else {
+					this.$rowoutlet.append(this._generateEmptyHTML());
+				}
 				
 				// Listen for row DOM events and redelegate events
 				this._listenToRows();
@@ -554,6 +565,19 @@
 				});
 				var $element = $(pattern.generate());
 				return $element.addClass(Mast.rowCSSClass);
+			},
+			
+			// Generate empty table html
+			_generateEmptyHTML: function () {
+				if (this.emptytemplate) {
+					var pattern = new Mast.Pattern({
+						template: this.emptytemplate
+					});
+					return $(pattern.generate());
+				}
+				else {
+					return $(this.emptyHTML);
+				}
 			},
 			
 			// Given the event object, return the index of this row's element

@@ -165,6 +165,8 @@ var AppController = {
 					
 			autorender: false,
 			
+			emptytemplate: '#mast-template-testtable-empty',
+			
 			// Called only after the socket is live
 			afterConnect: function() {
 				Mast.Socket.off('connect', this.afterConnect);
