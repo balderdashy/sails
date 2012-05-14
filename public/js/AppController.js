@@ -210,7 +210,6 @@ var AppController = {
 			, 
 			deselectAll: function(e) {
 				this.collection.each(function(model){
-					debug.debug(model);
 					model.set('highlighted',false);
 				});
 			}
@@ -223,32 +222,34 @@ var AppController = {
 			
 			, 
 			toggleRow: function(rowId, e){
-				console.log(this,this.collection,"---");
-				if (this.collection.at(rowId).get('highlighted')) {
-					debug.debug("Dimming row "+rowId);
-					this.collection.at(rowId).set('highlighted',false);
+				var rowModel = this.collection.at(rowId);
+				if (rowModel.get('highlighted')) {
+					debug.debug("Dimming row w/ id: "+rowModel.id+" @ index: "+rowId);
+					rowModel.set('highlighted',false);
 				}
 				else {
-					debug.debug("Highlighting row "+rowId);
-					this.collection.at(rowId).set('highlighted',true);
+					debug.debug("Highlighting row w/ id: "+rowModel.id+" @ index: "+rowId);
+					rowModel.set('highlighted',true);
 				}
 			}
 			
 			,
 			removeRow: function(rowId,e) {
-				debug.debug("Deleting row "+rowId);
-				this.collection.remove(this.collection.at(rowId));
+				var rowModel = this.collection.at(rowId);
+				debug.debug("Deleting row w/ id: "+rowModel.id+" @ index: "+rowId);
+				this.collection.remove(rowModel);
 				e.stopImmediatePropagation();
 			}
 			
 			,
+			// Triggered after rendering the entire table
 			afterRender: function() {
-				this.$rowoutlet.children().disableSelection();
 			}
 			
 			// Triggered after rendering each row
 			,
 			afterRenderRow: function(rowId) {
+				this.$rowoutlet.children().eq(rowId).disableSelection();
 				
 			}
 		});

@@ -72,9 +72,9 @@
 
 		<div style="display:none;" id="mast-template-library">
 			<%
-			// Get all files in template dir
-			var viewRelativePath = "../templates", 
-				appRelativePath = 'templates';
+			// Get all files in components dir
+			var viewRelativePath = "../components", 
+				appRelativePath = 'components';
 			fs.readdirSync(appRelativePath).forEach(function(filename) {
 
 				// TODO: Efficient compilation, see https://github.com/balderdashdesign/mast/issues/5

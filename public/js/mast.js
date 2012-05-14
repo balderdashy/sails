@@ -39,12 +39,6 @@
 							resp = Mast.Socket.destroy(model);
 							break;
 					}
-
-//					if (resp) {
-//						options.success(resp);
-//					} else {
-//						options.error("Record not found");
-//					}
 				};
 			},
 			
@@ -52,9 +46,9 @@
 			// (reference: http://documentcloud.github.com/backbone/docs/backbone-localstorage.html)
 			create: function(model,options){
 				var url = (model.url || model.collection.url) + "/create";
-				console.log("RUNNING CREATE",arguments,url);
+//				console.log("RUNNING CREATE",arguments,url);
 				this._socket.emit(url,{},function(result) {
-					console.log("result",result);
+//					console.log("result",result);
 					try {
 						options.success(JSON.parse(result));
 					}
@@ -427,11 +421,11 @@
 					self.render();
 				});
 				this.collection.on('change',function(model) {
-					console.log("CHANGE!");
+//					console.log("CHANGE!");
 					self.renderRow(model);
 				});
 				this.collection.on('add',function() {
-					console.log("ADD fired!");
+//					console.log("ADD fired!");
 					self.render();
 				});
 				this.collection.on('reset',function() {

@@ -13,12 +13,38 @@
 		width:50%;
 		min-height:100px;
 	}
-	.testtable .searchbox{
+	
+	.testtable ul {
+		
+		margin-top: 1em;
+	}
+	
+	.testtable a {
+		background:#522;
+		padding: 0.2em 0.5em;
+		display:block;
+		float:right;
+		font-weight:bold;
+		color:white;
+		cursor:pointer;
+	}
+	
+	.testtable .searchbox {
 		clear:both;
 		display:block;
 	}
 	
+	
+	.testtable .row span {
+		display:block;
+		float:left;
+	}
+	.testtable .row a, .testtable .row span {
+		padding: 0.3em 0.5em 0.3em 0.5em;
+	}
 	.testtable .row {
+		border: 1px solid #bbf;
+		overflow:auto;
 		background:#99e;
 	}
 	.testtable .row.highlighted {
@@ -36,5 +62,5 @@
 </div>
 
 <li class="row {% if (highlighted) { %} highlighted {% } %}" id="mast-template-testtable-row">
-	{{title}} | {{value}} | <a class="doDelete" style="cursor:pointer;">x</a>
+	<span>{{title}} | {{value}} </span><a class="doDelete" style="cursor:pointer;">x</a>
 </li>
