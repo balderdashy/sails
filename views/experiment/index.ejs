@@ -1,4 +1,8 @@
-
+<style type="text/css">
+	.sandbox {
+		overflow:auto;
+	}
+</style>
 <div class="container">
 	<div class="sandbox"></div>
 	<a href="experiment/2">Next example ></a>
@@ -17,35 +21,37 @@
 			template: '.dropdown',
 			events: {
 				click:'openMenu'
-//				, clickoutside: 'closeMenu'
+				, clickoutside: 'closeMenu'
 			},
 			init: function() {
 				//
 			},
-			openMenu: function(){
+			openMenu: function(e){
+				debug.debug("Opened menu.");
 				this.pattern.setTemplate('.dropdown-expanded');
+				e.stopImmediatePropagation();
 			},
 			
 			closeMenu: function () {
+				debug.debug("Closed menu.");
 				this.pattern.setTemplate('.dropdown');
 			},
 			
-			afterRender: function () {
-				console.log("AFTERRENDER called on DropDown",this.outlet);
-				
-			}
+			// Triggered after each render
+			afterRender: function () {}
 		});
 	
 		// Create some components
 		a=new Mast.Component({
 			events: {},
 			
-			init: function() {
-				// We use a component instead of a pattern here
-				// since the dropdown component is potentially reusable
-				// and has uses in many different situations
-				
-			},
+			// Subcomponents to register
+			subcomponents: [
+				{
+					component: DropdownComponent,
+					outlet: ".ddown"
+				}
+			],
 			
 			model: new Mast.Model({
 				name:'THING1 rendered!  Appended a dropdown component as well.'
@@ -58,28 +64,31 @@
 			// Triggered after each render
 			afterRender: function () {
 				this.$el.draggable();
-				
-				this.dropdownComponent = new DropdownComponent({
-					outlet: ".ddown",
-					autorender: false
-				});
-				this.dropdownComponent.render();
 			}
 		});	
-//		
-//		b=new Mast.Component({
-//			pattern: new Mast.Pattern({
-//				model: new Mast.Model({name:'te1'}),
-//				template: '.test'
-//			}),
-//	
-//			outlet:'.sandbox',
-//			
-//			// Triggered after each render
-//			afterRender: function () {
-//				this.$el.draggable();
-//			}
-//		});
+		
+		b=new Mast.Component({
+			
+			// Subcomponents to register
+			subcomponents: [
+				{
+					component: DropdownComponent,
+					outlet: ".ddown"
+				}
+			],
+			
+			pattern: new Mast.Pattern({
+				model: new Mast.Model({name:'te1'}),
+				template: '.test'
+			}),
+	
+			outlet:'.sandbox',
+			
+			// Triggered after each render
+			afterRender: function () {
+				this.$el.draggable();
+			}
+		});
 
 		
 		// When you create a new Component, it renders to the DOM automatically
@@ -89,17 +98,21 @@
 		
 		// First, let's try changing the model
 		// an event is created at the model and bubbles up to the view
-//		a.pattern.set('name','Changed THING1\'s model.');
-//		b.pattern.model.set('name','Changed THING2\'s model.');
+		a.pattern.set('name','Changed THING1\'s model.');
+		b.pattern.model.set('name','Changed THING2\'s model.');
 		
 		
 		// Now let's change the template-- notice how the DOM automatically updates
 		// This is great for instances when a whole bunch of HTML needs to change 
-//		a.pattern.setTemplate('.test1');
-//		b.pattern.setTemplate('.test1');
+		a.pattern.setTemplate('.test1');
+		b.pattern.setTemplate('.test1');
 		
-		
-//		a.render();
+		// You can render components as many times as you want!
+		a.render();
+		a.render();
+		a.render();
+		a.render();
+		a.render();
 		
 		var generateSampleRow = function (x){
 			return new Mast.Model({
@@ -115,10 +128,10 @@
 		// a homogenous list of sub-Components
 		t = new Mast.Table({
 			events:{
-//				'clickoutside': 'deselectAll'
+				'clickoutside': 'deselectAll'
 			},
 			rowevents: {
-				'click': 'toggleRow'
+				'mousedown': 'toggleRow'
 			},
 			
 			deselectAll: function(e) {
@@ -134,6 +147,7 @@
 				else {
 					this.patterns[rowId].set('highlighted',true);
 				}
+				e.stopImmediatePropagation();
 			},
 			
 			template: '#mast-template-testtable',

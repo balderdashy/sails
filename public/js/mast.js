@@ -170,15 +170,28 @@
 							'Ignoring extra attributes and using the specified pattern...');
 					}
 				}
+				
+				// If this belongsTo another component, disable autorender
+				if (this.belongsTo) {
+					this.autorender = false;
+				}
+				
+				// Maintain list of subcomponents
+				this._subcomponents = [];
 			
 				// Watch for changes to pattern
 				this.pattern.on('change',this.render);
 				
-				// Watch for and announce statechange events
-				this.on('afterRender',this.afterRender);
-			
+				// Register any subcomponents
+				_.each(this.subcomponents,function(properties) {
+					this.registerSubcomponent(properties);
+				},this);
+				
 				// Trigger init event
 				_.result(this,'init');
+				
+				// Watch for and announce statechange events
+				this.on('afterRender',this.afterRender);
 				
 				// Autorender is on by default
 				// Default render type is "append", but you can also specify "replaceOutlet""
@@ -187,19 +200,15 @@
 						this.replace()
 					}
 					else {
-						 this.append();
+						this.append();
 					}
 				}
-			
-//				if (this.autorender===false) {
-//					this.$el = this._verifyOutlet();
-//				}
-			
 			},
 		
 			// Append the pattern to the outlet
 			append: function (outlet) {
-				var $outlet = this._verifyOutlet(outlet);
+				var $outlet = this._verifyOutlet(outlet,
+					this.belongsTo && this.belongsTo.$el);
 			
 				this.render();
 				$outlet.append(this.$el);
@@ -221,16 +230,14 @@
 				var $element = this.generate();
 				this.$el.replaceWith($element);
 				this.setElement($element);
-				
-//				// Handle special clickoutside event
-//				console.log("Rendering component: ",this.$el.attr('class'), "cid=",this.cid,"el",this.$el);
-//				if (this.events && this.events.clickoutside) {
-//					var self = this;
-//					var eventfn = this[this.events.clickoutside];
-//					var uid = this.cid;//this._verifyOutlet();
-//					
-//					_.defer(self.$el.clickoutside,uid,eventfn,this.$el);
-//				}
+			
+				// If any subcomponents exist, 
+				_.each(this._subcomponents,function(subcomponent) {
+					// append them to the appropriate outlet
+					_.defer(function() {
+						subcomponent.append();
+					})
+				},this);
 			
 				if (!silent) {
 					this.trigger('afterRender');
@@ -244,36 +251,27 @@
 				return $(this.pattern.generate(data));
 			},
 			
-			
-			//////////////////////////////////////////////////////////////////////
-			// TODO: MAKE THIS WORK!!!!
-			// problem is the *native function * stuff
-			// Create a short, deterministic hash key from a function variable
-			_deterministicFnHashId: function (fn) {
-				var asString = fn.toString(),
-				uniquenessQuotient = 25,
-				firstBit = asString.substr(0,uniquenessQuotient),
-				range = (asString.length-(uniquenessQuotient+1)),
-				lastBitStartPoint = (range>0)?range:0,
-				lastBit = asString.substring(
-					lastBitStartPoint,asString.length-1
-					);
-						
-				var hashid = "";
-				for (var i=0;i<lastBit.length-lastBitStartPoint;i++){
-					console.log(firstBit.charCodeAt(i));
-					var encodedCharCode = lastBit.charCodeAt(i+lastBitStartPoint)+
-					firstBit.charCodeAt(i);
-					hashid += encodedCharCode+".";
+			registerSubcomponent: function(options) {
+				var Subcomponent;
+				
+				if (!options.component) {
+					throw new Error("Cannot register subcomponent without specifying which component to register!");
 				}
-				console.log("~~~~~~~~~~",asString,"********",hashid,range);
-				return hashid;
+				else {
+					Subcomponent = options.component;
+				}
+				
+				// Instantiate subcomponent, but don't append/render it yet
+				var subcomponent = new Subcomponent({
+					belongsTo: this,
+					outlet: options.outlet
+				});
+				this._subcomponents.push(subcomponent);
 			},
-			///////////////////////////////////////////////////////////////////////////
-		
-		
-			// Check that outlet is valid
-			_verifyOutlet: function (outlet,onlyDescendants) {
+			
+			// Determine the proper outlet selector and ensure that it is valid
+			_verifyOutlet: function (outlet,context) {
+//				console.log("!!!!",context);
 				outlet = outlet || this.outlet;
 			
 				if (!outlet) {
@@ -281,17 +279,18 @@
 					return false;
 				}
 				
-				var $outlet = (onlyDescendants && this.$el.find(outlet)) || $(outlet);
+				var $outlet = (context && context.find(outlet)) || $(outlet);
 				if ($outlet.length != 1) {
 					throw new Error(
 						(($outlet.length > 1)?"More than one ":"No ")+
 						(($outlet.length > 1)?"element exists ":"elements exist ")+
-						(onlyDescendants?"in this template ":"") +
+						(context?"in this template context ("+context+ ")":"") +
 						"for the specified "+
-						(onlyDescendants?"row ":"") +
+						(context?"child ":"") +
 						"outlet selector! ('"+outlet+"')");
 					return false;
 				}
+
 			
 				return $outlet;
 			},
@@ -345,7 +344,7 @@
 				else {
 					// Otherwise use the rowoutlet selector to find
 					// the row outlet element inside of this.$el
-					this.$rowoutlet = this._verifyOutlet(this.rowoutlet,true);
+					this.$rowoutlet = this._verifyOutlet(this.rowoutlet,this.$el);
 				}
 				
 				// Empty the row outlet
@@ -460,6 +459,8 @@
 			// or from a URL
 			Mast.TemplateLibrary = {}
 			
+			// TODO: Go ahead and absorb all of the templates in the library 
+			// right from the get-go
 			
 			// Set up template settings
 			_.templateSettings = {
