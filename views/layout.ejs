@@ -2,6 +2,9 @@
 <html>
 	<head>
 		<title><%- title %></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		
+		
 		<link rel="stylesheet" type="text/css" media="all" href="/stylesheets/reset.css"/>
 		<link rel="stylesheet" type="text/css" media="all" href="/stylesheets/layout.css"/>
 		<link rel="stylesheet" type="text/css" media="all" href="/stylesheets/responsive.css"/>
@@ -26,15 +29,40 @@
 				<a href="/">sails.js</a>
 			</h1>
 
-			<ul>
-				<% if (!session.authenticated) { %>
-				<li><a href="/login">Login</a></li>
-				<li><a href="/register">Register</a></li>
-				<li><a href="/auth/registerAdmin">Register as Admin</a></li>
-				<% } else { %>
-				<li><a href="/logout">Logout</a></li>
-				<% } %>
+			<% 
+				var authedNavbar = [
+					 {label: "Logout", href:"/logout"}
+				],
+					unauthedNavbar = [
+					 {label: "Login", href:"/login"}
+					,{label: "Register", href:"/register"}
+					,{label: "Register as Admin", href:"/auth/registerAdmin"}
+				];
+			%>
+			
+			<ul class="widescreen-nav">
+				<% _.each((session.authenticated) ? authedNavbar : unauthedNavbar,
+						function(item) { %>
+				<li><a href="<%- item['href'] %>"><%- item['label'] %></a></li>
+					<% }); %>
 			</ul>
+			
+			<select class="mobile-only" id="topbar-dropdown">
+				<option>-- Go --</option>
+			<% _.each((session.authenticated) ? authedNavbar : unauthedNavbar,
+						function(item) { %>
+				<option href="<%- item['href'] %>"><%- item['label'] %></option>
+					<% }); %>
+			</select>
+			<script type="text/javascript">
+				// Handle mobile navbar
+				$(function(){
+					$("#topbar-dropdown").change(function (e) {
+						var destination = $(e.currentTarget).find("option:selected").attr('href');
+						window.location = destination;
+					});
+				});
+			</script>
 
 		</div>
 

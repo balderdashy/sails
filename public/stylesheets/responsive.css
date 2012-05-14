@@ -15,7 +15,7 @@
 }
 
 @media screen and (max-width: 480px) {
-	#navbar {
+	.widescreen-nav {
 		display:none;
 	}
 	
