@@ -73,13 +73,14 @@
 		<div style="display:none;" id="mast-template-library">
 			<%
 			// Get all files in template dir
-			var dir = 'meta/templates', completeDir = 'views/'+dir;
-			fs.readdirSync(completeDir).forEach(function(filename) {
+			var viewRelativePath = "../templates", 
+				appRelativePath = 'templates';
+			fs.readdirSync(appRelativePath).forEach(function(filename) {
 
 				if ((filename === 'index.js') || (filename[0] === '_')) { return; }
 
 				filename = path.basename(filename, path.extname(filename));
-				var filepath = path.join(dir, filename);
+				var filepath = path.join(viewRelativePath, filename);
 
 				%>
 				<%- partial(filepath,{}) %>
