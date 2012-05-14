@@ -6,18 +6,18 @@ function generateSampleRow (){
 		value: Math.floor(Math.random()*5000),
 		highlighted: false
 	});
-}		
+}
+
+var TestRow = Mast.Model.extend({
+	defaults: {
+		highlighted: false
+	}
+})
 
 var TestRows = Mast.Collection.extend({
-	
-	});
-		
-var testtableRowCollection = new TestRows([
-	generateSampleRow(),
-	generateSampleRow(),
-	generateSampleRow(),
-	generateSampleRow()
-	]);
+	url: '/experiment',
+	model: TestRow
+});
 
 
 
@@ -164,6 +164,17 @@ var AppController = {
 		t = new Mast.Table({
 					
 			autorender: false,
+			
+			// Called only after the socket is live
+			afterConnect: function() {
+				Mast.Socket.off('connect', this.afterConnect);
+				var self = this;
+				this.collection.fetch({
+					error: function(stuff){
+						throw new Error(stuff);
+					}
+				});
+			},
 					
 			events: {
 				'click .deselectAll': 'deselectAll',
@@ -174,8 +185,8 @@ var AppController = {
 			// child rows fire a DOM event
 			, 
 			rowevents: {
-				'click .doDelete': 'removeRow'
-				,'click': 'toggleRow'
+				'click .doDelete': 'removeRow',
+				'click': 'toggleRow'
 			}
 					
 			, // Template for this Table
@@ -188,7 +199,7 @@ var AppController = {
 			outlet: '.sandbox'
 			
 			, 
-			collection: testtableRowCollection
+			collection: new TestRows()
 					
 			, 
 			rowtemplate: '#mast-template-testtable-row'
@@ -204,13 +215,15 @@ var AppController = {
 				});
 			}
 			
-			,addRow: function(e) {
+			,
+			addRow: function(e) {
 				var model = generateSampleRow(this.collection.length);
-				this.collection.push(model);
+				this.collection.create(model);
 			}
 			
 			, 
 			toggleRow: function(rowId, e){
+				console.log(this,this.collection,"---");
 				if (this.collection.at(rowId).get('highlighted')) {
 					debug.debug("Dimming row "+rowId);
 					this.collection.at(rowId).set('highlighted',false);
@@ -221,18 +234,21 @@ var AppController = {
 				}
 			}
 			
-			,removeRow: function(rowId,e) {
+			,
+			removeRow: function(rowId,e) {
 				debug.debug("Deleting row "+rowId);
-				this.deleteRow(rowId);
+				this.collection.remove(this.collection.at(rowId));
 				e.stopImmediatePropagation();
 			}
 			
-			,afterRender: function() {
+			,
+			afterRender: function() {
 				this.$rowoutlet.children().disableSelection();
 			}
 			
 			// Triggered after rendering each row
-			,afterRenderRow: function(rowId) {
+			,
+			afterRenderRow: function(rowId) {
 				
 			}
 		});

@@ -19,6 +19,69 @@
 				if (this.autoconnect) {
 					this.connect();
 				}
+				
+				
+				// Override Backbone.sync
+				Backbone.sync = function(method, model, options) {
+					var resp;
+					
+					switch (method) {
+						case "read":
+							model.id ? Mast.Socket.find(model,options) : Mast.Socket.findAll(model,options);
+							break;
+						case "create":
+							resp = Mast.Socket.create(model);
+							break;
+						case "update":
+							resp = Mast.Socket.update(model);
+							break;
+						case "delete":
+							resp = Mast.Socket.destroy(model);
+							break;
+					}
+
+//					if (resp) {
+//						options.success(resp);
+//					} else {
+//						options.error("Record not found");
+//					}
+				};
+			},
+			
+			// CRUD methods for Backbone usage
+			// (reference: http://documentcloud.github.com/backbone/docs/backbone-localstorage.html)
+			create: function(model,options){
+				var url = (model.url || model.collection.url) + "/create";
+				console.log("RUNNING CREATE",arguments,url);
+				this._socket.emit(url,{},function(result) {
+					console.log("result",result);
+					try {
+						options.success(JSON.parse(result));
+					}
+					catch (e) {
+						throw new Error("Server response could not be parsed:",result,e);
+					}
+				});
+			},
+			find: function(model){
+				var url = (model.url || model.collection.url) + "/find";
+			},
+			findAll: function(model,options){
+				var url = (model.url || model.collection.url) + "/findAll";
+				this._socket.emit(url,{},function(result) {
+					try {
+						options.success(JSON.parse(result));
+					}
+					catch (e) {
+						throw new Error("Server response could not be parsed:",result,e);
+					}
+				});
+			},
+			update: function(model){
+				var url = (model.url || model.collection.url) + "/update";
+			},
+			destroy: function(model){
+				var url = (model.url || model.collection.url) + "/destroy";
 			},
 				
 			// TODO: Investigate removing this and doing it all automatically
@@ -202,6 +265,17 @@
 						this.append();
 					}
 				}
+				
+				// Listen for when the socket is live
+				// (unless it's already live)
+				if (!Mast.Socket.connected) {
+					Mast.Socket.off('connect', this.afterConnect);
+					Mast.Socket.on('connect', this.afterConnect);
+				}
+				else {
+					Mast.Socket.off('connect', this.afterConnect);
+					this.afterConnect();
+				}
 			},
 		
 			// Append the pattern to the outlet
@@ -284,6 +358,14 @@
 				return this.pattern.model.set(attribute,value);
 			},
 			
+			afterRender: function(){
+				// stub
+			},
+			
+			afterConnect: function(){
+				// stub
+			},
+			
 			// Determine the proper outlet selector and ensure that it is valid
 			_verifyOutlet: function (outlet,context) {
 				//				console.log("!!!!",context);
@@ -332,6 +414,8 @@
 				// Initialize main component
 				Mast.Component.prototype.initialize.call(this,attributes,options,true);
 				
+				_.extend(this,attributes);
+				
 				_.bindAll(this);
 				
 				// Watch for and announce statechange events
@@ -343,10 +427,14 @@
 					self.render();
 				});
 				this.collection.on('change',function(model) {
+					console.log("CHANGE!");
 					self.renderRow(model);
 				});
 				this.collection.on('add',function() {
-					console.log(arguments);
+					console.log("ADD fired!");
+					self.render();
+				});
+				this.collection.on('reset',function() {
 					self.render();
 				});
 				
@@ -400,19 +488,7 @@
 			
 			// Render the given row in place
 			renderRow: function (model,status) {
-//				var id = this._getRowIndexFromEl(el);
-//				debug.debug("RENDERING ROW!!!!!",arguments);
 				this._replaceRow(this.collection.indexOf(model),this._generateRowElement(model));
-			},
-			
-			
-			
-			deleteRow: function (id) {
-				this.collection.remove(this.collection.at(id));
-			},
-			
-			addRow: function (model) {
-				this.collection.add(model);
 			},
 			
 			// Lookup the element for the id'th row
@@ -488,9 +564,9 @@
 			
 			// Given the event object, return the index of this row's element
 			_getRowIndexFromEvent: function (e) {
-//				console.log("?",e,$(e.currentTarget).is('.'+Mast.rowCSSClass),$(e.currentTarget).parents('.'+Mast.rowCSSClass),$(e.currentTarget),$(e.currentTarget).index());
+				//				console.log("?",e,$(e.currentTarget).is('.'+Mast.rowCSSClass),$(e.currentTarget).parents('.'+Mast.rowCSSClass),$(e.currentTarget),$(e.currentTarget).index());
 				var $target = $(e.currentTarget),
-					rowSelector = '.'+Mast.rowCSSClass;
+				rowSelector = '.'+Mast.rowCSSClass;
 					
 				if ($target.is(rowSelector)) {
 					return $target.index();
@@ -521,87 +597,87 @@
 			// (can't have key:function(){} style routes, must use a string function name)
 			var routerConfig = {
 				routes:{}
-		};
-		var indexRoute = null;
-		if (options.controller) {
-			_.each(options.controller,function(action,query) {
-				if (query=="routes") return;
-				// Save index route for the end
-				if (query=="index") {
-					indexRoute = action;
-				}
-				routerConfig.routes[query] = query;
-				routerConfig[query] = action;
-			});
+			};
+			var indexRoute = null;
+			if (options.controller) {
+				_.each(options.controller,function(action,query) {
+					if (query=="routes") return;
+					// Save index route for the end
+					if (query=="index") {
+						indexRoute = action;
+					}
+					routerConfig.routes[query] = query;
+					routerConfig[query] = action;
+				});
 				
-			// Define default (index) route
-			routerConfig.routes[""] = "index";
-			routerConfig.index = indexRoute;
-		}
+				// Define default (index) route
+				routerConfig.routes[""] = "index";
+				routerConfig.index = indexRoute;
+			}
 			
-		// Extend and instantiate main router
-		var AppRouter = Mast.Router.extend(routerConfig);
-		Mast.app = new AppRouter();
+			// Extend and instantiate main router
+			var AppRouter = Mast.Router.extend(routerConfig);
+			Mast.app = new AppRouter();
 			
-		// Mast makes the assumption that you want to trigger
-		// the route handler.  This can be overridden
-		Mast.navigate = function(query,options) {
-			return Mast.app.navigate(query,_.extend({
-				trigger:true
-			},options));
-		}
+			// Mast makes the assumption that you want to trigger
+			// the route handler.  This can be overridden
+			Mast.navigate = function(query,options) {
+				return Mast.app.navigate(query,_.extend({
+					trigger:true
+				},options));
+			}
 			
-		// when document is ready
-		$(function(){
-			// Launch history manager 
-			Mast.history.start();
-		});
+			// when document is ready
+			$(function(){
+				// Launch history manager 
+				Mast.history.start();
+			});
 
 	
-		// Initialize Socket
-		// Override default base URL if one was specified
-		this.Socket.baseurl = options.baseurl || this.Socket.baseurl;
-		this.Socket.initialize();
+			// Initialize Socket
+			// Override default base URL if one was specified
+			this.Socket.baseurl = options.baseurl || this.Socket.baseurl;
+			this.Socket.initialize();
 	
 	
-		// Add outerHtml to jQuery
-		jQuery.fn.outerHTML = function(s) {
-			return s
-			? this.before(s).remove()
-			: jQuery("<p>").append(this.eq(0).clone()).html();
-		};
+			// Add outerHtml to jQuery
+			jQuery.fn.outerHTML = function(s) {
+				return s
+				? this.before(s).remove()
+				: jQuery("<p>").append(this.eq(0).clone()).html();
+			};
 					
 			
-		// Prepare template library
-		// HTML templates can be manually assigned here
-		// otherwise they can be loaded from DOM elements
-		// or from a URL
-		Mast.TemplateLibrary = {}
+			// Prepare template library
+			// HTML templates can be manually assigned here
+			// otherwise they can be loaded from DOM elements
+			// or from a URL
+			Mast.TemplateLibrary = {}
 			
-		// TODO: Go ahead and absorb all of the templates in the library 
-		// right from the get-go
+			// TODO: Go ahead and absorb all of the templates in the library 
+			// right from the get-go
 			
-		// Set up template settings
-		_.templateSettings = {
-			//				variable: 'data',
-			interpolate : /\{\{(.+?)\}\}/g,
-			escape : /\{\{(-.+?)\}\}/g,
-			evaluate : /\{\%(.+?)\%\}/g
-		};
+			// Set up template settings
+			_.templateSettings = {
+				//				variable: 'data',
+				interpolate : /\{\{(.+?)\}\}/g,
+				escape : /\{\{(-.+?)\}\}/g,
+				evaluate : /\{\%(.+?)\%\}/g
+			};
 				
 				
-		// Extend Backbone structures
-		Mast.Pattern = Mast.View.extend(Mast.Pattern);
-		Mast.Component = Mast.Pattern.extend(Mast.Component);
-		Mast.Table = Mast.Component.extend(Mast.Table);
+			// Extend Backbone structures
+			Mast.Pattern = Mast.View.extend(Mast.Pattern);
+			Mast.Component = Mast.Pattern.extend(Mast.Component);
+			Mast.Table = Mast.Component.extend(Mast.Table);
 			
-		// When Mast and $.document are ready, 
-		// trigger afterLoad callback (if specified)
-		$(function(){
-			afterLoadFn && _.defer(afterLoadFn);
-		})
+			// When Mast and $.document are ready, 
+			// trigger afterLoad callback (if specified)
+			$(function(){
+				afterLoadFn && _.defer(afterLoadFn);
+			})
 			
-	}
+		}
 	},
 	Backbone.Events);
 

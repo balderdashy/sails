@@ -13,6 +13,10 @@
 		width:50%;
 		min-height:100px;
 	}
+	.testtable .searchbox{
+		clear:both;
+		display:block;
+	}
 	
 	.testtable .row {
 		background:#99e;
@@ -21,11 +25,13 @@
 		background:#eee;
 		font-weight:bold;
 	}
+	
 </style>
 
 <div class="testtable" id="mast-template-testtable">
 	<a class="deselectAll">Deselect All</a>
 	<a class="addRow">+ Add row</a>
+	<input type="text" class="searchbox" placeholder="Search"/>
 	<ul class="row-outlet"></ul>
 </div>
 

@@ -29,6 +29,29 @@ exports.customMappings = function () {
 			action: 'testjson'
 		}
 		, '/403': '/login'
+		
+		
+		// Temporary mappings b/c of socket.io wildcard deficiency
+		, '/experiment/fetch': {
+			controller: 'experiment',
+			action: 'fetch'
+		}
+		, '/experiment/findAll': {
+			controller: 'experiment',
+			action: 'findAll'
+		}
+		, '/experiment/find': {
+			controller: 'experiment',
+			action: 'find'
+		}
+		, '/experiment/destoy': {
+			controller: 'experiment',
+			action: 'destroy'
+		}
+		, '/experiment/create': {
+			controller: 'experiment',
+			action: 'create'
+		}
 	}
 };
 
