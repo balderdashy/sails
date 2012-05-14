@@ -77,6 +77,8 @@
 				appRelativePath = 'templates';
 			fs.readdirSync(appRelativePath).forEach(function(filename) {
 
+				// TODO: only read in template (.ejs) files so we can include a README
+			
 				if ((filename === 'index.js') || (filename[0] === '_')) { return; }
 
 				filename = path.basename(filename, path.extname(filename));
