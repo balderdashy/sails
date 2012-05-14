@@ -40,7 +40,7 @@ _.extend(exports,{
 	logout: function (req,res,next) {
 		req.session.reroutedFrom = null;
 		AuthenticationService.session.unlink(req);
-		res.view('/login');
+		res.redirect('/login');
 	},
 	
 	
@@ -58,6 +58,7 @@ _.extend(exports,{
 			}).success(function(){
 				debug.debug("REGISTRATION SUCCEEDED and user logged in.");
 				
+				// Attempt to send registration email
 				AuthenticationService.session.link(req,account);
 				req.flash("Your account was registered successfully!");
 				
@@ -72,14 +73,14 @@ _.extend(exports,{
 				// else errors will be thrown
 				myMsg.send(function(err){ 
 					debug.debug(err,"\n","Message sent successfully.");
-					res.view('/');
+					res.redirect('/');
 				});
 			})
 			.error(function() {
 				debug.debug("REGISTRATION FAILED!!!!");
 				
 				req.flash("An error occured while processing your registration.");
-				res.view('/register');
+				res.redirect('auth/register');
 			});
 		}
 		else {
