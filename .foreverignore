@@ -1,3 +1,7 @@
+.git
+.git/**/*
+**/.git/**/*
+
 **/public/**/*
 
 # unnecessary, but retained as references for next time I need to change something
