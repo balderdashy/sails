@@ -269,6 +269,11 @@
 				this._subcomponents.push(subcomponent);
 			},
 			
+			// Free the memory for this component and remove it from the DOM
+			destroy: function () {
+				this.$el.remove();
+			},
+			
 			// Determine the proper outlet selector and ensure that it is valid
 			_verifyOutlet: function (outlet,context) {
 //				console.log("!!!!",context);
@@ -424,22 +429,48 @@
 		raise: function (options,readyfn) {
 			
 			
-			//  Create history router	
-			var Itinerary = Mast.Router.extend({
-				routes: {
-					"home":	"home"
-				},
-
-				home: function (query,page) {
-				}
-			});
-			var app = new Itinerary();
+			// Convert options.routes into a format Backbone's router will accept
+			// (can't have key:function(){} style routes, must use a string function name)
+			var routerConfig = {routes:{}};
+			var indexRoute = null;
+			if (options.routes) {
+				_.each(options.routes,function(action,query) {
+					if (query=="routes") return;
+					// Save index route for the end
+					if (query=="index") {
+						indexRoute = action;
+					}
+					routerConfig.routes[query] = query;
+					routerConfig[query] = action;
+				});
+				
+				// Define default (index) route
+				routerConfig.routes[""] = "index";
+				routerConfig.index = indexRoute;
+			}
+			
+			// Extend and instantiate main router
+			var AppRouter = Mast.Router.extend(routerConfig);
+			Mast.app = new AppRouter();
+			
+			// Mast makes the assumption that you want to trigger
+			// the route handler.  This can be overridden
+			Mast.navigate = function(query,options) {
+				return Mast.app.navigate(query,_.extend({
+					trigger:true
+				},options));
+			}
+			
+			// when document is ready
 			$(function(){
+				// Launch history manager 
 				Mast.history.start();
 			});
 
 	
 			// Initialize Socket
+			// Override default base URL if one was specified
+			this.Socket.baseurl = options.baseurl || this.Socket.baseurl;
 			this.Socket.initialize();
 	
 	
