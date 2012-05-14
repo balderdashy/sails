@@ -1,5 +1,4 @@
-(function (){
-		
+(function(){
 	// Build mast objects and set defaults
 	Mast = _.extend(Backbone,
 	{
@@ -46,9 +45,9 @@
 			// (reference: http://documentcloud.github.com/backbone/docs/backbone-localstorage.html)
 			create: function(model,options){
 				var url = (model.url || model.collection.url) + "/create";
-//				console.log("RUNNING CREATE",arguments,url);
+				//				console.log("RUNNING CREATE",arguments,url);
 				this._socket.emit(url,{},function(result) {
-//					console.log("result",result);
+					//					console.log("result",result);
 					try {
 						options.success(JSON.parse(result));
 					}
@@ -353,11 +352,11 @@
 			},
 			
 			afterRender: function(){
-				// stub
+			// stub
 			},
 			
 			afterConnect: function(){
-				// stub
+			// stub
 			},
 			
 			// Default HTML to display if table is empty and no emptytemplate
@@ -427,11 +426,11 @@
 					self.render();
 				});
 				this.collection.on('change',function(model) {
-//					console.log("CHANGE!");
+					//					console.log("CHANGE!");
 					self.renderRow(model);
 				});
 				this.collection.on('add',function() {
-//					console.log("ADD fired!");
+					//					console.log("ADD fired!");
 					self.render();
 				});
 				this.collection.on('reset',function() {
@@ -683,11 +682,6 @@
 				evaluate : /\{\%(.+?)\%\}/g
 			};
 				
-				
-			// Extend Backbone structures
-			Mast.Pattern = Mast.View.extend(Mast.Pattern);
-			Mast.Component = Mast.Pattern.extend(Mast.Component);
-			Mast.Table = Mast.Component.extend(Mast.Table);
 			
 			// When Mast and $.document are ready, 
 			// trigger afterLoad callback (if specified)
@@ -698,5 +692,12 @@
 		}
 	},
 	Backbone.Events);
+	
+	
+	// Extend Backbone structures
+	Mast.Pattern = Mast.View.extend(Mast.Pattern);
+	Mast.Component = Mast.Pattern.extend(Mast.Component);
+	Mast.Table = Mast.Component.extend(Mast.Table);
+
 
 })();

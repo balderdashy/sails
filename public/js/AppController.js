@@ -1,25 +1,41 @@
-// Create a random new row
-function generateSampleRow (){
-	return new Mast.Model({
+//
+// Define Mast components, collections, models, etc.
+/////////////////////////////////////////////////////
+//
+	// Create a random new row
+	function generateSampleRow (){
+		return new Mast.Model({
 		
-		title: 'Sample',
-		value: Math.floor(Math.random()*5000),
-		highlighted: false
-	});
-}
-
-var TestRow = Mast.Model.extend({
-	defaults: {
-		highlighted: false
+			title: 'Sample',
+			value: Math.floor(Math.random()*5000),
+			highlighted: false
+		});
 	}
-})
 
-var TestRows = Mast.Collection.extend({
-	url: '/experiment',
-	model: TestRow
-});
+	var TestRow = Mast.Model.extend({
+		defaults: {
+			highlighted: false
+		}
+	})
 
-
+	var TestRows = Mast.Collection.extend({
+		url: '/experiment',
+		model: TestRow
+	});
+	
+	Mast.Button = Mast.Component.extend({
+		events:{},
+		init: function() {
+			this.events.click = this.click;
+			this.set('label',this.label);
+		},
+		template: '#mast-template-button',
+		model: new Mast.Model({
+			label: 'Press me!'
+		})
+	});
+//////////////////////////////////////////////////////
+	
 
 // Define routes
 var AppController = {
@@ -137,17 +153,12 @@ var AppController = {
 		// OK that was fun-- so lets move on to another example
 		// We'll create a "Next Example" link
 		// which will use the Mast.Router to manage the browser history stack
-		// and move on to the next stage of the example app
-		new Mast.Component({
-			events: {
-				click: function(e) {
-					Mast.navigate('tableExample');
-				}
+		// and move on to the next stage of the example app		
+		new Mast.Button({
+			label: 'Next experiment >',
+			click: function(e) {
+				Mast.navigate('tableExample');
 			},
-			template: '#mast-template-button',
-			model: new Mast.Model({
-				label: 'Next experiment >'
-			}),
 			outlet: '.sandbox'
 		});
 	},
@@ -263,17 +274,12 @@ var AppController = {
 		t.append();
 
 		// Finally, let's create another button for the user to go back
-		// to the previous example
-		new Mast.Component({
-			events: {
-				click: function(e) {
-					Mast.navigate('index');
-				}
+		// to the previous example		
+		new Mast.Button({
+			label: '< Previous experiment',
+			click: function(e) {
+				Mast.navigate('index');
 			},
-			template: '#mast-template-button',
-			model: new Mast.Model({
-				label: '< Previous experiment'
-			}),
 			outlet: '.sandbox'
 		});
 	}

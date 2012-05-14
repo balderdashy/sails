@@ -15,12 +15,14 @@
 	}
 	
 	.testtable ul {
-		
 		margin-top: 1em;
 	}
 	
 	.testtable a {
-		background:#522;
+		background:#a33;
+		border: 1px inset #b55;
+		border-bottom: 3px inset #633;
+		border-right: 4px inset #522;
 		padding: 0.2em 0.5em;
 		display:block;
 		float:right;
@@ -30,11 +32,18 @@
 	}
 	
 	.testtable .searchbox {
-		clear:both;
+		float:left;
+/*		clear:both;*/
 		display:block;
 	}
 	
-	
+	.testtable .row {
+		background:#99e;
+		border: 1px inset #559;
+		border-right:none;
+		cursor:pointer;
+		overflow:auto;
+	}
 	.testtable .row span {
 		display:block;
 		float:left;
@@ -42,14 +51,21 @@
 	.testtable .row a, .testtable .row span {
 		padding: 0.3em 0.5em 0.3em 0.5em;
 	}
-	.testtable .row {
-		border: 1px solid #bbf;
-		overflow:auto;
-		background:#99e;
-	}
 	.testtable .row.highlighted {
 		background:#eee;
+		border: 1px outset #bbf;
+		border-bottom: 3px outset #bbf;
+		border-right:none;
 		font-weight:bold;
+	}
+	
+	.clear {clear:both;}
+	
+	.testtable .empty {
+		text-align:center;
+		font-style:italic;
+		margin-top: 2.2em;
+		color: #227;
 	}
 	
 </style>
@@ -58,10 +74,11 @@
 	<a class="deselectAll">Deselect All</a>
 	<a class="addRow">+ Add row</a>
 	<input type="text" class="searchbox" placeholder="Search"/>
+	<div class="clear"></div>
 	<ul class="row-outlet"></ul>
 </div>
 
-<div id="mast-template-testtable-empty">
+<div class="empty" id="mast-template-testtable-empty">
 	<span>Nothing to see here...</span>
 </div>
 
