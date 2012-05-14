@@ -1,6 +1,6 @@
 
 <div class="container">
-	<div class="mast outlet0"></div>
+	<div class="sandbox"></div>
 	<a href="experiment/2">Next example ></a>
 </div>
 
@@ -8,64 +8,79 @@
 
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.8.19/jquery-ui.min.js"></script>
 <script type="text/javascript">
-	
-	$(function() {
+
+	Mast.raise({
+		baseurl: 'http://localhost:5008'
+	},function() {
 		
-		
-		var DropdownComponent = Mast.Component.extend({
-			template: '.dropdown.template',
+		DropdownComponent = Mast.Component.extend({
+			template: '.dropdown',
 			events: {
 				click:'openMenu'
+//				, clickoutside: 'closeMenu'
 			},
 			init: function() {
 				//
 			},
 			openMenu: function(){
-				this.pattern.setTemplate('.dropdown-expanded.template');
-				_.defer(this.$el.clickoutside,this.closeMenu,this.$el);
+				this.pattern.setTemplate('.dropdown-expanded');
 			},
 			
 			closeMenu: function () {
-				this.pattern.setTemplate('.dropdown.template');
+				this.pattern.setTemplate('.dropdown');
+			},
+			
+			afterRender: function () {
+				console.log("AFTERRENDER called on DropDown",this.outlet);
+				
 			}
 		});
 	
 		// Create some components
 		a=new Mast.Component({
+			events: {},
+			
+			init: function() {
+				// We use a component instead of a pattern here
+				// since the dropdown component is potentially reusable
+				// and has uses in many different situations
+				
+			},
+			
 			model: new Mast.Model({
-				name:'THING1 rendered!  Appended a dropdown component as well.'}),
-			template: '.test.template',
+				name:'THING1 rendered!  Appended a dropdown component as well.'
+			}),
+			
+			template: '.test',
 	
-			outlet:'.outlet0',
+			outlet:'.sandbox',
 			
 			// Triggered after each render
 			afterRender: function () {
 				this.$el.draggable();
 				
-				// We use a component instead of a pattern here
-				// since the dropdown component is potentially reusable
-				// and has uses in many different situations
 				this.dropdownComponent = new DropdownComponent({
-					outlet: this.$el
+					outlet: ".ddown",
+					autorender: false
 				});
+				this.dropdownComponent.render();
 			}
 		});	
-		
-		b=new Mast.Component({
-			pattern: new Mast.Pattern({
-				model: new Mast.Model({name:'te1'}),
-				template: '.test.template'
-			}),
-	
-			outlet:'.outlet0',
-			
-			// Triggered after each render
-			afterRender: function () {
-				this.$el.draggable();
-			}
-		});
-		
-		
+//		
+//		b=new Mast.Component({
+//			pattern: new Mast.Pattern({
+//				model: new Mast.Model({name:'te1'}),
+//				template: '.test'
+//			}),
+//	
+//			outlet:'.sandbox',
+//			
+//			// Triggered after each render
+//			afterRender: function () {
+//				this.$el.draggable();
+//			}
+//		});
+
 		
 		// When you create a new Component, it renders to the DOM automatically
 		// And subsequently, you don't have to force a component to render-- 
@@ -74,32 +89,65 @@
 		
 		// First, let's try changing the model
 		// an event is created at the model and bubbles up to the view
-		a.pattern.model.set('name','Changed THING1\'s model.');
-		b.pattern.model.set('name','Changed THING2\'s model.');
+//		a.pattern.set('name','Changed THING1\'s model.');
+//		b.pattern.model.set('name','Changed THING2\'s model.');
 		
 		
 		// Now let's change the template-- notice how the DOM automatically updates
 		// This is great for instances when a whole bunch of HTML needs to change 
-		a.pattern.setTemplate('.test1.template');
-		b.pattern.setTemplate('.test1.template');
+//		a.pattern.setTemplate('.test1');
+//		b.pattern.setTemplate('.test1');
 		
 		
+//		a.render();
+		
+		var generateSampleRow = function (x){
+			return new Mast.Model({
+				id: x,
+				title: 'Sample',
+				value: Math.floor(Math.random()*5000),
+				highlighted: false
+			});
+		};
 		
 		// Now let's try creating a Table
 		// A Table is basically just a Component which contains 
 		// a homogenous list of sub-Components
 		t = new Mast.Table({
+			events:{
+//				'clickoutside': 'deselectAll'
+			},
+			rowevents: {
+				'click': 'toggleRow'
+			},
+			
+			deselectAll: function(e) {
+				_.each(this.patterns,function(pattern){
+					pattern.set('highlighted',false);
+				});
+			},
+			
+			toggleRow: function(rowId, e){
+				if (this.patterns[rowId].get('highlighted')) {
+					this.patterns[rowId].set('highlighted',false);
+				}
+				else {
+					this.patterns[rowId].set('highlighted',true);
+				}
+			},
+			
 			template: '#mast-template-testtable',
 			model: null,
+			outlet: '.sandbox',
 			
-			collection: new Mast.Collection,
+			collection: new Mast.Collection([
+					generateSampleRow(0),
+					generateSampleRow(1),
+					generateSampleRow(2),
+					generateSampleRow(3)]),
 			rowtemplate: '#mast-template-testtable-row',
-			rowoutlet: '.mast-template-row',
-			outlet: '.outlet0',
-			autorender: true
+			rowoutlet: '.row-outlet'
 		});
-		
-		
 	});
 	
 </script>

@@ -1,5 +1,11 @@
+<!--
+	REMEMBER:
+	Don't use IDs in css selectors for templates!
+	IDs are stripped from templates!
+-->
+
 <style type="text/css">
-	#mast-template-testtable {
+	.testtable {
 		background: #aaf;
 		padding:1em;
 		margin: 0 auto;
@@ -7,15 +13,19 @@
 		min-height:100px;
 	}
 	
-	#mast-template-testtable {
-		
+	.testtable .row {
+		background:#99e;
+	}
+	.testtable .row.highlighted {
+		background:#eee;
+		font-weight:bold;
 	}
 </style>
 
-<div id="mast-template-testtable">
-	<ul class="mast-outlet-row"></ul>
+<div class="testtable" id="mast-template-testtable">
+	<ul class="row-outlet"></ul>
 </div>
 
-<li id="mast-template-row-testtable">
-	row: {{id}}
+<li class="row {% if (highlighted) { %} highlighted {% } %}" id="mast-template-testtable-row">
+	{{id}} | {{title}} | {{value}}
 </li>
