@@ -1,7 +1,7 @@
 // Create a random new row
-function generateSampleRow (x){
+function generateSampleRow (){
 	return new Mast.Model({
-		id: x,
+		
 		title: 'Sample',
 		value: Math.floor(Math.random()*5000),
 		highlighted: false
@@ -13,10 +13,10 @@ var TestRows = Mast.Collection.extend({
 	});
 		
 var testtableRowCollection = new TestRows([
-	generateSampleRow(0),
-	generateSampleRow(1),
-	generateSampleRow(2),
-	generateSampleRow(3)
+	generateSampleRow(),
+	generateSampleRow(),
+	generateSampleRow(),
+	generateSampleRow()
 	]);
 
 
@@ -34,12 +34,11 @@ var AppController = {
 		DropdownComponent = Mast.Component.extend({
 			template: '.dropdown',
 			events: {
-				click:'openMenu'
-				, 
+				click:'openMenu', 
 				clickoutside: 'closeMenu'
 			},
 			init: function() {
-			//
+			
 			},
 			openMenu: function(e){
 				debug.debug("Opened menu.");
@@ -119,14 +118,14 @@ var AppController = {
 
 		// First, let's try changing the model
 		// an event is created at the model and bubbles up to the view
-		a.pattern.set('name','Changed THING1\'s model.');
-		b.pattern.model.set('name','Changed THING2\'s model.');
+		a.set('name','Changed THING1\'s model.');
+		b.set('name','Changed THING2\'s model.');
 
 
 		// Now let's change the template-- notice how the DOM automatically updates
 		// This is great for instances when a whole bunch of HTML needs to change 
-		a.pattern.setTemplate('.test1');
-		b.pattern.setTemplate('.test1');
+		a.setTemplate('.test1');
+		b.setTemplate('.test1');
 
 		// You can render components as many times as you want!
 		a.render();
@@ -167,7 +166,8 @@ var AppController = {
 			autorender: false,
 					
 			events: {
-				'click .deselectAll': 'deselectAll'
+				'click .deselectAll': 'deselectAll',
+				'click .addRow': 'addRow'
 			}
 					
 			// Row events are triggered when any of the
@@ -204,6 +204,11 @@ var AppController = {
 				});
 			}
 			
+			,addRow: function(e) {
+				var model = generateSampleRow(this.collection.length);
+				this.collection.push(model);
+			}
+			
 			, 
 			toggleRow: function(rowId, e){
 				if (this.collection.at(rowId).get('highlighted')) {
@@ -222,6 +227,10 @@ var AppController = {
 				e.stopImmediatePropagation();
 			}
 			
+			,afterRender: function() {
+				this.$rowoutlet.children().disableSelection();
+			}
+			
 			// Triggered after rendering each row
 			,afterRenderRow: function(rowId) {
 				
@@ -229,10 +238,13 @@ var AppController = {
 		});
 				
 				
-		// Now append the table to its outlet
+		// Now append the table to its outlet.
+		// We could have just created the table normally,
+		// but I wanted to demonstrate how to disable autorender.
 		t.append();
-				
-		// We can allow the user to continue on now
+
+		// Finally, let's create another button for the user to go back
+		// to the previous example
 		new Mast.Component({
 			events: {
 				click: function(e) {

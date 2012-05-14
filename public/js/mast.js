@@ -274,6 +274,16 @@
 				this.$el.remove();
 			},
 			
+			// Set pattern's template selector
+			setTemplate: function (selector){
+				return this.pattern.setTemplate(selector);
+			},
+			
+			// Set pattern's model attribute
+			set: function (attribute,value){
+				return this.pattern.model.set(attribute,value);
+			},
+			
 			// Determine the proper outlet selector and ensure that it is valid
 			_verifyOutlet: function (outlet,context) {
 				//				console.log("!!!!",context);
@@ -329,13 +339,14 @@
 				
 				// Watch for collection changes
 				var self = this;
-				this.collection.on('remove',function(model,collection,status) {
+				this.collection.on('remove',function() {
 					self.render();
 				});
-				this.collection.on('change',function(model,status) {
+				this.collection.on('change',function(model) {
 					self.renderRow(model);
 				});
 				this.collection.on('add',function() {
+					console.log(arguments);
 					self.render();
 				});
 				
@@ -358,7 +369,7 @@
 			},
 			
 			// Render the Table, its subcomponents, and all rows
-			render: function () {
+			render: function (silent) {
 				// Render main pattern
 				Mast.Component.prototype.render.call(this,true);
 				
@@ -381,6 +392,10 @@
 				// Listen for row DOM events and redelegate events
 				this._listenToRows();
 				this.delegateEvents();
+				
+				if (!silent) {
+					this.trigger('afterRender');
+				}
 			},
 			
 			// Render the given row in place
@@ -394,6 +409,10 @@
 			
 			deleteRow: function (id) {
 				this.collection.remove(this.collection.at(id));
+			},
+			
+			addRow: function (model) {
+				this.collection.add(model);
 			},
 			
 			// Lookup the element for the id'th row
@@ -454,6 +473,7 @@
 			_replaceRow: function(id,$el){
 				var oldEl = this.getRowEl(id);
 				oldEl.replaceWith($el);
+				this.trigger('afterRenderRow',$el.index());
 			},
 			
 			// Generate element and add CSS identifier class
