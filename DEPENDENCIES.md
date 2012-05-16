@@ -27,3 +27,4 @@ npm install require-all
 
 npm install email
 
+npm install node-minify

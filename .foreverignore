@@ -1,5 +1,4 @@
-
-
+# Ignore public web files
 **/public/**/*
 
 # unnecessary, but retained as references for next time I need to change something

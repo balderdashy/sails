@@ -2,57 +2,9 @@
 // Define Mast components, collections, models, etc.
 /////////////////////////////////////////////////////
 //
-	// Create a random new row
-	function generateSampleRow (){
-		return new Mast.Model({
-		
-			title: 'Sample',
-			value: Math.floor(Math.random()*5000),
-			highlighted: false
-		});
-	}
+	
 
-	var TestRow = Mast.Model.extend({
-		defaults: {
-			highlighted: false
-		}
-	})
 
-	var TestRows = Mast.Collection.extend({
-		url: '/experiment',
-		model: TestRow
-	});
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	Mast.Button = Mast.Component.extend({
-		
-		events:{},
-		
-		init: function() {
-			this.events.click = this.click;
-			this.set('label',this.label);
-		},
-		
-		template: '#mast-template-button',
-		
-		model: new Mast.Model({
-			label: 'Press me!'
-		})
-	});
-	
-	
-	
-	
-	
-	
-	
 	
 //////////////////////////////////////////////////////
 	
@@ -66,30 +18,6 @@ var AppController = {
 		// Empty container
 		$(".sandbox").empty();
 				
-		// Define a reusable dropdown component
-		DropdownComponent = Mast.Component.extend({
-			template: '.dropdown',
-			events: {
-				click:'openMenu', 
-				clickoutside: 'closeMenu'
-			},
-			init: function() {
-			
-			},
-			openMenu: function(e){
-				debug.debug("Opened menu.");
-				this.pattern.setTemplate('.dropdown-expanded');
-				e.stopImmediatePropagation();
-			},
-
-			closeMenu: function () {
-				debug.debug("Closed menu.");
-				this.pattern.setTemplate('.dropdown');
-			},
-
-			// Triggered after each render
-			afterRender: function () {}
-		});
 
 		// Create some components
 		a=new Mast.Component({
@@ -249,6 +177,15 @@ var AppController = {
 			
 			,
 			addRow: function(e) {
+				// Create a random new row
+				function generateSampleRow (){
+					return new Mast.Model({
+		
+						title: 'Sample',
+						value: Math.floor(Math.random()*5000),
+						highlighted: false
+					});
+				}
 				var model = generateSampleRow(this.collection.length);
 				this.collection.create(model);
 			}

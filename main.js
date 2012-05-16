@@ -147,8 +147,11 @@ router.mapSocketRequests(app,io);
 app.listen(config.port);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 
+// Compile components
+var compiler = require('./lib/compiler');
 
-// Attach 
+
+// Attach authorization middleware to socket event receiver
 io.set('authorization', function (data, accept) {
     if (data.headers.cookie) {
         data.cookie = parseCookie(data.headers.cookie);

@@ -5,3 +5,6 @@ ssl
 *~
 .idea
 config/db.js
+
+public/stylesheets/_*.css
+public/js/_*.js
