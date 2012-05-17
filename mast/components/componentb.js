@@ -1,20 +1,15 @@
-ComponentB = Mast.Component.extend({
+Mast.components.ComponentB = Mast.Component.extend({
 
 	// Subcomponents to register
 	subcomponents: [
-	{
-		component: "DropdownComponent",
-		outlet: ".ddown"
-	}
+		{
+			component: "DropdownComponent",
+			outlet: ".ddown"
+		}
 	],
-
-	pattern: new Mast.Pattern({
-		model: new Mast.Model({
-			name:'te1'
-		}),
-		template: '.test'
-	}),
-
+	
+	template: '.test',
+	model: new Mast.Model({name:'tel'}),
 	outlet:'.sandbox',
 
 	// Triggered after each render

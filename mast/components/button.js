@@ -1,4 +1,4 @@
-Mast.Button = Mast.Component.extend({
+Mast.components.Button = Mast.Button = Mast.Component.extend({
 		
 	events: {},
 		

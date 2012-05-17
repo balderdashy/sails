@@ -1,5 +1,5 @@
 // Define a reusable dropdown component
-var DropdownComponent = Mast.Component.extend({
+Mast.components.DropdownComponent = Mast.Component.extend({
 	template: '.dropdown',
 	events: {
 		click:'openMenu', 

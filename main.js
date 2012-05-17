@@ -13,8 +13,6 @@ sessionStore = new express.session.MemoryStore();
 parseCookie = require('connect').utils.parseCookie;
 ConnectSession = require('connect').middleware.session.Session;
 
-
-
 // Set up logger
 debug = require('./lib/logger.js').debug;
 
@@ -92,7 +90,11 @@ app.configure(function() {
   
 	// If this is development mode, allow direct access to mast directory
 	if (config.appEnvironment == 'development') {
+		 // Allow public access to user Mast components
 		 app.use(express['static'](__dirname + '/mast'));
+		 
+		 // Allow public access to Mast core
+		 app.use(express['static'](__dirname + '/lib/mast'));
 	}
   
 	// Session / cookie support

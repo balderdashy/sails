@@ -1,4 +1,4 @@
-ComponentA = Mast.Component.extend({
+Mast.components.ComponentA = Mast.Component.extend({
 	events: {},
 
 	// Subcomponents to register

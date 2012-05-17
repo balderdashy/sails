@@ -1,12 +1,12 @@
-var index = function(query,page) {
+Mast.routes.index = function(query,page) {
 				
 	// Empty container
 	$(".sandbox").empty();
 				
 
 	// Create some components
-	a=new ComponentA;	
-	b=new ComponentB;
+	a=new Mast.components.ComponentA;	
+	b=new Mast.components.ComponentB;
 
 
 	// When you create a new Component, it renders to the DOM automatically

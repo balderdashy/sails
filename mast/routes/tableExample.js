@@ -1,4 +1,4 @@
-var tableExample = function(query,page){
+Mast.routes.tableExample = function(query,page){
 			
 	// Empty container
 	$(".sandbox").empty();
@@ -6,7 +6,7 @@ var tableExample = function(query,page){
 	// Now let's try creating a Table
 	// A Table is basically just a Component which contains 
 	// a homogenous list of sub-Components
-	t = new TestTable();
+	t = new Mast.components.TestTable();
 				
 	// Now append the table to its outlet.
 	// We could have just created the table normally,

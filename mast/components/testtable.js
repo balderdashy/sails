@@ -10,7 +10,7 @@ var TestRows = Mast.Collection.extend({
 });
 
 
-TestTable = Mast.Table.extend({
+Mast.components.TestTable = Mast.Table.extend({
 					
 	autorender: false,
 			
