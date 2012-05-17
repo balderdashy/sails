@@ -90,7 +90,10 @@ app.configure(function() {
 	app.use(express.methodOverride());
 	app.use(express['static'](__dirname + '/public'));
   
-  
+	// If this is development mode, allow direct access to mast directory
+	if (config.appEnvironment == 'development') {
+		 app.use(express['static'](__dirname + '/mast'));
+	}
   
 	// Session / cookie support
 	app.use(express.cookieParser());

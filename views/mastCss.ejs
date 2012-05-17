@@ -1,0 +1,20 @@
+<%
+// This file is only used when config.environment == "development"
+//
+// Generate links to the css files from the components dir
+fs.readdirSync('public/_development').forEach(function(filename) {
+
+	if ((filename[0] === '_')) {
+		return;
+	}
+	
+	var filepath = path.join('/_development', filename);
+	
+	// Build list of main css files
+	if (filename.match(/.+\.css$/g)) {
+		%>
+		<link rel="stylesheet" href="<%- filepath %>" type="text/css"/>
+		<%
+	}
+});
+%>

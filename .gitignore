@@ -13,4 +13,4 @@ public/stylesheets/_*.css
 public/js/_*.js
 
 # Ignore production minified/compiled assets
-public/production/*
+public/_target/*

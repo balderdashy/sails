@@ -1,4 +1,4 @@
-_.extend(exports,{
+var MetaController = {
 	
 	// Optionally identify the controller here
 	// Otherwise name will be based off of filename
@@ -27,4 +27,5 @@ _.extend(exports,{
 			title: 'Access Denied (403)'
 		});
 	}
-});
+};
+_.extend(exports,MetaController);

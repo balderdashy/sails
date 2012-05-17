@@ -1,6 +1,5 @@
-_.extend(exports,{
+var ExperimentController = {
 	
-
 	index: function (req,res) {
 		console.log(req.params.id);
 		res.view();
@@ -53,4 +52,5 @@ _.extend(exports,{
 			things: "and more things"
 		});
 	}
-});
+};
+_.extend(exports,ExperimentController);

@@ -1,4 +1,4 @@
-_.extend(exports,{
+var AuthController ={
 	
 	// Login to an Account
 	login: function (req,res) {
@@ -131,4 +131,5 @@ _.extend(exports,{
 		};
 	}
 	
-});
+};
+_.extend(exports,AuthController);

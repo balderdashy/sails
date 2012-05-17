@@ -1,4 +1,4 @@
-_.extend(exports,{
+var SettingsController = {
 	
 
 	index: function (req,res) {
@@ -12,4 +12,5 @@ _.extend(exports,{
 			things: "and more things"
 		});
 	}
-});
+};
+_.extend(exports,SettingsController);

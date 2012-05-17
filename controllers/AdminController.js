@@ -1,4 +1,4 @@
-_.extend(exports,{
+var AdminController = {
 	
 
 	index: function (req,res) {
@@ -7,4 +7,5 @@ _.extend(exports,{
 		});
 
 	}
-});
+};
+_.extend(exports,AdminController);
