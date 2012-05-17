@@ -9,4 +9,4 @@ exports.appName = "Sails.js";
 // One of:
 // "development"
 // "production"
-exports.appEnvironment="development";
+exports.appEnvironment="production";
