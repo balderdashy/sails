@@ -2,16 +2,16 @@ Mast.components.ComponentA = Mast.Component.extend({
 	events: {},
 
 	// Subcomponents to register
-	subcomponents: [
-	{
-		component: "DropdownComponent",
-		outlet: ".ddown"
+	subcomponents: {
+		menu1:{
+			component: "DropdownComponent",
+			outlet: ".ddown"
+		},
+		menu2:{
+			component: "DropdownComponent",
+			outlet: ".ddown"
+		}
 	},
-	{
-		component: "DropdownComponent",
-		outlet: ".ddown"
-	}
-	],
 
 	model: new Mast.Model({
 		name:'THING1 rendered!  Appended a dropdown component as well.'
