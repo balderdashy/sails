@@ -1,5 +1,5 @@
 -------------
-stylesheets (miscellaneous css)
+_target (production js/css)
 -------------
 
-Any CSS unrelated to a specific Mast.Component can go in this directory.
+Compiled and minified javascript and css are generated here when running the Sails app in production mode.
