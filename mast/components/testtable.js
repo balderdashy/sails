@@ -1,5 +1,4 @@
 Mast.components.TestRow = Mast.Component.extend({
-//	autorender:false,
 	template: '#mast-template-testtable-row',
 	
 	events: {
@@ -35,8 +34,6 @@ Mast.components.TestRow = Mast.Component.extend({
 
 
 Mast.components.TestTable = Mast.Table.extend({
-	autorender:false,
-	
 	events: {
 		'click .deselectAll': 'deselectAll',
 		'click .addRow': 'addRow'
@@ -58,7 +55,7 @@ Mast.components.TestTable = Mast.Table.extend({
 	
 	template: '#mast-template-testtable',
 	
-	rowcomponent: 'TestRow',
+	rowcomponent: Mast.components.TestRow,
 	
 	rowoutlet: '.row-outlet',
 	
