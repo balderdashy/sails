@@ -15,10 +15,11 @@ exports.bootstrap = function () {
 }
 
 
-exports.sync = function () {
+exports.sync = function (callback) {
 	// Connect and sync
 	sequelize.sync().success(function() {
 		console.log("ORM sync successful!");
+		callback && callback();
 	});
 }
 
