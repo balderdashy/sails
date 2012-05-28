@@ -8,7 +8,7 @@ Mast.routes.subcomponents = function(query,page){
 	// Now let's try creating a Table
 	// A Table is basically just a Component which contains 
 	// a homogenous list of sub-Components
-	t = new Mast.components.TestTable();
+	t = new Mast.components.TestTableWithSubcomponents();
 	
 
 	// Finally, let's create another button for the user to go back

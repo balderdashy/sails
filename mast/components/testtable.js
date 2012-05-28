@@ -31,8 +31,6 @@ Mast.components.TestRow = Mast.Component.extend({
 });
 
 
-
-
 Mast.components.TestTable = Mast.Table.extend({
 	events: {
 		'click .deselectAll': 'deselectAll',
@@ -74,5 +72,19 @@ Mast.components.TestTable = Mast.Table.extend({
 		this.collection.each(function(model){
 			model.set('highlighted',false);
 		});
+	}
+});
+
+
+Mast.components.TestTableWithSubcomponents = Mast.components.TestTable.extend({
+	rowcomponent: 'TestRowWithSubcomponent'
+});
+
+Mast.components.TestRowWithSubcomponent = Mast.components.TestRow.extend({
+	
+	subcomponents: {
+		dropdown: {
+			component: "DropdownComponent"
+		}
 	}
 });
