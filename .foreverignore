@@ -1,3 +1,9 @@
+# Ignore git repos
+.git
+**/.git
+**/.git/*
+**/.git/**/*
+
 # Ignore public web files
 **/public/**/*
 
