@@ -17,6 +17,9 @@ ConnectSession = require('connect').middleware.session.Session;
 debug = require('./lib/logger.js').debug;
 
 // Configuration
+if (! path.existsSync("./config/db")) {
+    throw new Error ('No database configuration file found!');
+}
 db = require('./config/db'); 
 config = require('./config/app');
 require('./config/log');
