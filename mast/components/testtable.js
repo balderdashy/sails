@@ -97,6 +97,7 @@ Mast.components.TestTable = Mast.Table.extend({
 	// Triggered after rendering each row
 	,
 	afterRenderRow: function(rowId) {
+		// Disable selection on all child rows
 		this.$rowoutlet.children().eq(rowId).disableSelection();
 				
 	}

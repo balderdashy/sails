@@ -13,15 +13,6 @@ Mast.routes.tableExample = function(query,page){
 	// but I wanted to demonstrate how to disable autorender.
 	t.append();
 
-	// On to the next experiment
-	ba=new Mast.Button({
-		label: 'Next: Subcomponents >',
-		click: function(e) {
-			Mast.navigate('subcomponents');
-		},
-		outlet: '.sandbox'
-	});
-	
 	// Finally, let's create another button for the user to go back
 	// to the previous example		
 	bb=new Mast.Button({
@@ -31,4 +22,14 @@ Mast.routes.tableExample = function(query,page){
 		},
 		outlet: '.sandbox'
 	});
+	
+	// On to the next experiment
+	ba=new Mast.Button({
+		label: 'Next: Subcomponents >',
+		click: function(e) {
+			Mast.navigate('subcomponents');
+		},
+		outlet: '.sandbox'
+	});
+	
 }
