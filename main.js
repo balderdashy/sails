@@ -148,35 +148,37 @@ router.mapExpressRequests(app);
 router.mapSocketRequests(app,io);
 
 
-// Start server
-app.listen(config.port);
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
-
 // Compile components
 var compiler = require('./lib/compiler');
+compiler.compile(function(){
+	
+	// Start http(s):// server
+	app.listen(config.port);
+	console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+	
+	// Start ws(s):// server
+	io.set('authorization', function (data, accept) {
+		// Attach authorization middleware to socket event receiver
+		if (data.headers.cookie) {
+			data.cookie = parseCookie(data.headers.cookie);
+			data.sessionID = data.cookie['sails.sid'];
+			data.sessionStore = sessionStore;
 
-
-// Attach authorization middleware to socket event receiver
-io.set('authorization', function (data, accept) {
-    if (data.headers.cookie) {
-        data.cookie = parseCookie(data.headers.cookie);
-        data.sessionID = data.cookie['sails.sid'];
-		data.sessionStore = sessionStore;
-		
-        // (literally) get the session data from the session store
-        sessionStore.get(data.sessionID, function (err, session) {
-            if (err || !session) {
-                // if we cannot grab a session, turn down the connection
-                accept('Cannot load session from socket.io! (perhaps session id is invalid?)\n'+err, false);
-            } else {
-                // save the session data and accept the connection
-                // create a session object, passing data as request and our
-                // just acquired session data
-                data.session = new ConnectSession(data, session);
-                accept(null, true);
-            }
-        });
-    } else {
-       return accept('No cookie transmitted with socket.io connection.', false);
-    }
+			// (literally) get the session data from the session store
+			sessionStore.get(data.sessionID, function (err, session) {
+				if (err || !session) {
+					// if we cannot grab a session, turn down the connection
+					accept('Cannot load session from socket.io! (perhaps session id is invalid?)\n'+err, false);
+				} else {
+					// save the session data and accept the connection
+					// create a session object, passing data as request and our
+					// just acquired session data
+					data.session = new ConnectSession(data, session);
+					accept(null, true);
+				}
+			});
+		} else {
+		return accept('No cookie transmitted with socket.io connection.', false);
+		}
+	});
 });
