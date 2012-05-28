@@ -37,7 +37,7 @@ Mast.routes.index = function(query,page) {
 	// which will use the Mast.Router to manage the browser history stack
 	// and move on to the next stage of the example app		
 	new Mast.Button({
-		label: 'Next experiment >',
+		label: 'Next: Tables >',
 		click: function(e) {
 			Mast.navigate('tableExample');
 		},

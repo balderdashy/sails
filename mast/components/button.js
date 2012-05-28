@@ -9,7 +9,7 @@ Mast.components.Button = Mast.Button = Mast.Component.extend({
 		
 	template: '#mast-template-button',
 		
-	model: new Mast.Model({
+	model: {
 		label: 'Press me!'
-	})
+	}
 });

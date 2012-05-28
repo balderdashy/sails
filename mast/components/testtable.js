@@ -38,7 +38,7 @@ Mast.components.TestTable = Mast.Table.extend({
 	outlet: '.sandbox'
 			
 	, 
-	collection: new TestRows()
+	collection: new Mast.models.TestRows()
 					
 	, 
 	rowtemplate: '#mast-template-testtable-row'

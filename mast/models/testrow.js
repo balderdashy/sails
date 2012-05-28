@@ -1,10 +1,10 @@
-var TestRow = Mast.Model.extend({
+Mast.models.TestRow = Mast.Model.extend({
 	defaults: {
 		highlighted: false
 	}
 })
 
-var TestRows = Mast.Collection.extend({
+Mast.models.TestRows = Mast.Collection.extend({
 	url: '/experiment',
-	model: TestRow
+	model: Mast.models.TestRow
 });
