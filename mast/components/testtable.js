@@ -6,6 +6,11 @@ Mast.components.TestRow = Mast.Component.extend({
 		'click': 'toggleRow'
 	},
 	
+	// Called after initialization, before autorender
+	init: function () {
+		
+	},
+	
 	afterRender: function () {
 		this.$el.disableSelection();
 	},
@@ -37,6 +42,15 @@ Mast.components.TestTable = Mast.Table.extend({
 		'click .addRow': 'addRow'
 	},
 				
+	outlet: '.sandbox',
+	
+	template: '#mast-template-testtable',
+	
+	rowcomponent: Mast.components.TestRow,
+	
+	rowoutlet: '.row-outlet',
+	
+	collection: new Mast.models.TestRows(),
 	
 	// Called only after the socket is live
 	afterConnect: function() {
@@ -48,16 +62,6 @@ Mast.components.TestTable = Mast.Table.extend({
 			}
 		});
 	},
-	
-	outlet: '.sandbox',
-	
-	template: '#mast-template-testtable',
-	
-	rowcomponent: Mast.components.TestRow,
-	
-	rowoutlet: '.row-outlet',
-	
-	collection: new Mast.models.TestRows(),
 	
 	addRow: function(e) {
 		// Create a random new row
