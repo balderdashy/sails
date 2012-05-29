@@ -1,6 +1,9 @@
 Mast.models.TestRow = Mast.Model.extend({
+	urlRoot: '/experiment',
 	defaults: {
-		highlighted: false
+		highlighted: false,
+		title: 'Sample',
+		value: Math.floor(Math.random()*5000)
 	}
 })
 

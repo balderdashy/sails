@@ -44,7 +44,7 @@ exports.customMappings = function () {
 			controller: 'experiment',
 			action: 'find'
 		}
-		, '/experiment/destoy': {
+		, '/experiment/destroy': {
 			controller: 'experiment',
 			action: 'destroy'
 		}

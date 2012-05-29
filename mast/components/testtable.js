@@ -31,6 +31,8 @@ Mast.components.TestRow = Mast.Component.extend({
 		var rowModel = this.model;
 		//		debug.debug("Deleting row w/ id: "+rowModel.id+" @ index: "+rowId);
 		this.parent.collection.remove(rowModel);
+		console.log(rowModel,")!)!)!)!)!");
+		rowModel.destroy();
 		e.stopImmediatePropagation();
 	}
 });
@@ -54,7 +56,9 @@ Mast.components.TestTable = Mast.Table.extend({
 	
 	// Called only after the socket is live
 	afterConnect: function() {
+		// Only fire afterConnect once, even if a reconnect happens
 		Mast.Socket.off('connect', this.afterConnect);
+		
 		var self = this;
 		this.collection.fetch({
 			error: function(stuff){
@@ -65,11 +69,7 @@ Mast.components.TestTable = Mast.Table.extend({
 	
 	addRow: function(e) {
 		// Create a random new row
-		this.collection.create({
-			title: 'Sample',
-			value: Math.floor(Math.random()*5000),
-			highlighted: false
-		});
+		this.collection.create();
 	},
 	
 	deselectAll: function(e) {

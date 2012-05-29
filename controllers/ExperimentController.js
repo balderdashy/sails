@@ -23,8 +23,8 @@ var ExperimentController = {
 	// Store a new model
 	create: function (req,res) {
 		Experiment.create({
-			name: "A NEW TEST",
-			value: 99
+			title: req.param('title'),
+			value: req.param('value')
 		}).success(function(outcome) {
 			res.json({
 				success:true
@@ -40,8 +40,15 @@ var ExperimentController = {
 	},
 	
 	destroy: function (req,res) {
-		res.json({
-			success:true
+		var id = req.param('id');
+		
+		Experiment.find(id).success(function(experiment) {
+			console.log("THEOUTCOME::::",experiment);
+			experiment.destroy().success(function(outcome){
+				res.json({
+					success:true
+				});
+			});
 		});
 	},
 	
