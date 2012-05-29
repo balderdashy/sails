@@ -85,7 +85,11 @@ Mast.components.TestTableWithSubcomponents = Mast.components.TestTable.extend({
 });
 
 Mast.components.TestRowWithSubcomponent = Mast.components.TestRow.extend({
-	
+	init: function () {
+		this.on('submit',function(model) {
+			debug.debug(model);
+		})
+	},
 	subcomponents: {
 		dropdown: {
 			component: "DropdownComponent"
