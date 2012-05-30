@@ -4,18 +4,21 @@ Mast.components.DropdownComponent = Mast.Component.extend({
 	template: '.dropdown',
 	events: {
 		click:'openMenu', 
-		
 		clickoutside: 'closeMenu',
-		'click a.submit': 'modifyItem'
+		pressEnter: 'submitForm',
+		pressEscape: 'closeMenu',
+		'click a.submit': 'submitForm'
 	},
 	init: function() {
 			
 	},
 	openMenu: function(e){
-		debug.debug("Opened menu.");
 		if (!this.get('open')) {
+			debug.debug("Opened menu.");
 			this.set('open',true);
-			this.pattern.setTemplate('.dropdown-expanded');
+			this.setTemplate('.dropdown-expanded');
+			this.$el.find('input').focus();
+			
 		}
 		e.stopImmediatePropagation();
 	},
@@ -24,11 +27,11 @@ Mast.components.DropdownComponent = Mast.Component.extend({
 		if (this.get('open')) {
 			debug.debug("Closed menu.");
 			this.set('open',false);
-			this.pattern.setTemplate('.dropdown');
+			this.setTemplate('.dropdown');
 		}
 	},
 	
-	modifyItem: function (e) {
+	submitForm: function (e) {
 		this.parent.trigger('dropdownSubmit',this.$el.find('input').val());
 		this.closeMenu();
 		e.stopImmediatePropagation();
