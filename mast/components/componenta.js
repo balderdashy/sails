@@ -1,6 +1,14 @@
 Mast.components.ComponentA = Mast.Component.extend({
 	events: {},
 
+	init: function () {
+		this.on('dropdownSubmit',this.changeName);
+	},
+	
+	changeName: function(formFieldValue) {
+		this.set('name',formFieldValue);
+	},
+
 	// Subcomponents to register
 	subcomponents: {
 		menu1:{

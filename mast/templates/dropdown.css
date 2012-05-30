@@ -9,8 +9,8 @@
 	background: #bbb;
 }
 .dropdown-expanded ul li {
-	padding:1em;
+	padding:5%;
 	margin: 0 auto;
-	width:50%;
+	width:90%;
 	border: 1px solid blue;
 }
