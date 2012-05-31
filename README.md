@@ -1,19 +1,34 @@
-Sails Framework
---
+mast
+====
 
-Sails is like Rails, but for Node.js.
+Sails&#39;-optimized web UI framework, based on Backbone.js.
 
-But Sails does some things that Rails doesn't do:
+Like Sails, Mast is mainly just a collection of the latest stable versions of really great libraries.  
 
-<dl>
+Sails combines Backbone.js, Socket.io, and jQuery to unify the browser event model.
+Events might be triggered by logic, a user DOM action, or a push from a socket connection, but before, these event systems were separate.
 
-<dt>New-Age Content Negotiation</dt>
-<dd>a modern web framework should normalize parameters across traditional URL notation, XML, JSON, AND websockets.  Rails/grails/etc. don't do this because they were never built with websockets/realtime in mind.</dd>
+Mast introduces the concept of a Component, which is a minimal logical UI element which completely abstracts DOM interaction to its Pattern(s). 
 
-<dt>Built-In Parameter Validation</dt>
-<dd>Along the same vein, why is it that MVC frameworks have built in authentication for models, but not for route parameters?  It should be simple to assign validation rules to your actions and not have to check whether the parameters are valid over and over again in each one. This creates duplicative code and makes it easy to make mistakes.</dd>
+Patterns consist of a backbone model and a template (loaded by selector from the DOM, as a javascript string, or by URL over AJAX).
+When templates and/or models change, the Pattern fires an event which Components are wired up to listen to.
+But best of all, as a Mast user, you should never have to deal with patterns.  
 
-<dt>Mind-bendingly Simple Authentication Middleware</dt>
-<dd>
-<p>Full, granular authentication control should come baked in to the framework, and the simplest possible implementation should be visible and modifiable as part of the application by default.  In your controller code, you should be able to assume that all authentication has been taken care of by your own custom and the framework's built-in middleware.  Authentication and route control logic should all be extrapolated from your controller code.</p>
-<p>The access control list paradigm is great, but dealing with AROs and ACOs is confusing for programmers new to web applications.  Sails introduces a concept of "Accounts" and "Permissions" which are automatically built from a simple JSON configuration file.  This allows you to create static "Roles" which you use strictly for the purpose of making your code more readable.</p></dd>
+When you change the model, or change the template, for a component, it just works-- the DOM automatically gets updated.
+
+Mast also enhances jQuery's DOM events by adding "pressEnter", "pressEscape", and "clickoutside"
+
+There are a few different kinds of built in components:
+
+Component
+- may contain multiple named subomponents
+
+Table
+- extends component
+- contains a list of subcomponent rows which correspond with a collection of Mast.Models
+
+
+Tree
+- extends component
+- designed for modeling dependency lists
+- contains an N-ary tree of Components and methods to manage the tree
