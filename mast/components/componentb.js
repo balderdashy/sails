@@ -8,8 +8,19 @@ Mast.components.ComponentB = Mast.Component.extend({
 		}
 	],
 	
+	init: function () {
+		this.on('dropdownSubmit',this.changeName);
+	},
+	
+	changeName: function(formFieldValue) {
+		this.set('name',formFieldValue);
+	},
+	
 	template: '.test',
-	model: new Mast.Model({name:'tel'}),
+	
+	// Model need not be specified since this is a standard case
+//	model: new Mast.Model({name:'tel'}),
+
 	outlet:'.sandbox',
 
 	// Triggered after each render
