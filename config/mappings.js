@@ -52,6 +52,10 @@ exports.customMappings = function () {
 			controller: 'experiment',
 			action: 'create'
 		}
+		, '/experiment/update': {
+			controller: 'experiment',
+			action: 'update'
+		}
 	}
 };
 

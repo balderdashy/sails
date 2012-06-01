@@ -26,16 +26,14 @@ var ExperimentController = {
 			title: req.param('title'),
 			value: req.param('value')
 		}).success(function(outcome) {
-			res.json({
-				success:true
-			});
+			res.json({success:true});
 		});
 	},
 	
 	// Edit an existing model
 	update: function (req,res) {
-		res.json({
-			success:true
+		Experiment.find({where:{id: req.param('id')}}).success(function(outcome) {
+			res.json({success:true});
 		});
 	},
 	

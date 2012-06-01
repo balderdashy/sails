@@ -12,22 +12,22 @@
 	width:100%;
 }
 .dropdown-expanded {
-	background: #eee;
+/*	background: #eee;
 	padding:1em;
 	margin: 0 auto;
 	width:50%;
 	background: #bbb;
-	position:relative;
+	position:relative;*/
 }
 
 .dropdown-expanded ul {
-	position:absolute; z-index: 1;
+/*	position:absolute; z-index: 1;
 	width:200px;height:200px;
-	background:red;
+	background:red;*/
 }
 .dropdown-expanded ul li {
-	padding:5%;
+/*	padding:5%;
 	margin: 0 auto;
 	width:90%;
-	border: 1px solid blue;
+	border: 1px solid blue;*/
 }

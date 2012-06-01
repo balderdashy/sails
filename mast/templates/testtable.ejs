@@ -17,5 +17,8 @@
 </div>
 
 <li class="row {% if (highlighted) { %} highlighted {% } %}" id="mast-template-testtable-row">
-	<span>{{title}} | {{value}} </span><a class="doDelete" style="cursor:pointer;">x</a>
+	
+	<span>{{title}} | {{value}} </span>
+	{% if (allowEdit) { %}<a class="doUpdate" style="cursor:pointer;"></a> {% } %}
+	<a class="doDelete" style="cursor:pointer;">x</a>
 </li>
