@@ -2,6 +2,9 @@
 // Parent can listen to the "submit" event"
 Mast.components.DropdownComponent = Mast.Component.extend({
 	template: '.dropdown',
+	model: {
+		value: ""
+	},
 	events: {
 		click:'openMenu', 
 		clickoutside: 'closeMenu',
@@ -9,10 +12,12 @@ Mast.components.DropdownComponent = Mast.Component.extend({
 		pressEscape: 'closeMenu',
 		'click a.submit': 'submitForm'
 	},
-	init: function() {
-		this.set('value',"");
+	beforeOpenMenu: function () {
+		
 	},
 	openMenu: function(e) {
+		this.beforeOpenMenu && this.beforeOpenMenu();
+		
 		if (!this.get('open')) {
 			debug.debug("Opened menu.",this.get('value'));
 			this.set('open',true);
@@ -31,7 +36,9 @@ Mast.components.DropdownComponent = Mast.Component.extend({
 	},
 	
 	submitForm: function (e) {
+		console.log("??????",this.$el.find('input').val(),this.get('value'));
 		this.set('value',this.$el.find('input').val());
+		console.log("??????",this.$el.find('input').val(),this.get('value'));
 		this.parent.trigger('dropdownSubmit',this.get('value'));
 		this.closeMenu();
 		e.stopImmediatePropagation();

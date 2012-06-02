@@ -13,11 +13,17 @@ Mast.components.ComponentA = Mast.Component.extend({
 	subcomponents: {
 		menu1:{
 			component: "DropdownComponent",
-			outlet: ".ddown"
+			outlet: ".ddown",
+			beforeOpenMenu: function () {
+				this.set('value',this.parent.get('name'));
+			}
 		},
 		menu2:{
 			component: "DropdownComponent",
-			outlet: ".ddown"
+			outlet: ".ddown",
+			beforeOpenMenu: function () {
+				this.set('value',this.parent.get('name'));
+			}
 		}
 	},
 

@@ -13,16 +13,18 @@ Mast.components.ToDoList = Mast.Table.extend({
     
     
     events: {
-        pressEnter : "addToDo"
+        'pressEnter': "addToDo"
     },
     
     // create new todo item in the collection
     addToDo: function(e) {
         // Create a new todo
         this.collection.add({
-            todoTitle: "hello there"
+            todoTitle: this.$el.find('input').val()
         });
-        console.log("!",e);
+		
+		// Clear input field
+		this.$el.find('input').val('');
         
         e.stopImmediatePropagation();
         e.stopPropagation();
