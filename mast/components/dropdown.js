@@ -36,9 +36,7 @@ Mast.components.DropdownComponent = Mast.Component.extend({
 	},
 	
 	submitForm: function (e) {
-		console.log("??????",this.$el.find('input').val(),this.get('value'));
 		this.set('value',this.$el.find('input').val());
-		console.log("??????",this.$el.find('input').val(),this.get('value'));
 		this.parent.trigger('dropdownSubmit',this.get('value'));
 		this.closeMenu();
 		e.stopImmediatePropagation();

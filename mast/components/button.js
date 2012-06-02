@@ -6,6 +6,10 @@ Mast.components.Button = Mast.Button = Mast.Component.extend({
 		this.events.click = this.click;
 		this.set('label',this.label);
 	},
+	
+	afterRender: function () {
+		this.$el.disableSelection();
+	},
 		
 	template: '#mast-template-button',
 		
