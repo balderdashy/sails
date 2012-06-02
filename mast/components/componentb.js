@@ -4,7 +4,10 @@ Mast.components.ComponentB = Mast.Component.extend({
 	subcomponents: [
 		{
 			component: "DropdownComponent",
-			outlet: ".ddown"
+			outlet: ".ddown",
+			beforeOpenMenu: function () {
+				this.set('value',this.parent.get('name'));
+			}
 		}
 	],
 	
@@ -17,9 +20,6 @@ Mast.components.ComponentB = Mast.Component.extend({
 	},
 	
 	template: '.test',
-	
-	// Model need not be specified since this is a standard case
-//	model: new Mast.Model({name:'tel'}),
 
 	outlet:'.sandbox',
 
