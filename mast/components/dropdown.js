@@ -10,13 +10,12 @@ Mast.components.DropdownComponent = Mast.Component.extend({
 		'click a.submit': 'submitForm'
 	},
 	init: function() {
-		this.set('value',"");
+//		this.set('value',"");
 	},
 	openMenu: function(e){
 		if (!this.get('open')) {
-			debug.debug("Opened menu.");
+			debug.debug("Opened menu.",this.get('value'));
 			this.set('open',true);
-			this.set('value',this.parent.get('name'))
 			this.setTemplate('.dropdown-expanded');
 			this.$el.find('input').focus();
 			

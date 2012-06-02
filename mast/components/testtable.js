@@ -2,18 +2,22 @@ Mast.components.TestRow = Mast.Component.extend({
 	template: '#mast-template-testtable-row',
 	
 	events: {
-		'click .doUpdate': 'updateRow',
 		'click .doDelete': 'removeRow',
 		'click': 'toggleRow'
 	},
 	
 	// Called after initialization, before autorender
 	init: function () {
-		
 	},
 	
+	changeName: function(formFieldValue) {
+		this.set('name',formFieldValue);
+	},
 	afterRender: function () {
 		this.$el.disableSelection();
+		
+		// Listen for child events
+		this.on('dropdownSubmit',this.updateRow);
 	},
 	
 	toggleRow: function(e){
@@ -32,18 +36,12 @@ Mast.components.TestRow = Mast.Component.extend({
 		var rowModel = this.model;
 		//		debug.debug("Deleting row w/ id: "+rowModel.id+" @ index: "+rowId);
 		this.parent.collection.remove(rowModel);
-		console.log(rowModel,")!)!)!)!)!");
 		rowModel.destroy();
 		e.stopImmediatePropagation();
 	},
 	
-	updateRow: function(e) {
-		var rowModel = this.model;
-//		//		debug.debug("Deleting row w/ id: "+rowModel.id+" @ index: "+rowId);
-//		this.parent.collection.remove(rowModel);
-//		console.log(rowModel,")!)!)!)!)!");
-//		rowModel.destroy();
-		e.stopImmediatePropagation();
+	updateRow: function(value) {
+		this.set('title',value);
 	}
 });
 
@@ -98,16 +96,12 @@ Mast.components.TestRowWithSubcomponent = Mast.components.TestRow.extend({
 	init: function () {
 		
 		this.set('allowEdit',true);
-		
-		// Listen for submit event
-		this.on('submit',function(model) {
-			debug.debug(model);
-		})
 	},
 	subcomponents: {
 		dropdown: {
 			component: "DropdownComponent",
-			outlet: ".doUpdate"
+			outlet: ".doUpdate",
+			value: 'test'
 		}
 	}
 });
