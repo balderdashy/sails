@@ -20,7 +20,7 @@ Mast.components.TestRow = Mast.Component.extend({
 		this.on('dropdownSubmit',this.updateRow);
 	},
 	
-	toggleRow: function(e){
+	toggleRow: function(e) {
 		var rowModel = this.model;
 		if (rowModel.get('highlighted')) {
 			//			debug.debug("Dimming row w/ id: "+rowModel.id+" @ index: "+rowId);
@@ -44,6 +44,11 @@ Mast.components.TestRow = Mast.Component.extend({
 		this.set('title',value);
 	}
 });
+
+
+
+
+
 
 
 Mast.components.TestTable = Mast.Table.extend({
@@ -86,6 +91,9 @@ Mast.components.TestTable = Mast.Table.extend({
 		});
 	}
 });
+
+
+
 
 
 Mast.components.TestTableWithSubcomponents = Mast.components.TestTable.extend({

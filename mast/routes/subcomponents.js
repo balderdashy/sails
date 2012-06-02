@@ -20,4 +20,14 @@ Mast.routes.subcomponents = function(query,page){
 		},
 		outlet: '.sandbox'
 	});
+	
+	
+	// On to the next experiment
+	new Mast.Button({
+		label: 'Next: Demonstration >',
+		click: function(e) {
+			Mast.navigate('demonstration');
+		},
+		outlet: '.sandbox'
+	});
 }
