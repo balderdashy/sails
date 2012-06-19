@@ -10,3 +10,7 @@ exports.appName = "Sails.js";
 // "development"
 // "production"
 exports.appEnvironment="development";
+
+
+// Use Mast socket?
+exports.mastSocket=false;
