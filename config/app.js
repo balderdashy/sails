@@ -13,4 +13,4 @@ exports.appEnvironment="development";
 
 
 // Use Mast socket?
-exports.mastSocket=false;
+exports.mastSocket=true;
