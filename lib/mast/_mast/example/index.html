@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">		
+		<script src="../mast-1.0.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			
+			// Initialize route-level logic
+			// with defaults (everyone likes blue jays!)
+			Mast.routes.index = function(query,page) {
+				
+				new Mast.components.BirdSpeciesRow({
+					model:{name: 'Cyanocitta cristata'}
+				});
+				
+				new Mast.components.BirdSpeciesRow({
+					model:{name: 'Cardinalidae'}
+				});
+			}
+			
+			// Initialize the Mast template library
+			Mast.raise();
+		</script>
+	</head>
+	<body>
+
+		<!-- Standard layout markup -->
+		<div class="container">
+			<h1>My favorite bird species</h1>
+			<ol class="bird-species-list">
+				<li>Bird #1</li>
+				<li>Bird #2</li>
+				<li>Bird #3</li>
+			</ol>
+		</div>
+
+
+		<!-- Template library -->
+		<div style="display:none;" class="template-library" id="template-library">
+
+			<!-- Row markup template -->
+			<li id="template-bird-species">{{name}}</li>
+
+		</div>
+		
+		
+		
+		
+		<!-- Separate files: -->
+		<style type="text/css">
+			.bird-species-list  {
+				background:blue;
+			}
+			.bird-species-list li {
+				background:#228;
+				padding: 0.5 10%;
+				color: white;
+			}
+		</style>
+		
+		<script type="text/javascript">
+			// Row component
+			Mast.components.BirdSpeciesRow = Mast.Component.extend({
+				outlet: '.bird-species-list',
+				template: '#template-bird-species'
+			});
+		</script>
+	</body>
+</html>
