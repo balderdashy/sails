@@ -28,7 +28,3 @@ Table
 - contains a list of subcomponent rows which correspond with a collection of Mast.Models
 
 
-Tree
-- extends component
-- designed for modeling dependency lists
-- contains an N-ary tree of Components and methods to manage the tree
