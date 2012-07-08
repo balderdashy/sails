@@ -1,6 +1,10 @@
 Sails
 ====
 
+Tested with node 0.6.4 up to node 0.8.1
+
+
+
 Sails is an MVC framework for Node.js.  It relies heavily on Express.JS for routing, Sequelize for ORM, and Socket.io for maintaining socket connections.
 
 It does a few things other MVC frameworks can't do.  Namely:
