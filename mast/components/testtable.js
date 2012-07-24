@@ -73,6 +73,7 @@ Mast.components.TestTable = Mast.Table.extend({
 		Mast.Socket.off('connect', this.afterConnect);
 		
 		var self = this;
+		
 		this.collection.fetch({
 			error: function(stuff){
 				throw new Error(stuff);

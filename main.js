@@ -10,7 +10,14 @@ Email = require("email").Email;
 
 // Connect dependency requirements
 sessionStore = new express.session.MemoryStore();
-parseCookie = require('connect').utils.parseCookie;
+var connect = require('connect');
+var connectCookie = require('cookie');
+var cookieSecret = "k3yboard_kat";
+
+parseCookie = function(cookie) {
+	return connect.utils.parseSignedCookies(connectCookie.parse(decodeURIComponent(cookie)),cookieSecret);
+}
+
 ConnectSession = require('connect').middleware.session.Session;
 
 // Set up logger
@@ -103,7 +110,7 @@ app.configure(function() {
 	// Session / cookie support
 	app.use(express.cookieParser());
 	app.use(express.session({
-		secret: "k3yboard kat"
+		secret: "k3yboard_kat"
 		, store: sessionStore
 		, key: 'sails.sid'
 	}));
@@ -163,6 +170,7 @@ compiler.compile(function(){
 	io.set('authorization', function (data, accept) {
 		// Attach authorization middleware to socket event receiver
 		if (data.headers.cookie) {
+			console.log(connect.utils);
 			data.cookie = parseCookie(data.headers.cookie);
 			data.sessionID = data.cookie['sails.sid'];
 			data.sessionStore = sessionStore;

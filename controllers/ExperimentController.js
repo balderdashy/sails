@@ -1,8 +1,14 @@
 var ExperimentController = {
 	
 	index: function (req,res) {
-		console.log(req.params.id);
-		res.view();
+		console.log("INDEX");
+		if (req.xhr) {
+			return this.findAll();
+		}
+		else {
+			console.log(req.params.id);
+			res.view();
+		}
 	},
 	
 	
@@ -15,6 +21,7 @@ var ExperimentController = {
 	
 	// Fetch paginated list of models from testtable
 	findAll: function (req,res) {
+		console.log("FINDALL");
 		Experiment.fetch(null,function(experiments) {
 			res.json(experiments);
 		});
