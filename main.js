@@ -10,15 +10,19 @@ Email = require("email").Email;
 
 // Connect dependency requirements
 sessionStore = new express.session.MemoryStore();
+
+// EXPERIMENTAL connect v2 support
+// see https://github.com/senchalabs/connect/issues/588
+//var connect = require('connect');
+//var connectCookie = require('cookie');
+//var cookieSecret = "k3yboard_kat";
+//parseCookie = function(cookie) {
+//	return connect.utils.parseSignedCookies(connectCookie.parse(decodeURIComponent(cookie)),cookieSecret);
+//}
+
 var connect = require('connect');
-var connectCookie = require('cookie');
-var cookieSecret = "k3yboard_kat";
-
-parseCookie = function(cookie) {
-	return connect.utils.parseSignedCookies(connectCookie.parse(decodeURIComponent(cookie)),cookieSecret);
-}
-
-ConnectSession = require('connect').middleware.session.Session;
+parseCookie = connect.utils.parseCookie;
+ConnectSession = connect.middleware.session.Session;
 
 // Set up logger
 debug = require('./lib/logger.js').debug;
@@ -170,7 +174,6 @@ compiler.compile(function(){
 	io.set('authorization', function (data, accept) {
 		// Attach authorization middleware to socket event receiver
 		if (data.headers.cookie) {
-			console.log(connect.utils);
 			data.cookie = parseCookie(data.headers.cookie);
 			data.sessionID = data.cookie['sails.sid'];
 			data.sessionStore = sessionStore;
