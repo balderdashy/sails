@@ -5,6 +5,8 @@ ssl
 *~
 .idea
 
+nbproject
+
 # Ignore config file w/ sensitive information
 config/db.js
 
