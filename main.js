@@ -1,2 +1,2 @@
 // Fire up the app
-require('./lib/common').startServers();
+require('./lib/common').initialize();
