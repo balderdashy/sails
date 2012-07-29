@@ -1,1 +1,0 @@
-vows ./test/*.js --spec
