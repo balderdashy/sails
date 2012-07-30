@@ -5,7 +5,7 @@
   "description": "MVC framework for Node.JS",
   "homepage": "http://github.com/balderdashy/sails",
   "keywords": ["Sails", "MVC", "Rails", "ORM", "Grails"],
-  "main": "lib/sails",
+  "main": "lib/common",
   "directories": {
     "lib": "lib"
   },
@@ -13,12 +13,12 @@
     "express": ">= 2.5.11",
     "socket.io": ">= 0.9.6",
     "sequelize": "=1.5.0-beta-2",
-    "ejs":"0.7.2",
+    "ejs":">=0.7.2",
     "connect":"=1.8.3",
     "async":">=0.1.22",
     "require-all":">=0.0.4",
     "email":">=0.2.5",
-    "node-minify":">=0.4.2",
+    "node-minify":">=0.4.2"
   },
   "repository": {
     "type": "git",
