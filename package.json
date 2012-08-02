@@ -10,7 +10,7 @@
   "homepage": "http://sailsjs.com",
   "keywords": ["Sails", "MVC", "Rails", "ORM", "Grails"],
   "main": "lib/common",
-  "bin": { "sails": "./bin/sails" },
+  "bin": { "sails": "./bin/sails.js" },
   "directories": {
     "lib": "lib"
   },
