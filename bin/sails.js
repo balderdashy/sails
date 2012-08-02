@@ -3,17 +3,18 @@
 var ejs = require('ejs'),
 	fs = require('fs');
 
-var argv = 
-	require('optimist').
-	usage('Usage: $0 generate FILETYPE [string] (NAME [string])').
-	demand(2).
-	argv;
+//var argv = 
+//	require('optimist').
+//	usage('Usage: $0 generate FILETYPE [string] (NAME [string])').
+//	demand(2).
+//	argv;
+
+var argv = require('optimist').argv;
 
 // Locate app root
 var appRoot = 
 	outputPath = 
 	'.';
-
 
 // Generate a file
 if (argv._[0] == 'generate') {
@@ -33,6 +34,29 @@ if (argv._[0] == 'generate') {
 		fs.writeFileSync(outputPath+"/"+entityName+".ejs",file);
 	}
 }
+else {
+	// If not an action, first argument == app name
+	var newAppPath = outputPath+"/"+argv._[0];
+	
+	// Create core sails structure
+	fs.mkdirSync(newAppPath);
+	fs.mkdirSync(newAppPath+"/models");
+	fs.mkdirSync(newAppPath+"/controllers");
+	fs.mkdirSync(newAppPath+"/views");
+	fs.mkdirSync(newAppPath+"/services");
+	
+	// Create config file
+//	fs.mkdirSync(newAppPath+"/");
+	
+	// Create rigging for Mast
+	fs.mkdirSync(newAppPath+"/mast");
+	fs.mkdirSync(newAppPath+"/mast/components");
+	fs.mkdirSync(newAppPath+"/mast/routes");
+	fs.mkdirSync(newAppPath+"/mast/templates");
+	fs.mkdirSync(newAppPath+"/mast/models");
+	
+}
+
 
 
 
