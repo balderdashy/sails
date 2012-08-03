@@ -3,8 +3,32 @@
 	<head>
 		<title><%- title %></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+		<!-- Good old fashioned CSS -->
+		<link rel="stylesheet" type="text/css" media="all" href="/stylesheets/reset.css"/>
+		<link rel="stylesheet" type="text/css" media="all" href="/stylesheets/layout.css"/>
 	</head>
 	<body>
-		<h1>Layout generated successfully!</h1>
+
+
+	<body>
+		<div id="topbar">
+			<h1 id="branding">
+				<a href="/">sails.js</a>
+			</h1>
+
+			<ul class="widescreen-nav"></ul>
+			<select class="mobile-only" id="topbar-dropdown">
+				<option>-- Go --</option>
+			</select>
+		</div>
+
+		<div id="content">
+			<%- body %>
+		</div>
+
+		<div id="footer">
+			<a target="_blank" href="http://sailsjs.com" class="copyright">&copy; Sails Framework 2012</a>
+		</div>
 	</body>
 </html>

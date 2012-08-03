@@ -1,8 +1,33 @@
 #!/usr/bin/env node
 
 var ejs = require('ejs'),
-	fs = require('fs');
+fs = require('fs'),
+util = require('util');
 
+fs.copy = function (src, dst, cb) {
+    function copy(err) {
+		var is
+        , os
+        ;
+
+		if (!err) {
+			return cb(new Error("File " + dst + " exists."));
+		}
+
+		fs.stat(src, function (err) {
+			if (err) {
+				return cb(err);
+			}
+			is = fs.createReadStream(src);
+			os = fs.createWriteStream(dst);
+			util.pump(is, os, cb);
+		});
+    }
+
+    fs.stat(dst, copy);
+};
+  
+  
 //var argv = 
 //	require('optimist').
 //	usage('Usage: $0 generate FILETYPE [string] (NAME [string])').
@@ -53,16 +78,35 @@ else {
 	file = fs.readFileSync(__dirname+'/blueprints/layout.ejs','utf8');
 	fs.writeFileSync(newAppPath+"/views/layout.ejs",file);
 	
-	// Create meta views
-//	fs.mkdirSync(newAppPath+"/meta");
-//	file = fs.readFileSync(__dirname+'/blueprints/view.ejs','utf8');
-//	fs.writeFileSync(outputPath+"/meta/home.ejs",file);
-//	fs.writeFileSync(outputPath+"/404.ejs",file);
-//	fs.writeFileSync(outputPath+"/500.ejs",file);
-//	fs.writeFileSync(outputPath+"/403.ejs",file);
-		
 	// Create meta controller
+	file = fs.readFileSync(__dirname+'/blueprints/MetaController.js','utf8');
+	fs.writeFileSync(newAppPath+"/controllers/MetaController.js",file);
 	
+	// Create meta views
+	fs.mkdirSync(newAppPath+"/views/meta");
+	file = fs.readFileSync(__dirname+'/blueprints/home.ejs','utf8');
+	fs.writeFileSync(newAppPath+"/views/meta/home.ejs",file);
+	file = fs.readFileSync(__dirname+'/blueprints/403.ejs','utf8');
+	fs.writeFileSync(newAppPath+"/views/403.ejs",file);
+	file = fs.readFileSync(__dirname+'/blueprints/403.json','utf8');
+	fs.writeFileSync(newAppPath+"/views/403.json",file);
+	file = fs.readFileSync(__dirname+'/blueprints/404.ejs','utf8');
+	fs.writeFileSync(newAppPath+"/views/404.ejs",file);
+	file = fs.readFileSync(__dirname+'/blueprints/404.json','utf8');
+	fs.writeFileSync(newAppPath+"/views/404.json",file);
+	file = fs.readFileSync(__dirname+'/blueprints/500.ejs','utf8');
+	fs.writeFileSync(newAppPath+"/views/500.ejs",file);
+	file = fs.readFileSync(__dirname+'/blueprints/500.json','utf8');
+	fs.writeFileSync(newAppPath+"/views/500.json",file);
+	
+	// Create static assets
+	fs.mkdirSync(newAppPath+"/public");
+	fs.mkdirSync(newAppPath+"/public/images");
+	fs.mkdirSync(newAppPath+"/public/stylesheets");
+	fs.mkdirSync(newAppPath+"/public/js");
+	generateSimple(__dirname+'/blueprints/reset.css',newAppPath+"/public/stylesheets/reset.css");
+	generateSimple(__dirname+'/blueprints/layout.css',newAppPath+"/public/stylesheets/layout.css");
+	fs.copy(__dirname+'/blueprints/bg.png',newAppPath+"/public/images/bg.png");
 	
 	// Create rigging for Mast
 	fs.mkdirSync(newAppPath+"/mast");
@@ -73,6 +117,11 @@ else {
 	
 }
 
+
+function generateSimple(blueprintPath,outputPath) {
+	var file = fs.readFileSync(blueprintPath,'utf8');
+	fs.writeFileSync(outputPath,file);
+}
 
 
 
@@ -85,8 +134,8 @@ function generate (blueprintPath,outputPath,outputExtension) {
 	}
 	
 	var entityName = capitalize(argv._[2]),
-		file = fs.readFileSync(__dirname+blueprintPath,'utf8');
-		file = ejs.render(file,{name: entityName});
+	file = fs.readFileSync(__dirname+blueprintPath,'utf8');
+	file = ejs.render(file,{name: entityName});
 	fs.writeFileSync(outputPath+"/"+entityName+outputExtension,file);
 }
 
@@ -96,3 +145,4 @@ function capitalize(string)
 {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+

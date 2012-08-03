@@ -1,0 +1,5 @@
+{
+	"error": 403,
+	"success": false,
+	"authenticated":<% if (session.authenticated) { %>true<% } else { %>false<% } %>
+}
