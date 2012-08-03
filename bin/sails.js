@@ -44,9 +44,25 @@ else {
 	fs.mkdirSync(newAppPath+"/controllers");
 	fs.mkdirSync(newAppPath+"/views");
 	fs.mkdirSync(newAppPath+"/services");
+
+	// Create driver file
+	file = fs.readFileSync(__dirname+'/blueprints/sails.js','utf8');
+	fs.writeFileSync(newAppPath+"/sails.js",file);
 	
-	// Create config file
-//	fs.mkdirSync(newAppPath+"/");
+	// Create layout file
+	file = fs.readFileSync(__dirname+'/blueprints/layout.ejs','utf8');
+	fs.writeFileSync(newAppPath+"/views/layout.ejs",file);
+	
+	// Create meta views
+//	fs.mkdirSync(newAppPath+"/meta");
+//	file = fs.readFileSync(__dirname+'/blueprints/view.ejs','utf8');
+//	fs.writeFileSync(outputPath+"/meta/home.ejs",file);
+//	fs.writeFileSync(outputPath+"/404.ejs",file);
+//	fs.writeFileSync(outputPath+"/500.ejs",file);
+//	fs.writeFileSync(outputPath+"/403.ejs",file);
+		
+	// Create meta controller
+	
 	
 	// Create rigging for Mast
 	fs.mkdirSync(newAppPath+"/mast");
