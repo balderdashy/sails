@@ -115,6 +115,18 @@ else {
 	fs.mkdirSync(newAppPath+"/mast/templates");
 	fs.mkdirSync(newAppPath+"/mast/models");
 	
+	// Create readme files
+	generateSimple(__dirname+'/blueprints/__readme_models.css',newAppPath+"/models/__readme.md");
+	generateSimple(__dirname+'/blueprints/__readme_controllers.css',newAppPath+"/controllers/__readme.md");
+	generateSimple(__dirname+'/blueprints/__readme_views.css',newAppPath+"/views/__readme.md");
+	generateSimple(__dirname+'/blueprints/__readme_mast.css',newAppPath+"/mast/__readme.md");
+	generateSimple(__dirname+'/blueprints/__readme_mast_components.css',newAppPath+"/mast/components/__readme.md");
+	generateSimple(__dirname+'/blueprints/__readme_mast_models.css',newAppPath+"/mast/models/__readme.md");
+	generateSimple(__dirname+'/blueprints/__readme_mast_routes.css',newAppPath+"/mast/routes/__readme.md");
+	generateSimple(__dirname+'/blueprints/__readme_mast_templates.css',newAppPath+"/mast/templates/__readme.md");
+	generateSimple(__dirname+'/blueprints/__readme_js.css',newAppPath+"/public/js/__readme.md");
+	generateSimple(__dirname+'/blueprints/__readme_stylesheets.css',newAppPath+"/public/stylesheets/__readme.md");
+	generateSimple(__dirname+'/blueprints/__readme_services.css',newAppPath+"/services/__readme.md");
 }
 
 
