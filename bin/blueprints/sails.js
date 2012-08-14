@@ -1,16 +1,23 @@
 // lift sails                                                                                                          
 require('sails').lift({
-        appName: "Name of your application",
+	// Name of the application (for HTML title entity)
+	appName: "Name of your application",
 
-        appPath: __dirname,
+	// Path to application root (usually __dirname)
+	appPath: __dirname,
 
-        appEnvironment: 'development',
+	// The environment the app is deployed in
+	appEnvironment: 'development',
 
-        datasource: {
-			database: 'nameOfYourMySQLDatabase',
-			username: 'usernameForYourMySQLInstallation',
-			password: 'passwordForYourMySQLInstallation'
-		},
+	// The datasource configuration
+	// (for larger teams, this can be externalized into a separate config file 
+	// to avoid version control collisions)
+	datasource: {
+		database: 'nameOfYourMySQLDatabase',
+		username: 'usernameForYourMySQLInstallation',
+		password: 'passwordForYourMySQLInstallation'
+	},
 
-        rigging: false
+	// Whether to use built-in Mast integration through the Rigging library
+	rigging: false
 });
