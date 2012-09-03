@@ -5,7 +5,7 @@
     { "name": "Balderdash Design Co.", "email": "dev@balderdash.co" }, 
     { "name": "Gabe Hernandez", "email": "gabe@balderdash.co" }
   ],
-  "version": "12.08.22",
+  "version": "{{sailsVersion}}",
   "description": "MVC framework for Node.JS",
   "homepage": "http://sailsjs.com",
   "keywords": ["Sails", "MVC", "Rails", "ORM", "Grails"],
