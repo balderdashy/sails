@@ -6,7 +6,7 @@
     { "name": "Mike McNeil", "email": "mike@balderdash.co" },
     { "name": "Gabe Hernandez", "email": "gabe@balderdash.co" }
   ],
-  "version": "12.09.7sessionPruneFn",
+  "version": "12.09.092",
   "description": "MVC framework for Node.JS",
   "homepage": "http://sailsjs.com",
   "keywords": ["Sails", "MVC", "Rails", "ORM", "Grails"],
@@ -27,8 +27,7 @@
     "node-minify":">=0.4.2",
     "underscore":">=1.3.3",
     "less":">=1.3.0",
-    "optimist":">=0.3.4",
-    "underscore.string":"=2.2.0rc"
+    "optimist":">=0.3.4"
   },
   "repository": {
     "type": "git",
