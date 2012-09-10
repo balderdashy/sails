@@ -6,7 +6,7 @@
     { "name": "Mike McNeil", "email": "mike@balderdash.co" },
     { "name": "Gabe Hernandez", "email": "gabe@balderdash.co" }
   ],
-  "version": "12.09.03",
+  "version": "12.09.10a",
   "description": "MVC framework for Node.JS",
   "homepage": "http://sailsjs.com",
   "keywords": ["Sails", "MVC", "Rails", "ORM", "Grails"],
