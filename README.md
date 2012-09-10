@@ -19,7 +19,9 @@ Installation
 Getting Started
 --
 The following command will generate a new Sails project, ```nameOfNewApp/```, in the current directory:
+
 ```sails nameOfNewApp```
+
 
 Dependencies and Compatibility
 --
