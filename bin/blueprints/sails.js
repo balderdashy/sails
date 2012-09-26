@@ -17,6 +17,26 @@ require('sails').lift({
 		username: 'usernameForYourMySQLInstallation',
 		password: 'passwordForYourMySQLInstallation'
 	},
+	
+	// Default URL mappings
+	mappings: {
+		'/': {
+			controller:'meta',
+			action:'home'
+		},
+		'/500': {
+			controller:'meta',
+			action:'error'
+		},
+		'/404': {
+			controller:'meta',
+			action:'notfound'
+		},
+		'/403': {
+			controller:'meta',
+			action:'denied'
+		}
+	},
 
 	// Whether to use built-in Mast integration through the Rigging library
 	rigging: false
