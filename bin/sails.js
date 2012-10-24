@@ -68,6 +68,7 @@ else {
 	fs.mkdirSync(newAppPath+"/models");
 	fs.mkdirSync(newAppPath+"/controllers");
 	fs.mkdirSync(newAppPath+"/views");
+	fs.mkdirSync(newAppPath+"/policies");
 	fs.mkdirSync(newAppPath+"/services");
 
 	// Create driver file
