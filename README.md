@@ -29,7 +29,7 @@ https://github.com/balderdashy/sails-example
 Dependencies and Compatibility
 --
 
-Tested with node 0.6.4 up to node 0.8.1
+Tested with node 0.8.1
 
 We built Sails on the rock-solid foundations of ExpressJS, Sequelize ORM, and Socket.io.  
 
