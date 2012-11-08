@@ -22,6 +22,12 @@ If you installed Sails with the command line tool above, the following command w
 
 ```sails nameOfNewApp```
 
+Then run the app:
+```
+cd nameOfNewApp
+node app.js
+```
+
 Example
 --
 https://github.com/balderdashy/sails-example
