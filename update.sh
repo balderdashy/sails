@@ -7,5 +7,5 @@ else
   #todo: use second argument (optional) as commit message and annotated tag message
   git tag "$1"
 #  git commit -am "Bumped version to $1."
-  npm publish --force && git push
+  npm publish --force && git push --tags
 fi
