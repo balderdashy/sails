@@ -125,13 +125,13 @@ else {
 
 	// Generate a file
 	function generateFile(blueprintPath,outputPath) {
-		var file = fs.readFileSync(__dirname+'/blueprints/'+blueprintPath,'utf8');
-		fs.writeFileSync(newAppPath+'/'+outputPath,file);
+		var file = fs.readFileSync(__dirname+'/blueprints/'+(blueprintPath || ""),'utf8');
+		fs.writeFileSync(newAppPath+'/'+(outputPath || ""),file);
 	}
 
 	// Generate a directory
 	function generateDir(outputPath) {
-		fs.mkdirSync(newAppPath+"/"+outputPath);
+		fs.mkdirSync(newAppPath+"/"+(outputPath || ""));
 	}
 }
 
