@@ -72,8 +72,8 @@ else {
 	fs.mkdirSync(newAppPath+"/services");
 
 	// Create driver file
-	file = fs.readFileSync(__dirname+'/blueprints/sails.js','utf8');
-	fs.writeFileSync(newAppPath+"/sails.js",file);
+	file = fs.readFileSync(__dirname+'/blueprints/app.js','utf8');
+	fs.writeFileSync(newAppPath+"/app.js",file);
 
 	// Create routes file
 	file = fs.readFileSync(__dirname+'/blueprints/routes.js','utf8');
