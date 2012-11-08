@@ -2,11 +2,12 @@
 
 <p>You've successfully installed the Sails Framework.</p>
 
-<p>Sails is an MVC framework for the Node.js platform.  It helps you build apps fast.</p>
+<p>Sails is a modern, realtime MVC framework for the Node.js platform.  It helps you build apps fast.</p>
 
 <h2>Controllers</h2>
+<em>You can add and modify controllers in the <strong>controllers</strong> directory.</em>
 <ul id="controllers">
-	<% _.each(controllers, function (value,key,list) { 
+	<% _.each(sails.controllers, function (value,key,list) { 
 	if (key!="meta" && key!="auth") {
 	%>
 	<li><a href="<%- key %>"><%- key %></a></li>
