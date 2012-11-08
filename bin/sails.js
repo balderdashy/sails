@@ -19,36 +19,40 @@ if(argv._[0] === 'generate') {
 	// Generate a model
 	if(argv._[1] === 'model') {
 		verifyArg(2, "ERROR: Please specify the name for the new model as the third argument.");
-		generate('model.js', "models/", ".js", true);
+		generate('model.js', "models/", argv._[2], ".js", true);
 	}
 
 	// Generate a controller
 	else if(argv._[1] === 'controller') {
 		verifyArg(2, "ERROR: Please specify the name for the new controller as the third argument.");
-		generate('controller.js', "controllers/", "Controller.js", true);
-	}
-
-	// Generate a new layout file
-	else if(argv._[1] === 'layout') {
-		generateFile('layout.ejs', "views/", 'layout.ejs');
+		generate('controller.js', "controllers/", argv._[2], "Controller.js", true);
 	}
 
 	// Generate a new view
 	else if(argv._[1] === 'view') {
 		verifyArg(2, "ERROR: Please specify the name for the new view as the third argument.");
-		generate('view.ejs', "views/", '.ejs');
+		generate('view.ejs', "views/", argv._[2], '.ejs');
 	}
 
 	// Generate a new component
 	else if(argv._[1] === 'component') {
 		verifyArg(2, "ERROR: Please specify the name for the new component as the third argument.");
-		generate('component.js', "mast/components/", '.js', true);
+		generate('component.js', "mast/components/", argv._[2], '.js', true);
 	}
 
 	// Generate a new template
 	else if(argv._[1] == 'template') {
 		verifyArg(2, "ERROR: Please specify the name for the new template as the third argument.");
-		generate('template.ejs', "mast/templates/", '.ejs');
+		generate('template.ejs', "mast/templates/", argv._[2], '.ejs');
+	}
+
+	// Otherwise generate a model, controller, and view directory
+	else {
+		verifyArg(1, "ERROR: Please specify the name of the entity to generate a model, controller, and view for as the second argument.");
+		console.log("Generating model, controller, and view directory for "+argv._[1]);
+		generate('model.js', "models/", argv._[1], ".js", true);
+		generate('controller.js', "controllers/", argv._[1], "Controller.js", true);
+		generateDir("views/" + argv._[1]);
 	}
 }
 
@@ -134,6 +138,7 @@ function generateFile(blueprintPath, newPath) {
 // Generate a directory
 
 function generateDir(newPath) {
+	console.log("Generating directory "+newPath+"...");
 	fs.mkdirSync(outputPath + "/" + (newPath || ""));
 }
 
@@ -141,12 +146,14 @@ function generateDir(newPath) {
 // Utility class to generate a file given the blueprint and output paths,
 // as well as an optional ejs render override.
 
-function generate(blueprintPath, prefix, suffix, isEntityCapitalized) {
-	if(!argv._[2]) {
+function generate(blueprintPath, prefix, entity, suffix, isEntityCapitalized) {
+	console.log("Generating "+blueprintPath+" for "+entity+"...");
+
+	if (!entity) {
 		throw new Error('No output file name specified!');
 	}
 
-	var entityName = isEntityCapitalized ? _.str.capitalize(argv._[2]) : argv._[2],
+	var entityName = isEntityCapitalized ? _.str.capitalize(entity) : entity,
 		file = fs.readFileSync(__dirname + "/blueprints/" + blueprintPath, 'utf8');
 	file = ejs.render(file, {
 		name: entityName
