@@ -2,9 +2,10 @@
 
 var ejs = require('ejs'),
 	fs = require('fs'),
-	util = require('util');
-
-var argv = require('optimist').argv;
+	util = require('util'),
+	argv = require('optimist').argv,
+	_ = require('underscore');
+_.str = require('underscore.string');
 
 // Locate app root
 var appRoot = '.';
@@ -17,14 +18,14 @@ if(argv._[0] === 'generate') {
 
 	// Generate a model
 	if(argv._[1] === 'model') {
-		verifyArg(2,"ERROR: Please specify the name for the new model as the third argument.");
-		generate('model.js', "models/",".js", true);
+		verifyArg(2, "ERROR: Please specify the name for the new model as the third argument.");
+		generate('model.js', "models/", ".js", true);
 	}
 
 	// Generate a controller
 	else if(argv._[1] === 'controller') {
-		verifyArg(2,"ERROR: Please specify the name for the new controller as the third argument.");
-		generate('controller.js', "controllers/" , "Controller.js", true);
+		verifyArg(2, "ERROR: Please specify the name for the new controller as the third argument.");
+		generate('controller.js', "controllers/", "Controller.js", true);
 	}
 
 	// Generate a new layout file
@@ -34,19 +35,19 @@ if(argv._[0] === 'generate') {
 
 	// Generate a new view
 	else if(argv._[1] === 'view') {
-		verifyArg(2,"ERROR: Please specify the name for the new view as the third argument.");
+		verifyArg(2, "ERROR: Please specify the name for the new view as the third argument.");
 		generate('view.ejs', "views/", '.ejs');
 	}
 
 	// Generate a new component
 	else if(argv._[1] === 'component') {
-		verifyArg(2,"ERROR: Please specify the name for the new component as the third argument.");
-		generate('component.js', "mast/components/", '.js',true);
+		verifyArg(2, "ERROR: Please specify the name for the new component as the third argument.");
+		generate('component.js', "mast/components/", '.js', true);
 	}
 
 	// Generate a new template
 	else if(argv._[1] == 'template') {
-		verifyArg(2,"ERROR: Please specify the name for the new template as the third argument.");
+		verifyArg(2, "ERROR: Please specify the name for the new template as the third argument.");
 		generate('template.ejs', "mast/templates/", '.ejs');
 	}
 }
@@ -54,11 +55,13 @@ if(argv._[0] === 'generate') {
 // Generate an app
 else {
 	console.log("\nGenerating sails project...");
-	verifyArg(0,"ERROR: Please specify the name of the new directory as the first argument.");
-	
+	verifyArg(0, "ERROR: Please specify the name of the new directory as the first argument.");
+
 
 	// If not an action, first argument == app name
 	outputPath = outputPath + "/" + argv._[0];
+	verifyDoesntExist(outputPath,"ERROR: A file or directory already exists at: "+outputPath);
+	
 
 	// Create core sails structure
 	generateDir();
@@ -138,7 +141,7 @@ function generateDir(newPath) {
 // Utility class to generate a file given the blueprint and output paths,
 // as well as an optional ejs render override.
 
-function generate(blueprintPath, prefix,suffix, isEntityCapitalized) {
+function generate(blueprintPath, prefix, suffix, isEntityCapitalized) {
 	if(!argv._[2]) {
 		throw new Error('No output file name specified!');
 	}
@@ -175,13 +178,35 @@ function copyFile(src, dst, cb) {
 }
 
 // Verify that an argument exists
-function verifyArg (argNo,msg) {
-	if (! argv._[argNo]) {
+
+
+function verifyArg(argNo, msg) {
+	if(!argv._[argNo]) {
 		console.log(msg);
 		process.exit();
 	}
 }
 
-function verify1stArg () {
+function verifyDoesntExist(path,msg) {
+	if (fileExists(outputPath)) {
+		console.log(msg);
+		process.exit();
+	}
+}
 
+// Check if a file or directory exists
+function fileExists (path) {
+	try {
+		// Query the entry
+		var stats = fs.lstatSync(path);
+
+		// Is it a directory?
+		if(stats.isDirectory() || stats.isFile()) {
+			return true;
+		}
+	} catch(e) {
+		// ...
+	}
+
+	return false;
 }
