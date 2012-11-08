@@ -87,7 +87,7 @@ else {
 	// Create meta controller and views
 	generateFile('MetaController.js','controllers/MetaController.js');
 	generateDir("views/meta");
-	generateFile('home.ejs','meta/home.ejs');
+	generateFile('home.ejs','views/meta/home.ejs');
 	
 	// Create static assets
 	generateDir("public");
