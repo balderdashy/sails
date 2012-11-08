@@ -74,6 +74,14 @@ else {
 	// Create driver file
 	file = fs.readFileSync(__dirname+'/blueprints/sails.js','utf8');
 	fs.writeFileSync(newAppPath+"/sails.js",file);
+
+	// Create routes file
+	file = fs.readFileSync(__dirname+'/blueprints/routes.js','utf8');
+	fs.writeFileSync(newAppPath+"/routes.js",file);
+
+	// Create access_control file
+	file = fs.readFileSync(__dirname+'/blueprints/access_control.js','utf8');
+	fs.writeFileSync(newAppPath+"/access_control.js",file);
 	
 	// Create layout file
 	file = fs.readFileSync(__dirname+'/blueprints/layout.ejs','utf8');
