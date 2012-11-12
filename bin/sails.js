@@ -100,6 +100,7 @@ else {
 	// generateDir("public/js");
 
 	// Create rigging assets
+	generateDir("public/dependencies");
 	generateDir("public/ui");
 	generateDir("public/ui/components");
 	generateDir("public/ui/routes");
