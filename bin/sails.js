@@ -110,7 +110,7 @@ else {
 
 	// Create default policies
 	generateFile('policies/authenticated.js', 'policies/authenticated.js');
-	generateFile('policies/only.js', 'policies/only.js');
+	// generateFile('policies/only.js', 'policies/only.js');
 
 
 	// Create readme files
