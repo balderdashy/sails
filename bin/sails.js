@@ -95,18 +95,18 @@ else {
 	// Create static assets
 	generateDir("public");
 	generateDir("public/images");
-	generateDir("public/stylesheets");
-	generateDir("public/js");
-	generateFile('reset.css', "public/stylesheets/reset.css");
-	generateFile('layout.css', "public/stylesheets/layout.css");
 	copyFile('bg.png', "public/images/bg.png");
+	// generateDir("public/stylesheets");
+	// generateDir("public/js");
 
-	// Create structure for Mast
-	generateDir("mast");
-	generateDir("mast/components");
-	generateDir("mast/routes");
-	generateDir("mast/templates");
-	generateDir("mast/models");
+	// Create rigging assets
+	generateDir("public/ui");
+	generateDir("public/ui/components");
+	generateDir("public/ui/routes");
+	generateDir("public/ui/templates");
+	generateDir("public/ui/stylesheets");
+	generateFile('reset.css', "public/ui/stylesheets/reset.css");
+	generateFile('layout.css', "public/ui/stylesheets/layout.css");
 
 	// Create default policies
 	generateFile('policies/authenticated.js', 'policies/authenticated.js');
