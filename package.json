@@ -6,7 +6,7 @@
     { "name": "Mike McNeil", "email": "mike@balderdash.co" },
     { "name": "Gabe Hernandez", "email": "gabe@balderdash.co" }
   ],
-  "version": "12.11.0819",
+  "version": "12.11.1400",
   "description": "MVC framework for Node.JS",
   "homepage": "http://sailsjs.com",
   "keywords": ["Sails", "MVC", "Rails", "ORM", "Grails"],
@@ -16,7 +16,7 @@
     "lib": "lib"
   },
   "dependencies": {
-    "rigging": "git://github.com/balderdashy/rigging.git#revamp",
+    "rigging": "12.11.1400",
     "express": "= 2.5.11",
     "socket.io": "= 0.9.6",
     "sequelize": "=1.5.0-beta-2",
