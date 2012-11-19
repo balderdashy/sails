@@ -103,7 +103,6 @@ else {
 	generateDir("public/dependencies");
 	generateDir("public/ui");
 	generateDir("public/ui/components");
-	generateDir("public/ui/routes");
 	generateDir("public/ui/templates");
 	generateDir("public/ui/stylesheets");
 	generateFile('reset.css', "public/ui/stylesheets/reset.css");
@@ -118,13 +117,6 @@ else {
 	generateFile('__readme_models.md', "models/__readme.md");
 	generateFile('__readme_controllers.md', "controllers/__readme.md");
 	generateFile('__readme_views.md', "views/__readme.md");
-	generateFile('__readme_mast.md', "mast/__readme.md");
-	generateFile('__readme_mast_components.md', "mast/components/__readme.md");
-	generateFile('__readme_mast_models.md', "mast/models/__readme.md");
-	generateFile('__readme_mast_routes.md', "mast/routes/__readme.md");
-	generateFile('__readme_mast_templates.md', "mast/templates/__readme.md");
-	generateFile('__readme_js.md', "public/js/__readme.md");
-	generateFile('__readme_stylesheets.md', "public/stylesheets/__readme.md");
 	generateFile('__readme_services.md', "services/__readme.md");
 }
 
