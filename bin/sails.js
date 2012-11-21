@@ -49,7 +49,7 @@ if(argv._[0] === 'generate') {
 	// Otherwise generate a model, controller, and view directory
 	else {
 		verifyArg(1, "ERROR: Please specify the name of the entity to generate a model, controller, and view for as the second argument.");
-		console.log("Generating model, controller, and view directory for "+argv._[1]);
+		sails.log.debug("Generating model, controller, and view directory for "+argv._[1]);
 		generate('model.js', "models/", argv._[1], ".js", true);
 		generate('controller.js', "controllers/", argv._[1], "Controller.js", true);
 		generateDir("views/" + argv._[1]);
@@ -58,7 +58,7 @@ if(argv._[0] === 'generate') {
 
 // Generate an app
 else {
-	console.log("\nGenerating sails project...");
+	sails.log.debug("\nGenerating sails project...");
 	verifyArg(0, "ERROR: Please specify the name of the new directory as the first argument.");
 
 
@@ -131,7 +131,7 @@ function generateFile(blueprintPath, newPath) {
 // Generate a directory
 
 function generateDir(newPath) {
-	console.log("Generating directory "+newPath+"...");
+	sails.log.debug("Generating directory "+newPath+"...");
 	fs.mkdirSync(outputPath + "/" + (newPath || ""));
 }
 
@@ -140,7 +140,7 @@ function generateDir(newPath) {
 // as well as an optional ejs render override.
 
 function generate(blueprintPath, prefix, entity, suffix, isEntityCapitalized) {
-	console.log("Generating "+blueprintPath+" for "+entity+"...");
+	sails.log.debug("Generating "+blueprintPath+" for "+entity+"...");
 
 	if (!entity) {
 		throw new Error('No output file name specified!');
@@ -182,14 +182,14 @@ function copyFile(src, dst, cb) {
 
 function verifyArg(argNo, msg) {
 	if(!argv._[argNo]) {
-		console.log(msg);
+		sails.log.debug(msg);
 		process.exit();
 	}
 }
 
 function verifyDoesntExist(path,msg) {
 	if (fileExists(outputPath)) {
-		console.log(msg);
+		sails.log.debug(msg);
 		process.exit();
 	}
 }
