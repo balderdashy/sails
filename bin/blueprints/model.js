@@ -1,3 +1,7 @@
+/*---------------------
+	:: <%- name %> 
+	-> model
+---------------------*/
 <%- name %> = Model.extend({
 	
 	// Attributes/Schema

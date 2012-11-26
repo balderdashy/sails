@@ -1,5 +1,7 @@
-// <%- name %> 
-//
+/*---------------------
+	:: <%- name %> 
+	-> component
+---------------------*/
 Mast.registerComponent('<%- name %>', {
 
 	// Use extendsFrom to inherit methods and events from another component

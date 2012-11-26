@@ -1,8 +1,12 @@
-var <%- name %>Controller = {
+/*---------------------
+	:: <%- name %> 
+	-> controller
+---------------------*/
+module.exports = {
 	
-	// Methods
-	// ex.
-	// doStuff: function (req,res) {},
-	// someOtherMethod: function (req,res) {}
+	// Default action
+	// If index() is not included, read() will be called
+	index: function (req,res) {
+
+	}
 };
-_.extend(exports,<%- name %>Controller);
