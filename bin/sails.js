@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+// Build sails object
+sails = {};
+
 // Get Sails logger
 require('../lib/logger.js');
 
