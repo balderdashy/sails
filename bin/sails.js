@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+// Get Sails logger
+require('../lib/logger.js');
+
 var ejs = require('ejs'),
 	fs = require('fs'),
 	util = require('util'),
