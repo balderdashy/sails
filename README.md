@@ -1,3 +1,5 @@
+![sails.jpg](http://i.imgur.com/o0Qsp.jpg) 
+
 Sails
 ====
 
