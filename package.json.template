@@ -9,7 +9,7 @@
   "version": "{{sailsVersion}}",
   "description": "MVC framework for Node.JS",
   "homepage": "http://sailsjs.com",
-  "keywords": ["realtime", "mvc", "Sails", "Rails", "ORM", "Grails"],
+  "keywords": ["realtime", "mvc", "sockets", "restful", "auth", "socket.io", "rails", "orm", "async","asynchronous","active-record","express","sails","mysql"],
   "main": "lib/common",
   "bin": { "sails": "./bin/sails.js" },
   "directories": {
