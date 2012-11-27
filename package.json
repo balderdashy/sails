@@ -6,10 +6,10 @@
     { "name": "Mike McNeil", "email": "mike@balderdash.co" },
     { "name": "Gabe Hernandez", "email": "gabe@balderdash.co" }
   ],
-  "version": "12.11.2606",
+  "version": "12.11.2618",
   "description": "MVC framework for Node.JS",
   "homepage": "http://sailsjs.com",
-  "keywords": ["Sails", "MVC", "Rails", "ORM", "Grails"],
+  "keywords": ["realtime", "mvc", "Sails", "Rails", "ORM", "Grails"],
   "main": "lib/common",
   "bin": { "sails": "./bin/sails.js" },
   "directories": {
