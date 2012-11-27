@@ -6,7 +6,7 @@
     { "name": "Mike McNeil", "email": "mike@balderdash.co" },
     { "name": "Gabe Hernandez", "email": "gabe@balderdash.co" }
   ],
-  "version": "12.11.26120",
+  "version": "12.11.2620",
   "description": "MVC framework for Node.JS",
   "homepage": "http://sailsjs.com",
   "keywords": ["realtime", "mvc", "sockets", "restful", "auth", "socket.io", "rails", "orm", "async","asynchronous","active-record","express","sails","mysql"],
