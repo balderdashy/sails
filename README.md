@@ -3,12 +3,24 @@
 Sails
 ====
 
-Sails is designed to resemble Ruby on Rails with its MVC (Model View Controller) architecture and convention-over-configuration philosophy. Like Node.JS, Sails.JS written in JavaScript, the language most developers are already using. Sails provides a familiar framework for custom apps which cuts development to a fraction of the time.
+Sails makes it easier to build custom, realtime Node.js apps.  We designed it to resemble the MVC architecture you're used to from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of app and website development.  
 
-Sails does a few things other MVC frameworks can't do:
-- Sails provides all the productivity benefits of Ruby on Rails, but with the realtime capabilities and asynchronous efficiency of Node.js; all in the same language we're already using, JavaScript.
-- Sails routes Socket.io messages the same way as HTTP requests through Express.  When dealing with a Socket.io-initiated request, Sails transparently overrides Express' request and response objects to allow your code to be transport-agnostic.semantics (`res.send`).  This enables a consistent development interface and keeps you from having to reinvent the wheel just to share logic between Express and Socket.io.
-- Sails also contains built-in authentication and role-based access control.  As it should, this works the same way for Socket.io messages as it does for Express requests. (See https://github.com/balderdashy/sails-example)
+Sails espouses the same convention-over-configuration philosophy and emphasis on developer happiness, but takes it a step further.  Like Node.JS, Sails.JS allows you to write your app entirely in JavaScript, the language you or your team is already using to build the client-side portion of your web or mobile web app.  This cuts development to a fraction of the time.
+
+Meanwhile, since Sails is written in Node.js, your servers reap the performance benefits of an event-driven, asynchronous architecture.
+
+Finally, since Sails is build on the rock-solid foundation of Express (routing), EJS (templating) and Socket.io (cross-platform websockets), you don't have to worry about reinventing the wheel on the basics.
+
+Sails does a few things other Node.js MVC frameworks can't do:
+- Automatically generated JSON API for manipulating models means you don't have to write any backend code to build simple database apps
+- Built-in authentication, role-based access control, and customizable policies assignable at the controller/action level
+- Transport agnostic routing: Sails controllers also handle Socket.io / WebSocket messages!
+- Automatic asset minification with Rigging: Your UI code is automatically included in development mode, and minified into a simple, gzipped file in production.
+  - Support for:
+    - CoffeeScript
+    - LESS
+    - SASS / SCSS
+
 
 
 Installation
