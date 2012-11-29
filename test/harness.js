@@ -24,6 +24,42 @@ i.e. for model:
 */
 
 
+// TODO: also explore:
+
+/*
+
+$(SomeModel).find(4);
+
+where $(SomeModel) is just SomeModel, but every attribute that is a function (like find())
+automatically gets a callback function provided by parley.  
+
+Then the parley queue can be activated later (at the end of the controller perhaps).
+
+// Examples:
+$(User).join(FacebookUser, { name: fullName });
+
+If a parley object is passed into a view, queries to adapter will be deferred until the view is rendered
+
+// IN controller
+res.view({
+	users: User.where({id:'>4'}).join(FacebookUser, { name: fullName })
+})
+
+// Then in view
+module.exports = function() {
+	return {
+		name: this.users.name,
+		dateOfBirth: this.users.dateOfBirth
+	};
+};
+
+
+// Because the promise passed down to the view contained more than one model, 
+// the view will automatically understand that and let you create the api view
+// for just one single model, then use that as a template.
+
+*/
+
 // Create flow control object
 var $$$ = new parley();
 
