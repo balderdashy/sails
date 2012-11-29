@@ -1,5 +1,5 @@
 /////////////////////////////
-// DirtyAdapter.js
+// Dirtyself.js
 /////////////////////////////
 //
 // This adapter is for development only!
@@ -19,62 +19,63 @@ var adapter = {
 
 	// Connect to the underlying data model
 	connect: function(cb) {
+		console.log("connect()",this);
+		var self = this;
 
-		console.log("connect()");
-
-		db = require('dirty')(adapter.config.outputFile);
+		db = require('dirty')(self.config.outputFile);
 		db.on('load', function afterLoad() {
 			// Create domain object for storing waterline collection definitions
-			adapter.domain = {};
-setTimeout(cb,750)
-			// cb();
+			self.domain = {};
+			cb();
 		});
 	},
 
-	// Sync data store schema with the app's models
-	sync: {
-		// Drop and recreate collections
-		drop: function(collection,cb) {
+	
+	// Drop and recreate collections
+	syncDrop: function(collection,cb) {
 			console.log("sync.drop()");
-			cb();
-			// adapter.drop(collection, function(err) {
-			// 	adapter.define(collection._class, collection, cb);
-			// });
+			var self = this;
+			self.drop(collection, function(err) {
+				self.define(collection._class, collection, cb);
+			});
 		},
 
-		// Alter schema
-		alter: function(collection, cb) {
+	// Alter schema
+	syncAlter: function(collection, cb) {
+		var self = this;
 
-			// Iterate through each attribute on each model in your app
-			_.each(collection.attributes, function checkAttribute(attribute) {
-				// and make sure that a comparable field exists in the data store
-				// TODO
-			});
-
-			// Check that the attribute exists in the data store
+		// Iterate through each attribute on each model in your app
+		_.each(collection.attributes, function checkAttribute(attribute) {
+			// and make sure that a comparable field exists in the data store
 			// TODO
+		});
 
-			// If not, alter the collection to include it
-			// TODO
+		// Check that the attribute exists in the data store
+		// TODO
 
-			// Iterate through each attribute in this collection
-			// and make sure that a comparable field exists in the model
-			// TODO
+		// If not, alter the collection to include it
+		// TODO
 
-			// If not, alter the collection and remove it
-			// TODO
-			cb(err);
-		}
+		// Iterate through each attribute in this collection
+		// and make sure that a comparable field exists in the model
+		// TODO
+
+		// If not, alter the collection and remove it
+		// TODO
+		cb(err);
+		
 	},
 
 	// Fetch the definition for a collection
 	describe: function(name, cb) {
-		var definition = adapter.domain[name];
+		var self = this;
+		var definition = self.domain[name];
 		cb(null, definition);
 	},
 
 	// Define a new collection
 	define: function(name, definition, cb) {
+		var self = this;
 
 		// If id is not defined, add it
 		if(!definition.id) {
@@ -104,35 +105,37 @@ setTimeout(cb,750)
 		}
 
 		// Verify that collection doesn't already exist, then create it
-		adapter.describe(name, function defineNewCollection(err, existingDefinition) {
+		self.describe(name, function defineNewCollection(err, existingDefinition) {
 			if(existingDefinition) cb('The collection, ' + name + ', already exists.');
 			else if(err) cb(err);
 			else {
 				// Add collection to waterline domain object
-				adapter.domain[name] = definition;
+				self.domain[name] = definition;
 
-				// Save empty collection to database
-				db.set(name, [], function(val) {
-					cb(null, val);
-				});
+				// No need to save anything right now
+				cb(null);
 			}
 		});
 	},
 
 	// Drop an existing collection
 	drop: function(name, cb) {
-		db.rm(name, function() {
-			// Remove collection from waterline domain object
-			delete adapter.domain[name];
+		var self = this;
 
-			cb();
-		});
+		// TODO: foreach through and delete all of the models for this collection
+
+		// Remove schema def from waterline domain object
+		delete self.domain[name];
+
+		cb();
 	},
 
 	// Alter an existing collection
 	alter: function(name, newPartialDef, cb) {
-		// Update collection in waterline domain object
-		adapter.domain[name] = _.extend(adapter.domain[name], newPartialDef);
+		var self = this;
+
+		// Update schema in waterline domain object
+		self.domain[name] = _.extend(self.domain[name], newPartialDef);
 
 		// TODO: add default values for existing models where new attrs are undefined
 		cb();
@@ -142,6 +145,7 @@ setTimeout(cb,750)
 
 	// Create one or more new models in the data store.
 	create: function(name, values, cb) {
+		var self = this;
 		var collection = db.get(name);
 
 		// If a list was specified, create multiple models
@@ -173,6 +177,7 @@ setTimeout(cb,750)
 
 	// Find one or more models from the data store.
 	find: function(name, criteria, cb) {
+		var self = this;
 		var collection = db.get(name);
 		criteria = normalizeCriteria(criteria);
 
@@ -186,6 +191,7 @@ setTimeout(cb,750)
 
 	// Update one or more models in the data store.
 	update: function(name, criteria, values, cb) {
+		var self = this;
 		var collection = db.get(name);
 		criteria = normalizeCriteria(criteria);
 
@@ -208,6 +214,7 @@ setTimeout(cb,750)
 
 	// Delete one or more models from the data store.
 	destroy: function(name, criteria, cb) {
+		var self = this;
 		var collection = db.get(name);
 		criteria = normalizeCriteria(criteria);
 
@@ -227,14 +234,20 @@ setTimeout(cb,750)
 
 
 	// Begin an atomic transaction
-	lock: function (name, criteria, cb) { },
+	lock: function (name, criteria, cb) { 
+		var self = this;
+	},
 
 	// Commit and end an atomic transaction
-	unlock: function (name, criteria, cb) { },
+	unlock: function (name, criteria, cb) { 
+		var self = this;
+	},
 
 	// If @thisModel and @otherModel are both using this adapter, do a more efficient remote join.
 	// (By default, an inner join, but right and left outer joins are also supported.)
-	join: function(thisModel, otherModel, key, foreignKey, left, right, cb) { }
+	join: function(thisModel, otherModel, key, foreignKey, left, right, cb) { 
+		var self = this;
+	}
 };
 
 

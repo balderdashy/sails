@@ -1,48 +1,37 @@
 // Dependencies
 var async = require('async');
 var _ = require('underscore');
+_.str = require('underscore.string');
 var parley = require('parley');
+var waterline = require('../waterline.js');
 
-// Create flow control objects
-var $connect$ = new parley();
-var $other$ = new parley();
+// Extend collection and adapter definition
+var User = new waterline.Collection(require('../models/User.js'));
+_.bindAll(User.adapter);
+var newAdapter = new waterline.Adapter(User.adapter);
+
+// TODO: instead of saving empty list to dirty-db, use an entry for each model
+
+/*
+i.e. for model:
+{
+	collection: 'User',
+	data: {
+		name: 'Mike',
+		email: 'mike@balderdash.co'
+	}
+}
+*/
 
 
-
-// Thought:
-//////////////////////////////////////////////////////////////////////
-//
-// instead of a callback function, execute a generator function that
-// returns an incrementing id and pass in the result.
-// This serializes function calls by providing a unique sequence.
-// 
-// A __getter__ on globals[] could be used as well to make the syntax even more concise.
-//
-
-// Collections
-var User = require('../models/User.js');
-
-
+// Create flow control object
+var $$$ = new parley();
 
 // Connect to adapters
-$connect$ ( User.adapter.connect ) ();
-
-$connect$ ( function (x,cb) {
-	console.log(" Do more " + x + " stuff!");
-	setTimeout(cb,1500);
-}) ("111111111111");
-
-$other$ ( function (x,cb) {
-	console.log(" Do more " + x + " stuff!");
-	setTimeout(cb,500);
-}) ("22222222222");
-
-$connect$ ( function (x,cb) {
-	console.log(" Do more " + x + " stuff!");
-	setTimeout(cb,5500);
-}) ("33333333333");
+$$$ ( User.adapter.connect ) ();
 
 // Sync adapter schemas (if necessary)
-$connect$ ( User.adapter.sync[User.scheme] ) (User);
+$$$ ( User.adapter['sync'+_.str.capitalize(User.scheme)] ) (User);
 
-new parley ($connect$, $other$) (console.log) ("!");
+
+
