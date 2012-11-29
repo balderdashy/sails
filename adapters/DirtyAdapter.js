@@ -19,10 +19,15 @@ var adapter = {
 
 	// Connect to the underlying data model
 	connect: function(cb) {
+
+		console.log("\n*****************\n");
+		console.log("CONNECT args",arguments,"CTX:",this);
+
 		db = require('dirty')(adapter.config.outputFile);
 		db.on('load', function afterLoad() {
 			// Create domain object for storing waterline collection definitions
 			adapter.domain = {};
+
 			cb();
 		});
 	},
@@ -30,37 +35,37 @@ var adapter = {
 	// Sync data store schema with the app's models
 	sync: {
 		// Drop and recreate collections
-		drop: function(models, cb) {
-			async.forEach(_.keys(models), function defineModel(name, cb) {
-				adapter.drop(name, function(err) {
-					adapter.define(name, models[name], cb);
-				});
-			}, cb);
+		drop: function(collection,cb) {
+			console.log("\n*****************\n");
+			console.log("DROP","args",arguments);
+			cb();
+			// adapter.drop(collection, function(err) {
+			// 	adapter.define(collection._class, collection, cb);
+			// });
 		},
 
 		// Alter schema
-		alter: function(models, cb) {
+		alter: function(collection, cb) {
 
 			// Iterate through each attribute on each model in your app
-			// and make sure that a comparable field exists in the data store
-			async.forEach(models, function extendSchema(model, cb) {
-				_.each(model.attributes, function checkAttribute(attribute) {
-
-					// Check that the attribute exists in the data store
-					// TODO
-					// If not, alter the collection to include it
-					// TODO
-					cb();
-				});
-			}, function pruneSchema(err) {
-
-				// Iterate through each attribute on each collection in your data store
-				// and make sure that a comparable field exists in the model
+			_.each(collection.attributes, function checkAttribute(attribute) {
+				// and make sure that a comparable field exists in the data store
 				// TODO
-				// If not, alter the collection and remove it
-				// TODO
-				cb(err);
 			});
+
+			// Check that the attribute exists in the data store
+			// TODO
+
+			// If not, alter the collection to include it
+			// TODO
+
+			// Iterate through each attribute in this collection
+			// and make sure that a comparable field exists in the model
+			// TODO
+
+			// If not, alter the collection and remove it
+			// TODO
+			cb(err);
 		}
 	},
 
@@ -223,20 +228,15 @@ var adapter = {
 	},
 
 
-	lock: function(name, criteria, cb) {
-		// TODO
-	},
-	unlock: function(name, criteria, cb) {
-		// TODO
-	},
+	// Begin an atomic transaction
+	lock: function (name, criteria, cb) { },
 
-
+	// Commit and end an atomic transaction
+	unlock: function (name, criteria, cb) { },
 
 	// If @thisModel and @otherModel are both using this adapter, do a more efficient remote join.
 	// (By default, an inner join, but right and left outer joins are also supported.)
-	join: function(thisModel, otherModel, key, foreignKey, left, right, cb) {
-		// TODO
-	}
+	join: function(thisModel, otherModel, key, foreignKey, left, right, cb) { }
 };
 
 

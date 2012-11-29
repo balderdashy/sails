@@ -144,3 +144,10 @@ var Adapter = {
 };
 
 module.exports= Adapter;
+
+
+
+
+
+
+
