@@ -30,6 +30,6 @@
   "dependencies": {
     "dirty": "~0.9.6",
     "underscore": "~1.4.2",
-    "parley": "0.0.3"
+    "parley": "0.0.6"
   }
 }

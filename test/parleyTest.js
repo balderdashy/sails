@@ -19,30 +19,26 @@ var $other$ = new parley();
 // A __getter__ on globals[] could be used as well to make the syntax even more concise.
 //
 
-// Collections
-var User = require('../models/User.js');
-
-
-
-// Connect to adapters
-$connect$ ( User.adapter.connect ) ();
-
 $connect$ ( function (x,cb) {
 	console.log(" Do more " + x + " stuff!");
-	setTimeout(cb,1500);
+	setTimeout(cb,100);
 }) ("111111111111");
 
 $other$ ( function (x,cb) {
 	console.log(" Do more " + x + " stuff!");
-	setTimeout(cb,500);
+	setTimeout(cb,200);
 }) ("22222222222");
 
-$connect$ ( function (x,cb) {
+var $_result = $connect$ ( function (x,cb) {
 	console.log(" Do more " + x + " stuff!");
-	setTimeout(cb,5500);
+	setTimeout(function (){
+		cb(null,"some data");
+	},500);
 }) ("33333333333");
 
-// Sync adapter schemas (if necessary)
-$connect$ ( User.adapter.sync[User.scheme] ) (User);
-
-new parley ($connect$, $other$) (console.log) ("!");
+var $next$ = new parley ($connect$, $other$);
+$next$ (function ($$,cb) {
+	if ($$.error) throw $$.error;
+	console.log("DATA:",$$.data);
+	cb();
+}) ($_result);
