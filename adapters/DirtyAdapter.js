@@ -238,8 +238,8 @@ var adapter = {
 	},
 
 
-
-
+	lock: function () {},
+	unlock: function () {},
 
 
 

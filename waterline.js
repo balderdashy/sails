@@ -107,17 +107,17 @@ var Adapter = {
 	},
 
 
-	// Generate a new model
+	// Generate a new model and make it available in both sails.models and the global namespace
 	registerModel: function (modelName,definition) {
 		sails.log("Binding "+modelName+" to adapter:",this);
 		sails.models[modelName] = new Collection(this,definition);
 		if (global[modelName]) {
 			sails.log.warn("WARNING: Could not create your model, "+modelName+" in the global namespace.  Another variable w/ that name already exists.");
+			return null;
 		}
 		else {
-			global[modelName] = sails.models[modelName];
+			return global[modelName] = sails.models[modelName];
 		}
-		return sails.models[modelName];
 	},
 
 	// Turn a values object or a list of values objects into a model or list of models
