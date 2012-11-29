@@ -13,14 +13,8 @@ var adapter = {
 	config: {
 		// File to write persistent data
 		// (if left unspecified, the data will be stored only in-memory and lost when the server is shut down)
-		outputFile: '/tmp/sails_dirty.db',
-
-		// Scheme can be 'drop', 'update', or something custom
-		// Controls whether database is dropped and recreated when app starts,
-		// or whether Sails will try and synchronize the schema with the app models.
-		scheme: 'drop'
+		outputFile: '/tmp/sails_dirty.db'
 	},
-
 
 
 	// Connect to the underlying data model
@@ -34,19 +28,18 @@ var adapter = {
 	},
 
 	// Sync data store schema with the app's models
-	sync: function(models, cb) {
-
+	sync: {
 		// Drop and recreate collections
-		if(adapter.config.scheme === 'drop') {
+		drop: function(models, cb) {
 			async.forEach(_.keys(models), function defineModel(name, cb) {
 				adapter.drop(name, function(err) {
 					adapter.define(name, models[name], cb);
 				});
 			}, cb);
-		}
+		},
 
 		// Alter schema
-		else if(adapter.config.scheme === 'alter') {
+		alter: function(models, cb) {
 
 			// Iterate through each attribute on each model in your app
 			// and make sure that a comparable field exists in the data store
@@ -99,15 +92,17 @@ var adapter = {
 		}
 
 		// Normalize definition
-		for (var a in definition) {
-			if (_.isString(definition[a])) {
-				definition[a] = { type: definition[a] };
+		for(var a in definition) {
+			if(_.isString(definition[a])) {
+				definition[a] = {
+					type: definition[a]
+				};
 			}
 		}
 
 		// Verify that collection doesn't already exist, then create it
 		adapter.describe(name, function defineNewCollection(err, existingDefinition) {
-			if (existingDefinition) cb('The collection, ' + name + ', already exists.');
+			if(existingDefinition) cb('The collection, ' + name + ', already exists.');
 			else if(err) cb(err);
 			else {
 				// Add collection to waterline domain object
@@ -132,23 +127,13 @@ var adapter = {
 	},
 
 	// Alter an existing collection
-	alter: function (name,newPartialDef,cb) {
+	alter: function(name, newPartialDef, cb) {
 		// Update collection in waterline domain object
-		adapter.domain[name] = _.extend(adapter.domain[name],newPartialDef);
+		adapter.domain[name] = _.extend(adapter.domain[name], newPartialDef);
 
 		// TODO: add default values for existing models where new attrs are undefined
-
 		cb();
 	},
-
-
-
-
-
-
-
-
-
 
 
 
@@ -157,26 +142,27 @@ var adapter = {
 		var collection = db.get(name);
 
 		// If a list was specified, create multiple models
-		if (_.isArray(values)) {
+		if(_.isArray(values)) {
 			return async.forEach(values, doCreate, cb);
 		}
 		// Otherwise create a single model
-		else if (_.isObject(values)) {
-			return doCreate(values,cb);
-		} 
-		else return cb('Invalid values, ' + values + ' in create()');
+		else if(_.isObject(values)) {
+			return doCreate(values, cb);
+		} else return cb('Invalid values, ' + values + ' in create()');
 
 
 		// Add a new model to collection
-		function doCreate(values,cb) {
+
+
+		function doCreate(values, cb) {
 			// Add id (auto-increment PK- indexing is 1-based)
-			if (!values.id) {
+			if(!values.id) {
 				values.id = collection.length + 1;
 			}
 			// Persist new model and build and send back model object
 			collection.push(values);
-			db.set(name,collection,function(){
-				cb(null,buildModel(values) || null);
+			db.set(name, collection, function() {
+				cb(null, buildModel(values) || null);
 			});
 		}
 	},
@@ -188,7 +174,7 @@ var adapter = {
 		criteria = normalizeCriteria(criteria);
 
 		// Look up models
-		var resultSet = _.where(collection,criteria);
+		var resultSet = _.where(collection, criteria);
 
 		// Respond with a list of located models
 		cb(null, buildModel(resultSet) || null);
@@ -200,21 +186,20 @@ var adapter = {
 		var collection = db.get(name);
 		criteria = normalizeCriteria(criteria);
 
-		if (_.isObject(values)) {
+		if(_.isObject(values)) {
 
 			// Look up models
-			var resultSet = _.where(collection,criteria);
+			var resultSet = _.where(collection, criteria);
 
 			// Extend collection with updated values
-			resultSet = _.map(resultSet,function(model) {
+			resultSet = _.map(resultSet, function(model) {
 				return _.extend(model, values);
 			});
-			db.set(name,collection,function(){
+			db.set(name, collection, function() {
 				// Respond with a list of updated models
-				cb(null,buildModel(resultSet) || null);
+				cb(null, buildModel(resultSet) || null);
 			});
-		}
-		else return cb('Invalid values, ' + values + ' in update()');
+		} else return cb('Invalid values, ' + values + ' in update()');
 	},
 
 
@@ -224,26 +209,30 @@ var adapter = {
 		criteria = normalizeCriteria(criteria);
 
 		// Look up list of models who don't match the specified criteria
-		console.log("******",collection,criteria);
-		collection = _.reject(collection,function(model) {
-			return _.isEqual(model,collection) ? model : false;
+		console.log("******", collection, criteria);
+		collection = _.reject(collection, function(model) {
+			return _.isEqual(model, collection) ? model : false;
 		});
-		console.log("******",collection);
+		console.log("******", collection);
 
 		// Persist and respond with a list of models
-		db.set(name,collection,function() {
+		db.set(name, collection, function() {
 			// Respond with a list of updated models
-			cb(null,buildModel(collection) || null);
+			cb(null, buildModel(collection) || null);
 		});
 	},
 
 
-	lock: function () {},
-	unlock: function () {},
+	lock: function(name, criteria, cb) {
+		// TODO
+	},
+	unlock: function(name, criteria, cb) {
+		// TODO
+	},
 
 
 
-	// Join @thisModel with @otherModel.
+	// If @thisModel and @otherModel are both using this adapter, do a more efficient remote join.
 	// (By default, an inner join, but right and left outer joins are also supported.)
 	join: function(thisModel, otherModel, key, foreignKey, left, right, cb) {
 		// TODO
@@ -262,21 +251,23 @@ module.exports = adapter;
 
 
 // TODO: build actual model(s)
+
+
 function buildModel(valuesCollection) {
 	var models = valuesCollection;
 	return models;
 }
 
 // Normalize criteria
+
+
 function normalizeCriteria(criteria) {
-	if ((_.isFinite(criteria) || _.isString(criteria)) && +criteria > 0) {
+	if((_.isFinite(criteria) || _.isString(criteria)) && +criteria > 0) {
 		return criteria = {
 			id: +criteria
 		};
 	}
-	if (!_.isObject(criteria)) {
+	if(!_.isObject(criteria)) {
 		return 'Invalid criteria, ' + criteria + ' in find()';
 	}
 }
-
-

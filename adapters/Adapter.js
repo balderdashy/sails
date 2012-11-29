@@ -19,7 +19,7 @@ var adapter = module.exports = {
 	// Sync schema between the model and the data store
 	// Scheme can be 'drop', 'alter', or something custom
 	// Controls whether database is dropped and recreated when app starts,
-	// or whether Sails will try and synchronize the schema with the app models.
+	// or whether waterline will try and synchronize the schema with the app models.
 	sync: {
 
 		// Drop and recreate all collections
@@ -60,5 +60,9 @@ var adapter = module.exports = {
 	lock: function (name, criteria, cb) { },
 
 	// Commit and end an atomic transaction
-	unlock: function (name, criteria, cb) { }
+	unlock: function (name, criteria, cb) { },
+
+	// If @thisModel and @otherModel are both using this adapter, do a more efficient remote join.
+	// (By default, an inner join, but right and left outer joins are also supported.)
+	join: function(thisModel, otherModel, key, foreignKey, left, right, cb) { }
 };
