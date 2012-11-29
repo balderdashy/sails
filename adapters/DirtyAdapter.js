@@ -20,15 +20,14 @@ var adapter = {
 	// Connect to the underlying data model
 	connect: function(cb) {
 
-		console.log("\n*****************\n");
-		console.log("CONNECT args",arguments,"CTX:",this);
+		console.log("connect()");
 
 		db = require('dirty')(adapter.config.outputFile);
 		db.on('load', function afterLoad() {
 			// Create domain object for storing waterline collection definitions
 			adapter.domain = {};
-
-			cb();
+setTimeout(cb,750)
+			// cb();
 		});
 	},
 
@@ -36,8 +35,7 @@ var adapter = {
 	sync: {
 		// Drop and recreate collections
 		drop: function(collection,cb) {
-			console.log("\n*****************\n");
-			console.log("DROP","args",arguments);
+			console.log("sync.drop()");
 			cb();
 			// adapter.drop(collection, function(err) {
 			// 	adapter.define(collection._class, collection, cb);
