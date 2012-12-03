@@ -7,7 +7,7 @@
     { "name": "Gabe Hernandez", "email": "gabe@balderdash.co" }
   ],
   "version": "{{sailsVersion}}",
-  "description": "MVC framework for Node.JS",
+  "description": "Realtime MVC framework for Node.JS with support for Socket.io (built on Express)",
   "homepage": "http://sailsjs.com",
   "keywords": ["realtime", "mvc", "sockets", "restful", "auth", "socket.io", "rails", "orm", "async","asynchronous","active-record","express","sails","mysql"],
   "main": "lib/common",
