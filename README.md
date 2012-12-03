@@ -49,9 +49,9 @@ node app.js
 Example
 --
 #### Live demo
-*Please pardon the graphics, I threw them together myself*
+*Try it in two browser windows*
 
-http://sailsjs.com:1337/
+http://sailsjs.com:1337/experiment
 
 #### Code
 https://github.com/balderdashy/sails-example
