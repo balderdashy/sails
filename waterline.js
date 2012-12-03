@@ -38,7 +38,15 @@ module.exports = function (adapters,collections,cb) {
 		var collection = collections[collectionName];
 
 		// Use adapter shortname in model def. to look up actual object
-		collection.adapter = adapters[collection.adapter];
+		if (_.isString(collection.adapter)) {
+			if (! adapters[collection.adapter]) throw "Unknown adapter! ("+collection.adapter+")  Maybe try installing it?";
+			else collection.adapter = adapters[collection.adapter];
+		}
+
+		// Then check that a valid adapter object was retrieved (or already existed)
+		if (!(_.isObject(collection.adapter) && collection.adapter._isWaterlineAdapter)) {
+			throw "Invalid adapter!";
+		}
 
 		// Build actual collection object from definition
 		collections[collectionName] = new Collection(collection);

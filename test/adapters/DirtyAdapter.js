@@ -2,15 +2,13 @@
 var async = require('async');
 var _ = require('underscore');
 
+/*---------------------
+	:: DirtyAdapter
+	-> adapter
+---------------------*/
 
-/////////////////////////////
-// Adapter.js
-/////////////////////////////
-//
-// This is only a template!
-//
-// 
-//
+// This disk+memory adapter is for development only!
+// Learn more: https://github.com/felixge/node-dirty
 var adapter = module.exports = {
 
 	// Initialize the underlying data model
@@ -50,6 +48,7 @@ var adapter = module.exports = {
 
 	// Create one or more new models in the collection
 	create: function(collection, values, cb) { 
+		console.log("dirty :: create()");
 		cb();
 	},
 
@@ -86,7 +85,11 @@ var adapter = module.exports = {
 	// (By default, an inner join, but right and left outer joins are also supported.)
 	join: function(thisModel, otherModel, key, foreignKey, left, right, cb) { 
 		cb();
-	}
+	},
+
+	// Identity is here to facilitate unit testing
+	// (this is optional and normally automatically populated)
+	identity: 'dirty'
 };
 
 

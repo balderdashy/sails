@@ -3,18 +3,16 @@ var _ = require('underscore');
 var parley = require('parley');
 var assert = require("assert");
 
-var waterline = require("../waterline.js");
-
 
 describe('adapter', function() {
 	describe('#initialize()', function() {
-		it('should initialize without an error', function(done) {
+		it('should initialize and sync without an error', function(done) {
 			// Grab included adapters and test models
 			var adapters = buildDictionary(__dirname + '/adapters', /(.+Adapter)\.js$/, /Adapter/);
 			var models = buildDictionary(__dirname + '/models', /(.+)\.js$/);
 
 			var $ = new parley();
-			var outcome = $(waterline) (adapters,models);
+			var outcome = $(require("../waterline.js")) (adapters,models);
 			$(done)(outcome);
 		});
 	});

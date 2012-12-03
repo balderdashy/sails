@@ -145,6 +145,9 @@ var Adapter = module.exports = function (adapter) {
 	_.bindAll(this);
 	_.bind(this.sync.drop,this);
 	_.bind(this.sync.alter,this);
+
+	// Mark as valid adapter
+	this._isWaterlineAdapter = true;
 };
 
 

@@ -11,7 +11,6 @@ var domain = {};
 /////////////////////////////
 //
 // This adapter is for development only!
-//
 // Learn more about this database: https://github.com/felixge/node-dirty
 // 
 var adapter = {

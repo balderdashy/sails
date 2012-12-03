@@ -13,16 +13,23 @@ var Collection = module.exports = function(definition) {
 	_.extend(this, definition);
 
 	this.create = function(values, cb) {
-		this.adapter.create(this,values,cb);
+		this.adapter.create(this.identity,values,cb);
 	};
 	this.find = function(criteria, cb) {
-
+		this.adapter.find(this.identity,criteria,cb);
 	};
 	this.update = function(criteria, values, cb) {
-
+		this.adapter.yodate(this.identity,criteria,values,cb);
 	};
 	this.destroy = function(criteria, cb) {
+		this.adapter.destroy(this.identity,criteria,cb);
+	};
 
+	this.lock = function(criteria, cb) {
+		this.adapter.lock(this.identity,criteria,cb);
+	};
+	this.unlock = function(criteria, cb) {
+		this.adapter.unlock(this.identity,criteria,cb);
 	};
 
 	// Bind instance methods to collection

@@ -20,7 +20,7 @@ var adapter = module.exports = {
 
 	// Tear down any remaining connectins to the underlying data model
 	teardown: function (cb) {
-		cb();
+		cb && cb();
 	},
 
 
