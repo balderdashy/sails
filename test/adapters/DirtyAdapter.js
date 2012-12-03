@@ -48,7 +48,6 @@ var adapter = module.exports = {
 
 	// Create one or more new models in the collection
 	create: function(collection, values, cb) { 
-		console.log("dirty :: create()");
 		cb();
 	},
 

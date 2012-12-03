@@ -10,8 +10,10 @@ var Collection = module.exports = function(definition) {
 		default		: throw new Error('Invalid scheme in '+definition.identity+' model!');
 	}
 	
+	// Absorb definition methods
 	_.extend(this, definition);
 
+	// Define core methods
 	this.create = function(values, cb) {
 		this.adapter.create(this.identity,values,cb);
 	};
@@ -19,7 +21,7 @@ var Collection = module.exports = function(definition) {
 		this.adapter.find(this.identity,criteria,cb);
 	};
 	this.update = function(criteria, values, cb) {
-		this.adapter.yodate(this.identity,criteria,values,cb);
+		this.adapter.update(this.identity,criteria,values,cb);
 	};
 	this.destroy = function(criteria, cb) {
 		this.adapter.destroy(this.identity,criteria,cb);
