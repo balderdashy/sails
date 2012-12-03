@@ -3,7 +3,7 @@
 	-> model
 ---------------------*/
 
-exports.adapter = require('../adapters/DirtyAdapter.js');
+exports.adapter = 'mysql';
 
 exports.scheme = 'drop';
 

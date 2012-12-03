@@ -1,5 +1,13 @@
+// Dependencies
+var db;
+var async = require('async');
+var _ = require('underscore');
+
+// Shared domain object is used to define schema for the models using this adapter
+var domain = {};
+
 /////////////////////////////
-// Dirtyself.js
+// DirtyAdapter.js
 /////////////////////////////
 //
 // This adapter is for development only!
@@ -7,7 +15,6 @@
 // Learn more about this database: https://github.com/felixge/node-dirty
 // 
 var adapter = {
-
 
 	// Adapter configuration
 	config: {
@@ -19,67 +26,68 @@ var adapter = {
 
 	// Connect to the underlying data model
 	connect: function(cb) {
-		console.log("connect()",this);
 		var self = this;
 
 		db = require('dirty')(self.config.outputFile);
 		db.on('load', function afterLoad() {
 			// Create domain object for storing waterline collection definitions
-			self.domain = {};
+			domain = {};
 			cb();
 		});
 	},
 
-	
-	// Drop and recreate collections
-	syncDrop: function(collection,cb) {
-			console.log("sync.drop()");
-			var self = this;
-			self.drop(collection, function(err) {
-				self.define(collection._class, collection, cb);
-			});
-		},
+	// Sync given collection's schema with the underlying data model
+	sync: {
 
-	// Alter schema
-	syncAlter: function(collection, cb) {
-		var self = this;
-
-		// Iterate through each attribute on each model in your app
-		_.each(collection.attributes, function checkAttribute(attribute) {
-			// and make sure that a comparable field exists in the data store
-			// TODO
-		});
-
-		// Check that the attribute exists in the data store
-		// TODO
-
-		// If not, alter the collection to include it
-		// TODO
-
-		// Iterate through each attribute in this collection
-		// and make sure that a comparable field exists in the model
-		// TODO
-
-		// If not, alter the collection and remove it
-		// TODO
-		cb(err);
+		// Drop and recreate collections
+		drop: function(collection,cb) {
+				var self = this;
+				self.drop(collection, function(err) {
+					self.define(collection.identity, collection, cb);
+				});
+			},
 		
+		// Alter schema
+		alter: function(collection, cb) {
+			var self = this;
+
+			// Iterate through each attribute on each model in your app
+			_.each(collection.attributes, function checkAttribute(attribute) {
+				// and make sure that a comparable field exists in the data store
+				// TODO
+			});
+
+			// Check that the attribute exists in the data store
+			// TODO
+
+			// If not, alter the collection to include it
+			// TODO
+
+			// Iterate through each attribute in this collection
+			// and make sure that a comparable field exists in the model
+			// TODO
+
+			// If not, alter the collection and remove it
+			// TODO
+			cb(err);	
+		}
 	},
+
 
 	// Fetch the definition for a collection
 	describe: function(name, cb) {
 		var self = this;
-		var definition = self.domain[name];
+		var definition = domain[name];
 		cb(null, definition);
 	},
 
 	// Define a new collection
 	define: function(name, definition, cb) {
 		var self = this;
-
+		console.log("DEFINING "+name,definition);
 		// If id is not defined, add it
-		if(!definition.id) {
-			definition.id = {
+		if(!definition.attributes.id) {
+			definition.attributes.id = {
 				type: 'INTEGER',
 				primaryKey: true,
 				autoIncrement: true
@@ -88,15 +96,15 @@ var adapter = {
 
 		// If the config allows it, and they aren't already specified,
 		// extend definition with updatedAt and createdAt
-		if(sails.config.waterline.createdAt && !definition.createdAt) {
-			definition.createdAt = 'DATE';
-		}
-		if(sails.config.waterline.updatedAt && !definition.updatedAt) {
-			definition.updatedAt = 'DATE';
-		}
+		// if(sails.config.waterline.createdAt && !definition.createdAt) {
+		// 	definition.createdAt = 'DATE';
+		// }
+		// if(sails.config.waterline.updatedAt && !definition.updatedAt) {
+		// 	definition.updatedAt = 'DATE';
+		// }
 
 		// Normalize definition
-		for(var a in definition) {
+		for(var a in definition.attributes) {
 			if(_.isString(definition[a])) {
 				definition[a] = {
 					type: definition[a]
@@ -110,10 +118,10 @@ var adapter = {
 			else if(err) cb(err);
 			else {
 				// Add collection to waterline domain object
-				self.domain[name] = definition;
+				domain[name] = definition;
 
 				// No need to save anything right now
-				cb(null);
+				cb();
 			}
 		});
 	},
@@ -125,7 +133,7 @@ var adapter = {
 		// TODO: foreach through and delete all of the models for this collection
 
 		// Remove schema def from waterline domain object
-		delete self.domain[name];
+		delete domain[name];
 
 		cb();
 	},
@@ -135,7 +143,7 @@ var adapter = {
 		var self = this;
 
 		// Update schema in waterline domain object
-		self.domain[name] = _.extend(self.domain[name], newPartialDef);
+		domain[name] = _.extend(domain[name], newPartialDef);
 
 		// TODO: add default values for existing models where new attrs are undefined
 		cb();
@@ -144,9 +152,9 @@ var adapter = {
 
 
 	// Create one or more new models in the data store.
-	create: function(name, values, cb) {
+	create: function(collection, values, cb) {
 		var self = this;
-		var collection = db.get(name);
+		var dataCollection = db.get(collection.identity);
 
 		// If a list was specified, create multiple models
 		if(_.isArray(values)) {
@@ -159,16 +167,14 @@ var adapter = {
 
 
 		// Add a new model to collection
-
-
 		function doCreate(values, cb) {
 			// Add id (auto-increment PK- indexing is 1-based)
-			if(!values.id) {
-				values.id = collection.length + 1;
+			if (!values.id) {
+				values.id = dataCollection.length + 1;
 			}
 			// Persist new model and build and send back model object
-			collection.push(values);
-			db.set(name, collection, function() {
+			dataCollection.push(values);
+			db.set(dataCollection.identity, dataCollection, function() {
 				cb(null, buildModel(values) || null);
 			});
 		}
@@ -251,11 +257,10 @@ var adapter = {
 };
 
 
+// Bind each method in adapter to self
+adapter = _.bindAll(adapter);
 
-// Dependencies
-var db;
-var async = require('async');
-var _ = require('underscore');
+// (sync methods are bound at runtime in waterline)
 
 // Export adapter
 module.exports = adapter;

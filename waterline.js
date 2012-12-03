@@ -1,17 +1,106 @@
 // Dependencies
 var async = require('async');
 var _ = require('underscore');
+var parley = require('parley');
 
 // mock sails for now
-sails = {
-	config: {
-		waterline: {
-			createdAt: true,
-			updatedAt: true
-		}
-	},
-	models: {}
+var config = {
+	createdAt: true,
+	updatedAt: true
 };
+
+/**
+* Prepare waterline to interact with adapters
+*/
+module.exports = function (adapters,collections,cb) {
+
+	// connect each adapter in series
+	// TODO: parallelizing this process will increase load-time
+	var $$ = new parley();
+	for (var adapterName in adapters) {
+		var adapter = adapters[adapterName];
+
+		// bind adapter methods to self
+		adapter = _.bindAll(adapter);
+
+		// connect to adapter
+		$$(adapter).connect();
+	}
+
+	// Connect each model to its adapter and sync it
+	for (var collectionName in collections) {
+		var collection = collections[collectionName];
+
+		// Use adapter shortname in model def. to look up actual object
+		collection.adapter = adapters[collection.adapter];
+
+		// TODO: wrap calls to adapter with common functionality
+
+		// Sync (depending on scheme)
+		switch (collection.scheme) {
+			case "drop"	: collection.sync = _.bind(collection.adapter.sync.drop, collection.adapter, collection); break;
+			case "alter": collection.sync = _.bind(collection.adapter.sync.alter, collection.adapter, collection); break;
+			default		: throw new Error('Invalid scheme in '+collection.identity+' model!');
+		}
+		$$(collection).sync();
+
+		// Build actual collection object from definition
+		collections[collectionName] = new Collection(collection);
+	}
+
+	// Pass instantiated adapters and models
+	$$(cb)(null,{
+		adapters: adapters,
+		collections: collections
+	});
+};
+
+
+
+var Collection = module.exports.Collection = function(definition) {
+	_.extend(this, definition);
+
+	this.create = function(values, cb) {
+		this.adapter.create(this,values,cb);
+	};
+	this.find = function(criteria, cb) {
+
+	};
+	this.update = function(criteria, values, cb) {
+
+	};
+	this.destroy = function(criteria, cb) {
+
+	};
+
+	// Bind instance methods to collection
+	_.bindAll(this);
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * Run a method on an object -OR- each item in an array and return the result
@@ -29,22 +118,7 @@ _.plural = function(collection, application) {
 
 
 
-var Collection = module.exports.Collection = function(definition) {
-		_.extend(this, definition);
 
-		this.create = function(values, cb) {
-
-		};
-		this.find = function(criteria, cb) {
-
-		};
-		this.update = function(criteria, values, cb) {
-
-		};
-		this.destroy = function(criteria, cb) {
-
-		};
-	};
 
 
 
@@ -123,72 +197,3 @@ function normalizeCriteria (criteria) {
 	}
 	return criteria;
 }
-
-
-// var Adapter = module.exports.Adapter = {
-// 	_connect: function() {
-// 		// Bind all methods to this context
-// 		_.bindAll(this);
-
-// 		console.log("raw");
-// 		this.
-// 	},
-
-// 	// Synchronize the data store with the defined models
-// 	synchronize: function(collection, cb) {
-// 		this.sync[this.scheme](models, cb);
-// 	},
-
-// 	// DDL (uniform across all waterline adapters)
-// 	_define: function(collection, definition) {
-
-// 	},
-// 	_describe: function(collection) {
-
-// 	},
-// 	_alter: function(collection, def) {
-
-// 	},
-// 	_drop: function(collection) {
-
-// 	},
-
-// 	// DQL (uniform across all waterline adapters)
-// 	_create: function(name, def) {
-
-// 	},
-// 	_find: function(name, criteria) {
-// 		criteria = this._normalizeCriteria(criteria);
-
-// 	},
-// 	_update: function(name, criteria, def) {
-// 		criteria = this._normalizeCriteria(criteria);
-
-// 	},
-// 	_destroy: function(name, criteria) {
-// 		criteria = this._normalizeCriteria(criteria);
-
-// 	},
-
-
-// 	// Generate a new model and make it available in both sails.models and the global namespace
-// 	registerModel: function(modelName, definition) {
-// 		sails.log("Binding " + modelName + " to adapter:", this);
-// 		sails.models[modelName] = new Collection(this, definition);
-// 		if(global[modelName]) {
-// 			sails.log.warn("WARNING: Could not create your model, " + modelName + " in the global namespace.  Another variable w/ that name already exists.");
-// 			return null;
-// 		} else {
-// 			return global[modelName] = sails.models[modelName];
-// 		}
-// 	},
-
-// 	// Turn a values object or a list of values objects into a model or list of models
-// 	build: function(collection) {
-// 		_.plural(collection, this.buildModel, "Invalid collection passed to build():" + collection);
-// 	},
-// 	// Create a single model
-// 	buildModel: function(values) {
-// 		return values;
-// 	},
-
