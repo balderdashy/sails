@@ -4,14 +4,14 @@
 Sails makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development.  It's especially good for building realtime features like chat.
 
 ### Philosophy
-Sails espouses the same convention-over-configuration philosophy and emphasis on developer happiness, but takes it a step further.  Like Node.JS, Sails.JS allows you to write your app entirely in JavaScript, the language you or your team is already using to build the client-side portion of your web or mobile web app.  
-This cuts development to a fraction of the time.  We've used Sails to build production-ready, realtime apps in a matter of weeks that would have taken at least two months before.
+Like other MVC frameworks, Sails espouses a same convention-over-configuration philosophy and emphasis on developer happiness, but takes it a step further. Like Node.js, using Sails means your app is written entirely in JavaScript, the language you or your team is already using to build the frontend portion of your web or mobile web app.  This cuts development to a fraction of the time. 
+We've used Sails to build production-ready, realtime apps in a matter of weeks.  In the past, that would have taken us months!
 
 ### Performance
 Meanwhile, since Sails is written in Node.js, your servers reap the performance benefits of an event-driven, asynchronous architecture. (http://venturebeat.com/2011/08/16/linkedin-node/)
 
 ### Standing on the shoulders of giants
-Finally, since Sails is build on the rock-solid foundation of Express (routing), EJS (templating) and Socket.io (cross-platform websockets), you don't have to worry about reinventing the wheel on the basics.
+Sails is built on the rock-solid foundation of Express (routing), EJS (templating) and Socket.io (cross-platform WebSockets), you don't have to worry about reinventing the wheel.
 
 ## What else?
 Excited?  Us too!  
