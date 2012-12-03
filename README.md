@@ -14,7 +14,6 @@ Meanwhile, since Sails is written in Node.js, your servers reap the performance 
 Sails is built on the rock-solid foundation of Express (routing), EJS (templating) and Socket.io (cross-platform WebSockets), you don't have to worry about reinventing the wheel.
 
 ## What else?
-Excited?  Us too!  
 Sails does a few things other Node.js MVC frameworks can't do:
 - Automatically generated JSON API for manipulating models means you don't have to write any backend code to build simple database apps
 - Built-in authentication, role-based access control, and customizable policies assignable at the controller/action level
