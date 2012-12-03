@@ -36,43 +36,6 @@ var adapter = {
 		});
 	},
 
-	// Sync given collection's schema with the underlying data model
-	sync: {
-
-		// Drop and recreate collections
-		drop: function(collection,cb) {
-				var self = this;
-				self.drop(collection, function(err) {
-					self.define(collection.identity, collection, cb);
-				});
-			},
-		
-		// Alter schema
-		alter: function(collection, cb) {
-			var self = this;
-
-			// Iterate through each attribute on each model in your app
-			_.each(collection.attributes, function checkAttribute(attribute) {
-				// and make sure that a comparable field exists in the data store
-				// TODO
-			});
-
-			// Check that the attribute exists in the data store
-			// TODO
-
-			// If not, alter the collection to include it
-			// TODO
-
-			// Iterate through each attribute in this collection
-			// and make sure that a comparable field exists in the model
-			// TODO
-
-			// If not, alter the collection and remove it
-			// TODO
-			cb(err);	
-		}
-	},
-
 
 	// Fetch the definition for a collection
 	describe: function(name, cb) {

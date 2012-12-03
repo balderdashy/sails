@@ -1,9 +1,18 @@
+// Dependencies
+var async = require('async');
+var _ = require('underscore');
+var parley = require('parley');
+
+var waterline = require("../waterline.js");
+
 var assert = require("assert");
-describe('waterline', function(){
-  describe('#indexOf()', function(){
-    it('should return -1 when the value is not present', function(){
-      assert.equal(-1, [1,2,3].indexOf(5));
-      assert.equal(-1, [1,2,3].indexOf(0));
-    });
-  });
+
+
+
+describe('adapter', function() {
+	describe('#initialize()', function() {
+		it('should initialize without an error', function(done) {
+			done();
+		});
+	});
 });

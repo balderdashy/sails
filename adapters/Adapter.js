@@ -13,35 +13,20 @@ var _ = require('underscore');
 //
 var adapter = module.exports = {
 
-	// Connect to the underlying data model
-	connect: function(cb) {	
+	// Initialize the underlying data model
+	initialize: function(cb) {	
 		cb(); 
 	},
 
-	// Destroy conncetion to underlying data model
-	unconnect: function (cb) {
+	// Tear down any remaining connectins to the underlying data model
+	teardown: function (cb) {
 		cb();
 	},
 
-	// Sync schema between the model and the data store
-	// Scheme can be 'drop', 'alter', or something custom
-	// Controls whether database is dropped and recreated when app starts,
-	// or whether waterline will try and synchronize the schema with the app models.
-	sync: {
 
-		// Drop and recreate a collection
-		drop: function(collection, cb) { 
-			cb();
-		},
-
-		// Alter schema for a collection
-		alter: function (collection, cb) { 
-			cb();
-		}
-	},
 
 	// Fetch the schema for a collection
-	describe: function(collection, cb) {
+	describe: function(collectionName, cb) {
 		cb();
 	},
 
@@ -55,10 +40,12 @@ var adapter = module.exports = {
 		cb();
 	},
 
-	// Alter the schema for an existing collection
-	alter: function (collection,newAttrs,cb) { 
+	// Extend the schema for an existing collection
+	alter: function (collectionName,newAttrs,cb) { 
 		cb();
 	},
+
+
 
 
 	// Create one or more new models in the collection
@@ -82,6 +69,7 @@ var adapter = module.exports = {
 	},
 
 
+
 	// Begin an atomic transaction
 	lock: function (collection, criteria, cb) { 
 		cb();
@@ -91,6 +79,8 @@ var adapter = module.exports = {
 	unlock: function (collection, criteria, cb) { 
 		cb();
 	},
+
+
 
 	// If @thisModel and @otherModel are both using this adapter, do a more efficient remote join.
 	// (By default, an inner join, but right and left outer joins are also supported.)

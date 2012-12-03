@@ -18,8 +18,8 @@ var adapter = module.exports = {
 		password: 'test'
 	},
 
-	// Load the underlying data model (and prepare a pool if necessary)
-	connect: function(cb) {
+	// Initialize the underlying data model
+	initialize: function(cb) {	
 		var self = this;
 		this.pool = [];
 
@@ -31,8 +31,8 @@ var adapter = module.exports = {
 		cb();
 	},
 
-	// Destroy all connections to underlying data model in the pool
-	unconnect: function (cb) {
+	// Tear down any remaining connectins to the underlying data model
+	teardown: function (cb) {
 		var self = this;
 		async.forEach(this.pool,function (connection,cb) {
 			connection.end(cb);
@@ -44,6 +44,7 @@ var adapter = module.exports = {
 			cb && cb(err);
 		});
 	},
+	
 
 	// Sync schema between the model and the data store
 	// Scheme can be 'drop', 'alter', or something custom
