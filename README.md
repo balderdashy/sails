@@ -48,6 +48,11 @@ node app.js
 
 Example
 --
+#### Live demo
+**Please pardon the graphics, I threw them together myself**
+http://sailsjs.com:1337/
+
+#### Code
 https://github.com/balderdashy/sails-example
 
 Dependencies and Compatibility
