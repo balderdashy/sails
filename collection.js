@@ -1,10 +1,13 @@
+var _ = require('underscore');
+var parley = require('parley');
+
 var Collection = module.exports = function(definition) {
 
 	// Sync (depending on scheme)
-	switch (collection.scheme) {
-		case "drop"	: collection.sync = _.bind(collection.adapter.sync.drop, collection.adapter, collection); break;
-		case "alter": collection.sync = _.bind(collection.adapter.sync.alter, collection.adapter, collection); break;
-		default		: throw new Error('Invalid scheme in '+collection.identity+' model!');
+	switch (definition.scheme) {
+		case "drop"	: definition.sync = _.bind(definition.adapter.sync.drop, definition.adapter, definition); break;
+		case "alter": definition.sync = _.bind(definition.adapter.sync.alter, definition.adapter, definition); break;
+		default		: throw new Error('Invalid scheme in '+definition.identity+' model!');
 	}
 	
 	_.extend(this, definition);
@@ -23,5 +26,6 @@ var Collection = module.exports = function(definition) {
 	};
 
 	// Bind instance methods to collection
+	_.bindAll(definition);
 	_.bindAll(this);
 };

@@ -1,58 +1,103 @@
+var _ = require('underscore');
+var parley = require('parley');
+
+var config = require('./config.js');
+
 // Extend adapter definition
-var Adapter = module.exports = function (definition) {
-	this.config = definition.config;
+var Adapter = module.exports = function (adapter) {
+	this.config = adapter.config;
 
 	this.initialize = function(cb) {
-		definition.connect(cb);
+		// When process ends, close all open connections
+		var self = this;
+		process.on('SIGINT', process.exit);
+		process.on('SIGTERM', process.exit);
+		process.on('exit', function () { self.teardown(); });
+
+		adapter.initialize ? adapter.initialize(cb) : cb();
 	};
 	this.teardown = function (cb) {
-		definition.teardown(cb);
+		adapter.teardown ? adapter.teardown(cb) : cb && cb();
 	};
 
 
 	this.define = function(collectionName, definition, cb) { 
-		definition.define.apply(null,arguments);
+
+
+		// If id is not defined, add it
+		// TODO: Make this check for ANY primary key
+		// TODO: Make this disableable in the config
+		if (!definition.attributes.id) {
+			definition.attributes.id = {
+				type: 'INTEGER',
+				primaryKey: true,
+				autoIncrement: true
+			};
+		}
+
+		// If the config allows it, and they aren't already specified,
+		// extend definition with updatedAt and createdAt
+		if(config.createdAt && !definition.createdAt) definition.createdAt = 'DATE';
+		if(config.updatedAt && !definition.updatedAt) definition.updatedAt = 'DATE';
+
+		// Convert string-defined attributes into fully defined objects
+		for (var attr in definition.attributes) {
+			if(_.isString(definition[attr])) {
+				definition[attr] = {
+					type: definition[attr]
+				};
+			}
+		}
+
+		// Verify that collection doesn't already exist
+		var $ = new parley();
+		$(this).describe(collectionName);
+		$(cb).ifNotNull("Trying to define a collection which already exists.");
+		$(cb).ifError();
+		adapter.define ? $(adapter).define(collectionName,definition,cb) : $(cb)();
 	};
+
 	this.describe = function(collectionName, cb) { 
-		definition.describe.apply(null,arguments);
+		adapter.describe ? adapter.describe(collectionName,cb) : cb();
 	};
 	this.drop = function(collectionName, cb) { 
-		definition.drop.apply(null,arguments);
+		// TODO: foreach through and delete all of the models for this collection
+		adapter.drop ? adapter.drop(collectionName,cb) : cb();
 	};
 	this.alter = function (collectionName,newAttrs,cb) { 
-		definition.alter.apply(null,arguments);
+		adapter.alter ? adapter.alter(collectionName,newAttrs,cb) : cb();
 	};
 
 
 
-	this.create = function(collectionName, values, cb) { 
-		definition.create.apply(null,arguments);
+	this.create = function(collectionName, values, cb) {
+		adapter.create ? adapter.create(collectionName,values,cb) : cb();
 	};
 	this.find = function(collectionName, criteria, cb) {
 		criteria = normalizeCriteria(criteria);
-		definition.find.apply(null,arguments);
+		adapter.find ? adapter.find(collectionName,criteria,cb) : cb();
 	};
 	this.update = function(collectionName, criteria, values, cb) {
 		criteria = normalizeCriteria(criteria);
-		definition.update.apply(null,arguments);
+		adapter.update ? adapter.update(collectionName,criteria,values,cb) : cb();
 	};
 	this.destroy = function(collectionName, criteria, cb) {
 		criteria = normalizeCriteria(criteria);
-		definition.destroy.apply(null,arguments);
+		adapter.destroy ? adapter.destroy(collectionName,criteria,cb) : cb();
 	};
 
 
 	this.lock = function (collectionName, criteria, cb) { 
-		definition.lock.apply(null,arguments);
+		adapter.lock ? adapter.lock(collectionName,criteria,cb) : cb();
 	};
 	this.unlock = function (collectionName, criteria, cb) { 
-		definition.unlock.apply(null,arguments);
+		adapter.unlock ? adapter.unlock(collectionName,criteria,cb) : cb();
 	};
 
 	// If @thisModel and @otherModel are both using this adapter, do a more efficient remote join.
 	// (By default, an inner join, but right and left outer joins are also supported.)
 	this.join = function(collectionName, otherCollectionName, key, foreignKey, left, right, cb) {
-		cb();
+		adapter.join ? adapter.join(collectionName, otherCollectionName, key, foreignKey, left, right, cb) : cb();
 	};
 
 	// Sync given collection's schema with the underlying data model
@@ -96,7 +141,7 @@ var Adapter = module.exports = function (definition) {
 	};
 
 	// Bind adapter methods to self
-	_.bindAll(definition);
+	_.bindAll(adapter);
 	_.bindAll(this);
 	_.bind(this.sync.drop,this);
 	_.bind(this.sync.alter,this);
@@ -107,16 +152,15 @@ var Adapter = module.exports = function (definition) {
  * Run a method on an object -OR- each item in an array and return the result
  * Also handle errors gracefully
  */
-_.plural = function(collection, application) {
+function plural (collection, application) {
 	if(_.isArray(collection)) {
 		return _.map(collection, application);
 	} else if(_.isObject(collection)) {
 		return application(collection);
 	} else {
-		throw "Invalid collection passed to _.plural aggreagator:" + collection;
+		throw "Invalid collection passed to plural aggreagator:" + collection;
 	}
-};
-
+}
 
 // Normalize the different ways of specifying criteria into a uniform object
 function normalizeCriteria (criteria) {

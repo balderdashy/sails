@@ -3,6 +3,11 @@ var async = require('async');
 var _ = require('underscore');
 var parley = require('parley');
 
+// Prototype definitions
+var Adapter = require('./adapter.js');
+var Collection = require('./collection.js');
+var Model = require('./model.js');
+
 // mock sails for now
 var config = {
 	createdAt: true,
