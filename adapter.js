@@ -5,7 +5,12 @@ var config = require('./config.js');
 
 // Extend adapter definition
 var Adapter = module.exports = function (adapter) {
-	this.config = adapter.config;
+	// Assign logger (using console.log as default)
+	adapter.log = adapter.config.log || console.log;
+
+
+	this.config = adapter.config || {};
+
 
 	this.initialize = function(cb) {
 		// When process ends, close all open connections
@@ -17,7 +22,7 @@ var Adapter = module.exports = function (adapter) {
 		adapter.initialize ? adapter.initialize(cb) : cb();
 	};
 	this.teardown = function (cb) {
-		adapter.teardown ? adapter.teardown(cb) : cb && cb();
+		adapter.teardown ? adapter.teardown(cb) : (cb && cb());
 	};
 
 
@@ -49,12 +54,16 @@ var Adapter = module.exports = function (adapter) {
 			}
 		}
 
+		// Grab schema from definition
+		var schema = definition.attributes;
+
 		// Verify that collection doesn't already exist
-		var $ = new parley();
-		$(this).describe(collectionName);
-		$(cb).ifNotNull("Trying to define a collection which already exists.");
-		$(cb).ifError();
-		adapter.define ? $(adapter).define(collectionName,definition,cb) : $(cb)();
+		// and then define it and trigger callback
+		this.describe(collectionName,function (err,existingSchema) {
+			if (err) return cb(err,schema);
+			else if (existingSchema) return cb("Trying to define a collection ("+collectionName+") which already exists with schema:",existingSchema);
+			else return ( adapter.define ? adapter.define(collectionName,schema,cb) : cb() );
+		});
 	};
 
 	this.describe = function(collectionName, cb) { 
@@ -94,7 +103,15 @@ var Adapter = module.exports = function (adapter) {
 		adapter.unlock ? adapter.unlock(collectionName,criteria,cb) : cb();
 	};
 
-	// If @thisModel and @otherModel are both using this adapter, do a more efficient remote join.
+	this.status = function (collectionName, cb) {
+		adapter.status ? adapter.status(collectionName,cb) : cb();
+	};
+
+	this.autoIncrement = function (collectionName, values,cb) {
+		adapter.autoIncrement ? adapter.autoIncrement(collectionName, values, cb) : cb();
+	};
+
+	// If @collectionName and @otherCollectionName are both using this adapter, do a more efficient remote join.
 	// (By default, an inner join, but right and left outer joins are also supported.)
 	this.join = function(collectionName, otherCollectionName, key, foreignKey, left, right, cb) {
 		adapter.join ? adapter.join(collectionName, otherCollectionName, key, foreignKey, left, right, cb) : cb();
@@ -106,17 +123,23 @@ var Adapter = module.exports = function (adapter) {
 	// or whether waterline will try and synchronize the schema with the app models.
 	this.sync = {
 
-		// Drop and recreate collections
+		// Drop and recreate collection
 		drop: function(collection,cb) {
-			var $ = new parley();
-			$(this).drop(collection);
-			$(this).define(collection.identity,collection);
-			$(cb)();
+			var self = this;
+			this.drop(collection.identity,function (err,data) {
+				self.define(collection.identity,collection,cb);
+			});
 		},
 		
 		// Alter schema
 		alter: function(collection, cb) {
 			var self = this;
+
+			// Check that collection exists-- if it doesn't go ahead and add it and get out
+			this.describe(collection.identity,function (err,data) {
+				if (err) throw err;
+				else if (!data) return self.define(collection.identity,collection,cb);
+			});
 
 			// Iterate through each attribute on each model in your app
 			_.each(collection.attributes, function checkAttribute(attribute) {
@@ -136,7 +159,7 @@ var Adapter = module.exports = function (adapter) {
 
 			// If not, alter the collection and remove it
 			// TODO
-			cb(err);	
+			cb();	
 		}
 	};
 

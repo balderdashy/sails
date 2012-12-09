@@ -23,11 +23,6 @@ var adapter = module.exports = {
 		var self = this;
 		this.pool = [];
 
-		// When process ends, close all open connections
-		process.on('SIGINT', process.exit);
-		process.on('SIGTERM', process.exit);
-		process.on('exit', function () { self.teardown(); });
-
 		cb();
 	},
 
@@ -69,7 +64,7 @@ var adapter = module.exports = {
 	},
 
 	// Create a new collection
-	define: function(collectionName, definition, cb) {
+	define: function(collectionName, schema, cb) {
 		cb();
 	},
 

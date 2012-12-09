@@ -5,7 +5,7 @@
 
 exports.adapter = 'dirty';
 
-exports.scheme = 'drop';
+exports.scheme = 'alter';
 
 exports.attributes = {
 	name	: 'STRING',
@@ -15,5 +15,5 @@ exports.attributes = {
 };
 
 // Identity is here to facilitate unit testing
-// (this is optional and normally automatically populated)
+// (this is optional and normally automatically populated based on file name)
 exports.identity = 'user';

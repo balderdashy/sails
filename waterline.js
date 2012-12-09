@@ -20,6 +20,9 @@ var config = {
 module.exports = function (adapters,collections,cb) {
 	var $$ = new parley();
 
+	// Error aggregator obj
+	var errs;
+
 	// initialize each adapter in series
 	// TODO: parallelize this process (would decrease server startup time)
 	for (var adapterName in adapters) {
@@ -52,11 +55,12 @@ module.exports = function (adapters,collections,cb) {
 		collections[collectionName] = new Collection(collection);
 
 		// Synchronize schema with data source
-		$$(collection).sync();
+		var e = $$(collection).sync();
+		$$(function (e) {errs = errs || e;}).ifError(e);
 	}
 
 	// Pass instantiated adapters and models
-	$$(cb)(null,{
+	$$(cb)(errs,{
 		adapters: adapters,
 		collections: collections
 	});

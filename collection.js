@@ -15,15 +15,46 @@ var Collection = module.exports = function(definition) {
 
 	// Define core methods
 	this.create = function(values, cb) {
-		this.adapter.create(this.identity,values,cb);
+		var collection = this;
+
+		// Get status to get value of auto_increment counter
+		if (collection.adapter.status) {
+			collection.adapter.status(collection.identity,afterwards);
+		}
+		else afterwards();
+
+		// Modify values as necessary
+		function afterwards(err,status){
+			if (err) throw err;
+
+			// Auto increment fields that need it
+			collection.adapter.autoIncrement(collection.identity,values,function (err,values) {
+				if (err) return cb(err);
+
+				// TODO: Verify constraints using (HULL)
+
+				// Add updatedAt and createdAt
+				if (collection.adapter.config.createdAt) values.createdAt = new Date();
+				if (collection.adapter.config.updatedAt) values.updatedAt = new Date();
+
+				console.log("------ creatin' ",values);
+
+
+				// Call create method in adapter
+				collection.adapter.create(collection.identity,values,cb);
+			});
+		}
 	};
 	this.find = function(criteria, cb) {
+		// Call find method in adapter
 		this.adapter.find(this.identity,criteria,cb);
 	};
 	this.update = function(criteria, values, cb) {
+		// Call update method in adapter
 		this.adapter.update(this.identity,criteria,values,cb);
 	};
 	this.destroy = function(criteria, cb) {
+		// Call destroy method in adapter
 		this.adapter.destroy(this.identity,criteria,cb);
 	};
 

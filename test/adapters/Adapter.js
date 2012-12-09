@@ -9,6 +9,7 @@ var _ = require('underscore');
 //
 // This is only a template!
 //
+// ** this ** refers to the adapter
 // 
 //
 var adapter = module.exports = {
@@ -30,8 +31,8 @@ var adapter = module.exports = {
 		cb();
 	},
 
-	// Create a new collection
-	define: function(collectionName, definition, cb) { 
+	// Create a new 
+	define: function(collectionName, schema, cb) { 
 		cb();
 	},
 
@@ -48,43 +49,55 @@ var adapter = module.exports = {
 
 
 
-	// Create one or more new models in the collection
-	create: function(collection, values, cb) { 
+	// Create one or more new models in the collectionName
+	create: function(collectionName, values, cb) { 
 		cb();
 	},
 
-	// Find one or more models from the collection
-	find: function(collection, criteria, cb) { 
+	// Find one or more models from the collectionName
+	find: function(collectionName, criteria, cb) { 
 		cb();
 	},
 
-	// Update one or more models in the collection
-	update: function(collection, criteria, values, cb) { 
+	// Update one or more models in the collectionName
+	update: function(collectionName, criteria, values, cb) { 
 		cb();
 	},
 
-	// Delete one or more models from the collection
-	destroy: function(collection, criteria, cb) { 
+	// Delete one or more models from the collectionName
+	// ** this ** refers to the collectionName
+	destroy: function(collectionName, criteria, cb) { 
 		cb();
 	},
 
 
 
 	// Begin an atomic transaction
-	lock: function (collection, criteria, cb) { 
+	// lock models in collectionName which fit criteria (if criteria is null, lock all)
+	lock: function (collectionName, criteria, cb) { 
 		cb();
 	},
 
 	// Commit and end an atomic transaction
-	unlock: function (collection, criteria, cb) { 
+	// unlock models in collectionName which fit criteria (if criteria is null, unlock all)
+	unlock: function (collectionName, criteria, cb) { 
 		cb();
 	},
 
 
 
-	// If @thisModel and @otherModel are both using this adapter, do a more efficient remote join.
+	// Get table status (i.e. auto_increment counter)
+	status: function (collectionName, cb) {
+		cb(null,{
+			autoIncrement: 1
+		});
+	},
+
+
+
+	// If @collectionName and @otherCollectionName are both using this adapter, do a more efficient remote join.
 	// (By default, an inner join, but right and left outer joins are also supported.)
-	join: function(thisModel, otherModel, key, foreignKey, left, right, cb) { 
+	join: function(collectionName, otherCollectionName, key, foreignKey, left, right, cb) { 
 		cb();
 	}
 };

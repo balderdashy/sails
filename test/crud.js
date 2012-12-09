@@ -14,8 +14,6 @@ var models = {
 // Bootstrap waterline
 require("../waterline.js")(adapters, models, function() {
 
-
-
 	describe('#creating() users Johnny and Timmy', function() {
 
 		it('should work', function(done) {

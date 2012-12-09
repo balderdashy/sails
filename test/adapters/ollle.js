@@ -46,7 +46,7 @@ var adapter = {
 	// Define a new collection
 	define: function(name, definition, cb) {
 		var self = this;
-		
+		console.log("DEFINING "+name,definition);
 		// If id is not defined, add it
 		if(!definition.attributes.id) {
 			definition.attributes.id = {
