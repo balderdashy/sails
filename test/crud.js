@@ -37,15 +37,86 @@ require("../waterline.js")(adapters, models, function() {
 		it('should mean we can find Johnny', function(done) {
 			models.user.find({
 				name: "Johnny"
-			}, function (err,user) {
+			}, function (err,users) {
+				// Get first item from result set
+				var user = users[0];
+
 				if(err) throw err;
 				else if(!user || !_.isObject(user) || !user.name || user.name !== "Johnny") throw "Invalid model returned.";
 				else if(!user.id) throw "No id returned.";
 				else done(err, user);
 			});
 		});
-
 	});
 
+
+	describe('#updating() Johnny\'s name to Richard', function() {
+
+		it('should work', function(done) {
+			models.user.update({
+				name: 'Johnny'
+			},{
+				name: "Richard"
+			}, done);
+		});
+
+		it('should mean we can find Richard', function(done) {
+			models.user.find({
+				name: "Richard"
+			}, function (err,users) {
+				// Get first item from result set
+				var user = users[0];
+
+				if(err) throw err;
+				else if(!user || !_.isObject(user) || !user.name || user.name !== "Richard") throw "Invalid model returned.";
+				else done(err, user);
+			});
+		});
+
+		it('should only result in a single Richard existing', function(done) {
+			models.user.find({
+				name: "Richard"
+			}, function (err,users) {
+				if(err) throw err;
+				else if(users.length !== 1) throw "updating created extra models!";
+				else done(err, users);
+			});
+		});
+
+		it('should still retain other fields in updated model', function(done) {
+			models.user.find({
+				name: "Richard"
+			}, function (err,users) {
+				// Get first item from result set
+				var user = users[0];
+
+				if(err) throw err;
+				else if(!user.id) throw "Id missing!";
+				else done(err, users);
+			});
+		});
+	});
+
+
+	describe('#destroying() Richard', function() {
+
+		it('should work', function(done) {
+			models.user.destroy({
+				name: 'Richard'
+			}, done);
+		});
+
+		it('should mean trying to find Richard should return an empty array', function(done) {
+			models.user.find({
+				name: "Richard"
+			}, function (err,users) {
+				if(err) throw err;
+				else if(!users || !_.isArray(users) || users.length > 0) throw "A non-empty list was returned!";
+				else done(err, users);
+			});
+		});
+		
+
+	});
 
 });

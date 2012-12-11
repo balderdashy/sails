@@ -37,25 +37,22 @@ var Collection = module.exports = function(definition) {
 				if (collection.adapter.config.createdAt) values.createdAt = new Date();
 				if (collection.adapter.config.updatedAt) values.updatedAt = new Date();
 
-				console.log("------ creatin' ",values);
-
-
 				// Call create method in adapter
-				collection.adapter.create(collection.identity,values,cb);
+				return collection.adapter.create(collection.identity,values,cb);
 			});
 		}
 	};
+	// Call find method in adapter
 	this.find = function(criteria, cb) {
-		// Call find method in adapter
-		this.adapter.find(this.identity,criteria,cb);
+		return this.adapter.find(this.identity,criteria,cb);
 	};
+	// Call update method in adapter
 	this.update = function(criteria, values, cb) {
-		// Call update method in adapter
-		this.adapter.update(this.identity,criteria,values,cb);
+		return this.adapter.update(this.identity,criteria,values,cb);
 	};
+	// Call destroy method in adapter
 	this.destroy = function(criteria, cb) {
-		// Call destroy method in adapter
-		this.adapter.destroy(this.identity,criteria,cb);
+		return this.adapter.destroy(this.identity,criteria,cb);
 	};
 
 	this.lock = function(criteria, cb) {

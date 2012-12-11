@@ -16,8 +16,11 @@ var parley = require('parley');
 var adapter = module.exports = {
 
 	config: {
-		persistent: true,
-		scheme: 'alter',
+		// What persistence scheme is being used?  
+		// Is the db dropped & recreated each time or persisted to disc?
+		persistent: false,
+
+		// Filename for disk file output for persistent data
 		dbName: 'sails.db',
 
 		// String to precede key name for schema defininitions
@@ -32,8 +35,14 @@ var adapter = module.exports = {
 
 	// Initialize the underlying data model
 	initialize: function(cb) {
-		if(this.config.persistent) this.db = new(dirty.Dirty)(this.config.dbName);
-		else this.db = new(dirty.Dirty)();
+		if(this.config.persistent) {
+			this.config.scheme = 'alter';
+			this.db = new(dirty.Dirty)(this.config.dbName);
+		}
+		else {
+			this.config.scheme = 'drop';
+			this.db = new(dirty.Dirty)();
+		}
 		this.db.on('load', function() {
 			// Trigger callback with no error
 			cb();
@@ -50,7 +59,7 @@ var adapter = module.exports = {
 
 	// Fetch the schema for a collection
 	describe: function(collectionName, cb) {
-		this.log("<- Describing "+collectionName,err,schema);
+		this.log(" DESCRIBING :: "+collectionName,err,schema);
 		var schema, err;
 		try {
 			schema = this.db.get(this.config.schemaPrefix+collectionName);
@@ -63,7 +72,7 @@ var adapter = module.exports = {
 
 	// Create a new collection
 	define: function(collectionName, schema, cb) {
-		this.log("-> Defining "+collectionName, "as",schema);
+		this.log(" DEFINING "+collectionName, "as",schema);
 		var self = this;
 
 		// Write schema and status objects
@@ -78,7 +87,7 @@ var adapter = module.exports = {
 	// Drop an existing collection
 	drop: function(collectionName, cb) {
 		var self = this;
-		self.log("<*> Dropping "+collectionName);
+		self.log(" DROPPING "+collectionName);
 		return self.db.rm(self.config.dataPrefix+collectionName,function (err) {
 			if (err) return cb("Could not drop collection!");
 			return self.db.rm(self.config.schemaPrefix+collectionName,cb);
@@ -87,7 +96,7 @@ var adapter = module.exports = {
 
 	// Extend the schema for an existing collection
 	alter: function(collectionName, newAttrs, cb) {
-		this.log("-> Altering "+collectionName);
+		this.log(" ALTERING "+collectionName);
 		this.db.describe(collectionName,function (e0,existingSchema) {
 			if (err) return cb(collectionName+" does not exist!");
 			var schema = _.extend(existingSchema,newAttrs);
@@ -103,15 +112,10 @@ var adapter = module.exports = {
 		var dataKey = this.config.dataPrefix+collectionName;
 		var data = this.db.get(dataKey);
 
-		// Lookup this collection's status info
-		// if 
-
 		// Create new model
 		// (if data collection doesn't exist yet, create it)
 		data = data || [];
 		data.push(values);
-
-		console.log("new data:",dataKey,data);
 
 		// Replace data collection and go back
 		this.db.set(dataKey,data,function (err) {
@@ -121,17 +125,54 @@ var adapter = module.exports = {
 
 	// Find one or more models from the collection
 	find: function(collectionName, criteria, cb) {
-		cb();
+		this.log(" FINDING :: ",collectionName,criteria);
+		var dataKey = this.config.dataPrefix+collectionName;
+		var data = this.db.get(dataKey);
+
+		// Query result set using criteria
+		var resultSet = _.where(data,criteria);
+		cb(null,resultSet);
 	},
 
 	// Update one or more models in the collection
 	update: function(collectionName, criteria, values, cb) {
-		cb();
+		this.log(" UPDATING :: ",collectionName,criteria,values);
+		var dataKey = this.config.dataPrefix+collectionName;
+		var data = this.db.get(dataKey);
+
+		// Query result set using criteria
+		var resultIndices = [];
+		_.each(data,function (row,index) {
+			if (checkForMatch(row,criteria)) resultIndices.push(index);
+		});
+
+		// Update value(s)
+		_.each(resultIndices,function(index) {
+			data[index] = _.extend(data[index],values);
+		});
+
+		// Replace data collection and go back
+		this.db.set(dataKey,data,function (err) {
+			cb(err,values);
+		});
 	},
 
 	// Delete one or more models from the collection
 	destroy: function(collectionName, criteria, cb) {
-		cb();
+		this.log(" DESTROYING :: ",collectionName,criteria);
+		var dataKey = this.config.dataPrefix+collectionName;
+		var data = this.db.get(dataKey);
+
+		// Query result set using criteria
+		var resultIndices = [];
+		data = _.reject(data,function (row,index) {
+			return checkForMatch(row,criteria);
+		});
+
+		// Replace data collection and go back
+		this.db.set(dataKey,data,function (err) {
+			cb(err);
+		});
 	},
 
 
@@ -148,35 +189,26 @@ var adapter = module.exports = {
 	},
 
 
-	// Get table status (i.e. autoIncrement counter)
-	status: function (collectionName, cb) {
-		var err, status;
-		try { status = this.db.get(this.config.statusPrefix+collectionName); }
-		catch (e) { err = e; }
-		this.log("<oo Getting status "+collectionName,status);
-		return cb(err,status);
-	},
-
 	// Look for auto-increment fields, increment counters accordingly, and return refined values
 			// TODO: make sure this is atomic
 	autoIncrement: function (collectionName, values, cb) {
-		var self = this;
+		// Lookup schema & status so we know all of the attribute names and the current auto-increment value
 		var schema = this.db.get(this.config.schemaPrefix+collectionName);
-		// Lookup status so we know the current auto-increment value
-		this.status(collectionName,function(err,status) {
-			// if this is an autoIncrement field, increment it in values set
-			async.forEach(_.keys(_.extend({},schema,values)), function (attrName,cb) {
-				if (_.isObject(schema[attrName]) && schema[attrName].autoIncrement) {
-					values[attrName] = status.autoIncrement;
+		var status = this.db.get(this.config.statusPrefix+collectionName);
+		var self = this;
 
-					// Then, increment the status db persistently
-					status.autoIncrement++;
-					self.db.set(self.config.statusPrefix+collectionName,status,cb);
-				}
-				else cb();
-			}, function (err) {
-				return cb(err,values);
-			});
+		// if this is an autoIncrement field, increment it in values set
+		async.forEach(_.keys(_.extend({},schema,values)), function (attrName,cb) {
+			if (_.isObject(schema[attrName]) && schema[attrName].autoIncrement) {
+				values[attrName] = status.autoIncrement;
+
+				// Then, increment the status db persistently
+				status.autoIncrement++;
+				self.db.set(self.config.statusPrefix+collectionName,status,cb);
+			}
+			else cb();
+		}, function (err) {
+			return cb(err,values);
 		});
 	},
 
@@ -193,6 +225,17 @@ var adapter = module.exports = {
 };
 
 
+
 //////////////                 //////////////////////////////////////////
 ////////////// Private Methods //////////////////////////////////////////
 //////////////                 //////////////////////////////////////////
+
+// Verify that each attribute in criteria matches
+function checkForMatch (row,criteria) {
+	for (var key in criteria) {
+		if ( !row[key] || row[key] !== criteria[key] ) {
+			return false;
+		}
+	}
+	return true;
+}
