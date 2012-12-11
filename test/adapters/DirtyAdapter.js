@@ -18,7 +18,7 @@ var adapter = module.exports = {
 	config: {
 		// What persistence scheme is being used?  
 		// Is the db dropped & recreated each time or persisted to disc?
-		persistent: false,
+		persistent: true,
 
 		// Filename for disk file output for persistent data
 		dbName: 'sails.db',
@@ -170,21 +170,8 @@ var adapter = module.exports = {
 	},
 
 
-	// Begin an atomic transaction
-	// lock models in collection which fit criteria (if criteria is null, lock all)
-	lock: function (collectionName, criteria, cb) { 
-		cb();
-	},
-
-	// Commit and end an atomic transaction
-	// unlock models in collection which fit criteria (if criteria is null, unlock all)
-	unlock: function (collectionName, criteria, cb) { 
-		cb();
-	},
-
-
 	// Look for auto-increment fields, increment counters accordingly, and return refined values
-			// TODO: make sure this is atomic
+	// TODO: make sure this is atomic
 	autoIncrement: function (collectionName, values, cb) {
 		// Lookup schema & status so we know all of the attribute names and the current auto-increment value
 		var schema = this.db.get(this.config.schemaPrefix+collectionName);
@@ -204,13 +191,6 @@ var adapter = module.exports = {
 		}, function (err) {
 			return cb(err,values);
 		});
-	},
-
-
-	// If @thisModel and @otherModel are both using this adapter, do a more efficient remote join.
-	// (By default, an inner join, but right and left outer joins are also supported.)
-	join: function(collectionName, otherCollectionName, key, foreignKey, left, right, cb) {
-		cb();
 	},
 
 	// Identity is here to facilitate unit testing

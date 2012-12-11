@@ -115,8 +115,26 @@ require("../waterline.js")(adapters, models, function() {
 				else done(err, users);
 			});
 		});
-		
+	});
 
+
+	describe('#destroying() Timmy', function() {
+
+		it('should work', function(done) {
+			models.user.destroy({
+				name: 'Timmy'
+			}, done);
+		});
+
+		it('should mean trying to find Timmy should return an empty array', function(done) {
+			models.user.find({
+				name: "Timmy"
+			}, function (err,users) {
+				if(err) throw err;
+				else if(!users || !_.isArray(users) || users.length > 0) throw "A non-empty list was returned!";
+				else done(err, users);
+			});
+		});
 	});
 
 });

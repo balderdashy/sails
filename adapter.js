@@ -99,11 +99,44 @@ var Adapter = module.exports = function (adapter) {
 		adapter.destroy ? adapter.destroy(collectionName,criteria,cb) : cb();
 	};
 
-
+	// Begin an atomic transaction
+	// lock models in collection which fit criteria (if criteria is null, lock all)
 	this.lock = function (collectionName, criteria, cb) { 
+
+		// **************************************
+		// NAIVE SOLUTION
+		// (only the first roommate to notice gets the milk; the rest wait as soon as they see the note)
+
+		// No need to check the fridge!  Just start writing your note.
+
+		// TODO: Generate identifier for this transaction (use collection name to start with, but better yet, boil down criteria to essentials to allow for more concurrent access)
+		// TODO: Create entry in transaction DB (If you're sure that no other notes exist on fridge, write a note)
+		// TODO: Check the transaction db (CHECK THE DAMN FRIDGE IN CASE ONE OF YOUR ROOMMATES WROTE THE NOTE WHILE YOU WERE BUSY)
+
+		// TODO: If > 1 entry exists in the transaction db, subscribe to mutex queue and wait (if you see a note already on the fridge, get in line to be notified when roommate gets home)
+		// TODO: Otherwise, trigger callback immediately (you're good to go get the milk)
+
+		// **************************************
+		// AGRESSIVE SOLUTION
+		// (all roommates try to go get the milk, but the first person to get the milk prevents others from putting it in the fridge)
+
+		// TODO: Ask locksmith for model clone
+		// TODO: Pass model clone in callback
+
 		adapter.lock ? adapter.lock(collectionName,criteria,cb) : cb();
 	};
+
+	// Commit and end an atomic transaction
+	// unlock models in collection which fit criteria (if criteria is null, unlock all)
 	this.unlock = function (collectionName, criteria, cb) { 
+
+		// **************************************
+		// NAIVE SOLUTION
+		// (only the first roommate to notice gets the milk; the rest wait as soon as they see the note)
+
+		// TODO: Remove entry from transaction db (Remove your note from fridge)
+		// TODO: Callback can be triggered immediately, since you're sure the note will be removed
+
 		adapter.unlock ? adapter.unlock(collectionName,criteria,cb) : cb();
 	};
 
