@@ -8,26 +8,30 @@ var Adapter = module.exports = function (adapter) {
 	// Assign logger (using console.log as default)
 	adapter.log = adapter.config.log || console.log;
 
-
+	// Absorb configuration
 	this.config = adapter.config || {};
 
 
 	this.initialize = function(cb) {
-		// When process ends, close all open connections
 		var self = this;
+
+		// When process ends, close all open connections
 		process.on('SIGINT', process.exit);
 		process.on('SIGTERM', process.exit);
 		process.on('exit', function () { self.teardown(); });
 
+		// Set scheme based on `persistent` options
+		this.config.scheme = this.config.persistent ? 'alter' : 'drop';
+
 		adapter.initialize ? adapter.initialize(cb) : cb();
 	};
+
 	this.teardown = function (cb) {
 		adapter.teardown ? adapter.teardown(cb) : (cb && cb());
 	};
 
 
 	this.define = function(collectionName, definition, cb) { 
-
 
 		// If id is not defined, add it
 		// TODO: Make this check for ANY primary key

@@ -35,14 +35,9 @@ var adapter = module.exports = {
 
 	// Initialize the underlying data model
 	initialize: function(cb) {
-		if(this.config.persistent) {
-			this.config.scheme = 'alter';
-			this.db = new(dirty.Dirty)(this.config.dbName);
-		}
-		else {
-			this.config.scheme = 'drop';
-			this.db = new(dirty.Dirty)();
-		}
+		if(this.config.persistent) this.db = new(dirty.Dirty)(this.config.dbName);
+		else this.db = new(dirty.Dirty)();
+
 		this.db.on('load', function() {
 			// Trigger callback with no error
 			cb();
@@ -54,7 +49,6 @@ var adapter = module.exports = {
 		this.db = null;
 		cb && cb();
 	},
-
 
 
 	// Fetch the schema for a collection
