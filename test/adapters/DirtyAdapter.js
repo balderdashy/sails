@@ -120,7 +120,6 @@ var adapter = module.exports = {
 	// Find one or more models from the collection
 	// using where, limit, skip, and order
 	find: function(collectionName, options, cb) {
-		this.log(" FINDING WITH OPTIONS :: ",collectionName,options);
 		
 		var criteria = options.where;
 
