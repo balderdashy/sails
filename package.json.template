@@ -19,7 +19,6 @@
     "rigging": "12.11.2423",
     "express": "= 2.5.11",
     "socket.io": "= 0.9.6",
-    "sequelize": "=1.5.0-beta-2",
     "ejs":"=0.7.2",
     "connect":"=1.8.3",
     "async":"=0.1.22",
