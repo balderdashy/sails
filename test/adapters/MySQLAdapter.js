@@ -120,7 +120,11 @@ var adapter = module.exports = {
 	// (By default, an inner join, but right and left outer joins are also supported.)
 	join: function(thisModel, otherModel, key, foreignKey, left, right, cb) {
 		cb();
-	}
+	},
+
+	// Identity is here to facilitate unit testing
+	// (this is optional and normally automatically populated based on filename)
+	identity: 'mysql'
 };
 
 //////////////                 //////////////////////////////////////////

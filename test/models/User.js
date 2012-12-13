@@ -3,7 +3,8 @@
 	-> model
 ---------------------*/
 
-exports.adapter = 'dirty';
+// Each CRUD test will set the adapter property to match the adapter being tested
+// exports.adapter = 'dirty';
 
 exports.scheme = 'alter';
 

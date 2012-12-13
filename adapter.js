@@ -114,7 +114,7 @@ var Adapter = module.exports = function (adapter) {
 		// TODO: Check the transaction db (CHECK THE DAMN FRIDGE IN CASE ONE OF YOUR ROOMMATES WROTE THE NOTE WHILE YOU WERE BUSY)
 
 		// TODO: If > 1 entry exists in the transaction db, subscribe to mutex queue and wait (if you see a note already on the fridge, get in line to be notified when roommate gets home)
-		// TODO: Otherwise, trigger callback immediately (you're good to go get the milk)
+		// TODO: Otherwise, trigger callback!	QA immediately (you're good to go get the milk)
 
 		// **************************************
 		// AGRESSIVE SOLUTION
