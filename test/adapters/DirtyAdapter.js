@@ -118,8 +118,19 @@ var adapter = module.exports = {
 	},
 
 	// Find one or more models from the collection
-	find: function(collectionName, criteria, cb) {
-		this.log(" FINDING :: ",collectionName,criteria);
+	// using where, limit, skip, and order
+	find: function(collectionName, options, cb) {
+		this.log(" FINDING WITH OPTIONS :: ",collectionName,options);
+		if (!options.where && _.isObject(options)) options = { where: options };
+		else if (!options.where && !_.isObject(options)) return cb("Model.find() requires a `where` parameter.");
+		
+		var criteria = options.where;
+
+		// TODO: Make this shit actually work
+		var limit = options.limit;
+		var skip = options.skip;
+		var order = options.order;
+
 		var dataKey = this.config.dataPrefix+collectionName;
 		var data = this.db.get(dataKey);
 

@@ -46,8 +46,8 @@ var Collection = module.exports = function(definition) {
 		}
 	};
 	// Call find method in adapter
-	this.find = function(criteria, cb) {
-		return this.adapter.find(this.identity,criteria,cb);
+	this.find = function(options, cb) {
+		return this.adapter.find(this.identity,options,cb);
 	};
 	// Call update method in adapter
 	this.update = function(criteria, values, cb) {

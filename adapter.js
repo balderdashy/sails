@@ -86,9 +86,9 @@ var Adapter = module.exports = function (adapter) {
 	this.create = function(collectionName, values, cb) {
 		adapter.create ? adapter.create(collectionName,values,cb) : cb();
 	};
-	this.find = function(collectionName, criteria, cb) {
-		criteria = normalizeCriteria(criteria);
-		adapter.find ? adapter.find(collectionName,criteria,cb) : cb();
+	this.find = function(collectionName, options, cb) {
+		options = normalizeCriteria(options);
+		adapter.find ? adapter.find(collectionName,options,cb) : cb();
 	};
 	this.update = function(collectionName, criteria, values, cb) {
 		criteria = normalizeCriteria(criteria);
