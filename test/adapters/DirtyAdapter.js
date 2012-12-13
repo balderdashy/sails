@@ -124,10 +124,12 @@ var adapter = module.exports = {
 		
 		var criteria = options.where;
 
+		////////////////////////////////////////////////
 		// TODO: Make this shit actually work
 		var limit = options.limit;
 		var skip = options.skip;
 		var order = options.order;
+		////////////////////////////////////////////////
 
 		var dataKey = this.config.dataPrefix+collectionName;
 		var data = this.db.get(dataKey);
@@ -138,8 +140,18 @@ var adapter = module.exports = {
 	},
 
 	// Update one or more models in the collection
-	update: function(collectionName, criteria, values, cb) {
-		this.log(" UPDATING :: ",collectionName,criteria,values);
+	update: function(collectionName, options, values, cb) {
+		this.log(" UPDATING :: ",collectionName,options,values);
+
+		var criteria = options.where;
+
+		////////////////////////////////////////////////
+		// TODO: Make this shit actually work
+		var limit = options.limit;
+		var skip = options.skip;
+		var order = options.order;
+		////////////////////////////////////////////////
+
 		var dataKey = this.config.dataPrefix+collectionName;
 		var data = this.db.get(dataKey);
 
@@ -149,10 +161,14 @@ var adapter = module.exports = {
 			if (checkForMatch(row,criteria)) resultIndices.push(index);
 		});
 
+		console.log("RESULT INDICES::::::::",resultIndices,data);
+
 		// Update value(s)
 		_.each(resultIndices,function(index) {
 			data[index] = _.extend(data[index],values);
 		});
+
+		this.log("RESULTS IN ----------> ",data);
 
 		// Replace data collection and go back
 		this.db.set(dataKey,data,function (err) {
@@ -161,8 +177,18 @@ var adapter = module.exports = {
 	},
 
 	// Delete one or more models from the collection
-	destroy: function(collectionName, criteria, cb) {
-		this.log(" DESTROYING :: ",collectionName,criteria);
+	destroy: function(collectionName, options, cb) {
+		this.log(" DESTROYING :: ",collectionName,options);
+
+		var criteria = options.where;
+
+		////////////////////////////////////////////////
+		// TODO: Make this shit actually work
+		var limit = options.limit;
+		var skip = options.skip;
+		var order = options.order;
+		////////////////////////////////////////////////
+
 		var dataKey = this.config.dataPrefix+collectionName;
 		var data = this.db.get(dataKey);
 
@@ -216,7 +242,7 @@ var adapter = module.exports = {
 // Verify that each attribute in criteria matches
 function checkForMatch (row,criteria) {
 	for (var key in criteria) {
-		if ( !row[key] || row[key] !== criteria[key] ) {
+		if ( !row[key] || (row[key] !== criteria[key]) ) {
 			return false;
 		}
 	}
