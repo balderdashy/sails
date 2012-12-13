@@ -121,8 +121,6 @@ var adapter = module.exports = {
 	// using where, limit, skip, and order
 	find: function(collectionName, options, cb) {
 		this.log(" FINDING WITH OPTIONS :: ",collectionName,options);
-		if (!options.where && _.isObject(options)) options = { where: options };
-		else if (!options.where && !_.isObject(options)) return cb("Model.find() requires a `where` parameter.");
 		
 		var criteria = options.where;
 

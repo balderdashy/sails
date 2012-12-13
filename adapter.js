@@ -31,6 +31,10 @@ var Adapter = module.exports = function (adapter) {
 	};
 
 
+
+	//////////////////////////////////////////////////////////////////////
+	// DDL
+	//////////////////////////////////////////////////////////////////////
 	this.define = function(collectionName, definition, cb) { 
 
 		// If id is not defined, add it
@@ -82,7 +86,9 @@ var Adapter = module.exports = function (adapter) {
 	};
 
 
-
+	//////////////////////////////////////////////////////////////////////
+	// DQL
+	//////////////////////////////////////////////////////////////////////
 	this.create = function(collectionName, values, cb) {
 		adapter.create ? adapter.create(collectionName,values,cb) : cb();
 	};
@@ -98,6 +104,28 @@ var Adapter = module.exports = function (adapter) {
 		criteria = normalizeCriteria(criteria);
 		adapter.destroy ? adapter.destroy(collectionName,criteria,cb) : cb();
 	};
+
+	//////////////////////////////////////////////////////////////////////
+	// Convenience methods (overwritable in adapters)
+	//////////////////////////////////////////////////////////////////////
+	this.findOrCreate = function (collectionName, criteria, values, cb) { 
+		criteria = normalizeCriteria(criteria);
+		if (adapter.findOrCreate) adapter.findOrCreate(collectionName, criteria, values, cb);
+		else throw "TODO! :: This functionality will be released in an upcoming version.";
+	};
+	this.findAndUpdate = function (collectionName, criteria, values, cb) { 
+		criteria = normalizeCriteria(criteria);
+		if (adapter.findAndUpdate) adapter.findAndUpdate(collectionName, criteria, values, cb);
+		else this.update(collectionName, criteria, values, cb);
+	};
+	this.findAndDestroy = function (collectionName, criteria, cb) { 
+		criteria = normalizeCriteria(criteria);
+		if (adapter.findAndDestroy) adapter.findAndDestroy(collectionName, criteria, cb);
+		else this.destroy(collectionName, criteria, cb);
+	};
+
+
+
 
 	// Begin an atomic transaction
 	// lock models in collection which fit criteria (if criteria is null, lock all)
@@ -235,5 +263,14 @@ function normalizeCriteria (criteria) {
 	if(!_.isObject(criteria)) {
 		throw 'Invalid criteria, ' + criteria + ' in find()';
 	}
+	if (!criteria.where) criteria = { where: criteria };
+
+	// If any item in criteria is a parsable finite number, use that
+	for (var attrName in criteria.where) {
+		if (Math.pow(+criteria.where[attrName],2) > 0) {
+			criteria.where[attrName] = +criteria.where[attrName];
+		}
+	}
+
 	return criteria;
 }

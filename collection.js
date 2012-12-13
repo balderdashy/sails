@@ -58,11 +58,34 @@ var Collection = module.exports = function(definition) {
 		return this.adapter.destroy(this.identity,criteria,cb);
 	};
 
+	this.findOrCreate = function (criteria, values, cb) { 
+		return this.adapter.findOrCreate(this.identity,criteria,values,cb);
+	};
+	this.findAndUpdate = function (criteria, values, cb) { 
+		return this.adapter.findAndUpdate(this.identity, criteria, values, cb); 
+	};
+	this.findAndDestroy = function (criteria, cb) { 
+		return this.adapter.findAndDestroy(this.identity, criteria, cb); 
+	};
+
 	this.lock = function(criteria, cb) {
 		this.adapter.lock(this.identity,criteria,cb);
 	};
 	this.unlock = function(criteria, cb) {
 		this.adapter.unlock(this.identity,criteria,cb);
+	};
+
+	//////////////////////////////////////////
+	// Utility methods
+	//////////////////////////////////////////
+
+	// Return a trimmed set of the specified parameters
+	// with only the attributes which actually exist in the server-side model
+	this.trimParams = function(params) {
+		var trimmedParams = _.objFilter(params, function(value, name) {
+			return _.contains(_.keys(this.attributes), name);
+		}, this);
+		return trimmedParams;
 	};
 
 	// Bind instance methods to collection
