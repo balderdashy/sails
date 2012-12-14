@@ -255,6 +255,11 @@ function plural (collection, application) {
 
 // Normalize the different ways of specifying criteria into a uniform object
 function normalizeCriteria (criteria) {
+	// Empty undefined values from criteria object
+	_.each(criteria,function(val,key) {
+		if (val === undefined) delete criteria[key];
+	});
+
 	if((_.isFinite(criteria) || _.isString(criteria)) && +criteria > 0) {
 		criteria = {
 			id: +criteria
@@ -263,7 +268,13 @@ function normalizeCriteria (criteria) {
 	if(!_.isObject(criteria)) {
 		throw 'Invalid criteria, ' + criteria + ' in find()';
 	}
-	if (!criteria.where) criteria = { where: criteria };
+	if (!criteria.where && !criteria.limit && 
+		!criteria.skip && !criteria.offset && 
+		!criteria.order) {
+		console.log("CRITERIAAAAAA",criteria);
+		criteria = { where: criteria };
+		console.log("CRITERIAAAAAA2222",criteria);
+	}
 
 	// If any item in criteria is a parsable finite number, use that
 	for (var attrName in criteria.where) {

@@ -16,6 +16,10 @@ var parley = require('parley');
 var adapter = module.exports = {
 
 	config: {
+
+		// Attributes are case insensitive by default
+		// attributesCaseSensitive: false
+
 		// What persistence scheme is being used?  
 		// Is the db dropped & recreated each time or persisted to disc?
 		persistent: true,
@@ -119,6 +123,7 @@ var adapter = module.exports = {
 
 	// Find one or more models from the collection
 	// using where, limit, skip, and order
+	// In where: handle `or`, `and`, and `like` queries
 	find: function(collectionName, options, cb) {
 		
 		var criteria = options.where;
@@ -133,9 +138,8 @@ var adapter = module.exports = {
 		var dataKey = this.config.dataPrefix+collectionName;
 		var data = this.db.get(dataKey);
 
-		// Query result set using criteria
-		var resultSet = _.where(data,criteria);
-		cb(null,resultSet);
+		// Query and return result set using criteria
+		cb(null,applyFilter(data,criteria));
 	},
 
 	// Update one or more models in the collection
@@ -157,17 +161,15 @@ var adapter = module.exports = {
 		// Query result set using criteria
 		var resultIndices = [];
 		_.each(data,function (row,index) {
-			if (checkForMatch(row,criteria)) resultIndices.push(index);
+			console.log('matching row/index',row,index, "against",criteria, "with outcome",matchSet(row,criteria));
+			if (matchSet(row,criteria)) resultIndices.push(index);
 		});
-
-		console.log("RESULT INDICES::::::::",resultIndices,data);
+		console.log("filtered indices::",resultIndices,'criteria',criteria);
 
 		// Update value(s)
 		_.each(resultIndices,function(index) {
 			data[index] = _.extend(data[index],values);
 		});
-
-		this.log("RESULTS IN ----------> ",data);
 
 		// Replace data collection and go back
 		this.db.set(dataKey,data,function (err) {
@@ -192,9 +194,8 @@ var adapter = module.exports = {
 		var data = this.db.get(dataKey);
 
 		// Query result set using criteria
-		var resultIndices = [];
 		data = _.reject(data,function (row,index) {
-			return checkForMatch(row,criteria);
+			return matchSet(row,criteria);
 		});
 
 		// Replace data collection and go back
@@ -238,12 +239,70 @@ var adapter = module.exports = {
 ////////////// Private Methods //////////////////////////////////////////
 //////////////                 //////////////////////////////////////////
 
-// Verify that each attribute in criteria matches
-function checkForMatch (row,criteria) {
+// Run criteria query against data aset
+function applyFilter (data,criteria) {
+	if (criteria) {
+		return _.filter(data,function (model) {
+			return matchSet(model,criteria);
+		});
+	}
+	else return data;
+}
+
+
+// Match a model against each criterion in a criteria query
+function matchSet (model, criteria) {
+	// By default, treat entries as AND
 	for (var key in criteria) {
-		if ( !row[key] || (row[key] !== criteria[key]) ) {
+		if (! matchItem(model,key,criteria[key])) return false;
+	}
+	return true;
+}
+
+
+function matchOr (model, disjuncts) {
+	_.each(disjuncts,function (criteria) {
+		if (matchSet(model,criteria)) return true;
+	});
+	return false;
+}
+function matchAnd (model, conjuncts) {
+	_.each(conjuncts,function (criteria) {
+		if (!matchSet(model,criteria)) return false;
+	});
+	return true;
+}
+function matchLike (model, criteria) {
+	for (var key in criteria) {
+		// Check that criterion attribute and is at least similar to the model's value for that attr
+		if ( !model[key] || (!~model[key].indexOf(criteria[key]) ) ) {
 			return false;
 		}
 	}
 	return true;
+}
+function matchNot (model,criteria) {
+	return !matchSet(model,criteria);
+}
+
+function matchItem (model,key,criterion) {
+	// Make attribute names case insensitive unless overridden in config
+	if (! adapter.config.attributesCaseSensitive) key = key.toLowerCase();
+
+	if (key.toLowerCase() === 'or') {
+		return matchOr(model,criterion);
+	}
+	else if (key.toLowerCase() === 'not') {
+		return matchNot(model,criterion);
+	}
+	else if (key.toLowerCase() === 'and') {
+		return matchAnd(model,criterion);
+	}
+	else if (key.toLowerCase() === 'like') {
+		return matchLike(model,criterion);
+	}
+	// Otherwise this is an attribute name: ensure it exists and matches
+	else if ( !model[key] || (model[key] !== criterion) ) {
+		return false;
+	}
 }
