@@ -16,6 +16,7 @@
     "lib": "lib"
   },
   "dependencies": {
+    "waterline": "0.0.1",
     "rigging": "12.11.2423",
     "express": "= 2.5.11",
     "socket.io": "= 0.9.6",
