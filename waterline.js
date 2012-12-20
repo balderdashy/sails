@@ -8,17 +8,26 @@ var Adapter = require('./adapter.js');
 var Collection = require('./collection.js');
 var Model = require('./model.js');
 
+// Util
+var buildDictionary = require('./buildDictionary.js');
+
 // mock sails for now
 var config = {
 	createdAt: true,
 	updatedAt: true
 };
 
+// Include built-in adapters
+var builtInAdapters = buildDictionary(__dirname + '/adapters', /(.+Adapter)\.js$/, /Adapter/);
+
 /**
 * Prepare waterline to interact with adapters
 */
 module.exports = function (adapters,collections,cb) {
 	var $$ = new parley();
+
+	// Merge passed-in adapters with default adapters
+	adapters = _.extend(builtInAdapters,adapters || {});
 
 	// Error aggregator obj
 	var errs;
@@ -37,6 +46,7 @@ module.exports = function (adapters,collections,cb) {
 
 	// When all adapters are loaded,
 	// associate each model with its adapter and sync its schema
+	collections = collections || {};
 	for (var collectionName in collections) {
 		var collection = collections[collectionName];
 
