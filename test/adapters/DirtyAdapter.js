@@ -261,19 +261,24 @@ function matchSet (model, criteria) {
 
 
 function matchOr (model, disjuncts) {
+	var outcome = false;
 	_.each(disjuncts,function (criteria) {
-		if (matchSet(model,criteria)) return true;
+		if (matchSet(model,criteria)) outcome = true;
 	});
-	return false;
+	return outcome;
 }
 function matchAnd (model, conjuncts) {
+	var outcome = true;
 	_.each(conjuncts,function (criteria) {
-		if (!matchSet(model,criteria)) return false;
+		if (!matchSet(model,criteria)) outcome = false;
 	});
-	return true;
+	return outcome;
 }
 function matchLike (model, criteria) {
 	for (var key in criteria) {
+		// Make attribute names case insensitive unless overridden in config
+		if (! adapter.config.attributesCaseSensitive) key = key.toLowerCase();
+
 		// Check that criterion attribute and is at least similar to the model's value for that attr
 		if ( !model[key] || (!~model[key].indexOf(criteria[key]) ) ) {
 			return false;
@@ -302,7 +307,8 @@ function matchItem (model,key,criterion) {
 		return matchLike(model,criterion);
 	}
 	// Otherwise this is an attribute name: ensure it exists and matches
-	else if ( !model[key] || (model[key] !== criterion) ) {
+	else if ( !model[key] || (model[key] !== criterion)) {
 		return false;
 	}
+	return true;
 }

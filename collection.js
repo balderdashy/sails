@@ -79,14 +79,15 @@ var Collection = module.exports = function(definition) {
 	// Utility methods
 	//////////////////////////////////////////
 
-	// Return a trimmed set of the specified parameters
+	// Return a trimmed set of the specified attributes
 	// with only the attributes which actually exist in the server-side model
-	this.trimParams = function(params) {
+	this.filter = function(params) {
 		var trimmedParams = _.objFilter(params, function(value, name) {
 			return _.contains(_.keys(this.attributes), name);
 		}, this);
 		return trimmedParams;
 	};
+	this.trimParams = this.filter;
 
 	// Bind instance methods to collection
 	_.bindAll(definition);
