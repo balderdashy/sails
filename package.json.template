@@ -30,7 +30,7 @@
     "less":"=1.3.0",
     "optimist":"=0.3.4",
     "underscore.string":"=2.3.0",
-    "winston":"=0.6.2"
+    "winston":"git://github.com/jhurliman/winston.git"
   },
   "repository": {
     "type": "git",
