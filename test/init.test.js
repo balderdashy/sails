@@ -8,7 +8,7 @@ describe('adapter', function() {
 	describe('#initialize()', function() {
 		it('should initialize and sync without an error', function(done) {
 			// Grab included adapters and test models
-			var adapters = buildDictionary(__dirname + '/adapters', /(.+Adapter)\.js$/, /Adapter/);
+			var adapters = buildDictionary(__dirname + '/../adapters', /(.+Adapter)\.js$/, /Adapter/);
 			var models = buildDictionary(__dirname + '/models', /(.+)\.js$/);
 
 			var $ = new parley();
