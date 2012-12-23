@@ -111,7 +111,14 @@ var Adapter = module.exports = function (adapter) {
 	this.findOrCreate = function (collectionName, criteria, values, cb) { 
 		criteria = normalizeCriteria(criteria);
 		if (adapter.findOrCreate) adapter.findOrCreate(collectionName, criteria, values, cb);
-		else throw "TODO! :: This functionality will be released in an upcoming version.";
+		else {
+			// TODO: ADD A TRANSACTION LOCK HERE!!
+			adapter.find(collectionName,criteria,function (err,result) {
+				if (err) cb(err);
+				else if (result.length > 0) cb(null,result);
+				else adapter.create(collectionName, values,cb);
+			});
+		}
 	};
 	this.findAndUpdate = function (collectionName, criteria, values, cb) { 
 		criteria = normalizeCriteria(criteria);
