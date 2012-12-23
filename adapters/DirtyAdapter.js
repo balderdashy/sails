@@ -18,14 +18,14 @@ var adapter = module.exports = {
 	config: {
 
 		// Attributes are case insensitive by default
-		// attributesCaseSensitive: false
+		// attributesCaseSensitive: false,
 
 		// What persistence scheme is being used?  
 		// Is the db dropped & recreated each time or persisted to disc?
 		persistent: true,
 
-		// Filename for disk file output for persistent data
-		dbName: 'waterline.db',
+		// File path for disk file output (in persistent mode)
+		dbFilePath: './waterline.db',
 
 		// String to precede key name for schema defininitions
 		schemaPrefix: 'sails_schema_',
@@ -39,16 +39,30 @@ var adapter = module.exports = {
 
 	// Initialize the underlying data model
 	initialize: function(cb) {
-		if(this.config.persistent) this.db = new(dirty.Dirty)(this.config.dbName);
-		else this.db = new(dirty.Dirty)();
+		var my = this;
 
-		// Make logger easily accessible
-		this.log = this.config.log;
+		if(this.config.persistent) {
+			// Check that dbFilePath file exists and build tree as necessary
+			require('fs-extra').touch(this.config.dbFilePath, function (err) {
+				if (err) return cb(err);
+				my.db = new(dirty.Dirty)(my.config.dbFilePath);
+				afterwards();
+			});
+		}
+		else {
+			this.db = new(dirty.Dirty)();
+			afterwards();
+		}
 
-		// Trigger callback with no error
-		this.db.on('load', function() {
-			cb();
-		});
+		function afterwards() {
+			// Make logger easily accessible
+			my.log = my.config.log;
+
+			// Trigger callback with no error
+			my.db.on('load', function() {
+				cb();
+			});
+		}
 	},
 
 	// Tear down any remaining connections to the underlying data model

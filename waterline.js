@@ -35,8 +35,11 @@ module.exports = function (options,cb) {
 	// TODO: parallelize this process (would decrease server startup time)
 	for (var adapterName in adapters) {
 
-		// Pass logger down to adapters
-		adapters[adapterName].config = _.extend({log: log}, adapters[adapterName].config);
+		// Pass waterline config down to adapters
+		adapters[adapterName].config = _.defaults(adapters[adapterName].config,{
+			log: log,
+			dbFilePath: options.dbFilePath
+		});
 
 		// Build actual adapter object from definition
 		// and replace the entry in the adapter dictionary

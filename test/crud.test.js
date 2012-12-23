@@ -1,3 +1,11 @@
+/**
+* crud.test.js
+*
+* This module tests basic crud operations on the specified adapter.
+* Each operation occurs in series, one after another, so the purpose here 
+* isn't to test concurrency ACID compliance, just functional correctness.
+*
+*/
 module.exports = function(adapter) {
 
 	// Dependencies

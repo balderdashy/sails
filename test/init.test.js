@@ -1,3 +1,11 @@
+/**
+* init.test.js
+*
+* This module is just a basic sanity check to make sure everything kicks off properly
+*
+*
+*/
+
 // Dependencies
 var _ = require('underscore');
 var parley = require('parley');
