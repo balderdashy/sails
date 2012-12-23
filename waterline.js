@@ -131,7 +131,7 @@ _.mixin({
 				return response + "th";
 			}
 		} else {
-			sails.log.debug("You specified: ", integer);
+			console.warn("You specified: ", integer);
 			throw new Error("But _.th only works on integers!");
 		}
 	},

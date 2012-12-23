@@ -279,7 +279,6 @@ function normalizeCriteria (criteria) {
 		!criteria.skip && !criteria.offset && 
 		!criteria.order) {
 		criteria = { where: criteria };
-		console.log("CRITERIAAAAAA2222",criteria);
 	}
 
 	// If any item in criteria is a parsable finite number, use that
