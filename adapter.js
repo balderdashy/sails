@@ -6,7 +6,7 @@ var config = require('./config.js');
 // Extend adapter definition
 var Adapter = module.exports = function (adapter) {
 	// Assign logger (using console.log as default)
-	adapter.log = adapter.config.log || console.log;
+	adapter.log = adapter.config.log || config.log || console.log;
 
 	// Absorb configuration
 	this.config = adapter.config || {};
