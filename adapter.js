@@ -113,10 +113,10 @@ var Adapter = module.exports = function (adapter) {
 		if (adapter.findOrCreate) adapter.findOrCreate(collectionName, criteria, values, cb);
 		else {
 			// TODO: ADD A TRANSACTION LOCK HERE!!
-			adapter.find(collectionName,criteria,function (err,result) {
+			adapter.find(collectionName,criteria,function (err,results) {
 				if (err) cb(err);
-				else if (result.length > 0) cb(null,result);
-				else adapter.create(collectionName, values,cb);
+				else if (results.length > 0) cb(null,results);
+				else adapter.create(collectionName, values, cb);
 			});
 		}
 	};
@@ -278,7 +278,6 @@ function normalizeCriteria (criteria) {
 	if (!criteria.where && !criteria.limit && 
 		!criteria.skip && !criteria.offset && 
 		!criteria.order) {
-		console.log("CRITERIAAAAAA",criteria);
 		criteria = { where: criteria };
 		console.log("CRITERIAAAAAA2222",criteria);
 	}
