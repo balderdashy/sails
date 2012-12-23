@@ -14,7 +14,10 @@ module.exports = function(adapter) {
 	models.user.adapter = adapter.identity;
 
 	// Bootstrap waterline
-	require("../waterline.js")(adapters, models, function() {
+	require("../waterline.js")({
+		adapters: adapters,
+		collections: models
+	}, function() {
 
 		describe('#creating() users Johnny and Timmy', function() {
 

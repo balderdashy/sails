@@ -42,6 +42,9 @@ var adapter = module.exports = {
 		if(this.config.persistent) this.db = new(dirty.Dirty)(this.config.dbName);
 		else this.db = new(dirty.Dirty)();
 
+		// Make logger easily accessible
+		this.log = this.config.log;
+
 		// Trigger callback with no error
 		this.db.on('load', function() {
 			cb();

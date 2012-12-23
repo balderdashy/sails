@@ -13,7 +13,10 @@ describe('adapter', function() {
 			var models = buildDictionary(__dirname + '/models', /(.+)\.js$/);
 
 			var $ = new parley();
-			var outcome = $(require("../waterline.js")) (adapters,models);
+			var outcome = $(require("../waterline.js"))({
+				adapters: adapters,
+				collections: models
+			});
 			$(done)(outcome);
 		});
 	});

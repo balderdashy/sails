@@ -11,19 +11,18 @@ var Model = require('./model.js');
 // Util
 var buildDictionary = require('./buildDictionary.js');
 
-// mock sails for now
-var config = {
-	createdAt: true,
-	updatedAt: true
-};
-
 // Include built-in adapters
 var builtInAdapters = buildDictionary(__dirname + '/adapters', /(.+Adapter)\.js$/, /Adapter/);
 
 /**
 * Prepare waterline to interact with adapters
 */
-module.exports = function (adapters,collections,cb) {
+module.exports = function (options,cb) {
+
+	var adapters = options.adapters;
+	var collections = options.collections;
+	var log = options.log || console.log;
+	
 	var $$ = new parley();
 
 	// Merge passed-in adapters with default adapters
@@ -35,6 +34,9 @@ module.exports = function (adapters,collections,cb) {
 	// initialize each adapter in series
 	// TODO: parallelize this process (would decrease server startup time)
 	for (var adapterName in adapters) {
+
+		// Pass logger down to adapters
+		adapters[adapterName].config = _.defaults(adapters[adapterName].config, {log: log});
 
 		// Build actual adapter object from definition
 		// and replace the entry in the adapter dictionary
