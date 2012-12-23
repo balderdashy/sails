@@ -25,7 +25,7 @@ var adapter = module.exports = {
 		persistent: true,
 
 		// Filename for disk file output for persistent data
-		dbName: 'sails.db',
+		dbName: 'waterline.db',
 
 		// String to precede key name for schema defininitions
 		schemaPrefix: 'sails_schema_',
