@@ -42,8 +42,8 @@ var adapter = module.exports = {
 		if(this.config.persistent) this.db = new(dirty.Dirty)(this.config.dbName);
 		else this.db = new(dirty.Dirty)();
 
+		// Trigger callback with no error
 		this.db.on('load', function() {
-			// Trigger callback with no error
 			cb();
 		});
 	},
