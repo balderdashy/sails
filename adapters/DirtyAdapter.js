@@ -25,7 +25,7 @@ var adapter = module.exports = {
 		persistent: true,
 
 		// File path for disk file output (in persistent mode)
-		dbFilePath: './waterline.db',
+		dbFilePath: './.waterline/dirty.db',
 
 		// String to precede key name for schema defininitions
 		schemaPrefix: 'sails_schema_',

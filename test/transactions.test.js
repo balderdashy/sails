@@ -24,8 +24,7 @@ module.exports = function(adapter) {
 	// Bootstrap waterline
 	require("../waterline.js")({
 		adapters: adapters,
-		collections: models,
-		filePath: './.tmp/waterline.db'
+		collections: models
 	}, function() {
 
 		describe('Setup :: #creating() users Johnny and Timmy', function() {

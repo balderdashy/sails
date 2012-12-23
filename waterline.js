@@ -36,10 +36,9 @@ module.exports = function (options,cb) {
 	for (var adapterName in adapters) {
 
 		// Pass waterline config down to adapters
-		adapters[adapterName].config = _.defaults(adapters[adapterName].config,{
-			log: log,
-			dbFilePath: options.dbFilePath
-		});
+		adapters[adapterName].config = _.extend({
+			log: log
+		}, adapters[adapterName].config);
 
 		// Build actual adapter object from definition
 		// and replace the entry in the adapter dictionary
