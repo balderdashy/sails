@@ -1,3 +1,3 @@
-/public/stylesheets
+/public/ui/stylesheets
 
-The stylesheets directory consists of layout-level stylesheets that are not a part of mast.
+The stylesheets directory consists css, LESS, or SASS files.
