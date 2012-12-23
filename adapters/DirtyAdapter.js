@@ -60,7 +60,6 @@ var adapter = module.exports = {
 
 	// Fetch the schema for a collection
 	describe: function(collectionName, cb) {
-		this.log(" DESCRIBING :: "+collectionName,err,schema);
 		var schema, err;
 		try {
 			schema = this.db.get(this.config.schemaPrefix+collectionName);
@@ -68,12 +67,18 @@ var adapter = module.exports = {
 		catch (e) {
 			err = e;
 		}
+		this.log(" DESCRIBING :: "+collectionName,{
+			err: err,
+			schema: schema
+		});
 		return cb(err,schema);
 	},
 
 	// Create a new collection
 	define: function(collectionName, schema, cb) {
-		this.log(" DEFINING "+collectionName, "as",schema);
+		this.log(" DEFINING "+collectionName, {
+			as: schema
+		});
 		var self = this;
 
 		// Write schema and status objects
@@ -109,7 +114,7 @@ var adapter = module.exports = {
 
 	// Create one or more new models in the collection
 	create: function(collectionName, values, cb) {
-		this.log(" CREATING :: ",collectionName,values);
+		this.log(" CREATING :: "+collectionName,values);
 		var dataKey = this.config.dataPrefix+collectionName;
 		var data = this.db.get(dataKey);
 
@@ -147,7 +152,11 @@ var adapter = module.exports = {
 
 	// Update one or more models in the collection
 	update: function(collectionName, options, values, cb) {
-		this.log(" UPDATING :: ",collectionName,options,values);
+		this.log(" UPDATING :: "+collectionName,{
+			options: options,
+			values: values
+		});
+		var my = this;
 
 		var criteria = options.where;
 
@@ -164,10 +173,16 @@ var adapter = module.exports = {
 		// Query result set using criteria
 		var resultIndices = [];
 		_.each(data,function (row,index) {
-			console.log('matching row/index',row,index, "against",criteria, "with outcome",matchSet(row,criteria));
+			my.log('matching row/index',{
+				row: row,
+				index: index
+			});
+			my.log("against",criteria);
+			my.log("with outcome",matchSet(row,criteria));
+
 			if (matchSet(row,criteria)) resultIndices.push(index);
 		});
-		console.log("filtered indices::",resultIndices,'criteria',criteria);
+		this.log("filtered indices::",resultIndices,'criteria',criteria);
 
 		// Update value(s)
 		_.each(resultIndices,function(index) {
@@ -182,7 +197,7 @@ var adapter = module.exports = {
 
 	// Delete one or more models from the collection
 	destroy: function(collectionName, options, cb) {
-		this.log(" DESTROYING :: ",collectionName,options);
+		this.log(" DESTROYING :: "+collectionName,options);
 
 		var criteria = options.where;
 
