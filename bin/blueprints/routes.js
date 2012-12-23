@@ -22,7 +22,7 @@
 //
 module.exports = {
 	// Default mappings
-	'/': {
+	'get /': {
 		controller: 'meta',
 		action: 'home'
 	}

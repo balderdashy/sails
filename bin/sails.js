@@ -40,18 +40,6 @@ if(argv._[0] === 'generate') {
 		generate('view.ejs', "views/", argv._[2], '.ejs');
 	}
 
-	// Generate a new component
-	else if(argv._[1] === 'component') {
-		verifyArg(2, "ERROR: Please specify the name for the new component as the third argument.");
-		generate('component.js', "mast/components/", argv._[2], '.js', true);
-	}
-
-	// Generate a new template
-	else if(argv._[1] == 'template') {
-		verifyArg(2, "ERROR: Please specify the name for the new template as the third argument.");
-		generate('template.ejs', "mast/templates/", argv._[2], '.ejs');
-	}
-
 	// Otherwise generate a model, controller, and view directory
 	else {
 		verifyArg(1, "ERROR: Please specify the name of the entity to generate a model, controller, and view for as the second argument.");
@@ -78,8 +66,7 @@ else {
 	generateDir("models");
 	generateDir("controllers");
 	generateDir("views");
-	generateDir("policies");
-	generateDir("services");
+	generateDir("middleware");
 
 	// Create driver file
 	generateFile('app.js', 'app.js');
@@ -87,14 +74,13 @@ else {
 	// Create routes file
 	generateFile('routes.js', 'routes.js');
 
-	// Create access_control file
-	generateFile('access_control.js', 'access_control.js');
+	// Create policy file
+	generateFile('policy.js', 'policy.js');
 
 	// Create layout file
 	generateFile('layout.ejs', 'views/layout.ejs');
 
 	// Create meta controller and views
-	generateFile('MetaController.js', 'controllers/MetaController.js');
 	generateDir("views/meta");
 	generateFile('home.ejs', 'views/meta/home.ejs');
 
@@ -102,8 +88,6 @@ else {
 	generateDir("public");
 	generateDir("public/images");
 	copyFile('bg.png', "public/images/bg.png");
-	// generateDir("public/stylesheets");
-	// generateDir("public/js");
 
 	// Create rigging assets
 	generateDir("public/dependencies");
@@ -114,16 +98,15 @@ else {
 	generateFile('reset.css', "public/ui/stylesheets/reset.css");
 	generateFile('layout.css', "public/ui/stylesheets/layout.css");
 
-	// Create default policies
-	generateFile('policies/authenticated.js', 'policies/authenticated.js');
-	// generateFile('policies/only.js', 'policies/only.js');
+	// Create default middleware
+	generateFile('middleware/authenticated.js', 'middleware/authenticated.js');
 
 
 	// Create readme files
 	generateFile('__readme_models.md', "models/__readme.md");
 	generateFile('__readme_controllers.md', "controllers/__readme.md");
 	generateFile('__readme_views.md', "views/__readme.md");
-	generateFile('__readme_services.md', "services/__readme.md");
+	generateFile('__readme_middleware.md', "middleware/__readme_middleware.md");
 }
 
 
