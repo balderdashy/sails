@@ -54,6 +54,7 @@ module.exports = function (options,cb) {
 	for (var collectionName in collections) {
 		var collection = collections[collectionName];
 
+
 		// Use adapter shortname in model def. to look up actual object
 		if (_.isString(collection.adapter)) {
 			if (! adapters[collection.adapter]) throw "Unknown adapter! ("+collection.adapter+")  Maybe try installing it?";

@@ -1,2 +1,2 @@
 // Test DirtyAdapter
-require('./crud.test.js')(require('../adapters/DirtyAdapter.js'));
+require('./crud.test.js')('dirty');
