@@ -54,6 +54,8 @@ module.exports = function (options,cb) {
 	for (var collectionName in collections) {
 		var collection = collections[collectionName];
 
+		// If no adapter is specified, default to 'dirty'
+		if (!collection.adapter) collection.adapter = 'dirty';
 
 		// Use adapter shortname in model def. to look up actual object
 		if (_.isString(collection.adapter)) {
