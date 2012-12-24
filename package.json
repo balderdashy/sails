@@ -15,7 +15,8 @@
       "email": "gabe@balderdash.co"
     }
   ],
-  "version": "12.12.2000",
+  "public": "false",
+  "version": "99.99.9999",
   "description": "Realtime MVC framework for Node.JS with support for Socket.io (built on Express)",
   "homepage": "http://sailsjs.com",
   "keywords": [
