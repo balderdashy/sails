@@ -69,10 +69,10 @@ var Collection = module.exports = function(definition) {
 	};
 
 	this.lock = function(criteria, cb) {
-		this.adapter.lock(this.identity,criteria,cb);
+		return this.adapter.lock(this.identity,criteria,cb);
 	};
 	this.unlock = function(criteria, cb) {
-		this.adapter.unlock(this.identity,criteria,cb);
+		return this.adapter.unlock(this.identity,criteria,cb);
 	};
 
 	//////////////////////////////////////////

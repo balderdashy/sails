@@ -89,18 +89,26 @@ var Adapter = module.exports = function (adapter) {
 	//////////////////////////////////////////////////////////////////////
 	this.create = function(collectionName, values, cb) {
 		adapter.create ? adapter.create(collectionName,values,cb) : cb();
+
+		// TODO: Return model instance Promise object for joins, etc.
 	};
 	this.find = function(collectionName, options, cb) {
 		options = normalizeCriteria(options);
 		adapter.find ? adapter.find(collectionName,options,cb) : cb();
+
+		// TODO: Return model instance Promise object for joins, etc.
 	};
 	this.update = function(collectionName, criteria, values, cb) {
 		criteria = normalizeCriteria(criteria);
 		adapter.update ? adapter.update(collectionName,criteria,values,cb) : cb();
+
+		// TODO: Return model instance Promise object for joins, etc.
 	};
 	this.destroy = function(collectionName, criteria, cb) {
 		criteria = normalizeCriteria(criteria);
 		adapter.destroy ? adapter.destroy(collectionName,criteria,cb) : cb();
+
+		// TODO: Return model instance Promise object for joins, etc.
 	};
 
 	//////////////////////////////////////////////////////////////////////
@@ -117,16 +125,22 @@ var Adapter = module.exports = function (adapter) {
 				else adapter.create(collectionName, values, cb);
 			});
 		}
+
+		// TODO: Return model instance Promise object for joins, etc.
 	};
 	this.findAndUpdate = function (collectionName, criteria, values, cb) { 
 		criteria = normalizeCriteria(criteria);
 		if (adapter.findAndUpdate) adapter.findAndUpdate(collectionName, criteria, values, cb);
 		else this.update(collectionName, criteria, values, cb);
+
+		// TODO: Return model instance Promise object for joins, etc.
 	};
 	this.findAndDestroy = function (collectionName, criteria, cb) { 
 		criteria = normalizeCriteria(criteria);
 		if (adapter.findAndDestroy) adapter.findAndDestroy(collectionName, criteria, cb);
 		else this.destroy(collectionName, criteria, cb);
+
+		// TODO: Return model instance Promise object for joins, etc.
 	};
 
 
