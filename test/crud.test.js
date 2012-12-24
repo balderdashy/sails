@@ -27,9 +27,11 @@ module.exports = function(adapter) {
 		describe('#creating() users Johnny and Timmy', function() {
 
 			it('should work', function(done) {
-				collections.user.create({
+				var $ = new parley();
+				var __johnny = $(collections.user.create)({
 					name: "Johnny"
-				}, done);
+				});
+				$(done)(__johnny);
 			});
 
 			it('should return a generated PK', function(done) {
