@@ -6,40 +6,19 @@
  * It tests manual app-level locks/mutices, and also the built in atomic operations:
  * autoIncrement(), findOrCreate(), findAndUpdate(), findAndDestroy()
  */
-module.exports = function(adapter) {
+// Dependencies
+var _ = require('underscore');
+var parley = require('parley');
+var assert = require("assert");
 
-	// Dependencies
-	var _ = require('underscore');
-	var parley = require('parley');
-	var assert = require("assert");
+describe('transactions', function() {
 
-	// Get test adapters and models
-	var models = {
-		user: require('./models/User.js')
-	};
-	var adapters = {};
-	adapters[adapter.identity] = adapter;
-	models.user.adapter = adapter.identity;
+	// Bootstrap waterline with default adapters and bundled test collections
+	before(require('./bootstrap.test.js').init);
 
-	// Bootstrap waterline
-	require("../waterline.js")({
-		adapters: adapters,
-		collections: models
-	}, function() {
-
-		describe('Setup :: #creating() users Johnny and Timmy', function() {
-
-			it('should work', function(done) {
-				models.user.create({
-					name: "Johnny"
-				}, done);
-
-				models.user.create({
-					name: "Timmy"
-				}, done);
-			});
-
+	describe('#lock() and unlock()', function() {
+		it('should work without an error', function(done) {
+			done();
 		});
-
 	});
-};
+});
