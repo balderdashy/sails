@@ -16,14 +16,14 @@ var buildDictionary = require('../buildDictionary.js');
 describe('adapter', function() {
 	describe('#initialize()', function() {
 		it('should initialize and sync without an error', function(done) {
-			// Grab included adapters and test models
+			// Grab included adapters and test collections
 			var adapters = {};
-			var models = buildDictionary(__dirname + '/models', /(.+)\.js$/);
+			var collections = buildDictionary(__dirname + '/collections', /(.+)\.js$/);
 
 			var $ = new parley();
 			var outcome = $(require("../waterline.js"))({
 				adapters: adapters,
-				collections: models
+				collections: collections
 			});
 			$(done)(outcome);
 		});

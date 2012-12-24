@@ -1,6 +1,6 @@
 /*---------------------
 	:: User
-	-> model
+	-> collection
 ---------------------*/
 
 // Each CRUD test will set the adapter property to match the adapter being tested

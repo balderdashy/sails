@@ -13,33 +13,27 @@ module.exports = function(adapter) {
 	var parley = require('parley');
 	var assert = require("assert");
 
-	// Get test adapters and models
-	var models = {
-		user: require('./models/User.js')
+	// Get test adapters and collections
+	var collections = {
+		user: require('./collections/User.js')
 	};
-	var adapters = {};
-	// adapters[adapter.identity] = adapter;
-	// models.user.adapter = adapter.identity;
-	models.user.adapter = adapter;
+	collections.user.adapter = adapter;
 
 	// Bootstrap waterline
 	require("../waterline.js")({
-		adapters: adapters,
-		collections: models
+		collections: collections
 	}, function() {
-
-		console.log("WATERLINE STARTED!");
 
 		describe('#creating() users Johnny and Timmy', function() {
 
 			it('should work', function(done) {
-				models.user.create({
+				collections.user.create({
 					name: "Johnny"
 				}, done);
 			});
 
 			it('should return a generated PK', function(done) {
-				models.user.create({
+				collections.user.create({
 					name: "Timmy"
 				}, function(err, timmy) {
 					if(err) throw err;
@@ -51,7 +45,7 @@ module.exports = function(adapter) {
 			});
 
 			it('should mean we can find Johnny', function(done) {
-				models.user.find({
+				collections.user.find({
 					name: "Johnny"
 				}, function(err, users) {
 					// Get first item from result set
@@ -69,7 +63,7 @@ module.exports = function(adapter) {
 		describe('#updating() Johnny\'s name to Richard', function() {
 
 			it('should work', function(done) {
-				models.user.update({
+				collections.user.update({
 					name: 'Johnny'
 				}, {
 					name: "Richard"
@@ -77,7 +71,7 @@ module.exports = function(adapter) {
 			});
 
 			it('should mean we can find Richard', function(done) {
-				models.user.find({
+				collections.user.find({
 					name: "Richard"
 				}, function(err, users) {
 					// Get first item from result set
@@ -90,17 +84,17 @@ module.exports = function(adapter) {
 			});
 
 			it('should only result in a single Richard existing', function(done) {
-				models.user.find({
+				collections.user.find({
 					name: "Richard"
 				}, function(err, users) {
 					if(err) throw err;
-					else if(users.length !== 1) throw "updating created extra models!";
+					else if(users.length !== 1) throw "updating created extra collections!";
 					else done(err, users);
 				});
 			});
 
 			it('should still retain other fields in updated model', function(done) {
-				models.user.find({
+				collections.user.find({
 					name: "Richard"
 				}, function(err, users) {
 					// Get first item from result set
@@ -117,13 +111,13 @@ module.exports = function(adapter) {
 		describe('#destroying() Richard', function() {
 
 			it('should work', function(done) {
-				models.user.destroy({
+				collections.user.destroy({
 					name: 'Richard'
 				}, done);
 			});
 
 			it('should mean trying to find Richard should return an empty array', function(done) {
-				models.user.find({
+				collections.user.find({
 					name: "Richard"
 				}, function(err, users) {
 					if(err) throw err;
@@ -137,13 +131,13 @@ module.exports = function(adapter) {
 		describe('#destroying() Timmy', function() {
 
 			it('should work', function(done) {
-				models.user.destroy({
+				collections.user.destroy({
 					name: 'Timmy'
 				}, done);
 			});
 
 			it('should mean trying to find Timmy should return an empty array', function(done) {
-				models.user.find({
+				collections.user.find({
 					name: "Timmy"
 				}, function(err, users) {
 					if(err) throw err;
