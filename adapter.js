@@ -150,6 +150,12 @@ var Adapter = module.exports = function (adapter) {
 	// lock models in collection which fit criteria (if criteria is null, lock all)
 	this.lock = function (collectionName, criteria, cb) { 
 
+		// Allow criteria argument to be omitted
+		if (_.isFunction(criteria)) {
+			cb = criteria;
+			criteria = null;
+		}
+
 		// **************************************
 		// NAIVE SOLUTION
 		// (only the first roommate to notice gets the milk; the rest wait as soon as they see the note)
@@ -177,6 +183,12 @@ var Adapter = module.exports = function (adapter) {
 	// unlock models in collection which fit criteria (if criteria is null, unlock all)
 	this.unlock = function (collectionName, criteria, cb) { 
 
+		// Allow criteria argument to be omitted
+		if (_.isFunction(criteria)) {
+			cb = criteria;
+			criteria = null;
+		}
+
 		// **************************************
 		// NAIVE SOLUTION
 		// (only the first roommate to notice gets the milk; the rest wait as soon as they see the note)
@@ -185,6 +197,20 @@ var Adapter = module.exports = function (adapter) {
 		// TODO: Callback can be triggered immediately, since you're sure the note will be removed
 
 		adapter.unlock ? adapter.unlock(collectionName,criteria,cb) : cb();
+	};
+
+	// Cancel a pending lock or unlock request
+	// Then check commit log and verify state of transaction
+	this.cancel = function (collectionName, criteria, cb) { 
+
+		// Allow criteria argument to be omitted
+		if (_.isFunction(criteria)) {
+			cb = criteria;
+			criteria = null;
+		}
+
+		// TODO
+		adapter.cancel ? adapter.cancel(collectionName,criteria,cb) : cb();
 	};
 
 	this.status = function (collectionName, cb) {

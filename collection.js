@@ -74,6 +74,9 @@ var Collection = module.exports = function(definition) {
 	this.unlock = function(criteria, cb) {
 		return this.adapter.unlock(this.identity,criteria,cb);
 	};
+	this.cancel = function(criteria, cb) {
+		return this.adapter.cancel(this.identity,criteria,cb);
+	};
 
 	//////////////////////////////////////////
 	// Utility methods

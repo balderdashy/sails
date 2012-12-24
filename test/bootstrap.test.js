@@ -2,8 +2,6 @@ var _ = require('underscore');
 var parley = require('parley');
 var assert = require("assert");
 var waterline = require('../waterline');
-
-
 var collections = require('../buildDictionary.js')(__dirname + '/collections', /(.+)\.js$/);
 
 module.exports = {
@@ -25,9 +23,12 @@ module.exports = {
 
 // Initialize waterline
 function initialize (exit) {
-	var $ = new parley();
-	var outcome = $(require("../waterline.js"))({
-		collections: collections
-	});
-	$(exit)(outcome);
+	require("../waterline.js")({
+		collections: collections,
+		log: blackhole
+	}, exit);
 }
+
+// Use silent logger for testing
+// (this prevents annoying output from cluttering up our nice clean console)
+var blackhole = function (){};

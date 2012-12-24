@@ -10,8 +10,10 @@
 var _ = require('underscore');
 var parley = require('parley');
 var assert = require("assert");
+
+// Bootstrap waterline and get access to User collection
 var bootstrap = require('./bootstrap.test.js');
-var collections = bootstrap.collections;
+var User;
 
 module.exports = function(adapter) {
 
@@ -20,18 +22,21 @@ module.exports = function(adapter) {
 		// Bootstrap waterline with default adapters and bundled test collections
 		before(bootstrap.initWithAdapter(adapter));
 
+		// Get User object ready to go before each test
+		beforeEach(function () {
+			return User = bootstrap.collections.user;
+		});
+
 		describe('#creating() users Johnny and Timmy', function() {
 
 			it('should work', function(done) {
-				var $ = new parley();
-				var __johnny = $(collections.user.create)({
+				User.create({
 					name: "Johnny"
-				});
-				$(done)(__johnny);
+				},done);
 			});
 
 			it('should return a generated PK', function(done) {
-				collections.user.create({
+				User.create({
 					name: "Timmy"
 				}, function(err, timmy) {
 					if(err) throw err;
@@ -43,7 +48,7 @@ module.exports = function(adapter) {
 			});
 
 			it('should mean we can find Johnny', function(done) {
-				collections.user.find({
+				User.find({
 					name: "Johnny"
 				}, function(err, users) {
 					// Get first item from result set
@@ -61,7 +66,7 @@ module.exports = function(adapter) {
 		describe('#updating() Johnny\'s name to Richard', function() {
 
 			it('should work', function(done) {
-				collections.user.update({
+				User.update({
 					name: 'Johnny'
 				}, {
 					name: "Richard"
@@ -69,7 +74,7 @@ module.exports = function(adapter) {
 			});
 
 			it('should mean we can find Richard', function(done) {
-				collections.user.find({
+				User.find({
 					name: "Richard"
 				}, function(err, users) {
 					// Get first item from result set
@@ -82,7 +87,7 @@ module.exports = function(adapter) {
 			});
 
 			it('should only result in a single Richard existing', function(done) {
-				collections.user.find({
+				User.find({
 					name: "Richard"
 				}, function(err, users) {
 					if(err) throw err;
@@ -92,7 +97,7 @@ module.exports = function(adapter) {
 			});
 
 			it('should still retain other fields in updated model', function(done) {
-				collections.user.find({
+				User.find({
 					name: "Richard"
 				}, function(err, users) {
 					// Get first item from result set
@@ -109,13 +114,13 @@ module.exports = function(adapter) {
 		describe('#destroying() Richard', function() {
 
 			it('should work', function(done) {
-				collections.user.destroy({
+				User.destroy({
 					name: 'Richard'
 				}, done);
 			});
 
 			it('should mean trying to find Richard should return an empty array', function(done) {
-				collections.user.find({
+				User.find({
 					name: "Richard"
 				}, function(err, users) {
 					if(err) throw err;
@@ -129,13 +134,13 @@ module.exports = function(adapter) {
 		describe('#destroying() Timmy', function() {
 
 			it('should work', function(done) {
-				collections.user.destroy({
+				User.destroy({
 					name: 'Timmy'
 				}, done);
 			});
 
 			it('should mean trying to find Timmy should return an empty array', function(done) {
-				collections.user.find({
+				User.find({
 					name: "Timmy"
 				}, function(err, users) {
 					if(err) throw err;
