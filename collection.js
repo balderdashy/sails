@@ -1,6 +1,6 @@
 var _ = require('underscore');
 var parley = require('parley');
-var util = require('sails_util');
+var util = require('sails-util');
 
 var Collection = module.exports = function(definition) {
 
