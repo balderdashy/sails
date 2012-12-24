@@ -28,14 +28,15 @@ var adapter = module.exports = {
 
 	// Tear down any remaining connectins to the underlying data model
 	teardown: function (cb) {
-		var self = this;
-		async.forEach(this.pool,function (connection,cb) {
+		var my = this;
+		if (my.pool.length === 0) return cb && cb();
+		
+		async.forEach(my.pool,function (connection,cb) {
 			connection.end(cb);
 		},function (err) {
-			console.log("\nTerminated "+
-				self.pool.length + " open connections to mySQL server "+
-				"@ "+self.config.host+
-			".");
+			my.log("\nTerminated "+
+				my.pool.length + " open connections to mySQL server "+
+				"@ "+my.config.host+".");
 			cb && cb(err);
 		});
 	},

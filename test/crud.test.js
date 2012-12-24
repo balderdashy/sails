@@ -1,28 +1,24 @@
 /**
-* crud.test.js
-*
-* This module tests basic crud operations on the specified adapter.
-* Each operation occurs in series, one after another, so the purpose here 
-* isn't to test concurrency ACID compliance, just functional correctness.
-*
-*/
+ * crud.test.js
+ *
+ * This module tests basic crud operations on the specified adapter.
+ * Each operation occurs in series, one after another, so the purpose here
+ * isn't to test concurrency ACID compliance, just functional correctness.
+ *
+ */
+// Dependencies
+var _ = require('underscore');
+var parley = require('parley');
+var assert = require("assert");
+var bootstrap = require('./bootstrap.test.js');
+var collections = bootstrap.collections;
+
 module.exports = function(adapter) {
 
-	// Dependencies
-	var _ = require('underscore');
-	var parley = require('parley');
-	var assert = require("assert");
+	describe('adapter', function() {
 
-	// Get test adapters and collections
-	var collections = {
-		user: require('./collections/User.js')
-	};
-	collections.user.adapter = adapter;
-
-	// Bootstrap waterline
-	require("../waterline.js")({
-		collections: collections
-	}, function() {
+		// Bootstrap waterline with default adapters and bundled test collections
+		before(bootstrap.initWithAdapter(adapter));
 
 		describe('#creating() users Johnny and Timmy', function() {
 
@@ -150,5 +146,4 @@ module.exports = function(adapter) {
 		});
 
 	});
-
 };
