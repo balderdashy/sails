@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var parley = require('parley');
+var util = require('sails_util');
 
 var Collection = module.exports = function(definition) {
 
@@ -85,7 +86,7 @@ var Collection = module.exports = function(definition) {
 	// Return a trimmed set of the specified attributes
 	// with only the attributes which actually exist in the server-side model
 	this.filter = function(params) {
-		var trimmedParams = _.objFilter(params, function(value, name) {
+		var trimmedParams = util.objFilter(params, function(value, name) {
 			return _.contains(_.keys(this.attributes), name);
 		}, this);
 		return trimmedParams;
