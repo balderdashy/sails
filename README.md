@@ -9,32 +9,30 @@ NOTE: Waterline is currently in unreleased alpha-- that means it's not productio
 ```
 
 ## Adapters currently supported
-
-### Datastore adapters:
-
-Dirty (in memory and simple disk JSON store)
-* mySQL 
-* mongoDB
-* redis
-* cassandra
-* oracle
-* postgres
-* db2
-* mssql
-
-### Other adapters:
-
-* HTTP ( client for api integrations and unit testing )
-* Socket.io / WebSockets ( client for api integrations and unit testing )
-* LDAP
-* Active Directory
-* Mandril (hosted email from MailChimp)
-* Facebook friends
-* Tweets
-* SMTP
-* IMAP
-
 (* not yet complete)
+
+
+### Datastores:
+* Dirty (in memory and simple disk JSON store)
+* mySQL*
+* mongoDB*
+* redis*
+* cassandra*
+* oracle*
+* postgres*
+* db2*
+* mssql*
+
+### Misc:
+* HTTP ( client for api integrations and unit testing )*
+* Socket.io / WebSockets ( client for api integrations and unit testing )*
+* LDAP*
+* Active Directory*
+* Mandril (hosted email from MailChimp)*
+* Facebook friends*
+* Tweets*
+* SMTP*
+* IMAP*
 
 ## Writing adapters
 
