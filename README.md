@@ -4,9 +4,7 @@ Waterline is a new kind of storage and retrieval engine.  It provides a uniform 
 
 Waterline also comes with built-in transaction support, as well as a configurable environment setting. 
 
-```
-NOTE: Waterline is currently in unreleased alpha-- that means it's not production ready!  If you want to use waterline in a production app, please contribute.  Currentliy, the plan is for an open alpha release early next year (2013).  Thanks!
-```
+> NOTE: Waterline is currently in unreleased alpha-- that means it's not production ready!  If you want to use waterline in a production app, please contribute.  Currentliy, the plan is for an open alpha release early next year (2013).  Thanks!
 
 ## Adapters currently supported
 (* not yet complete)
