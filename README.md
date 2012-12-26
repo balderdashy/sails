@@ -63,9 +63,16 @@ Sails is built on the rock-solid foundations of ExpressJS and Socket.io.
 
 
 ## Who Built This?
-The Sails framework was developed by @mikermcneil and is supported by Balderdash Co (@balderdashy).  We build realtime web and mobile apps as a service for our customers, and over time, after trying lots of different methodologies, I ended up crystallizing all our best code and conventions into Sails.  
-Then, we open-sourced it, because no one should have to go through that again.  Seriously.  Hopefully, it makes your life a little bit easier!
 
+The Sails framework was developed by Mike McNeil (@mikermcneil) and is maintained by Balderdash (@balderdashy), a realtime web & mobile studio I started with Heather White (@hdesignsit) in Austin, TX.
+
+After building a few realtime javascript apps and taking them into production, we realized that the  JavaScript development landscape is very much still the Wild West.  Over time, after trying lots of different methodologies (on the front end and the back), we decided to crystallize all of our best practices into this framework.  I hope it saves you some time :)
+
+
+License
+--
+
+Sails is built around so many great open-source technologies that it would never have crossed our minds to keep it proprietary.  We owe huge gratitude and props to TJ Holowaychuk (@visionmedia) and Guillermo Rauch (@guille) for the work they did, as well as the stewards of all the other open-source modules we use.  Sails could never have been developed without your tremendous contributions to the node community.
 
 The MIT License (MIT)
 --
