@@ -4,14 +4,13 @@ var util = require('sails-util');
 
 var Collection = module.exports = function(definition) {
 
-	// Sync (depending on scheme)
+	// Sync depending on scheme
+	// (default to alter)
 	definition.scheme = definition.scheme || 'alter';
 	switch (definition.scheme) {
 		case "drop"	: definition.sync = _.bind(definition.adapter.sync.drop, definition.adapter, definition); break;
 		case "alter": definition.sync = _.bind(definition.adapter.sync.alter, definition.adapter, definition); break;
 		
-		// Not having a scheme is not an error, just default to alter
-		// default		: throw new Error('Invalid scheme in '+definition.identity+' model!');
 	}
 	
 	// Absorb definition methods

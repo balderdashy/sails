@@ -90,6 +90,9 @@ var Adapter = module.exports = function (adapter) {
 
 	// TODO: ENSURE ATOMICITY
 	this.create = function(collectionName, values, cb) {
+		if (!collectionName) throw "No collectionName specified!";
+		else if (!values) throw "Trying to create(), but no values specified!";
+
 		// Get status if specified
 		if (adapter.status) adapter.status(collectionName,afterwards);
 		else afterwards();
@@ -251,7 +254,8 @@ var Adapter = module.exports = function (adapter) {
 		drop: function(collection,cb) {
 			var self = this;
 			this.drop(collection.identity,function (err,data) {
-				self.define(collection.identity,collection,cb);
+				if (err) cb(err);
+				else self.define(collection.identity,collection,cb);
 			});
 		},
 		
@@ -261,29 +265,29 @@ var Adapter = module.exports = function (adapter) {
 
 			// Check that collection exists-- if it doesn't go ahead and add it and get out
 			this.describe(collection.identity,function (err,data) {
-				if (err) throw err;
+				if (err) cb(err);
 				else if (!data) return self.define(collection.identity,collection,cb);
-			});
+				
+				// Iterate through each attribute on each model in your app
+				_.each(collection.attributes, function checkAttribute(attribute) {
+					// and make sure that a comparable field exists in the data store
+					// TODO
+				});
 
-			// Iterate through each attribute on each model in your app
-			_.each(collection.attributes, function checkAttribute(attribute) {
-				// and make sure that a comparable field exists in the data store
+				// Check that the attribute exists in the data store
 				// TODO
+
+				// If not, alter the collection to include it
+				// TODO
+
+				// Iterate through each attribute in this collection
+				// and make sure that a comparable field exists in the model
+				// TODO
+
+				// If not, alter the collection and remove it
+				// TODO
+				cb();	
 			});
-
-			// Check that the attribute exists in the data store
-			// TODO
-
-			// If not, alter the collection to include it
-			// TODO
-
-			// Iterate through each attribute in this collection
-			// and make sure that a comparable field exists in the model
-			// TODO
-
-			// If not, alter the collection and remove it
-			// TODO
-			cb();	
 		}
 	};
 
