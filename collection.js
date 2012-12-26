@@ -21,7 +21,7 @@ var Collection = module.exports = function(definition) {
 	this.create = function(values, cb) {
 		var collection = this;
 
-		// Get status to get value of auto_increment counter
+		// Get status if specified
 		if (collection.adapter.status) {
 			collection.adapter.status(collection.identity,afterwards);
 		}
@@ -42,6 +42,10 @@ var Collection = module.exports = function(definition) {
 				if (collection.adapter.config.updatedAt) values.updatedAt = new Date();
 
 				// Call create method in adapter
+				console.log("BACK FROM AUTOINCREMENT::::::::");
+				console.log("idendity",collection.identity);
+				console.log("values",values);
+				console.log("<<<<>>>>");
 				return collection.adapter.create(collection.identity,values,cb);
 			});
 		}
