@@ -3,6 +3,7 @@ var async = require('async');
 var _ = require('underscore');
 var dirty = require('dirty');
 var parley = require('parley');
+var uuid = require('node-uuid');
 
 /*---------------------
 	:: DirtyAdapter
@@ -22,7 +23,7 @@ var adapter = module.exports = {
 
 		// What persistence scheme is being used?  
 		// Is the db dropped & recreated each time or persisted to disc?
-		persistent: true,
+		persistent: false,
 
 		// File path for disk file output (in persistent mode)
 		dbFilePath: './.waterline/dirty.db',
@@ -34,7 +35,10 @@ var adapter = module.exports = {
 		dataPrefix: 'sails_data_',
 
 		// String to precede key name for collection status data
-		statusPrefix: 'sails_status_'
+		statusPrefix: 'sails_status_',
+
+		// String to precede key name for transaction data
+		lockPrefix: 'sails_transactions_'
 	},
 
 	// Initialize the underlying data model
@@ -260,6 +264,81 @@ var adapter = module.exports = {
 		});
 	},
 
+	// 2PL
+	// Lock access to this collection or a subset of it
+	// (assume this is a 'write' lock)
+	// TODO: Smarter locking (i.e. don't always lock the entire collection)
+	lock: function (collectionName, criteria, cb) {
+		var self = this;
+		var commitLogKey = this.config.lockPrefix+collectionName;
+		var locks = this.db.get(commitLogKey);
+		locks = locks || [];
+
+
+		// Generate unique lock and update commit log as if lock was acquired
+		var newLock = {
+			id: uuid.v4(), 
+			type: 'write',
+			timestamp: epoch(),
+			cb: cb
+		};
+		locks.push(newLock);
+
+		// Write commit log to disc
+		this.db.set(commitLogKey,locks,function (err) {
+			if (err) return cb(err);
+
+			// Verify that lock was successfully acquired
+			// (i.e. no other locks w/ overlapping criteria exist)
+			var conflict = false;
+			locks = self.db.get(commitLogKey);
+			_.each(locks,function (entry) {
+
+				// If a conflict IS found, respect the oldest
+				// (the conflict-causer is responsible for cleaning up his entry)
+				if (entry.id !== newLock.id && 
+					entry.timestamp <= newLock.timestamp) conflict = true;
+
+				// Otherwise, other lock is older-- ignore it
+			});
+
+			// Lock acquired!
+			if (!conflict) {
+				self.log("Acquired lock :: "+newLock.id);
+				cb();
+			}
+
+			// Otherwise, get in line
+			// In other words, do nothing-- 
+			// unlock() will grant lock request in order it was received
+		});
+	},
+
+	unlock: function (collectionName, criteria, cb) {
+		var self = this;
+		var commitLogKey = this.config.lockPrefix+collectionName;
+		var locks = this.db.get(commitLogKey);
+		locks = locks || [];
+
+		// Guess current lock by grabbing the oldest
+		// (this will only work if unlock() is used inside of a transaction)
+		var currentLock = getOldest(locks);
+		if (!currentLock) return cb('Trying to unlock, but no lock exists!');
+		
+		// Remove currentLock
+		locks = _.without(locks,currentLock);
+		this.db.set(commitLogKey,locks,function (err) {
+			// Trigger unlock's callback
+			if (err) return cb(err);
+			else cb();
+
+			// Now allow the next user in line to acquire the lock (trigger the NEW oldest lock's callback)
+			// This marks the end of the previous transaction
+			var nextInLine = getOldest(locks);
+			nextInLine && nextInLine.cb();
+		});
+	},
+
 	// Identity is here to facilitate unit testing
 	// (this is optional and normally automatically populated based on filename)
 	identity: 'dirty'
@@ -343,4 +422,19 @@ function matchItem (model,key,criterion) {
 		return false;
 	}
 	return true;
+}
+
+// Number of miliseconds since the Unix epoch Jan 1st, 1970
+function epoch () {
+	return (new Date()).getTime();
+}
+
+// Return the oldest lock in the collection
+function getOldest (locks) {
+	var currentLock;
+	_.each(locks,function (lock) {
+		if (!currentLock) currentLock = lock;
+		else if (lock.timestamp < currentLock.timestamp) currentLock = lock;
+	});
+	return currentLock;
 }

@@ -32,21 +32,31 @@ describe('transactions', function() {
 		});
 
 		it('should NOT allow another lock to be acquired until the first lock is released', function(done) {
-			// The callback should never fire until the lock is released
+			
+			var orderingTest = [];
+
+			// The callback should not fire until the lock is released
 			User.lock(null, function (err) {
-				if (!err) throw "The lock was acquired by two users at once!";
-				else if (err) throw err;
+				if (err) throw err;
+				orderingTest.push('lock');
+				
+				if (orderingTest[0] === 'unlock' && 
+					orderingTest[1] === 'lock' && 
+					orderingTest.length === 2) {
+						done();
+				}
+				else throw "The lock was acquired by two users at once!";
 			});
 
 			// Note that other code can still run while the semaphore remains gated
-			setTimeout(done,100);
-		});
 
-		it('should NOT be able to cancel a lock request if it\'s already been satisfied', function(done){
-			User.cancel(null,function (err) {
-				if (err) done();
-				else throw "Lock acquisition request cancelled when the lock had already been granted!";
-			});
+			// Set timeout to release the lock after a 1/4 of a second
+			setTimeout(function () {
+				User.unlock(null,function(err){
+					orderingTest.push('unlock');
+				});
+			},250);
+
 		});
 	});
 });

@@ -91,9 +91,7 @@ var Adapter = module.exports = function (adapter) {
 	// TODO: ENSURE ATOMICITY
 	this.create = function(collectionName, values, cb) {
 		// Get status if specified
-		if (adapter.status) {
-			adapter.status(collectionName,afterwards);
-		}
+		if (adapter.status) adapter.status(collectionName,afterwards);
 		else afterwards();
 
 		// Modify values as necessary
@@ -104,7 +102,7 @@ var Adapter = module.exports = function (adapter) {
 			adapter.autoIncrement(collectionName,values,function (err,values) {
 				if (err) return cb(err);
 
-				// TODO: Verify constraints using (HULL)
+				// TODO: Verify constraints using Anchor
 
 				// Add updatedAt and createdAt
 				if (adapter.config.createdAt) values.createdAt = new Date();
@@ -188,11 +186,15 @@ var Adapter = module.exports = function (adapter) {
 
 		// No need to check the fridge!  Just start writing your note.
 
-		// TODO: Generate identifier for this transaction (use collection name to start with, but better yet, boil down criteria to essentials to allow for more concurrent access)
-		// TODO: Create entry in transaction DB (If you're sure that no other notes exist on fridge, write a note)
+		// TODO: Generate identifier for this transaction (use collection name to start with, 
+			// but better yet, boil down criteria to essentials to allow for more concurrent access)
+		
+		// TODO: Create entry in transaction DB (write a note on the fridge and check it)
 		// TODO: Check the transaction db (CHECK THE DAMN FRIDGE IN CASE ONE OF YOUR ROOMMATES WROTE THE NOTE WHILE YOU WERE BUSY)
 
-		// TODO: If > 1 entry exists in the transaction db, subscribe to mutex queue and wait (if you see a note already on the fridge, get in line to be notified when roommate gets home)
+		// TODO: If > 1 entry exists in the transaction db, subscribe to mutex queue to be notified later
+		// (if you see a note already on the fridge, get in line to be notified when roommate gets home)
+
 		// TODO: Otherwise, trigger callback!	QA immediately (you're good to go get the milk)
 
 		// **************************************
@@ -223,20 +225,6 @@ var Adapter = module.exports = function (adapter) {
 		// TODO: Callback can be triggered immediately, since you're sure the note will be removed
 
 		adapter.unlock ? adapter.unlock(collectionName,criteria,cb) : cb();
-	};
-
-	// Cancel a pending lock or unlock request
-	// Then check commit log and verify state of transaction
-	this.cancel = function (collectionName, criteria, cb) { 
-
-		// Allow criteria argument to be omitted
-		if (_.isFunction(criteria)) {
-			cb = criteria;
-			criteria = null;
-		}
-
-		// TODO
-		adapter.cancel ? adapter.cancel(collectionName,criteria,cb) : cb();
 	};
 
 	this.status = function (collectionName, cb) {
