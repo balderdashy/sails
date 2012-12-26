@@ -59,23 +59,22 @@ Dependencies and Compatibility
 --
 
 Tested with node 0.8.1
-
-We built Sails on the rock-solid foundations of ExpressJS, Sequelize ORM, and Socket.io.  
+Sails is built on the rock-solid foundations of ExpressJS and Socket.io.  
 
 
 ## Who Built This?
-The Sails framework is jointly developed and supported by Mike McNeil and Balderdash Design Co.  Balderdash builds realtime web apps as a service, and after much frustration with the lack of convention in existing solutions, we built Sails to use on our customers' projects.  Naturally, we open-sourced it.  Hopefully, it makes your life a little bit easier!
+The Sails framework was developed by @mikermcneil and is supported by Balderdash Co (@balderdashy).  We build realtime web and mobile apps as a service for our customers, and over time, after trying lots of different methodologies, I ended up crystallizing all our best code and conventions into Sails.  
+Then, we open-sourced it, because no one should have to go through that again.  Seriously.  Hopefully, it makes your life a little bit easier!
 
 
 The MIT License (MIT)
 --
 
-Copyright © 2012 Mike McNeil
+Copyright © 2012-2013 Mike McNeil
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/8acf2fc2ca0aca8a3018e355ad776ed7 "githalytics.com")](http://githalytics.com/balderdashy/sails)
