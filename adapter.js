@@ -88,33 +88,45 @@ var Adapter = module.exports = function (adapter) {
 	// DQL
 	//////////////////////////////////////////////////////////////////////
 
-	// TODO: ENSURE ATOMICITY
 	this.create = function(collectionName, values, cb) {
-		if (!collectionName) throw "No collectionName specified!";
-		else if (!values) throw "Trying to create(), but no values specified!";
+		var self = this;
+		if (!collectionName) cb ("No collectionName specified!");
+		else if (!values) cb("Trying to create(), but no values specified!");
+		if (!adapter.create) cb("No create() method defined in adapter!");
 
-		// Get status if specified
-		if (adapter.status) adapter.status(collectionName,afterwards);
-		else afterwards();
-
-		// Modify values as necessary
-		function afterwards(err,status){
-			if (err) throw err;
-
-			// Auto increment fields that need it
-			adapter.autoIncrement(collectionName,values,function (err,values) {
-				if (err) return cb(err);
-
-				// TODO: Verify constraints using Anchor
-
-				// Add updatedAt and createdAt
-				if (adapter.config.createdAt) values.createdAt = new Date();
-				if (adapter.config.updatedAt) values.updatedAt = new Date();
-
-				// Call create method in adapter
-				return adapter.create ? adapter.create(collectionName,values,cb) : cb();
+		// Provide augmented callback which also ends transaction
+		var augmentedCb = function (err,data) {
+			self.unlock(collectionName,function (ue) {
+				cb(ue || err, data);
 			});
-		}
+		};
+
+		// Lock to ensure atomicity and serialization
+		this.lock(collectionName,function () {
+			// Get status if specified
+			if (adapter.status) adapter.status(collectionName,afterwards);
+			else afterwards();
+
+			// Modify values as necessary
+			function afterwards(err,status){
+				if (err) return augmentedCb(err);
+
+				// Auto increment fields that need it
+				adapter.autoIncrement(collectionName,values,function (err,values) {
+					if (err) return augmentedCb(err);
+
+					// TODO: Verify constraints using Anchor
+
+					// Add updatedAt and createdAt
+					if (adapter.config.createdAt) values.createdAt = new Date();
+					if (adapter.config.updatedAt) values.updatedAt = new Date();
+					
+					// Call create method in adapter
+					adapter.create(collectionName,values,augmentedCb);
+				});
+			}		
+		});
+
 
 		// TODO: Return model instance Promise object for joins, etc.
 	};

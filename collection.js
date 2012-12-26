@@ -10,7 +10,6 @@ var Collection = module.exports = function(definition) {
 	switch (definition.scheme) {
 		case "drop"	: definition.sync = _.bind(definition.adapter.sync.drop, definition.adapter, definition); break;
 		case "alter": definition.sync = _.bind(definition.adapter.sync.alter, definition.adapter, definition); break;
-		
 	}
 	
 	// Absorb definition methods
