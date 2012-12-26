@@ -238,7 +238,6 @@ var adapter = module.exports = {
 
 
 	// Look for auto-increment fields, increment counters accordingly, and return refined values
-	// TODO: make sure this is atomic
 	autoIncrement: function (collectionName, values, cb) {
 		// Lookup schema & status so we know all of the attribute names and the current auto-increment value
 		var schema = this.db.get(this.config.schemaPrefix+collectionName);
@@ -246,7 +245,8 @@ var adapter = module.exports = {
 		var self = this;
 
 		// if this is an autoIncrement field, increment it in values set
-		async.forEach(_.keys(_.extend({},schema,values)), function (attrName,cb) {
+		var keys = _.keys(_.extend({},schema,values));
+		async.forEach(keys, function (attrName,cb) {
 			if (_.isObject(schema[attrName]) && schema[attrName].autoIncrement) {
 				values[attrName] = status.autoIncrement;
 

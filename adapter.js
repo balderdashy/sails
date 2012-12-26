@@ -87,8 +87,33 @@ var Adapter = module.exports = function (adapter) {
 	//////////////////////////////////////////////////////////////////////
 	// DQL
 	//////////////////////////////////////////////////////////////////////
+
+	// TODO: ENSURE ATOMICITY
 	this.create = function(collectionName, values, cb) {
-		adapter.create ? adapter.create(collectionName,values,cb) : cb();
+		// Get status if specified
+		if (adapter.status) {
+			adapter.status(collectionName,afterwards);
+		}
+		else afterwards();
+
+		// Modify values as necessary
+		function afterwards(err,status){
+			if (err) throw err;
+
+			// Auto increment fields that need it
+			adapter.autoIncrement(collectionName,values,function (err,values) {
+				if (err) return cb(err);
+
+				// TODO: Verify constraints using (HULL)
+
+				// Add updatedAt and createdAt
+				if (adapter.config.createdAt) values.createdAt = new Date();
+				if (adapter.config.updatedAt) values.updatedAt = new Date();
+
+				// Call create method in adapter
+				return adapter.create ? adapter.create(collectionName,values,cb) : cb();
+			});
+		}
 
 		// TODO: Return model instance Promise object for joins, etc.
 	};
@@ -114,15 +139,16 @@ var Adapter = module.exports = function (adapter) {
 	//////////////////////////////////////////////////////////////////////
 	// Convenience methods (overwritable in adapters)
 	//////////////////////////////////////////////////////////////////////
-	this.findOrCreate = function (collectionName, criteria, values, cb) { 
+	this.findOrCreate = function (collectionName, criteria, values, cb) {
+		var self = this; 
 		criteria = normalizeCriteria(criteria);
 		if (adapter.findOrCreate) adapter.findOrCreate(collectionName, criteria, values, cb);
 		else {
 			// TODO: ADD A TRANSACTION LOCK HERE!!
-			adapter.find(collectionName,criteria,function (err,results) {
+			self.find(collectionName,criteria,function (err,results) {
 				if (err) cb(err);
 				else if (results.length > 0) cb(null,results);
-				else adapter.create(collectionName, values, cb);
+				else self.create(collectionName, values, cb);
 			});
 		}
 

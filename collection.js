@@ -19,36 +19,7 @@ var Collection = module.exports = function(definition) {
 
 	// Define core methods
 	this.create = function(values, cb) {
-		var collection = this;
-
-		// Get status if specified
-		if (collection.adapter.status) {
-			collection.adapter.status(collection.identity,afterwards);
-		}
-		else afterwards();
-
-		// Modify values as necessary
-		function afterwards(err,status){
-			if (err) throw err;
-
-			// Auto increment fields that need it
-			collection.adapter.autoIncrement(collection.identity,values,function (err,values) {
-				if (err) return cb(err);
-
-				// TODO: Verify constraints using (HULL)
-
-				// Add updatedAt and createdAt
-				if (collection.adapter.config.createdAt) values.createdAt = new Date();
-				if (collection.adapter.config.updatedAt) values.updatedAt = new Date();
-
-				// Call create method in adapter
-				console.log("BACK FROM AUTOINCREMENT::::::::");
-				console.log("idendity",collection.identity);
-				console.log("values",values);
-				console.log("<<<<>>>>");
-				return collection.adapter.create(collection.identity,values,cb);
-			});
-		}
+		return this.adapter.create(this.identity,values,cb);
 	};
 	// Call find method in adapter
 	this.find = function(options, cb) {

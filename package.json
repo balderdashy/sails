@@ -30,11 +30,11 @@
   "dependencies": {
     "dirty": "~0.9.6",
     "underscore": "=1.4.3",
-    "parley": "0.0.1203",
     "mysql": "~2.0.0-alpha4",
     "node-uuid": "~1.4.0",
     "require-all": "0.0.5",
     "fs-extra": "~0.3.2",
-    "sails-util": "0.0.0"
+    "sails-util": "0.0.0",
+    "parley": "0.0.2"
   }
 }
