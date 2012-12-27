@@ -8,6 +8,9 @@ var Adapter = require('./adapter.js');
 var Collection = require('./collection.js');
 var Model = require('./model.js');
 
+// Read global config
+var config = require('./config.js');
+
 // Util
 var buildDictionary = require('./buildDictionary.js');
 
@@ -19,22 +22,60 @@ var builtInAdapters = buildDictionary(__dirname + '/adapters', /(.+Adapter)\.js$
 */
 module.exports = function (options,cb) {
 
-	var adapters = options.adapters;
-	var collections = options.collections;
+	var adapters = options.adapters || {};
+	var collections = options.collections || {};
 	var log = options.log || console.log;
-	
 	var $$ = new parley();
 
 	// Merge passed-in adapters with default adapters
-	adapters = _.extend(builtInAdapters,adapters || {});
+	adapters = _.extend(builtInAdapters,adapters);
 
 	// Error aggregator obj
-	var errs;
+	// var errs;
 
 	// initialize each adapter in series
 	// TODO: parallelize this process (would decrease server startup time)
-	for (var adapterName in adapters) {
+	$$(async).forEach(_.keys(adapters),prepareAdapter);
 
+	// Instantiate special collections
+	var transCol = $$(instantiateCollection)(config.transactionCollection);
+
+	$$(function (err,transCol,xcb) {
+		// Attach transaction collection to each adapter
+		_.each(adapters,function(adapter,adapterName){
+			adapters[adapterName].transactionCollection = transCol;
+		});
+		xcb();
+	})(transCol);
+	
+
+	// TODO: in sails, in the same way ---->
+	// set up session adapter
+	// set up socket adapter
+	// ------->
+
+	// then associate each collection with its adapter and sync its schema
+	$$(async).forEach(_.keys(collections),prepareCollection);
+
+
+	// Attach transaction collection to each adapter
+	$$(function (xcb) {
+
+		// console.log(collections);
+
+		// Pass instantiated adapters and models
+		cb(null,{
+			adapters: adapters,
+			collections: collections
+		});
+
+		// Just for cleanliness/sanity
+		xcb();
+	})();
+
+
+	// Instantiate an adapter object
+	function prepareAdapter (adapterName,cb) {
 		// Pass waterline config down to adapters
 		adapters[adapterName].config = _.extend({
 			log: log
@@ -45,14 +86,20 @@ module.exports = function (options,cb) {
 		adapters[adapterName] = new Adapter(adapters[adapterName]);
 
 		// Load adapter data source
-		$$(adapters[adapterName]).initialize();
+		adapters[adapterName].initialize(cb);
 	}
 
-	// When all adapters are loaded,
-	// associate each model with its adapter and sync its schema
-	collections = collections || {};
-	for (var collectionName in collections) {
+	// Instantiate a collection object and store it back in the dictionary
+	function prepareCollection (collectionName, cb) {
 		var collection = collections[collectionName];
+		instantiateCollection(collection,function (err,collection) {
+			collections[collectionName] = collection;
+			cb(err,collection);
+		});
+	}
+
+	// Instantiate a collection object
+	function instantiateCollection (collection, cb) {
 
 		// If no adapter is specified, default to 'dirty'
 		if (!collection.adapter) collection.adapter = 'dirty';
@@ -69,16 +116,9 @@ module.exports = function (options,cb) {
 		}
 
 		// Build actual collection object from definition
-		collections[collectionName] = new Collection(collection);
+		collection = new Collection(collection);
 
 		// Synchronize schema with data source
-		var e = $$(collection).sync();
-		$$(function (e) {errs = errs || e;}).ifError(e);
+		collection.sync(function (err){ cb(err,collection); });
 	}
-
-	// Pass instantiated adapters and models
-	$$(cb)(errs,{
-		adapters: adapters,
-		collections: collections
-	});
 };

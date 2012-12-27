@@ -1,13 +1,20 @@
 var _ = require('underscore');
 var parley = require('parley');
 
+// Read global config
 var config = require('./config.js');
 
 // Extend adapter definition
 var Adapter = module.exports = function (adapter) {
+	var self = this;
 
 	// Absorb configuration
-	this.config = adapter.config || {};
+	this.config = adapter.config = _.extend({
+
+		// Default transaction collection name
+		transactionCollection: _.clone(config.transactionCollection)
+
+	},adapter.config || {});
 
 
 	this.initialize = function(cb) {
@@ -35,6 +42,8 @@ var Adapter = module.exports = function (adapter) {
 	//////////////////////////////////////////////////////////////////////
 	this.define = function(collectionName, definition, cb) { 
 
+		if (!definition.attributes) definition.attributes = {};
+
 		// If id is not defined, add it
 		// TODO: Make this check for ANY primary key
 		// TODO: Make this disableable in the config
@@ -46,10 +55,10 @@ var Adapter = module.exports = function (adapter) {
 			};
 		}
 
-		// If the config allows it, and they aren't already specified,
+		// If the adapter config allows it, and they aren't already specified,
 		// extend definition with updatedAt and createdAt
-		if(config.createdAt && !definition.createdAt) definition.createdAt = 'DATE';
-		if(config.updatedAt && !definition.updatedAt) definition.updatedAt = 'DATE';
+		if(this.config.createdAt && !definition.createdAt) definition.createdAt = 'DATE';
+		if(this.config.updatedAt && !definition.updatedAt) definition.updatedAt = 'DATE';
 
 		// Convert string-defined attributes into fully defined objects
 		for (var attr in definition.attributes) {
@@ -94,39 +103,7 @@ var Adapter = module.exports = function (adapter) {
 		else if (!values) cb("Trying to create(), but no values specified!");
 		if (!adapter.create) cb("No create() method defined in adapter!");
 
-		// Provide augmented callback which also ends transaction
-		var augmentedCb = function (err,data) {
-			self.unlock(collectionName,function (ue) {
-				cb(ue || err, data);
-			});
-		};
-
-		// Lock to ensure atomicity and serialization
-		this.lock(collectionName,function () {
-			// Get status if specified
-			if (adapter.status) adapter.status(collectionName,afterwards);
-			else afterwards();
-
-			// Modify values as necessary
-			function afterwards(err,status){
-				if (err) return augmentedCb(err);
-
-				// Auto increment fields that need it
-				adapter.autoIncrement(collectionName,values,function (err,values) {
-					if (err) return augmentedCb(err);
-
-					// TODO: Verify constraints using Anchor
-
-					// Add updatedAt and createdAt
-					if (adapter.config.createdAt) values.createdAt = new Date();
-					if (adapter.config.updatedAt) values.updatedAt = new Date();
-					
-					// Call create method in adapter
-					adapter.create(collectionName,values,augmentedCb);
-				});
-			}		
-		});
-
+		adapter.create ? adapter.create(collectionName,values,cb) : cb();
 
 		// TODO: Return model instance Promise object for joins, etc.
 	};
@@ -183,72 +160,92 @@ var Adapter = module.exports = function (adapter) {
 	};
 
 
+	// App-level transaction
+	this.transaction = function (transactionName, cb) {
+		// console.log("Initiating transaction on " + this.identity + "...",transactionName, this.transactionCollection);
+		// this.transactionCollection.create(function (err) {
+			
+		// });
+		var err = null;
+		cb(err, function () {});
+	};
 
 
-	// Begin an atomic transaction
-	// lock models in collection which fit criteria (if criteria is null, lock all)
-	this.lock = function (collectionName, criteria, cb) { 
 
-		// Allow criteria argument to be omitted
+	// HAX
+	this.lock = this.unlock = function (collectionName, criteria, cb) {
 		if (_.isFunction(criteria)) {
 			cb = criteria;
 			criteria = null;
 		}
+		cb && cb();
+	};
 
-		// **************************************
-		// NAIVE SOLUTION
-		// (only the first roommate to notice gets the milk; the rest wait as soon as they see the note)
 
-		// No need to check the fridge!  Just start writing your note.
+	// // Begin an atomic transaction
+	// // lock models in collection which fit criteria (if criteria is null, lock all)
+	// this.lock = function (collectionName, criteria, cb) { 
 
-		// TODO: Generate identifier for this transaction (use collection name to start with, 
-			// but better yet, boil down criteria to essentials to allow for more concurrent access)
+	// 	// Allow criteria argument to be omitted
+	// 	if (_.isFunction(criteria)) {
+	// 		cb = criteria;
+	// 		criteria = null;
+	// 	}
+
+	// 	// **************************************
+	// 	// NAIVE SOLUTION
+	// 	// (only the first roommate to notice gets the milk; the rest wait as soon as they see the note)
+
+	// 	// No need to check the fridge!  Just start writing your note.
+
+	// 	// TODO: Generate identifier for this transaction (use collection name to start with, 
+	// 		// but better yet, boil down criteria to essentials to allow for more concurrent access)
 		
-		// TODO: Create entry in transaction DB (write a note on the fridge and check it)
-		// TODO: Check the transaction db (CHECK THE DAMN FRIDGE IN CASE ONE OF YOUR ROOMMATES WROTE THE NOTE WHILE YOU WERE BUSY)
+	// 	// TODO: Create entry in transaction DB (write a note on the fridge and check it)
+	// 	// TODO: Check the transaction db (CHECK THE DAMN FRIDGE IN CASE ONE OF YOUR ROOMMATES WROTE THE NOTE WHILE YOU WERE BUSY)
 
-		// TODO: If > 1 entry exists in the transaction db, subscribe to mutex queue to be notified later
-		// (if you see a note already on the fridge, get in line to be notified when roommate gets home)
+	// 	// TODO: If > 1 entry exists in the transaction db, subscribe to mutex queue to be notified later
+	// 	// (if you see a note already on the fridge, get in line to be notified when roommate gets home)
 
-		// TODO: Otherwise, trigger callback!	QA immediately (you're good to go get the milk)
+	// 	// TODO: Otherwise, trigger callback!	QA immediately (you're good to go get the milk)
 
-		// **************************************
-		// AGRESSIVE SOLUTION
-		// (all roommates try to go get the milk, but the first person to get the milk prevents others from putting it in the fridge)
+	// 	// **************************************
+	// 	// AGRESSIVE SOLUTION
+	// 	// (all roommates try to go get the milk, but the first person to get the milk prevents others from putting it in the fridge)
 
-		// TODO: Ask locksmith for model clone
-		// TODO: Pass model clone in callback
+	// 	// TODO: Ask locksmith for model clone
+	// 	// TODO: Pass model clone in callback
 
-		adapter.lock ? adapter.lock(collectionName,criteria,cb) : cb();
-	};
+	// 	adapter.lock ? adapter.lock(collectionName,criteria,cb) : cb();
+	// };
 
-	// Commit and end an atomic transaction
-	// unlock models in collection which fit criteria (if criteria is null, unlock all)
-	this.unlock = function (collectionName, criteria, cb) { 
+	// // Commit and end an atomic transaction
+	// // unlock models in collection which fit criteria (if criteria is null, unlock all)
+	// this.unlock = function (collectionName, criteria, cb) { 
 
-		// Allow criteria argument to be omitted
-		if (_.isFunction(criteria)) {
-			cb = criteria;
-			criteria = null;
-		}
+	// 	// Allow criteria argument to be omitted
+	// 	if (_.isFunction(criteria)) {
+	// 		cb = criteria;
+	// 		criteria = null;
+	// 	}
 
-		// **************************************
-		// NAIVE SOLUTION
-		// (only the first roommate to notice gets the milk; the rest wait as soon as they see the note)
+	// 	// **************************************
+	// 	// NAIVE SOLUTION
+	// 	// (only the first roommate to notice gets the milk; the rest wait as soon as they see the note)
 
-		// TODO: Remove entry from transaction db (Remove your note from fridge)
-		// TODO: Callback can be triggered immediately, since you're sure the note will be removed
+	// 	// TODO: Remove entry from transaction db (Remove your note from fridge)
+	// 	// TODO: Callback can be triggered immediately, since you're sure the note will be removed
 
-		adapter.unlock ? adapter.unlock(collectionName,criteria,cb) : cb();
-	};
+	// 	adapter.unlock ? adapter.unlock(collectionName,criteria,cb) : cb();
+	// };
 
-	this.status = function (collectionName, cb) {
-		adapter.status ? adapter.status(collectionName,cb) : cb();
-	};
+	// this.status = function (collectionName, cb) {
+	// 	adapter.status ? adapter.status(collectionName,cb) : cb();
+	// };
 
-	this.autoIncrement = function (collectionName, values,cb) {
-		adapter.autoIncrement ? adapter.autoIncrement(collectionName, values, cb) : cb();
-	};
+	// this.autoIncrement = function (collectionName, values,cb) {
+	// 	adapter.autoIncrement ? adapter.autoIncrement(collectionName, values, cb) : cb();
+	// };
 
 	// If @collectionName and @otherCollectionName are both using this adapter, do a more efficient remote join.
 	// (By default, an inner join, but right and left outer joins are also supported.)
@@ -277,7 +274,7 @@ var Adapter = module.exports = function (adapter) {
 
 			// Check that collection exists-- if it doesn't go ahead and add it and get out
 			this.describe(collection.identity,function (err,data) {
-				if (err) cb(err);
+				if (err) return cb(err);
 				else if (!data) return self.define(collection.identity,collection,cb);
 				
 				// Iterate through each attribute on each model in your app
@@ -298,10 +295,22 @@ var Adapter = module.exports = function (adapter) {
 
 				// If not, alter the collection and remove it
 				// TODO
-				cb();	
+				// cb(null);	
 			});
 		}
 	};
+
+	// Always grant access to a few of Adapter's methods to the user adapter instance
+	// (things that may or may not be defined by the user adapter)
+	adapter.transaction = function (name,cb) {
+		return self.transaction(name,cb);
+	};
+
+	// console.log("--------- ",adapter.transactionCollection);
+	// this.transactionCollection = adapter.transactionCollection;
+	// adapter.transactionCollection = this.transactionCollection)
+	// this.transactionCollection = adapter.transactionCollection || this.transactionCollection;
+	
 
 	// Bind adapter methods to self
 	_.bindAll(adapter);

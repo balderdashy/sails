@@ -35,10 +35,7 @@ var adapter = module.exports = {
 		dataPrefix: 'sails_data_',
 
 		// String to precede key name for collection status data
-		statusPrefix: 'sails_status_',
-
-		// String to precede key name for transaction data
-		lockPrefix: 'sails_transactions_'
+		statusPrefix: 'sails_status_'
 	},
 
 	// Initialize the underlying data model
@@ -135,15 +132,43 @@ var adapter = module.exports = {
 		this.log(" CREATING :: "+collectionName,values);
 		var dataKey = this.config.dataPrefix+collectionName;
 		var data = this.db.get(dataKey);
+		var self = this;
+	
+		// Ensure atomicity of creation
+		this.transaction('_create',function (err, unlock) {
+			if (err) return cb(err);
 
-		// Create new model
-		// (if data collection doesn't exist yet, create it)
-		data = data || [];
-		data.push(values);
+			// Auto increment fields that need it
+			self.autoIncrement(collectionName,values,function (err,values) {
+				if (err) { unlock(); return cb(err); }
 
-		// Replace data collection and go back
-		this.db.set(dataKey,data,function (err) {
-			cb(err,values);
+				// Verify constraints using Anchor
+				// TODO: verify constraints
+
+				// Populate default values
+				self.describe(collectionName,function (err,description) {
+					if (err) { unlock(); return cb(err); }
+
+					// Add updatedAt and createdAt
+					if (description.createdAt) values.createdAt = new Date();
+					if (description.updatedAt) values.updatedAt = new Date();
+
+					// TODO: add other fields with default values
+					
+					// Create new model
+					// (if data collection doesn't exist yet, create it)
+					data = data || [];
+					data.push(values);
+
+					// Replace data collection and go back
+					self.db.set(dataKey,data,function (err) {
+						if (err) { unlock(); return cb(err); }
+
+						unlock();
+						cb(err,values);
+					});
+				});
+			});
 		});
 	},
 
@@ -264,11 +289,18 @@ var adapter = module.exports = {
 		});
 	},
 
+
 	// 2PL
 	// Lock access to this collection or a subset of it
 	// (assume this is a 'write' lock)
 	// TODO: Smarter locking (i.e. don't always lock the entire collection)
 	lock: function (collectionName, criteria, cb) {
+		// Allow criteria argument to be omitted
+		if (_.isFunction(criteria)) {
+			cb = criteria;
+			criteria = null;
+		}
+
 		var self = this;
 		var commitLogKey = this.config.lockPrefix+collectionName;
 		var locks = this.db.get(commitLogKey);
@@ -315,6 +347,12 @@ var adapter = module.exports = {
 	},
 
 	unlock: function (collectionName, criteria, cb) {
+		// Allow criteria argument to be omitted
+		if (_.isFunction(criteria)) {
+			cb = criteria;
+			criteria = null;
+		}
+
 		var self = this;
 		var commitLogKey = this.config.lockPrefix+collectionName;
 		var locks = this.db.get(commitLogKey);

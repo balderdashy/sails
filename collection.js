@@ -42,14 +42,18 @@ var Collection = module.exports = function(definition) {
 		return this.adapter.findAndDestroy(this.identity, criteria, cb); 
 	};
 
-	this.lock = function(criteria, cb) {
-		return this.adapter.lock(this.identity,criteria,cb);
-	};
-	this.unlock = function(criteria, cb) {
-		return this.adapter.unlock(this.identity,criteria,cb);
-	};
-	this.cancel = function(criteria, cb) {
-		return this.adapter.cancel(this.identity,criteria,cb);
+	// this.lock = function(criteria, cb) {
+	// 	return this.adapter.lock(this.identity,criteria,cb);
+	// };
+	// this.unlock = function(criteria, cb) {
+	// 	return this.adapter.unlock(this.identity,criteria,cb);
+	// };
+	// this.cancel = function(criteria, cb) {
+	// 	return this.adapter.cancel(this.identity,criteria,cb);
+	// };
+
+	this.transaction = function (name, cb) {
+		return this.adapter.transaction(name, cb);
 	};
 
 	//////////////////////////////////////////
