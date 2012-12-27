@@ -50,8 +50,8 @@ describe('transactions', function() {
 					}
 				});
 
-				// Set timeout to release the lock after a 1/4 of a second
-				setTimeout(function() {unlock(testAppendUnlock); }, 250);
+				// Set timeout to release the lock after a 1/20 of a second
+				setTimeout(function() {unlock(testAppendUnlock); }, 50);
 			});
 
 			// Note that other code can still run while the semaphore remains gated
@@ -67,6 +67,23 @@ describe('transactions', function() {
 				orderingTest.push('lock');
 			}
 		});
+
+		// it ('should timeout if the transaction takes a long time',function (done) {
+		// 	User.transaction("test", function(err, unlock) {
+		// 		User.transaction("test", function(err, unlock) {
+		// 			unlock();
+		// 			done(err);
+		// 		});
+		// 		setTimeout(function() {unlock(); }, 2500);
+		// 	});
+
+		// });
+
+		// it('should not be able to release a lock more than once', function(done) {
+		// 	User.transaction("test", function(err, unlock) {
+		// 		throw "The lock was acquired by two users at once!";
+		// 	});
+		// });
 
 	});
 });

@@ -77,7 +77,7 @@ module.exports = function (options,cb) {
 		// Pass waterline config down to adapters
 		adapters[adapterName].config = _.extend({
 			log: log
-		}, adapters[adapterName].config);
+		}, adapters[adapterName].config, config);
 
 		// Build actual adapter object from definition
 		// and replace the entry in the adapter dictionary

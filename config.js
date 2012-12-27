@@ -11,5 +11,13 @@ module.exports = {
 	transactionCollection: {
 		adapter: 'dirtylocksmith',
 		identity: '___transaction'
-	}
+	},
+
+	// ms to wait before warning that a tranaction is taking too long
+	transactionWarningTimer: 2000,
+
+	// ms to wait before timing out a transaction and calling unlock() with an error
+	// (App can then handle the logic to undo the transaction)
+	// TODO: Make this work
+	transactionTimeout: 15000
 };

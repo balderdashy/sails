@@ -192,8 +192,13 @@ var Adapter = module.exports = function (adapter) {
 
 				// If there are no conflicts, the lock is acquired!
 				if (!conflict) {
-					// console.log("Acquired lock :: "+newLock.name,newLock.id);
+					var warningTimer = setTimeout(function () {
+						console.error("Transaction :: "+newLock.name +
+							" is taking an abnormally long time (> "+
+								self.config.transactionWarningTimer+"ms)");
+					},self.config.transactionWarningTimer);
 					cb(err, function unlock (cb) {
+						clearTimeout(warningTimer);
 						self.unlock(newLock.id,newLock.name,cb);
 					});
 				}
@@ -208,8 +213,6 @@ var Adapter = module.exports = function (adapter) {
 
 	this.unlock = function (id,transactionName,cb) {
 		var self = this;
-
-			// console.log("Released lock :: "+transactionName,id);
 
 			// Remove current lock
 			self.transactionCollection.destroy({id: id},function (err) {
