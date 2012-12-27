@@ -162,8 +162,9 @@ var Adapter = module.exports = function (adapter) {
 
 	// App-level transaction
 	this.transaction = function (transactionName, cb) {
-		// console.log("Initiating transaction on " + this.identity + "...",transactionName, this.transactionCollection);
-		// Generate unique lock and update commit log as if lock was acquired
+		var self = this;
+
+		// Generate unique lock
 		var newLock = {
 			id: uuid.v4(),
 			name: transactionName,
@@ -171,11 +172,11 @@ var Adapter = module.exports = function (adapter) {
 			cb: cb
 		};
 
-		var self = this;
-
+		// write new lock to commit log
 		this.transactionCollection.create(newLock,function (err) {
 			if (err) return cb(err);
 
+			// Check if lock was written, and is the oldest with the proper name
 			self.transactionCollection.findAll(function (err,locks) {
 				if (err) return cb(err);
 
@@ -183,18 +184,18 @@ var Adapter = module.exports = function (adapter) {
 				_.each(locks,function (entry) {
 
 					// If a conflict IS found, respect the oldest
-					// (the conflict-causer is responsible for cleaning up his entry)
+					// (the conflict-causer is responsible for cleaning up his entry-- ignore it!)
 					if (entry.name === newLock.name &&
 						entry.id !== newLock.id && 
 						entry.timestamp <= newLock.timestamp) conflict = true;
-
-					// Otherwise, other lock is older-- ignore it
 				});
 
-				// Lock acquired!
+				// If there are no conflicts, the lock is acquired!
 				if (!conflict) {
-					// console.log("Acquired lock :: "+newLock.id);
-					cb(err, self.unlock);
+					// console.log("Acquired lock :: "+newLock.name,newLock.id);
+					cb(err, function unlock (cb) {
+						self.unlock(newLock.id,newLock.name,cb);
+					});
 				}
 
 				// Otherwise, get in line
@@ -208,41 +209,42 @@ var Adapter = module.exports = function (adapter) {
 	this.unlock = function (id,transactionName,cb) {
 		var self = this;
 
-		self.transactionCollection.findAll(function (err,locks) {
-
-			// Guess current lock by grabbing the oldest
-			// (this will only work if unlock() is used inside of a transaction)
-			var currentLock = getOldest(locks);
-			if (!currentLock) return cb && cb('Trying to unlock, but no lock exists!');
+			// console.log("Released lock :: "+transactionName,id);
 
 			// Remove current lock
 			self.transactionCollection.destroy({id: id},function (err) {
+				if (err) return cb && cb(err);
 
-				// Also remove the lock from the in-memory list
-				// (TODO: again suck less and do the right thing)
-				locks = _.without(locks,currentLock);
+				self.transactionCollection.findAll(function(err,locks) {
+					if (err) return cb && cb(err);
 
-				// Trigger unlock's callback if specified
-				cb && cb(err);
+					// Trigger unlock's callback if specified
+					cb && cb();
 
-				// Now allow the next user in line to acquire the lock (trigger the NEW oldest lock's callback)
-				// This marks the end of the previous transaction
-				var nextInLine = getOldest(locks);
-				nextInLine && nextInLine.cb && nextInLine.cb();
+					// Now allow the next user in line to acquire the lock (trigger the NEW oldest lock's callback)
+					// This marks the end of the previous transaction
+					var nextInLine = getNextLock(locks,transactionName);
+					nextInLine && nextInLine.cb && nextInLine.cb();
+				});
 			});
-		});
 	};
 
 
-	// TODO: make this suck less
-	// (use the [currently unfinished] ORDER option)
-	function getOldest(locks) {
-		var currentLock;
+	// Find the oldest lock with the same transaction name
+	// ************************************************************
+	//	this function wouldn't be necessary if we could....
+	//	TODO:  call find() with the [currently unfinished] ORDER option
+	// ************************************************************
+	function getNextLock(locks,transactionName) {
+		var nextLock;
 		_.each(locks,function (lock) {
-			if (!currentLock) currentLock = lock;
-			else if (lock.timestamp < currentLock.timestamp) currentLock = lock;
+			// Ignore locks with different names
+			if (lock.name !== transactionName) return;
+
+			// If this is the first one, or this lock is older than the one we have, use it
+			if (!nextLock || lock.timestamp < nextLock.timestamp) nextLock = lock;
 		});
-		return currentLock;
+		return nextLock;
 	}
 
 	// HAX
