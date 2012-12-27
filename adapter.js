@@ -179,7 +179,6 @@ var Adapter = module.exports = function (adapter) {
 			self.transactionCollection.findAll(function (err,locks) {
 				if (err) return cb(err);
 
-				// console.log("wHERE MY LOCKS NIGGA",locks);
 				var conflict = false;
 				_.each(locks,function (entry) {
 
