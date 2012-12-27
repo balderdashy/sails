@@ -138,6 +138,7 @@ var adapter = module.exports = {
 		// Ensure atomicity of creation
 		this.transaction('_create',function (err, unlock) {
 			if (err) return cb(err);
+			if (!unlock) return cb('No unlock() method came back in call to transaction()');
 
 			// Auto increment fields that need it
 			self.autoIncrement(collectionName,values,function (err,values) {

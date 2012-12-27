@@ -137,7 +137,7 @@ var Adapter = module.exports = function (adapter) {
 			// TODO: ADD A TRANSACTION LOCK HERE!!
 			self.find(collectionName,criteria,function (err,results) {
 				if (err) cb(err);
-				else if (results.length > 0) cb(null,results);
+				else if (results && results.length > 0) cb(null,results);
 				else self.create(collectionName, values, cb);
 			});
 		}
@@ -184,7 +184,8 @@ var Adapter = module.exports = function (adapter) {
 
 					// If a conflict IS found, respect the oldest
 					// (the conflict-causer is responsible for cleaning up his entry)
-					if (entry.id !== newLock.id && 
+					if (entry.name === newLock.name &&
+						entry.id !== newLock.id && 
 						entry.timestamp <= newLock.timestamp) conflict = true;
 
 					// Otherwise, other lock is older-- ignore it
