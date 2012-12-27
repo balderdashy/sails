@@ -19,6 +19,7 @@ module.exports = _.extend({},require('./DirtyAdapter'),{
 	// Create one or more new models in the collection
 	create: function(collectionName, values, cb) {
 		this.log(" CREATING :: " + collectionName, values);
+		values = values || {};
 		var dataKey = this.config.dataPrefix + collectionName;
 		var data = this.db.get(dataKey);
 		var self = this;
@@ -33,7 +34,4 @@ module.exports = _.extend({},require('./DirtyAdapter'),{
 			return cb(err, values);
 		});
 	}
-
 });
-
-console.log(module.exports);

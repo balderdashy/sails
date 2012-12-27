@@ -61,8 +61,6 @@ module.exports = function (options,cb) {
 	// Attach transaction collection to each adapter
 	$$(function (xcb) {
 
-		// console.log(collections);
-
 		// Pass instantiated adapters and models
 		cb(null,{
 			adapters: adapters,

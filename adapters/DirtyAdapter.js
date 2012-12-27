@@ -130,6 +130,7 @@ var adapter = module.exports = {
 	// Create one or more new models in the collection
 	create: function(collectionName, values, cb) {
 		this.log(" CREATING :: "+collectionName,values);
+		values = values || {};
 		var dataKey = this.config.dataPrefix+collectionName;
 		var data = this.db.get(dataKey);
 		var self = this;
@@ -189,6 +190,7 @@ var adapter = module.exports = {
 		var dataKey = this.config.dataPrefix+collectionName;
 		var data = this.db.get(dataKey);
 
+		console.log(cb,"\n\n\n\nFOUND :: "+collectionName,data, "\nwith criteria",criteria,"\n\n\n\n*********\n");
 		// Query and return result set using criteria
 		cb(null,applyFilter(data,criteria));
 	},
@@ -390,7 +392,7 @@ var adapter = module.exports = {
 
 // Run criteria query against data aset
 function applyFilter (data,criteria) {
-	if (criteria) {
+	if (criteria && data) {
 		return _.filter(data,function (model) {
 			return matchSet(model,criteria);
 		});
@@ -401,6 +403,9 @@ function applyFilter (data,criteria) {
 
 // Match a model against each criterion in a criteria query
 function matchSet (model, criteria) {
+	// Null WHERE query always matches everything
+	if (!criteria) return true;
+
 	// By default, treat entries as AND
 	for (var key in criteria) {
 		if (! matchItem(model,key,criteria[key])) return false;

@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var parley = require('parley');
+var uuid = require('node-uuid');
 
 // Read global config
 var config = require('./config.js');
@@ -99,9 +100,8 @@ var Adapter = module.exports = function (adapter) {
 
 	this.create = function(collectionName, values, cb) {
 		var self = this;
-		if (!collectionName) cb ("No collectionName specified!");
-		else if (!values) cb("Trying to create(), but no values specified!");
-		if (!adapter.create) cb("No create() method defined in adapter!");
+		if (!collectionName) return cb ("No collectionName specified!");
+		if (!adapter.create) return cb("No create() method defined in adapter!");
 
 		adapter.create ? adapter.create(collectionName,values,cb) : cb();
 
@@ -163,23 +163,96 @@ var Adapter = module.exports = function (adapter) {
 	// App-level transaction
 	this.transaction = function (transactionName, cb) {
 		// console.log("Initiating transaction on " + this.identity + "...",transactionName, this.transactionCollection);
-		// this.transactionCollection.create(function (err) {
-			
-		// });
-		var err = null;
-		cb(err, function () {});
+		// Generate unique lock and update commit log as if lock was acquired
+		var newLock = {
+			id: uuid.v4(),
+			name: transactionName,
+			timestamp: epoch(),
+			cb: cb
+		};
+
+		var self = this;
+
+		this.transactionCollection.create(newLock,function (err) {
+			if (err) return cb(err);
+
+			self.transactionCollection.findAll(function (err,locks) {
+				if (err) return cb(err);
+
+				// console.log("wHERE MY LOCKS NIGGA",locks);
+				var conflict = false;
+				_.each(locks,function (entry) {
+
+					// If a conflict IS found, respect the oldest
+					// (the conflict-causer is responsible for cleaning up his entry)
+					if (entry.id !== newLock.id && 
+						entry.timestamp <= newLock.timestamp) conflict = true;
+
+					// Otherwise, other lock is older-- ignore it
+				});
+
+				// Lock acquired!
+				if (!conflict) {
+					console.log("Acquired lock :: "+newLock.id);
+					cb(err, self.unlock);
+				}
+
+				// Otherwise, get in line
+				// In other words, do nothing-- 
+				// unlock() will grant lock request in order it was received
+			});
+		});
 	};
 
 
+	this.unlock = function (id,transactionName,cb) {
+		var self = this;
+
+		self.transactionCollection.findAll(function (err,locks) {
+
+			// Guess current lock by grabbing the oldest
+			// (this will only work if unlock() is used inside of a transaction)
+			var currentLock = getOldest(locks);
+			if (!currentLock) return cb && cb('Trying to unlock, but no lock exists!');
+
+			// Remove current lock
+			self.transactionCollection.destroy({id: id},function (err) {
+
+				// Also remove the lock from the in-memory list
+				// (TODO: again suck less and do the right thing)
+				locks = _.without(locks,currentLock);
+
+				// Trigger unlock's callback if specified
+				cb && cb(err);
+
+				// Now allow the next user in line to acquire the lock (trigger the NEW oldest lock's callback)
+				// This marks the end of the previous transaction
+				var nextInLine = getOldest(locks);
+				nextInLine && nextInLine.cb && nextInLine.cb();
+			});
+		});
+	};
+
+
+	// TODO: make this suck less
+	// (use the [currently unfinished] ORDER option)
+	function getOldest(locks) {
+		var currentLock;
+		_.each(locks,function (lock) {
+			if (!currentLock) currentLock = lock;
+			else if (lock.timestamp < currentLock.timestamp) currentLock = lock;
+		});
+		return currentLock;
+	}
 
 	// HAX
-	this.lock = this.unlock = function (collectionName, criteria, cb) {
-		if (_.isFunction(criteria)) {
-			cb = criteria;
-			criteria = null;
-		}
-		cb && cb();
-	};
+	// this.lock = this.unlock = function (collectionName, criteria, cb) {
+	// 	if (_.isFunction(criteria)) {
+	// 		cb = criteria;
+	// 		criteria = null;
+	// 	}
+	// 	cb && cb();
+	// };
 
 
 	// // Begin an atomic transaction
@@ -339,6 +412,8 @@ function plural (collection, application) {
 
 // Normalize the different ways of specifying criteria into a uniform object
 function normalizeCriteria (criteria) {
+	if (!criteria) return {where: null};
+
 	// Empty undefined values from criteria object
 	_.each(criteria,function(val,key) {
 		if (val === undefined) delete criteria[key];
@@ -366,4 +441,9 @@ function normalizeCriteria (criteria) {
 	}
 
 	return criteria;
+}
+
+// Number of miliseconds since the Unix epoch Jan 1st, 1970
+function epoch () {
+	return (new Date()).getTime();
 }

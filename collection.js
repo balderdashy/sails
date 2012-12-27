@@ -17,11 +17,18 @@ var Collection = module.exports = function(definition) {
 
 	// Define core methods
 	this.create = function(values, cb) {
+		if (_.isFunction(values)) {
+			cb = values;
+			values = null;
+		}
 		return this.adapter.create(this.identity,values,cb);
 	};
 	// Call find method in adapter
 	this.find = function(options, cb) {
 		return this.adapter.find(this.identity,options,cb);
+	};
+	this.findAll = function (cb) {
+		return this.adapter.find(this.identity,null,cb);
 	};
 	// Call update method in adapter
 	this.update = function(criteria, values, cb) {
