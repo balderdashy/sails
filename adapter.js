@@ -192,7 +192,7 @@ var Adapter = module.exports = function (adapter) {
 
 				// Lock acquired!
 				if (!conflict) {
-					console.log("Acquired lock :: "+newLock.id);
+					// console.log("Acquired lock :: "+newLock.id);
 					cb(err, self.unlock);
 				}
 
@@ -377,11 +377,6 @@ var Adapter = module.exports = function (adapter) {
 	adapter.transaction = function (name,cb) {
 		return self.transaction(name,cb);
 	};
-
-	// console.log("--------- ",adapter.transactionCollection);
-	// this.transactionCollection = adapter.transactionCollection;
-	// adapter.transactionCollection = this.transactionCollection)
-	// this.transactionCollection = adapter.transactionCollection || this.transactionCollection;
 	
 
 	// Bind adapter methods to self

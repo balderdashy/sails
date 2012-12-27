@@ -190,7 +190,6 @@ var adapter = module.exports = {
 		var dataKey = this.config.dataPrefix+collectionName;
 		var data = this.db.get(dataKey);
 
-		console.log(cb,"\n\n\n\nFOUND :: "+collectionName,data, "\nwith criteria",criteria,"\n\n\n\n*********\n");
 		// Query and return result set using criteria
 		cb(null,applyFilter(data,criteria));
 	},
