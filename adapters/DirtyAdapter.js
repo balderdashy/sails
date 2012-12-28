@@ -136,11 +136,13 @@ var adapter = module.exports = {
 		var self = this;
 	
 		// Ensure atomicity of creation
+		console.log("Initializing transaction (_create)");
 		this.transaction('_create',function (err, unlock) {
 			if (err) return cb(err);
 			if (!unlock) return cb('No unlock() method came back in call to transaction()');
 
 			// Auto increment fields that need it
+			console.log("Auto-incrementing...");
 			self.autoIncrement(collectionName,values,function (err,values) {
 				if (err) { unlock(); return cb(err); }
 
@@ -166,8 +168,10 @@ var adapter = module.exports = {
 					self.db.set(dataKey,data,function (err) {
 						if (err) { unlock(); return cb(err); }
 
-						unlock();
-						cb(err,values);
+						// Wait until unlock() is complete before triggering callback
+						unlock(function() {
+							cb(err,values);
+						});
 					});
 				});
 			});
@@ -291,93 +295,6 @@ var adapter = module.exports = {
 		});
 	},
 
-
-	// 2PL
-	// Lock access to this collection or a subset of it
-	// (assume this is a 'write' lock)
-	// TODO: Smarter locking (i.e. don't always lock the entire collection)
-	lock: function (collectionName, criteria, cb) {
-		// Allow criteria argument to be omitted
-		if (_.isFunction(criteria)) {
-			cb = criteria;
-			criteria = null;
-		}
-
-		var self = this;
-		var commitLogKey = this.config.lockPrefix+collectionName;
-		var locks = this.db.get(commitLogKey);
-		locks = locks || [];
-
-
-		// Generate unique lock and update commit log as if lock was acquired
-		var newLock = {
-			id: uuid.v4(), 
-			type: 'write',
-			timestamp: epoch(),
-			cb: cb
-		};
-		locks.push(newLock);
-
-		// Write commit log to disc
-		this.db.set(commitLogKey,locks,function (err) {
-			if (err) return cb(err);
-
-			// Verify that lock was successfully acquired
-			// (i.e. no other locks w/ overlapping criteria exist)
-			var conflict = false;
-			locks = self.db.get(commitLogKey);
-			_.each(locks,function (entry) {
-
-				// If a conflict IS found, respect the oldest
-				// (the conflict-causer is responsible for cleaning up his entry)
-				if (entry.id !== newLock.id && 
-					entry.timestamp <= newLock.timestamp) conflict = true;
-
-				// Otherwise, other lock is older-- ignore it
-			});
-
-			// Lock acquired!
-			if (!conflict) {
-				self.log("Acquired lock :: "+newLock.id);
-				cb();
-			}
-
-			// Otherwise, get in line
-			// In other words, do nothing-- 
-			// unlock() will grant lock request in order it was received
-		});
-	},
-
-	unlock: function (collectionName, criteria, cb) {
-		// Allow criteria argument to be omitted
-		if (_.isFunction(criteria)) {
-			cb = criteria;
-			criteria = null;
-		}
-
-		var self = this;
-		var commitLogKey = this.config.lockPrefix+collectionName;
-		var locks = this.db.get(commitLogKey);
-		locks = locks || [];
-
-		// Guess current lock by grabbing the oldest
-		// (this will only work if unlock() is used inside of a transaction)
-		var currentLock = getOldest(locks);
-		if (!currentLock) return cb('Trying to unlock, but no lock exists!');
-		
-		// Remove currentLock
-		locks = _.without(locks,currentLock);
-		this.db.set(commitLogKey,locks,function (err) {
-			// Trigger unlock's callback
-			if (err) return cb(err);
-			else cb();
-
-			// Now allow the next user in line to acquire the lock (trigger the NEW oldest lock's callback)
-			// This marks the end of the previous transaction
-			var nextInLine = getOldest(locks);
-			nextInLine && nextInLine.cb();
-		});
-	},
 
 	// Identity is here to facilitate unit testing
 	// (this is optional and normally automatically populated based on filename)

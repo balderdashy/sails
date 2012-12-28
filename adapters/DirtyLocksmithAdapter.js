@@ -1,6 +1,16 @@
 // Dependencies
 var _ = require('underscore');
 
+// ******************************************
+// Poor man's auto-increment
+// ******************************************
+// In production, the transaction database should be set to something else 
+// with true, database-side auto-increment capabilities
+// This in-memory auto-increment will not scale to a multi-instance / cluster setup.
+// NOTE: you can't use an adapter which depends on transactions (i.e. Dirty)
+// ******************************************
+var aiCounter = 1;
+
 /*---------------------
 	:: DirtyLocksmith
 	-> adapter
@@ -23,6 +33,14 @@ module.exports = _.extend({},require('./DirtyAdapter'),{
 		var dataKey = this.config.dataPrefix + collectionName;
 		var data = this.db.get(dataKey);
 		var self = this;
+
+		// ******************************************
+		// Poor man's auto-increment
+		// (see note above)
+		// ******************************************
+		values.id = aiCounter;
+		aiCounter++;
+		// ******************************************
 
 		// Create new model
 		// (if data collection doesn't exist yet, create it)

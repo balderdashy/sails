@@ -167,11 +167,12 @@ var Adapter = module.exports = function(adapter) {
 
 			// Generate unique lock
 			var newLock = {
-				id: uuid.v4(),
+				uuid: uuid.v4(),
 				name: transactionName,
 				timestamp: epoch(),
 				cb: cb
 			};
+			console.log("Generating lock "+newLock.uuid+" ("+transactionName+")");
 
 			// write new lock to commit log
 			this.transactionCollection.create(newLock, function(err) {
@@ -190,12 +191,21 @@ var Adapter = module.exports = function(adapter) {
 
 						// If a conflict IS found, respect the oldest
 						// (the conflict-causer is responsible for cleaning up his entry-- ignore it!)
-						if(entry.name === newLock.name && entry.id !== newLock.id && entry.timestamp <= newLock.timestamp) conflict = true;
+						if(entry.name === newLock.name && 
+							entry.uuid !== newLock.uuid && 
+							true && //entry.timestamp <= newLock.timestamp && 
+							entry.id < newLock.id) conflict = entry;
 					});
 
 					// If there are no conflicts, the lock is acquired!
 					if(!conflict) {
 						self.lock(newLock, cb);
+					}
+					else {
+						console.log("************ Conflict encountered:: lock already exists for that transaction!!");
+						console.log("MY LOCK:: transaction: "+newLock.name," uuid: "+newLock.uuid, "timestamp: ",newLock.timestamp);
+						console.log("CONFLICTING LOCK:: transaction: "+conflict.name," uuid: "+conflict.uuid, "timestamp: ",conflict.timestamp);
+						console.log("***************");
 					}
 
 					// Otherwise, get in line
@@ -207,6 +217,7 @@ var Adapter = module.exports = function(adapter) {
 
 		this.lock = function(newLock, cb) {
 			var self = this;
+			console.log("====> Lock acquired "+newLock.uuid+" ("+newLock.name+")");
 
 			var warningTimer = setTimeout(function() {
 				console.error("Transaction :: " + newLock.name + " is taking an abnormally long time (> " + self.config.transactionWarningTimer + "ms)");
@@ -214,35 +225,36 @@ var Adapter = module.exports = function(adapter) {
 
 			cb(null, function unlock(cb) {
 				clearTimeout(warningTimer);
-				self.unlock(newLock.id, newLock.name, cb);
+				self.unlock(newLock.uuid, newLock.name, cb);
 			});
 		};
 
 
-		this.unlock = function(id, transactionName, cb) {
+		this.unlock = function(uuid, transactionName, cb) {
 			var self = this;
+			console.log("Releasing lock "+uuid+" ("+transactionName+")");
 
 			// Remove current lock
 			self.transactionCollection.destroy({
-				id: id
+				uuid: uuid
 			}, function(err) {
 				if(err) return cb && cb(err);
+				console.log("<≠≠≠≠≠ Lock released :: "+uuid+" ("+transactionName+")");
 
 				self.transactionCollection.findAll(function(err, locks) {
 					if(err) return cb && cb(err);
 
+					// Determine the next user in line (oldest lock w/ the proper transactionName)
+					var nextInLine = getNextLock(locks,transactionName);
+					nextInLine ? console.log("Preparing to hand off lock to "+nextInLine.uuid+" ("+nextInLine.name+")") : console.log("No locks remaining !!!");
+					
 					// Trigger unlock's callback if specified
 					cb && cb();
-
-					// Now allow the next user in line to acquire the lock (trigger the NEW oldest lock's callback)
+					
+					// Now allow the nextInLine lock to be acquired
 					// This marks the end of the previous transaction
-					// nextInLine && nextInLine.cb && nextInLine.cb(function unlock (cb) {
-					// 	clearTimeout(warningTimer);
-					// 	self.unlock(nextInLine.id,nextInLine.name,cb);
-					// });
-					// ?????
-					var nextInLine = getNextLock(locks,transactionName);
 					nextInLine && self.lock(nextInLine, nextInLine.cb);
+
 				});
 			});
 		};
@@ -253,8 +265,6 @@ var Adapter = module.exports = function(adapter) {
 		//	this function wouldn't be necessary if we could....
 		//	TODO:  call find() with the [currently unfinished] ORDER option
 		// ************************************************************
-
-
 		function getNextLock(locks, transactionName) {
 			var nextLock;
 			_.each(locks, function(lock) {
@@ -267,62 +277,6 @@ var Adapter = module.exports = function(adapter) {
 			return nextLock;
 		}
 
-		// HAX
-		// this.lock = this.unlock = function (collectionName, criteria, cb) {
-		// 	if (_.isFunction(criteria)) {
-		// 		cb = criteria;
-		// 		criteria = null;
-		// 	}
-		// 	cb && cb();
-		// };
-
-		// // Begin an atomic transaction
-		// // lock models in collection which fit criteria (if criteria is null, lock all)
-		// this.lock = function (collectionName, criteria, cb) { 
-		// 	// Allow criteria argument to be omitted
-		// 	if (_.isFunction(criteria)) {
-		// 		cb = criteria;
-		// 		criteria = null;
-		// 	}
-		// 	// **************************************
-		// 	// NAIVE SOLUTION
-		// 	// (only the first roommate to notice gets the milk; the rest wait as soon as they see the note)
-		// 	// No need to check the fridge!  Just start writing your note.
-		// 	// TODO: Generate identifier for this transaction (use collection name to start with, 
-		// 		// but better yet, boil down criteria to essentials to allow for more concurrent access)
-		// 	// TODO: Create entry in transaction DB (write a note on the fridge and check it)
-		// 	// TODO: Check the transaction db (CHECK THE DAMN FRIDGE IN CASE ONE OF YOUR ROOMMATES WROTE THE NOTE WHILE YOU WERE BUSY)
-		// 	// TODO: If > 1 entry exists in the transaction db, subscribe to mutex queue to be notified later
-		// 	// (if you see a note already on the fridge, get in line to be notified when roommate gets home)
-		// 	// TODO: Otherwise, trigger callback!	QA immediately (you're good to go get the milk)
-		// 	// **************************************
-		// 	// AGRESSIVE SOLUTION
-		// 	// (all roommates try to go get the milk, but the first person to get the milk prevents others from putting it in the fridge)
-		// 	// TODO: Ask locksmith for model clone
-		// 	// TODO: Pass model clone in callback
-		// 	adapter.lock ? adapter.lock(collectionName,criteria,cb) : cb();
-		// };
-		// // Commit and end an atomic transaction
-		// // unlock models in collection which fit criteria (if criteria is null, unlock all)
-		// this.unlock = function (collectionName, criteria, cb) { 
-		// 	// Allow criteria argument to be omitted
-		// 	if (_.isFunction(criteria)) {
-		// 		cb = criteria;
-		// 		criteria = null;
-		// 	}
-		// 	// **************************************
-		// 	// NAIVE SOLUTION
-		// 	// (only the first roommate to notice gets the milk; the rest wait as soon as they see the note)
-		// 	// TODO: Remove entry from transaction db (Remove your note from fridge)
-		// 	// TODO: Callback can be triggered immediately, since you're sure the note will be removed
-		// 	adapter.unlock ? adapter.unlock(collectionName,criteria,cb) : cb();
-		// };
-		// this.status = function (collectionName, cb) {
-		// 	adapter.status ? adapter.status(collectionName,cb) : cb();
-		// };
-		// this.autoIncrement = function (collectionName, values,cb) {
-		// 	adapter.autoIncrement ? adapter.autoIncrement(collectionName, values, cb) : cb();
-		// };
 		// If @collectionName and @otherCollectionName are both using this adapter, do a more efficient remote join.
 		// (By default, an inner join, but right and left outer joins are also supported.)
 		this.join = function(collectionName, otherCollectionName, key, foreignKey, left, right, cb) {
