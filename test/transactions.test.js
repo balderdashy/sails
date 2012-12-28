@@ -37,11 +37,20 @@ describe('transactions', function() {
 			var orderingTest = [];
 
 			// The callback should not fire until the lock is released
-			User.transaction('test', function(err,unlock) {
-				testAppendLock(err);
+			User.transaction('test', function(err,unlock1) {
+				if (err) return done(err);
+				if (!unlock1) throw new Error("No unlock() method provided!");
 
-				User.transaction('test',function (err,unlock) {
-					testAppendLock(err);
+				testAppendLock();
+
+				User.transaction('test',function (err,unlock2) {
+					if (err) return done(err);
+					if (!unlock2) throw new Error("No unlock() method provided!");
+
+					testAppendLock();
+					
+					// Release lock so other tests can use the 'test' transaction
+					unlock2();
 
 					if(	_.isEqual(orderingTest,['lock','unlock','lock'])) done();
 					else {
@@ -51,7 +60,7 @@ describe('transactions', function() {
 				});
 
 				// Set timeout to release the lock after a 1/20 of a second
-				setTimeout(function() {unlock(testAppendUnlock); }, 50);
+				setTimeout(function() {unlock1(testAppendUnlock); }, 50);
 			});
 
 			// Note that other code can still run while the semaphore remains gated
