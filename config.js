@@ -1,6 +1,11 @@
 // Global adapter defaults
 module.exports = {
 
+	// This uses an auto-incrementing integer attirbute (id) as the primary key for the collection
+	// This is a common pattern and best-practice in relational and non-relational databases,
+	// since it eliminates confusion when more than one developer hops on the project
+	defaultPK: true,
+
 	// Automatically define updatedAt field in schema and refresh with the current timestamp when models are updated
 	updatedAt: true,
 

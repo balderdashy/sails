@@ -50,12 +50,15 @@ module.exports = function(adapter) {
 		// If id is not defined, add it
 		// TODO: Make this check for ANY primary key
 		// TODO: Make this disableable in the config
-		if(!attributes.id) {
+		if(this.config.defaultPK && !attributes.id) {
 			attributes.id = {
 				type: 'INTEGER',
-				primaryKey: true,
 				autoIncrement: true,
-				'default': 'AUTO_INCREMENT'
+				'default': 'AUTO_INCREMENT',
+				constraints: {
+					unique: true,
+					primaryKey: true
+				}
 			};
 		}
 
