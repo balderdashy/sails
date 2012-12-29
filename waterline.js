@@ -30,6 +30,7 @@ module.exports = function (options,cb) {
 	// Merge passed-in adapters with default adapters
 	adapters = _.extend(builtInAdapters,adapters);
 
+
 	// Error aggregator obj
 	// var errs;
 
@@ -38,15 +39,15 @@ module.exports = function (options,cb) {
 	$$(async).forEach(_.keys(adapters),prepareAdapter);
 
 	// Instantiate special collections
-	var transCol = $$(instantiateCollection)(config.transactionCollection);
+	var transactionsDb = $$(instantiateCollection)(config.transactionCollection);
 
-	$$(function (err,transCol,xcb) {
-		// Attach transaction collection to each adapter
+	// Attach transaction collection to each adapter
+	$$(function (err,transactionsDb,xcb) {
 		_.each(adapters,function(adapter,adapterName){
-			adapters[adapterName].transactionCollection = transCol;
+			adapters[adapterName].transactionCollection = transactionsDb;
 		});
 		xcb();
-	})(transCol);
+	})(transactionsDb);
 	
 
 	// TODO: in sails, in the same way ---->
@@ -57,17 +58,42 @@ module.exports = function (options,cb) {
 	// then associate each collection with its adapter and sync its schema
 	$$(async).forEach(_.keys(collections),prepareCollection);
 
+	// Now that the others are instantiated, add transaction collection to list
+	// (this is so events like teardownCollection() fire properly)
+	$$(function (err,transactionsDb,xcb) {
+		collections[transactionsDb.identity] = transactionsDb;
+		xcb();
+	})(transactionsDb);
 
-	// Attach transaction collection to each adapter
+
+	// Fire teardown() on process-end and make it public
+	// (this logic lives here to avoid assigning multiple events in each adapter and collection)
 	$$(function (xcb) {
 
-		// Pass instantiated adapters and models
+		// Make teardown() public
+		module.exports.teardown = teardown;
+
+		// When process ends, fire teardown
+		process.on('SIGINT', process.exit);
+		process.on('SIGTERM', process.exit);
+		process.on('exit', function() {
+			teardown({
+				adapters: adapters,
+				collections: collections
+			});
+		});
+
+		xcb();
+	})();
+
+	
+	// Pass instantiated adapters and models
+	$$(function (xcb) {
 		cb(null,{
 			adapters: adapters,
 			collections: collections
 		});
 
-		// Just for cleanliness/sanity
 		xcb();
 	})();
 
@@ -117,6 +143,34 @@ module.exports = function (options,cb) {
 		collection = new Collection(collection);
 
 		// Synchronize schema with data source
-		collection.sync(function (err){ cb(err,collection); });
+		console.log("Syncing ::",collection.identity);
+		collection.sync(function (err){ 
+			if (err) throw err;
+			console.log("SYNC successful");
+			cb(err,collection); 
+		});
 	}
+
 };
+
+// Tear down all open waterline adapters and collections
+function teardown (options,cb) {
+	cb = cb || function(){};
+
+	async.auto({
+
+		// Fire each adapter's teardown event
+		adapters: function (cb) {
+			async.forEach(options.adapters,function (adapter) {
+				adapter.teardown();
+			},cb);
+		},
+
+		// Fire each collection's teardown event
+		collections: function (cb) {
+			async.forEach(options.collections,function (collection) {
+				collection.adapter.teardownCollection(collection.identity);
+			},cb);
+		}
+	}, cb);
+}

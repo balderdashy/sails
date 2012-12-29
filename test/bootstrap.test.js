@@ -1,13 +1,19 @@
+// Keep a reference to waterline to use for teardown()
+var waterline = require("../waterline.js");
+var adapters, collections;
+
 var _ = require('underscore');
 var parley = require('parley');
 var assert = require("assert");
-var waterline = require('../waterline');
 var collections = require('../buildDictionary.js')(__dirname + '/collections', /(.+)\.js$/);
+
 
 module.exports = {
 
 	// Initialize waterline
 	init: initialize,
+
+	teardown: teardown,
 
 	// Override every collection's adapter with the specified adapter
 	// Then return the init() method
@@ -22,11 +28,25 @@ module.exports = {
 };
 
 // Initialize waterline
-function initialize (exit) {
-	require("../waterline.js")({
+function initialize (done) {
+	console.log("Bootstrapping waterline for testing...");
+	waterline({
 		collections: collections,
 		log: blackhole
-	}, exit);
+	}, function (err, waterlineData){
+		console.log("bootstrap successful!");
+		adapters = waterlineData.adapters;
+		collections = waterlineData.collections;
+		done(err);
+	});
+}
+
+// Tear down adapters and collections
+function teardown (done) {
+	waterline.teardown({
+		adapters: adapters,
+		collections: collections
+	},done);
 }
 
 // Use silent logger for testing

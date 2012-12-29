@@ -86,22 +86,34 @@ describe('transactions', function() {
 
 		it('should support 10 simultaneous dummy transactions', function(done) {
 			var constellations = ['Andromeda', 'Antlia', 'Apus', 'Aquarius', 'Aquila', 'Ara', 'Aries', 'Auriga', 'Boötes', 'Caelum'];
-			async.forEach(constellations, function(constellation, cb) {
+			dummyTransactionTest(constellations,'constellation',done);
+		});
+
+		it('should support 50 simultaneous dummy transactions', function(done) {
+			dummyTransactionTest(_.range(50),'number test 1',done);
+		});
+
+		it('should support 200 simultaneous dummy transactions', function(done) {
+			dummyTransactionTest(_.range(200),'number test 2',done);
+		});
+
+		function dummyTransactionTest(items,type,done) {
+			async.forEach(items, function(constellation, cb) {
 				User.transaction('test_create',function(err,unlock) {
 					User.create({
 						name: constellation,
-						type: 'constellation'
+						type: type
 					},function(err) {
-						// Wait a bit to introduce an element of choas
+						// Wait a short moment to introduce an element of choas
 						setTimeout(function() {
 							unlock();
 							cb();
-						},Math.round(Math.random()) * 150);
+						},Math.round(Math.random())*5);
 					});
 				});
 			}, function(err) {
-				User.find({ type: 'constellation' },function (err,users) {
-					if(users.length != 10) {
+				User.find({ type: type },function (err,users) {
+					if(users.length != items.length) {
 						console.error("Users: ");
 						console.error(users);
 						return done('Proper users were not created!');
@@ -109,10 +121,13 @@ describe('transactions', function() {
 					done();
 				});
 			});
-		});
+		}
 
 
 		// it ('should timeout if the transaction takes a long time', function (done) {});
 		// it('should not be able to release a lock more than once', function (done) {});
 	});
+
+	// When this suite of tests is complete, shut down waterline to allow other tests to run without conflicts
+	after(require('./bootstrap.test.js').teardown);
 });

@@ -107,5 +107,20 @@ describe('transactional CRUD operations :: ', function() {
 			});
 		});
 
+		// Transactional CRUD
+
+		// it ('should handle 10 simultaneous findOrCreate() requests appropriately ',function (done){})
+		// it ('should handle 10 simultaneous updateOrCreate() requests appropriately ',function (done){})
+		// it ('should handle 10 simultaneous findAndUpdate() requests appropriately ',function (done){})
+		// it ('should handle 10 simultaneous findAndDestroy() requests appropriately ',function (done){})
+
+
+		// And just in case the adapter being tested requires these are transactions
+		// it ('should handle 10 simultaneous update() requests appropriately ',function (done){})
+		// it ('should handle 10 simultaneous destroy() requests appropriately ',function (done){})
+		
 	});
+
+	// When this suite of tests is complete, shut down waterline to allow other tests to run without conflicts
+	after(require('./bootstrap.test.js').teardown);
 });

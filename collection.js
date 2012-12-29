@@ -3,13 +3,21 @@ var parley = require('parley');
 var util = require('sails-util');
 
 var Collection = module.exports = function(definition) {
+	var self = this;
 
-	// Sync depending on scheme
-	// (default to alter)
-	definition.scheme = definition.scheme || 'alter';
-	switch (definition.scheme) {
-		case "drop"	: definition.sync = _.bind(definition.adapter.sync.drop, definition.adapter, definition); break;
-		case "alter": definition.sync = _.bind(definition.adapter.sync.alter, definition.adapter, definition); break;
+	// ********************************************************************
+	// Configure collection-specific configuration
+	// Copy over only the methods from the adapter that you need, and modify if necessary
+	// ********************************************************************
+
+	// Set synchronization scheme based on persistence
+	// (default to persistent: true)
+	definition.persistent = definition.persistent === false ? false : true;
+	if (definition.persistent) {
+		definition.sync = _.bind(definition.adapter.sync.drop, definition.adapter, definition);
+	}
+	else if (!definition.persistent) {
+		definition.sync = _.bind(definition.adapter.sync.alter, definition.adapter, definition);
 	}
 	
 	// Absorb definition methods
@@ -25,6 +33,9 @@ var Collection = module.exports = function(definition) {
 	};
 	// Call find method in adapter
 	this.find = function(options, cb) {
+		if (_.isFunction(options) || !options) {
+			throw new Error('find(criteria,callback) requires a criteria parameter.  To get all models in a collection, use findAll()');
+		}
 		return this.adapter.find(this.identity,options,cb);
 	};
 	this.findAll = function (cb) {
@@ -48,16 +59,6 @@ var Collection = module.exports = function(definition) {
 	this.findAndDestroy = function (criteria, cb) { 
 		return this.adapter.findAndDestroy(this.identity, criteria, cb); 
 	};
-
-	// this.lock = function(criteria, cb) {
-	// 	return this.adapter.lock(this.identity,criteria,cb);
-	// };
-	// this.unlock = function(criteria, cb) {
-	// 	return this.adapter.unlock(this.identity,criteria,cb);
-	// };
-	// this.cancel = function(criteria, cb) {
-	// 	return this.adapter.cancel(this.identity,criteria,cb);
-	// };
 
 	this.transaction = function (name, cb) {
 		return this.adapter.transaction(name, cb);

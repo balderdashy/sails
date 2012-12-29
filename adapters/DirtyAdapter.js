@@ -29,9 +29,6 @@ var adapter = module.exports = {
 
 		// Attributes are case insensitive by default
 		// attributesCaseSensitive: false,
-		// What persistence scheme is being used?  
-		// Is the db dropped & recreated each time or persisted to disc?
-		persistent: false,
 
 		// File path for disk file output (in persistent mode)
 		dbFilePath: './.waterline/dirty.db',
@@ -48,10 +45,17 @@ var adapter = module.exports = {
 		var my = this;
 
 		if(this.config.persistent) {
+
 			// Check that dbFilePath file exists and build tree as necessary
 			require('fs-extra').touch(this.config.dbFilePath, function(err) {
 				if(err) return cb(err);
 				my.db = new(dirty.Dirty)(my.config.dbFilePath);
+
+				// Before doing anything else, read the auto-increment values
+				// for each known collection and stuff them in memory
+				// Get starting auto-increment value
+				// my.getAutoIncrement('')
+
 				afterwards();
 			});
 		} else {
@@ -60,6 +64,7 @@ var adapter = module.exports = {
 		}
 
 		function afterwards() {
+
 			// Make logger easily accessible
 			my.log = my.config.log;
 
@@ -70,44 +75,63 @@ var adapter = module.exports = {
 		}
 	},
 
-	// Tear down any remaining connections to the underlying data model
-	teardown: function(cb) {
-		this.db = null;
-		cb && cb();
+	// Logic to handle flushing collection data to disk before the adapter shuts down
+	teardownCollection: function(collectionName, cb) {
+		var my = this;
+		
+		// Always go ahead and write the new auto-increment to disc, even though it will be wrong sometimes
+		// (this is done so that the auto-increment counter can be "ressurected" when the adapter is restarted from disk)
+		var schema = _.extend(this.db.get(this.config.schemaPrefix + collectionName),{
+			autoIncrement: statusDb[collectionName].autoIncrement
+		});
+		this.db.set(this.config.schemaPrefix + collectionName, schema, function (err) {
+			my.db = null;
+			cb && cb(err);
+		});
 	},
 
 
 	// Fetch the schema for a collection
-	describe: function(collectionName, cb) {
-		var schema, err;
-		try {
-			schema = this.db.get(this.config.schemaPrefix + collectionName);
-		} catch(e) {
-			err = e;
-		}
-		this.log(" DESCRIBING :: " + collectionName, {
-			err: err,
-			schema: schema
+	// (contains attributes and autoIncrement value)
+	describe: function(collectionName, cb) {	
+		this.log(" DESCRIBING :: " + collectionName);
+		var schema = this.db.get(this.config.schemaPrefix + collectionName);
+		var attributes = schema && schema.attributes;
+		return cb(null, attributes);
+	},
+
+	// Fetch the current auto-increment value
+	getAutoIncrement: function (collectionName,cb) {
+		var schema = this.db.get(this.config.schemaPrefix + collectionName);
+		return cb(err,schema.autoIncrement);
+	},
+
+	// Persist the current auto-increment value
+	setAutoIncrement: function (collectionName,cb) {
+		this.db.set(this.config.schemaPrefix + collectionName, {
+
 		});
-		return cb(err, schema);
+		return cb(err,schema.autoIncrement);
 	},
 
 	// Create a new collection
-	define: function(collectionName, schema, cb) {
+	define: function(collectionName, attributes, cb) {
 		this.log(" DEFINING " + collectionName, {
 			as: schema
 		});
 		var self = this;
 
+		var schema = {
+			attributes: _.clone(attributes),
+			autoIncrement: 1
+		};
+
 		// Write schema and status objects
 		return self.db.set(this.config.schemaPrefix + collectionName, schema, function(err) {
 			if(err) return cb(err);
 
-			// Set auto-increment for this collection
-			statusDb[collectionName] = {
-				autoIncrement: 1
-			};
-
+			// Set in-memory schema for this collection
+			statusDb[collectionName] = schema;
 			cb();
 		});
 	},
@@ -125,11 +149,9 @@ var adapter = module.exports = {
 	// Extend the schema for an existing collection
 	alter: function(collectionName, newAttrs, cb) {
 		this.log(" ALTERING " + collectionName);
-		this.db.describe(collectionName, function(e0, existingSchema) {
-			if(err) return cb(collectionName + " does not exist!");
-			var schema = _.extend(existingSchema, newAttrs);
-			return this.db.set(this.config.schemaPrefix + collectionName, schema, cb);
-		});
+		var schema = this.db.get(this.config.schemaPrefix + collectionName);
+		schema = _.extend(schema.attributes, newAttrs);
+		return this.db.set(this.config.schemaPrefix + collectionName, schema, cb);
 	},
 
 
@@ -143,32 +165,37 @@ var adapter = module.exports = {
 		var self = this;
 
 
+		// Lookup schema & status so we know all of the attribute names and the current auto-increment value
+		var schema = this.db.get(this.config.schemaPrefix + collectionName);
+
 		// Auto increment fields that need it
-		// console.log("Auto-incrementing...");
-		values = self.autoIncrement(collectionName, values);
+		doAutoIncrement(collectionName, schema.attributes, values, this, function (err, values) {
+			if (err) return cb(err);
 
-		// Verify constraints using Anchor
-		// TODO: verify constraints
-		// Populate default values
-		self.describe(collectionName, function(err, description) {
-			if(err) return cb(err);
+			// Verify constraints using Anchor
+			// TODO: verify constraints
+			// Populate default values
+			self.describe(collectionName, function(err, attributes) {
+				if(err) return cb(err);
 
-			// Add updatedAt and createdAt
-			if(description.createdAt) values.createdAt = new Date();
-			if(description.updatedAt) values.updatedAt = new Date();
+				// Add updatedAt and createdAt
+				// TODO: check config that this is the requested behavior
+				// if(this.config.createdAt && !definition.createdAt) definition
+				if(attributes.createdAt) values.createdAt = new Date();
+				if(attributes.updatedAt) values.updatedAt = new Date();
 
-			// TODO: add other fields with default values
-			// Create new model
-			// (if data collection doesn't exist yet, create it)
-			data = data || [];
-			data.push(values);
+				// TODO: add other fields with default values
+				// Create new model
+				// (if data collection doesn't exist yet, create it)
+				data = data || [];
+				data.push(values);
 
-			// Replace data collection and go back
-			self.db.set(dataKey, data, function(err) {
-				return cb(err, values);
+				// Replace data collection and go back
+				self.db.set(dataKey, data, function(err) {
+					return cb(err, values);
+				});
 			});
 		});
-
 	},
 
 	// Find one or more models from the collection
@@ -262,26 +289,6 @@ var adapter = module.exports = {
 	},
 
 
-	// Look for auto-increment fields, increment counters accordingly, and return refined values
-	autoIncrement: function(collectionName, values) {
-		// Lookup schema & status so we know all of the attribute names and the current auto-increment value
-		var schema = this.db.get(this.config.schemaPrefix + collectionName);
-		var self = this;
-
-		// increment AI fields in values set
-		var keys = _.keys(_.extend({}, schema, values));
-		_.each(keys, function(attrName) {
-			if(_.isObject(schema[attrName]) && schema[attrName].autoIncrement) {
-				values[attrName] = statusDb[collectionName].autoIncrement;
-
-				// Then, increment the auto-increment counter for this collection
-				statusDb[collectionName].autoIncrement++;
-			}
-		});
-
-		return values;
-	},
-
 
 	// Identity is here to facilitate unit testing
 	// (this is optional and normally automatically populated based on filename)
@@ -293,8 +300,29 @@ var adapter = module.exports = {
 //////////////                 //////////////////////////////////////////
 ////////////// Private Methods //////////////////////////////////////////
 //////////////                 //////////////////////////////////////////
-// Run criteria query against data aset
 
+// Look for auto-increment field, increment counter accordingly, and return refined value set
+function doAutoIncrement (collectionName, attributes, values, ctx, cb) {
+
+	// Determine the attribute names which will be included in the created object
+	var attrNames = _.keys(_.extend({}, attributes, values));
+
+	// increment AI fields in values set
+	_.each(attrNames, function(attrName) {
+		if(_.isObject(attributes[attrName]) && attributes[attrName].autoIncrement) {
+			values[attrName] = statusDb[collectionName].autoIncrement;
+
+			// Then, increment the auto-increment counter for this collection
+			statusDb[collectionName].autoIncrement++;
+		}
+	});
+
+	// Return complete values set w/ auto-incremented data
+	return cb(null,values);
+}
+
+
+// Run criteria query against data aset
 function applyFilter(data, criteria) {
 	if(criteria && data) {
 		return _.filter(data, function(model) {

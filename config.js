@@ -19,5 +19,10 @@ module.exports = {
 	// ms to wait before timing out a transaction and calling unlock() with an error
 	// (App can then handle the logic to undo the transaction)
 	// TODO: Make this work
-	transactionTimeout: 15000
+	transactionTimeout: 15000,
+
+	// What persistence scheme is being used?  
+	// If false, the db will be dropped & recreated each time
+	// If true, the db will be persisted to disk
+	persistent: true
 };
