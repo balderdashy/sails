@@ -10,6 +10,7 @@ module.exports = {
 	// Define a collection to use for app-level transactions
 	transactionCollection: {
 		adapter: 'dirty',
+		persistent: false,
 		identity: '___transaction'
 	},
 
@@ -19,10 +20,5 @@ module.exports = {
 	// ms to wait before timing out a transaction and calling unlock() with an error
 	// (App can then handle the logic to undo the transaction)
 	// TODO: Make this work
-	transactionTimeout: 15000,
-
-	// What persistence scheme is being used?  
-	// If false, the db will be dropped & recreated each time
-	// If true, the db will be persisted to disk
-	persistent: true
+	transactionTimeout: 15000
 };

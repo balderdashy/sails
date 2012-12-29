@@ -6,8 +6,10 @@
 // Each CRUD test will set the adapter property to match the adapter being tested
 // exports.adapter = 'dirty';
 
-// exports.scheme = 'alter';
+// Models are set to persistent: true by default
+exports.persistent = true;
 
+// Attributes for the user data model
 exports.attributes = {
 	name	: 'STRING',
 	email	: 'STRING',

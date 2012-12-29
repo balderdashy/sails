@@ -28,12 +28,14 @@ module.exports = function(adapter) {
 	// Teardown is fired once-per-adapter
 	// (i.e. tear down any remaining connections to the underlying data model)
 	this.teardown = function(cb) {
+		console.log("----- teardown -----");
 		adapter.teardown ? adapter.teardown(cb) : (cb && cb());
 	}; 
 
 	// teardownCollection is fired once-per-collection
 	// (i.e. flush data to disk before the adapter shuts down)
 	this.teardownCollection = function(collectionName,cb) {
+		console.log("----- teardownCollection -----");
 		adapter.teardownCollection ? adapter.teardownCollection(collectionName, cb) : (cb && cb());
 	};
 
@@ -287,16 +289,15 @@ module.exports = function(adapter) {
 			console.log("DROP", collection.identity);
 			this.drop(collection.identity, function(err, data) {
 				if(err) cb(err);
-				else self.define(collection.identity, collection, function(err, r) {
-					console.log("defined", collection.identity, "as ", r);
-					cb(err, r);
-				});
+				else self.define(collection.identity, collection, cb);
 			});
 		},
 
 		// Alter schema
 		alter: function(collection, cb) {
 			var self = this;
+
+			console.log("\n\n\n****** ALTER", collection.identity);
 
 			// Check that collection exists-- if it doesn't go ahead and add it and get out
 			this.describe(collection.identity, function(err, data) {
@@ -328,6 +329,9 @@ module.exports = function(adapter) {
 	adapter.transaction = function(name, cb) {
 		return self.transaction(name, cb);
 	};
+
+	adapter.teardown = adapter.teardown || self.teardown;
+	adapter.teardownCollection = adapter.teardownCollection || self.teardownCollection;
 
 
 	// Bind adapter methods to self

@@ -27,6 +27,9 @@ var adapter = module.exports = {
 
 	config: {
 
+		// If inMemory is true, all data will be destroyed when the server stops
+		inMemory: true,
+
 		// Attributes are case insensitive by default
 		// attributesCaseSensitive: false,
 
@@ -44,17 +47,12 @@ var adapter = module.exports = {
 	initialize: function(cb) {
 		var my = this;
 
-		if(this.config.persistent) {
+		if(! this.config.inMemory) {
 
 			// Check that dbFilePath file exists and build tree as necessary
 			require('fs-extra').touch(this.config.dbFilePath, function(err) {
 				if(err) return cb(err);
 				my.db = new(dirty.Dirty)(my.config.dbFilePath);
-
-				// Before doing anything else, read the auto-increment values
-				// for each known collection and stuff them in memory
-				// Get starting auto-increment value
-				// my.getAutoIncrement('')
 
 				afterwards();
 			});
@@ -81,6 +79,7 @@ var adapter = module.exports = {
 		
 		// Always go ahead and write the new auto-increment to disc, even though it will be wrong sometimes
 		// (this is done so that the auto-increment counter can be "ressurected" when the adapter is restarted from disk)
+		console.log("******** Wrote to "+collectionName+":: AI => ", statusDb[collectionName].autoIncrement);
 		var schema = _.extend(this.db.get(this.config.schemaPrefix + collectionName),{
 			autoIncrement: statusDb[collectionName].autoIncrement
 		});

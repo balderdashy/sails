@@ -10,13 +10,15 @@ var Collection = module.exports = function(definition) {
 	// Copy over only the methods from the adapter that you need, and modify if necessary
 	// ********************************************************************
 
-	// Set synchronization scheme based on persistence
-	// (default to persistent: true)
-	definition.persistent = definition.persistent === false ? false : true;
-	if (definition.persistent) {
+	// If persistent is false, this collection will be wiped and recreated when the server starts
+	// (defaults to true)
+	definition.persistent = !_.isUndefined(definition.persistent) ? definition.persistent : true;
+	
+
+	if (!definition.persistent) {
 		definition.sync = _.bind(definition.adapter.sync.drop, definition.adapter, definition);
 	}
-	else if (!definition.persistent) {
+	else if (definition.persistent) {
 		definition.sync = _.bind(definition.adapter.sync.alter, definition.adapter, definition);
 	}
 	

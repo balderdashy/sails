@@ -17,6 +17,10 @@ var buildDictionary = require('./buildDictionary.js');
 // Include built-in adapters
 var builtInAdapters = buildDictionary(__dirname + '/adapters', /(.+Adapter)\.js$/, /Adapter/);
 
+// Only tear down waterline once 
+// (if teardown() is called explicitly, don't tear it down when the process exits)
+var tornDown = false;
+
 /**
 * Prepare waterline to interact with adapters
 */
@@ -71,7 +75,12 @@ module.exports = function (options,cb) {
 	$$(function (xcb) {
 
 		// Make teardown() public
-		module.exports.teardown = teardown;
+		module.exports.teardown = function(options,cb) {
+			teardown({
+				adapters: adapters,
+				collections: collections
+			},cb);
+		};
 
 		// When process ends, fire teardown
 		process.on('SIGINT', process.exit);
@@ -103,7 +112,7 @@ module.exports = function (options,cb) {
 		// Pass waterline config down to adapters
 		adapters[adapterName].config = _.extend({
 			log: log
-		}, adapters[adapterName].config, config);
+		}, config, adapters[adapterName].config);
 
 		// Build actual adapter object from definition
 		// and replace the entry in the adapter dictionary
@@ -143,10 +152,8 @@ module.exports = function (options,cb) {
 		collection = new Collection(collection);
 
 		// Synchronize schema with data source
-		console.log("Syncing ::",collection.identity);
 		collection.sync(function (err){ 
 			if (err) throw err;
-			console.log("SYNC successful");
 			cb(err,collection); 
 		});
 	}
@@ -155,21 +162,27 @@ module.exports = function (options,cb) {
 
 // Tear down all open waterline adapters and collections
 function teardown (options,cb) {
+	// Only tear down once
+	if (tornDown) return cb && cb();
+	tornDown = true;
 	cb = cb || function(){};
+	
+	console.log("TEARDOWN");
 
 	async.auto({
 
 		// Fire each adapter's teardown event
 		adapters: function (cb) {
-			async.forEach(options.adapters,function (adapter) {
-				adapter.teardown();
+			async.forEach(options.adapters,function (adapter,cb) {
+				console.log(adapter);
+				adapter.teardown(cb);
 			},cb);
 		},
 
 		// Fire each collection's teardown event
 		collections: function (cb) {
-			async.forEach(options.collections,function (collection) {
-				collection.adapter.teardownCollection(collection.identity);
+			async.forEach(options.collections,function (collection,cb) {
+				collection.adapter.teardownCollection(collection.identity,cb);
 			},cb);
 		}
 	}, cb);

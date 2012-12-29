@@ -129,5 +129,5 @@ describe('transactions', function() {
 	});
 
 	// When this suite of tests is complete, shut down waterline to allow other tests to run without conflicts
-	after(require('./bootstrap.test.js').teardown);
+	after(bootstrap.teardown);
 });

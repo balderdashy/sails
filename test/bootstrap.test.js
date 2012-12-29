@@ -46,7 +46,10 @@ function teardown (done) {
 	waterline.teardown({
 		adapters: adapters,
 		collections: collections
-	},done);
+	},function (err) {
+		console.log("Tore down waterline...");
+		done(err);
+	});
 }
 
 // Use silent logger for testing
