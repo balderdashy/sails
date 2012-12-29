@@ -7,7 +7,7 @@
 // exports.adapter = 'dirty';
 
 // Models are set to persistent: true by default
-exports.persistent = true;
+exports.persistent = false;
 
 // Attributes for the user data model
 exports.attributes = {

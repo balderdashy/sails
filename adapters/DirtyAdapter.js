@@ -28,7 +28,7 @@ var adapter = module.exports = {
 	config: {
 
 		// If inMemory is true, all data will be destroyed when the server stops
-		inMemory: true,
+		inMemory: false,
 
 		// Attributes are case insensitive by default
 		// attributesCaseSensitive: false,

@@ -302,6 +302,7 @@ module.exports = function(adapter) {
 		// Drop and recreate collection
 		drop: function(collection, cb) {
 			var self = this;
+			console.log("DROP");
 			this.drop(collection.identity, function(err, data) {
 				if(err) cb(err);
 				else self.define(collection.identity, collection, cb);
@@ -311,6 +312,7 @@ module.exports = function(adapter) {
 		// Alter schema
 		alter: function(collection, cb) {
 			var self = this;
+			console.log("ALTER");
 
 			// Check that collection exists-- if it doesn't go ahead and add it and get out
 			this.describe(collection.identity, function(err, data) {

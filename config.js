@@ -13,11 +13,7 @@ module.exports = {
 	createdAt: true,
 
 	// Define a collection to use for app-level transactions
-	transactionCollection: {
-		adapter: 'dirty',
-		persistent: false,
-		identity: '___transaction'
-	},
+	transactionCollection: require('./collections/Transaction.js'),
 
 	// ms to wait before warning that a tranaction is taking too long
 	transactionWarningTimer: 2000,
