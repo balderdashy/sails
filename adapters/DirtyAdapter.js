@@ -37,10 +37,10 @@ var adapter = module.exports = {
 		dbFilePath: './.waterline/dirty.db',
 
 		// String to precede key name for schema defininitions
-		schemaPrefix: 'sails_schema_',
+		schemaPrefix: 'waterline_schema_',
 
 		// String to precede key name for actual data in collection
-		dataPrefix: 'sails_data_'
+		dataPrefix: 'waterline_data_'
 	},
 
 	// Initialize the underlying data model
