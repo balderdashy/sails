@@ -30,49 +30,80 @@ describe('transactional CRUD operations :: ', function() {
 
 		it('should create 2 users in series', function(done) {
 			async.forEach(_.range(1), function(i, cb) {
-				console.log("\n*************************\n* Creating user "+i);
 				User.create({
-					name: 'user ' + i
-				}, function(err,user) {
-					console.log("__ok__ Created User " + i+" with id "+user.id+"\n");
-					cb();
-				});
+					name: 'series_test user 0'
+				}, cb);
 			}, function(err) {
-				console.log("\n*************************\n* Creating user N");
+				if (err) return done(err);
+
 				User.create({
-					name: 'user N'
-				}, function(err,user) {
-					console.log("__ok__ Created User N with id "+user.id+"\n");
-					done(err);
+					name: 'series_test user 1'
+				}, function(err, user) {
+					if (err) return done(err);
+
+					// Now check that both users were created
+					User.find({
+						or: [{
+							name: 'series_test user 0'
+						}, {
+							name: 'series_test user 1'
+						}]
+					}, function(err, users) {
+						if(users.length != 2) {
+							console.error("Users: ");
+							console.error(users);
+							return done('Proper users were not created!');
+						} else done(err);
+					});
 				});
 			});
 		});
 
 		it('should create 2 users in parallel', function(done) {
 			async.forEach(_.range(2), function(i, cb) {
-				console.log("\n*************************\n* Creating user "+i);
 				User.create({
-					name: 'user ' + i
-				}, function(err,user) {
-					console.log("__ok__ Created User " + i+" with id "+user.id+"\n");
-					cb();
-				});
+					name: 'parallel_test user ' + i
+				}, cb);
 			}, function(err) {
-				done(err);
+				if (err) return done(err);
+
+				// Now check that both users were created
+				User.find({
+					or: [{
+						name: 'parallel_test user 0'
+					}, {
+						name: 'parallel_test user 1'
+					}]
+				}, function(err, users) {
+					if(users.length != 2) {
+						console.error("Users: ");
+						console.error(users);
+						return done('Proper users were not created!');
+					} else done(err);
+				});
 			});
 		});
 
 		it('should properly autoincrement 10 newly created users', function(done) {
 			async.forEach(_.range(10), function(i, cb) {
-				console.log("Creating user "+i);
 				User.create({
-					name: 'user' + i
-				}, function(err) {
-					console.log("Created User" + i,err);
-					cb();
-				});
+					name: 'ten_test user ' + i
+				}, cb);
 			}, function(err) {
-				done(err);
+				if (err) return done(err);
+				
+				// Now check that both users were created
+				User.find({
+					like: {
+						name: 'ten_test'
+					}
+				}, function(err, users) {
+					if(users.length != 10) {
+						console.error("Users: ");
+						console.error(users);
+						return done('Proper users were not created!');
+					} else done(err);
+				});
 			});
 		});
 

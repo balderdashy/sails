@@ -172,7 +172,7 @@ var Adapter = module.exports = function(adapter) {
 				timestamp: epoch(),
 				cb: cb
 			};
-			console.log("Generating lock "+newLock.uuid+" ("+transactionName+")");
+			// console.log("Generating lock "+newLock.uuid+" ("+transactionName+")");
 
 			// write new lock to commit log
 			this.transactionCollection.create(newLock, function(err) {
@@ -202,10 +202,10 @@ var Adapter = module.exports = function(adapter) {
 						self.lock(newLock, cb);
 					}
 					else {
-						console.log("************ Conflict encountered:: lock already exists for that transaction!!");
-						console.log("MY LOCK:: transaction: "+newLock.name," uuid: "+newLock.uuid, "timestamp: ",newLock.timestamp);
-						console.log("CONFLICTING LOCK:: transaction: "+conflict.name," uuid: "+conflict.uuid, "timestamp: ",conflict.timestamp);
-						console.log("***************");
+						// console.log("************ Conflict encountered:: lock already exists for that transaction!!");
+						// console.log("MY LOCK:: transaction: "+newLock.name," uuid: "+newLock.uuid, "timestamp: ",newLock.timestamp);
+						// console.log("CONFLICTING LOCK:: transaction: "+conflict.name," uuid: "+conflict.uuid, "timestamp: ",conflict.timestamp);
+						// console.log("***************");
 					}
 
 					// Otherwise, get in line
@@ -217,7 +217,7 @@ var Adapter = module.exports = function(adapter) {
 
 		this.lock = function(newLock, cb) {
 			var self = this;
-			console.log("====> Lock acquired "+newLock.uuid+" ("+newLock.name+")");
+			// console.log("====> Lock acquired "+newLock.uuid+" ("+newLock.name+")");
 
 			var warningTimer = setTimeout(function() {
 				console.error("Transaction :: " + newLock.name + " is taking an abnormally long time (> " + self.config.transactionWarningTimer + "ms)");
@@ -232,21 +232,21 @@ var Adapter = module.exports = function(adapter) {
 
 		this.unlock = function(uuid, transactionName, cb) {
 			var self = this;
-			console.log("Releasing lock "+uuid+" ("+transactionName+")");
+			// console.log("Releasing lock "+uuid+" ("+transactionName+")");
 
 			// Remove current lock
 			self.transactionCollection.destroy({
 				uuid: uuid
 			}, function(err) {
 				if(err) return cb && cb(err);
-				console.log("<≠≠≠≠≠ Lock released :: "+uuid+" ("+transactionName+")");
+				// console.log("<≠≠≠≠≠ Lock released :: "+uuid+" ("+transactionName+")");
 
 				self.transactionCollection.findAll(function(err, locks) {
 					if(err) return cb && cb(err);
 
 					// Determine the next user in line (oldest lock w/ the proper transactionName)
 					var nextInLine = getNextLock(locks,transactionName);
-					nextInLine ? console.log("Preparing to hand off lock to "+nextInLine.uuid+" ("+nextInLine.name+")") : console.log("No locks remaining !!!");
+					// nextInLine ? console.log("Preparing to hand off lock to "+nextInLine.uuid+" ("+nextInLine.name+")") : console.log("No locks remaining !!!");
 					
 					// Trigger unlock's callback if specified
 					cb && cb();

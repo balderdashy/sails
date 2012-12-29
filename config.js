@@ -9,7 +9,7 @@ module.exports = {
 
 	// Define a collection to use for app-level transactions
 	transactionCollection: {
-		adapter: 'dirtylocksmith',
+		adapter: 'dirty',
 		identity: '___transaction'
 	},
 

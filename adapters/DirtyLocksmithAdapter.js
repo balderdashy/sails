@@ -9,7 +9,7 @@ var _ = require('underscore');
 // This in-memory auto-increment will not scale to a multi-instance / cluster setup.
 // NOTE: you can't use an adapter which depends on transactions (i.e. Dirty)
 // ******************************************
-var aiCounter = 1;
+var statusDb = {};
 
 /*---------------------
 	:: DirtyLocksmith
