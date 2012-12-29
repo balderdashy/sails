@@ -171,17 +171,8 @@ var adapter = module.exports = {
 		doAutoIncrement(collectionName, schema.attributes, values, this, function (err, values) {
 			if (err) return cb(err);
 
-			// Verify constraints using Anchor
-			// TODO: verify constraints
-			// Populate default values
 			self.describe(collectionName, function(err, attributes) {
 				if(err) return cb(err);
-
-				// Add updatedAt and createdAt
-				// TODO: check config that this is the requested behavior
-				// if(this.config.createdAt && !definition.createdAt) definition
-				if(attributes.createdAt) values.createdAt = new Date();
-				if(attributes.updatedAt) values.updatedAt = new Date();
 
 				// TODO: add other fields with default values
 				// Create new model
