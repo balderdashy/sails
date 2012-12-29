@@ -29,12 +29,10 @@ module.exports = {
 
 // Initialize waterline
 function initialize (done) {
-	console.log("Bootstrapping waterline for testing...");
 	waterline({
 		collections: collections,
 		log: blackhole
 	}, function (err, waterlineData){
-		console.log("bootstrap successful!");
 		adapters = waterlineData.adapters;
 		collections = waterlineData.collections;
 		done(err);
@@ -46,10 +44,7 @@ function teardown (done) {
 	waterline.teardown({
 		adapters: adapters,
 		collections: collections
-	},function (err) {
-		console.log("Tore down waterline...");
-		done(err);
-	});
+	},done);
 }
 
 // Use silent logger for testing

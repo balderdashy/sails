@@ -17,14 +17,14 @@ var buildDictionary = require('./buildDictionary.js');
 // Include built-in adapters
 var builtInAdapters = buildDictionary(__dirname + '/adapters', /(.+Adapter)\.js$/, /Adapter/);
 
-// Only tear down waterline once 
-// (if teardown() is called explicitly, don't tear it down when the process exits)
-var tornDown = false;
 
 /**
 * Prepare waterline to interact with adapters
 */
 module.exports = function (options,cb) {
+	// Only tear down waterline once 
+	// (if teardown() is called explicitly, don't tear it down when the process exits)
+	var tornDown = false;
 
 	var adapters = options.adapters || {};
 	var collections = options.collections || {};
@@ -158,32 +158,32 @@ module.exports = function (options,cb) {
 		});
 	}
 
+	// Tear down all open waterline adapters and collections
+	function teardown (options,cb) {
+		cb = cb || function(){};
+
+		// Only tear down once
+		if (tornDown) return cb();
+		tornDown = true;
+
+		// console.log(options.adapters);
+
+		async.auto({
+
+			// Fire each adapter's teardown event
+			adapters: function (cb) {
+				async.forEach(_.values(options.adapters),function (adapter,cb) {
+					adapter.teardown(cb);
+				},cb);
+			},
+
+			// Fire each collection's teardown event
+			collections: function (cb) {
+				async.forEach(_.values(options.collections),function (collection,cb) {
+					collection.adapter.teardownCollection(collection.identity,cb);
+				},cb);
+			}
+		}, cb);
+	}
 };
 
-// Tear down all open waterline adapters and collections
-function teardown (options,cb) {
-	// Only tear down once
-	if (tornDown) return cb && cb();
-	tornDown = true;
-	cb = cb || function(){};
-	
-	console.log("TEARDOWN");
-
-	async.auto({
-
-		// Fire each adapter's teardown event
-		adapters: function (cb) {
-			async.forEach(options.adapters,function (adapter,cb) {
-				console.log(adapter);
-				adapter.teardown(cb);
-			},cb);
-		},
-
-		// Fire each collection's teardown event
-		collections: function (cb) {
-			async.forEach(options.collections,function (collection,cb) {
-				collection.adapter.teardownCollection(collection.identity,cb);
-			},cb);
-		}
-	}, cb);
-}

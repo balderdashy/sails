@@ -28,14 +28,12 @@ module.exports = function(adapter) {
 	// Teardown is fired once-per-adapter
 	// (i.e. tear down any remaining connections to the underlying data model)
 	this.teardown = function(cb) {
-		console.log("----- teardown -----");
 		adapter.teardown ? adapter.teardown(cb) : (cb && cb());
 	}; 
 
 	// teardownCollection is fired once-per-collection
 	// (i.e. flush data to disk before the adapter shuts down)
 	this.teardownCollection = function(collectionName,cb) {
-		console.log("----- teardownCollection -----");
 		adapter.teardownCollection ? adapter.teardownCollection(collectionName, cb) : (cb && cb());
 	};
 
@@ -46,36 +44,35 @@ module.exports = function(adapter) {
 	//////////////////////////////////////////////////////////////////////
 	this.define = function(collectionName, definition, cb) {
 
-		if(!definition.attributes) definition.attributes = {};
+		// Grab attributes from definition
+		var attributes = definition.attributes || {};
 
 		// If id is not defined, add it
 		// TODO: Make this check for ANY primary key
 		// TODO: Make this disableable in the config
-		if(!definition.attributes.id) {
-			definition.attributes.id = {
+		if(!attributes.id) {
+			attributes.id = {
 				type: 'INTEGER',
 				primaryKey: true,
-				autoIncrement: true
+				autoIncrement: true,
+				'default': 'AUTO_INCREMENT'
 			};
 		}
 
 		// If the adapter config allows it, and they aren't already specified,
 		// extend definition with updatedAt and createdAt
-		if(this.config.createdAt && !definition.createdAt) definition.createdAt = 'DATE';
-		if(this.config.updatedAt && !definition.updatedAt) definition.updatedAt = 'DATE';
+		var now = {type: 'DATE', 'default': 'NOW'};
+		if(this.config.createdAt && !attributes.createdAt) attributes.createdAt = now;
+		if(this.config.updatedAt && !attributes.updatedAt) attributes.updatedAt = now;
 
 		// Convert string-defined attributes into fully defined objects
-		for(var attr in definition.attributes) {
-			if(_.isString(definition[attr])) {
-				definition[attr] = {
-					type: definition[attr]
+		for(var attr in attributes) {
+			if(_.isString(attributes[attr])) {
+				attributes[attr] = {
+					type: attributes[attr]
 				};
 			}
 		}
-
-		// Grab attributes from definition
-		var attributes = definition.attributes;
-
 
 		// Verify that collection doesn't already exist
 		// and then define it and trigger callback
@@ -302,7 +299,6 @@ module.exports = function(adapter) {
 		// Drop and recreate collection
 		drop: function(collection, cb) {
 			var self = this;
-			console.log("DROP", collection.identity);
 			this.drop(collection.identity, function(err, data) {
 				if(err) cb(err);
 				else self.define(collection.identity, collection, cb);
@@ -312,8 +308,6 @@ module.exports = function(adapter) {
 		// Alter schema
 		alter: function(collection, cb) {
 			var self = this;
-
-			console.log("\n\n\n****** ALTER", collection.identity);
 
 			// Check that collection exists-- if it doesn't go ahead and add it and get out
 			this.describe(collection.identity, function(err, data) {
@@ -346,8 +340,8 @@ module.exports = function(adapter) {
 		return self.transaction(name, cb);
 	};
 
-	adapter.teardown = adapter.teardown || self.teardown;
-	adapter.teardownCollection = adapter.teardownCollection || self.teardownCollection;
+	// adapter.teardown = adapter.teardown || self.teardown;
+	// adapter.teardownCollection = adapter.teardownCollection || self.teardownCollection;
 
 
 	// Bind adapter methods to self

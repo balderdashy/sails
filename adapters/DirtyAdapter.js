@@ -79,7 +79,7 @@ var adapter = module.exports = {
 		
 		// Always go ahead and write the new auto-increment to disc, even though it will be wrong sometimes
 		// (this is done so that the auto-increment counter can be "ressurected" when the adapter is restarted from disk)
-		console.log("******** Wrote to "+collectionName+":: AI => ", statusDb[collectionName].autoIncrement);
+		// console.log("******** Wrote to "+collectionName+":: AI => ", statusDb[collectionName].autoIncrement);
 		var schema = _.extend(this.db.get(this.config.schemaPrefix + collectionName),{
 			autoIncrement: statusDb[collectionName].autoIncrement
 		});
