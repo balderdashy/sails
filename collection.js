@@ -10,16 +10,18 @@ var Collection = module.exports = function(definition) {
 	// Copy over only the methods from the adapter that you need, and modify if necessary
 	// ********************************************************************
 
-	// If persistent is false, this collection will be wiped and recreated when the server starts
-	// (defaults to true)
-	definition.persistent = !_.isUndefined(definition.persistent) ? definition.persistent : true;
-	
 
-	if (!definition.persistent) {
+	// (defaults to 'alter')
+	definition.migrate = !_.isUndefined(definition.migrate) ? definition.migrate : 'alter';
+	
+	if (definition.migrate === 'drop') {
 		definition.sync = _.bind(definition.adapter.sync.drop, definition.adapter, definition);
 	}
-	else if (definition.persistent) {
+	else if (definition.migrate === 'alter') {
 		definition.sync = _.bind(definition.adapter.sync.alter, definition.adapter, definition);
+	}
+	else if (definition.migrate === 'safe') {
+		definition.sync = _.bind(definition.adapter.sync.safe, definition.adapter, definition);
 	}
 	
 	// Absorb definition methods

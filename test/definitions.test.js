@@ -48,6 +48,9 @@ describe('definitions', function() {
 		});
 	});
 
+
+
+
 	describe('updatedAt', function() {
 
 		it('should be on by default', function() {
@@ -70,6 +73,10 @@ describe('definitions', function() {
 			});
 		});
 	});
+
+
+
+
 
 	describe('primary key', function() {
 		

@@ -12,14 +12,21 @@ module.exports = {
 	// Automatically define createdAt field in schema and populate with the current timestamp during model creation
 	createdAt: true,
 
+	// Attributes are case insensitive by default
+	// attributesCaseSensitive: false,
+
+
 	// Define a collection to use for app-level transactions
+	// TODO: replace this with convention of the "Transaction.js" collection
 	transactionCollection: require('./collections/Transaction.js'),
 
 	// ms to wait before warning that a tranaction is taking too long
+	// TODO: move this logic as a configuration option into the actual transaction collection
 	transactionWarningTimer: 2000,
 
 	// ms to wait before timing out a transaction and calling unlock() with an error
 	// (App can then handle the logic to undo the transaction)
 	// TODO: Make this work
+	// TODO: move this logic as a configuration option into the actual transaction collection
 	transactionTimeout: 15000
 };

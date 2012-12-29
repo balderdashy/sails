@@ -28,12 +28,9 @@ var adapter = module.exports = {
 	config: {
 
 		// If inMemory is true, all data will be destroyed when the server stops
-		inMemory: false,
+		inMemory: true,
 
-		// Attributes are case insensitive by default
-		// attributesCaseSensitive: false,
-
-		// File path for disk file output (in persistent mode)
+		// File path for disk file output (when NOT in inMemory mode)
 		dbFilePath: './.waterline/dirty.db',
 
 		// String to precede key name for schema defininitions

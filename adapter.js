@@ -302,7 +302,6 @@ module.exports = function(adapter) {
 		// Drop and recreate collection
 		drop: function(collection, cb) {
 			var self = this;
-			console.log("DROP");
 			this.drop(collection.identity, function(err, data) {
 				if(err) cb(err);
 				else self.define(collection.identity, collection, cb);
@@ -312,18 +311,47 @@ module.exports = function(adapter) {
 		// Alter schema
 		alter: function(collection, cb) {
 			var self = this;
-			console.log("ALTER");
 
 			// Check that collection exists-- if it doesn't go ahead and add it and get out
 			this.describe(collection.identity, function(err, data) {
+				data = _.clone(data);
+
 				if(err) return cb(err);
 				else if(!data) return self.define(collection.identity, collection, cb);
 
-				// Iterate through each attribute on each model in your app
-				_.each(collection.attributes, function checkAttribute(attribute) {
-					// and make sure that a comparable field exists in the data store
-					// TODO
+				// TODO: move all of this to the alter() call in the adapter
+
+				// If it *DOES* exist, we'll try to guess what changes need to be made
+
+				// Iterate through each attribute in this collection's schema
+				_.each(collection.attributes, function checkAttribute(attribute,attrName) {
+					// Make sure that a comparable field exists in the data store
+					if (!data[attrName]) {
+						data[attrName] = attribute;
+
+						// Add the default value for this new attribute to each row in the data model
+						// TODO
+					}
+					
+					// And that it matches completely
+					else {
+						data[attrName] = attribute;
+
+						// Update the data belonging to this attribute to reflect the new properties
+						// Realistically, this will mainly be about constraints, and primarily uniquness
+						// It'd be good if waterline could enforce all constraints at this time,
+						// but there's a trade-off with destroying people's data
+						// TODO
+					}
 				});
+
+				// Now iterate through each attribute in the adapter's data store
+				// and remove any that don't have an analog in the collection definition
+				// Also prune the data belonging to removed attributes from rows
+				// TODO:
+
+				// Persist that
+
 
 				// Check that the attribute exists in the data store
 				// TODO
@@ -336,6 +364,11 @@ module.exports = function(adapter) {
 				// TODO
 				// cb();	
 			});
+		}, 
+
+		// Do nothing to the underlying data model
+		safe: function (collection,cb) {
+			cb();
 		}
 	};
 
