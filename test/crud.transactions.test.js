@@ -12,15 +12,7 @@ var async = require('async');
 var parley = require('parley');
 var assert = require("assert");
 
-module.exports = function(bootstrap) {
-
-	var User;
-
-	// Get User object ready to go before each test
-	beforeEach(function() {
-		return User = bootstrap.collections.user;
-	});
-
+describe('CRUD :: Composite methods and transactions', function (){
 	describe('create', function() {
 
 		it('should create 2 users in series', function(done) {
@@ -115,5 +107,4 @@ module.exports = function(bootstrap) {
 		// it ('should handle 10 simultaneous destroy() requests appropriately ',function (done){})
 		
 	});
-
-};
+});

@@ -11,22 +11,10 @@ var _ = require('underscore');
 var parley = require('parley');
 var assert = require("assert");
 
-// Bootstrap waterline and get access to User collection
-var bootstrap = require('./bootstrap.test.js');
-var User;
-
 module.exports = function(adapter) {
 
 	describe('adapter', function() {
-
-		// Bootstrap waterline with default adapters and bundled test collections
-		before(bootstrap.initWithAdapter(adapter));
-
-		// Get User object ready to go before each test
-		beforeEach(function () {
-			return User = bootstrap.collections.user;
-		});
-
+		
 		describe('#creating() users Johnny and Timmy', function() {
 
 			it('should work', function(done) {
@@ -149,9 +137,6 @@ module.exports = function(adapter) {
 				});
 			});
 		});
-
-		// When this suite of tests is complete, shut down waterline to allow other tests to run without conflicts
-		after(bootstrap.teardown);
 
 	});
 };

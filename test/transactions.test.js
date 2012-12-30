@@ -12,14 +12,8 @@ var parley = require('parley');
 var async = require('async');
 var assert = require("assert");
 
-module.exports = function (bootstrap) {
 
-	var User;
-
-	// Get User object ready to go before each test
-	beforeEach(function() {
-		return User = bootstrap.collections.user;
-	});
+describe ('transactions',function () {
 
 	describe('app-level transaction', function() {
 		it('should be able to acquire lock', function(done) {
@@ -118,8 +112,7 @@ module.exports = function (bootstrap) {
 			});
 		}
 
-
 		// it ('should timeout if the transaction takes a long time', function (done) {});
 		// it('should not be able to release a lock more than once', function (done) {});
 	});
-};
+});

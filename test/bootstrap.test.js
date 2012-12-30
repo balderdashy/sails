@@ -1,9 +1,9 @@
+// Dependencies
 var _ = require('underscore');
 var parley = require('parley');
 var assert = require("assert");
 
-
-module.exports = {
+var bootstrap = {
 
 	// Initialize waterline
 	init: initialize,
@@ -13,36 +13,48 @@ module.exports = {
 	// Override every collection's adapter with the specified adapter
 	// Then return the init() method
 	initWithAdapter: function (adapter) {
-		_.map(module.exports.collections,function (collection) {
+		_.map(bootstrap.collections,function (collection) {
 			collection.adapter = adapter;
 		});
 		return initialize;
 	}
 };
 
+// Bootstrap waterline with default adapters and bundled test collections
+before(bootstrap.init);
+
+// When this suite of tests is complete, shut down waterline to allow other tests to run without conflicts
+after(bootstrap.teardown);
+
+// Get User object ready to go before each test
+beforeEach(function() {
+	return User = bootstrap.collections.user;
+});
+
+
 // Initialize waterline
 function initialize (done) {
 	// Keep a reference to waterline to use for teardown()
-	module.exports.waterline = require("../waterline.js");
+	bootstrap.waterline = require("../waterline.js");
 
 	var collections = require('../buildDictionary.js')(__dirname + '/collections', /(.+)\.js$/);
 
-	module.exports.waterline({
+	bootstrap.waterline({
 		collections: collections,
 		log: blackhole
 	}, function (err, waterlineData){
 
-		module.exports.adapters = waterlineData.adapters;
-		module.exports.collections = waterlineData.collections;
+		bootstrap.adapters = waterlineData.adapters;
+		bootstrap.collections = waterlineData.collections;
 		done(err);
 	});
 }
 
 // Tear down adapters and collections
 function teardown (done) {
-	module.exports.waterline.teardown({
-		adapters: module.exports.adapters,
-		collections: module.exports.collections
+	bootstrap.waterline.teardown({
+		adapters: bootstrap.adapters,
+		collections: bootstrap.collections
 	},done);
 }
 

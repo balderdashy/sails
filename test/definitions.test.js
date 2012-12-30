@@ -11,14 +11,7 @@ var async = require('async');
 var assert = require("assert");
 
 
-module.exports = function(bootstrap) {
-
-	var User;
-	
-	// Get User object ready to go before each test
-	beforeEach(function() {
-		return User = bootstrap.collections.user;
-	});
+describe('definitions',function (){
 
 	describe('createdAt', function() {
 
@@ -72,8 +65,6 @@ module.exports = function(bootstrap) {
 
 
 
-
-
 	describe('primary key', function() {
 		
 		it('should be set to use id by default', function() {
@@ -96,4 +87,4 @@ module.exports = function(bootstrap) {
 			});
 		});
 	});
-};
+});
