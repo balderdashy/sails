@@ -471,7 +471,7 @@ function normalizeCriteria(criteria) {
 		};
 	}
 	if(!_.isObject(criteria)) {
-		throw 'Invalid criteria, ' + criteria + ' in find()';
+		throw 'Invalid options/criteria :: ' + criteria;
 	}
 	if(!criteria.where && !criteria.limit && !criteria.skip && !criteria.offset && !criteria.order) {
 		criteria = {

@@ -49,14 +49,95 @@ var Collection = module.exports = function(definition) {
 	// Dynamic finders
 	//////////////////////////////////////////
 
+	// Query the collection using the name of the attribute directly
+	this.generateDynamicFinder = function (attrName) {
+		// Return a closure
+		return function (value, options, cb) {
+			if (_.isFunction(options)) {
+				cb = options;
+				options = null;
+			}
+			options = options || {};
+
+			var usage = _.str.capitalize(this.identity)+'.findBy'+_.str.capitalize(attrName)+
+						'(someValue,[options],callback)';
+			// if(_.isUndefined(value)) usageError('No value specified!',usage);
+			if(options.where) usageError('Cannot specify `where` option in a dynamic findBy*() query!',usage);
+			if(!_.isFunction(cb)) usageError('No callback specified!',usage);
+
+			// Build criteria query and submit it
+			options.where = {};
+			options.where[attrName] = value;
+			return self.find(options,cb);
+		};
+	};
+
+	// For each defined attribute, create a dynamic finder function
+	_.each(this.attributes,function (attrDef, attrName) {
+		self['findBy'+_.str.capitalize(attrName)] = self.generateDynamicFinder(attrName);
+	});
+
+	// Then create compound dynamic finders using the various permutations
 	// TODO
 
+
+
+	//////////////////////////////////////////
+	// Promises / Deferred Objects
+	//////////////////////////////////////////
+
+	// =============================
+	// TODO: (for a later release)
+	// =============================
+	/*
+		// when done() is called (or some comparably-named terminator)
+		// run every operation in the queue and trigger the callback
+		this.done = function (cb) {
+			// A callback is always required here
+			if(!_.isFunction(cb)) usageError('No callback specified!',usage);
+		};
+
+		// Join with another collection
+		// (use optimized join in adapter if one was provided)
+		this.join = function (anotherOne, cb) {
+	
+		}
+	*/
+	// =============================
 
 	//////////////////////////////////////////
 	// Core CRUD
 	//////////////////////////////////////////
 
 	this.create = function(values, cb) {
+		// =============================
+		// TODO: (for a later release)
+		// =============================
+		/*
+			
+			if (this._isDeferredObject) {
+				if (this.terminated) {
+					throw new Error("The callback was already triggered!");
+				}
+
+				// If this was called from a deferred object, 
+				// instead of doing the normal operation, pop it on a queue for later
+
+				if (cb) {
+					// If a callback is specified, terminate the deferred object
+				}
+			}
+			else {
+				// Do the normal stuff
+			}
+
+			if (!cb) {
+				// No callback specified
+				// Initialize and return a deferred object
+			}
+		*/
+		// =============================
+
 		if (_.isFunction(values)) {
 			cb = values;
 			values = null;
