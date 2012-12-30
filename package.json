@@ -15,7 +15,7 @@
       "email": "gabe@balderdash.co"
     }
   ],
-  "public": "false",
+  "private": "true",
   "version": "99.99.9999",
   "description": "Realtime MVC framework for Node.JS with support for Socket.io (built on Express)",
   "homepage": "http://sailsjs.com",
@@ -57,7 +57,7 @@
     "optimist": "=0.3.4",
     "underscore.string": "=2.3.0",
     "winston": "git://github.com/jhurliman/winston.git",
-    "waterline": "0.0.51",
+    "waterline": "0.0.52",
     "glob": "~3.1.14"
   },
   "repository": {
