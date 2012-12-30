@@ -17,6 +17,7 @@ var buildDictionary = require('./buildDictionary.js');
 // Include built-in adapters
 var builtInAdapters = buildDictionary(__dirname + '/adapters', /(.+Adapter)\.js$/, /Adapter/);
 
+
 var builtInCollections = buildDictionary(__dirname + '/collections', /(.+)\.js$/);
 
 /**
@@ -35,7 +36,6 @@ module.exports = function (options,cb) {
 	// Merge passed-in adapters + collections with defaults
 	adapters = _.extend(builtInAdapters,adapters);
 	collections = _.extend(builtInCollections,collections);
-	// console.log("----------KEYS----->",_.keys(collections));
 
 
 	// Error aggregator obj
@@ -52,7 +52,6 @@ module.exports = function (options,cb) {
 	$$(function (xcb) {
 		_.each(collections,function(collection) {
 			collection.adapter.transactionCollection = collections[config.transactionDbIdentity];
-			// console.log("ADDED ",collection.adapter);
 		});
 		xcb();
 	})();
@@ -97,6 +96,7 @@ module.exports = function (options,cb) {
 
 	// Instantiate an adapter object
 	function prepareAdapter (adapterName,cb) {
+
 		// Pass waterline config down to adapters
 		adapters[adapterName].config = _.extend({
 			log: log

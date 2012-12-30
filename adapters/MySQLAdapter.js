@@ -10,7 +10,7 @@ var uuid = require("node-uuid");
 	:: MySQLAdapter
 	-> adapter
 ---------------------*/
-var adapter = module.exports = {
+var adapter = {
 
 	config: {
 		host: 'localhost',
