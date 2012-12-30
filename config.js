@@ -26,5 +26,9 @@ module.exports = {
 	// (App can then handle the logic to undo the transaction)
 	// TODO: Make this work
 	// TODO: move this logic as a configuration option into the actual transaction collection
-	transactionTimeout: 15000
+	transactionTimeout: 15000,
+
+	migrate: 'alter',
+
+	globalize: true
 };

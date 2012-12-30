@@ -1,6 +1,7 @@
 // Dependencies
 var async = require('async');
 var _ = require('underscore');
+_.str = require('underscore.string');
 var parley = require('parley');
 
 // Prototype definitions
@@ -46,9 +47,10 @@ module.exports = function (options,cb) {
 	// then associate each collection with its adapter and sync its schema
 	$$(async).forEach(_.keys(collections),prepareCollection);
 
-	// Now that everything is instantiated, add transaction collection to each collection's adapter
+	// Now that everything is instantiated, augment the live collections
 	$$(function (xcb) {
 		_.each(collections,function(collection) {
+			// add transaction collection to each collection's adapter
 			collection.adapter.transactionCollection = collections[config.transactionDbIdentity];
 		});
 		xcb();

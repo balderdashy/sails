@@ -1,6 +1,7 @@
 var _ = require('underscore');
 var parley = require('parley');
 var util = require('sails-util');
+var config = require('./config');
 
 var Collection = module.exports = function(definition) {
 	var self = this;
@@ -10,14 +11,21 @@ var Collection = module.exports = function(definition) {
 	// Copy over only the methods from the adapter that you need, and modify if necessary
 	// ********************************************************************
 
-	// TODO: configure createdAt/updatedAt
-	// TODO: configure automatic id PK
+	// Pass up options from adapter  (defaults to global options)
+	definition.migrate = definition.migrate || definition.adapter.config.migrate || config.migrate;
+	definition.globalize = !_.isUndefined(definition.globalize) ? definition.globalize :
+			!_.isUndefined(definition.adapter.config.globalize) ? definition.adapter.config.globalize : 
+			config.globalize;
 
-	// (defaults to 'alter')
-	definition.migrate = 
-		!_.isUndefined(definition.migrate) ? definition.migrate : 
-		!_.isUndefined(definition.adapter.config.migrate) ? definition.adapter.config.migrate : 'alter';
+	// Pass down appropriate configuration items to adapter
+	_.each(['defaultPK', 'updatedAt', 'createdAt'],function(key) {
+		if (!_.isUndefined(definition[key])) {
+			definition.adapter.config[key] = definition[key];
+		}
+	});
+
 	
+	// Set behavior in adapter depending on migrate option
 	if (definition.migrate === 'drop') {
 		definition.sync = _.bind(definition.adapter.sync.drop, definition.adapter, definition);
 	}
@@ -30,6 +38,12 @@ var Collection = module.exports = function(definition) {
 	
 	// Absorb definition methods
 	_.extend(this, definition);
+
+	// if configured as such, make each collection globally accessible
+	if (definition.globalize) {
+		var globalName = _.str.capitalize(this.identity);
+		global[globalName] = this;
+	}
 
 	// Define core methods
 	this.create = function(values, cb) {
