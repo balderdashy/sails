@@ -61,8 +61,8 @@ var Collection = module.exports = function(definition) {
 			cb = values;
 			values = null;
 		}
-		var usage = this.identity+'.create({someAttr: "someValue"},callbackFunction)';
-		if(!_.isFunction(cb)) throw usageError('No callback specified!',usage);
+		var usage = _.str.capitalize(this.identity)+'.create({someAttr: "someValue"},callback)';
+		if(!_.isFunction(cb)) usageError('No callback specified!',usage);
 
 		return this.adapter.create(this.identity,values,cb);
 	};
@@ -73,8 +73,8 @@ var Collection = module.exports = function(definition) {
 			cb = options;
 			options = null;
 		}
-		var usage = this.identity+'.find(criteria,callbackFunction)';
-		if(!_.isFunction(cb)) throw usageError('No callback specified!',usage);
+		var usage = _.str.capitalize(this.identity)+'.find(criteria,callback)';
+		if(!_.isFunction(cb)) usageError('No callback specified!',usage);
 
 		return this.adapter.find(this.identity,options,cb);
 	};
@@ -86,10 +86,10 @@ var Collection = module.exports = function(definition) {
 			cb = options;
 			options = null;
 		}
-		var usage = this.identity+'.update(criteria, newValues, callbackFunction)';
-		if(!options) throw usageError('No criteria option specified! If you\'re trying to update everything, maybe try updateAll?',usage);
-		if(!newValues) throw usageError('No updated values specified!',usage);
-		if(!_.isFunction(cb)) throw usageError('No callback specified!',usage);
+		var usage = _.str.capitalize(this.identity)+'.update(criteria, newValues, callback)';
+		if(!options) usageError('No criteria option specified! If you\'re trying to update everything, maybe try updateAll?',usage);
+		if(!newValues) usageError('No updated values specified!',usage);
+		if(!_.isFunction(cb)) usageError('No callback specified!',usage);
 
 		return this.adapter.update(this.identity,options,newValues,cb);
 	};
@@ -101,9 +101,9 @@ var Collection = module.exports = function(definition) {
 			cb = options;
 			options = null;
 		}
-		var usage = this.identity+'.destroy(options, callbackFunction)';
-		if(!options) throw usageError('No options specified! If you\'re trying to destroy everything, maybe try destroyAll?',usage);
-		if(!_.isFunction(cb)) throw usageError('No callback specified!',usage);
+		var usage = _.str.capitalize(this.identity)+'.destroy(options, callback)';
+		if(!options) usageError('No options specified! If you\'re trying to destroy everything, maybe try destroyAll?',usage);
+		if(!_.isFunction(cb)) usageError('No callback specified!',usage);
 
 		return this.adapter.destroy(this.identity,options,cb);
 	};
@@ -129,10 +129,10 @@ var Collection = module.exports = function(definition) {
 
 	this.createAll = function (valuesList, cb) {
 		var my = this;
-		var usage = this.identity+'.createAll(valuesList, callbackFunction)';
-		if(!valueList) throw usageError('No valuesList specified!',usage);
-		if(!_.isArray(valueList)) throw usageError('Invalid valuesList specified (should be an array!)',usage);
-		if(!_.isFunction(cb)) throw usageError('No callback specified!',usage);
+		var usage = _.str.capitalize(this.identity)+'.createAll(valuesList, callback)';
+		if(!valuesList) usageError('No valuesList specified!',usage);
+		if(!_.isArray(valuesList)) usageError('Invalid valuesList specified (should be an array!)',usage);
+		if(!_.isFunction(cb)) usageError('No callback specified!',usage);
 		
 		// If an optimized createAll exists, use it, otherwise use an asynchronous loop with create()
 		this.adapter.createAll(this.identity,valuesList,cb);
@@ -141,15 +141,15 @@ var Collection = module.exports = function(definition) {
 	this.findAll = this.find;
 
 	this.updateAll = function (newValues,cb) {
-		var usage = this.identity+'.updateAll(newValues, callbackFunction)';
-		if(!newValues) throw usageError('No updated values specified!',usage);
-		if(!_.isFunction(cb)) throw usageError('No callback specified!',usage);
+		var usage = _.str.capitalize(this.identity)+'.updateAll(newValues, callback)';
+		if(!newValues) usageError('No updated values specified!',usage);
+		if(!_.isFunction(cb)) usageError('No callback specified!',usage);
 		return this.adapter.updateAll(this.identity,newValues,cb);
 	};
 
 	this.destroyAll = function (cb) {
-		var usage = this.identity+'.destroyAll(newValues, callbackFunction)';
-		if(!_.isFunction(cb)) throw usageError('No callback specified!',usage);
+		var usage = _.str.capitalize(this.identity)+'.destroyAll(newValues, callback)';
+		if(!_.isFunction(cb)) usageError('No callback specified!',usage);
 		return this.adapter.destroyAll(this.identity,cb);
 	};
 
@@ -182,5 +182,6 @@ var Collection = module.exports = function(definition) {
 
 
 function usageError(err,usage) {
-	return new Error(err+'\nProper usage :: '+usage);
+	console.error("\n\n");
+	throw new Error(err+'\n==============================================\nProper usage :: \n'+usage+'\n==============================================\n');
 }
