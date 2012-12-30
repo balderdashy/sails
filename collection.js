@@ -45,7 +45,17 @@ var Collection = module.exports = function(definition) {
 		global[globalName] = this;
 	}
 
-	// Define core methods
+	//////////////////////////////////////////
+	// Dynamic finders
+	//////////////////////////////////////////
+
+	// TODO
+
+
+	//////////////////////////////////////////
+	// Core CRUD
+	//////////////////////////////////////////
+
 	this.create = function(values, cb) {
 		if (_.isFunction(values)) {
 			cb = values;
