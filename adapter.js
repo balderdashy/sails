@@ -25,6 +25,11 @@ module.exports = function(adapter) {
 		adapter.initialize ? adapter.initialize(cb) : cb();
 	};
 
+	// Logic to handle the (re)instantiation of collections
+	this.initializeCollection = function(collectionName, cb) {
+		adapter.initializeCollection ? adapter.initializeCollection(collectionName,cb) : (cb && cb());
+	};
+
 	// Teardown is fired once-per-adapter
 	// (i.e. tear down any remaining connections to the underlying data model)
 	this.teardown = function(cb) {

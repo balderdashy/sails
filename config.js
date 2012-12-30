@@ -15,11 +15,6 @@ module.exports = {
 	// Attributes are case insensitive by default
 	// attributesCaseSensitive: false,
 
-
-	// Define a collection to use for app-level transactions
-	// TODO: replace this with convention of the "Transaction.js" collection
-	transactionCollection: require('./collections/Transaction.js'),
-
 	// ms to wait before warning that a tranaction is taking too long
 	// TODO: move this logic as a configuration option into the actual transaction collection
 	transactionWarningTimer: 2000,

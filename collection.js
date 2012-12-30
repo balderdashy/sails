@@ -12,7 +12,9 @@ var Collection = module.exports = function(definition) {
 
 
 	// (defaults to 'alter')
-	definition.migrate = !_.isUndefined(definition.migrate) ? definition.migrate : 'alter';
+	definition.migrate = 
+		!_.isUndefined(definition.migrate) ? definition.migrate : 
+		!_.isUndefined(definition.adapter.config.migrate) ? definition.adapter.config.migrate : 'alter';
 	
 	if (definition.migrate === 'drop') {
 		definition.sync = _.bind(definition.adapter.sync.drop, definition.adapter, definition);

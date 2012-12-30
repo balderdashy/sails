@@ -43,7 +43,7 @@ module.exports = function (options,cb) {
 	$$(async).forEach(_.keys(adapters),prepareAdapter);
 
 	// Instantiate special collections
-	var transactionsDb = $$(instantiateCollection)(config.transactionCollection);
+	var transactionsDb = $$(instantiateCollection)(require('./collections/Transaction.js'));
 
 	// Attach transaction collection to each adapter
 	$$(function (err,transactionsDb,xcb) {
@@ -151,11 +151,17 @@ module.exports = function (options,cb) {
 		// Build actual collection object from definition
 		collection = new Collection(collection);
 
-		// Synchronize schema with data source
-		collection.sync(function (err){ 
+		// Call initializeCollection() event on adapter
+		collection.adapter.initializeCollection(collection.identity,function (err) {
 			if (err) throw err;
-			cb(err,collection); 
+			
+			// Synchronize schema with data source
+			collection.sync(function (err){ 
+				if (err) throw err;
+				cb(err,collection); 
+			});
 		});
+
 	}
 
 	// Tear down all open waterline adapters and collections
@@ -165,8 +171,6 @@ module.exports = function (options,cb) {
 		// Only tear down once
 		if (tornDown) return cb();
 		tornDown = true;
-
-		// console.log(options.adapters);
 
 		async.auto({
 

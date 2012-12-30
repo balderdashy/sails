@@ -5,7 +5,6 @@ var adapters, collections;
 var _ = require('underscore');
 var parley = require('parley');
 var assert = require("assert");
-var collections = require('../buildDictionary.js')(__dirname + '/collections', /(.+)\.js$/);
 
 
 module.exports = {
@@ -22,17 +21,19 @@ module.exports = {
 			collection.adapter = adapter;
 		});
 		return initialize;
-	},
-
-	collections: collections
+	}
 };
 
 // Initialize waterline
 function initialize (done) {
+	collections = require('../buildDictionary.js')(__dirname + '/collections', /(.+)\.js$/);
+	module.exports.collections = collections;
+
 	waterline({
 		collections: collections,
 		log: blackhole
 	}, function (err, waterlineData){
+
 		adapters = waterlineData.adapters;
 		collections = waterlineData.collections;
 		done(err);
