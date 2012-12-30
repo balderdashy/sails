@@ -17,7 +17,6 @@ var buildDictionary = require('./buildDictionary.js');
 // Include built-in adapters
 var builtInAdapters = buildDictionary(__dirname + '/adapters', /(.+Adapter)\.js$/, /Adapter/);
 
-var builtInCollections = buildDictionary(__dirname + '/collections', /(.+)\.js$/);
 
 /**
 * Prepare waterline to interact with adapters
@@ -32,10 +31,8 @@ module.exports = function (options,cb) {
 	var log = options.log || console.log;
 	var $$ = new parley();
 
-	// Merge passed-in adapters + collections with defaults
+	// Merge passed-in adapters with default adapters
 	adapters = _.extend(builtInAdapters,adapters);
-	collections = _.extend(builtInCollections,collections);
-	// console.log("----------KEYS----->",_.keys(collections));
 
 
 	// Error aggregator obj
@@ -45,17 +42,32 @@ module.exports = function (options,cb) {
 	// TODO: parallelize this process (would decrease server startup time)
 	$$(async).forEach(_.keys(adapters),prepareAdapter);
 
+	// Instantiate special collections
+	var transactionsDb = $$(instantiateCollection)(require('./collections/Transaction.js'));
+
+	// Attach transaction collection to each adapter
+	$$(function (err,transactionsDb,xcb) {
+		_.each(adapters,function(adapter,adapterName){
+			adapters[adapterName].transactionCollection = transactionsDb;
+		});
+		xcb();
+	})(transactionsDb);
+	
+
+	// TODO: in sails, in the same way ---->
+	// set up session adapter
+	// set up socket adapter
+	// ------->
+
 	// then associate each collection with its adapter and sync its schema
 	$$(async).forEach(_.keys(collections),prepareCollection);
 
-	// Now that everything is instantiated, add transaction collection to each collection's adapter
-	$$(function (xcb) {
-		_.each(collections,function(collection) {
-			collection.adapter.transactionCollection = collections[config.transactionDbIdentity];
-			// console.log("ADDED ",collection.adapter);
-		});
+	// Now that the others are instantiated, add transaction collection to list
+	// (this is so events like teardownCollection() fire properly)
+	$$(function (err,transactionsDb,xcb) {
+		collections[transactionsDb.identity] = transactionsDb;
 		xcb();
-	})();
+	})(transactionsDb);
 
 
 	// Fire teardown() on process-end and make it public
@@ -120,31 +132,31 @@ module.exports = function (options,cb) {
 	}
 
 	// Instantiate a collection object
-	function instantiateCollection (definition, cb) {
+	function instantiateCollection (collection, cb) {
 
 		// If no adapter is specified, default to 'dirty'
-		if (!definition.adapter) definition.adapter = 'dirty';
+		if (!collection.adapter) collection.adapter = 'dirty';
 
 		// Use adapter shortname in model def. to look up actual object
-		if (_.isString(definition.adapter)) {
-			if (! adapters[definition.adapter]) throw "Unknown adapter! ("+definition.adapter+")  Did you include a valid adapter with this name?";
-			else definition.adapter = adapters[definition.adapter];
+		if (_.isString(collection.adapter)) {
+			if (! adapters[collection.adapter]) throw "Unknown adapter! ("+collection.adapter+")  Maybe try installing it?";
+			else collection.adapter = adapters[collection.adapter];
 		}
 
 		// Then check that a valid adapter object was retrieved (or already existed)
-		if (!(_.isObject(definition.adapter) && definition.adapter._isWaterlineAdapter)) {
+		if (!(_.isObject(collection.adapter) && collection.adapter._isWaterlineAdapter)) {
 			throw "Invalid adapter!";
 		}
 
 		// Build actual collection object from definition
-		var collection = new Collection(definition);
+		collection = new Collection(collection);
 
 		// Call initializeCollection() event on adapter
 		collection.adapter.initializeCollection(collection.identity,function (err) {
 			if (err) throw err;
-
+			
 			// Synchronize schema with data source
-			collection.sync(function (err) { 
+			collection.sync(function (err){ 
 				if (err) throw err;
 				cb(err,collection); 
 			});
