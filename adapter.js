@@ -10,12 +10,7 @@ module.exports = function(adapter) {
 	var self = this;
 
 	// Absorb configuration
-	this.config = adapter.config = _.extend({
-
-		// Default transaction collection name
-		transactionCollection: _.clone(config.transactionCollection)
-
-	}, adapter.config || {});
+	this.config = _.extend({}, adapter.config || {});
 
 	// Absorb identity
 	this.identity = adapter.identity;

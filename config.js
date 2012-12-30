@@ -15,6 +15,9 @@ module.exports = {
 	// Attributes are case insensitive by default
 	// attributesCaseSensitive: false,
 
+	// Default identity for transaction database
+	transactionDbIdentity: '___transaction',
+
 	// ms to wait before warning that a tranaction is taking too long
 	// TODO: move this logic as a configuration option into the actual transaction collection
 	transactionWarningTimer: 2000,

@@ -1,7 +1,3 @@
-// Keep a reference to waterline to use for teardown()
-var waterline = require("../waterline.js");
-var adapters, collections;
-
 var _ = require('underscore');
 var parley = require('parley');
 var assert = require("assert");
@@ -17,7 +13,7 @@ module.exports = {
 	// Override every collection's adapter with the specified adapter
 	// Then return the init() method
 	initWithAdapter: function (adapter) {
-		_.map(collections,function (collection) {
+		_.map(module.exports.collections,function (collection) {
 			collection.adapter = adapter;
 		});
 		return initialize;
@@ -26,25 +22,27 @@ module.exports = {
 
 // Initialize waterline
 function initialize (done) {
-	collections = require('../buildDictionary.js')(__dirname + '/collections', /(.+)\.js$/);
-	module.exports.collections = collections;
+	// Keep a reference to waterline to use for teardown()
+	module.exports.waterline = require("../waterline.js");
 
-	waterline({
+	var collections = require('../buildDictionary.js')(__dirname + '/collections', /(.+)\.js$/);
+
+	module.exports.waterline({
 		collections: collections,
 		log: blackhole
 	}, function (err, waterlineData){
 
-		adapters = waterlineData.adapters;
-		collections = waterlineData.collections;
+		module.exports.adapters = waterlineData.adapters;
+		module.exports.collections = waterlineData.collections;
 		done(err);
 	});
 }
 
 // Tear down adapters and collections
 function teardown (done) {
-	waterline.teardown({
-		adapters: adapters,
-		collections: collections
+	module.exports.waterline.teardown({
+		adapters: module.exports.adapters,
+		collections: module.exports.collections
 	},done);
 }
 

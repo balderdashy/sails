@@ -12,4 +12,4 @@ exports.adapter = 'dirty';
 
 exports.migrate = 'drop';
 
-exports.identity = '___transaction';
+exports.identity = require('../config.js').transactionDbIdentity;

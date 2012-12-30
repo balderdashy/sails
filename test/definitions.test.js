@@ -10,15 +10,11 @@ var parley = require('parley');
 var async = require('async');
 var assert = require("assert");
 
-// Bootstrap waterline and get access to collections, especially User
-var bootstrap = require('./bootstrap.test.js');
-var User;
 
-describe('definitions', function() {
+module.exports = function(bootstrap) {
 
-	// Bootstrap waterline with default adapters and bundled test collections
-	before(bootstrap.init);
-
+	var User;
+	
 	// Get User object ready to go before each test
 	beforeEach(function() {
 		return User = bootstrap.collections.user;
@@ -100,7 +96,4 @@ describe('definitions', function() {
 			});
 		});
 	});
-
-	// When this suite of tests is complete, shut down waterline to allow other tests to run without conflicts
-	after(bootstrap.teardown);
-});
+};
