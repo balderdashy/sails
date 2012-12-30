@@ -2,6 +2,9 @@ var _ = require('underscore');
 var parley = require('parley');
 var uuid = require('node-uuid');
 
+// (for sorting)
+var MAX_INTEGER = 4294967295;
+
 // Read global config
 var config = require('./config.js');
 
@@ -213,51 +216,59 @@ module.exports = function(adapter) {
 				});
 
 				// If there are no conflicts, the lock is acquired!
-				if(!conflict) {
-					self.lock(newLock, cb);
-				} else {
-					// console.log("************ Conflict encountered:: lock already exists for that transaction!!");
-					// console.log("MY LOCK:: transaction: "+newLock.name," uuid: "+newLock.uuid, "timestamp: ",newLock.timestamp);
-					// console.log("CONFLICTING LOCK:: transaction: "+conflict.name," uuid: "+conflict.uuid, "timestamp: ",conflict.timestamp);
-					// console.log("***************");
-				}
+				if(!conflict) self.lock(newLock, newLock.cb);
 
 				// Otherwise, get in line
 				// In other words, do nothing-- 
 				// unlock() will grant lock request in order it was received
+				else {
+					/*
+					console.log("************ Conflict encountered:: lock already exists for that transaction!!");
+					console.log("ATTEMPTING LOCK:: transaction: "+newLock.name," uuid: "+newLock.uuid, "timestamp: ",newLock.id);
+					console.log("EXISTING LOCK:: transaction: "+conflict.name," uuid: "+conflict.uuid, "timestamp: ",conflict.id);
+					console.log("***************");
+					*/
+				}
+
 			});
 		});
 	};
 
 	this.lock = function(newLock, cb) {
 		var self = this;
-		// console.log("====> Lock acquired "+newLock.uuid+" ("+newLock.name+")");
+		// console.log("====> Lock "+newLock.id+" acquired "+newLock.uuid+" ("+newLock.name+")");
+
 		var warningTimer = setTimeout(function() {
 			console.error("Transaction :: " + newLock.name + " is taking an abnormally long time (> " + self.config.transactionWarningTimer + "ms)");
 		}, self.config.transactionWarningTimer);
 
 		cb(null, function unlock(cb) {
 			clearTimeout(warningTimer);
-			self.unlock(newLock.uuid, newLock.name, cb);
+			self.unlock(newLock, cb);
 		});
 	};
 
 
-	this.unlock = function(uuid, transactionName, cb) {
+	this.unlock = function(currentLock, cb) {
 		var self = this;
-		// console.log("Releasing lock "+uuid+" ("+transactionName+")");
-		// Remove current lock
-		self.transactionCollection.destroy({
-			uuid: uuid
-		}, function(err) {
+
+		// Get all locks
+		self.transactionCollection.findAll(function(err, locks) {
 			if(err) return cb && cb(err);
-			// console.log("<≠≠≠≠≠ Lock released :: "+uuid+" ("+transactionName+")");
-			self.transactionCollection.findAll(function(err, locks) {
+			
+			// Determine the next user in line
+			// (oldest lock that isnt THIS ONE w/ the proper transactionName)
+			var nextInLine = getNextLock(locks, currentLock);
+
+			// console.log('unlocking ',currentLock);
+			// console.log('nextInLine is',nextInLine);
+
+			// Remove current lock
+			self.transactionCollection.destroy({
+				uuid: currentLock.uuid
+			}, function(err) {
 				if(err) return cb && cb(err);
 
-				// Determine the next user in line (oldest lock w/ the proper transactionName)
-				var nextInLine = getNextLock(locks, transactionName);
-				// nextInLine ? console.log("Preparing to hand off lock to "+nextInLine.uuid+" ("+nextInLine.name+")") : console.log("No locks remaining !!!");
 				// Trigger unlock's callback if specified
 				cb && cb();
 
@@ -275,15 +286,19 @@ module.exports = function(adapter) {
 	//	this function wouldn't be necessary if we could....
 	//	TODO:  call find() with the [currently unfinished] ORDER option
 	// ************************************************************
-
-	function getNextLock(locks, transactionName) {
+	function getNextLock(locks, currentLock) {
 		var nextLock;
 		_.each(locks, function(lock) {
-			// Ignore locks with different names
-			if(lock.name !== transactionName) return;
 
-			// If this is the first one, or this lock is older than the one we have, use it
-			if(!nextLock || lock.timestamp < nextLock.timestamp) nextLock = lock;
+			// Ignore locks with different transaction names
+			if (lock.name !== currentLock.name) return;
+			
+			// Ignore current lock
+			if (lock.uuid === currentLock.uuid) return;
+
+			// Find the lock with the smallest id
+			var minId = nextLock ? nextLock.id : MAX_INTEGER;
+			if (lock.id < minId) nextLock = lock;
 		});
 		return nextLock;
 	}

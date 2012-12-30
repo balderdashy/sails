@@ -10,6 +10,8 @@ var Collection = module.exports = function(definition) {
 	// Copy over only the methods from the adapter that you need, and modify if necessary
 	// ********************************************************************
 
+	// TODO: configure createdAt/updatedAt
+	// TODO: configure automatic id PK
 
 	// (defaults to 'alter')
 	definition.migrate = 
