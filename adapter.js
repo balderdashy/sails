@@ -105,8 +105,6 @@ module.exports = function(adapter) {
 	// DQL
 	//////////////////////////////////////////////////////////////////////
 	this.create = function(collectionName, values, cb) {
-		var self = this;
-		if(!collectionName) return cb("No collectionName specified!");
 		if(!adapter.create) return cb("No create() method defined in adapter!");
 
 		// TODO: Populate default values
@@ -149,7 +147,7 @@ module.exports = function(adapter) {
 	};
 
 	//////////////////////////////////////////////////////////////////////
-	// Convenience methods (overwritable in adapters)
+	// Compound methods (overwritable in adapters)
 	//////////////////////////////////////////////////////////////////////
 	this.findOrCreate = function(collectionName, criteria, values, cb) {
 		var self = this;
@@ -182,6 +180,37 @@ module.exports = function(adapter) {
 	};
 
 
+
+	//////////////////////////////////////////////////////////////////////
+	// Aggregate
+	//////////////////////////////////////////////////////////////////////
+
+	// If an optimized createAll exists, use it, otherwise use an asynchronous loop with create()
+	this.createAll = function (collectionName, valuesList,cb) {
+		var my = this;
+
+		if (adapter.createAll) adapter.createAll(collectionName,valuesList,cb);
+		else {
+			async.forEach(valuesList, function (values,cb) {
+				my.create(collectionName, values, cb);
+			}, cb);
+		}
+	};
+
+	this.updateAll = function (collectionName,newValues, cb){
+		return this.update(collectionName,null,newValues,cb);
+	};
+
+	this.destroyAll = function (collectionName, cb){
+		return this.destroy(this.identity,null,newValues,cb);
+	};
+
+
+
+	//////////////////////////////////////////////////////////////////////
+	// Concurrency
+	//////////////////////////////////////////////////////////////////////
+	
 	// App-level transaction
 	this.transaction = function(transactionName, cb) {
 		var self = this;
@@ -281,27 +310,6 @@ module.exports = function(adapter) {
 	};
 
 
-	// Find the oldest lock with the same transaction name
-	// ************************************************************
-	//	this function wouldn't be necessary if we could....
-	//	TODO:  call find() with the [currently unfinished] ORDER option
-	// ************************************************************
-	function getNextLock(locks, currentLock) {
-		var nextLock;
-		_.each(locks, function(lock) {
-
-			// Ignore locks with different transaction names
-			if (lock.name !== currentLock.name) return;
-			
-			// Ignore current lock
-			if (lock.uuid === currentLock.uuid) return;
-
-			// Find the lock with the smallest id
-			var minId = nextLock ? nextLock.id : MAX_INTEGER;
-			if (lock.id < minId) nextLock = lock;
-		});
-		return nextLock;
-	}
 
 	// If @collectionName and @otherCollectionName are both using this adapter, do a more efficient remote join.
 	// (By default, an inner join, but right and left outer joins are also supported.)
@@ -407,6 +415,28 @@ module.exports = function(adapter) {
 	this._isWaterlineAdapter = true;
 };
 
+
+// Find the oldest lock with the same transaction name
+// ************************************************************
+//	this function wouldn't be necessary if we could....
+//	TODO:  call find() with the [currently unfinished] ORDER option
+// ************************************************************
+function getNextLock(locks, currentLock) {
+	var nextLock;
+	_.each(locks, function(lock) {
+
+		// Ignore locks with different transaction names
+		if (lock.name !== currentLock.name) return;
+		
+		// Ignore current lock
+		if (lock.uuid === currentLock.uuid) return;
+
+		// Find the lock with the smallest id
+		var minId = nextLock ? nextLock.id : MAX_INTEGER;
+		if (lock.id < minId) nextLock = lock;
+	});
+	return nextLock;
+}
 
 /**
  * Run a method on an object -OR- each item in an array and return the result
