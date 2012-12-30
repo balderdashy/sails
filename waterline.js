@@ -14,10 +14,8 @@ var config = require('./config.js');
 // Util
 var buildDictionary = require('./buildDictionary.js');
 
-// Include built-in adapters
+// Include built-in adapters and collections
 var builtInAdapters = buildDictionary(__dirname + '/adapters', /(.+Adapter)\.js$/, /Adapter/);
-
-
 var builtInCollections = buildDictionary(__dirname + '/collections', /(.+)\.js$/);
 
 /**
@@ -96,7 +94,7 @@ module.exports = function (options,cb) {
 
 	// Instantiate an adapter object
 	function prepareAdapter (adapterName,cb) {
-
+		
 		// Pass waterline config down to adapters
 		adapters[adapterName].config = _.extend({
 			log: log
