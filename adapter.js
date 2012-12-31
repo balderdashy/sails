@@ -1,3 +1,4 @@
+var async = require('async');
 var _ = require('underscore');
 var parley = require('parley');
 var uuid = require('node-uuid');
@@ -52,7 +53,6 @@ module.exports = function(adapter) {
 
 		// If id is not defined, add it
 		// TODO: Make this check for ANY primary key
-		// TODO: Make this disableable in the config
 		if(this.config.defaultPK && !attributes.id) {
 			attributes.id = {
 				type: 'INTEGER',

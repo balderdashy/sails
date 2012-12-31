@@ -37,6 +37,6 @@
     "sails-util": "0.0.0",
     "parley": "0.0.2",
     "microtime": "~0.3.3",
-    "waterline-dirty": "0.0.02"
+    "waterline-dirty": "0.0.03"
   }
 }
