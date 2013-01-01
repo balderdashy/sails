@@ -51,34 +51,8 @@ module.exports = function(adapter) {
 		// Grab attributes from definition
 		var attributes = definition.attributes || {};
 
-		// If id is not defined, add it
-		// TODO: Make this check for ANY primary key
-		if(this.config.defaultPK && !attributes.id) {
-			attributes.id = {
-				type: 'INTEGER',
-				autoIncrement: true,
-				'default': 'AUTO_INCREMENT',
-				constraints: {
-					unique: true,
-					primaryKey: true
-				}
-			};
-		}
-
-		// If the adapter config allows it, and they aren't already specified,
-		// extend definition with updatedAt and createdAt
-		var now = {type: 'DATE', 'default': 'NOW'};
-		if(this.config.createdAt && !attributes.createdAt) attributes.createdAt = now;
-		if(this.config.updatedAt && !attributes.updatedAt) attributes.updatedAt = now;
-
-		// Convert string-defined attributes into fully defined objects
-		for(var attr in attributes) {
-			if(_.isString(attributes[attr])) {
-				attributes[attr] = {
-					type: attributes[attr]
-				};
-			}
-		}
+		// Marshal attributes to a standard format
+		attributes = require('./augmentAttributes')(attributes,this.config);
 
 		// Verify that collection doesn't already exist
 		// and then define it and trigger callback

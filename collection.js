@@ -72,14 +72,16 @@ var Collection = module.exports = function(definition) {
 		};
 	};
 
+	var attributes = _.clone(this.attributes) || {};
+	attributes = require('./augmentAttributes')(attributes,_.extend({},config,this.config));
+
 	// For each defined attribute, create a dynamic finder function
-	_.each(this.attributes,function (attrDef, attrName) {
+	_.each(attributes,function (attrDef, attrName) {
 		self['findBy'+_.str.capitalize(attrName)] = self.generateDynamicFinder(attrName);
 	});
 
 	// Then create compound dynamic finders using the various permutations
 	// TODO
-
 
 
 	//////////////////////////////////////////
