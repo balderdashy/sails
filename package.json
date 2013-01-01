@@ -49,13 +49,13 @@
     "ejs": "=0.7.2",
     "connect": "=1.8.3",
     "async": "=0.1.22",
-    "require-all": "=0.0.4",
+    "require-all": "git://github.com/mikermcneil/node-require-all.git",
     "underscore": "=1.4.2",
     "less": "=1.3.0",
     "optimist": "=0.3.4",
     "underscore.string": "=2.3.0",
     "winston": "git://github.com/jhurliman/winston.git",
-    "waterline": "=0.0.5201",
+    "waterline": "=0.0.5202",
     "glob": "=3.1.14"
   },
   "repository": {
