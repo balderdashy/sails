@@ -115,14 +115,14 @@ module.exports = function(adapter) {
 		if (self.config.createdAt) values.createdAt = new Date();
 		if (self.config.updatedAt) values.updatedAt = new Date();
 
-		adapter.create ? adapter.create(collectionName, values, cb) : cb();
+		adapter.create(collectionName, values, cb);
 
 		// TODO: Return model instance Promise object for joins, etc.
 	};
 	this.find = function(collectionName, options, cb) {
 		if(!adapter.find) return cb("No find() method defined in adapter!");
 		options = normalizeCriteria(options);
-		adapter.find ? adapter.find(collectionName, options, cb) : cb();
+		adapter.find(collectionName, options, cb);
 
 		// TODO: Return model instance Promise object for joins, etc.
 	};
@@ -134,14 +134,14 @@ module.exports = function(adapter) {
 
 		// TODO: Automatically change updatedAt (if enabled)
 
-		adapter.update ? adapter.update(collectionName, criteria, values, cb) : cb();
+		adapter.update(collectionName, criteria, values, cb);
 
 		// TODO: Return model instance Promise object for joins, etc.
 	};
 	this.destroy = function(collectionName, criteria, cb) {
 		if(!adapter.destroy) return cb("No destroy() method defined in adapter!");
 		criteria = normalizeCriteria(criteria);
-		adapter.destroy ? adapter.destroy(collectionName, criteria, cb) : cb();
+		adapter.destroy(collectionName, criteria, cb);
 
 		// TODO: Return model instance Promise object for joins, etc.
 	};
