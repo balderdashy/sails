@@ -119,16 +119,19 @@ module.exports = function(adapter) {
 
 		// TODO: Return model instance Promise object for joins, etc.
 	};
-	this.find = function(collectionName, options, cb) {
+	this.find = function(collectionName, criteria, cb) {
 		if(!adapter.find) return cb("No find() method defined in adapter!");
-		options = normalizeCriteria(options);
-		adapter.find(collectionName, options, cb);
+		criteria = normalizeCriteria(criteria);
+		if (_.isString(criteria)) return cb(criteria);
+
+		adapter.find(collectionName, criteria, cb);
 
 		// TODO: Return model instance Promise object for joins, etc.
 	};
 	this.update = function(collectionName, criteria, values, cb) {
 		if(!adapter.update) return cb("No update() method defined in adapter!");
 		criteria = normalizeCriteria(criteria);
+		if (_.isString(criteria)) return cb(criteria);
 
 		// TODO: Validate constraints using Anchor
 
@@ -141,6 +144,8 @@ module.exports = function(adapter) {
 	this.destroy = function(collectionName, criteria, cb) {
 		if(!adapter.destroy) return cb("No destroy() method defined in adapter!");
 		criteria = normalizeCriteria(criteria);
+		if (_.isString(criteria)) return cb(criteria);
+
 		adapter.destroy(collectionName, criteria, cb);
 
 		// TODO: Return model instance Promise object for joins, etc.
@@ -152,6 +157,8 @@ module.exports = function(adapter) {
 	this.findOrCreate = function(collectionName, criteria, values, cb) {
 		var self = this;
 		criteria = normalizeCriteria(criteria);
+		if (_.isString(criteria)) return cb(criteria);
+
 		if(adapter.findOrCreate) adapter.findOrCreate(collectionName, criteria, values, cb);
 		else {
 			// TODO: ADD A TRANSACTION LOCK HERE!!
@@ -166,6 +173,8 @@ module.exports = function(adapter) {
 	};
 	this.findAndUpdate = function(collectionName, criteria, values, cb) {
 		criteria = normalizeCriteria(criteria);
+		if (_.isString(criteria)) return cb(criteria);
+
 		if(adapter.findAndUpdate) adapter.findAndUpdate(collectionName, criteria, values, cb);
 		else this.update(collectionName, criteria, values, cb);
 
@@ -173,6 +182,8 @@ module.exports = function(adapter) {
 	};
 	this.findAndDestroy = function(collectionName, criteria, cb) {
 		criteria = normalizeCriteria(criteria);
+		if (_.isString(criteria)) return cb(criteria);
+
 		if(adapter.findAndDestroy) adapter.findAndDestroy(collectionName, criteria, cb);
 		else this.destroy(collectionName, criteria, cb);
 
@@ -219,7 +230,6 @@ module.exports = function(adapter) {
 		var newLock = {
 			uuid: uuid.v4(),
 			name: transactionName,
-			timestamp: epoch(),
 			cb: cb
 		};
 		// console.log("Generating lock "+newLock.uuid+" ("+transactionName+")");
@@ -240,8 +250,9 @@ module.exports = function(adapter) {
 
 					// If a conflict IS found, respect the oldest
 					// (the conflict-causer is responsible for cleaning up his entry-- ignore it!)
-					if(entry.name === newLock.name && entry.uuid !== newLock.uuid && true && //entry.timestamp <= newLock.timestamp && 
-					entry.id < newLock.id) conflict = entry;
+					if(entry.name === newLock.name && 
+						entry.uuid !== newLock.uuid && 
+						entry.id < newLock.id) conflict = entry;
 				});
 
 				// If there are no conflicts, the lock is acquired!
@@ -462,17 +473,20 @@ function normalizeCriteria(criteria) {
 
 	// Empty undefined values from criteria object
 	_.each(criteria, function(val, key) {
-		if(val === undefined) delete criteria[key];
+		if(_.isUndefined(val)) delete criteria[key];
 	});
 
+	// Convert id and id strings into a criteria
 	if((_.isFinite(criteria) || _.isString(criteria)) && +criteria > 0) {
 		criteria = {
 			id: +criteria
 		};
 	}
-	if(!_.isObject(criteria)) {
-		throw 'Invalid options/criteria :: ' + criteria;
-	}
+
+	// Return string to indicate an error
+	if(!_.isObject(criteria)) return ('Invalid options/criteria :: ' + criteria);
+
+	// If criteria doesn't seem to contain operational keys, assume all the keys are criteria
 	if(!criteria.where && !criteria.limit && !criteria.skip && !criteria.offset && !criteria.order) {
 		criteria = {
 			where: criteria
@@ -487,10 +501,4 @@ function normalizeCriteria(criteria) {
 	}
 
 	return criteria;
-}
-
-// Number of miliseconds since the Unix epoch Jan 1st, 1970
-
-function epoch() {
-	return(new Date()).getTime();
 }
