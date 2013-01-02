@@ -297,7 +297,7 @@ module.exports = function(adapter) {
 				if(err) return cb && cb(err);
 
 				// Trigger unlock's callback if specified
-				// > NOTE: do this before triggering the next locked code
+				// > NOTE: do this before triggering the next queued transaction
 				// to prevent transactions from monopolizing the event loop
 				cb && cb();
 
