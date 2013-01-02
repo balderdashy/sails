@@ -54,9 +54,9 @@
     "less": "=1.3.0",
     "optimist": "=0.3.4",
     "underscore.string": "=2.3.0",
-    "winston": "git://github.com/jhurliman/winston.git",
     "waterline": "=0.0.5204",
-    "glob": "=3.1.14"
+    "glob": "=3.1.14",
+    "winston": "~0.6.2"
   },
   "repository": {
     "type": "git",
