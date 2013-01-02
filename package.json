@@ -56,7 +56,8 @@
     "underscore.string": "=2.3.0",
     "waterline": "=0.0.5204",
     "glob": "=3.1.14",
-    "winston": "~0.6.2"
+    "winston": "~0.6.2",
+    "sails-moduleloader": "0.0.0"
   },
   "repository": {
     "type": "git",
