@@ -196,45 +196,49 @@ module.exports = function(adapter) {
 	// Concurrency
 	//////////////////////////////////////////////////////////////////////
 	
-	// App-level transaction
-	this.transaction = function(transactionName, cb) {
+	/**
+	*	App-level transaction
+	*	@transactionName		a unique identifier for this transaction
+	*	@atomicLogic		the logic to be run atomically
+	*	@afterUnlock (optional)	the function to trigger after unlock() is called
+	*/
+	this.transaction = function(transactionName, atomicLogic, afterUnlock) {
 		var self = this;
 
 		// Generate unique lock
 		var newLock = {
 			uuid: uuid.v4(),
 			name: transactionName,
-			cb: cb
+			atomicLogic: atomicLogic,
+			afterUnlock: afterUnlock
 		};
-		// console.log("Generating lock "+newLock.uuid+" ("+transactionName+")");
+
+		// console.log("Generating lock "+newLock.uuid+" ("+transactionName+")",newLock);
 		// write new lock to commit log
-		this.transactionCollection.create(newLock, function(err) {
-			if(err) return cb(err, function() {
+		this.transactionCollection.create(newLock, function afterCreatingTransaction(err) {
+			if(err) return atomicLogic(err, function() {
 				throw err;
 			});
 
 			// Check if lock was written, and is the oldest with the proper name
-			self.transactionCollection.findAll(function(err, locks) {
-				if(err) return cb(err, function() {
+			self.transactionCollection.findAll(function afterLookingUpTransactions(err, locks) {
+				if(err) return atomicLogic(err, function() {
 					throw err;
 				});
 
 				var conflict = false;
-				_.each(locks, function(entry) {
+				_.each(locks, function eachLock (entry) {
 
 					// If a conflict IS found, respect the oldest
-					// (the conflict-causer is responsible for cleaning up his entry-- ignore it!)
 					if(entry.name === newLock.name && 
 						entry.uuid !== newLock.uuid && 
 						entry.id < newLock.id) conflict = entry;
 				});
 
 				// If there are no conflicts, the lock is acquired!
-				if(!conflict) self.lock(newLock, newLock.cb);
+				if(!conflict) acquireLock(newLock);
 
-				// Otherwise, get in line
-				// In other words, do nothing-- 
-				// unlock() will grant lock request in order it was received
+				// Otherwise, get in line: a lock was acquired before mine, do nothing
 				else {
 					/*
 					console.log("************ Conflict encountered:: lock already exists for that transaction!!");
@@ -248,26 +252,35 @@ module.exports = function(adapter) {
 		});
 	};
 
-	this.lock = function(newLock, cb) {
-		var self = this;
-		// console.log("====> Lock "+newLock.id+" acquired "+newLock.uuid+" ("+newLock.name+")");
+	/**
+	* acquireLock() is run after the lock is acquired, but before passing control to the atomic app logic
+	*
+	* @newLock					the object representing the lock to acquire
+		* @name						name of the lock
+		* @atomicLogic				the transactional logic to be run atomically
+		* @afterUnlock (optional)	the function to run after the lock is subsequently released
+	*/
+	var acquireLock = function(newLock) {
+		// console.log("====> Lock "+newLock.id+" acquired "+newLock.uuid+" ("+newLock.name+")",newLock);
 
 		var warningTimer = setTimeout(function() {
 			console.error("Transaction :: " + newLock.name + " is taking an abnormally long time (> " + self.config.transactionWarningTimer + "ms)");
 		}, self.config.transactionWarningTimer);
 
-		cb(null, function unlock(cb) {
+		newLock.atomicLogic(null, function unlock () {
 			clearTimeout(warningTimer);
-			self.unlock(newLock, cb);
+			releaseLock(newLock);
 		});
 	};
 
 
-	this.unlock = function(currentLock, cb) {
-		var self = this;
+	// releaseLock() will grant pending lock requests in the order they were received
+	var releaseLock = function(currentLock) {
+
+		var cb = currentLock.afterUnlock;
 
 		// Get all locks
-		self.transactionCollection.findAll(function(err, locks) {
+		self.transactionCollection.findAll(function afterLookingUpTransactions(err, locks) {
 			if(err) return cb && cb(err);
 			
 			// Determine the next user in line
@@ -280,16 +293,17 @@ module.exports = function(adapter) {
 			// Remove current lock
 			self.transactionCollection.destroy({
 				uuid: currentLock.uuid
-			}, function(err) {
+			}, function afterLockReleased (err) {
 				if(err) return cb && cb(err);
 
 				// Trigger unlock's callback if specified
+				// > NOTE: do this before triggering the next locked code
+				// to prevent transactions from monopolizing the event loop
 				cb && cb();
 
 				// Now allow the nextInLine lock to be acquired
 				// This marks the end of the previous transaction
-				nextInLine && self.lock(nextInLine, nextInLine.cb);
-
+				nextInLine && acquireLock(nextInLine);
 			});
 		});
 	};
@@ -310,7 +324,7 @@ module.exports = function(adapter) {
 		// Drop and recreate collection
 		drop: function(collection, cb) {
 			var self = this;
-			this.drop(collection.identity, function(err, data) {
+			this.drop(collection.identity, function afterDrop (err, data) {
 				if(err) cb(err);
 				else self.define(collection.identity, collection, cb);
 			});
@@ -321,7 +335,7 @@ module.exports = function(adapter) {
 			var self = this;
 
 			// Check that collection exists-- if it doesn't go ahead and add it and get out
-			this.describe(collection.identity, function(err, data) {
+			this.describe(collection.identity, function afterDescribe (err, data) {
 				data = _.clone(data);
 
 				if(err) return cb(err);
@@ -379,16 +393,6 @@ module.exports = function(adapter) {
 			cb();
 		}
 	};
-
-	// Always grant access to a few of Adapter's methods to the user adapter instance
-	// (things that may or may not be defined by the user adapter)
-	adapter.transaction = function(name, cb) {
-		return self.transaction(name, cb);
-	};
-
-	// adapter.teardown = adapter.teardown || self.teardown;
-	// adapter.teardownCollection = adapter.teardownCollection || self.teardownCollection;
-
 
 	// Bind adapter methods to self
 	_.bindAll(adapter);

@@ -240,9 +240,7 @@ var Collection = module.exports = function(definition) {
 	// Special methods
 	//////////////////////////////////////////
 
-	this.transaction = function (name, cb) {
-		return this.adapter.transaction(name, cb);
-	};
+	this.transaction = this.adapter.transaction;
 
 	//////////////////////////////////////////
 	// Utility methods

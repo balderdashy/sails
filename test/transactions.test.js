@@ -17,10 +17,9 @@ describe ('transactions',function () {
 
 	describe('app-level transaction', function() {
 		it('should be able to acquire lock', function(done) {
-			User.transaction("test", function(err, unlock) {
-				unlock();
-				done(err);
-			});
+			User.transaction("test", function(err, cb) {
+				cb();
+			},done);
 		});
 
 		it('should NOT allow another lock to be acquired until the first lock is released', function(done) {
@@ -28,30 +27,29 @@ describe ('transactions',function () {
 
 			// The callback should not fire until the lock is released
 			User.transaction('test', function(err, unlock1) {
-				if(err) return done(err);
+				if(err) throw new Error(err);
 				if(!unlock1) throw new Error("No unlock() method provided!");
 
 				testAppendLock();
 
 				User.transaction('test', function(err, unlock2) {
-					if(err) return done(err);
+					if(err) throw new Error(err);
 					if(!unlock2) throw new Error("No unlock() method provided!");
 
 					testAppendLock();
 
 					// Release lock so other tests can use the 'test' transaction
-					unlock2();
-
-					if(_.isEqual(orderingTest, ['lock', 'unlock', 'lock'])) done();
+					if(_.isEqual(orderingTest, ['lock', 'unlock', 'lock'])) unlock2();
 					else {
 						console.error(orderingTest);
-						throw "The lock was acquired by two users at once!";
+						throw new Error("The lock was acquired by two users at once!");
 					}
-				});
+				}, done);
 
 				// Set timeout to release the lock after a 1/20 of a second
 				setTimeout(function() {
-					unlock1(testAppendUnlock);
+					testAppendUnlock();
+					unlock1();
 				}, 50);
 			});
 
@@ -89,25 +87,26 @@ describe ('transactions',function () {
 		function dummyTransactionTest(items,type,done) {
 			async.forEach(items, function(constellation, cb) {
 				User.transaction('test_create',function(err,unlock) {
+					if (err) throw new Error(err);
+
 					User.create({
 						name: constellation,
 						type: type
 					},function(err) {
+						if (err) throw new Error(err);
+
 						// Wait a short moment to introduce an element of choas
 						setTimeout(function() {
 							unlock();
-							cb();
 						},Math.round(Math.random())*5);
 					});
-				});
+				},cb);
 			}, function(err) {
+				if (err) throw new Error(err);
+				
 				User.find({ type: type },function (err,users) {
-					if(users.length != items.length) {
-						console.error("Users: ");
-						console.error(users);
-						return done('Proper users were not created!');
-					}
-					done();
+					if(users.length === items.length) return done();
+					else return done('Proper users were not created!');
 				});
 			});
 		}
