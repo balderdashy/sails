@@ -13,11 +13,18 @@ var Model = require('./model.js');
 var config = require('./config.js');
 
 // Util
-var buildDictionary = require('./buildDictionary.js');
+var modules = require('sails-moduleloader');
 
 // Include built-in adapters and collections
-var builtInAdapters = buildDictionary(__dirname + '/adapters', /(.+Adapter)\.js$/, /Adapter/);
-var builtInCollections = buildDictionary(__dirname + '/collections', /(.+)\.js$/);
+var builtInAdapters = modules.required({
+	dirname		: __dirname + '/adapters',
+	filter		: /(.+Adapter)\.js$/,
+	replaceExpr	: /Adapter/
+});
+var builtInCollections = modules.required({
+	dirname		: __dirname + '/collections',
+	filter		: /(.+)\.js$/
+});
 
 /**
 * Prepare waterline to interact with adapters

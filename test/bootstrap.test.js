@@ -37,7 +37,10 @@ function initialize (done) {
 	// Keep a reference to waterline to use for teardown()
 	bootstrap.waterline = require("../waterline.js");
 
-	var collections = require('../buildDictionary.js')(__dirname + '/collections', /(.+)\.js$/);
+	var collections = require('sails-moduleloader').required({
+		dirname		: __dirname + '/collections', 
+		filter		: /(.+)\.js$/
+	});
 
 	bootstrap.waterline({
 		collections: collections,
@@ -60,4 +63,10 @@ function teardown (done) {
 
 // Use silent logger for testing
 // (this prevents annoying output from cluttering up our nice clean console)
-var blackhole = function (){};
+var blackhole = _.extend(function () {},{
+	verbose: function (){},
+	info: function (){},
+	debug: function (){},
+	warn: function (){},
+	error: function (){}
+});

@@ -1,5 +1,10 @@
 var _ = require('underscore');
 
+/**
+* Given a set of attributes, normalize them into object notation
+* Also add any automatic attributes if configured to do so
+* (i.e. default `id` primary key attribute, updatedAt, createdAt, etc.)
+*/
 module.exports = function (attributes,config) {
 
 	var newAttributes = _.clone(attributes);
