@@ -70,8 +70,59 @@ module.exports = function(adapter) {
 		// TODO: foreach through and delete all of the models for this collection
 		adapter.drop ? adapter.drop(collectionName, cb) : cb();
 	};
-	this.alter = function(collectionName, newAttrs, cb) {
-		adapter.alter ? adapter.alter(collectionName, newAttrs, cb) : cb();
+	this.alter = function(collectionName, attributes, cb) {
+
+		adapter.alter ? adapter.alter(collectionName, attributes, cb) : defaultAlter();
+
+		// Default behavior
+		function defaultAlter(done) {
+
+			// Alter the schema
+			this.describe(collectionName, function afterDescribe (err, oldAttributes) {
+				if (err) return done(err);
+
+				// Keep track of previously undefined attributes
+				// for use when updating the actual data
+				var newAttributes = {};
+
+				// Iterate through each attribute in the new definition
+				_.each(attributes, function checkAttribute(attribute,attrName) {
+
+					// If the attribute doesn't exist, create it
+					if (!oldAttributes[attrName]) {
+						newAttributes[attrName] = attribute;
+					}
+
+					// If the old attribute is not exactly the same, or it doesn't exist, (re)create it
+					if ( !oldAttributes[attrName] || !_.isEqual(oldAttributes[attrName],attribute) ) {
+						oldAttributes[attrName] = attribute;
+					}
+
+				});
+
+
+				// Then alter the actual data as necessary
+				this.find(collectionName,null, function afterFind (err,data) {
+					if (err) return done(err);
+
+					// Update the data belonging to this attribute to reflect the new properties
+					// Realistically, this will mainly be about constraints, and primarily uniquness
+					// It'd be good if waterline could enforce all constraints at this time,
+					// but there's a trade-off with destroying people's data
+					// TODO: Figure this out
+
+
+					// For new columns, just use the default value if one exists (otherwise use null)
+					_.each(newAttributes, function checkAttribute(attribute,attrName) {
+						if (attribute.defaultValue) {
+							data[attrName] = attribute.defaultValue;
+						}
+					});
+
+					done();
+				});
+			});
+		}
 	};
 
 
@@ -343,51 +394,8 @@ module.exports = function(adapter) {
 
 				if(err) return cb(err);
 				else if(!data) return self.define(collection.identity, collection, cb);
-
-				// TODO: move all of this to the alter() call in the adapter
-
-				// If it *DOES* exist, we'll try to guess what changes need to be made
-
-				// Iterate through each attribute in this collection's schema
-				_.each(collection.attributes, function checkAttribute(attribute,attrName) {
-					// Make sure that a comparable field exists in the data store
-					if (!data[attrName]) {
-						data[attrName] = attribute;
-
-						// Add the default value for this new attribute to each row in the data model
-						// TODO
-					}
-					
-					// And that it matches completely
-					else {
-						data[attrName] = attribute;
-
-						// Update the data belonging to this attribute to reflect the new properties
-						// Realistically, this will mainly be about constraints, and primarily uniquness
-						// It'd be good if waterline could enforce all constraints at this time,
-						// but there's a trade-off with destroying people's data
-						// TODO
-					}
-				});
-
-				// Now iterate through each attribute in the adapter's data store
-				// and remove any that don't have an analog in the collection definition
-				// Also prune the data belonging to removed attributes from rows
-				// TODO:
-
-				// Persist that
-
-
-				// Check that the attribute exists in the data store
-				// TODO
-				// If not, alter the collection to include it
-				// TODO
-				// Iterate through each attribute in this collection
-				// and make sure that a comparable field exists in the model
-				// TODO
-				// If not, alter the collection and remove it
-				// TODO
-				// cb();	
+				// Otherwise, if it *DOES* exist, we'll try and guess what changes need to be made
+				else self.alter(collection.identity, collection, cb);
 			});
 		}, 
 
