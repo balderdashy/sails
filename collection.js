@@ -240,7 +240,19 @@ var Collection = module.exports = function(definition) {
 	// Special methods
 	//////////////////////////////////////////
 
-	this.transaction = this.adapter.transaction;
+	this.transaction = function (transactionName, atomicLogic, afterUnlock) {
+		var usage = _.str.capitalize(this.identity)+'.transaction(transactionName, atomicLogicFunction, afterUnlockFunction)';
+		if (!atomicLogic) {
+			return usageError('Missing required parameter: atomicLogicFunction!',usage);
+		}
+		else if (!_.isFunction(atomicLogic)) {
+			return usageError('Invalid atomicLogicFunction!  Not a function: '+atomicLogic,usage);
+		}
+		else if (afterUnlock && !_.isFunction(afterUnlock)) {
+			return usageError('Invalid afterUnlockFunction!  Not a function: '+afterUnlock,usage);
+		}
+		else return this.adapter.transaction(transactionName, atomicLogic, afterUnlock);
+	};
 
 	//////////////////////////////////////////
 	// Utility methods

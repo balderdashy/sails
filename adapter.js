@@ -269,13 +269,16 @@ module.exports = function(adapter) {
 
 		newLock.atomicLogic(null, function unlock () {
 			clearTimeout(warningTimer);
-			releaseLock(newLock);
+			releaseLock(newLock,arguments);
 		});
 	};
 
 
 	// releaseLock() will grant pending lock requests in the order they were received
-	var releaseLock = function(currentLock) {
+	//
+	// @currentLock			the lock currently acquired
+	// @afterUnlockArgs		the arguments to pass to the afterUnlock function 
+	var releaseLock = function(currentLock, afterUnlockArgs) {
 
 		var cb = currentLock.afterUnlock;
 
@@ -299,7 +302,7 @@ module.exports = function(adapter) {
 				// Trigger unlock's callback if specified
 				// > NOTE: do this before triggering the next queued transaction
 				// to prevent transactions from monopolizing the event loop
-				cb && cb();
+				cb && cb.apply(null, afterUnlockArgs);
 
 				// Now allow the nextInLine lock to be acquired
 				// This marks the end of the previous transaction
