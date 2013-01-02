@@ -71,14 +71,15 @@ module.exports = function(adapter) {
 		adapter.drop ? adapter.drop(collectionName, cb) : cb();
 	};
 	this.alter = function(collectionName, attributes, cb) {
+		var self = this;
 
-		adapter.alter ? adapter.alter(collectionName, attributes, cb) : defaultAlter();
+		adapter.alter ? adapter.alter(collectionName, attributes, cb) : defaultAlter(cb);
 
 		// Default behavior
 		function defaultAlter(done) {
 
 			// Alter the schema
-			this.describe(collectionName, function afterDescribe (err, oldAttributes) {
+			self.describe(collectionName, function afterDescribe (err, oldAttributes) {
 				if (err) return done(err);
 
 				// Keep track of previously undefined attributes
@@ -102,7 +103,7 @@ module.exports = function(adapter) {
 
 
 				// Then alter the actual data as necessary
-				this.find(collectionName,null, function afterFind (err,data) {
+				self.find(collectionName,null, function afterFind (err,data) {
 					if (err) return done(err);
 
 					// Update the data belonging to this attribute to reflect the new properties
@@ -119,7 +120,17 @@ module.exports = function(adapter) {
 						}
 					});
 
-					done();
+					// Create deferred object
+					var $$ = new parley();
+					var $_self = $$(self);
+					
+					// Dumbly drop the table and redefine it					
+					$_self.drop(collectionName);
+					$_self.define(collectionName, attributes);
+
+					// Then dumbly add the data back in
+					$_self.createAll(collectionName,data);
+					$$(function(xcb) { done && done(); xcb(); })();
 				});
 			});
 		}
@@ -225,7 +236,10 @@ module.exports = function(adapter) {
 	this.createAll = function (collectionName, valuesList,cb) {
 		var my = this;
 
+		// Custom user adapter behavior
 		if (adapter.createAll) adapter.createAll(collectionName,valuesList,cb);
+		
+		// Default behavior
 		else {
 			async.forEach(valuesList, function (values,cb) {
 				my.create(collectionName, values, cb);
@@ -393,9 +407,9 @@ module.exports = function(adapter) {
 				data = _.clone(data);
 
 				if(err) return cb(err);
-				else if(!data) return self.define(collection.identity, collection, cb);
+				else if(!data) return self.define(collection.identity, collection.attributes, cb);
 				// Otherwise, if it *DOES* exist, we'll try and guess what changes need to be made
-				else self.alter(collection.identity, collection, cb);
+				else self.alter(collection.identity, collection.attributes, cb);
 			});
 		}, 
 
