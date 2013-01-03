@@ -1,5 +1,5 @@
 /**
- * transactions.test.js
+ * crud.transactions.test.js
  *
  * This module tests basic CRUD operations on the specified adapter, but in parallel.
  * It simulates simultaneous access to models in the same collection, and then models at the same time.
