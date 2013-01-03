@@ -239,7 +239,7 @@ module.exports = function(adapter) {
 		// Warning: Inefficient!  App-level tranactions should not be used for built-in compound queries.
 		else {
 			// Create transaction name based on collection
-			var transactionName = collectionName+'.waterline.default.create_all';
+			var transactionName = collectionName+'.waterline.default.create.findOrCreate';
 			self.transaction(transactionName, function (err,done) {
 				self.find(collectionName, criteria, function(err, result) {
 					if(err) done(err);
