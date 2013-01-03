@@ -83,6 +83,8 @@ var Collection = module.exports = function(definition) {
 	_.each(attributes,function (attrDef, attrName) {
 		self['findBy'+_.str.capitalize(attrName)] = self.generateDynamicFinder(attrName,'findBy');
 		self['findAllBy'+_.str.capitalize(attrName)] = self.generateDynamicFinder(attrName,'findAllBy');
+		// TODO: findBy*OrCreate
+		// TODO: findAllBy*OrCreate
 	});
 
 	// Then create compound dynamic finders using the various permutations
