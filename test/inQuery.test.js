@@ -25,7 +25,7 @@ describe('IN queries', function() {
 					name: 'something else'
 				}];
 
-				User.createAll(users, function(err) {
+				User.createEach(users, function(err) {
 					if(err) return done(err);
 					User.findAll({
 						name: ["foo", testName, "bar", "baz"]

@@ -228,35 +228,27 @@ var Collection = module.exports = function(definition) {
 		return this.adapter.findOrCreate(this.identity,criteria,values,cb);
 	};
 
-	// TODO: findOrCreateAll()
-	this.findOrCreateAll = function () { throw new Error('findOrCreateAll() is not implemented yet!'); };
 
 	//////////////////////////////////////////
 	// Aggregate methods
 	//////////////////////////////////////////
 
-	this.createAll = function (valuesList, cb) {
-		var my = this;
-		var usage = _.str.capitalize(this.identity)+'.createAll(valuesList, callback)';
+	this.createEach = function (valuesList, cb) {
+		var usage = _.str.capitalize(this.identity)+'.createEach(valuesList, callback)';
 		if(!valuesList) usageError('No valuesList specified!',usage);
 		if(!_.isArray(valuesList)) usageError('Invalid valuesList specified (should be an array!)',usage);
 		if(!_.isFunction(cb)) usageError('Invalid callback specified!',usage);
-		
-		// If an optimized createAll exists, use it, otherwise use an asynchronous loop with create()
-		this.adapter.createAll(this.identity,valuesList,cb);
+		this.adapter.createEach(this.identity,valuesList,cb);
 	};
 
-	this.updateAll = function (newValues,cb) {
-		var usage = _.str.capitalize(this.identity)+'.updateAll(newValues, callback)';
-		if(!newValues) usageError('No updated values specified!',usage);
+	// Iterate through a list of objects, trying to find each one
+	// For any that don't exist, create them
+	this.findOrCreateEach = function (valuesList, cb) { 
+		var usage = _.str.capitalize(this.identity)+'.findOrCreateEach(valuesList, callback)';
+		if(!valuesList) usageError('No valuesList specified!',usage);
+		if(!_.isArray(valuesList)) usageError('Invalid valuesList specified (should be an array!)',usage);
 		if(!_.isFunction(cb)) usageError('Invalid callback specified!',usage);
-		return this.adapter.updateAll(this.identity,newValues,cb);
-	};
-
-	this.destroyAll = function (cb) {
-		var usage = _.str.capitalize(this.identity)+'.destroyAll(newValues, callback)';
-		if(!_.isFunction(cb)) usageError('Invalid callback specified!',usage);
-		return this.adapter.destroyAll(this.identity,cb);
+		this.adapter.findOrCreateEach(this.identity,valuesList,cb);
 	};
 
 	//////////////////////////////////////////

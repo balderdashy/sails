@@ -21,24 +21,33 @@ module.exports = function(adapter) {
 
 	// Initialize is fired once-per-adapter
 	this.initialize = function(cb) {
-		adapter.initialize ? adapter.initialize(cb) : cb();
+		if (adapter.initialize) adapter.initialize(cb);
+		else cb();
 	};
 
 	// Logic to handle the (re)instantiation of collections
 	this.initializeCollection = function(collectionName, cb) {
-		adapter.initializeCollection ? adapter.initializeCollection(collectionName,cb) : (cb && cb());
+		if (adapter.initializeCollection) {
+			adapter.initializeCollection.apply(this,arguments);
+		}
+		else cb && cb();
 	};
 
 	// Teardown is fired once-per-adapter
 	// (i.e. tear down any remaining connections to the underlying data model)
 	this.teardown = function(cb) {
-		adapter.teardown ? adapter.teardown(cb) : (cb && cb());
+
+		if (adapter.teardown) adapter.teardown.apply(this,arguments);
+		else cb && cb();
 	}; 
 
 	// teardownCollection is fired once-per-collection
 	// (i.e. flush data to disk before the adapter shuts down)
 	this.teardownCollection = function(collectionName,cb) {
-		adapter.teardownCollection ? adapter.teardownCollection(collectionName, cb) : (cb && cb());
+		if (adapter.teardownCollection) {
+			adapter.teardownCollection.apply(this,arguments);
+		}
+		else cb && cb();
 	};
 
 
@@ -59,21 +68,32 @@ module.exports = function(adapter) {
 		this.describe(collectionName, function(err, existingAttributes) {
 			if(err) return cb(err, attributes);
 			else if(existingAttributes) return cb("Trying to define a collection (" + collectionName + ") which already exists.");
-			else return(adapter.define ? adapter.define(collectionName, attributes, cb) : cb());
+			
+			if (adapter.define) adapter.define(collectionName, attributes, cb);
+			else cb();
 		});
 	};
 
 	this.describe = function(collectionName, cb) {
-		adapter.describe ? adapter.describe(collectionName, cb) : cb();
+		if (adapter.describe) {
+			adapter.describe.apply(this,arguments);
+		}
+		else cb();
 	};
 	this.drop = function(collectionName, cb) {
 		// TODO: foreach through and delete all of the models for this collection
-		adapter.drop ? adapter.drop(collectionName, cb) : cb();
+		if (adapter.drop) {
+			adapter.drop.apply(this,arguments);
+		}
+		else cb();
 	};
 	this.alter = function(collectionName, attributes, cb) {
 		var self = this;
 
-		adapter.alter ? adapter.alter(collectionName, attributes, cb) : defaultAlter(cb);
+		if (adapter.alter) {
+			adapter.alter.apply(this,arguments);
+		}
+		else defaultAlter(cb);
 
 		// Default behavior
 		function defaultAlter(done) {
@@ -129,7 +149,7 @@ module.exports = function(adapter) {
 					$_self.define(collectionName, attributes);
 
 					// Then dumbly add the data back in
-					$_self.createAll(collectionName,data);
+					$_self.createEach(collectionName,data);
 					$$(function(xcb) { done && done(); xcb(); })();
 				});
 			});
@@ -230,7 +250,9 @@ module.exports = function(adapter) {
 		criteria = normalizeCriteria(criteria);
 		if (_.isString(criteria)) return cb(criteria);
 
-		if(adapter.findAndUpdate) adapter.findAndUpdate(collectionName, criteria, values, cb);
+		if(adapter.findAndUpdate) {
+			adapter.findAndUpdate(collectionName, criteria, values, cb);
+		}
 
 		// Default behavior
 		// Warning: Default behavior does NOT include transaction lock!
@@ -243,10 +265,13 @@ module.exports = function(adapter) {
 		criteria = normalizeCriteria(criteria);
 		if (_.isString(criteria)) return cb(criteria);
 
+		if(adapter.findAndDestroy) {
+			adapter.findAndDestroy(collectionName, criteria, cb);
+		}
+
 		// Default behavior
 		// Warning: Default behavior does NOT include transaction lock!
 		// (this is to prevent endless recursion with a misconfigured transaction adapter)
-		if(adapter.findAndDestroy) adapter.findAndDestroy(collectionName, criteria, cb);
 		else this.destroy(collectionName, criteria, cb);
 
 		// TODO: Return model instance Promise object for joins, etc.
@@ -258,12 +283,12 @@ module.exports = function(adapter) {
 	// Aggregate
 	//////////////////////////////////////////////////////////////////////
 
-	// If an optimized createAll exists, use it, otherwise use an asynchronous loop with create()
-	this.createAll = function (collectionName, valuesList,cb) {
+	// If an optimized createEach exists, use it, otherwise use an asynchronous loop with create()
+	this.createEach = function (collectionName, valuesList, cb) {
 		var my = this;
 
 		// Custom user adapter behavior
-		if (adapter.createAll) adapter.createAll(collectionName,valuesList,cb);
+		if (adapter.createEach) adapter.createEach.apply(this,arguments);
 		
 		// Default behavior
 		else {
@@ -272,21 +297,19 @@ module.exports = function(adapter) {
 			}, cb);
 		}
 	};
+	// If an optimized findOrCreateEach exists, use it, otherwise use an asynchronous loop with create()
+	this.findOrCreateEach = function (collectionName, valuesList,cb) {
+		var my = this;
 
-	this.updateAll = function (collectionName,newValues, cb){
 		// Custom user adapter behavior
-		if (adapter.updateAll) adapter.updateAll(collectionName,valuesList,cb);
-
+		if (adapter.findOrCreateEach) adapter.findOrCreateEach(collectionName,valuesList,cb);
+		
 		// Default behavior
-		return this.update(collectionName,null,newValues,cb);
-	};
-
-	this.destroyAll = function (collectionName, cb){
-		// Custom user adapter behavior
-		if (adapter.destroyAll) adapter.destroyAll(collectionName,valuesList,cb);
-
-		// Default behavior
-		return this.destroy(this.identity,null,newValues,cb);
+		else {
+			async.forEach(valuesList, function (values,cb) {
+				my.findOrCreate(collectionName, criteria, null, cb);
+			}, cb);
+		}
 	};
 
 
