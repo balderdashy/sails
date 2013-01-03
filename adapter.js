@@ -98,6 +98,7 @@ module.exports = function(adapter) {
 		function defaultAlter(done) {
 
 			// TODO: FIX THIS
+			// return done();
 
 			// Alter the schema
 			self.describe(collectionName, function afterDescribe (err, oldAttributes) {
@@ -107,14 +108,12 @@ module.exports = function(adapter) {
 				// for use when updating the actual data
 				var newAttributes = {};
 
-				console.log("old attrs",collectionName, oldAttributes);
-
 				// Iterate through each attribute in the new definition
 				_.each(attributes, function checkAttribute(attribute,attrName) {
 
 					// If the attribute doesn't exist, create it
 					if (!oldAttributes[attrName]) {
-						console.log("new attr",attrName, attribute, "in ", collectionName);
+						// console.log("new attr",attrName, attribute, "in ", collectionName);
 						newAttributes[attrName] = attribute;
 					}
 
@@ -127,7 +126,7 @@ module.exports = function(adapter) {
 
 
 				// Then alter the actual data as necessary
-				self.find(collectionName,null, function afterFind (err,data) {
+				self.findAll(collectionName,null, function afterFind (err,data) {
 					if (err) return done(err);
 
 					// Update the data belonging to this attribute to reflect the new properties
@@ -140,7 +139,9 @@ module.exports = function(adapter) {
 					// For new columns, just use the default value if one exists (otherwise use null)
 					_.each(newAttributes, function checkAttribute(attribute,attrName) {
 						if (attribute.defaultValue) {
-							data[attrName] = attribute.defaultValue;
+							_.each(data,function (model) {
+								model[attrName] = attribute.defaultValue;
+							});
 						}
 					});
 
@@ -150,7 +151,7 @@ module.exports = function(adapter) {
 					
 					// Dumbly drop the table and redefine it					
 					$_self.drop(collectionName);
-					$_self.define(collectionName, attributes);
+					$_self.define(collectionName, { attributes: attributes, identity: collectionName });
 
 					// Then dumbly add the data back in
 					$_self.createEach(collectionName,data);
@@ -436,7 +437,7 @@ module.exports = function(adapter) {
 			this.describe(collection.identity, function afterDescribe (err, attrs) {
 				attrs = _.clone(attrs);
 				if(err) return cb(err);
-				else if(!attrs) return self.define(collection.identity, collection.attributes, cb);
+				else if(!attrs) return self.define(collection.identity, collection, cb);
 
 				// Otherwise, if it *DOES* exist, we'll try and guess what changes need to be made
 				else self.alter(collection.identity, collection.attributes, cb);
