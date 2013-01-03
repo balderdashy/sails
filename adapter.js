@@ -97,6 +97,8 @@ module.exports = function(adapter) {
 		// Default behavior
 		function defaultAlter(done) {
 
+			// TODO: FIX THIS
+
 			// Alter the schema
 			self.describe(collectionName, function afterDescribe (err, oldAttributes) {
 				if (err) return done(err);
@@ -105,11 +107,14 @@ module.exports = function(adapter) {
 				// for use when updating the actual data
 				var newAttributes = {};
 
+				console.log("old attrs",collectionName, oldAttributes);
+
 				// Iterate through each attribute in the new definition
 				_.each(attributes, function checkAttribute(attribute,attrName) {
 
 					// If the attribute doesn't exist, create it
 					if (!oldAttributes[attrName]) {
+						console.log("new attr",attrName, attribute, "in ", collectionName);
 						newAttributes[attrName] = attribute;
 					}
 
@@ -428,11 +433,11 @@ module.exports = function(adapter) {
 			var self = this;
 
 			// Check that collection exists-- if it doesn't go ahead and add it and get out
-			this.describe(collection.identity, function afterDescribe (err, data) {
-				data = _.clone(data);
-
+			this.describe(collection.identity, function afterDescribe (err, attrs) {
+				attrs = _.clone(attrs);
 				if(err) return cb(err);
-				else if(!data) return self.define(collection.identity, collection.attributes, cb);
+				else if(!attrs) return self.define(collection.identity, collection.attributes, cb);
+
 				// Otherwise, if it *DOES* exist, we'll try and guess what changes need to be made
 				else self.alter(collection.identity, collection.attributes, cb);
 			});
