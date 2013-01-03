@@ -50,7 +50,8 @@ var Collection = module.exports = function(definition) {
 	//////////////////////////////////////////
 
 	// Query the collection using the name of the attribute directly
-	this.generateDynamicFinder = function (attrName) {
+	// @method	findBy or findAllBy
+	this.generateDynamicFinder = function (attrName, method) {
 		// Return a closure
 		return function (value, options, cb) {
 			if (_.isFunction(options)) {
@@ -59,16 +60,19 @@ var Collection = module.exports = function(definition) {
 			}
 			options = options || {};
 
-			var usage = _.str.capitalize(this.identity)+'.findBy'+_.str.capitalize(attrName)+
+			var usage = _.str.capitalize(this.identity)+'.'+method+_.str.capitalize(attrName)+
 						'(someValue,[options],callback)';
 			// if(_.isUndefined(value)) usageError('No value specified!',usage);
-			if(options.where) usageError('Cannot specify `where` option in a dynamic findBy*() query!',usage);
+			if(options.where) usageError('Cannot specify `where` option in a dynamic '+method+'*() query!',usage);
 			if(!_.isFunction(cb)) usageError('Invalid callback specified!',usage);
 
 			// Build criteria query and submit it
 			options.where = {};
 			options.where[attrName] = value;
-			return self.find(options,cb);
+
+			// Use either find or findAll
+			if (method === 'findBy') return self.find(options,cb);
+			else if (method === 'findAllBy') return self.findAll(options,cb);
 		};
 	};
 
@@ -77,7 +81,8 @@ var Collection = module.exports = function(definition) {
 
 	// For each defined attribute, create a dynamic finder function
 	_.each(attributes,function (attrDef, attrName) {
-		self['findBy'+_.str.capitalize(attrName)] = self.generateDynamicFinder(attrName);
+		self['findBy'+_.str.capitalize(attrName)] = self.generateDynamicFinder(attrName,'findBy');
+		self['findAllBy'+_.str.capitalize(attrName)] = self.generateDynamicFinder(attrName,'findAllBy');
 	});
 
 	// Then create compound dynamic finders using the various permutations

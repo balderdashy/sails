@@ -13,7 +13,7 @@ var assert = require("assert");
 
 describe('dynamic finders',function (){
 
-	describe('findByName', function() {
+	describe('findBy', function() {
 
 		it('should return the user with the given name', function(done) {
 			var testName = 'dynamic_finder_test_findByName';
@@ -26,6 +26,25 @@ describe('dynamic finders',function (){
 					if (err) return done(err);
 					if (!user) return done('Dynamic finder did not return anything!');
 					if (user.name !== testName) return done('Dynamic finder returned incorrect user!');
+					done(err);
+				});
+			});
+		});
+	});
+
+	describe('findAllBy', function() {
+
+		it('should return the users with the given name', function(done) {
+			var testName = 'dynamic_finder_test_findAllByName';
+
+			User.create({
+				name: testName
+			},function (err) {
+				if (err) return done(err);
+				User.findAllByName(testName,function(err,users) {
+					if (err) return done(err);
+					if (users.length < 1) return done('Dynamic finder did not return anything!');
+					if (users[0].name !== testName) return done('Dynamic finder returned incorrect user!');
 					done(err);
 				});
 			});
