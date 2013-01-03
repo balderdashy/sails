@@ -218,11 +218,10 @@ var Collection = module.exports = function(definition) {
 	this.findOrCreate = function (criteria, values, cb) { 
 		if (_.isFunction(values)) {
 			cb = values;
-			values = criteria;
+			values = null;
 		}
 		var usage = _.str.capitalize(this.identity)+'.findOrCreate(criteria, values, callback)';
 		if(!criteria) usageError('No criteria option specified!',usage);
-		if(!values) usageError('No values specified!',usage);
 		if(!_.isFunction(cb)) usageError('Invalid callback specified!',usage);
 
 		return this.adapter.findOrCreate(this.identity,criteria,values,cb);

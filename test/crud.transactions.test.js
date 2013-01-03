@@ -76,7 +76,7 @@ describe('CRUD :: Composite methods and transactions', function (){
 						}]
 					}, function(err, users) {
 						if(users.length != 2) {
-							return done('Proper users were not created!');
+							return done(new Error('Proper users were not created!'));
 						} else done(err);
 					});
 				});
@@ -100,9 +100,7 @@ describe('CRUD :: Composite methods and transactions', function (){
 					}]
 				}, function(err, users) {
 					if(users.length != 2) {
-						console.error("Users: ");
-						console.error(users);
-						return done('Proper users were not created!');
+						return done(new Error('Proper users were not created!'));
 					} else done(err);
 				});
 			});
@@ -111,23 +109,24 @@ describe('CRUD :: Composite methods and transactions', function (){
 		it('should properly autoincrement 10 newly created users', function(done) {
 			async.forEach(_.range(10), function(i, cb) {
 				User.create({
-					name: 'ten_test user ' + i
+					name: 'ten_test user ' + i,
+					type: 'ten_test crud.transaction'
 				}, cb);
 			}, function(err) {
-				if (err) return done(err);
+				if (err) return done(new Error(err));
 				
 				// Now check that both users were created
 				User.findAll({
 					like: {
-						name: 'ten_test'
+						type: 'ten_test '
 					}
-				}, function(err, users) {
-					if(users.length != 10) {
-						console.error("Users: ");
-						console.error(users);
-						return done('Proper users were not created!');
+				},function foundLikeUsers (err, users) {
+					if (err) return done(new Error(err));
+					if(users.length !== 10) {
+						return done(new Error('Proper # of users not created!'));
 					} else done(err);
 				});
+
 			});
 		});
 

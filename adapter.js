@@ -228,7 +228,12 @@ module.exports = function(adapter) {
 		criteria = normalizeCriteria(criteria);
 		if (_.isString(criteria)) return cb(criteria);
 
-		if(adapter.findOrCreate) adapter.findOrCreate(collectionName, criteria, values, cb);
+		// If no values were specified, use criteria
+		if (!values) values = criteria.where;
+
+		if(adapter.findOrCreate) {
+			adapter.findOrCreate(collectionName, criteria, values, cb);
+		}
 		
 		// Default behavior
 		// Warning: Inefficient!  App-level tranactions should not be used for built-in compound queries.
@@ -246,37 +251,6 @@ module.exports = function(adapter) {
 
 		// TODO: Return model instance Promise object for joins, etc.
 	};
-	this.findAndUpdate = function(collectionName, criteria, values, cb) {
-		criteria = normalizeCriteria(criteria);
-		if (_.isString(criteria)) return cb(criteria);
-
-		if(adapter.findAndUpdate) {
-			adapter.findAndUpdate(collectionName, criteria, values, cb);
-		}
-
-		// Default behavior
-		// Warning: Default behavior does NOT include transaction lock!
-		// (this is to prevent endless recursion with a misconfigured transaction adapter)
-		else this.update(collectionName, criteria, values, cb);
-
-		// TODO: Return model instance Promise object for joins, etc.
-	};
-	this.findAndDestroy = function(collectionName, criteria, cb) {
-		criteria = normalizeCriteria(criteria);
-		if (_.isString(criteria)) return cb(criteria);
-
-		if(adapter.findAndDestroy) {
-			adapter.findAndDestroy(collectionName, criteria, cb);
-		}
-
-		// Default behavior
-		// Warning: Default behavior does NOT include transaction lock!
-		// (this is to prevent endless recursion with a misconfigured transaction adapter)
-		else this.destroy(collectionName, criteria, cb);
-
-		// TODO: Return model instance Promise object for joins, etc.
-	};
-
 
 
 	//////////////////////////////////////////////////////////////////////
@@ -307,7 +281,7 @@ module.exports = function(adapter) {
 		// Default behavior
 		else {
 			async.forEach(valuesList, function (values,cb) {
-				my.findOrCreate(collectionName, criteria, null, cb);
+				my.findOrCreate(collectionName, values, null, cb);
 			}, cb);
 		}
 	};
