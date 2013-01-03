@@ -216,9 +216,9 @@ module.exports = function(adapter) {
 			// Create transaction name based on collection
 			var transactionName = collectionName+'.default_CT';
 			self.transaction(transactionName, function (err,done) {
-				self.find(collectionName, criteria, function(err, results) {
+				self.find(collectionName, criteria, function(err, result) {
 					if(err) done(err);
-					else if(results && results.length > 0) done(null, results);
+					else if(result) done(null, result);
 					else self.create(collectionName, values, done);
 				});
 			}, cb);
