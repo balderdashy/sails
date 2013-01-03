@@ -218,19 +218,16 @@ var Collection = module.exports = function(definition) {
 			cb = values;
 			values = criteria;
 		}
-		var usage = _.str.capitalize(this.identity)+'.update(criteria, values, callback)';
+		var usage = _.str.capitalize(this.identity)+'.findOrCreate(criteria, values, callback)';
 		if(!criteria) usageError('No criteria option specified!',usage);
 		if(!values) usageError('No values specified!',usage);
 		if(!_.isFunction(cb)) usageError('Invalid callback specified!',usage);
 
 		return this.adapter.findOrCreate(this.identity,criteria,values,cb);
 	};
-	this.findAndUpdate = function (criteria, values, cb) { 
-		return this.adapter.findAndUpdate(this.identity, criteria, values, cb); 
-	};
-	this.findAndDestroy = function (criteria, cb) { 
-		return this.adapter.findAndDestroy(this.identity, criteria, cb); 
-	};
+
+	// TODO: findOrCreateAll()
+	this.findOrCreateAll = function () { throw new Error('findOrCreateAll() is not implemented yet!'); };
 
 	//////////////////////////////////////////
 	// Aggregate methods

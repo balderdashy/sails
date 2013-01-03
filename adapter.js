@@ -274,10 +274,18 @@ module.exports = function(adapter) {
 	};
 
 	this.updateAll = function (collectionName,newValues, cb){
+		// Custom user adapter behavior
+		if (adapter.updateAll) adapter.updateAll(collectionName,valuesList,cb);
+
+		// Default behavior
 		return this.update(collectionName,null,newValues,cb);
 	};
 
 	this.destroyAll = function (collectionName, cb){
+		// Custom user adapter behavior
+		if (adapter.destroyAll) adapter.destroyAll(collectionName,valuesList,cb);
+
+		// Default behavior
 		return this.destroy(this.identity,null,newValues,cb);
 	};
 
