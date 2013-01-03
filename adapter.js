@@ -81,7 +81,6 @@ module.exports = function(adapter) {
 		else cb();
 	};
 	this.drop = function(collectionName, cb) {
-		// TODO: foreach through and delete all of the models for this collection
 		if (adapter.drop) {
 			adapter.drop.apply(this,arguments);
 		}
@@ -204,7 +203,8 @@ module.exports = function(adapter) {
 
 		// TODO: Validate constraints using Anchor
 
-		// TODO: Automatically change updatedAt (if enabled)
+		// Automatically change updatedAt (if enabled)
+		if (self.config.updatedAt) values.updatedAt = new Date();
 
 		adapter.update(collectionName, criteria, values, cb);
 
@@ -239,7 +239,7 @@ module.exports = function(adapter) {
 		// Warning: Inefficient!  App-level tranactions should not be used for built-in compound queries.
 		else {
 			// Create transaction name based on collection
-			var transactionName = collectionName+'.default_CT';
+			var transactionName = collectionName+'.waterline.default.create_all';
 			self.transaction(transactionName, function (err,done) {
 				self.find(collectionName, criteria, function(err, result) {
 					if(err) done(err);
@@ -266,13 +266,16 @@ module.exports = function(adapter) {
 		
 		// Default behavior
 		else {
-			async.forEach(valuesList, function (values,cb) {
-				my.create(collectionName, values, cb);
-			}, cb);
+			// Create transaction name based on collection
+			my.transaction(collectionName+'..waterline.default.createEach', function (err,done) {
+				async.forEach(valuesList, function (values,cb) {
+					my.create(collectionName, values, cb);
+				}, done);
+			},cb);
 		}
 	};
 	// If an optimized findOrCreateEach exists, use it, otherwise use an asynchronous loop with create()
-	this.findOrCreateEach = function (collectionName, valuesList,cb) {
+	this.findOrCreateEach = function (collectionName, valuesList, cb) {
 		var my = this;
 
 		// Custom user adapter behavior
@@ -280,9 +283,12 @@ module.exports = function(adapter) {
 		
 		// Default behavior
 		else {
-			async.forEach(valuesList, function (values,cb) {
-				my.findOrCreate(collectionName, values, null, cb);
-			}, cb);
+			// Create transaction name based on collection
+			my.transaction(collectionName+'.waterline.default.createEach', function (err,done) {
+				async.forEach(valuesList, function (values,cb) {
+					my.findOrCreate(collectionName, values, null, cb);
+				}, done);
+			},cb);
 		}
 	};
 
