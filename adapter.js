@@ -336,7 +336,7 @@ module.exports = function(adapter) {
 		};
 
 		// write new lock to commit log
-		this.transactionCollection.create(newLock, function afterCreatingTransaction(err) {
+		this.transactionCollection.create(newLock, function afterCreatingTransaction(err, newLock) {
 			if(err) return atomicLogic(err, function() {
 				throw err;
 			});
