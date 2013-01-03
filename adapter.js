@@ -97,9 +97,6 @@ module.exports = function(adapter) {
 		// Default behavior
 		function defaultAlter(done) {
 
-			// TODO: FIX THIS
-			// return done();
-
 			// Alter the schema
 			self.describe(collectionName, function afterDescribe (err, oldAttributes) {
 				if (err) return done(err);
@@ -121,7 +118,6 @@ module.exports = function(adapter) {
 					if ( !oldAttributes[attrName] || !_.isEqual(oldAttributes[attrName],attribute) ) {
 						oldAttributes[attrName] = attribute;
 					}
-
 				});
 
 
@@ -147,15 +143,14 @@ module.exports = function(adapter) {
 
 					// Create deferred object
 					var $$ = new parley();
-					var $_self = $$(self);
 					
 					// Dumbly drop the table and redefine it					
-					$_self.drop(collectionName);
-					$_self.define(collectionName, { attributes: attributes, identity: collectionName });
+					$$(self).drop(collectionName);
+					$$(self).define(collectionName, { attributes: attributes, identity: collectionName });
 
 					// Then dumbly add the data back in
-					$_self.createEach(collectionName,data);
-					$$(function(xcb) { done && done(); xcb(); })();
+					$$(self).createEach(collectionName,data);
+					$$(function(xcb) { xcb(); done && done(); })();
 				});
 			});
 		}

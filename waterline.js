@@ -54,14 +54,11 @@ module.exports = function (options,cb) {
 	// then associate each collection with its adapter and sync its schema
 	$$(async).forEach(_.keys(collections),prepareCollection);
 
-	// Now that everything is instantiated, augment the live collections
-	$$(function (xcb) {
-		_.each(collections,function(collection) {
-			// add transaction collection to each collection's adapter
-			collection.adapter.transactionCollection = collections[config.transactionDbIdentity];
-		});
-		xcb();
-	})();
+	// Now that everything is instantiated, augment the live collections with a transaction collection
+	$$(async).forEach(_.values(collections),addTransactionCollection);
+
+	// And sync them
+	$$(async).forEach(_.values(collections),syncCollection);
 
 
 	// Fire teardown() on process-end and make it public
@@ -150,13 +147,23 @@ module.exports = function (options,cb) {
 		collection.adapter.initializeCollection(collection.identity,function (err) {
 			if (err) throw err;
 
-			// Synchronize schema with data source
-			collection.sync(function (err) { 
-				if (err) throw err;
-				cb(err,collection); 
-			});
+			cb(err,collection);
 		});
+	}
 
+	// add transaction collection to each collection's adapter
+	function addTransactionCollection (collection, cb) {
+		collection.adapter.transactionCollection = collections[config.transactionDbIdentity];
+		cb();
+	}
+
+	// Sync a collection w/ its adapter's data store
+	function syncCollection (collection,cb) {
+		// Synchronize schema with data source
+		collection.sync(function (err) { 
+			if (err) throw err;
+			cb(err,collection); 
+		});
 	}
 
 	// Tear down all open waterline adapters and collections
