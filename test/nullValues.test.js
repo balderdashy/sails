@@ -17,7 +17,7 @@ describe('Null values', function() {
 			if (err) return done(err);
 
 			// Now try to find the user using a different key
-			User.find({
+			User.findAll({
 				type: 'null value create test'
 			}, function(err, users) {
 				if(users.length < 1) return done(new Error('Proper user was not created!'));
@@ -31,7 +31,7 @@ describe('Null values', function() {
 	it('should be findable', function(done) {
 		// Now check that the user we just created can be found
 		// but use the NULL name as the query
-		User.find({
+		User.findAll({
 			name: null
 		}, function(err, users) {
 			if(users.length < 1) return done(new Error('Proper user was not found!'));

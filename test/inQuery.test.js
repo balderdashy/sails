@@ -27,7 +27,7 @@ describe('IN queries', function() {
 
 				User.createAll(users, function(err) {
 					if(err) return done(err);
-					User.find({
+					User.findAll({
 						name: ["foo", testName, "bar", "baz"]
 					}, function(err, users) {
 						if(err) return done(err);
@@ -43,7 +43,7 @@ describe('IN queries', function() {
 		describe('searching for a set that contains none', function() {
 
 			it('should return NONE', function(done) {
-				User.find({
+				User.findAll({
 					name: ["foo", "bar", "baz"]
 				}, function(err, users) {
 					if(users.length > 0) return done('IN query returned things when it shouldn\'t have!');

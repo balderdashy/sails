@@ -104,7 +104,7 @@ describe ('transactions',function () {
 			}, function(err) {
 				if (err) throw new Error(err);
 				
-				User.find({ type: type },function (err,users) {
+				User.findAll({ type: type },function (err,users) {
 					if(users.length === items.length) return done();
 					else return done('Proper users were not created!');
 				});

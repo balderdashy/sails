@@ -22,10 +22,10 @@ describe('dynamic finders',function (){
 				name: testName
 			},function (err) {
 				if (err) return done(err);
-				User.findByName(testName,function(err,users) {
+				User.findByName(testName,function(err,user) {
 					if (err) return done(err);
-					if (users.length !== 1) return done('Dynamic finder did not return anything!');
-					if (users[0].name !== testName) return done('Dynamic finder returned incorrect user!');
+					if (!user) return done('Dynamic finder did not return anything!');
+					if (user.name !== testName) return done('Dynamic finder returned incorrect user!');
 					done(err);
 				});
 			});

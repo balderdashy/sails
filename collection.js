@@ -63,7 +63,7 @@ var Collection = module.exports = function(definition) {
 						'(someValue,[options],callback)';
 			// if(_.isUndefined(value)) usageError('No value specified!',usage);
 			if(options.where) usageError('Cannot specify `where` option in a dynamic findBy*() query!',usage);
-			if(!_.isFunction(cb)) usageError('No callback specified!',usage);
+			if(!_.isFunction(cb)) usageError('Invalid callback specified!',usage);
 
 			// Build criteria query and submit it
 			options.where = {};
@@ -96,7 +96,7 @@ var Collection = module.exports = function(definition) {
 		// run every operation in the queue and trigger the callback
 		this.done = function (cb) {
 			// A callback is always required here
-			if(!_.isFunction(cb)) usageError('No callback specified!',usage);
+			if(!_.isFunction(cb)) usageError('Invalid callback specified!',usage);
 		};
 
 		// Join with another collection
@@ -145,7 +145,7 @@ var Collection = module.exports = function(definition) {
 			values = null;
 		}
 		var usage = _.str.capitalize(this.identity)+'.create({someAttr: "someValue"},callback)';
-		if(!_.isFunction(cb)) usageError('No callback specified!',usage);
+		if(!_.isFunction(cb)) usageError('Invalid callback specified!',usage);
 
 		return this.adapter.create(this.identity,values,cb);
 	};
@@ -157,11 +157,23 @@ var Collection = module.exports = function(definition) {
 			options = null;
 		}
 		var usage = _.str.capitalize(this.identity)+'.find(criteria,callback)';
-		if(!_.isFunction(cb)) usageError('No callback specified!',usage);
+		if(!_.isFunction(cb)) usageError('Invalid callback specified!',usage);
 
 		return this.adapter.find(this.identity,options,cb);
 	};
-	this.findWhere = this.find;
+
+	this.findAll = function (options, cb) {
+		if (_.isFunction(options)) {
+			cb = options;
+			options = null;
+		}
+		var usage = _.str.capitalize(this.identity)+'.findAll(criteria,callback)';
+		if(!_.isFunction(cb)) usageError('Invalid callback specified!',usage);
+
+		return this.adapter.findAll(this.identity, options, cb);
+	};
+	this.where = this.findAll;
+	this.select = this.findAll;
 
 	// Call update method in adapter
 	this.update = function(options, newValues, cb) {
@@ -172,7 +184,7 @@ var Collection = module.exports = function(definition) {
 		var usage = _.str.capitalize(this.identity)+'.update(criteria, newValues, callback)';
 		if(!options) usageError('No criteria option specified! If you\'re trying to update everything, maybe try updateAll?',usage);
 		if(!newValues) usageError('No updated values specified!',usage);
-		if(!_.isFunction(cb)) usageError('No callback specified!',usage);
+		if(!_.isFunction(cb)) usageError('Invalid callback specified!',usage);
 
 		return this.adapter.update(this.identity,options,newValues,cb);
 	};
@@ -186,7 +198,7 @@ var Collection = module.exports = function(definition) {
 		}
 		var usage = _.str.capitalize(this.identity)+'.destroy(options, callback)';
 		if(!options) usageError('No options specified! If you\'re trying to destroy everything, maybe try destroyAll?',usage);
-		if(!_.isFunction(cb)) usageError('No callback specified!',usage);
+		if(!_.isFunction(cb)) usageError('Invalid callback specified!',usage);
 
 		return this.adapter.destroy(this.identity,options,cb);
 	};
@@ -197,6 +209,15 @@ var Collection = module.exports = function(definition) {
 	// Composite
 	//////////////////////////////////////////
 	this.findOrCreate = function (criteria, values, cb) { 
+		if (_.isFunction(values)) {
+			cb = values;
+			values = criteria;
+		}
+		var usage = _.str.capitalize(this.identity)+'.update(criteria, values, callback)';
+		if(!criteria) usageError('No criteria option specified!',usage);
+		if(!values) usageError('No values specified!',usage);
+		if(!_.isFunction(cb)) usageError('Invalid callback specified!',usage);
+
 		return this.adapter.findOrCreate(this.identity,criteria,values,cb);
 	};
 	this.findAndUpdate = function (criteria, values, cb) { 
@@ -215,24 +236,22 @@ var Collection = module.exports = function(definition) {
 		var usage = _.str.capitalize(this.identity)+'.createAll(valuesList, callback)';
 		if(!valuesList) usageError('No valuesList specified!',usage);
 		if(!_.isArray(valuesList)) usageError('Invalid valuesList specified (should be an array!)',usage);
-		if(!_.isFunction(cb)) usageError('No callback specified!',usage);
+		if(!_.isFunction(cb)) usageError('Invalid callback specified!',usage);
 		
 		// If an optimized createAll exists, use it, otherwise use an asynchronous loop with create()
 		this.adapter.createAll(this.identity,valuesList,cb);
 	};
 
-	this.findAll = this.find;
-
 	this.updateAll = function (newValues,cb) {
 		var usage = _.str.capitalize(this.identity)+'.updateAll(newValues, callback)';
 		if(!newValues) usageError('No updated values specified!',usage);
-		if(!_.isFunction(cb)) usageError('No callback specified!',usage);
+		if(!_.isFunction(cb)) usageError('Invalid callback specified!',usage);
 		return this.adapter.updateAll(this.identity,newValues,cb);
 	};
 
 	this.destroyAll = function (cb) {
 		var usage = _.str.capitalize(this.identity)+'.destroyAll(newValues, callback)';
-		if(!_.isFunction(cb)) usageError('No callback specified!',usage);
+		if(!_.isFunction(cb)) usageError('Invalid callback specified!',usage);
 		return this.adapter.destroyAll(this.identity,cb);
 	};
 
@@ -251,7 +270,7 @@ var Collection = module.exports = function(definition) {
 		else if (afterUnlock && !_.isFunction(afterUnlock)) {
 			return usageError('Invalid afterUnlockFunction!  Not a function: '+afterUnlock,usage);
 		}
-		else return this.adapter.transaction(transactionName, atomicLogic, afterUnlock);
+		else return this.adapter.transaction(this.identity+'.'+transactionName, atomicLogic, afterUnlock);
 	};
 
 	//////////////////////////////////////////

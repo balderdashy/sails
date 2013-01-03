@@ -12,8 +12,47 @@ var async = require('async');
 var parley = require('parley');
 var assert = require("assert");
 
+
 describe('CRUD :: Composite methods and transactions', function (){
+	describe ('compound crud',function () {
+
+		it('should successfully run one findOrCreate()', function (done){
+			var testName = 'findOrCreate test 0';
+
+			User.findOrCreate({
+				name: testName
+			}, {
+				name: testName
+			}, function(err, user) {
+				if (err) throw new Error(err);
+				if (!user || (user.name !== testName)) {
+					return done(new Error('findOrCreate() returned incorrect user!'));
+				}
+
+				User.find({name: testName},function(err,user) {
+					if (err) throw new Error(err);
+					if (!user || (user.name !== testName)) {
+						return done(new Error('findOrCreate() returned incorrect user!'));
+					}
+
+					done();
+				});
+			});
+		});
+
+		it('should successfully run one findOrCreate() using shorthand', function (done){
+			var testName = 'findOrCreate test 1';
+			User.findOrCreate({
+				name: testName
+			}, done);
+		});
+
+	});
+
 	describe('create', function() {
+
+		// Basic concurrency (tests auto-increment)
+		///////////////////////////////////////////////////
 
 		it('should create 2 users in series', function(done) {
 			async.forEach(_.range(1), function(i, cb) {
@@ -29,7 +68,7 @@ describe('CRUD :: Composite methods and transactions', function (){
 					if (err) return done(err);
 
 					// Now check that both users were created
-					User.find({
+					User.findAll({
 						or: [{
 							name: 'series_test user 0'
 						}, {
@@ -37,8 +76,6 @@ describe('CRUD :: Composite methods and transactions', function (){
 						}]
 					}, function(err, users) {
 						if(users.length != 2) {
-							console.error("Users: ");
-							console.error(users);
 							return done('Proper users were not created!');
 						} else done(err);
 					});
@@ -55,7 +92,7 @@ describe('CRUD :: Composite methods and transactions', function (){
 				if (err) return done(err);
 
 				// Now check that both users were created
-				User.find({
+				User.findAll({
 					or: [{
 						name: 'parallel_test user 0'
 					}, {
@@ -80,7 +117,7 @@ describe('CRUD :: Composite methods and transactions', function (){
 				if (err) return done(err);
 				
 				// Now check that both users were created
-				User.find({
+				User.findAll({
 					like: {
 						name: 'ten_test'
 					}

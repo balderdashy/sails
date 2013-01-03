@@ -155,12 +155,25 @@ module.exports = function(adapter) {
 
 		// TODO: Return model instance Promise object for joins, etc.
 	};
-	this.find = function(collectionName, criteria, cb) {
+
+	// Find a set of models
+	this.findAll = function(collectionName, criteria, cb) {
 		if(!adapter.find) return cb("No find() method defined in adapter!");
 		criteria = normalizeCriteria(criteria);
 		if (_.isString(criteria)) return cb(criteria);
 
 		adapter.find(collectionName, criteria, cb);
+
+		// TODO: Return model instance Promise object for joins, etc.
+	};
+
+	// Find exactly one model
+	this.find = function(collectionName, criteria, cb) {
+		this.findAll(collectionName, criteria, function (err, models) {
+			if (models.length < 1) return cb();
+			else if (models.length > 1) return cb("More than one "+collectionName+" returned!");
+			else return cb(null,models[0]);
+		});
 
 		// TODO: Return model instance Promise object for joins, etc.
 	};
@@ -196,13 +209,19 @@ module.exports = function(adapter) {
 		if (_.isString(criteria)) return cb(criteria);
 
 		if(adapter.findOrCreate) adapter.findOrCreate(collectionName, criteria, values, cb);
+		
+		// Default behavior
+		// Warning: Inefficient!  App-level tranactions should not be used for built-in compound queries.
 		else {
-			// TODO: ADD A TRANSACTION LOCK HERE!!
-			self.find(collectionName, criteria, function(err, results) {
-				if(err) cb(err);
-				else if(results && results.length > 0) cb(null, results);
-				else self.create(collectionName, values, cb);
-			});
+			// Create transaction name based on collection
+			var transactionName = collectionName+'.default_CT';
+			self.transaction(transactionName, function (err,done) {
+				self.find(collectionName, criteria, function(err, results) {
+					if(err) done(err);
+					else if(results && results.length > 0) done(null, results);
+					else self.create(collectionName, values, done);
+				});
+			}, cb);
 		}
 
 		// TODO: Return model instance Promise object for joins, etc.
@@ -212,6 +231,10 @@ module.exports = function(adapter) {
 		if (_.isString(criteria)) return cb(criteria);
 
 		if(adapter.findAndUpdate) adapter.findAndUpdate(collectionName, criteria, values, cb);
+
+		// Default behavior
+		// Warning: Default behavior does NOT include transaction lock!
+		// (this is to prevent endless recursion with a misconfigured transaction adapter)
 		else this.update(collectionName, criteria, values, cb);
 
 		// TODO: Return model instance Promise object for joins, etc.
@@ -220,6 +243,9 @@ module.exports = function(adapter) {
 		criteria = normalizeCriteria(criteria);
 		if (_.isString(criteria)) return cb(criteria);
 
+		// Default behavior
+		// Warning: Default behavior does NOT include transaction lock!
+		// (this is to prevent endless recursion with a misconfigured transaction adapter)
 		if(adapter.findAndDestroy) adapter.findAndDestroy(collectionName, criteria, cb);
 		else this.destroy(collectionName, criteria, cb);
 
@@ -278,7 +304,6 @@ module.exports = function(adapter) {
 			afterUnlock: afterUnlock
 		};
 
-		// console.log("Generating lock "+newLock.uuid+" ("+transactionName+")",newLock);
 		// write new lock to commit log
 		this.transactionCollection.create(newLock, function afterCreatingTransaction(err) {
 			if(err) return atomicLogic(err, function() {
@@ -304,14 +329,7 @@ module.exports = function(adapter) {
 				if(!conflict) acquireLock(newLock);
 
 				// Otherwise, get in line: a lock was acquired before mine, do nothing
-				else {
-					/*
-					console.log("************ Conflict encountered:: lock already exists for that transaction!!");
-					console.log("ATTEMPTING LOCK:: transaction: "+newLock.name," uuid: "+newLock.uuid, "timestamp: ",newLock.id);
-					console.log("EXISTING LOCK:: transaction: "+conflict.name," uuid: "+conflict.uuid, "timestamp: ",conflict.id);
-					console.log("***************");
-					*/
-				}
+				
 
 			});
 		});
@@ -326,7 +344,6 @@ module.exports = function(adapter) {
 		* @afterUnlock (optional)	the function to run after the lock is subsequently released
 	*/
 	var acquireLock = function(newLock) {
-		// console.log("====> Lock "+newLock.id+" acquired "+newLock.uuid+" ("+newLock.name+")",newLock);
 
 		var warningTimer = setTimeout(function() {
 			console.error("Transaction :: " + newLock.name + " is taking an abnormally long time (> " + self.config.transactionWarningTimer + "ms)");
@@ -354,9 +371,6 @@ module.exports = function(adapter) {
 			// Determine the next user in line
 			// (oldest lock that isnt THIS ONE w/ the proper transactionName)
 			var nextInLine = getNextLock(locks, currentLock);
-
-			// console.log('unlocking ',currentLock);
-			// console.log('nextInLine is',nextInLine);
 
 			// Remove current lock
 			self.transactionCollection.destroy({

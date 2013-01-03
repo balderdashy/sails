@@ -38,10 +38,7 @@ module.exports = function(adapter) {
 			it('should mean we can find Johnny', function(done) {
 				User.find({
 					name: "Johnny"
-				}, function(err, users) {
-					// Get first item from result set
-					var user = users[0];
-
+				}, function(err, user) {
 					if(err) throw err;
 					else if(!user || !_.isObject(user) || !user.name || user.name !== "Johnny") throw "Invalid model returned.";
 					else if(!user.id) throw "No id returned.";
@@ -64,9 +61,7 @@ module.exports = function(adapter) {
 			it('should mean we can find Richard', function(done) {
 				User.find({
 					name: "Richard"
-				}, function(err, users) {
-					// Get first item from result set
-					var user = users[0];
+				}, function(err, user) {
 
 					if(err) throw err;
 					else if(!user || !_.isObject(user) || !user.name || user.name !== "Richard") throw "Invalid model returned.";
@@ -75,7 +70,7 @@ module.exports = function(adapter) {
 			});
 
 			it('should only result in a single Richard existing', function(done) {
-				User.find({
+				User.findAll({
 					name: "Richard"
 				}, function(err, users) {
 					if(err) throw err;
@@ -87,13 +82,11 @@ module.exports = function(adapter) {
 			it('should still retain other fields in updated model', function(done) {
 				User.find({
 					name: "Richard"
-				}, function(err, users) {
-					// Get first item from result set
-					var user = users[0];
+				}, function(err, user) {
 
 					if(err) throw err;
 					else if(!user.id) throw "Id missing!";
-					else done(err, users);
+					else done(err, user);
 				});
 			});
 		});
@@ -108,7 +101,7 @@ module.exports = function(adapter) {
 			});
 
 			it('should mean trying to find Richard should return an empty array', function(done) {
-				User.find({
+				User.findAll({
 					name: "Richard"
 				}, function(err, users) {
 					if(err) throw err;
@@ -128,7 +121,7 @@ module.exports = function(adapter) {
 			});
 
 			it('should mean trying to find Timmy should return an empty array', function(done) {
-				User.find({
+				User.findAll({
 					name: "Timmy"
 				}, function(err, users) {
 					if(err) throw err;
