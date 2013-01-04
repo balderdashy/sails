@@ -12,9 +12,6 @@ module.exports = {
 	// Automatically define createdAt field in schema and populate with the current timestamp during model creation
 	createdAt: true,
 
-	// Attributes are case insensitive by default
-	// attributesCaseSensitive: false,
-
 	// Default identity for transaction database
 	transactionDbIdentity: '___transaction',
 
