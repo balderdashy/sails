@@ -546,5 +546,26 @@ function normalizeCriteria(criteria) {
 		}
 	}
 
+	// Normalize sort criteria
+	if (criteria.sort) {
+		// Split string into attr and sortDirection parts (default to 'asc')
+		if (_.isString(criteria.sort)) {
+			var parts = _.str.words(criteria.sort);
+			parts[1] = parts[1] ? parts[1].toLowerCase() : 'asc';
+			if (parts.length !== 2 || (parts[1] !== 'asc' && parts[1] !== 'desc')) {
+				throw new Error ('Invalid sort criteria :: '+criteria.sort);
+			}
+			criteria.sort = {};
+			criteria.sort[parts[0]] = (parts[1] === 'asc') ? 1 : -1;
+		}
+
+		// Verify that user either specified a proper object
+		// or provided explicit comparator function
+		if (!_.isObject(criteria.sort) && !_.isFunction(criteria.sort)) {
+			throw new Error ('Invalid sort criteria for '+attrName+' :: '+direction);
+		}
+
+	}
+
 	return criteria;
 }

@@ -62,7 +62,7 @@ describe('sort', function() {
 			else if(!users) throw new Error('Unexpected result: ' + users);
 			else if(users.length !== origUsers.length) throw new Error('Improper # of users returned (' + users + ')');
 			else {
-				if (! isSorted(users, 'phone', 1)) cb(new Error('Users not properly sorted!'));
+				if (! isSorted(users, 'phone', -1)) cb(new Error('Users not properly sorted!'));
 				else cb();
 			}
 		});
@@ -73,8 +73,8 @@ function isSorted (list, attrName, direction) {
 	var lastItem;
 	return _.all(list,function (thisItem) {
 		if (!lastItem) ok = true;
-		else if (direction) ok = lastItem[attrName] <= thisItem[attrName];
-		else ok = lastItem[attrName] >= thisItem[attrName];
+		else if (direction === 1) ok = lastItem[attrName] <= thisItem[attrName];
+		else if (direction === -1) ok = lastItem[attrName] >= thisItem[attrName];
 		lastItem = thisItem;
 		return ok;
 	});
