@@ -189,6 +189,9 @@ module.exports = function(adapter) {
 
 	// Find exactly one model
 	this.find = function(collectionName, criteria, cb) {
+		// If no criteria specified, use first
+		if (!criteria) criteria = {limit: 1};
+		
 		this.findAll(collectionName, criteria, function (err, models) {
 			if (models.length < 1) return cb();
 			else if (models.length > 1) return cb("More than one "+collectionName+" returned!");

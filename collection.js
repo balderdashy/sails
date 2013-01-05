@@ -166,20 +166,13 @@ var Collection = module.exports = function(definition) {
 		};
 
 		// Call find method in adapter
-		this.find = function(criteria, options, cb) {
-			var usage = _.str.capitalize(this.identity) + '.find([criteria],[options],callback)';
+		this.find = function(criteria, cb) {
+			var usage = _.str.capitalize(this.identity) + '.find([criteria],callback)';
 
-			if(_.isFunction(criteria)) {
+			if (_.isFunction(criteria)) {
 				cb = criteria;
 				criteria = null;
-				options = null;
-			} else if(_.isFunction(options)) {
-				cb = options;
-				options = null;
-			} else if(_.isObject(options)) {
-				criteria = _.extend({}, criteria, options);
-			} else usageError('Invalid options specified!', usage);
-
+			}
 			if(!_.isFunction(cb)) usageError('Invalid callback specified!', usage);
 
 			return this.adapter.find(this.identity, criteria, cb);
@@ -220,6 +213,25 @@ var Collection = module.exports = function(definition) {
 			}
 			else usageError('Criteria must be string or object!',usage);
 		};
+
+		this.count = function (criteria, options, cb) {
+			var usage = _.str.capitalize(this.identity) + '.count([criteria],[options],callback)';
+			if(_.isFunction(criteria)) {
+				cb = criteria;
+				criteria = null;
+				options = null;
+			} else if(_.isFunction(options)) {
+				cb = options;
+				options = null;
+			} else if(_.isObject(options)) {
+				criteria = _.extend({}, criteria, options);
+			} else usageError('Invalid options specified!', usage);
+
+			if(!_.isFunction(cb)) usageError('Invalid callback specified!', usage);
+
+			return this.adapter.count(this.identity, criteria, cb);
+		};
+		this.countAll = this.count;
 
 
 		// Call update method in adapter
