@@ -189,9 +189,11 @@ module.exports = function(adapter) {
 
 	// Find exactly one model
 	this.find = function(collectionName, criteria, cb) {
-		// If no criteria specified, use first
+		// If no criteria specified, use first model
 		if (!criteria) criteria = {limit: 1};
-		
+
+		// If no limit specified
+
 		this.findAll(collectionName, criteria, function (err, models) {
 			if (models.length < 1) return cb();
 			else if (models.length > 1) return cb("More than one "+collectionName+" returned!");
@@ -200,6 +202,17 @@ module.exports = function(adapter) {
 
 		// TODO: Return model instance Promise object for joins, etc.
 	};
+
+	this.count = function(collectionName, criteria, cb) {
+		criteria = normalizeCriteria(criteria);
+		if (!adapter.count) {
+			adapter.findAll(collectionName, criteria, function (err,models){
+				cb(err,models.length);
+			});
+		}
+		else adapter.count(collectionName, criteria, cb);
+	};
+
 	this.update = function(collectionName, criteria, values, cb) {
 		if(!adapter.update) return cb("No update() method defined in adapter!");
 		criteria = normalizeCriteria(criteria);
