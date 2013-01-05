@@ -103,9 +103,6 @@ var Collection = module.exports = function(definition) {
 			this.generateDynamicFinder(attrName, 'findAllBy*Like');
 		}, this);
 
-		// Then create compound dynamic finders using the various permutations
-		// TODO
-
 		//////////////////////////////////////////
 		// Promises / Deferred Objects
 		//////////////////////////////////////////
