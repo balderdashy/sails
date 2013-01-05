@@ -57,7 +57,7 @@ var Collection = module.exports = function(definition) {
 				}
 				options = options || {};
 
-				var usage = _.str.capitalize(this.identity) + '.' + method + _.str.capitalize(attrName) + '(someValue,[options],callback)';
+				var usage = _.str.capitalize(this.identity) + '.' + actualMethodName + '(someValue,[options],callback)';
 				if(_.isUndefined(value)) usageError('No value specified!', usage);
 				if(options.where) usageError('Cannot specify `where` option in a dynamic ' + method + '*() query!', usage);
 				if(!_.isFunction(cb)) usageError('Invalid callback specified!', usage);
@@ -75,10 +75,24 @@ var Collection = module.exports = function(definition) {
 							like: options.where
 						}
 					}), cb);
-				} else if(method === 'findAllBy*' || method === 'findAllBy*In') {
+				} 
+
+				// Aggregate finders
+				else if(method === 'findAllBy*' || method === 'findAllBy*In') {
 					return self.findAll(options, cb);
 				} else if(method === 'findAllBy*Like') {
 					return self.findAll(_.extend(options, {
+						where: {
+							like: options.where
+						}
+					}), cb);
+				}
+
+				// Count finders
+				else if(method === 'countBy*' || method === 'countBy*In') {
+					return self.count(options, cb);
+				} else if(method === 'countBy*Like') {
+					return self.count(_.extend(options, {
 						where: {
 							like: options.where
 						}
@@ -101,6 +115,10 @@ var Collection = module.exports = function(definition) {
 			this.generateDynamicFinder(attrName, 'findAllBy*');
 			this.generateDynamicFinder(attrName, 'findAllBy*In');
 			this.generateDynamicFinder(attrName, 'findAllBy*Like');
+
+			this.generateDynamicFinder(attrName, 'countBy*');
+			this.generateDynamicFinder(attrName, 'countBy*In');
+			this.generateDynamicFinder(attrName, 'countBy*Like');
 		}, this);
 
 		//////////////////////////////////////////

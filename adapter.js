@@ -204,9 +204,10 @@ module.exports = function(adapter) {
 	};
 
 	this.count = function(collectionName, criteria, cb) {
+		var self = this;
 		criteria = normalizeCriteria(criteria);
 		if (!adapter.count) {
-			adapter.findAll(collectionName, criteria, function (err,models){
+			self.findAll(collectionName, criteria, function (err,models){
 				cb(err,models.length);
 			});
 		}
