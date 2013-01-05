@@ -72,6 +72,7 @@ describe('sort', function() {
 function isSorted (list, attrName, direction) {
 	var lastItem;
 	return _.all(list,function (thisItem) {
+		var ok;
 		if (!lastItem) ok = true;
 		else if (direction === 1) ok = lastItem[attrName] <= thisItem[attrName];
 		else if (direction === -1) ok = lastItem[attrName] >= thisItem[attrName];
