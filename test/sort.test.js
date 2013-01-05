@@ -1,0 +1,81 @@
+var _ = require('underscore');
+describe('sort', function() {
+
+	var testName = 'sort test';
+	var origUsers = [];
+	_.each(_.range(10), function(i) {
+		origUsers.push({
+			name: testName + '_user' + i,
+			type: testName,
+			// Random phone number
+			phone: Math.round(Math.random()*999) + "-"+ Math.round(Math.random()*999) + "-" + Math.round(Math.random()*9999)
+		});
+	});
+
+	it ('prepares tests',function(cb) {
+		User.createEach(origUsers, cb);
+	});
+
+	it('normal usage should not break', function(cb) {
+		User.findAll({
+			where: {
+				type: testName
+			},
+			sort: {
+				phone: 1
+			}
+		}, cb);
+	});
+
+	it('secondary usage should not break', function(cb) {
+		User.findAll({type: testName}, {sort: { phone: 1 }}, cb);
+	});
+
+	it('dynamic finder usage should not break', function(cb) {
+		User.findAllByType(testName, { sort: { phone: 1 } }, cb);
+	});
+
+	it('string attrName ASC usage should not break', function(cb) {
+		User.findAllByType(testName, { sort: 'phone ASC' }, cb);
+	});
+
+	it('string attrName usage should not break', function(cb) {
+		User.findAllByType(testName, { sort: 'phone' }, cb);
+	});
+
+
+	it('it should effectively sort the list (ASC)', function(cb) {
+		User.findAllByType(testName, { sort: 'phone ASC' }, function(err, users) {
+			if(err) throw new Error(err);
+			else if(!users) throw new Error('Unexpected result: ' + users);
+			else if(users.length !== origUsers.length) throw new Error('Improper # of users returned (' + users + ')');
+			else {
+				if (! isSorted(users, 'phone', 1)) cb(new Error('Users not properly sorted!'));
+				else cb();
+			}
+		});
+	});
+
+	it('it should effectively sort the list (DESC)', function(cb) {
+		User.findAllByType(testName, { sort: 'phone DESC' }, function(err, users) {
+			if(err) throw new Error(err);
+			else if(!users) throw new Error('Unexpected result: ' + users);
+			else if(users.length !== origUsers.length) throw new Error('Improper # of users returned (' + users + ')');
+			else {
+				if (! isSorted(users, 'phone', 1)) cb(new Error('Users not properly sorted!'));
+				else cb();
+			}
+		});
+	});
+});
+
+function isSorted (list, attrName, direction) {
+	var lastItem;
+	return _.all(list,function (thisItem) {
+		if (!lastItem) ok = true;
+		else if (direction) ok = lastItem[attrName] <= thisItem[attrName];
+		else ok = lastItem[attrName] >= thisItem[attrName];
+		lastItem = thisItem;
+		return ok;
+	});
+}

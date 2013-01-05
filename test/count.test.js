@@ -7,7 +7,7 @@ describe('count', function() {
 		origUsers.push({
 			name: testName + '_user' + i,
 			type: testName
-		});
+		}); 
 	});
 
 	it ('prepares tests',function(cb) {
