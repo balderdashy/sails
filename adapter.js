@@ -89,16 +89,20 @@ module.exports = function(adapter) {
 	this.alter = function(collectionName, attributes, cb) {
 		var self = this;
 
+		// If the adapter defines alter, use that
 		if (adapter.alter) {
 			adapter.alter.apply(this,arguments);
 		}
-		else defaultAlter(cb);
-
-		// Default behavior
-		function defaultAlter(done) {
+		// If the adapter defines column manipulation, use it
+		else if (adapter.addAttribute && adapter.removeAttribute) {
+			// Update the data belonging to this attribute to reflect the new properties
+			// Realistically, this will mainly be about constraints, and primarily uniquness
+			// It'd be good if waterline could enforce all constraints at this time,
+			// but there's a trade-off with destroying people's data
+			// TODO: Figure this out
 
 			// Alter the schema
-			self.describe(collectionName, function afterDescribe (err, oldAttributes) {
+			self.describe(collectionName, function afterDescribe (err, originalAttributes) {
 				if (err) return done(err);
 
 				// Keep track of previously undefined attributes
@@ -106,54 +110,40 @@ module.exports = function(adapter) {
 				var newAttributes = {};
 
 				// Iterate through each attribute in the new definition
+				// If the attribute doesn't exist, mark it as a new attribute
 				_.each(attributes, function checkAttribute(attribute,attrName) {
-
-					// If the attribute doesn't exist, create it
-					if (!oldAttributes[attrName]) {
-						// console.log("new attr",attrName, attribute, "in ", collectionName);
+					if (!originalAttributes[attrName]) {
 						newAttributes[attrName] = attribute;
-					}
-
-					// If the old attribute is not exactly the same, or it doesn't exist, (re)create it
-					if ( !oldAttributes[attrName] || !_.isEqual(oldAttributes[attrName],attribute) ) {
-						oldAttributes[attrName] = attribute;
 					}
 				});
 
+				// Keep track of attributes which no longer exist or which need to be changed
+				var deprecatedAttributes = {};
+				_.each(originalAttributes,function (attribute,attrName) {
+					if (! attributes[attrName]) {
+						deprecatedAttributes[attrName] = attribute;
+					}
+					// Remove and recreate the attribute
+					if ( !_.isEqual(attributes[attrName],attribute) ) {
+						deprecatedAttributes[attrName] = attribute;
+						newAttributes[attrName] = attribute;
+					}
+				});
 
-				// Then alter the actual data as necessary
-				self.findAll(collectionName,null, function afterFind (err,data) {
-					if (err) return done(err);
-
-					// Update the data belonging to this attribute to reflect the new properties
-					// Realistically, this will mainly be about constraints, and primarily uniquness
-					// It'd be good if waterline could enforce all constraints at this time,
-					// but there's a trade-off with destroying people's data
-					// TODO: Figure this out
-
-
-					// For new columns, just use the default value if one exists (otherwise use null)
-					_.each(newAttributes, function checkAttribute(attribute,attrName) {
-						if (attribute.defaultValue) {
-							_.each(data,function (model) {
-								model[attrName] = attribute.defaultValue;
-							});
-						}
-					});
-
-					// Create deferred object
-					var $$ = new parley();
-					
-					// Dumbly drop the table and redefine it					
-					$$(self).drop(collectionName);
-					$$(self).define(collectionName, { attributes: attributes, identity: collectionName });
-
-					// Then dumbly add the data back in
-					$$(self).createEach(collectionName,data);
-					$$(function(xcb) { xcb(); done && done(); })();
+				// Add and remove attributes using the specified adapter
+				async.forEach(_.keys(newAttributes), function (attrName, cb) {
+					adapter.addAttribute(collectionName, attrName, newAttributes[attrName], cb);
+				}, function (err) {
+					if (err) throw err;
+					async.forEach(_.keys(deprecatedAttributes), function (attrName, cb) {
+						adapter.removeAttribute(collectionName, attrName, deprecatedAttributes[attrName], cb);
+					}, cb);
 				});
 			});
 		}
+		// Otherwise don't do anything, it's too dangerous 
+		// (dropping and readding the data could cause corruption if the user stops the server midway through)
+		else cb();
 	};
 
 
