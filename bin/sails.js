@@ -1,23 +1,23 @@
 #!/usr/bin/env node
 
+// Dependencies
+var ejs = require('ejs');
+var fs = require('fs');
+var util = require('util');
+var argv = require('optimist').argv;
+var _ = require('underscore');
+_.str = require('underscore.string');
+
+
 // Build sails object
 sails = {};
 
 // Get Sails logger
-require('../lib/logger.js');
-
-var ejs = require('ejs'),
-	fs = require('fs'),
-	util = require('util'),
-	argv = require('optimist').argv,
-	_ = require('underscore');
-_.str = require('underscore.string');
+sails.log = require('../lib/logger.js')();
 
 // Locate app root
 var appRoot = '.';
 var outputPath = '.';
-
-
 
 // Generate a file
 if(argv._[0] === 'generate') {
@@ -40,22 +40,10 @@ if(argv._[0] === 'generate') {
 		generate('view.ejs', "views/", argv._[2], '.ejs');
 	}
 
-	// Generate a new component
-	else if(argv._[1] === 'component') {
-		verifyArg(2, "ERROR: Please specify the name for the new component as the third argument.");
-		generate('component.js', "mast/components/", argv._[2], '.js', true);
-	}
-
-	// Generate a new template
-	else if(argv._[1] == 'template') {
-		verifyArg(2, "ERROR: Please specify the name for the new template as the third argument.");
-		generate('template.ejs', "mast/templates/", argv._[2], '.ejs');
-	}
-
 	// Otherwise generate a model, controller, and view directory
 	else {
 		verifyArg(1, "ERROR: Please specify the name of the entity to generate a model, controller, and view for as the second argument.");
-		console.log("Generating model, controller, and view directory for "+argv._[1]);
+		sails.log.debug("Generating model, controller, and view directory for " + argv._[1]);
 		generate('model.js', "models/", argv._[1], ".js", true);
 		generate('controller.js', "controllers/", argv._[1], "Controller.js", true);
 		generateDir("views/" + argv._[1]);
@@ -69,17 +57,17 @@ else {
 
 
 	// If not an action, first argument == app name
+	var appName = argv._[0];
 	outputPath = outputPath + "/" + argv._[0];
-	verifyDoesntExist(outputPath,"ERROR: A file or directory already exists at: "+outputPath);
-	
+	verifyDoesntExist(outputPath, "ERROR: A file or directory already exists at: " + outputPath);
+
 
 	// Create core sails structure
 	generateDir();
 	generateDir("models");
 	generateDir("controllers");
 	generateDir("views");
-	generateDir("policies");
-	generateDir("services");
+	generateDir("middleware");
 
 	// Create driver file
 	generateFile('app.js', 'app.js');
@@ -87,14 +75,13 @@ else {
 	// Create routes file
 	generateFile('routes.js', 'routes.js');
 
-	// Create access_control file
-	generateFile('access_control.js', 'access_control.js');
+	// Create policy file
+	generateFile('policy.js', 'policy.js');
 
 	// Create layout file
 	generateFile('layout.ejs', 'views/layout.ejs');
 
 	// Create meta controller and views
-	generateFile('MetaController.js', 'controllers/MetaController.js');
 	generateDir("views/meta");
 	generateFile('home.ejs', 'views/meta/home.ejs');
 
@@ -102,8 +89,6 @@ else {
 	generateDir("public");
 	generateDir("public/images");
 	copyFile('bg.png', "public/images/bg.png");
-	// generateDir("public/stylesheets");
-	// generateDir("public/js");
 
 	// Create rigging assets
 	generateDir("public/dependencies");
@@ -114,16 +99,34 @@ else {
 	generateFile('reset.css', "public/ui/stylesheets/reset.css");
 	generateFile('layout.css', "public/ui/stylesheets/layout.css");
 
-	// Create default policies
-	generateFile('policies/authenticated.js', 'policies/authenticated.js');
-	// generateFile('policies/only.js', 'policies/only.js');
+	// Create default middleware
+	generateFile('middleware/authenticated.js', 'middleware/authenticated.js');
 
 
 	// Create readme files
 	generateFile('__readme_models.md', "models/__readme.md");
 	generateFile('__readme_controllers.md', "controllers/__readme.md");
 	generateFile('__readme_views.md', "views/__readme.md");
-	generateFile('__readme_services.md', "services/__readme.md");
+	generateFile('__readme_middleware.md', "middleware/__readme_middleware.md");
+
+	// Create .gitignore
+	generateFile('.gitignore', '.gitignore');
+
+	// Generate package.json
+	sails.log.debug("Generating package.json...");
+	fs.writeFileSync(outputPath + '/package.json', JSON.stringify({
+		name: appName,
+		version: '0.0.0',
+		description: 'a Sails application',
+		main: 'app.js',
+		repository: '',
+		author: '',
+		license: 'BSD'
+	},null,4));
+
+	// Generate readme
+	sails.log.debug("Generating README.md...");
+	fs.writeFileSync(outputPath + '/README.md', '#'+appName+'\n### a Sails application');
 }
 
 
@@ -137,7 +140,7 @@ function generateFile(blueprintPath, newPath) {
 // Generate a directory
 
 function generateDir(newPath) {
-	console.log("Generating directory "+newPath+"...");
+	sails.log.debug("Generating directory " + newPath + "...");
 	fs.mkdirSync(outputPath + "/" + (newPath || ""));
 }
 
@@ -146,12 +149,8 @@ function generateDir(newPath) {
 // as well as an optional ejs render override.
 
 function generate(blueprintPath, prefix, entity, suffix, isEntityCapitalized) {
-	console.log("Generating "+blueprintPath+" for "+entity+"...");
-
-	if (!entity) {
-		throw new Error('No output file name specified!');
-	}
-
+	sails.log.debug("Generating " + blueprintPath + " for " + entity + "...");
+	if(!entity) throw new Error('No output file name specified!');
 	var entityName = isEntityCapitalized ? _.str.capitalize(entity) : entity,
 		file = fs.readFileSync(__dirname + "/blueprints/" + blueprintPath, 'utf8');
 	file = ejs.render(file, {
@@ -185,7 +184,6 @@ function copyFile(src, dst, cb) {
 
 // Verify that an argument exists
 
-
 function verifyArg(argNo, msg) {
 	if(!argv._[argNo]) {
 		console.log(msg);
@@ -193,15 +191,17 @@ function verifyArg(argNo, msg) {
 	}
 }
 
-function verifyDoesntExist(path,msg) {
-	if (fileExists(outputPath)) {
-		console.log(msg);
+function verifyDoesntExist(path, msg) {
+	if(fileExists(outputPath)) {
+		sails.log.debug(msg);
 		process.exit();
 	}
 }
 
 // Check if a file or directory exists
-function fileExists (path) {
+
+
+function fileExists(path) {
 	try {
 		// Query the entry
 		var stats = fs.lstatSync(path);
