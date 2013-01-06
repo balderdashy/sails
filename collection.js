@@ -4,6 +4,8 @@ var async = require('async');
 var util = require('sails-util');
 var config = require('./config');
 
+var Deferred = require('./deferredObject');
+
 var Collection = module.exports = function(definition) {
 		var self = this;
 
@@ -121,26 +123,16 @@ var Collection = module.exports = function(definition) {
 			this.generateDynamicFinder(attrName, 'countBy*Like');
 		}, this);
 
-		//////////////////////////////////////////
-		// Promises / Deferred Objects
-		//////////////////////////////////////////
-		// =============================
-		// TODO: (for a later release)
-		// =============================
-		/*
-		// when done() is called (or some comparably-named terminator)
-		// run every operation in the queue and trigger the callback
-		this.done = function (cb) {
-			// A callback is always required here
-			if(!_.isFunction(cb)) usageError('Invalid callback specified!',usage);
-		};
 
+		//////////////////////////////////////////
+		// Join
+		//////////////////////////////////////////
 		// Join with another collection
 		// (use optimized join in adapter if one was provided)
 		this.join = function (anotherOne, cb) {
-	
-		}
-	*/
+			
+		};
+
 		// =============================
 		//////////////////////////////////////////
 		// Core CRUD
@@ -191,9 +183,16 @@ var Collection = module.exports = function(definition) {
 				cb = criteria;
 				criteria = null;
 			}
-			if(!_.isFunction(cb)) usageError('Invalid callback specified!', usage);
 
-			return this.adapter.find(this.identity, criteria, cb);
+			// If no callback specified, return deferred object
+			if(!_.isFunction(cb)) {
+				return new Deferred({
+					method: 'find',
+					collection: this,
+					criteria: criteria
+				});
+			}
+			else return this.adapter.find(this.identity, criteria, cb);
 		};
 
 		this.findAll = function(criteria, options, cb) {
@@ -206,12 +205,19 @@ var Collection = module.exports = function(definition) {
 				cb = options;
 				options = null;
 			} else if(_.isObject(options)) {
+				if (!criteria.where) criteria = { where: criteria };
 				criteria = _.extend({}, criteria, options);
 			} else usageError('Invalid options specified!', usage);
 
-			if(!_.isFunction(cb)) usageError('Invalid callback specified!', usage);
-
-			return this.adapter.findAll(this.identity, criteria, cb);
+			// If no callback specified, return deferred object
+			if(!_.isFunction(cb)) {
+				return new Deferred({
+					method: 'findAll',
+					collection: this,
+					options: options
+				});
+			}
+			else return this.adapter.findAll(this.identity, criteria, cb);
 		};
 		this.where = this.findAll;
 		this.select = this.findAll;

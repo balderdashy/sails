@@ -1,3 +1,5 @@
+# Criteria Options
+
 ## limit: n
 Default: null
 
