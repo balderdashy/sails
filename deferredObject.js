@@ -13,23 +13,31 @@ module.exports = function (operation) {
 	//////////////////////////////////////////
 	// Joins
 	//////////////////////////////////////////
-	this.join = function (collection, fk, cb) {
+	this.join = function (collection, fk, pk, cb) {
 		var usage = _.str.capitalize(this.identity) + '.join(collection, [foreignKey], [callback])';
 		if (this.terminated) usageError('Chain is already terminated!');
 		if (!collection) usageError('No collection specified!');
 		if (_.isFunction (fk)) cb = fk;
 
-		// TODO
+		this.callChain.push({
+			method: 'join',
+			collection: this,
+			args: { 
+				collection: collection,
+				fk: fk,
+				pk: pk
+			}
+		});
 
 		if (_.isFunction(cb)) return this.done(cb);
 		else return this;
 	};
 	this.innerJoin = this.join;
 
-	this.leftOuterJoin = function (collection, fk, cb) {
+	this.leftOuterJoin = function (collection, fk, pk, cb) {
 		throw new Error('Not implemented yet!');
 	};
-	this.rightOuterJoin = function (collection, fk, cb) {
+	this.rightOuterJoin = function (collection, fk, pk, cb) {
 		throw new Error('Not implemented yet!');
 	};
 
@@ -115,11 +123,10 @@ module.exports = function (operation) {
 
 				// Always tack on callback
 				var args = [promiseCallback];
-
 				// Push criteria on argument list
-				if (hasCriteria(methodName)) {
-					args.unshift(promise.args.criteria);
-				}
+				_.each(promise.argsKeys, function (argName) {
+					args.unshift(promise.args[argName]);
+				});
 
 				// Execute promise
 				method.apply(promise.collection, args);
@@ -147,10 +154,15 @@ module.exports = function (operation) {
 
 // Whether the function is "findish", or whether it can be used as a context promise
 function isFindish(methodName) {
-	return methodName.match('find');
+	return methodName.match(/find/i);
 }
 
 // Whether the function accepts a criteria
 function hasCriteria(methodName) {
-	return methodName.match('find');
+	return methodName.match(/find/i);
+}
+
+// Whether the function is a join
+function isJoin(methodName) {
+	return methodName.match(/join/i);
 }

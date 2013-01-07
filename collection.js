@@ -133,8 +133,21 @@ var Collection = module.exports = function(definition) {
 		//////////////////////////////////////////
 		// Join with another collection
 		// (use optimized join in adapter if one was provided)
-		this.join = function (anotherOne, cb) {
-			
+		this.join = function (collection, fk, pk, cb) {
+			// If no callback specified, return deferred object
+			if(!_.isFunction(cb)) {
+				return new Deferred({
+					method: 'join',
+					collection: this,
+					args: { 
+						collection: collection,
+						fk: fk,
+						pk: pk
+					},
+					argsKeys: ['collection','fk','pk']
+				});
+			}
+			else return this.adapter.join(this.identity, collection, fk, pk, cb);
 		};
 
 		// =============================
@@ -196,7 +209,8 @@ var Collection = module.exports = function(definition) {
 				return new Deferred({
 					method: 'find',
 					collection: this,
-					args: { criteria: criteria }
+					args: { criteria: criteria },
+					argsKeys: ['criteria']
 				});
 			}
 			else return this.adapter.find(this.identity, criteria, cb);
@@ -230,7 +244,8 @@ var Collection = module.exports = function(definition) {
 					collection: this,
 					args: {
 						criteria: criteria
-					}
+					},
+					argsKeys: ['criteria']
 				});
 			}
 			else return this.adapter.findAll(this.identity, criteria, cb);
