@@ -175,7 +175,7 @@ module.exports = function(adapter) {
 
 	// Find exactly one model
 	this.find = function(collectionName, criteria, cb) {
-		// If no criteria specified, use first model
+		// If no criteria specified AT ALL, use first model
 		if (!criteria) criteria = {limit: 1};
 
 		this.findAll(collectionName, criteria, function (err, models) {
@@ -196,6 +196,7 @@ module.exports = function(adapter) {
 		else adapter.count(collectionName, criteria, cb);
 	};
 
+
 	this.update = function(collectionName, criteria, values, cb) {
 		if(!adapter.update) return cb("No update() method defined in adapter!");
 		criteria = normalizeCriteria(criteria);
@@ -207,17 +208,12 @@ module.exports = function(adapter) {
 		if (self.config.updatedAt) values.updatedAt = new Date();
 
 		adapter.update(collectionName, criteria, values, cb);
-
-		// TODO: Return model instance Promise object for joins, etc.
 	};
+
 	this.destroy = function(collectionName, criteria, cb) {
 		if(!adapter.destroy) return cb("No destroy() method defined in adapter!");
 		criteria = normalizeCriteria(criteria);
-		if (_.isString(criteria)) return cb(criteria);
-
 		adapter.destroy(collectionName, criteria, cb);
-
-		// TODO: Return model instance Promise object for joins, etc.
 	};
 
 	//////////////////////////////////////////////////////////////////////
@@ -458,7 +454,7 @@ module.exports = function(adapter) {
 // Find the oldest lock with the same transaction name
 // ************************************************************
 //	this function wouldn't be necessary if we could....
-//	TODO:  call find() with the [currently unfinished] ORDER option
+//	TODO:  call find() with the SORT option
 // ************************************************************
 function getNextLock(locks, currentLock) {
 	var nextLock;
@@ -496,7 +492,7 @@ function plural(collection, application) {
 
 function normalizeCriteria(criteria) {
 	if(!criteria) return {
-		where: null
+		where: {}
 	};
 
 	// Empty undefined values from criteria object
@@ -515,11 +511,14 @@ function normalizeCriteria(criteria) {
 	if(!_.isObject(criteria)) return ('Invalid options/criteria :: ' + criteria);
 
 	// If criteria doesn't seem to contain operational keys, assume all the keys are criteria
-	if(!criteria.where && !criteria.limit && !criteria.skip && !criteria.offset && !criteria.order) {
+	if(_.isUndefined(criteria.where) && _.isUndefined(criteria.limit) && 
+		_.isUndefined(criteria.skip) && _.isUndefined(criteria.sort)) {
 		criteria = {
 			where: criteria
 		};
 	}
+	// If where is null, turn it into an object
+	else if (_.isNull(criteria.where)) criteria.where = {};
 
 	// If any item in criteria is a parsable finite number, use that
 	for(var attrName in criteria.where) {

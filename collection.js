@@ -296,13 +296,13 @@ var Collection = module.exports = function(definition) {
 				options = null;
 			}
 			var usage = _.str.capitalize(this.identity) + '.update(criteria, newValues, callback)';
-			if(!options) usageError('No criteria option specified! If you\'re trying to update everything, maybe try updateAll?', usage);
 			if(!newValues) usageError('No updated values specified!', usage);
 			if(!_.isFunction(cb)) usageError('Invalid callback specified!', usage);
 
 			return this.adapter.update(this.identity, options, newValues, cb);
 		};
 		this.updateWhere = this.update;
+		this.updateAll = this.update;
 
 		// Call destroy method in adapter
 		this.destroy = function(options, cb) {
@@ -310,13 +310,12 @@ var Collection = module.exports = function(definition) {
 				cb = options;
 				options = null;
 			}
-			var usage = _.str.capitalize(this.identity) + '.destroy(options, callback)';
-			if(!options) usageError('No options specified! If you\'re trying to destroy everything, maybe try destroyAll?', usage);
+			var usage = _.str.capitalize(this.identity) + '.destroy([options], callback)';
 			if(!_.isFunction(cb)) usageError('Invalid callback specified!', usage);
-
 			return this.adapter.destroy(this.identity, options, cb);
 		};
 		this.destroyWhere = this.destroy;
+		this.destroyAll = this.destroy;
 
 
 		//////////////////////////////////////////

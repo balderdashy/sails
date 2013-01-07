@@ -14,13 +14,13 @@ var assert = require("assert");
 module.exports = function(adapter) {
 
 	describe('adapter', function() {
-		
+
 		describe('#creating() users Johnny and Timmy', function() {
 
 			it('should work', function(done) {
 				User.create({
 					name: "Johnny"
-				},done);
+				}, done);
 			});
 
 			it('should return a generated PK', function(done) {
@@ -128,6 +128,35 @@ module.exports = function(adapter) {
 					else if(!users || !_.isArray(users) || users.length > 0) throw "A non-empty list was returned!";
 					else done(err, users);
 				});
+			});
+		});
+
+		describe('#destroyAll()', function() {
+
+			before(function(cb) {
+				User.createEach([{
+					type: 'dummy_test'
+				}, {
+					type: 'dummy_test'
+				}, {
+					type: 'dummy_test'
+				}, {
+					type: 'dummy_test'
+				}], cb);
+			});
+
+
+			it('should remove all of the models', function(done) {
+			
+				User.destroyAll(function(err, users) {
+					User.findAll(function(err, users) {
+						if(err) throw err;
+						else if(!users || !_.isArray(users)) throw new Error("An invalid result was returned!");
+						else if(users.length > 0) throw new Error("A non-empty list was returned!");
+						else done(err, users);
+					});
+				});
+			
 			});
 		});
 
