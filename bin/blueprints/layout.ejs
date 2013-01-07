@@ -3,9 +3,11 @@
 	<head>
 		<title><%- title %></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		
+		<!-- rigging assets -->
+		<%- rigging.css %>
+		<%- rigging.js %>
 	</head>
-	<body>
-
 
 	<body>
 		<div id="topbar">
@@ -26,5 +28,9 @@
 		<div id="footer">
 			<a target="_blank" href="http://sailsjs.com" class="copyright">&copy; Sails Framework 2012</a>
 		</div>
+
+		<!-- Template library -->
+		<%- rigging.templateLibrary %>
+
 	</body>
 </html>
