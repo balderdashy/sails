@@ -41,6 +41,16 @@ describe('limit', function() {
 		}, cb);
 	});
 
+	it('chained limit should work', function(cb) {
+		var limit = 3;
+		User.findAll({type: testName}).limit(limit).done(function(err,result) {
+			if(err) throw new Error(err);
+			else if(!result) throw new Error('Unexpected result: ' + result);
+			else if(result.length !== limit) throw new Error('Improper # of users returned (' + result.length + ')');
+			else cb();
+		});
+	});
+
 	it('it should effectively limit the number of things returned', function(cb) {
 		User.findAllByType(testName, {
 			limit: limit

@@ -46,6 +46,9 @@ var Collection = module.exports = function(definition) {
 		// Dynamic finders
 		//////////////////////////////////////////
 		// Query the collection using the name of the attribute directly
+		// find or findAll will take care of callback 
+		// (with deferred object or the appropriate error)
+		// So no need to worry about that
 		this.generateDynamicFinder = function(attrName, method) {
 
 			// Figure out actual dynamic method name by injecting attribute name		
@@ -59,10 +62,11 @@ var Collection = module.exports = function(definition) {
 				}
 				options = options || {};
 
+				
 				var usage = _.str.capitalize(this.identity) + '.' + actualMethodName + '(someValue,[options],callback)';
 				if(_.isUndefined(value)) usageError('No value specified!', usage);
 				if(options.where) usageError('Cannot specify `where` option in a dynamic ' + method + '*() query!', usage);
-				if(!_.isFunction(cb)) usageError('Invalid callback specified!', usage);
+				
 
 				// Build criteria query and submit it
 				options.where = {};
@@ -134,6 +138,9 @@ var Collection = module.exports = function(definition) {
 		};
 
 		// =============================
+
+
+
 		//////////////////////////////////////////
 		// Core CRUD
 		//////////////////////////////////////////
@@ -189,7 +196,7 @@ var Collection = module.exports = function(definition) {
 				return new Deferred({
 					method: 'find',
 					collection: this,
-					args: [criteria]
+					args: { criteria: criteria }
 				});
 			}
 			else return this.adapter.find(this.identity, criteria, cb);
@@ -204,8 +211,11 @@ var Collection = module.exports = function(definition) {
 			} else if(_.isFunction(options)) {
 				cb = options;
 				options = null;
-			} else if(_.isObject(options) && _.isObject(criteria)) {
-				if (!criteria.where) criteria = { where: criteria };
+			}
+
+			// Normalize criteria
+			if (criteria && !criteria.where) criteria = { where: criteria };
+			if(_.isObject(options) && _.isObject(criteria)) {
 				criteria = _.extend({}, criteria, options);
 			}
 
@@ -218,7 +228,9 @@ var Collection = module.exports = function(definition) {
 				return new Deferred({
 					method: 'findAll',
 					collection: this,
-					args: [criteria, options]
+					args: {
+						criteria: criteria
+					}
 				});
 			}
 			else return this.adapter.findAll(this.identity, criteria, cb);

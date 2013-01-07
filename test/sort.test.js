@@ -67,6 +67,30 @@ describe('sort', function() {
 			}
 		});
 	});
+
+	it('chained usage + dynamic finder should effectively sort the list (ASC)', function(cb) {
+		User.findAllByType(testName).sort('phone ASC').done(function(err, users) {
+			if(err) throw new Error(err);
+			else if(!users) throw new Error('Unexpected result: ' + users);
+			else if(users.length !== origUsers.length) throw new Error('Improper # of users returned (' + users + ')');
+			else {
+				if (! isSorted(users, 'phone', 1)) cb(new Error('Users not properly sorted!'));
+				else cb();
+			}
+		});
+	});
+
+	it('chained usage + dynamic finder should effectively sort the list (DESC)', function(cb) {
+		User.findAllByType(testName).sort('phone DESC').done(function(err, users) {
+			if(err) throw new Error(err);
+			else if(!users) throw new Error('Unexpected result: ' + users);
+			else if(users.length !== origUsers.length) throw new Error('Improper # of users returned (' + users + ')');
+			else {
+				if (! isSorted(users, 'phone', -1)) cb(new Error('Users not properly sorted!'));
+				else cb();
+			}
+		});
+	});
 });
 
 function isSorted (list, attrName, direction) {

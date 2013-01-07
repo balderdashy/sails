@@ -41,6 +41,24 @@ describe('skip', function() {
 		}, cb);
 	});
 
+	it('chained usage should not break', function (cb) {
+		User.findAll({type: testName}).skip(skip).done(function(err, users) {
+			if(err) throw new Error(err);
+			else if(!users) throw new Error('Unexpected result: ' + users);
+			else if(users.length !== origUsers.length-skip) throw new Error('Improper # of users returned (' + users.length + ')');
+			else cb();
+		});
+	});
+
+	it('chained usage in dynamicFinder should work', function(cb) {
+		User.findAllByType(testName).skip(skip).done(function(err, users) {
+			if(err) throw new Error(err);
+			else if(!users) throw new Error('Unexpected result: ' + users);
+			else if(users.length !== origUsers.length-skip) throw new Error('Improper # of users returned (' + users.length + ')');
+			else cb();
+		});
+	});
+
 	it('it should effectively skip the number of things returned', function(cb) {
 		User.findAllByType(testName, {
 			skip: skip
@@ -51,4 +69,6 @@ describe('skip', function() {
 			else cb();
 		});
 	});
+
+
 });

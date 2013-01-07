@@ -154,6 +154,7 @@ module.exports = function(adapter) {
 		if(!adapter.create) return cb("No create() method defined in adapter!");
 
 		// TODO: Populate default values
+		// (just use describe(), but first we need an in-memory cache for calls to describe())
 
 		// TODO: Validate constraints using Anchor
 		
@@ -162,8 +163,6 @@ module.exports = function(adapter) {
 		if (self.config.updatedAt) values.updatedAt = new Date();
 
 		adapter.create(collectionName, values, cb);
-
-		// TODO: Return model instance Promise object for joins, etc.
 	};
 
 	// Find a set of models
@@ -171,10 +170,7 @@ module.exports = function(adapter) {
 		if(!adapter.find) return cb("No find() method defined in adapter!");
 		criteria = normalizeCriteria(criteria);
 		if (_.isString(criteria)) return cb(criteria);
-
 		adapter.find(collectionName, criteria, cb);
-
-		// TODO: Return model instance Promise object for joins, etc.
 	};
 
 	// Find exactly one model
@@ -182,15 +178,11 @@ module.exports = function(adapter) {
 		// If no criteria specified, use first model
 		if (!criteria) criteria = {limit: 1};
 
-		// If no limit specified
-
 		this.findAll(collectionName, criteria, function (err, models) {
 			if (models.length < 1) return cb();
 			else if (models.length > 1) return cb("More than one "+collectionName+" returned!");
 			else return cb(null,models[0]);
 		});
-
-		// TODO: Return model instance Promise object for joins, etc.
 	};
 
 	this.count = function(collectionName, criteria, cb) {
