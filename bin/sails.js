@@ -52,7 +52,7 @@ if(argv._[0] === 'generate') {
 
 // Generate an app
 else {
-	sails.log.debug("\nGenerating sails project...");
+	console.log("\nGenerating sails project...");
 	verifyArg(0, "ERROR: Please specify the name of the new directory as the first argument.");
 
 
@@ -150,11 +150,7 @@ function generateDir(newPath) {
 
 function generate(blueprintPath, prefix, entity, suffix, isEntityCapitalized) {
 	sails.log.debug("Generating " + blueprintPath + " for " + entity + "...");
-
-	if(!entity) {
-		throw new Error('No output file name specified!');
-	}
-
+	if(!entity) throw new Error('No output file name specified!');
 	var entityName = isEntityCapitalized ? _.str.capitalize(entity) : entity,
 		file = fs.readFileSync(__dirname + "/blueprints/" + blueprintPath, 'utf8');
 	file = ejs.render(file, {
@@ -190,7 +186,7 @@ function copyFile(src, dst, cb) {
 
 function verifyArg(argNo, msg) {
 	if(!argv._[argNo]) {
-		sails.log.debug(msg);
+		console.log(msg);
 		process.exit();
 	}
 }
