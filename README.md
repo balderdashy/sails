@@ -19,16 +19,18 @@ Sails does a few things other Node.js MVC frameworks can't do:
 Installation
 --
 
-> Sails is currently in open beta-- but lots of folks (including us) are using it in production today.
+To install the latest stable release:
+```
+npm install sails
+```
+
+Or to install with the command line tool: ```sudo npm install -g sails```
+
+> NOTE: Sails is currently in open beta-- but lots of folks (including us) are using it in production today.
 > If you're planning on using Sails in a production environment, make sure you lock down your dependency in your project's package.json file.
 > (The next version of the Sails command-line tool does this for you, but it's not released yet.)
 > We're on the cusp of a major release which will introduce support for a new ORM, Waterline.
 
-Install the latest stable release:
-```npm install sails```
-
-Or to install with the command line tool:
-```sudo npm install -g sails```
 
 Getting Started
 --
