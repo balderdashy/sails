@@ -1,0 +1,20 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', '-g', 'link', 'sails' ]
+2 info using npm@1.1.70
+3 info using node@v0.8.1
+4 error Error: link should never be --global.
+4 error Please re-run this command with --local
+4 error     at EventEmitter.link (/usr/local/lib/node_modules/npm/lib/link.js:41:15)
+4 error     at Object.keys.concat.forEach.Object.defineProperty.get.commandCache.(anonymous function) (/usr/local/lib/node_modules/npm/lib/npm.js:188:11)
+4 error     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/bin/npm-cli.js:83:28)
+4 error     at process.startup.processNextTick.process._tickCallback (node.js:244:9)
+5 error If you need help, you may report this log at:
+5 error     <http://github.com/isaacs/npm/issues>
+5 error or email it to:
+5 error     <npm-@googlegroups.com>
+6 error System Darwin 12.2.0
+7 error command "node" "/usr/local/bin/npm" "-g" "link" "sails"
+8 error cwd /Users/ghernandez345/code/sails
+9 error node -v v0.8.1
+10 error npm -v 1.1.70
+11 verbose exit [ 1, true ]

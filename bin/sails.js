@@ -92,12 +92,11 @@ else {
 
 	// Create rigging assets
 	generateDir("public/dependencies");
-	generateDir("public/ui");
-	generateDir("public/ui/components");
-	generateDir("public/ui/templates");
-	generateDir("public/ui/stylesheets");
-	generateFile('reset.css', "public/ui/stylesheets/reset.css");
-	generateFile('layout.css', "public/ui/stylesheets/layout.css");
+	generateDir("public/js");
+	generateDir("public/templates");
+	generateDir("public/styles");
+	generateFile('reset.css', "public/styles/reset.css");
+	generateFile('layout.css', "public/styles/layout.css");
 
 	// Create default middleware
 	generateFile('middleware/authenticated.js', 'middleware/authenticated.js');
