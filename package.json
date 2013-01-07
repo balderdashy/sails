@@ -34,7 +34,7 @@
     "node-uuid": "~1.4.0",
     "require-all": "0.0.5",
     "fs-extra": "~0.3.2",
-    "sails-util": "0.0.0",
+    "sails-util": "0.1.0",
     "parley": "0.0.2",
     "microtime": "~0.3.3",
     "waterline-dirty": "0.1.1",
