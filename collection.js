@@ -189,7 +189,7 @@ var Collection = module.exports = function(definition) {
 				return new Deferred({
 					method: 'find',
 					collection: this,
-					criteria: criteria
+					args: [criteria]
 				});
 			}
 			else return this.adapter.find(this.identity, criteria, cb);
@@ -204,17 +204,21 @@ var Collection = module.exports = function(definition) {
 			} else if(_.isFunction(options)) {
 				cb = options;
 				options = null;
-			} else if(_.isObject(options)) {
+			} else if(_.isObject(options) && _.isObject(criteria)) {
 				if (!criteria.where) criteria = { where: criteria };
 				criteria = _.extend({}, criteria, options);
-			} else usageError('Invalid options specified!', usage);
+			}
+
+			if (_.isFunction(criteria) || _.isFunction(options)) {
+				return usageError('Invalid options specified!', usage);
+			}
 
 			// If no callback specified, return deferred object
 			if(!_.isFunction(cb)) {
 				return new Deferred({
 					method: 'findAll',
 					collection: this,
-					options: options
+					args: [criteria, options]
 				});
 			}
 			else return this.adapter.findAll(this.identity, criteria, cb);

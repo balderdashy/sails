@@ -2,13 +2,6 @@ var _ = require('underscore');
 describe ('query edge cases',function () {
 	describe ('find', function () {
 
-		it ('should timeout when getting NO argument ', function (cb) {
-			try {
-				User.find();
-			}
-			catch (e) { return cb(); }
-		});
-
 		it ('should return first model when no criteria provided', function (cb) {
 			User.find(function (err,user) {
 				if(err) throw new Error(err);
