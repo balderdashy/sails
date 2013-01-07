@@ -10,7 +10,29 @@ module.exports = function (operation) {
 	this.callChain = [operation];
 	this.terminated = false;
 
-	// console.log("Buffering :: ",operation.collection.identity,operation.method,operation.args);
+	//////////////////////////////////////////
+	// Joins
+	//////////////////////////////////////////
+	this.join = function (collection, fk, cb) {
+		var usage = _.str.capitalize(this.identity) + '.join(collection, [foreignKey], [callback])';
+		if (this.terminated) usageError('Chain is already terminated!');
+		if (!collection) usageError('No collection specified!');
+		if (_.isFunction (fk)) cb = fk;
+
+		// TODO
+
+		if (_.isFunction(cb)) return this.done(cb);
+		else return this;
+	};
+	this.innerJoin = this.join;
+
+	this.leftOuterJoin = function (collection, fk, cb) {
+		throw new Error('Not implemented yet!');
+	};
+	this.rightOuterJoin = function (collection, fk, cb) {
+		throw new Error('Not implemented yet!');
+	};
+
 	
 	//////////////////////////////////////////
 	// Chained query options
@@ -71,6 +93,7 @@ module.exports = function (operation) {
 	// when done() is called (or some comparably-named terminator)
 	// run every operation in the queue and trigger the callback
 	this.done = function (cb) {
+
 		// A callback is always required here, and done() can't be called more than once
 		var usage = _.str.capitalize(this.identity) + '.done(callback)';
 		if(!_.isFunction(cb)) usageError('Invalid callback specified!',usage);
