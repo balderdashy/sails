@@ -52,7 +52,7 @@ Example
 #### Live demo
 *Try it in two browser windows*
 
-http://sailsjs.com:1337/experiment
+http://sailsjs.com:1337/experiment#subcomponents
 
 #### Code
 https://github.com/balderdashy/sails-example
