@@ -51,11 +51,9 @@ module.exports = function (operation) {
 					else throw new Error ('Unknown chained method: '+methodName);
 				}]));
 				
-			}, function (err) {
-				// Delete this deferred object
-				// TODO
-
-				// Return to caller
+			}, 
+			// Return result set to caller
+			function (err) {
 				return cb(err, resultSet);
 			});
 		}
