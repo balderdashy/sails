@@ -123,6 +123,7 @@ module.exports = function (operation) {
 
 				// Always tack on callback
 				var args = [promiseCallback];
+
 				// Push criteria on argument list
 				_.each(promise.argsKeys, function (argName) {
 					args.unshift(promise.args[argName]);
@@ -135,8 +136,11 @@ module.exports = function (operation) {
 
 					// Manage result set differently dependending on the method
 					if (isFindish(methodName)) {
-						if (resultSet) err = methodName + " cannot be called more than once in the same chain!";
-						resultSet = data;
+						if (resultSet) {
+							err = methodName + " cannot be called more than once in the same chain!";
+						}
+						else resultSet = data;
+						
 						return cb(err,data);
 					}
 					else throw new Error ('Unknown chained method: '+methodName);
