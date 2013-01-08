@@ -81,7 +81,7 @@ module.exports = function (options,cb) {
 		process.on('SIGTERM', serverOnHalt);
 		// If SIGINT or SIGTERM wasn't run, this is a dirty exit-- 
 		process.on('exit', function process_exit() {
-			if (!exiting) log.warn("Server stopped unexpectedly!!");
+			if (!exiting) log.warn("Server stopped itself.");
 		});
 		function serverOnHalt (){
 			exiting = true;
@@ -92,7 +92,6 @@ module.exports = function (options,cb) {
 				process.exit();
 			});
 		}
-
 		xcb();
 	})();
 
