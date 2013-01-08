@@ -3,6 +3,7 @@ var parley = require('parley');
 var async = require('async');
 var util = require('sails-util');
 var config = require('./config');
+var normalize = require('./normalize');
 
 var Deferred = require('./deferredObject');
 
@@ -227,8 +228,8 @@ var Collection = module.exports = function(definition) {
 				options = null;
 			}
 
-			// Normalize criteria
-			if (criteria && !criteria.where) criteria = { where: criteria };
+			// Normalize criteria and fold in options
+			criteria = normalize.criteria(criteria);
 			if(_.isObject(options) && _.isObject(criteria)) {
 				criteria = _.extend({}, criteria, options);
 			}

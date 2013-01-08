@@ -30,6 +30,8 @@ var builtInCollections = modules.required({
 * Prepare waterline to interact with adapters
 */
 module.exports = function (options,cb) {
+	var self = this;
+
 	// Only tear down waterline once 
 	// (if teardown() is called explicitly, don't tear it down when the process exits)
 	var tornDown = false;
@@ -74,14 +76,22 @@ module.exports = function (options,cb) {
 		};
 
 		// When process ends, fire teardown
-		process.on('SIGINT', process.exit);
-		process.on('SIGTERM', process.exit);
-		process.on('exit', function() {
+		var exiting = false;
+		process.on('SIGINT', serverOnHalt);
+		process.on('SIGTERM', serverOnHalt);
+		// If SIGINT or SIGTERM wasn't run, this is a dirty exit-- 
+		process.on('exit', function process_exit() {
+			if (!exiting) log.warn("Server stopped unexpectedly!!");
+		});
+		function serverOnHalt (){
+			exiting = true;
 			teardown({
 				adapters: adapters,
 				collections: collections
+			}, function () {
+				process.exit();
 			});
-		});
+		}
 
 		xcb();
 	})();

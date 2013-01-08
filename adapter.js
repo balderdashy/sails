@@ -9,6 +9,8 @@ var MAX_INTEGER = 4294967295;
 // Read global config
 var config = require('./config.js');
 
+var normalize = require('./normalize.js');
+
 // Extend adapter definition
 module.exports = function(adapter) {
 	var self = this;
@@ -36,7 +38,6 @@ module.exports = function(adapter) {
 	// Teardown is fired once-per-adapter
 	// (i.e. tear down any remaining connections to the underlying data model)
 	this.teardown = function(cb) {
-
 		if (adapter.teardown) adapter.teardown.apply(this,arguments);
 		else cb && cb();
 	}; 
@@ -168,8 +169,7 @@ module.exports = function(adapter) {
 	// Find a set of models
 	this.findAll = function(collectionName, criteria, cb) {
 		if(!adapter.find) return cb("No find() method defined in adapter!");
-		criteria = normalizeCriteria(criteria);
-		if (_.isString(criteria)) return cb(criteria);
+		criteria = normalize.criteria(criteria);
 		adapter.find(collectionName, criteria, cb);
 	};
 
@@ -187,7 +187,7 @@ module.exports = function(adapter) {
 
 	this.count = function(collectionName, criteria, cb) {
 		var self = this;
-		criteria = normalizeCriteria(criteria);
+		criteria = normalize.criteria(criteria);
 		if (!adapter.count) {
 			self.findAll(collectionName, criteria, function (err,models){
 				cb(err,models.length);
@@ -199,7 +199,7 @@ module.exports = function(adapter) {
 
 	this.update = function(collectionName, criteria, values, cb) {
 		if(!adapter.update) return cb("No update() method defined in adapter!");
-		criteria = normalizeCriteria(criteria);
+		criteria = normalize.criteria(criteria);
 		if (_.isString(criteria)) return cb(criteria);
 
 		// TODO: Validate constraints using Anchor
@@ -212,7 +212,7 @@ module.exports = function(adapter) {
 
 	this.destroy = function(collectionName, criteria, cb) {
 		if(!adapter.destroy) return cb("No destroy() method defined in adapter!");
-		criteria = normalizeCriteria(criteria);
+		criteria = normalize.criteria(criteria);
 		adapter.destroy(collectionName, criteria, cb);
 	};
 
@@ -221,7 +221,7 @@ module.exports = function(adapter) {
 	//////////////////////////////////////////////////////////////////////
 	this.findOrCreate = function(collectionName, criteria, values, cb) {
 		var self = this;
-		criteria = normalizeCriteria(criteria);
+		criteria = normalize.criteria(criteria);
 		if (_.isString(criteria)) return cb(criteria);
 
 		// If no values were specified, use criteria
@@ -471,82 +471,4 @@ function getNextLock(locks, currentLock) {
 		if (lock.id < minId) nextLock = lock;
 	});
 	return nextLock;
-}
-
-/**
- * Run a method on an object -OR- each item in an array and return the result
- * Also handle errors gracefully
- */
-
-function plural(collection, application) {
-	if(_.isArray(collection)) {
-		return _.map(collection, application);
-	} else if(_.isObject(collection)) {
-		return application(collection);
-	} else {
-		throw "Invalid collection passed to plural aggreagator:" + collection;
-	}
-}
-
-// Normalize the different ways of specifying criteria into a uniform object
-
-function normalizeCriteria(criteria) {
-	if(!criteria) return {
-		where: {}
-	};
-
-	// Empty undefined values from criteria object
-	_.each(criteria, function(val, key) {
-		if(_.isUndefined(val)) delete criteria[key];
-	});
-
-	// Convert id and id strings into a criteria
-	if((_.isFinite(criteria) || _.isString(criteria)) && +criteria > 0) {
-		criteria = {
-			id: +criteria
-		};
-	}
-
-	// Return string to indicate an error
-	if(!_.isObject(criteria)) return ('Invalid options/criteria :: ' + criteria);
-
-	// If criteria doesn't seem to contain operational keys, assume all the keys are criteria
-	if(_.isUndefined(criteria.where) && _.isUndefined(criteria.limit) && 
-		_.isUndefined(criteria.skip) && _.isUndefined(criteria.sort)) {
-		criteria = {
-			where: criteria
-		};
-	}
-	// If where is null, turn it into an object
-	else if (_.isNull(criteria.where)) criteria.where = {};
-
-	// If any item in criteria is a parsable finite number, use that
-	for(var attrName in criteria.where) {
-		if(Math.pow(+criteria.where[attrName], 2) > 0) {
-			criteria.where[attrName] = +criteria.where[attrName];
-		}
-	}
-
-	// Normalize sort criteria
-	if (criteria.sort) {
-		// Split string into attr and sortDirection parts (default to 'asc')
-		if (_.isString(criteria.sort)) {
-			var parts = _.str.words(criteria.sort);
-			parts[1] = parts[1] ? parts[1].toLowerCase() : 'asc';
-			if (parts.length !== 2 || (parts[1] !== 'asc' && parts[1] !== 'desc')) {
-				throw new Error ('Invalid sort criteria :: '+criteria.sort);
-			}
-			criteria.sort = {};
-			criteria.sort[parts[0]] = (parts[1] === 'asc') ? 1 : -1;
-		}
-
-		// Verify that user either specified a proper object
-		// or provided explicit comparator function
-		if (!_.isObject(criteria.sort) && !_.isFunction(criteria.sort)) {
-			throw new Error ('Invalid sort criteria for '+attrName+' :: '+direction);
-		}
-
-	}
-
-	return criteria;
 }
