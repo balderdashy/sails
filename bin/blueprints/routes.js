@@ -20,24 +20,64 @@
 //       JSON API for the model which matches :controller.
 //   - if no view OR model exists, Sails will respond with a 404.
 //
-module.exports = {
-	// Default mappings
-	'get /': {
+var routes = {
+	
+	// Home page
+	'/': {
 		controller: 'meta',
 		action: 'home'
 	}
 
 	// Additional routes might look like:
-	// '/someArbitraryPath': {
+	// '/whateverYouWant': {
 	//		controller: 'someController',
 	//		action: 'someAction'
 	// }
 
-	// If you only want to set up a route for a particular HTTP method, 
-	// you can specify the HTTP verb before the path:
-	//
+	// If you want to set up a route only for a particular HTTP method/verb 
+	// (GET, POST, PUT, DELETE) you can specify the verb before the path:
 	// 'post /signup': {
 	//		controller: 'auth',
 	//		action: 'signup'
 	// }
+
+	// Keep in mind default routes exist for each of your controllers
+	// So if you have a UserController with an action called "juggle" 
+	// a route will be automatically exist mapping it to /user/juggle.
+	//
+	// Additionally, unless you override them, new controllers will have 
+	// create(), find(), findAll(), update(), and destroy() actions, 
+	// and routes will exist for them as follows:
+	/*
+
+	'/user': {
+		controller	: 'user',
+		action		: 'findAll'
+	}
+	'/user/:id': {
+		controller	: 'user',
+		action		: 'find'
+	}
+	'/user/create': {
+		controller	: 'user',
+		action		: 'create'
+	}
+	'/user/find': {
+		controller	: 'user',
+		action		: 'find'
+	}
+	'/user/findAll': {
+		controller	: 'user',
+		action		: 'findAll'
+	}
+	'/user/update': {
+		controller	: 'user',
+		action		: 'update'
+	}
+	'/user/destroy': {
+		controller	: 'user',
+		action		: 'destroy'
+	}
+	*/
 };
+module.exports = routes;
