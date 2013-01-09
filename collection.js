@@ -376,6 +376,9 @@ var Collection = module.exports = function(definition) {
 		// Return a trimmed set of the specified attributes
 		// with only the attributes which actually exist in the server-side model
 		this.filter = function(params) {
+			// If attributes aren't defined, send back
+			if (!this.attributes) return {};
+
 			var trimmedParams = util.objFilter(params, function(value, name) {
 				return _.contains(_.keys(this.attributes), name);
 			}, this);
