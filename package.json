@@ -38,6 +38,6 @@
     "parley": "0.0.2",
     "microtime": "~0.3.3",
     "waterline-dirty": "git://github.com/balderdashy/waterline-dirty.git",
-    "sails-moduleloader": "1.0.1"
+    "sails-moduleloader": "1.0.2"
   }
 }
