@@ -1,27 +1,22 @@
 /**
-* Policies are middleware that are run before a URL is routed to a controller.
-* Any policy dropped into the /policies directory is made available through sails.policies
+* Policy defines middleware that is run before each controller/controller.
+* Any policy dropped into the /middleware directory is made globally available through sails.middleware
+* Below, use the string name of the middleware
 */
-var policy = sails.policies;
+var policy = {
 
-module.exports = {
-
-	// Default policy
-	'*': true,
-
-	// Policy mapping for the home page
-	meta: {
-		home: true
-	}
+	// Default policy (allow public access)
+	'*': true
 
 	/** Example mapping: 
 	someController: {
 
 		// Apply the "authenticated" policy to all actions
-		'*': policy.authenticated,
+		'*': 'authenticated',
 
-		// For someAction, apply "somePolicy" instead
-		someAction: policy.somePolicy
+		// For someAction, apply 'somePolicy' instead
+		someAction: 'somePolicy'
 	}
 	*/
 };
+module.exports = policy;

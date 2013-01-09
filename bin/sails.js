@@ -115,7 +115,8 @@ else {
 	generateFile('routes.js', 'config/routes.js');
 	generateFile('policy.js', 'config/policy.js');
 	generateDir('config/locales');
-	// TODO: Add locales
+	generateFile('locales/english.js', 'config/locales/english.js');
+	
 
 
 	// Create driver file
