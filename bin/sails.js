@@ -141,7 +141,7 @@ else {
 	// generateFile('__readme_middleware.md', "middleware/__readme_middleware.md");
 
 	// Create .gitignore
-	generateFile('.gitignore', '.gitignore');
+	generateFile('gitignore', '.gitignore');
 
 	// Generate package.json
 	sails.log.debug("Generating package.json...");
