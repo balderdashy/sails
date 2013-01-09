@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 
 // Dependencies
+var _ = require('underscore');
+_.str = require('underscore.string');
 var ejs = require('ejs');
 var fs = require('fs');
 var util = require('util');
-var argv = require('optimist').argv;
-var _ = require('underscore');
-_.str = require('underscore.string');
+
+var optimist = require('optimist');
+var argv = optimist.argv;
 
 
 // Build sails object
@@ -19,46 +21,45 @@ sails.log = require('../lib/logger.js')();
 var appRoot = '.';
 var outputPath = '.';
 
+
+
 // Generate a file
 if(argv._[0] === 'generate') {
 
+	verifyArg(1, "ERROR: Please specify the name for the new model and controller as the second argument.");
+
 	// Generate a model
 	if(argv._[1] === 'model') {
+		var entity = argv._[2];
 		verifyArg(2, "ERROR: Please specify the name for the new model as the third argument.");
-		generate('model.js', "models/", argv._[2], ".js", true);
+		generateModel(entity);
 	}
 
 	// Generate a controller
 	else if(argv._[1] === 'controller') {
+		var entity = argv._[2];
 		verifyArg(2, "ERROR: Please specify the name for the new controller as the third argument.");
-		generate('controller.js', "controllers/", argv._[2], "Controller.js", true);
-	}
-
-	// Generate a new view
-	else if(argv._[1] === 'view') {
-		verifyArg(2, "ERROR: Please specify the name for the new view as the third argument.");
-		generate('view.ejs', "views/", argv._[2], '.ejs');
+		generateController(entity);
 	}
 
 	// Otherwise generate a model, controller, and view directory
 	else {
+		var entity = argv._[1];
 		verifyArg(1, "ERROR: Please specify the name of the entity to generate a model, controller, and view for as the second argument.");
-		sails.log.debug("Generating model, controller, and view directory for " + argv._[1]);
-		generate('model.js', "models/", argv._[1], ".js", true);
-		generate('controller.js', "controllers/", argv._[1], "Controller.js", true);
-		generateDir("views/" + argv._[1]);
+		sails.log.info("Generating model and controller for " + entity);
+		generateModel(entity);
+		generateController(entity);
 	}
 }
 
 // Generate an app
 else {
-	console.log("\nGenerating sails project...");
-	verifyArg(0, "ERROR: Please specify the name of the new directory as the first argument.");
-
+	sails.log.info("Generating Sails project...");
+	verifyArg(0, "ERROR: Please specify the name of the new project directory as the first argument.");
 
 	// If not an action, first argument == app name
 	var appName = argv._[0];
-	outputPath = outputPath + "/" + argv._[0];
+	outputPath = outputPath + "/" + appName;
 	verifyDoesntExist(outputPath, "ERROR: A file or directory already exists at: " + outputPath);
 
 
@@ -120,12 +121,12 @@ else {
 		main: 'app.js',
 		repository: '',
 		author: '',
-		license: 'BSD'
-	},null,4));
+		license: 'MIT'
+	}, null, 4));
 
 	// Generate readme
 	sails.log.debug("Generating README.md...");
-	fs.writeFileSync(outputPath + '/README.md', '#'+appName+'\n### a Sails application');
+	fs.writeFileSync(outputPath + '/README.md', '#' + appName + '\n### a Sails application');
 }
 
 
@@ -143,19 +144,45 @@ function generateDir(newPath) {
 	fs.mkdirSync(outputPath + "/" + (newPath || ""));
 }
 
+function generateController(entity, options) {
+	return generate({
+		blueprint: 'controller.js',
+		prefix: 'controllers/',
+		entity: capitalize(entity),
+		suffix: "Controller.js"
+	});
+}
+function generateModel(entity, options) {
+	return generate({
+		blueprint: 'model.js',
+		prefix: 'models/',
+		entity: capitalize(entity),
+		suffix: ".js"
+	});
+}
+
 
 // Utility class to generate a file given the blueprint and output paths,
 // as well as an optional ejs render override.
+function generate(options) {
+	sails.log.debug("Generating " + options.blueprint + " for " + options.entity + "...");
 
-function generate(blueprintPath, prefix, entity, suffix, isEntityCapitalized) {
-	sails.log.debug("Generating " + blueprintPath + " for " + entity + "...");
-	if(!entity) throw new Error('No output file name specified!');
-	var entityName = isEntityCapitalized ? _.str.capitalize(entity) : entity,
-		file = fs.readFileSync(__dirname + "/blueprints/" + blueprintPath, 'utf8');
+	// Trim slashes
+	options.prefix = trimSlashes(options.prefix) + '/';
+
+	if(!options.entity) throw new Error('No output file name specified!');
+	
+	var blueprint = __dirname + "/blueprints/" + options.blueprint;
+	verifyExists(blueprint, "Blueprint doesn't exist!");
+	var file = fs.readFileSync(blueprint, 'utf8');
+
 	file = ejs.render(file, {
-		name: entityName
+		name: options.entity
 	});
-	fs.writeFileSync(outputPath + "/" + prefix + entityName + suffix, file);
+
+	var newFilePath = outputPath + "/" + options.prefix + options.entity + options.suffix;
+	verifyDoesntExist(newFilePath, "ERROR: A file or directory already exists at: " + newFilePath);
+	fs.writeFileSync(newFilePath, file);
 }
 
 // Copy a file from src to dst with callback cb
@@ -185,21 +212,26 @@ function copyFile(src, dst, cb) {
 
 function verifyArg(argNo, msg) {
 	if(!argv._[argNo]) {
-		console.log(msg);
+		sails.log.error(msg);
 		process.exit();
 	}
 }
 
 function verifyDoesntExist(path, msg) {
 	if(fileExists(outputPath)) {
-		sails.log.debug(msg);
+		sails.log.error(msg);
+		process.exit();
+	}
+}
+
+function verifyExists(path, msg) {
+	if(!fileExists(path)) {
+		sails.log.error(msg);
 		process.exit();
 	}
 }
 
 // Check if a file or directory exists
-
-
 function fileExists(path) {
 	try {
 		// Query the entry
@@ -214,4 +246,17 @@ function fileExists(path) {
 	}
 
 	return false;
+}
+
+
+
+// String convenience utilities
+
+
+function trimSlashes(str) {
+	return _.str.trim(str, '/');
+}
+
+function capitalize(str) {
+	return _.str.capitalize(str);
 }
