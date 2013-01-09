@@ -22,23 +22,23 @@
 //
 var routes = {
 	
-	// Home page
-	'/': {
-		controller: 'meta',
-		action: 'home'
-	}
-
-	// Additional routes might look like:
+	// Routes look like:
 	// '/whateverYouWant': {
-	//		controller: 'someController',
-	//		action: 'someAction'
+	//		controller	: 'someController',
+	//		action		: 'someAction'
+	// }
+
+	// To route the home page:
+	// '/' : {
+	//		controller	: 'someController',
+	//		action		: 'someAction'
 	// }
 
 	// If you want to set up a route only for a particular HTTP method/verb 
 	// (GET, POST, PUT, DELETE) you can specify the verb before the path:
 	// 'post /signup': {
-	//		controller: 'auth',
-	//		action: 'signup'
+	//		controller	: 'auth',
+	//		action		: 'signup'
 	// }
 
 	// Keep in mind default routes exist for each of your controllers

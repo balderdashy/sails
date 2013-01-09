@@ -53,7 +53,8 @@
     "glob": "=3.1.14",
     "winston": "~0.6.2",
     "sails-moduleloader": "1.0.0",
-    "sails-util": "0.1.0"
+    "sails-util": "0.1.0",
+    "fs-extra": "~0.3.2"
   },
   "repository": {
     "type": "git",

@@ -4,44 +4,35 @@
 var _ = require('underscore');
 _.str = require('underscore.string');
 var ejs = require('ejs');
-var fs = require('fs');
+var fs = require('fs-extra');
 var util = require('util');
+
 
 var optimist = require('optimist');
 var argv = optimist.argv;
 
+// Build mock sails object
+var sails = require('./mockSails.js');
 
-// Build sails object
-var sails = {};
-
-// Get Sails logger
-sails.log = require('../lib/logger.js')();
-
-// Extend w/ data from Sails package.json
-var packageConfig = require('../lib/package.js');
-sails.version = packageConfig.version;
-sails.dependencies = packageConfig.dependencies;
-
-// TODO get actual user config
-var userConfig = {
-	appPath: '.'
-};
-
-// Merge user config with defaults
-var configuration = require('../lib/configuration');
-sails.config = configuration.build(configuration.defaults(userConfig), userConfig);
-
-// Validate user config
-sails.config = configuration.validate(sails.config, userConfig);
-
-// Locate app root
-var appRoot = sails.config.appPath;
+// Output in directory where cmdline tool was run
 var outputPath = '.';
 
-
+// Basic usage
+if (argv._.length === 0) {
+	sails.log.info(
+		'Welcome to Sails!\n'+
+		'\n'+
+		'Usage: sails <command>\n'+
+		'\n'+
+		'sails lift\t\tRun this Sails app (in the current dir)\n'+
+		'sails <newApp>\t\tCreate a new Sails project in the current dir\n'+
+		'sails generate <foo>\tGenerate model and controller for this app\n'+
+		'sails version\t\tGet the current globally installed Sails version'
+	);
+}
 // Get the sails version
-var version = argv.v || argv.version || (argv._[0] === 'version' && argv._[0]);
-if (version) {
+else if (argv.v || argv.version || (argv._[0] === 'version' && argv._[0])) {
+	var version = argv.v || argv.version || (argv._[0] === 'version' && argv._[0]);
 	sails.log.info('v'+sails.version);
 }
 // Generate a file
@@ -96,51 +87,54 @@ else {
 	outputPath = outputPath + "/" + appName;
 	verifyDoesntExist(outputPath, "A file or directory already exists at: " + outputPath);
 
-
-	// Create core sails structure
+	// Create app directory
 	generateDir();
-	generateDir("models");
-	generateDir("controllers");
-	generateDir("views");
-	generateDir("middleware");
+	
+	// Create default app structure
+	generateDir('ui');
+	generateDir(sails.config.paths.dependencies);
+	generateDir(sails.config.paths['public']);
+	generateDir("ui/public/styles");
+	generateDir("ui/public/images");
+	generateDir("ui/public/js");
+	generateDir(sails.config.paths.views);
+	generateDir(sails.config.paths.templates);
+	generateFile('layout.ejs', sails.config.paths.layout);
+
+	generateDir('api');
+	generateDir(sails.config.paths.models);
+	generateDir(sails.config.paths.controllers);
+	generateDir(sails.config.paths.middleware);
+	// NOTE: We are not creating an adapters directory for now to keep things simple.
+	// NOTE: We are not creating a services directory for now to keep things simple.
+	
+	generateDir('config');
+	generateFile('routes.js', 'config/routes.js');
+	generateFile('policy.js', 'config/policy.js');
+	generateDir('config/locales');
+	// TODO: Add locales
+
 
 	// Create driver file
 	generateFile('app.js', 'app.js');
 
-	// Create routes file
-	generateFile('routes.js', 'routes.js');
+	// Create default home page
+	generateFile('index.html', sails.config.paths['public'] + '/index.html');
 
-	// Create policy file
-	generateFile('policy.js', 'policy.js');
+	// Copy default favicon
+	copyBlueprint('favicon.ico',sails.config.paths['public'] + '/favicon.ico');
 
-	// Create layout file
-	generateFile('layout.ejs', 'views/layout.ejs');
+	// Create default css reset
+	generateFile('reset.css', sails.config.paths['public'] + "/styles/reset.css");
 
-	// Create meta controller and views
-	generateDir("views/meta");
-	generateFile('home.ejs', 'views/meta/home.ejs');
-
-	// Create static assets
-	generateDir("public");
-	generateDir("public/images");
-
-	// Create rigging assets
-	generateDir("public/dependencies");
-	generateDir("public/js");
-	generateDir("public/templates");
-	generateDir("public/styles");
-	generateFile('reset.css', "public/styles/reset.css");
-	generateFile('layout.css', "public/styles/layout.css");
-
-	// Create default middleware
-	generateFile('middleware/authenticated.js', 'middleware/authenticated.js');
-
+	// Create default user management and auth middleware
+	// TODO	
 
 	// Create readme files
-	generateFile('__readme_models.md', "models/__readme.md");
-	generateFile('__readme_controllers.md', "controllers/__readme.md");
-	generateFile('__readme_views.md', "views/__readme.md");
-	generateFile('__readme_middleware.md', "middleware/__readme_middleware.md");
+	// generateFile('__readme_models.md', "models/__readme.md");
+	// generateFile('__readme_controllers.md', "controllers/__readme.md");
+	// generateFile('__readme_views.md', "views/__readme.md");
+	// generateFile('__readme_middleware.md', "middleware/__readme_middleware.md");
 
 	// Create .gitignore
 	generateFile('.gitignore', '.gitignore');
@@ -149,6 +143,7 @@ else {
 	sails.log.debug("Generating package.json...");
 	fs.writeFileSync(outputPath + '/package.json', JSON.stringify({
 		name: appName,
+		'private': true,
 		version: '0.0.0',
 		description: 'a Sails application',
 		dependencies: {
@@ -160,9 +155,9 @@ else {
 		license: 'MIT'
 	}, null, 4));
 
-	// Generate readme
+	// Generate README
 	sails.log.debug("Generating README.md...");
-	fs.writeFileSync(outputPath + '/README.md', '#' + appName + '\n### a Sails application');
+	fs.writeFileSync(outputPath + '/README.md', '# ' + appName + '\n### a Sails application');
 }
 
 
@@ -176,7 +171,8 @@ function generateFile(blueprintPath, newPath) {
 
 // Generate a directory
 function generateDir(newPath) {
-	sails.log.debug("Generating directory " + newPath + "...");
+	if (!newPath) sails.log.debug("Generating app directory...");
+	else sails.log.debug("Generating directory " + newPath + "...");
 	var newDirPath = outputPath + "/" + (newPath || "");
 	verifyDoesntExist(newDirPath, "A file/directory already exists at "+newDirPath);
 	fs.mkdirSync(newDirPath);
@@ -244,7 +240,7 @@ function generateController(entity, options) {
 function generateModel(entity, options) {
 	return generate({
 		blueprint: 'model.js',
-		prefix: 'models/',
+		prefix: 'api/models/',
 		entity: capitalize(entity),
 		suffix: ".js"
 	});
@@ -275,6 +271,14 @@ function renderBlueprint(blueprint, data) {
 	verifyExists(blueprintPath, "Blueprint ("+blueprint+") doesn't exist!");
 	var file = fs.readFileSync(blueprintPath, 'utf8');
 	return ejs.render(file, data);
+}
+
+// Copy a blueprint file
+function copyBlueprint(blueprint, destination, cb) {
+	var blueprintPath = __dirname + '/blueprints/' + blueprint;
+	fs.copy(blueprintPath, outputPath + '/' + destination, function (err) {
+		return cb && cb(err);
+	});
 }
 
 

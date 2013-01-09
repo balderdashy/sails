@@ -2,35 +2,19 @@
 <html>
 	<head>
 		<title><%- title %></title>
+
+		<!-- Viewport mobile tag for sensible mobile support -->
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		
-		<!-- rigging assets -->
+		<!-- JavaScript and stylesheets from your public folder are included here -->
 		<%- rigging.css %>
 		<%- rigging.js %>
 	</head>
 
 	<body>
-		<div id="topbar">
-			<h1 id="branding">
-				<a href="/">sails.js</a>
-			</h1>
+		<%- body %>
 
-			<ul class="widescreen-nav"></ul>
-			<select class="mobile-only" id="topbar-dropdown">
-				<option>-- Go --</option>
-			</select>
-		</div>
-
-		<div id="content">
-			<%- body %>
-		</div>
-
-		<div id="footer">
-			<a target="_blank" href="http://sailsjs.com" class="copyright">&copy; Sails Framework 2012</a>
-		</div>
-
-		<!-- Template library -->
+		<!-- Templates from your view path are included here -->
 		<%- rigging.templateLibrary %>
-
 	</body>
 </html>
