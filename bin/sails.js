@@ -22,7 +22,7 @@ var packageConfig = require('../lib/package.js');
 sails.version = packageConfig.version;
 sails.dependencies = packageConfig.dependencies;
 
-// TODO get user config
+// TODO get actual user config
 var userConfig = {
 	appPath: '.'
 };
@@ -57,7 +57,7 @@ else if(argv._[0] === 'generate') {
 
 		// Figure out attributes based on args
 		var options = _.extend({},argv);
-		options.actions = argv._.splice(3);
+		options.attributes = argv._.splice(2);
 		generateModel(entity, options);
 	}
 
@@ -79,10 +79,10 @@ else if(argv._[0] === 'generate') {
 		sails.log.info("Generating model and controller for " + entity);
 		
 		var options = _.extend({},argv);
-		options.actions = argv._.splice(3);
+		options.actions = argv._.splice(1);
 
 		generateModel(entity,options);
-		generateController(entity);
+		generateController(entity,options);
 	}
 }
 
@@ -183,10 +183,16 @@ function generateDir(newPath) {
 }
 
 function generateController(entity, options) {
+	var newControllerPath = 'controllers/'+capitalize(entity)+'Controller.js';
+	var newFederatedControllerPath = 'controllers/'+entity;
+
+	verifyDoesntExist(newControllerPath, "A controller already exists at: " + newControllerPath);
+	verifyDoesntExist(newFederatedControllerPath, "A controller already exists at: " + newFederatedControllerPath);
+
 	// Federated controller
 	if (options && (options.f || options.federated)) {
-		var newControllerPath = 'controllers/'+entity;
-		generateDir(newControllerPath);
+
+		generateDir(newFederatedControllerPath);
 		_.each(options.actions, function (action) {
 			
 			action = verifyValidEntity(action, "Invalid action name: " + action);
@@ -208,21 +214,23 @@ function generateController(entity, options) {
 		var actions = "";
 
 		// Add each requested function
-		_.each(options.actions,function (action) {
-			var fnString = renderBlueprint('action.js', {
-				action: action,
-				entity: entity,
-				viewEngine: sails.config.viewEngine,
-				viewPath: _.str.rtrim(sails.config.viewPath,'/'),
-				baseurl: '/'+entity
-			});
+		if (options && options.actions) {
+			_.each(options.actions,function (action) {
+				var fnString = renderBlueprint('action.js', {
+					action: action,
+					entity: entity,
+					viewEngine: sails.config.viewEngine,
+					viewPath: _.str.rtrim(sails.config.viewPath,'/'),
+					baseurl: '/'+entity
+				});
 
-			// If this is not the first action, add a comma
-			if (actions !== "") {
-				fnString = ',\n\n' + fnString;
-			}
-			actions += fnString;
-		});
+				// If this is not the first action, add a comma
+				if (actions !== "") {
+					fnString = ',\n\n' + fnString;
+				}
+				actions += fnString;
+			});
+		}
 
 		return generate({
 			blueprint: 'controller.js',
