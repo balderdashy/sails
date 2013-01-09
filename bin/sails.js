@@ -22,8 +22,20 @@ var packageConfig = require('../lib/package.js');
 sails.version = packageConfig.version;
 sails.dependencies = packageConfig.dependencies;
 
+// TODO get user config
+var userConfig = {
+	appPath: '.'
+};
+
+// Merge user config with defaults
+var configuration = require('../lib/configuration');
+sails.config = configuration.build(configuration.defaults(userConfig), userConfig);
+
+// Validate user config
+sails.config = configuration.validate(sails.config, userConfig);
+
 // Locate app root
-var appRoot = '.';
+var appRoot = sails.config.appPath;
 var outputPath = '.';
 
 
@@ -184,17 +196,42 @@ function generateController(entity, options) {
 				prefix: 'controllers/'+entity+'/',
 				entity: entity,
 				action: action,
+				viewEngine: sails.config.viewEngine,
+				viewPath: _.str.rtrim(sails.config.viewPath,'/'),
+				baseurl: '/'+entity,
 				suffix: ".js"
 			});
 		});
 	}
 	// Monolithic controller
-	else return generate({
-		blueprint: 'controller.js',
-		prefix: 'controllers/',
-		entity: capitalize(entity),
-		suffix: "Controller.js"
-	});
+	else {
+		var actions = "";
+
+		// Add each requested function
+		_.each(options.actions,function (action) {
+			var fnString = renderBlueprint('action.js', {
+				action: action,
+				entity: entity,
+				viewEngine: sails.config.viewEngine,
+				viewPath: _.str.rtrim(sails.config.viewPath,'/'),
+				baseurl: '/'+entity
+			});
+
+			// If this is not the first action, add a comma
+			if (actions !== "") {
+				fnString = ',\n\n' + fnString;
+			}
+			actions += fnString;
+		});
+
+		return generate({
+			blueprint: 'controller.js',
+			prefix: 'controllers/',
+			entity: capitalize(entity),
+			actions: actions,
+			suffix: "Controller.js"
+		});
+	}
 }
 function generateModel(entity, options) {
 	return generate({
@@ -216,19 +253,20 @@ function generate(options) {
 
 	if(!options.entity) throw new Error('No output file name specified!');
 	
-	var blueprint = __dirname + "/blueprints/" + options.blueprint;
-	verifyExists(blueprint, "Blueprint doesn't exist!");
-	var file = fs.readFileSync(blueprint, 'utf8');
+	var file = renderBlueprint(options.blueprint,options);
 
-	file = ejs.render(file, {
-		action: options.action,
-		name: options.entity
-	});
 	var fileEntity = options.action || options.entity;
-
 	var newFilePath = outputPath + "/" + options.prefix + fileEntity + options.suffix;
 	verifyDoesntExist(newFilePath, "A file or directory already exists at: " + newFilePath);
 	fs.writeFileSync(newFilePath, file);
+}
+
+// Read a blueprint and render the template
+function renderBlueprint(blueprint, data) {
+	var blueprintPath = __dirname + '/blueprints/' + blueprint;
+	verifyExists(blueprintPath, "Blueprint ("+blueprint+") doesn't exist!");
+	var file = fs.readFileSync(blueprintPath, 'utf8');
+	return ejs.render(file, data);
 }
 
 

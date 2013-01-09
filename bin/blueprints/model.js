@@ -1,8 +1,8 @@
 /*---------------------
-	:: <%- name %> 
+	:: <%- entity %> 
 	-> model
 ---------------------*/
-var <%- name %> = {
+var <%- entity %> = {
 	
 	// Attributes/Schema
 	// 
@@ -20,5 +20,4 @@ var <%- name %> = {
 	// belongsTo: [ 'SomeModel', 'SomeOtherModel']
 	
 };
-
-exports = <%- name %>;
+module.exports = <%- entity %>;
