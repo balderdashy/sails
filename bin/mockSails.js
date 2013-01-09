@@ -19,7 +19,4 @@ var userConfig = {
 var configuration = require('../lib/configuration');
 sails.config = configuration.build(configuration.defaults(userConfig), userConfig);
 
-// Validate user config
-sails.config = configuration.validate(sails.config, userConfig);
-
 module.exports = sails;
