@@ -2,7 +2,7 @@
 	:: <%- name %> 
 	-> model
 ---------------------*/
-<%- name %> = Model.extend({
+var <%- name %> = {
 	
 	// Attributes/Schema
 	// 
@@ -19,4 +19,6 @@
 	// ex.
 	// belongsTo: [ 'SomeModel', 'SomeOtherModel']
 	
-});
+};
+
+exports = <%- name %>;
