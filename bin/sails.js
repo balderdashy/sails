@@ -30,12 +30,15 @@ if (argv._.length === 0) {
 		'sails version\t\tGet the current globally installed Sails version'
 	);
 }
+// Start this app
+else if ( _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l'], argv._[0]) ) {
+	require(process.cwd()+'/app.js');
+}
 // Get the sails version
-else if (argv.v || argv.version || (argv._[0] === 'version' && argv._[0])) {
-	var version = argv.v || argv.version || (argv._[0] === 'version' && argv._[0]);
+else if (argv.v || argv.version || argv._[0] === 'version') {
 	sails.log.info('v'+sails.version);
 }
-// Generate a file
+// Generate file(s)
 else if(argv._[0] === 'generate') {
 
 	verifyArg(1, "Please specify the name for the new model and controller as the second argument.");
