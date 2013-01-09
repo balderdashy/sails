@@ -19,16 +19,8 @@ var outputPath = '.';
 
 // Basic usage
 if (argv._.length === 0) {
-	sails.log.info(
-		'Welcome to Sails!\n'+
-		'\n'+
-		'Usage: sails <command>\n'+
-		'\n'+
-		'sails lift\t\tRun this Sails app (in the current dir)\n'+
-		'sails <newApp>\t\tCreate a new Sails project in the current dir\n'+
-		'sails generate <foo>\tGenerate model and controller for this app\n'+
-		'sails version\t\tGet the current globally installed Sails version'
-	);
+	sails.log.info('Welcome to Sails!\n');
+	sailsUsage();
 }
 // Start this app
 else if ( _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l'], argv._[0]) ) {
@@ -80,13 +72,13 @@ else if(argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^generat$|^gener
 	}
 }
 
-// Generate an app
-else {
+// Create a new app
+else if(argv._[0].match(/^n$|^ne$|^new$/) || argv.n || argv['new']) {
 	sails.log.info("Generating Sails project...");
-	verifyArg(0, "Please specify the name of the new project directory as the first argument.");
+	verifyArg(1, "Please specify the name of the new project directory as the first argument.");
 
 	// If not an action, first argument == app name
-	var appName = argv._[0];
+	var appName = argv._[1];
 	outputPath = outputPath + "/" + appName;
 	verifyDoesntExist(outputPath, "A file or directory already exists at: " + outputPath);
 
@@ -162,6 +154,23 @@ else {
 	// Generate README
 	sails.log.debug("Generating README.md...");
 	fs.writeFileSync(outputPath + '/README.md', '# ' + appName + '\n### a Sails application');
+}
+// Unknown command
+else  {
+	sails.log.error("Unknown usage!");
+	sailsUsage();
+}
+
+
+// Display usage
+function sailsUsage () {
+	sails.log.info('Usage: sails <command>\n'+
+		'\n'+
+		'sails lift\t\tRun this Sails app (in the current dir)\n'+
+		'sails new <appName>\t\tCreate a new Sails project in the current dir\n'+
+		'sails generate <foo>\tGenerate model and controller for this app\n'+
+		'sails version\t\tGet the current globally installed Sails version'
+	);
 }
 
 
