@@ -57,7 +57,7 @@ else if(argv._[0] === 'generate') {
 
 		// Figure out attributes based on args
 		var options = _.extend({},argv);
-		options.attributes = argv._.splice(2);
+		options.attributes = argv._.splice(3);
 		generateModel(entity, options);
 	}
 
@@ -79,7 +79,7 @@ else if(argv._[0] === 'generate') {
 		sails.log.info("Generating model and controller for " + entity);
 		
 		var options = _.extend({},argv);
-		options.actions = argv._.splice(1);
+		options.actions = argv._.splice(2);
 
 		generateModel(entity,options);
 		generateController(entity,options);
@@ -203,7 +203,7 @@ function generateController(entity, options) {
 				entity: entity,
 				action: action,
 				viewEngine: sails.config.viewEngine,
-				viewPath: _.str.rtrim(sails.config.viewPath,'/'),
+				viewPath: _.str.rtrim(sails.config.paths.views,'/'),
 				baseurl: '/'+entity,
 				suffix: ".js"
 			});
@@ -220,7 +220,7 @@ function generateController(entity, options) {
 					action: action,
 					entity: entity,
 					viewEngine: sails.config.viewEngine,
-					viewPath: _.str.rtrim(sails.config.viewPath,'/'),
+					viewPath: _.str.rtrim(sails.config.paths.views,'/'),
 					baseurl: '/'+entity
 				});
 
