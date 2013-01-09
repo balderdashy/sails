@@ -4,20 +4,18 @@
 ---------------------*/
 var <%- entity %> = {
 	
-	// Attributes/Schema
-	// 
-	// ex.
-	// attrName: {
-	//	type: STRING,
-	//	validate: {
-	//	is: ['someValue','someOtherValue']
-	//	}
-	// },
-	
-	// Associations
-	// 
-	// ex.
-	// belongsTo: [ 'SomeModel', 'SomeOtherModel']
-	
+	// Attributes / Schema
+	attributes	: {
+
+		// Simple attribute:
+		// name: 'STRING',
+
+		// Or for more flexibility:
+		// phoneNumber: {
+		//	type: 'STRING',
+		//	defaultValue: '555-555-5555'
+		// }
+	}
+
 };
 module.exports = <%- entity %>;

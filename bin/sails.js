@@ -39,7 +39,7 @@ else if (argv.v || argv.version || argv._[0] === 'version') {
 	sails.log.info('v'+sails.version);
 }
 // Generate file(s)
-else if(argv._[0] === 'generate') {
+else if(argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^generat$|^generate$/) || argv.g || argv.generate) {
 
 	verifyArg(1, "Please specify the name for the new model and controller as the second argument.");
 
@@ -198,7 +198,7 @@ function generateController(entity, options) {
 
 			return generate({
 				blueprint: 'federatedAction.js',
-				prefix: 'controllers/'+entity+'/',
+				prefix: sails.config.paths.controllers + '/' + entity,
 				entity: entity,
 				action: action,
 				viewEngine: sails.config.viewEngine,
@@ -233,7 +233,7 @@ function generateController(entity, options) {
 
 		return generate({
 			blueprint: 'controller.js',
-			prefix: 'controllers/',
+			prefix: sails.config.paths.controllers,
 			entity: capitalize(entity),
 			actions: actions,
 			suffix: "Controller.js"
@@ -243,7 +243,7 @@ function generateController(entity, options) {
 function generateModel(entity, options) {
 	return generate({
 		blueprint: 'model.js',
-		prefix: 'api/models/',
+		prefix: sails.config.paths.models,
 		entity: capitalize(entity),
 		suffix: ".js"
 	});
@@ -263,7 +263,7 @@ function generate(options) {
 	var file = renderBlueprint(options.blueprint,options);
 
 	var fileEntity = options.action || options.entity;
-	var newFilePath = outputPath + "/" + options.prefix + fileEntity + options.suffix;
+	var newFilePath = options.prefix + fileEntity + options.suffix;
 	verifyDoesntExist(newFilePath, "A file or directory already exists at: " + newFilePath);
 	fs.writeFileSync(newFilePath, file);
 }
