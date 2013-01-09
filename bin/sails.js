@@ -12,19 +12,28 @@ var argv = optimist.argv;
 
 
 // Build sails object
-sails = {};
+var sails = {};
 
 // Get Sails logger
 sails.log = require('../lib/logger.js')();
+
+// Extend w/ data from Sails package.json
+var packageConfig = require('../lib/package.js');
+sails.version = packageConfig.version;
+sails.dependencies = packageConfig.dependencies;
 
 // Locate app root
 var appRoot = '.';
 var outputPath = '.';
 
 
-
+// Get the sails version
+var version = argv.v || argv.version || (argv._[0] === 'version' && argv._[0]);
+if (version) {
+	sails.log.info('v'+sails.version);
+}
 // Generate a file
-if(argv._[0] === 'generate') {
+else if(argv._[0] === 'generate') {
 
 	verifyArg(1, "Please specify the name for the new model and controller as the second argument.");
 
@@ -130,6 +139,9 @@ else {
 		name: appName,
 		version: '0.0.0',
 		description: 'a Sails application',
+		dependencies: {
+			sails: sails.version
+		},
 		main: 'app.js',
 		repository: '',
 		author: '',
