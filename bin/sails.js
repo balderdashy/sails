@@ -192,8 +192,8 @@ function generateDir(newPath) {
 }
 
 function generateController(entity, options) {
-	var newControllerPath = 'controllers/'+capitalize(entity)+'Controller.js';
-	var newFederatedControllerPath = 'controllers/'+entity;
+	var newControllerPath = sails.config.paths.controllers+'/'+capitalize(entity)+'Controller.js';
+	var newFederatedControllerPath = sails.config.paths.controllers+'/'+entity;
 
 	verifyDoesntExist(newControllerPath, "A controller already exists at: " + newControllerPath);
 	verifyDoesntExist(newFederatedControllerPath, "A controller already exists at: " + newFederatedControllerPath);
