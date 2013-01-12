@@ -1,3 +1,7 @@
+/*
+* The purpose of this CSS reset file is to a provide a sane starting place for stylesheet development by
+* normalizing browser differences, eliminating margin and padding, and providing a clear-fix.
+*/
 html, body {text-align:left;font-size: 1em;}
 html,body,img,form,textarea,input,fieldset,div,p,div,ul,li,ol,dl,dt,dd,h1,h2,h3,h4,h5,h6,pre,code { margin: 0;padding: 0;}
 ul,li {list-style: none;}

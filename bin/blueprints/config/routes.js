@@ -1,4 +1,4 @@
-// Custom URL mappings
+// Routes
 // *********************
 // 
 // This table routes urls to controllers/actions.

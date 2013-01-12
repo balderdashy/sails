@@ -104,10 +104,11 @@ else if(argv._[0].match(/^n$|^ne$|^new$/) || argv.n || argv['new']) {
 	// NOTE: We are not creating a services directory for now to keep things simple.
 	
 	generateDir('config');
-	generateFile('routes.js', 'config/routes.js');
-	generateFile('policy.js', 'config/policy.js');
+	generateFile('config/routes.js', 'config/routes.js');
+	generateFile('config/policy.js', 'config/policy.js');
 	generateDir('config/locales');
-	generateFile('locales/english.js', 'config/locales/english.js');
+	generateFile('config/locales/english.js', 'config/locales/english.js');
+	generateFile('config/local.js', 'config/local.js');
 	
 
 

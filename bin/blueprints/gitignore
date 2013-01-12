@@ -4,6 +4,7 @@
 .sails
 .waterline
 .rigging
+.tmp
 
 
 ########################
@@ -26,7 +27,7 @@ npm-debug.log
 
 
 ########################
-# general / editors
+# misc / editors
 ########################
 *~
 *#
