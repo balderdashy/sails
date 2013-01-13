@@ -7,10 +7,8 @@
 // In that case, you'll want to point this collection at an adapter for a production database (i.e. Mongo)
 // That would look like:
 /*
-exports.adapter = 'mongo'
+exports.adapter = 'waterline-mongo'
 */
-
-
 exports.identity = require('../config.js').transactionDbIdentity;
 exports.adapter = 'waterline-dirty';
 exports.migrate = 'drop';
