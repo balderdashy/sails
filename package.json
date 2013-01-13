@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha --ignore-leaks -b"
+    "test": "mocha --globals ___transaction --globals User -b -R landing"
   },
   "repository": {
     "type": "git",

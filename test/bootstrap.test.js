@@ -20,15 +20,17 @@ var bootstrap = {
 	}
 };
 
+
 // Bootstrap waterline with default adapters and bundled test collections
 before(bootstrap.init);
 
 // When this suite of tests is complete, shut down waterline to allow other tests to run without conflicts
 after(bootstrap.teardown);
 
-// Get User object ready to go before each test
+// Make some objects globally accessible for the purpose of testing
 beforeEach(function() {
-	return User = bootstrap.collections.user;
+	User = bootstrap.collections.user;
+	return;
 });
 
 
@@ -49,6 +51,7 @@ function initialize (done) {
 
 		bootstrap.adapters = waterlineData.adapters;
 		bootstrap.collections = waterlineData.collections;
+
 		done(err);
 	});
 }

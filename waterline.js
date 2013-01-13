@@ -132,40 +132,69 @@ module.exports = function (options,cb) {
 		});
 	}
 
+
+	// Use adapter shortname to look up actual adapter
+	// cb :: (err, adapter)
+	function getAdapterByIdentity (identity, cb) {
+
+		if (adapters[identity]) cb(null, adapters[identity]);
+
+		// If the adapter doesn't exist yet, try to require it
+		else loadAdapter(identity, cb);
+	}
+
+	// cb :: (err, adapter)
+	function loadAdapter (identity, cb) {
+		// Add to adapters set
+		adapters[identity] = require(identity) ();
+		
+		// Then prepare the adapter
+		prepareAdapter(identity,function (err) {
+			cb (err, adapters[identity]);
+		});
+	}
+
 	// Instantiate a collection object
 	function instantiateCollection (definition, cb) {
 
-		// If no adapter is specified, default to 'waterline-dirty'
-		if (!definition.adapter) definition.adapter = 'waterline-dirty';
+		// If no adapter is specified, default to whatever's in the config
+		if (!definition.adapter) definition.adapter = config.defaultAdapter;
 
-		// Use adapter shortname in model def. to look up actual adapter
+
 		if (_.isString(definition.adapter)) {
-
-			if (adapters[definition.adapter]) {
-				definition.adapter = adapters[definition.adapter];
-				afterwards();
-			}
-			// If the adapter doesn't exist yet, try to require it and add it to the adapters set
-			// Then prepare it like we did to the others
-			else {
-				var identity = definition.adapter;
-				adapters[identity] = require(definition.adapter) ();
-				prepareAdapter(identity,function (err) {
-					definition.adapter = adapters[identity];
-					afterwards();
+			getAdapterByIdentity(definition.adapter, afterwards);
+		}
+		else if (_.isObject(definition.adapter)) {
+			if (!definition.adapter.identity) return cb("No identity specified in adapter definition!");
+			getAdapterByIdentity(definition.adapter.identity, function gotAdapter (err,adapter) {
+			
+				// Absorb relevant items from collection config into the clone adapter definition
+				// Instantiate a new, cloned adapter unique to this collection
+				// TODO:	be smart and only maintain the minimum number of adapters in memory necessary
+				//			Since adapter connections need only be config-specific
+				var temporalIdentity = adapter.identity + '-' + definition.identity;
+				
+				// Add to adapters set
+				adapters[temporalIdentity] = require(adapter.identity) ();
+				
+				// Then prepare the adapter
+				prepareAdapter(temporalIdentity, function (err) {
+					afterwards (err, adapters[temporalIdentity]);
 				});
-			}
-
-			// else throw "Unknown adapter! ("+definition.adapter+")  Did you include a valid adapter with this name?";
+			});
 		}
 
-		function afterwards() {
-
-			// Then check that a valid adapter object was retrieved (or already existed)
-			if (!(_.isObject(definition.adapter))) {
-				console.error(definition.adapter);
+		function afterwards(err, adapter) {
+			if (err) return cb(err);
+			
+			// Check that a valid adapter object was retrieved (or already existed)
+			if (!adapter || !_.isObject(adapter)) {
+				console.error("Invalid adapter:",definition.adapter);
 				throw new Error("Invalid adapter!");
 			}
+
+			// Inject a reference to the true adapter object in the collection def
+			definition.adapter = adapter;
 
 			// Build actual collection object from definition
 			var collection = new Collection(definition);

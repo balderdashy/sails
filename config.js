@@ -27,5 +27,8 @@ module.exports = {
 
 	migrate: 'alter',
 
-	globalize: true
+	globalize: true,
+
+	// If no adapter specified, this one will be used
+	defaultAdapter: 'waterline-dirty'
 };

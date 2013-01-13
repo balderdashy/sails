@@ -263,7 +263,7 @@ module.exports = function(adapter) {
 		// Default behavior
 		else {
 			// Create transaction name based on collection
-			my.transaction(collectionName+'..waterline.default.createEach', function (err,done) {
+			my.transaction(collectionName+'.waterline.default.createEach', function (err,done) {
 				async.forEach(valuesList, function (values,cb) {
 					my.create(collectionName, values, cb);
 				}, done);
@@ -398,6 +398,24 @@ module.exports = function(adapter) {
 	};
 
 
+	
+	// Find this collection's auto-increment field and return its name
+	this.getAutoIncrementAttribute = function (collectionName, cb) {
+		this.describe(collectionName, function (err,attributes) {
+			var attrName, done=false;
+			_.each(attributes, function(attribute, aname) {
+				if(!done && _.isObject(attribute) && attribute.autoIncrement) {
+					attrName = aname;
+					done = true;
+				}
+			});
+
+			cb(null, attrName);
+		});
+	};
+
+	// Share this method with the child adapter
+	adapter.getAutoIncrementAttribute = this.getAutoIncrementAttribute;
 
 	// If @collectionName and @otherCollectionName are both using this adapter, do a more efficient remote join.
 	// (By default, an inner join, but right and left outer joins are also supported.)

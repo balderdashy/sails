@@ -25,3 +25,9 @@ exports.attributes = {
 // Identity is here to facilitate unit testing
 // (this is optional and normally automatically populated based on file name)
 exports.identity = 'user';
+
+// The adapter to test
+exports.adapter = {
+	identity: 'waterline-dirty',
+	inMemory: false
+};

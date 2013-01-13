@@ -159,33 +159,6 @@ var Collection = module.exports = function(definition) {
 		// Core CRUD
 		//////////////////////////////////////////
 		this.create = function(values, cb) {
-			// =============================
-			// TODO: (for a later release)
-			// =============================
-			/*
-			
-			if (this._isDeferredObject) {
-				if (this.terminated) {
-					throw new Error("The callback was already triggered!");
-				}
-
-				// If this was called from a deferred object, 
-				// instead of doing the normal operation, pop it on a queue for later
-
-				if (cb) {
-					// If a callback is specified, terminate the deferred object
-				}
-			}
-			else {
-				// Do the normal stuff
-			}
-
-			if (!cb) {
-				// No callback specified
-				// Initialize and return a deferred object
-			}
-		*/
-			// =============================
 			if(_.isFunction(values)) {
 				cb = values;
 				values = null;
