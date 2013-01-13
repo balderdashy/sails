@@ -23,6 +23,8 @@ module.exports = function(adapter) {
 
 	// Initialize is fired once-per-adapter
 	this.initialize = function(cb) {
+		// Make logger easily accessible
+		adapter.log = self.config.log;
 		if (adapter.initialize) adapter.initialize(cb);
 		else cb();
 	};

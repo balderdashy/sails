@@ -28,5 +28,5 @@ exports.identity = 'user';
 
 // The adapter to test
 exports.adapter = {
-	identity: 'waterline-dirty'
+	identity: 'waterline-mysql'
 };
