@@ -174,8 +174,8 @@ module.exports = function (options,cb) {
 				//			Since adapter connections need only be config-specific
 				var temporalIdentity = adapter.identity + '-' + definition.identity;
 				
-				// Add to adapters set
-				adapters[temporalIdentity] = require(adapter.identity) ();
+				// Add to adapters set (and pass in config object)
+				adapters[temporalIdentity] = require(adapter.identity) (definition.adapter);
 				
 				// Then prepare the adapter
 				prepareAdapter(temporalIdentity, function (err) {

@@ -28,6 +28,5 @@ exports.identity = 'user';
 
 // The adapter to test
 exports.adapter = {
-	identity: 'waterline-dirty',
-	inMemory: false
+	identity: 'waterline-dirty'
 };
