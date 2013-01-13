@@ -37,7 +37,9 @@
     "sails-util": "0.1.0",
     "parley": "0.0.2",
     "microtime": "~0.3.3",
-    "waterline-dirty": "git://github.com/balderdashy/waterline-dirty.git",
-    "sails-moduleloader": "git://github.com/mikermcneil/sails-moduleloader.git"
+    "waterline-dirty": "~0.1.2",
+    "sails-moduleloader": "git://github.com/mikermcneil/sails-moduleloader.git",
+    "async": "~0.1.22",
+    "underscore.string": "~2.3.1"
   }
 }
