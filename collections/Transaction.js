@@ -12,5 +12,5 @@ exports.adapter = 'mongo'
 
 
 exports.identity = require('../config.js').transactionDbIdentity;
-exports.adapter = 'dirty';
+exports.adapter = 'waterline-dirty';
 exports.migrate = 'drop';

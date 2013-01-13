@@ -135,29 +135,49 @@ module.exports = function (options,cb) {
 	// Instantiate a collection object
 	function instantiateCollection (definition, cb) {
 
-		// If no adapter is specified, default to 'dirty'
-		if (!definition.adapter) definition.adapter = 'dirty';
+		// If no adapter is specified, default to 'waterline-dirty'
+		if (!definition.adapter) definition.adapter = 'waterline-dirty';
 
-		// Use adapter shortname in model def. to look up actual object
+		// Use adapter shortname in model def. to look up actual adapter
 		if (_.isString(definition.adapter)) {
-			if (! adapters[definition.adapter]) throw "Unknown adapter! ("+definition.adapter+")  Did you include a valid adapter with this name?";
-			else definition.adapter = adapters[definition.adapter];
+
+			if (adapters[definition.adapter]) {
+				definition.adapter = adapters[definition.adapter];
+				afterwards();
+			}
+			// If the adapter doesn't exist yet, try to require it and add it to the adapters set
+			// Then prepare it like we did to the others
+			else {
+				var identity = definition.adapter;
+				adapters[identity] = require(definition.adapter) ();
+				prepareAdapter(identity,function (err) {
+					definition.adapter = adapters[identity];
+					afterwards();
+				});
+			}
+
+			// else throw "Unknown adapter! ("+definition.adapter+")  Did you include a valid adapter with this name?";
 		}
 
-		// Then check that a valid adapter object was retrieved (or already existed)
-		if (!(_.isObject(definition.adapter) && definition.adapter._isWaterlineAdapter)) {
-			throw "Invalid adapter!";
+		function afterwards() {
+
+			// Then check that a valid adapter object was retrieved (or already existed)
+			if (!(_.isObject(definition.adapter))) {
+				console.error(definition.adapter);
+				throw new Error("Invalid adapter!");
+			}
+
+			// Build actual collection object from definition
+			var collection = new Collection(definition);
+
+			// Call initializeCollection() event on adapter
+			collection.adapter.initializeCollection(collection.identity,function (err) {
+				if (err) throw err;
+
+				cb(err,collection);
+			});
 		}
 
-		// Build actual collection object from definition
-		var collection = new Collection(definition);
-
-		// Call initializeCollection() event on adapter
-		collection.adapter.initializeCollection(collection.identity,function (err) {
-			if (err) throw err;
-
-			cb(err,collection);
-		});
 	}
 
 	// add transaction collection to each collection's adapter
