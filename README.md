@@ -10,30 +10,35 @@ Waterline also comes with built-in transaction support, as well as a configurabl
 > NOTE: Waterline is currently in unreleased alpha-- that means it's not production ready!  If you want to use waterline in a production app, awesome!  Currentliy, the plan is for an open alpha release early next year (2013).  Thanks!
 
 ## Adapters currently supported
-(* not yet complete)
 
-
-### Datastores:
 * Dirty (in memory and simple disk JSON store)
-* mySQL*
-* mongoDB*
-* redis*
-* cassandra*
-* oracle*
-* postgres*
-* db2*
-* mssql*
+* mySQL
 
-### Misc:
-* HTTP ( client for api integrations and unit testing )*
-* Socket.io / WebSockets ( client for api integrations and unit testing )*
-* LDAP*
-* Active Directory*
-* Mandril (hosted email from MailChimp)*
-* Facebook friends*
-* Tweets*
-* SMTP*
-* IMAP*
+## In development
+* mongoDB (Feb)
+* redis (March)
+* OpenStack (Feb)
+* Amazon S3 (Feb)
+
+
+## Roadmap
+
+### SQL Datastores
+* postgres
+* oracle
+* db2
+* mssql
+
+### NoSQL Datastores
+* Cassandra
+* Neo4J
+* CouchDB
+
+### Misc
+* LDAP
+* Active Directory
+* 
+* 
 
 ## Writing adapters
 
