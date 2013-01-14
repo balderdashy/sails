@@ -15,7 +15,7 @@ Waterline also comes with built-in transaction support, as well as a configurabl
 * mySQL
 
 ## In development
-* mongoDB (Feb)
+* mongoDB (Jan)
 * redis (March)
 * OpenStack (Feb)
 * Amazon S3 (Feb)
