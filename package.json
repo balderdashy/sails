@@ -9,10 +9,14 @@
     {
       "name": "Gabe Hernandez",
       "email": "gabe@balderdash.co"
+    },
+    {
+      "name": "Brad Carleton",
+      "email": "brad@techpines.com"
     }
   ],
   "private": "true",
-  "version": "99.99.9999",
+  "version": "0.1.0",
   "description": "Realtime MVC framework for Node.JS with support for Socket.io (built on Express)",
   "homepage": "http://sailsjs.com",
   "keywords": [
@@ -49,10 +53,10 @@
     "less": "=1.3.0",
     "optimist": "=0.3.4",
     "underscore.string": "=2.3.0",
-    "waterline": "git://github.com/mikermcneil/waterline.git",
+    "waterline": "0.1.0",
     "glob": "=3.1.14",
     "winston": "~0.6.2",
-    "sails-moduleloader": "git://github.com/mikermcneil/sails-moduleloader.git",
+    "sails-moduleloader": "~1.1.0",
     "sails-util": "0.1.0",
     "fs-extra": "~0.3.2",
     "i18n": "~0.3.5"
