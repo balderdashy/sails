@@ -64,6 +64,8 @@ describe('CRUD :: Aggreagate methods and transactions', function (){
 
 		it ('should have saved the proper values (with auto-increment values)',function (done) {
 			User.findAll({type: testName},function (err,users) {
+				console.log("users",users);
+				console.log("testData",testData);
 				if (err) done(new Error(err));
 				else if (!pluckEqual(users,testData, 'name')) {
 					done(new Error ('Proper user names were not saved!')); 

@@ -4,7 +4,7 @@ module.exports = {
 	// Normalize the different ways of specifying criteria into a uniform object
 	criteria: function normalizeCriteria (origCriteria) {
 		var criteria = _.clone(origCriteria);
-		
+
 		if(!criteria) return {
 			where: null
 		};
@@ -39,12 +39,14 @@ module.exports = {
 		// If where is null, turn it into an object
 		else if(_.isNull(criteria.where)) criteria.where = {};
 
+		// NOTE: This is dangeros
+		// TODO: Think about this more and add back in if it makes sense
 		// If any item in criteria is a parsable finite number, use that
-		for(var attrName in criteria.where) {
-			if(Math.pow(+criteria.where[attrName], 2) > 0) {
-				criteria.where[attrName] = +criteria.where[attrName];
-			}
-		}
+		// for(var attrName in criteria.where) {
+		// 	if(Math.pow(+criteria.where[attrName], 2) > 0) {
+		// 		criteria.where[attrName] = +criteria.where[attrName];
+		// 	}
+		// }
 		
 		// If WHERE is {}, always change it back to null
 		if (criteria.where && _.keys(criteria.where).length === 0) {
