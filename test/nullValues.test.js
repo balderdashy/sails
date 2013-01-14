@@ -20,6 +20,7 @@ describe('Null values', function() {
 			User.findAll({
 				type: 'null value create test'
 			}, function(err, users) {
+				if (err) return done(new Error(err));
 				if(users.length < 1) return done(new Error('Proper user was not created!'));
 				if(users.length > 1) return done(new Error('Too many users created!'));
 				else done(err);
@@ -32,8 +33,10 @@ describe('Null values', function() {
 		// Now check that the user we just created can be found
 		// but use the NULL name as the query
 		User.findAll({
-			name: null
+			name: null,
+			type: 'null value create test'
 		}, function(err, users) {
+			if (err) return done(new Error(err));
 			if(users.length < 1) return done(new Error('Proper user was not found!'));
 			if(users.length > 1) return done(new Error('Too many users found!'));
 			else done(err);
