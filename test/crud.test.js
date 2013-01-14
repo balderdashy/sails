@@ -16,7 +16,7 @@ describe('adapter', function() {
 
 	describe('#creating() users Johnny and Timmy', function() {
 
-		it('should work', function(done) {
+		it('should create Johnny', function(done) {
 			User.create({
 				name: "Johnny"
 			}, done);
@@ -28,7 +28,7 @@ describe('adapter', function() {
 			}, function(err, timmy) {
 				if(err) throw err;
 				else if(!timmy || !_.isObject(timmy)) throw "Invalid model returned.";
-				else if(!timmy.name || timmy.name !== "Timmy") throw "Invalid name returned.";
+				else if(!timmy.name || timmy.name !== "Timmy") throw new Error("Invalid name returned: "+timmy.name);
 				else if(!timmy.id) throw "No id returned.";
 				else done(err, timmy);
 			});
@@ -39,7 +39,9 @@ describe('adapter', function() {
 				name: "Johnny"
 			}, function(err, user) {
 				if(err) throw err;
-				else if(!user || !_.isObject(user) || !user.name || user.name !== "Johnny") throw "Invalid model returned.";
+				else if(!user || !_.isObject(user) || !user.name || user.name !== "Johnny") {
+					throw new Error("Invalid model returned: "+user);
+				}
 				else if(!user.id) throw "No id returned.";
 				else done(err, user);
 			});

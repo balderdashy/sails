@@ -21,6 +21,15 @@ module.exports = function(adapter) {
 	// Absorb identity
 	this.identity = adapter.identity;
 
+	// Store reference to app-level adapter inside this wrapper object
+	this._adapter = adapter;
+	
+	// Maintain an in-memory cache of this adapter's collections' schema for quicker lookup
+	// (this will be populated as new collections are instantiated)
+	// (uses the app collections)
+	this._adapter.schema = {};
+
+
 	// Initialize is fired once-per-adapter
 	this.initialize = function(cb) {
 		// Make logger easily accessible
@@ -79,13 +88,13 @@ module.exports = function(adapter) {
 
 	this.describe = function(collectionName, cb) {
 		if (adapter.describe) {
-			adapter.describe.apply(this,arguments);
+			adapter.describe(collectionName, cb);
 		}
 		else cb();
 	};
 	this.drop = function(collectionName, cb) {
 		if (adapter.drop) {
-			adapter.drop.apply(this,arguments);
+			adapter.drop(collectionName, cb);
 		}
 		else cb();
 	};
@@ -94,7 +103,7 @@ module.exports = function(adapter) {
 
 		// If the adapter defines alter, use that
 		if (adapter.alter) {
-			adapter.alter.apply(this,arguments);
+			adapter.alter(collectionName, attributes, cb);
 		}
 		// If the adapter defines column manipulation, use it
 		else if (adapter.addAttribute && adapter.removeAttribute) {
@@ -443,10 +452,12 @@ module.exports = function(adapter) {
 		alter: function(collection, cb) {
 			var self = this;
 
-			// Check that collection exists-- if it doesn't go ahead and add it and get out
+			// Check that collection exists-- 
 			this.describe(collection.identity, function afterDescribe (err, attrs) {
 				attrs = _.clone(attrs);
 				if(err) return cb(err);
+
+				// if it doesn't go ahead and add it and get out
 				else if(!attrs) return self.define(collection.identity, collection, cb);
 
 				// Otherwise, if it *DOES* exist, we'll try and guess what changes need to be made

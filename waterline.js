@@ -199,6 +199,9 @@ module.exports = function (options,cb) {
 			// Build actual collection object from definition
 			var collection = new Collection(definition);
 
+			// Update the adapter's in-memory schema cache
+			adapter._adapter.schema[collection.identity] = collection.schema;
+
 			// Call initializeCollection() event on adapter
 			collection.adapter.initializeCollection(collection.identity,function (err) {
 				if (err) throw err;

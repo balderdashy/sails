@@ -112,6 +112,9 @@ var Collection = module.exports = function(definition) {
 		var attributes = _.clone(this.attributes) || {};
 		attributes = require('./augmentAttributes')(attributes, _.extend({}, config, this.config));
 
+		// Maintain an in-memory cache of the schema for quicker lookup
+		this.schema = attributes;
+
 		// For each defined attribute, create a dynamic finder function
 		_.each(attributes, function(attrDef, attrName) {
 
