@@ -21,10 +21,10 @@ describe('CRUD :: Aggreagate methods and transactions', function (){
 
 		var testName = 'test createEach';
 		var testData = [
-			{name: Math.round(Math.random()*10000), type: testName},
-			{name: Math.round(Math.random()*10000), type: testName},
-			{name: Math.round(Math.random()*10000), type: testName},
-			{name: Math.round(Math.random()*10000), type: testName}
+			{name: ''+Math.round(Math.random()*10000), type: testName},
+			{name: ''+Math.round(Math.random()*10000), type: testName},
+			{name: ''+Math.round(Math.random()*10000), type: testName},
+			{name: ''+Math.round(Math.random()*10000), type: testName}
 		];
 
 		it ('should not fail',function (done) {
@@ -51,11 +51,12 @@ describe('CRUD :: Aggreagate methods and transactions', function (){
 
 		var testName = 'test findOrCreateEach';
 		var testData = [
-			{name: Math.round(Math.random()*10000), type: testName},
-			{name: Math.round(Math.random()*10000), type: testName},
-			{name: Math.round(Math.random()*10000), type: testName},
-			{name: Math.round(Math.random()*10000), type: testName}
+			{name: ''+Math.round(Math.random()*10000), type: testName},
+			{name: ''+Math.round(Math.random()*10000), type: testName},
+			{name: ''+Math.round(Math.random()*10000), type: testName},
+			{name: ''+Math.round(Math.random()*10000), type: testName}
 		];
+
 
 		it ('should not fail',function (done) {
 			User.findOrCreateEach(testData,done);
@@ -68,7 +69,7 @@ describe('CRUD :: Aggreagate methods and transactions', function (){
 					done(new Error ('Proper user names were not saved!')); 
 				}
 				else if (!validAutoIncrementIds(users)) {
-					console.log(users,properAutoIncrementVals);
+					console.error(users,properAutoIncrementVals);
 					done(new Error ('Ids were not properly auto-incremented!')); 
 				}
 				else done();
@@ -78,10 +79,16 @@ describe('CRUD :: Aggreagate methods and transactions', function (){
 	});
 });
 
-// Check equality on two lists of objects 
+// Check equality on two SETS of objects 
 // using one particular attribute as a vector of comparison
 function pluckEqual(listA, listB, attrName) {
-	return _.isEqual(_.pluck(listA, attrName),_.pluck(listB, attrName));
+	// Order doesn't matter
+	return _.every(_.pluck(listA, attrName), function (item) {
+		return _.contains(_.pluck(listB, attrName),item);
+	});
+
+	// Order does matter:
+	// return _.isEqual(_.pluck(listA, attrName),_.pluck(listB, attrName));
 }
 // Check that all new ids exist and are valid auto-increment vals
 function validAutoIncrementIds(users) {

@@ -2,7 +2,9 @@ var _ = require('underscore');
 
 module.exports = {
 	// Normalize the different ways of specifying criteria into a uniform object
-	criteria: function normalizeCriteria (criteria) {
+	criteria: function normalizeCriteria (origCriteria) {
+		var criteria = _.clone(origCriteria);
+		
 		if(!criteria) return {
 			where: null
 		};
