@@ -38,9 +38,8 @@ var Collection = module.exports = function(definition) {
 		_.extend(this, definition);
 
 		// if configured as such, make each collection globally accessible
-		console.log(definition.globalize);
 		if(definition.globalize) {
-			var globalName = this.globalId;
+			var globalName = this.globalId || this.identity;
 			global[globalName] = this;
 		}
 

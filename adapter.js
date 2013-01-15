@@ -217,7 +217,6 @@ module.exports = function(adapter) {
 
 		// Automatically change updatedAt (if enabled)
 		if (self.config.updatedAt) values.updatedAt = new Date();
-
 		adapter.update(collectionName, criteria, values, cb);
 	};
 
