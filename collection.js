@@ -40,7 +40,7 @@ var Collection = module.exports = function(definition) {
 		// if configured as such, make each collection globally accessible
 		console.log(definition.globalize);
 		if(definition.globalize) {
-			var globalName = this.capIdentity;
+			var globalName = this.globalId;
 			global[globalName] = this;
 		}
 
