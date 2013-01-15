@@ -17,6 +17,11 @@ require('sails').lift({
 		sequence: ['./ui/dependencies', './ui/public', './ui/views/templates']
 	},
 
-	// The environment the app is deployed in (`development`, `production`, or `test`)
-	environment: 'development'
+	// The environment the app is deployed in 
+	// (`development`, `production`, or `test`)
+	environment: 'development',
+
+	// Default data store adapter 
+	// (can be overriden in models)
+	adapter: 'memory'
 });
