@@ -24,7 +24,7 @@ exports.attributes = {
 
 // Identity is here to facilitate unit testing
 // (this is optional and normally automatically populated based on file name)
-exports.identity = 'user';
+exports.identity = 'User';
 
 
 // For testing purposes, the following adapter configurations are provided:
@@ -32,7 +32,7 @@ exports.identity = 'user';
 ////////////////////////////////////////////////////////
 // development: temporal (in-memory dirtydb)
 ////////////////////////////////////////////////////////
-// exports.adapter = 'waterline-dirty';
+exports.adapter = 'waterline-dirty';
 
 ////////////////////////////////////////////////////////
 // development: stateful (on-disk dirtydb)
@@ -45,12 +45,12 @@ exports.identity = 'user';
 ////////////////////////////////////////////////////////
 // mySQL
 ////////////////////////////////////////////////////////
-exports.adapter = {
-	identity	: 'waterline-mysql',
-	database	: 'waterline',
-	user		: 'waterline',
-	password	: 'abc123'
-};
+//exports.adapter = {
+//	identity	: 'waterline-mysql',
+//	database	: 'waterline',
+//	user		: 'waterline',
+//	password	: 'abc123'
+//};
 
 ////////////////////////////////////////////////////////
 // mySQL: connection pooling enabled

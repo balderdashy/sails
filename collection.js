@@ -38,8 +38,9 @@ var Collection = module.exports = function(definition) {
 		_.extend(this, definition);
 
 		// if configured as such, make each collection globally accessible
+		console.log(definition.globalize);
 		if(definition.globalize) {
-			var globalName = _.str.capitalize(this.identity);
+			var globalName = this.capIdentity;
 			global[globalName] = this;
 		}
 
@@ -167,9 +168,18 @@ var Collection = module.exports = function(definition) {
 				values = null;
 			}
 			var usage = _.str.capitalize(this.identity) + '.create({someAttr: "someValue"},callback)';
-			if(!_.isFunction(cb)) usageError('Invalid callback specified!', usage);
+			
 
-			return this.adapter.create(this.identity, values, cb);
+			// If no callback specified, return deferred object
+			if(!_.isFunction(cb)) {
+				return new Deferred({
+					method: 'create',
+					collection: this,
+					args: { values: values },
+					argsKeys: ['values']
+				});
+			}
+			else return this.adapter.create(this.identity, values, cb);
 		};
 
 		// Call find method in adapter
@@ -276,7 +286,16 @@ var Collection = module.exports = function(definition) {
 			if(!newValues) usageError('No updated values specified!', usage);
 			if(!_.isFunction(cb)) usageError('Invalid callback specified!', usage);
 
-			return this.adapter.update(this.identity, options, newValues, cb);
+			// If no callback specified, return deferred object
+			if(!_.isFunction(cb)) {
+				return new Deferred({
+					method: 'update',
+					collection: this,
+					args: { options: options, newValues: newValues },
+					argsKeys: ['options', 'newValues']
+				});
+			}
+			else return this.adapter.update(this.identity, options, newValues, cb);
 		};
 		this.updateWhere = this.update;
 		this.updateAll = this.update;
@@ -288,8 +307,18 @@ var Collection = module.exports = function(definition) {
 				options = null;
 			}
 			var usage = _.str.capitalize(this.identity) + '.destroy([options], callback)';
-			if(!_.isFunction(cb)) usageError('Invalid callback specified!', usage);
-			return this.adapter.destroy(this.identity, options, cb);
+
+
+			// If no callback specified, return deferred object
+			if(!_.isFunction(cb)) {
+				return new Deferred({
+					method: 'destroy',
+					collection: this,
+					args: { options: options },
+					argsKeys: ['options']
+				});
+			}
+			else return this.adapter.destroy(this.identity, options, cb);
 		};
 		this.destroyWhere = this.destroy;
 		this.destroyAll = this.destroy;
@@ -352,9 +381,9 @@ var Collection = module.exports = function(definition) {
 		// Return a trimmed set of the specified attributes
 		// with only the attributes which actually exist in the server-side model
 		this.filter = function(params) {
-			// If attributes aren't defined, send back
+			// If attributes aren't defined, send back empty obj
 			if (!this.attributes) return {};
-
+			
 			var trimmedParams = util.objFilter(params, function(value, name) {
 				return _.contains(_.keys(this.attributes), name);
 			}, this);

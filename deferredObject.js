@@ -133,17 +133,8 @@ module.exports = function (operation) {
 				method.apply(promise.collection, args);
 				function promiseCallback (err,data) {
 					if (err) return cb(err);
-
-					// Manage result set differently dependending on the method
-					if (isFindish(methodName)) {
-						if (resultSet) {
-							err = methodName + " cannot be called more than once in the same chain!";
-						}
-						else resultSet = data;
-						
-						return cb(err,data);
-					}
-					else throw new Error ('Unknown chained method: '+methodName);
+					resultSet = data;
+					return cb(err,data);
 				}
 			}, 
 			// Return result set to caller

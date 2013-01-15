@@ -41,7 +41,8 @@ function initialize (done) {
 
 	var collections = require('sails-moduleloader').required({
 		dirname		: __dirname + '/collections', 
-		filter		: /(.+)\.js$/
+		filter		: /(.+)\.js$/,
+		caseSensitive: true
 	});
 
 	bootstrap.waterline({
