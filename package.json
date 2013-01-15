@@ -1,13 +1,13 @@
 {
   "name": "waterline",
-  "version": "0.1.01",
+  "version": "0.1.02",
   "description": "Adaptable data access layer for Node.js",
   "main": "waterline.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "mocha --globals ___transaction --globals User -b -R landing"
+    "test": "mocha --globals ___transaction --globals User -b -R landing -t 8000"
   },
   "repository": {
     "type": "git",

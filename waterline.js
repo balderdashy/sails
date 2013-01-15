@@ -9,9 +9,6 @@ var Adapter = require('./adapter.js');
 var Collection = require('./collection.js');
 var Model = require('./model.js');
 
-// Read global config
-var config = require('./config.js');
-
 // Util
 var modules = require('sails-moduleloader');
 
@@ -45,6 +42,10 @@ module.exports = function (options,cb) {
 	adapters = _.extend(builtInAdapters,adapters);
 	collections = _.extend(builtInCollections,collections);
 
+	// Read global config
+	// Extend default config with user options
+	var config = require('./config.js');
+	config = _.extend(config, options);
 
 	// Error aggregator obj
 	// var errs;
