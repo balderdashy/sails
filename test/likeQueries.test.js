@@ -47,7 +47,14 @@ describe('findAllLike', function() {
 			User.findAllLike({name: part},function(err,users) {
 				if (err) return done(err);
 				if (users.length < 1) return done(new Error('findAllLike() did not return anything!'));
-				if (users[0].name !== testName || users[1].name !== testName2) return done(new Error('findAllLike() returned incorrect user!'));
+				if ( !(
+						(users[0].name === testName && users[1].name === testName2) ||
+						(users[0].name === testName2 && users[1].name === testName)
+					)) {
+					console.error("\n\n","IS: ",users[0].name,"\n",users[1].name,"\n\n");
+					console.error("Should be:",testName,"\n",testName2,"\n\n");
+					return done(new Error('findAllLike() returned incorrect user!'));
+				}
 				done(err);
 			});
 		});
@@ -67,7 +74,14 @@ describe('findAllLike', function() {
 			User.findAllLike(part,function(err,users) {
 				if (err) return done(err);
 				if (users.length < 1) return done(new Error('findAllLike() did not return anything!'));
-				if (users[0].name !== testName || users[1].name !== testName2) return done(new Error('findAllLike() returned incorrect user!'));
+				if ( !(
+						(users[0].name === testName && users[1].name === testName2) ||
+						(users[0].name === testName2 && users[1].name === testName)
+					)) {
+					console.error("\n\n","IS: ",users[0].name,"\n",users[1].name,"\n\n");
+					console.error("Should be:",testName,"\n",testName2,"\n\n");
+					return done(new Error('findAllLike() returned incorrect user!'));
+				}
 				done(err);
 			});
 		});

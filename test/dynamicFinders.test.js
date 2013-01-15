@@ -79,7 +79,14 @@ describe('dynamic finders',function (){
 				User.findAllByNameIn([testName, 'foo', 'bar', testName2, 'baz'],function(err,users) {
 					if (err) return done(err); 
 					if (users.length < 1) return done('Dynamic finder did not return anything!');
-					if (users[0].name !== testName || users[1].name !== testName2) return done('Dynamic finder returned incorrect user!');
+					if ( !(
+						(users[0].name === testName && users[1].name === testName2) ||
+						(users[0].name === testName2 && users[1].name === testName)
+					)) {
+						console.error("IS: ",'('+users[0].name+','+users[1].name+')');
+						console.error("Should be:",testName,testName2);
+						return done(new Error('Dynamic finder returned incorrect user!'));
+					}
 					done(err);
 				});
 			});
@@ -121,7 +128,14 @@ describe('dynamic finders',function (){
 				User.findAllByNameLike(part,function(err,users) {
 					if (err) return done(err);
 					if (users.length < 1) return done('Dynamic finder did not return anything!');
-					if (users[0].name !== testName || users[1].name !== testName2) return done('Dynamic finder returned incorrect user!');
+					if ( !(
+						(users[0].name === testName && users[1].name === testName2) ||
+						(users[0].name === testName2 && users[1].name === testName)
+					)) {
+						console.error("Should be:",testName,testName2);
+						console.error("IS: ",'('+users[0].name+','+users[1].name+')');
+						return done(new Error('Dynamic finder returned incorrect user!'));
+					}
 					done(err);
 				});
 			});
