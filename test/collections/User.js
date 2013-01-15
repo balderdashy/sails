@@ -26,7 +26,28 @@ exports.attributes = {
 // (this is optional and normally automatically populated based on file name)
 exports.identity = 'user';
 
-// The adapter to test
+
+// For testing purposes, the following adapter configurations are provided:
+
+////////////////////////////////////////////////////////
+// development: temporal (in-memory dirtydb)
+////////////////////////////////////////////////////////
+// exports.adapter = 'waterline-dirty';
+
+////////////////////////////////////////////////////////
+// development: stateful (on-disk dirtydb)
+////////////////////////////////////////////////////////
+// exports.adapter = {
+//	identity	: 'waterline-dirty',
+//	inMemory	: false
+// };
+
+////////////////////////////////////////////////////////
+// mySQL
+////////////////////////////////////////////////////////
 exports.adapter = {
-	identity: 'waterline-mysql'
+	identity	: 'waterline-mysql',
+	database	: 'waterline',
+	user		: 'waterline',
+	password	: 'abc123'
 };
