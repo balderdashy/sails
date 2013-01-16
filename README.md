@@ -1,4 +1,4 @@
-![sails.jpg](http://i.imgur.com/o0Qsp.jpg) 
+![image_devInTub@2x.png](http://i.imgur.com/kwlqZ.png)
 
 # Sails
 Sails makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development.  It's especially good for building realtime features like chat.
