@@ -1,6 +1,6 @@
-# Waterline
-
 ![image_squidhome@2x.png](http://i.imgur.com/7rMxw.png) 
+
+# Waterline
 
 Waterline is a brand new kind of storage and retrieval engine.  
 
