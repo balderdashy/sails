@@ -201,10 +201,10 @@ The Sails framework was developed by Mike McNeil (@mikermcneil) and is maintaine
 After building a few realtime javascript apps and taking them into production, we realized that the  JavaScript development landscape is very much still the Wild West.  Over time, after trying lots of different methodologies (on the front end and the back), we decided to crystallize all of our best practices into this framework.  I hope it saves you some time :)
 
 
+![icon_circlelightbulb@2x.png](http://i.imgur.com/eOFXn.png)  
+
 License
 --
-
-![icon_circlelightbulb@2x.png](http://i.imgur.com/eOFXn.png) 
 
 Sails is built around so many great open-source technologies that it would never have crossed our minds to keep it proprietary.  We owe huge gratitude and props to TJ Holowaychuk (@visionmedia) and Guillermo Rauch (@guille) for the work they did, as well as the stewards of all the other open-source modules we use.  Sails could never have been developed without your tremendous contributions to the node community.
 
