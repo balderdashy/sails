@@ -82,6 +82,7 @@ describe('CRUD :: Aggreagate methods and transactions', function (){
 // Check equality on two SETS of objects 
 // using one particular attribute as a vector of comparison
 function pluckEqual(listA, listB, attrName) {
+
 	// Order doesn't matter
 	return _.every(_.pluck(listA, attrName), function (item) {
 		return _.contains(_.pluck(listB, attrName),item);

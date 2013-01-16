@@ -211,7 +211,6 @@ module.exports = function(adapter) {
 	this.update = function(collectionName, criteria, values, cb) {
 		if(!adapter.update) return cb("No update() method defined in adapter!");
 		criteria = normalize.criteria(criteria);
-		if (_.isString(criteria)) return cb(criteria);
 
 		// TODO: Validate constraints using Anchor
 
@@ -231,11 +230,10 @@ module.exports = function(adapter) {
 	//////////////////////////////////////////////////////////////////////
 	this.findOrCreate = function(collectionName, criteria, values, cb) {
 		var self = this;
-		criteria = normalize.criteria(criteria);
-		if (_.isString(criteria)) return cb(criteria);
 
 		// If no values were specified, use criteria
-		if (!values) values = criteria.where;
+		if (!values) values = criteria.where ? criteria.where : criteria;
+		criteria = normalize.criteria(criteria);
 
 		if(adapter.findOrCreate) {
 			adapter.findOrCreate(collectionName, criteria, values, cb);

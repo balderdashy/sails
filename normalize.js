@@ -22,7 +22,7 @@ module.exports = {
 		}
 
 		// Return string to indicate an error
-		if(!_.isObject(criteria)) return('Invalid options/criteria :: ' + criteria);
+		if(!_.isObject(criteria)) throw new Error ('Invalid options/criteria :: ' + criteria);
 
 		// If criteria doesn't seem to contain operational keys, assume all the keys are criteria
 		if(!criteria.where && !criteria.limit && !criteria.skip && !criteria.sort) {
