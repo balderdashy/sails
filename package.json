@@ -39,7 +39,7 @@
     "microtime": "~0.3.3",
     "waterline-dirty": "~0.1.2",
     "waterline-mysql": "0.1.0",
-    "sails-moduleloader": "~1.1.0",
+    "sails-moduleloader": "~1.1.5",
     "async": "~0.1.22",
     "underscore.string": "~2.3.1"
   }
