@@ -150,7 +150,6 @@ http://localhost:1337/user/destroy/1
 (or send an HTTP DELETE to http://localhost:1337/user/1)
 ```
 
-
 ## Additional Features
 Sails does a few things other Node.js MVC frameworks can't do:
 - Automatically generated JSON API for manipulating models means you don't have to write any backend code to build simple database apps
@@ -166,10 +165,11 @@ Sails does a few things other Node.js MVC frameworks can't do:
 To learn more, check out the documentation here: 
 https://github.com/balderdashy/sails/wiki/_pages
 
+![icon_circlechart@2x.png](http://i.imgur.com/hXc06.png) 
 
-Example app
+Demo
 --
-#### Live demo
+
 *Try it in two browser windows*
 
 http://sailsjs.com:1337/experiment#subcomponents
@@ -179,13 +179,6 @@ http://sailsjs.com:1337/experiment#subcomponents
 https://github.com/balderdashy/sails-example
 -->
 
-### Philosophy
-Like other MVC frameworks, Sails espouses a same convention-over-configuration philosophy and emphasis on developer happiness, but takes it a step further. Like Node.js, using Sails means your app is written entirely in JavaScript, the language you or your team is already using to build the frontend portion of your web or mobile web app.  This cuts development to a fraction of the time. 
-We've used Sails to build production-ready, realtime apps in a matter of weeks.  In the past, that would have taken us months!
-
-### Performance
-Since Sails is written in Node.js, your servers reap the performance benefits of an event-driven, asynchronous architecture. (http://venturebeat.com/2011/08/16/linkedin-node/)
-
 
 Dependencies and Compatibility
 --
@@ -194,6 +187,9 @@ Tested with node 0.8.1
 Sails is built on the rock-solid foundations of ExpressJS and Socket.io.  
 
 
+
+
+![icon_circleheart@2x.png](http://i.imgur.com/liHPV.png) 
 ## Who Built This?
 
 The Sails framework was developed by Mike McNeil (@mikermcneil) and is maintained by Balderdash (@balderdashy), a realtime web & mobile studio I started with Heather White (@hdesignsit) in Austin, TX.
