@@ -158,30 +158,57 @@ module.exports = function (options,cb) {
 	// Instantiate a collection object
 	function instantiateCollection (definition, cb) {
 
+		// Track whether this collection can use the shared version of its adapter
+		// or whether a new instance of the adapter needs to be instantiated
+		// (necessary in cases w/ fundamentally different settings-- i.e. separate database)
+		var sharedAdapter = false;
+
+		// Whether to use the app's default adapter
+		var defaultAdapter = false;
+
 		// If no adapter is specified, default to whatever's in the config
-		if (!definition.adapter) definition.adapter = config.defaultAdapter;
+		if (!definition.adapter) {
 
+			// If no adapter is specifed, the default adapter will be used
+			// (and it will be shared)
+			defaultAdapter = true;
+			sharedAdapter = true;
 
+			definition.adapter = config.defaultAdapter;
+		}
+
+		// Adapter specified as a string
 		if (_.isString(definition.adapter)) {
+
+			// If the adapter is specifed as a string, it can be shared
+			sharedAdapter = true;
+
 			getAdapterByIdentity(definition.adapter, afterwards);
 		}
 		else if (_.isObject(definition.adapter)) {
+
 			if (!definition.adapter.identity) return cb("No identity specified in adapter definition!");
+
 			getAdapterByIdentity(definition.adapter.identity, function gotAdapter (err,adapter) {
 			
-				// Absorb relevant items from collection config into the clone adapter definition
+				// If the shared adapter can't be used
+				// Absorb relevant items from collection config into the cloned adapter definition
 				// Instantiate a new, cloned adapter unique to this collection
-				// TODO:	be smart and only maintain the minimum number of adapters in memory necessary
-				//			Since adapter connections need only be config-specific
-				var temporalIdentity = adapter.identity + '-' + definition.identity;
-				
-				// Add to adapters set (and pass in config object)
-				adapters[temporalIdentity] = require(adapter.identity) (definition.adapter);
-				
-				// Then prepare the adapter
-				prepareAdapter(temporalIdentity, function (err) {
-					afterwards (err, adapters[temporalIdentity]);
-				});
+				if (!sharedAdapter) {
+
+					// TODO:	be smart and only maintain the minimum number of adapters in memory necessary
+					//			Since adapter connections need only be config-specific
+					var temporalIdentity = adapter.identity + '-' + definition.identity;
+					
+					// Add to adapters set (and pass in config object)
+					adapters[temporalIdentity] = require(adapter.identity) (definition.adapter);
+					
+					// Then prepare the adapter
+					prepareAdapter(temporalIdentity, function (err) {
+						afterwards (err, adapters[temporalIdentity]);
+					});
+				}
+				else afterwards(err,adapter);
 			});
 		}
 
