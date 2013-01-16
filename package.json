@@ -16,7 +16,7 @@
     }
   ],
   "private": "true",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Realtime MVC framework for Node.JS with support for Socket.io (built on Express)",
   "homepage": "http://sailsjs.com",
   "keywords": [
