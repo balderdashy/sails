@@ -204,7 +204,10 @@ After building a few realtime javascript apps and taking them into production, w
 License
 --
 
+![icon_circlelightbulb@2x.png](http://i.imgur.com/eOFXn.png) 
+
 Sails is built around so many great open-source technologies that it would never have crossed our minds to keep it proprietary.  We owe huge gratitude and props to TJ Holowaychuk (@visionmedia) and Guillermo Rauch (@guille) for the work they did, as well as the stewards of all the other open-source modules we use.  Sails could never have been developed without your tremendous contributions to the node community.
+
 
 The MIT License (MIT)
 --
