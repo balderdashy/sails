@@ -15,7 +15,7 @@
       "email": "brad@techpines.com"
     }
   ],
-  "version": "0.7.0-4",
+  "version": "0.7.0-5",
   "description": "Realtime MVC framework for Node.JS with support for Socket.io (built on Express)",
   "homepage": "http://sailsjs.com",
   "keywords": [
