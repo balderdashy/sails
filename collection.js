@@ -400,25 +400,62 @@ var Collection = module.exports = function(definition) {
 		// otherwise returns normalized criteria obj.
 		// (inside as a closure in order to get access to attributes object)
 		function normalizeLikeCriteria (criteria) {
+
+			
 			if (_.isObject(criteria)) {
 				if (!criteria.where) criteria = {where: criteria};
 				criteria.where = {like: criteria.where};
+
+				// Look for and handle % signs
+				// _.each(criteria.where.like,function (criterion, attrName) {
+				// 	criteria.where.like[attrName] = normalizePercentSigns(criterion);
+				// });
+				// console.log("\n\nCRITERIA",criteria);
+				return criteria;
 			}
+
 			// If string criteria is specified, check each attribute for a match
 			else if (_.isString(criteria)) {
 				var searchTerm = criteria;
 				criteria = {where: {or: []}};
-				_.each(attributes,function (val, attrName) {
+				_.each(attributes,function (criterion, attrName) {
+					
+					// Build individual like query
 					var obj = {like: {}};
-					obj.like[attrName] = searchTerm;
+
+					// Look for and handle % signs
+					// obj.like[attrName] = searchTerm;
+					obj.like[attrName] = normalizePercentSigns(searchTerm);
+					
 					criteria.where.or.push(obj);
 				});
+
+				return criteria;
 			}
 			else return false;
-
-			return criteria;
 		}
 	};
+
+	// Given a criteria string inside of a "LIKE" criteria object,
+	// support the use of % signs to add startsWith and endsWith functionality
+	function normalizePercentSigns (likeCriterion) {
+		// If no % signs are specified, wrap it in %
+		if (! likeCriterion.match(/%/)) {
+			return '%' + likeCriterion + '%';
+		}
+		else return likeCriterion;
+	}
+
+
+	// Replace % with %%%
+	function escapeLikeQuery (likeCriterion) {
+		return likeCriterion.replace(/[^%]%[^%]/g,'%%%');
+	}
+
+	// Replace %%% with %
+	function unescapeLikeQuery (likeCriterion) {
+		return likeCriterion.replace(/%%%/g,'%');
+	}
 
 
 function usageError(err, usage) {

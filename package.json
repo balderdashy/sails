@@ -28,19 +28,18 @@
   "author": "Mike McNeil",
   "license": "MIT",
   "dependencies": {
-    "dirty": "~0.9.6",
     "underscore": "=1.4.3",
-    "mysql": "~2.0.0-alpha4",
-    "node-uuid": "~1.4.0",
-    "require-all": "0.0.5",
-    "fs-extra": "~0.3.2",
-    "sails-util": "0.1.0",
-    "parley": "0.0.2",
-    "microtime": "~0.3.3",
-    "waterline-dirty": "~0.1.2",
-    "waterline-mysql": "0.1.0",
-    "sails-moduleloader": "~1.1.5",
+    "underscore.string": "~2.3.1",
     "async": "~0.1.22",
-    "underscore.string": "~2.3.1"
+    "node-uuid": "~1.4.0",
+    "fs-extra": "~0.3.2",
+    "require-all": "0.0.5",
+    
+    "parley": "0.0.2",
+    "sails-util": "0.1.0",
+    "sails-moduleloader": "~1.1.5",
+
+    "waterline-dirty": "~0.2.1",
+    "waterline-mysql": "~0.2.1"
   }
 }
