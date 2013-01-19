@@ -63,18 +63,18 @@ var Collection = module.exports = function(definition) {
 				}
 				options = options || {};
 
-				
+
 				var usage = _.str.capitalize(this.identity) + '.' + actualMethodName + '(someValue,[options],callback)';
 				if(_.isUndefined(value)) usageError('No value specified!', usage);
 				if(options.where) usageError('Cannot specify `where` option in a dynamic ' + method + '*() query!', usage);
-				
+
 
 				// Build criteria query and submit it
 				options.where = {};
 				options.where[attrName] = value;
 
 				// Make modifications based on method as necessary
-				if (method === 'findBy*' || method === 'findBy*In') {
+				if(method === 'findBy*' || method === 'findBy*In') {
 					return self.find(options, cb);
 				} else if(method === 'findBy*Like') {
 					return self.find(_.extend(options, {
@@ -82,7 +82,7 @@ var Collection = module.exports = function(definition) {
 							like: options.where
 						}
 					}), cb);
-				} 
+				}
 
 				// Aggregate finders
 				else if(method === 'findAllBy*' || method === 'findAllBy*In') {
@@ -137,25 +137,23 @@ var Collection = module.exports = function(definition) {
 		//////////////////////////////////////////
 		// Join with another collection
 		// (use optimized join in adapter if one was provided)
-		this.join = function (collection, fk, pk, cb) {
+		this.join = function(collection, fk, pk, cb) {
 			// If no callback specified, return deferred object
 			if(!_.isFunction(cb)) {
 				return new Deferred({
 					method: 'join',
 					collection: this,
-					args: { 
+					args: {
 						collection: collection,
 						fk: fk,
 						pk: pk
 					},
-					argsKeys: ['collection','fk','pk']
+					argsKeys: ['collection', 'fk', 'pk']
 				});
-			}
-			else return this.adapter.join(this.identity, collection, fk, pk, cb);
+			} else return this.adapter.join(this.identity, collection, fk, pk, cb);
 		};
 
 		// =============================
-
 
 
 		//////////////////////////////////////////
@@ -167,25 +165,26 @@ var Collection = module.exports = function(definition) {
 				values = null;
 			}
 			var usage = _.str.capitalize(this.identity) + '.create({someAttr: "someValue"},callback)';
-			
+
 
 			// If no callback specified, return deferred object
 			if(!_.isFunction(cb)) {
 				return new Deferred({
 					method: 'create',
 					collection: this,
-					args: { values: values },
+					args: {
+						values: values
+					},
 					argsKeys: ['values']
 				});
-			}
-			else return this.adapter.create(this.identity, values, cb);
+			} else return this.adapter.create(this.identity, values, cb);
 		};
 
 		// Call find method in adapter
 		this.find = function(criteria, cb) {
 			var usage = _.str.capitalize(this.identity) + '.find([criteria],callback)';
 
-			if (_.isFunction(criteria)) {
+			if(_.isFunction(criteria)) {
 				cb = criteria;
 				criteria = null;
 			}
@@ -195,11 +194,12 @@ var Collection = module.exports = function(definition) {
 				return new Deferred({
 					method: 'find',
 					collection: this,
-					args: { criteria: criteria },
+					args: {
+						criteria: criteria
+					},
 					argsKeys: ['criteria']
 				});
-			}
-			else return this.adapter.find(this.identity, criteria, cb);
+			} else return this.adapter.find(this.identity, criteria, cb);
 		};
 
 		this.findAll = function(criteria, options, cb) {
@@ -219,7 +219,7 @@ var Collection = module.exports = function(definition) {
 				criteria = _.extend({}, criteria, options);
 			}
 
-			if (_.isFunction(criteria) || _.isFunction(options)) {
+			if(_.isFunction(criteria) || _.isFunction(options)) {
 				return usageError('Invalid options specified!', usage);
 			}
 
@@ -233,29 +233,26 @@ var Collection = module.exports = function(definition) {
 					},
 					argsKeys: ['criteria']
 				});
-			}
-			else return this.adapter.findAll(this.identity, criteria, cb);
+			} else return this.adapter.findAll(this.identity, criteria, cb);
 		};
 		this.where = this.findAll;
 		this.select = this.findAll;
 
-		this.findLike = function (criteria, options, cb) {
+		this.findLike = function(criteria, options, cb) {
 			var usage = _.str.capitalize(this.identity) + '.findLike([criteria],[options],callback)';
-			if (criteria = normalizeLikeCriteria(criteria)) {
+			if(criteria = normalize.likeCriteria(criteria, attributes)) {
 				return this.find(criteria, options, cb);
-			}
-			else usageError('Criteria must be string or object!',usage);
+			} else usageError('Criteria must be string or object!', usage);
 		};
 
-		this.findAllLike = function (criteria, options, cb) {
+		this.findAllLike = function(criteria, options, cb) {
 			var usage = _.str.capitalize(this.identity) + '.findAllLike([criteria],[options],callback)';
-			if (criteria = normalizeLikeCriteria(criteria)) {
+			if(criteria = normalize.likeCriteria(criteria, attributes)) {
 				return this.findAll(criteria, options, cb);
-			}
-			else usageError('Criteria must be string or object!',usage);
+			} else usageError('Criteria must be string or object!', usage);
 		};
 
-		this.count = function (criteria, options, cb) {
+		this.count = function(criteria, options, cb) {
 			var usage = _.str.capitalize(this.identity) + '.count([criteria],[options],callback)';
 			if(_.isFunction(criteria)) {
 				cb = criteria;
@@ -290,11 +287,13 @@ var Collection = module.exports = function(definition) {
 				return new Deferred({
 					method: 'update',
 					collection: this,
-					args: { options: options, newValues: newValues },
+					args: {
+						options: options,
+						newValues: newValues
+					},
 					argsKeys: ['options', 'newValues']
 				});
-			}
-			else return this.adapter.update(this.identity, options, newValues, cb);
+			} else return this.adapter.update(this.identity, options, newValues, cb);
 		};
 		this.updateWhere = this.update;
 		this.updateAll = this.update;
@@ -313,11 +312,12 @@ var Collection = module.exports = function(definition) {
 				return new Deferred({
 					method: 'destroy',
 					collection: this,
-					args: { options: options },
+					args: {
+						options: options
+					},
 					argsKeys: ['options']
 				});
-			}
-			else return this.adapter.destroy(this.identity, options, cb);
+			} else return this.adapter.destroy(this.identity, options, cb);
 		};
 		this.destroyWhere = this.destroy;
 		this.destroyAll = this.destroy;
@@ -381,8 +381,8 @@ var Collection = module.exports = function(definition) {
 		// with only the attributes which actually exist in the server-side model
 		this.filter = function(params) {
 			// If attributes aren't defined, send back empty obj
-			if (!this.attributes) return {};
-			
+			if(!this.attributes) return {};
+
 			var trimmedParams = util.objFilter(params, function(value, name) {
 				return _.contains(_.keys(this.attributes), name);
 			}, this);
@@ -390,72 +390,10 @@ var Collection = module.exports = function(definition) {
 		};
 		this.trimParams = this.filter;
 
-		// Bind instance methods to collection
-		_.bindAll(definition);
-		_.bindAll(this);
-
-
-
-		// Returns false if criteria is invalid,
-		// otherwise returns normalized criteria obj.
-		// (inside as a closure in order to get access to attributes object)
-		function normalizeLikeCriteria (criteria) {
-
-			
-			if (_.isObject(criteria)) {
-				if (!criteria.where) criteria = {where: criteria};
-				criteria.where = {like: criteria.where};
-
-				// Look for and handle % signs
-				// _.each(criteria.where.like,function (criterion, attrName) {
-				// 	criteria.where.like[attrName] = normalizePercentSigns(criterion);
-				// });
-				// console.log("\n\nCRITERIA",criteria);
-				return criteria;
-			}
-
-			// If string criteria is specified, check each attribute for a match
-			else if (_.isString(criteria)) {
-				var searchTerm = criteria;
-				criteria = {where: {or: []}};
-				_.each(attributes,function (criterion, attrName) {
-					
-					// Build individual like query
-					var obj = {like: {}};
-
-					// Look for and handle % signs
-					// obj.like[attrName] = searchTerm;
-					obj.like[attrName] = normalizePercentSigns(searchTerm);
-					
-					criteria.where.or.push(obj);
-				});
-
-				return criteria;
-			}
-			else return false;
-		}
-	};
-
-	// Given a criteria string inside of a "LIKE" criteria object,
-	// support the use of % signs to add startsWith and endsWith functionality
-	function normalizePercentSigns (likeCriterion) {
-		// If no % signs are specified, wrap it in %
-		if (! likeCriterion.match(/%/)) {
-			return '%' + likeCriterion + '%';
-		}
-		else return likeCriterion;
-	}
-
-
-	// Replace % with %%%
-	function escapeLikeQuery (likeCriterion) {
-		return likeCriterion.replace(/[^%]%[^%]/g,'%%%');
-	}
-
-	// Replace %%% with %
-	function unescapeLikeQuery (likeCriterion) {
-		return likeCriterion.replace(/%%%/g,'%');
-	}
+	// Bind instance methods to collection
+	_.bindAll(definition);
+	_.bindAll(this);
+};
 
 
 function usageError(err, usage) {

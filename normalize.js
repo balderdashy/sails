@@ -1,8 +1,8 @@
 var _ = require('underscore');
 
-module.exports = {
+var normalize = module.exports = {
 	// Normalize the different ways of specifying criteria into a uniform object
-	criteria: function normalizeCriteria (origCriteria) {
+	criteria: function normalizeCriteria(origCriteria) {
 		var criteria = _.clone(origCriteria);
 
 		if(!criteria) return {
@@ -22,7 +22,7 @@ module.exports = {
 		}
 
 		// Return string to indicate an error
-		if(!_.isObject(criteria)) throw new Error ('Invalid options/criteria :: ' + criteria);
+		if(!_.isObject(criteria)) throw new Error('Invalid options/criteria :: ' + criteria);
 
 		// If criteria doesn't seem to contain operational keys, assume all the keys are criteria
 		if(!criteria.where && !criteria.limit && !criteria.skip && !criteria.sort) {
@@ -46,10 +46,17 @@ module.exports = {
 				criteria.where[attrName] = [+criteria.where[attrName], criteria.where[attrName]];
 			}
 		}
-		
+
 		// If WHERE is {}, always change it back to null
-		if (criteria.where && _.keys(criteria.where).length === 0) {
+		if(criteria.where && _.keys(criteria.where).length === 0) {
 			criteria.where = null;
+		}
+
+		// If a LIKE was specified, normalize it
+		if(criteria.where && criteria.where.like) {
+			_.each(criteria.where.like, function(criterion, attrName) {
+				criteria.where.like[attrName] = normalizePercentSigns(criterion);
+			});
 		}
 
 		// Normalize sort criteria
@@ -75,11 +82,58 @@ module.exports = {
 		return criteria;
 	},
 
+	// Normalize the capitalization and % wildcards in a like query
+	// Returns false if criteria is invalid,
+	// otherwise returns normalized criteria obj.
+	likeCriteria: function normalizeLikeCriteria(criteria, attributes) {
+
+		if(_.isObject(criteria)) {
+			if(!criteria.where) criteria = {
+				where: criteria
+			};
+			criteria.where = {
+				like: criteria.where
+			};
+
+			// Look for and handle % signs
+			_.each(criteria.where.like, function(criterion, attrName) {
+				criteria.where.like[attrName] = normalizePercentSigns(criterion);
+			});
+			return criteria;
+		}
+
+		// If string criteria is specified, check every attribute for a match
+		else if(_.isString(criteria)) {
+			var searchTerm = criteria;
+			criteria = {
+				where: {
+					or: []
+				}
+			};
+			_.each(attributes, function(criterion, attrName) {
+
+				// Build individual like query
+				var obj = {
+					like: {}
+				};
+
+				// Look for and handle % signs
+				obj.like[attrName] = normalizePercentSigns(searchTerm);
+
+				criteria.where.or.push(obj);
+			});
+
+			return criteria;
+		} else return false;
+
+	},
+
+
 	/**
 	 * Run a method on an object -OR- each item in an array and return the result
 	 * Also handle errors gracefully
 	 */
-	pluralize: function pluralize (collection, application) {
+	pluralize: function pluralize(collection, application) {
 		if(_.isArray(collection)) {
 			return _.map(collection, application);
 		} else if(_.isObject(collection)) {
@@ -89,3 +143,30 @@ module.exports = {
 		}
 	}
 };
+
+
+
+
+// Given a criteria string inside of a "LIKE" criteria object,
+// support the use of % signs to add startsWith and endsWith functionality
+function normalizePercentSigns(likeCriterion) {
+	// If no % signs are specified, wrap it in %
+	if(!likeCriterion.match(/%/)) {
+		return '%' + likeCriterion + '%';
+	} else return likeCriterion;
+}
+
+
+// Replace % with %%%
+
+
+function escapeLikeQuery(likeCriterion) {
+	return likeCriterion.replace(/[^%]%[^%]/g, '%%%');
+}
+
+// Replace %%% with %
+
+
+function unescapeLikeQuery(likeCriterion) {
+	return likeCriterion.replace(/%%%/g, '%');
+}
