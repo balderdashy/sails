@@ -1,6 +1,6 @@
 {
   "name": "waterline",
-  "version": "0.1.04",
+  "version": "0.1.5",
   "description": "Adaptable data access layer for Node.js",
   "main": "waterline.js",
   "directories": {
@@ -34,11 +34,9 @@
     "node-uuid": "~1.4.0",
     "fs-extra": "~0.3.2",
     "require-all": "0.0.5",
-    
     "parley": "0.0.2",
     "sails-util": "0.1.0",
     "sails-moduleloader": "~1.1.5",
-
     "waterline-dirty": "~0.2.1",
     "waterline-mysql": "~0.2.1"
   }
