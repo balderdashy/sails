@@ -1,3 +1,5 @@
+![image_squidhome@2x.png](http://i.imgur.com/7rMxw.png) 
+
 # Waterline
 
 Waterline is a brand new kind of storage and retrieval engine.  
@@ -16,8 +18,6 @@ Waterline also comes with built-in transaction support which takes advantage of 
 ## In development
 * mongoDB (Jan)
 * redis (March)
-* OpenStack (Feb)
-* Amazon S3 (Feb)
 
 
 ## Roadmap
