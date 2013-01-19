@@ -1,3 +1,71 @@
+describe('LIKE: basic query usage', function() {
+	it ('should return the user with the given name',function (done) {
+		var part = 'basic LIKE query test';
+		var testName = '24g basic LIKE query test asdcxbzbasg';
+
+		User.create({ name: testName },function (err) {
+			if (err) return done(err);
+			User.find({
+				like: {
+					name: part
+				}
+			},function(err,user) {
+				if (err) return done(err); 
+				if (!user) return done(new Error('find() with LIKE query returned nothing!'));
+				if (user.name !== testName) return done(new Error('find() with LIKE query returned incorrect user!'));
+				done(err);
+			});
+		});
+	});
+
+	it ('should support wrapping both sides with a % sign',function (done) {
+		var part = 'basic LIKE query test with sign';
+		var testName = '24gdddaga4 basic LIKE query test with sign asdcxbzbasg';
+
+		User.create({ name: testName },function (err) {
+			if (err) return done(err);
+			User.find({
+				like: {
+					name: '%'+part+'%'
+				}
+			},function(err,user) {
+				if (err) return done(err); 
+				if (!user) return done(new Error('find() with LIKE query returned nothing!'));
+				if (user.name !== testName) return done(new Error('find() with LIKE query returned incorrect user!'));
+				done(err);
+			});
+		});
+	});
+
+
+	// TODO: startsWith()
+	// TODO: basic like usage
+
+	// TODO: endsWith()
+	// TODO: basic like usage
+
+	// TODO: contains()
+
+	// it ('should support startsWith functionality using preceding % sign',function (done) {
+	// 	var part = 'startsWith LIKE';
+	// 	var testName = 'startsWith LIKE zzzzz';
+
+	// 	User.create({ name: testName },function (err) {
+	// 		if (err) return done(err);
+	// 		User.find({
+	// 			like: {
+	// 				name: part
+	// 			}
+	// 		},function(err,user) {
+	// 			if (err) return done(err); 
+	// 			if (!user) return done(new Error('find() with LIKE query returned nothing!'));
+	// 			if (user.name !== testName) return done(new Error('find() with LIKE query returned incorrect user!'));
+	// 			done(err);
+	// 		});
+	// 	});
+	// });
+});
+
 describe('findByLike', function() {
 
 	it('should return the user with the given name', function(done) {
