@@ -45,25 +45,6 @@ describe('LIKE: basic query usage', function() {
 	// TODO: basic like usage
 
 	// TODO: contains()
-
-	// it ('should support startsWith functionality using preceding % sign',function (done) {
-	// 	var part = 'startsWith LIKE';
-	// 	var testName = 'startsWith LIKE zzzzz';
-
-	// 	User.create({ name: testName },function (err) {
-	// 		if (err) return done(err);
-	// 		User.find({
-	// 			like: {
-	// 				name: part
-	// 			}
-	// 		},function(err,user) {
-	// 			if (err) return done(err); 
-	// 			if (!user) return done(new Error('find() with LIKE query returned nothing!'));
-	// 			if (user.name !== testName) return done(new Error('find() with LIKE query returned incorrect user!'));
-	// 			done(err);
-	// 		});
-	// 	});
-	// });
 });
 
 describe('findByLike', function() {
