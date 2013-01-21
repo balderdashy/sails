@@ -146,6 +146,10 @@ else if(argv._[0].match(/^n$|^ne$|^new$/) || argv.n || argv['new']) {
 		dependencies: {
 			sails: sails.version
 		},
+		scripts: {
+			test: 'mocha -b',
+			start: 'node app.js'
+		},
 		main: 'app.js',
 		repository: '',
 		author: '',
