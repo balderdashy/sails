@@ -3,6 +3,10 @@
   "author": "Mike McNeil <mike@balderdash.co>",
   "contributors": [
     {
+      "name": "Mike McNeil",
+      "email": "mike@balderdash.co"
+    },
+    {
       "name": "Balderdash Design Co.",
       "email": "dev@balderdash.co"
     },
@@ -13,18 +17,23 @@
     {
       "name": "Brad Carleton",
       "email": "brad@techpines.com"
+    },
+    {
+      "name": "Curtis Lacy",
+      "email": "curtis.lacy@ldengine.com"
     }
   ],
-  "version": "0.7.0-6",
-  "description": "Realtime MVC framework for Node.JS with support for Socket.io (built on Express)",
+  "version": "0.7.0-7",
+  "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
   "homepage": "http://sailsjs.com",
   "keywords": [
     "realtime",
     "mvc",
-    "sockets",
-    "restful",
-    "auth",
     "socket.io",
+    "websockets",
+    "restful",
+    "API",
+    "auth",
     "rails",
     "orm",
     "async",
@@ -74,6 +83,6 @@
     "url": "http://github.com/balderdashy/sails/issues"
   },
   "engines": {
-    "node": ">= 0.6.4"
+    "node": ">= 0.8.1"
   }
 }
