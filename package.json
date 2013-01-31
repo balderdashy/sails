@@ -71,7 +71,9 @@
   },
   "devDependencies": {
     "mocha": "*",
-    "chai": "*"
+    "chai": "*",
+    "coffee-script": "*",
+    "request": "*"
   },
   "repository": {
     "type": "git",
