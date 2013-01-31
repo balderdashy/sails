@@ -69,6 +69,10 @@
     "fs-extra": "~0.3.2",
     "i18n": "~0.3.5"
   },
+  "devDependencies": {
+    "mocha": "*",
+    "chai": "*"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/balderdashy/sails.git"

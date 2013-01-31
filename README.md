@@ -54,7 +54,7 @@ var HelloController = {
 	}
 }
 
-exports = HelloController;
+module.exports = HelloController;
 ```
 
 After you have added that, you will want to remove the default index.html page that shows at the
