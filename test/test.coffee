@@ -3,6 +3,7 @@ should = require('chai').should()
 spawn = require('child_process').spawn
 easyrequest = require 'request'
 fs = require 'fs'
+retry = require 'retry'
 
 testProject = 'sails-example'
 sailsBin = '../bin/sails.js'
@@ -22,7 +23,7 @@ describe 'the sails cli', ->
                 app.on 'exit', ->
                     unless finished
                         throw new Error 'Sails server exited prematurely, check for other running sails instances.'
-                setTimeout done, 500
+                setTimeout done, 1000
         
     it 'should lift', (done) ->
         easyrequest 'http://localhost:1337', (error, response, body) ->
@@ -57,7 +58,7 @@ describe 'the sails cli', ->
     after (done) ->
         finished = true
         app.on 'exit', ->
-            rm = spawn 'rm', ['-rf', testProject]
+            rm = spawn 'rm', ['-rf', "../#{testProject}"]
             rm.on 'exit', ->
                 done()
         app.kill 'SIGKILL'
