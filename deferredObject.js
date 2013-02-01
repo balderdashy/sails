@@ -79,16 +79,26 @@ module.exports = function (operation) {
 	};
 
 	// TODO for filtering
-	this.like = function (queryString, attributes, cb) {
+	this.like = function (criteria, cb) {
 		throw new notImplementedError();
 	};
-	this.startsWith = function (queryString, attributes, cb) {
+	this.startsWith = function (criteria, cb) {
 		throw new notImplementedError();
 	};
-	this.contains = function (queryString, attributes, cb) {
+	this.contains = function (criteria, cb) {
 		throw new notImplementedError();
 	};
-	this.endsWith = function (queryString, attributes, cb) {
+	this.endsWith = function (criteria, cb) {
+		throw new notImplementedError();
+	};
+
+	this.greaterThan = function (lowerBound, cb) {
+		throw new notImplementedError();
+	};
+	this.lessThan = function (upperBound, cb) {
+		throw new notImplementedError();
+	};
+	this.between = function (lowerBound, upperBound, cb) {
 		throw new notImplementedError();
 	};
 

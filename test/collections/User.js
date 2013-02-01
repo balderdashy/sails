@@ -19,7 +19,8 @@ exports.attributes = {
 	email	: 'STRING',
 	title	: 'STRING',
 	phone	: 'STRING',
-	type	: 'STRING'
+	type	: 'STRING',
+	age		: 'INTEGER'
 };
 
 // Identity is here to facilitate unit testing
