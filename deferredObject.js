@@ -35,10 +35,10 @@ module.exports = function (operation) {
 	this.innerJoin = this.join;
 
 	this.leftOuterJoin = function (collection, fk, pk, cb) {
-		throw new Error('Not implemented yet!');
+		throw new notImplementedError();
 	};
 	this.rightOuterJoin = function (collection, fk, pk, cb) {
-		throw new Error('Not implemented yet!');
+		throw new notImplementedError();
 	};
 
 	
@@ -76,6 +76,16 @@ module.exports = function (operation) {
 		// Either call done() or return the deferred object
 		if(_.isFunction(cb)) return this.done(cb);
 		else return this;
+	};
+
+	this.startsWith = function (queryString, attributes, cb) {
+		throw new notImplementedError();
+	};
+	this.contains = function (queryString, attributes, cb) {
+		throw new notImplementedError();
+	};
+	this.endsWith = function (queryString, attributes, cb) {
+		throw new notImplementedError();
 	};
 
 	// Go back and modify the criteria to find a method that takes a criteria
@@ -160,4 +170,8 @@ function hasCriteria(methodName) {
 // Whether the function is a join
 function isJoin(methodName) {
 	return methodName.match(/join/i);
+}
+
+function notImplementedError() {
+	return 'Not implemented yet: we welcome your commits! Visit https://github.com/balderdashy/waterline for more info. ^_^';
 }

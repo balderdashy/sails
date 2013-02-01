@@ -5,6 +5,10 @@
 // It contains the entry point for all DML/DQL methods (e.g. User.find())
 // as well as some private members used internally, like sync()
 //
+// For the most part, most methods in this file defer to adaper.js for 
+// most of their implementation, and the implementation here just
+// validates the parameters.
+//
 //////////////////////////////////////////////////////////////////////
 
 var _ = require('underscore');
@@ -247,6 +251,14 @@ var Collection = module.exports = function(definition) {
 		this.where = this.findAll;
 		this.select = this.findAll;
 
+
+		//////////////////////////////////////////
+		// Search methods
+		//////////////////////////////////////////
+
+		// If criteria is an object, return models where >= 1 of the specified attributes match queryString
+		// If criteria is a string, match against any of the collection's attributes
+
 		this.findLike = function(criteria, options, cb) {
 			var usage = _.str.capitalize(this.identity) + '.findLike([criteria],[options],callback)';
 			if(criteria = normalize.likeCriteria(criteria, attributes)) {
@@ -261,6 +273,41 @@ var Collection = module.exports = function(definition) {
 			} else usageError('Criteria must be string or object!', usage);
 		};
 
+		
+		this.startsWith = function (criteria, options, cb) {
+			var usage = _.str.capitalize(this.identity) + '.startsWith([criteria],[options],callback)';
+			var likeCriteria;
+
+			if (_.isObject(criteria)) {
+				likeCriteria = util.objMap(_.clone(criteria), applyStartsWith);
+			}
+			else if (_.isString(criteria)) {
+				likeCriteria = applyStartsWith(criteria);
+			}
+
+			function applyStartsWith(criteria) {
+				return '%'+criteria;
+			}
+
+			if (criteria = normalize.likeCriteria(likeCriteria, attributes)) {
+				return this.findAll(likeCriteria, optoins, cb);
+			} else usageError('Criteria must be a string or object!', usage);
+			throw new notImplementedError();
+		};
+
+		// Return models where >= 1 of the specified attributes contain queryString
+		this.contains = function (criteria, options, cb) {
+			throw new notImplementedError();
+		};
+
+		// Return models where >= 1 of the specified attributes end with queryString
+		this.endsWith = function (criteria, options, cb) {
+			throw new notImplementedError();
+		};
+
+		//////////////////////////////////////////
+		// Cardinality methods
+		//////////////////////////////////////////
 		this.count = function(criteria, options, cb) {
 			var usage = _.str.capitalize(this.identity) + '.count([criteria],[options],callback)';
 			if(_.isFunction(criteria)) {
@@ -408,4 +455,9 @@ var Collection = module.exports = function(definition) {
 function usageError(err, usage) {
 	console.error("\n\n");
 	throw new Error(err + '\n==============================================\nProper usage :: \n' + usage + '\n==============================================\n');
+}
+
+
+function notImplementedError() {
+	return 'Not implemented yet: we welcome your commits! Visit https://github.com/balderdashy/waterline for more info. ^_^';
 }

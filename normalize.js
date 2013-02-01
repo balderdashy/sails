@@ -86,6 +86,7 @@ var normalize = module.exports = {
 	// Returns false if criteria is invalid,
 	// otherwise returns normalized criteria obj.
 	likeCriteria: function normalizeLikeCriteria(criteria, attributes) {
+		criteria = _.clone(criteria);
 
 		if(_.isObject(criteria)) {
 			if(!criteria.where) criteria = {
@@ -95,7 +96,7 @@ var normalize = module.exports = {
 				like: criteria.where
 			};
 
-			// Look for and handle % signs
+			// Look for and escape % signs
 			_.each(criteria.where.like, function(criterion, attrName) {
 				criteria.where.like[attrName] = normalizePercentSigns(criterion);
 			});
@@ -117,7 +118,7 @@ var normalize = module.exports = {
 					like: {}
 				};
 
-				// Look for and handle % signs
+				// Look for and escape % signs
 				obj.like[attrName] = normalizePercentSigns(searchTerm);
 
 				criteria.where.or.push(obj);
@@ -158,8 +159,6 @@ function normalizePercentSigns(likeCriterion) {
 
 
 // Replace % with %%%
-
-
 function escapeLikeQuery(likeCriterion) {
 	return likeCriterion.replace(/[^%]%[^%]/g, '%%%');
 }
