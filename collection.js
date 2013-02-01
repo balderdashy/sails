@@ -1,3 +1,12 @@
+//////////////////////////////////////////////////////////////////////
+// collection.js
+//
+// This file is the prototype for collections defined using Waterline
+// It contains the entry point for all DML/DQL methods (e.g. User.find())
+// as well as some private members used internally, like sync()
+//
+//////////////////////////////////////////////////////////////////////
+
 var _ = require('underscore');
 var parley = require('parley');
 var async = require('async');
@@ -377,7 +386,7 @@ var Collection = module.exports = function(definition) {
 		//////////////////////////////////////////
 		// Utility methods
 		//////////////////////////////////////////
-		// Return a trimmed set of the specified attributes
+		// Return a trimmed set of the specified params
 		// with only the attributes which actually exist in the server-side model
 		this.filter = function(params) {
 			// If attributes aren't defined, send back empty obj
