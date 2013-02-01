@@ -1,4 +1,5 @@
 var _ = require('underscore');
+var util = require('sails-util');
 
 var normalize = module.exports = {
 	// Normalize the different ways of specifying criteria into a uniform object
@@ -85,13 +86,19 @@ var normalize = module.exports = {
 	// Normalize the capitalization and % wildcards in a like query
 	// Returns false if criteria is invalid,
 	// otherwise returns normalized criteria obj.
-	likeCriteria: function normalizeLikeCriteria(criteria, attributes) {
+	// Enhancer is an optional function to run on each criterion to preprocess the string
+	likeCriteria: function normalizeLikeCriteria(criteria, attributes, enhancer) {
+		
 		criteria = _.clone(criteria);
 
 		if(_.isObject(criteria)) {
 			if(!criteria.where) criteria = {
 				where: criteria
 			};
+			
+			// Apply enhancer to each
+			if (enhancer) criteria.where = util.objMap(criteria.where, enhancer);
+
 			criteria.where = {
 				like: criteria.where
 			};
@@ -106,6 +113,8 @@ var normalize = module.exports = {
 		// If string criteria is specified, check every attribute for a match
 		else if(_.isString(criteria)) {
 			var searchTerm = criteria;
+			if (enhancer) criteria = enhancer(criteria);
+
 			criteria = {
 				where: {
 					or: []

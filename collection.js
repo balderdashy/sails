@@ -63,10 +63,15 @@ var Collection = module.exports = function(definition) {
 		// find or findAll will take care of callback 
 		// (with deferred object or the appropriate error)
 		// So no need to worry about that
-		this.generateDynamicFinder = function(attrName, method) {
+		this.generateDynamicFinder = function(attrName, method, dontCapitalize) {
+
+			// Capitalize attribute name if necessary to be syntactically correct
+			var preparedAttrName;
+			if (dontCapitalize) preparedAttrName = attrName;
+			else preparedAttrName = _.str.capitalize(attrName);
 
 			// Figure out actual dynamic method name by injecting attribute name		
-			var actualMethodName = method.replace(/\*/g, _.str.capitalize(attrName));
+			var actualMethodName = method.replace(/\*/g, preparedAttrName);
 
 			// Assign this finder to the collection
 			this[actualMethodName] = function dynamicMethod(value, options, cb) {
@@ -118,6 +123,17 @@ var Collection = module.exports = function(definition) {
 						}
 					}), cb);
 				}
+
+				// Searchers
+				else if (method === '*StartsWith') {
+					return self.startsWith(options, cb);
+				}
+				else if (method === '*Contains') {
+					return self.contains(options, cb);
+				}
+				else if (method === '*EndsWith') {
+					return self.endsWith(options, cb);
+				}
 			};
 		};
 
@@ -142,6 +158,10 @@ var Collection = module.exports = function(definition) {
 			this.generateDynamicFinder(attrName, 'countBy*');
 			this.generateDynamicFinder(attrName, 'countBy*In');
 			this.generateDynamicFinder(attrName, 'countBy*Like');
+
+			this.generateDynamicFinder(attrName, '*StartsWith', true);
+			this.generateDynamicFinder(attrName, '*Contains', true);
+			this.generateDynamicFinder(attrName, '*EndsWith', true);
 		}, this);
 
 
@@ -256,8 +276,8 @@ var Collection = module.exports = function(definition) {
 		// Search methods
 		//////////////////////////////////////////
 
-		// If criteria is an object, return models where >= 1 of the specified attributes match queryString
-		// If criteria is a string, match against any of the collection's attributes
+		// If criteria is an object, return models where ALL of the specified attributes match queryString
+		// If criteria is a string, match against ANY of the collection's attributes
 
 		this.findLike = function(criteria, options, cb) {
 			var usage = _.str.capitalize(this.identity) + '.findLike([criteria],[options],callback)';
@@ -276,11 +296,10 @@ var Collection = module.exports = function(definition) {
 		
 		this.startsWith = function (criteria, options, cb) {
 			var usage = _.str.capitalize(this.identity) + '.startsWith([criteria],[options],callback)';
-			criteria = enhanceLikeQuery(criteria, function applyStartsWith(criteria) {
-				return criteria + '%';
-			});
 
-			if (criteria = normalize.likeCriteria(criteria, attributes)) {
+			if (criteria = normalize.likeCriteria(criteria, attributes, function applyStartsWith(criteria) {
+				return criteria + '%';
+			})) {
 				return this.findAll(criteria, options, cb);
 			} else usageError('Criteria must be a string or object!', usage);
 			throw new notImplementedError();
@@ -289,11 +308,10 @@ var Collection = module.exports = function(definition) {
 		// Return models where >= 1 of the specified attributes contain queryString
 		this.contains = function (criteria, options, cb) {
 			var usage = _.str.capitalize(this.identity) + '.startsWith([criteria],[options],callback)';
-			criteria = enhanceLikeQuery(criteria, function applyContains(criteria) {
-				return '%' + criteria + '%';
-			});
 
-			if (criteria = normalize.likeCriteria(criteria, attributes)) {
+			if (criteria = normalize.likeCriteria(criteria, attributes, function applyContains(criteria) {
+				return '%' + criteria + '%';
+			})) {
 				return this.findAll(criteria, options, cb);
 			} else usageError('Criteria must be a string or object!', usage);
 			throw new notImplementedError();
@@ -302,11 +320,10 @@ var Collection = module.exports = function(definition) {
 		// Return models where >= 1 of the specified attributes end with queryString
 		this.endsWith = function (criteria, options, cb) {
 			var usage = _.str.capitalize(this.identity) + '.startsWith([criteria],[options],callback)';
-			criteria = enhanceLikeQuery(criteria, function applyEndsWith(criteria) {
-				return '%' + criteria;
-			});
 
-			if (criteria = normalize.likeCriteria(criteria, attributes)) {
+			if (criteria = normalize.likeCriteria(criteria, attributes, function applyEndsWith(criteria) {
+				return '%' + criteria;
+			})) {
 				return this.findAll(criteria, options, cb);
 			} else usageError('Criteria must be a string or object!', usage);
 			throw new notImplementedError();

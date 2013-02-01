@@ -39,7 +39,11 @@ describe('LIKE: basic query usage', function() {
 		});
 	});
 
+});
 
+
+
+describe('special LIKE modifiers', function () {
 	it ('should support startsWith()',function (done) {
 		var part = 'xxj8xrxh!!!r';
 		var testName = 'xxj8xrxh!!!r basic startsWith query test';
@@ -60,7 +64,7 @@ describe('LIKE: basic query usage', function() {
 
 	it ('should support contains() (same as LIKE if query doesn\'t contain % signs)',function (done) {
 		var part = 'xx3ah4aj8xrxh!!!r';
-		var testName = 'and here it is: xx3ah4aj8xrxh!!!r basic contains query test';
+		var testName = 'xx3ah4aj8xrxh!!!r  basic contains query test';
 
 		User.create({ name: testName },function (err) {
 			if (err) return done(err);
@@ -78,7 +82,7 @@ describe('LIKE: basic query usage', function() {
 
 	it ('should support endsWith()',function (done) {
 		var part = 'xxj8xa4hPFDH';
-		var testName = 'xxj8xrxh!!!r basic endsWith query test xxj8xa4hPFDH';
+		var testName = 'basic endsWith query test xxj8xa4hPFDH';
 
 		User.create({ name: testName },function (err) {
 			if (err) return done(err);
@@ -132,7 +136,7 @@ describe('LIKE: basic query usage', function() {
 
 	it ('should support endsWith()  with attributes specified',function (done) {
 		var part = 'xxj8xa4hPFDH';
-		var testType = 'xxj8xrxh!!!r endsWith with specified attributes xxj8xa4hPFDH';
+		var testType = ' endsWith with specified attributes xxj8xa4hPFDH';
 
 		User.create({ type: testType },function (err) {
 			if (err) return done(err);
@@ -148,7 +152,74 @@ describe('LIKE: basic query usage', function() {
 		});
 	});
 
+	it ('should support dynamic startsWith()',function (done) {
+
+		var part = 'xxj8xrxh!!!r';
+		User.typeStartsWith(part, function (err, usersA) {
+			if (err) return done(err); 
+			if (!usersA) return done(new Error('StartsWith() query returned nothing!'));
+			if (!_.isArray(usersA)) return done(new Error('StartsWith() query returned a non-list!'));
+			if (usersA.length < 1) return done(new Error('StartsWith() query returned too few usersA!'));
+			if (usersA.length > 1) return done(new Error('StartsWith() query returned too many usersA!'));
+
+			User.nameStartsWith(part, function (err, usersB) {
+				if (err) return done(err); 
+				if (!usersB) return done(new Error('StartsWith() query returned nothing!'));
+				if (!_.isArray(usersB)) return done(new Error('StartsWith() query returned a non-list!'));
+				if (usersB.length < 1) return done(new Error('StartsWith() query returned too few usersB!'));
+				if (usersB.length > 1) return done(new Error('StartsWith() query returned too many usersB!'));
+
+				done(err);
+			});
+		});
+	});
+
+	it ('should support dynamic endsWith()',function (done) {
+
+		var part = 'xxj8xa4hPFDH';
+		User.typeEndsWith(part, function (err, usersA) {
+			if (err) return done(err); 
+			if (!usersA) return done(new Error('endsWith() query returned nothing!'));
+			if (!_.isArray(usersA)) return done(new Error('endsWith() query returned a non-list!'));
+			if (usersA.length < 1) return done(new Error('endsWith() query returned too few usersA!'));
+			if (usersA.length > 1) return done(new Error('endsWith() query returned too many usersA!'));
+
+			User.nameEndsWith(part, function (err, usersB) {
+				if (err) return done(err); 
+				if (!usersB) return done(new Error('endsWith() query returned nothing!'));
+				if (!_.isArray(usersB)) return done(new Error('endsWith() query returned a non-list!'));
+				if (usersB.length < 1) return done(new Error('endsWith() query returned too few usersB!'));
+				if (usersB.length > 1) return done(new Error('endsWith() query returned too many usersB!'));
+
+				done(err);
+			});
+		});
+	});
+
+	it ('should support dynamic contains()',function (done) {
+
+		var part = 'xx3ah4aj8xrxh!!!r';
+		User.typeContains(part, function (err, usersA) {
+			if (err) return done(err); 
+			if (!usersA) return done(new Error('contains() query returned nothing!'));
+			if (!_.isArray(usersA)) return done(new Error('contains() query returned a non-list!'));
+			if (usersA.length < 1) return done(new Error('contains() query returned too few usersA!'));
+			if (usersA.length > 1) return done(new Error('contains() query returned too many usersA!'));
+
+			User.nameContains(part, function (err, usersB) {
+				if (err) return done(err); 
+				if (!usersB) return done(new Error('contains() query returned nothing!'));
+				if (!_.isArray(usersB)) return done(new Error('contains() query returned a non-list!'));
+				if (usersB.length < 1) return done(new Error('contains() query returned too few usersB!'));
+				if (usersB.length > 1) return done(new Error('contains() query returned too many usersB!'));
+
+				done(err);
+			});
+		});
+	});
+
 });
+
 
 describe('findByLike', function() {
 
