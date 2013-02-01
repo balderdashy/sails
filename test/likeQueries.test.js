@@ -1,3 +1,5 @@
+var _ = require('underscore');
+
 describe('LIKE: basic query usage', function() {
 	it ('should return the user with the given name',function (done) {
 		var part = 'basic LIKE query test';
@@ -38,7 +40,61 @@ describe('LIKE: basic query usage', function() {
 	});
 
 
-	// TODO: startsWith()
+	it ('should support startsWith()',function (done) {
+		var part = 'xxj8xrxh!!!r';
+		var testName = 'xxj8xrxh!!!r basic startsWith query test';
+
+		User.create({ name: testName },function (err) {
+			if (err) return done(err);
+			User.startsWith(part,function(err,users) {
+				if (err) return done(err); 
+				if (!users) return done(new Error('startsWith() query returned nothing!'));
+				if (!_.isArray(users)) return done(new Error('startsWith() query returned a non-list!'));
+				if (users.length < 1) return done(new Error('startsWith() query returned too few users!'));
+				if (users.length > 1) return done(new Error('startsWith() query returned too many users!'));
+				if (users[0].name !== testName) return done(new Error('startsWith() query returned incorrect user!'));
+				done(err);
+			});
+		});
+	});
+
+	it ('should support contains() (same as LIKE if query doesn\'t contain % signs)',function (done) {
+		var part = 'xx3ah4aj8xrxh!!!r';
+		var testName = 'and here it is: xx3ah4aj8xrxh!!!r basic contains query test';
+
+		User.create({ name: testName },function (err) {
+			if (err) return done(err);
+			User.contains(part,function(err,users) {
+				if (err) return done(err); 
+				if (!users) return done(new Error('contains() query returned nothing!'));
+				if (!_.isArray(users)) return done(new Error('contains() query returned a non-list!'));
+				if (users.length < 1) return done(new Error('contains() query returned too few users!'));
+				if (users.length > 1) return done(new Error('contains() query returned too many users!'));
+				if (users[0].name !== testName) return done(new Error('contains() query returned incorrect user!'));
+				done(err);
+			});
+		});
+	});
+
+	it ('should support endsWith()',function (done) {
+		var part = 'xxj8xa4hPFDH';
+		var testName = 'xxj8xrxh!!!r basic endsWith query test xxj8xa4hPFDH';
+
+		User.create({ name: testName },function (err) {
+			if (err) return done(err);
+			User.endsWith(part,function(err,users) {
+				if (err) return done(err); 
+				if (!users) return done(new Error('endsWith() query returned nothing!'));
+				if (!_.isArray(users)) return done(new Error('endsWith() query returned a non-list!'));
+				if (users.length < 1) return done(new Error('endsWith() query returned too few users!'));
+				if (users.length > 1) return done(new Error('endsWith() query returned too many users!'));
+				if (users[0].name !== testName) return done(new Error('endsWith() query returned incorrect user!'));
+				done(err);
+			});
+		});
+	});
+
+
 	// TODO: basic like usage
 
 	// TODO: endsWith()

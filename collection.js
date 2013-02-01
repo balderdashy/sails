@@ -276,34 +276,51 @@ var Collection = module.exports = function(definition) {
 		
 		this.startsWith = function (criteria, options, cb) {
 			var usage = _.str.capitalize(this.identity) + '.startsWith([criteria],[options],callback)';
-			var likeCriteria;
+			criteria = enhanceLikeQuery(criteria, function applyStartsWith(criteria) {
+				return criteria + '%';
+			});
 
-			if (_.isObject(criteria)) {
-				likeCriteria = util.objMap(_.clone(criteria), applyStartsWith);
-			}
-			else if (_.isString(criteria)) {
-				likeCriteria = applyStartsWith(criteria);
-			}
-
-			function applyStartsWith(criteria) {
-				return '%'+criteria;
-			}
-
-			if (criteria = normalize.likeCriteria(likeCriteria, attributes)) {
-				return this.findAll(likeCriteria, optoins, cb);
+			if (criteria = normalize.likeCriteria(criteria, attributes)) {
+				return this.findAll(criteria, options, cb);
 			} else usageError('Criteria must be a string or object!', usage);
 			throw new notImplementedError();
 		};
 
 		// Return models where >= 1 of the specified attributes contain queryString
 		this.contains = function (criteria, options, cb) {
+			var usage = _.str.capitalize(this.identity) + '.startsWith([criteria],[options],callback)';
+			criteria = enhanceLikeQuery(criteria, function applyContains(criteria) {
+				return '%' + criteria + '%';
+			});
+
+			if (criteria = normalize.likeCriteria(criteria, attributes)) {
+				return this.findAll(criteria, options, cb);
+			} else usageError('Criteria must be a string or object!', usage);
 			throw new notImplementedError();
 		};
 
 		// Return models where >= 1 of the specified attributes end with queryString
 		this.endsWith = function (criteria, options, cb) {
+			var usage = _.str.capitalize(this.identity) + '.startsWith([criteria],[options],callback)';
+			criteria = enhanceLikeQuery(criteria, function applyEndsWith(criteria) {
+				return '%' + criteria;
+			});
+
+			if (criteria = normalize.likeCriteria(criteria, attributes)) {
+				return this.findAll(criteria, options, cb);
+			} else usageError('Criteria must be a string or object!', usage);
 			throw new notImplementedError();
 		};
+
+		// Apply an enhancement (startsWith, endsWith, contains) to a LIKE criteria
+		function enhanceLikeQuery(criteria, enhancer) {
+			if (_.isObject(criteria)) {
+				return util.objMap(_.clone(criteria), enhancer);
+			}
+			else if (_.isString(criteria)) {
+				return enhancer(criteria);
+			}
+		}
 
 		//////////////////////////////////////////
 		// Cardinality methods

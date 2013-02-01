@@ -96,7 +96,7 @@ var normalize = module.exports = {
 				like: criteria.where
 			};
 
-			// Look for and escape % signs
+			// Look for and handle % signs
 			_.each(criteria.where.like, function(criterion, attrName) {
 				criteria.where.like[attrName] = normalizePercentSigns(criterion);
 			});
@@ -118,7 +118,7 @@ var normalize = module.exports = {
 					like: {}
 				};
 
-				// Look for and escape % signs
+				// Look for and handle % signs
 				obj.like[attrName] = normalizePercentSigns(searchTerm);
 
 				criteria.where.or.push(obj);
