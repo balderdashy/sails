@@ -1,6 +1,8 @@
 var _ = require('underscore');
 describe('lessThan', function() {
 
+	var testName = 'lessThan test';
+
 	it('should work with basic usage', function(cb) {
 		User.findAll(testName, {
 			age: {
