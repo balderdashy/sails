@@ -78,6 +78,10 @@ module.exports = function (operation) {
 		else return this;
 	};
 
+	// TODO for filtering
+	this.like = function (queryString, attributes, cb) {
+		throw new notImplementedError();
+	};
 	this.startsWith = function (queryString, attributes, cb) {
 		throw new notImplementedError();
 	};
