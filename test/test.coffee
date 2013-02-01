@@ -3,7 +3,6 @@ should = require('chai').should()
 spawn = require('child_process').spawn
 easyrequest = require 'request'
 fs = require 'fs'
-retry = require 'retry'
 
 testProject = 'sails-example'
 sailsBin = '../bin/sails.js'
