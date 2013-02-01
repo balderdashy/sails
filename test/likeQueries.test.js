@@ -94,13 +94,60 @@ describe('LIKE: basic query usage', function() {
 		});
 	});
 
+	it ('should support startsWith() with attributes specified',function (done) {
+		var part = 'xxj8xrxh!!!r';
+		var testType = 'xxj8xrxh!!!r startsWith with specified attributes';
 
-	// TODO: basic like usage
+		User.create({ type: testType },function (err) {
+			if (err) return done(err);
+			User.startsWith({type: part},function(err,users) {
+				if (err) return done(err); 
+				if (!users) return done(new Error('startsWith() query returned nothing!'));
+				if (!_.isArray(users)) return done(new Error('startsWith() query returned a non-list!'));
+				if (users.length < 1) return done(new Error('startsWith() query returned too few users!'));
+				if (users.length > 1) return done(new Error('startsWith() query returned too many users!'));
+				if (users[0].type !== testType) return done(new Error('startsWith() query returned incorrect user!'));
+				done(err);
+			});
+		});
+	});
 
-	// TODO: endsWith()
-	// TODO: basic like usage
+	it ('should support contains()  with attributes specified',function (done) {
+		var part = 'xx3ah4aj8xrxh!!!r';
+		var testType = 'and here it is: xx3ah4aj8xrxh!!!r  contains with specified attributes';
 
-	// TODO: contains()
+		User.create({ type: testType },function (err) {
+			if (err) return done(err);
+			User.contains({type: part},function(err,users) {
+				if (err) return done(err); 
+				if (!users) return done(new Error('contains() query returned nothing!'));
+				if (!_.isArray(users)) return done(new Error('contains() query returned a non-list!'));
+				if (users.length < 1) return done(new Error('contains() query returned too few users!'));
+				if (users.length > 1) return done(new Error('contains() query returned too many users!'));
+				if (users[0].type !== testType) return done(new Error('contains() query returned incorrect user!'));
+				done(err);
+			});
+		});
+	});
+
+	it ('should support endsWith()  with attributes specified',function (done) {
+		var part = 'xxj8xa4hPFDH';
+		var testType = 'xxj8xrxh!!!r endsWith with specified attributes xxj8xa4hPFDH';
+
+		User.create({ type: testType },function (err) {
+			if (err) return done(err);
+			User.endsWith({type: part},function(err,users) {
+				if (err) return done(err); 
+				if (!users) return done(new Error('endsWith() query returned nothing!'));
+				if (!_.isArray(users)) return done(new Error('endsWith() query returned a non-list!'));
+				if (users.length < 1) return done(new Error('endsWith() query returned too few users!'));
+				if (users.length > 1) return done(new Error('endsWith() query returned too many users!'));
+				if (users[0].type !== testType) return done(new Error('endsWith() query returned incorrect user!'));
+				done(err);
+			});
+		});
+	});
+
 });
 
 describe('findByLike', function() {
