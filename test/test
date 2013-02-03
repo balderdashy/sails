@@ -1,6 +1,0 @@
-#!/bin/bash
-
-rm -f ../node_modules/sails
-ln -sT ../../sails ../node_modules/sails
-../node_modules/mocha/bin/mocha --compilers coffee:coffee-script test.coffee --reporter spec --timeout 5000
-rm ../node_modules/sails
