@@ -39,19 +39,19 @@ exports.adapter = 'waterline-dirty';
 // development: stateful (on-disk dirtydb)
 ////////////////////////////////////////////////////////
 // exports.adapter = {
-//	identity	: 'waterline-dirty',
-//	inMemory	: false
+// 	identity	: 'waterline-dirty',
+// 	inMemory	: false
 // };
 
 ////////////////////////////////////////////////////////
 // mySQL
 ////////////////////////////////////////////////////////
-//exports.adapter = {
-//	identity	: 'waterline-mysql',
-//	database	: 'waterline',
-//	user		: 'waterline',
-//	password	: 'abc123'
-//};
+// exports.adapter = {
+// 	identity	: 'waterline-mysql',
+// 	database	: 'waterline',
+// 	user		: 'waterline',
+// 	password	: 'abc123'
+// };
 
 ////////////////////////////////////////////////////////
 // mySQL: connection pooling enabled

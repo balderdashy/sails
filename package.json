@@ -37,7 +37,7 @@
     "parley": "0.0.2",
     "sails-util": "0.1.0",
     "sails-moduleloader": "~1.1.5",
-    "waterline-dirty": "~0.2.3",
-    "waterline-mysql": "~0.2.1"
+    "waterline-dirty": "~0.3.0",
+    "waterline-mysql": "~0.3.0"
   }
 }
