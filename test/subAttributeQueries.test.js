@@ -1,7 +1,7 @@
 var _ = require('underscore');
 
 describe('sub-attribute criteria queries', function(cb) {
-	describe('lessThan', function(cb) {
+	describe('lessThan (<, <=)', function(cb) {
 
 		var testName = 'lessThan test';
 
@@ -59,7 +59,7 @@ describe('sub-attribute criteria queries', function(cb) {
 		});
 	});
 
-	describe('greaterThan', function(cb) {
+	describe('greaterThan (>, >=)', function(cb) {
 
 		var testName = 'greaterThan test';
 
@@ -113,6 +113,49 @@ describe('sub-attribute criteria queries', function(cb) {
 					'>=': 5
 				}
 			}, checkListResult(2, cb));
+		});	
+	});
+
+
+
+	describe('not (!)', function(cb) {
+
+		var testName = 'not (!) test';
+
+		before(function (cb) {
+			User.createEach([{
+				age: 40,
+				name: testName
+			},
+			{
+				age: 44,
+				name: testName
+			},
+			{
+				age: 45,
+				name: testName
+			},
+			{
+				age: 46,
+				name: testName
+			}], cb);
+		});
+
+		it('should work with basic usage', function(cb) {
+			User.findAll({
+				name: testName,
+				age: {
+					not: 40
+				}
+			}, checkListResult(3, cb));
+		});
+		it('should work with symbolic usage', function(cb) {
+			User.findAll({
+				name: testName,
+				age: {
+					'!': 40
+				}
+			}, checkListResult(3, cb));
 		});	
 	});
 });
