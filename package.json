@@ -67,7 +67,9 @@
     "sails-moduleloader": "~1.1.5",
     "sails-util": "0.1.0",
     "fs-extra": "~0.3.2",
-    "i18n": "~0.3.5"
+    "i18n": "~0.3.5",
+    "wrench": "*",
+    "uglify-js": "*"
   },
   "devDependencies": {
     "mocha": "*",

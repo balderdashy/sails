@@ -14,6 +14,10 @@ describe 'the sails cli', ->
         rm = spawn 'rm', ['-rf', testProject]
         rm.on 'exit', ->
             sails = spawn sailsBin, ['new', testProject]
+            sails.stderr.setEncoding 'utf8'
+            data = ''
+            sails.stderr.on 'data', (buffer) ->
+                data += buffer
             sails.on 'exit', (code) ->
                 code.should.equal 0
                 process.chdir "#{__dirname}/#{testProject}"
@@ -21,7 +25,7 @@ describe 'the sails cli', ->
                 app = spawn 'node', [sailsBin, 'lift']
                 app.on 'exit', ->
                     unless finished
-                        throw new Error 'Sails server exited prematurely, check for other running sails instances.'
+                        throw new Error "Sails server exited prematurely, check for other running sails instances.\n#{data}"
                 setTimeout done, 1000
         
     it 'should lift', (done) ->
