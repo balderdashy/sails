@@ -7,17 +7,11 @@ var parley = require('parley');
 // Prototype definitions
 var Adapter = require('./adapter.js');
 var Collection = require('./collection.js');
-var Model = require('./model.js');
 
 // Util
 var modules = require('sails-moduleloader');
 
 // Include built-in adapters and collections
-var builtInAdapters = modules.required({
-	dirname		: __dirname + '/adapters',
-	filter		: /(.+Adapter)\.js$/,
-	replaceExpr	: /Adapter/
-});
 var builtInCollections = modules.required({
 	dirname		: __dirname + '/collections',
 	filter		: /(.+)\.js$/
@@ -39,7 +33,7 @@ module.exports = function (options,cb) {
 	var $$ = new parley();
 
 	// Merge passed-in adapters + collections with defaults
-	adapters = _.extend(builtInAdapters,adapters);
+	adapters = _.clone(adapters);
 	collections = _.extend(builtInCollections,collections);
 
 	// Read global config
