@@ -47,12 +47,12 @@ var Collection = module.exports = function(definition) {
 			definition.sync = _.bind(definition.adapter.sync.safe, definition.adapter, definition);
 		}
 
-		// Absorb definition methods
+		// Absorb definition
 		_.extend(this, definition);
 
 		// if configured as such, make each collection globally accessible
 		if(definition.globalize) {
-			var globalName = this.globalId || this.identity;
+			var globalName = definition.globalId || this.identity;
 			global[globalName] = this;
 		}
 
@@ -482,6 +482,11 @@ var Collection = module.exports = function(definition) {
 			return trimmedParams;
 		};
 		this.trimParams = this.filter;
+
+
+		// Absorb JUST the methods again, to override any of the above if they're specified
+		_.extend(this,_.functions(definition));
+
 
 	// Bind instance methods to collection
 	_.bindAll(definition);

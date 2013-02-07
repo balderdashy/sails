@@ -19,36 +19,23 @@ module.exports = function (options,cb) {
 
 	// Read global config
 	// Extend default config with user options
-	var config = require('./config.js');
-	config = _.extend(config, options);
+	var globalConfig = require('./config.js');
+	globalConfig = _.extend(globalConfig, options);
 
 	// Only tear down waterline once 
 	// (if teardown() is called explicitly, don't tear it down when the process exits)
 	var tornDown = false;
 
+	var log = options.log || console.log;
+	var $$ = new parley();
+
 	var collections = {};
 	var adapters = {};
-
-	// Start off with just the default transaction collection
-	// (can be overridden by passed-in collections)
-	collections[config.transactionDbIdentity] = require('./defaultTransactionCollection.js');
 
 	// Extend with adapter and collection defs passed in 
 	collections = _.extend(collections,options.collections);
 	adapters = _.extend(adapters,options.adapters);
 
-	var log = options.log || console.log;
-	var $$ = new parley();
-
-	// Error aggregator obj
-	// var errs;
-
-	// Determine the minimal number of adapter instances we'll need to instantiate
-	// TODO
-
-	// initialize each adapter in series
-	// TODO: parallelize this process (would decrease server startup time)
-	$$(async).forEach(_.keys(adapters),prepareAdapter);
 
 	// then associate each collection with its adapter and sync its schema
 	$$(async).forEach(_.keys(collections),prepareCollection);
@@ -105,12 +92,18 @@ module.exports = function (options,cb) {
 
 
 	// Instantiate an adapter object
-	function prepareAdapter (adapterName,cb) {
+	function prepareAdapter (adapterName, config, cb) {
+		// Instantiate adapter (if it hasn't been already)
+		if (_.isFunction (adapters[adapterName])) {
+			adapters[adapterName] = adapters[adapterName](config);
+		}
 		
 		// Pass waterline config down to adapters
 		adapters[adapterName].config = _.extend({
 			log: log
-		}, config, adapters[adapterName].config);
+		}, globalConfig, adapters[adapterName].config, config);
+		console.log("config:",config,adapterName);
+
 
 		// Build actual adapter object from definition
 		// and replace the entry in the adapter dictionary
@@ -130,34 +123,13 @@ module.exports = function (options,cb) {
 	}
 
 
-	// Use adapter shortname to look up actual adapter
-	// cb :: (err, adapter)
-	function getAdapterByIdentity (identity, cb) {
-
-		if (adapters[identity]) cb(null, adapters[identity]);
-
-		// If the adapter doesn't exist yet, try to require it
-		else loadAdapter(identity, cb);
-	}
-
-	// cb :: (err, adapter)
-	function loadAdapter (identity, cb) {
-		// Add to adapters set
-		adapters[identity] = require(identity) ();
-		
-		// Then prepare the adapter
-		prepareAdapter(identity,function (err) {
-			cb (err, adapters[identity]);
-		});
-	}
-
 	// Instantiate a collection object
 	function instantiateCollection (definition, cb) {
 
-		// Track whether this collection can use the shared version of its adapter
-		// or whether a new instance of the adapter needs to be instantiated
-		// (necessary in cases w/ fundamentally different settings-- i.e. separate database)
-		var sharedAdapter = false;
+		if (!_.isString(definition.adapter)) {
+			sails.log.error("Invalid adapter defintion:", definition.adapter, " in ",definition.identity);
+			process.exit(1);
+		}
 
 		// Whether to use the app's default adapter
 		var defaultAdapter = false;
@@ -166,47 +138,22 @@ module.exports = function (options,cb) {
 		if (!definition.adapter) {
 
 			// If no adapter is specifed, the default adapter will be used
-			// (and it will be shared)
 			defaultAdapter = true;
-			sharedAdapter = true;
 
-			definition.adapter = config.defaultAdapter;
+			definition.adapter = globalConfig.defaultAdapter;
 		}
 
-		// Adapter specified as a string
-		if (_.isString(definition.adapter)) {
+		var identity = definition.adapter;
 
-			// If the adapter is specifed as a string, it can be shared
-			sharedAdapter = true;
-
-			getAdapterByIdentity(definition.adapter, afterwards);
+		if (!adapters[identity]) {
+			// If the adapter doesn't exist yet, try to require it
+			adapters[identity] = require(identity);
 		}
-		else if (_.isObject(definition.adapter)) {
 
-			if (!definition.adapter.identity) return cb("No identity specified in adapter definition!");
-
-			getAdapterByIdentity(definition.adapter.identity, function gotAdapter (err,adapter) {
-			
-				// If the shared adapter can't be used
-				// Absorb relevant items from collection config into the cloned adapter definition
-				// Instantiate a new, cloned adapter unique to this collection
-				if (!sharedAdapter) {
-
-					// TODO:	be smart and only maintain the minimum number of adapters in memory necessary
-					//			Since adapter connections need only be config-specific
-					var temporalIdentity = adapter.identity + '-' + definition.identity;
-					
-					// Add to adapters set (and pass in config object)
-					adapters[temporalIdentity] = require(adapter.identity) (definition.adapter);
-					
-					// Then prepare the adapter
-					prepareAdapter(temporalIdentity, function (err) {
-						afterwards (err, adapters[temporalIdentity]);
-					});
-				}
-				else afterwards(err,adapter);
-			});
-		}
+		// Then prepare the adapter
+		return prepareAdapter(identity, definition, function (err) {
+			return afterwards (err, adapters[identity]);
+		});
 
 		function afterwards(err, adapter) {
 			if (err) return cb(err);
@@ -223,8 +170,10 @@ module.exports = function (options,cb) {
 			// Build actual collection object from definition
 			var collection = new Collection(definition);
 
-			// Update the adapter's in-memory schema cache
-			adapter._adapter.schema[collection.identity] = collection.schema;
+			// Update the adapter's in-memory schema cache (if one exists)
+			if (adapter._adapter.schema) {
+				adapter._adapter.schema[collection.identity] = collection.schema;
+			}
 
 			// Call initializeCollection() event on adapter
 			collection.adapter.initializeCollection(collection.identity,function (err) {
@@ -238,8 +187,14 @@ module.exports = function (options,cb) {
 
 	// add transaction collection to each collection's adapter
 	function addTransactionCollection (collection, cb) {
-		collection.adapter.transactionCollection = collections[config.transactionDbIdentity];
-		cb();
+		if (collection.adapter.transactionCollection) return cb();
+		else {
+			instantiateCollection(require('./defaultTransactionCollection.js'), function (err, result) {
+				collection.adapter.transactionCollection = result;
+				console.log("TRANSACTION COLLECTION:::",result);
+				cb(err, result);
+			});
+		}
 	}
 
 	// Sync a collection w/ its adapter's data store
