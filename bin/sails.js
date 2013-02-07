@@ -73,12 +73,21 @@ else if(argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^generat$|^gener
 }
 
 // Create a new app
+// second argument == app name
 else if(argv._[0].match(/^n$|^ne$|^new$/) || argv.n || argv['new']) {
-	sails.log.info("Generating Sails project...");
-	verifyArg(1, "Please specify the name of the new project directory as the first argument.");
+	createNewApp(argv._[1]);
+}
 
-	// If not an action, first argument == app name
-	var appName = argv._[1];
+// Unknown command, assume creating a new app w/ that name
+// First argument == app name
+else  {
+	verifyArg(0, "Please specify the name of the new project directory as the first argument.");
+	createNewApp(argv._[0]);
+}
+
+function createNewApp (appName) {
+	sails.log.info("Generating Sails project ("+appName+")...");
+
 	outputPath = outputPath + "/" + appName;
 	verifyDoesntExist(outputPath, "A file or directory already exists at: " + outputPath);
 
@@ -159,11 +168,6 @@ else if(argv._[0].match(/^n$|^ne$|^new$/) || argv.n || argv['new']) {
 	// Generate README
 	sails.log.debug("Generating README.md...");
 	fs.writeFileSync(outputPath + '/README.md', '# ' + appName + '\n### a Sails application');
-}
-// Unknown command
-else  {
-	sails.log.error("Unknown usage!");
-	sailsUsage();
 }
 
 
