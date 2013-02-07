@@ -9,6 +9,6 @@
 /*
 exports.adapter = 'waterline-mongo'
 */
-exports.identity = require('../config.js').transactionDbIdentity;
+exports.identity = require('./config.js').transactionDbIdentity;
 exports.adapter = 'waterline-dirty';
 exports.migrate = 'drop';

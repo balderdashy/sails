@@ -11,38 +11,40 @@ var Collection = require('./collection.js');
 // Util
 var modules = require('sails-moduleloader');
 
-// Include built-in adapters and collections
-var builtInCollections = modules.required({
-	dirname		: __dirname + '/collections',
-	filter		: /(.+)\.js$/
-});
-
 /**
 * Prepare waterline to interact with adapters
 */
 module.exports = function (options,cb) {
 	var self = this;
 
-	// Only tear down waterline once 
-	// (if teardown() is called explicitly, don't tear it down when the process exits)
-	var tornDown = false;
-
-	var adapters = options.adapters || {};
-	var collections = options.collections || {};
-	var log = options.log || console.log;
-	var $$ = new parley();
-
-	// Merge passed-in adapters + collections with defaults
-	adapters = _.clone(adapters);
-	collections = _.extend(builtInCollections,collections);
-
 	// Read global config
 	// Extend default config with user options
 	var config = require('./config.js');
 	config = _.extend(config, options);
 
+	// Only tear down waterline once 
+	// (if teardown() is called explicitly, don't tear it down when the process exits)
+	var tornDown = false;
+
+	var collections = {};
+	var adapters = {};
+
+	// Start off with just the default transaction collection
+	// (can be overridden by passed-in collections)
+	collections[config.transactionDbIdentity] = require('./defaultTransactionCollection.js');
+
+	// Extend with adapter and collection defs passed in 
+	collections = _.extend(collections,options.collections);
+	adapters = _.extend(adapters,options.adapters);
+
+	var log = options.log || console.log;
+	var $$ = new parley();
+
 	// Error aggregator obj
 	// var errs;
+
+	// Determine the minimal number of adapter instances we'll need to instantiate
+	// TODO
 
 	// initialize each adapter in series
 	// TODO: parallelize this process (would decrease server startup time)
