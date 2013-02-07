@@ -17,6 +17,36 @@ var assert = require("assert");
 
 
 describe('CRUD :: Aggreagate methods and transactions', function (){
+
+	describe ('overloaded usage',function () {
+		var testName = 'test create a list';
+		var testData = [
+			{name: ''+Math.round(Math.random()*10000), type: testName},
+			{name: ''+Math.round(Math.random()*10000), type: testName},
+			{name: ''+Math.round(Math.random()*10000), type: testName},
+			{name: ''+Math.round(Math.random()*10000), type: testName}
+		];
+
+		before(function (done) {
+			User.create(testData, done); 
+		});
+
+		it ('should have saved the proper values (with auto-increment values)',function (done) {
+			
+			User.findAll({type: testName},function (err,users) {
+				if (err) done(new Error(err));
+				else if (!pluckEqual(users,testData, 'name')) {
+					done(new Error ('Proper user names were not saved!')); 
+				}
+				else if (!validAutoIncrementIds(users)) {
+					done(new Error ('Ids were not properly auto-incremented!')); 
+				}
+				else done();
+			});
+		});
+	});
+
+
 	describe ('createEach',function () {
 
 		var testName = 'test createEach';

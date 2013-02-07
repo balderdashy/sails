@@ -197,6 +197,9 @@ var Collection = module.exports = function(definition) {
 				cb = values;
 				values = null;
 			}
+			else if (_.isArray(values)) {
+				return this.createEach(values,cb);
+			}
 			var usage = _.str.capitalize(this.identity) + '.create({someAttr: "someValue"},callback)';
 
 
