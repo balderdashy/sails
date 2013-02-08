@@ -189,6 +189,7 @@ function sailsUsage () {
 	sails.log.info('Usage: sails <command>\n'+
 		'\n'+
 		'sails lift\t\tRun this Sails app (in the current dir)\n'+
+		'sails console\t\tRun this Sails app (in the current dir & in interactive mode.)\n'+
 		'sails new <appName>\t\tCreate a new Sails project in the current dir\n'+
 		'sails generate <foo>\tGenerate model and controller for this app\n'+
 		'sails version\t\tGet the current globally installed Sails version'
