@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha --globals ___transaction --globals User -b -R landing -t 8000"
+    "test": "mocha --globals ___transaction --recursive  --globals User -b -R landing -t 8000"
   },
   "repository": {
     "type": "git",
