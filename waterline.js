@@ -80,7 +80,7 @@ module.exports = function (options,cb) {
 	})();
 
 	
-	// Pass instantiated adapters and models
+	// Pass back instantiated adapters and models
 	$$(function (xcb) {
 		cb(null,{
 			adapters: adapters,
