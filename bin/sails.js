@@ -103,14 +103,15 @@ function createNewApp (appName) {
 	generateDir("ui/public/js");
 	generateDir(sails.config.paths.views);
 	generateDir(sails.config.paths.templates);
+	generateFile('404.ejs', sails.config.paths['404']);
 	generateFile('layout.ejs', sails.config.paths.layout);
 
 	generateDir('api');
 	generateDir(sails.config.paths.models);
 	generateDir(sails.config.paths.controllers);
 	generateDir(sails.config.paths.middleware);
-	// NOTE: We are not creating an adapters directory for now to keep things simple.
-	// NOTE: We are not creating a services directory for now to keep things simple.
+	generateDir(sails.config.paths.services);
+	// NOTE: We are not creating an adapters directory for now to keep things simple for new users.
 	
 	generateDir('config');
 	generateFile('config/routes.js', 'config/routes.js');
