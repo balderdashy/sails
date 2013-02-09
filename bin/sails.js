@@ -29,15 +29,15 @@ else if ( _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 
 // Start this app in interactive mode
 else if ( _.contains(['console'], argv._[0]) ) {
 	require(process.cwd()+'/app.js');
-	setTimeout(function () {
-	  	console.log('Sails Console started');
-  		console.log('To exit, type ".exit"');
-	}, 1000);
-	repl = require("repl").start("Sails> ");
-	repl.on('exit', function () {
-  		console.log('Closing Console');
-  		process.exit();
-	});
+  	setTimeout(function () {
+		sails.log.info('Sails Console started');
+  		sails.log.info('To exit, type ".exit"');
+		repl = require("repl").start("Sails> ");
+		repl.on('exit', function () {
+  			console.log('Closing Console');
+  			process.exit();
+		});
+	}, 500);
 }
 // Get the sails version
 else if (argv.v || argv.version || argv._[0] === 'version') {
