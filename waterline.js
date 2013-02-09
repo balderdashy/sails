@@ -102,7 +102,7 @@ module.exports = function (options,cb) {
 		adapters[adapterName].config = _.extend({
 			log: log
 		}, globalConfig, adapters[adapterName].config, config);
-		console.log("config:",config,adapterName);
+		// console.log("config:",config,adapterName);
 
 
 		// Build actual adapter object from definition
@@ -126,22 +126,17 @@ module.exports = function (options,cb) {
 	// Instantiate a collection object
 	function instantiateCollection (definition, cb) {
 
+		// If no adapter is specifed, the default adapter will be used
+		if (!definition.adapter) {
+			definition.adapter = globalConfig.defaultAdapter;
+		}
+
 		if (!_.isString(definition.adapter)) {
 			sails.log.error("Invalid adapter defintion:", definition.adapter, " in ",definition.identity);
 			process.exit(1);
 		}
 
-		// Whether to use the app's default adapter
-		var defaultAdapter = false;
-
-		// If no adapter is specified, default to whatever's in the config
-		if (!definition.adapter) {
-
-			// If no adapter is specifed, the default adapter will be used
-			defaultAdapter = true;
-
-			definition.adapter = globalConfig.defaultAdapter;
-		}
+		
 
 		var identity = definition.adapter;
 
@@ -191,7 +186,6 @@ module.exports = function (options,cb) {
 		else {
 			instantiateCollection(require('./defaultTransactionCollection.js'), function (err, result) {
 				collection.adapter.transactionCollection = result;
-				console.log("TRANSACTION COLLECTION:::",result);
 				cb(err, result);
 			});
 		}
