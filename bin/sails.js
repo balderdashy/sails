@@ -26,6 +26,19 @@ if (argv._.length === 0) {
 else if ( _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l'], argv._[0]) ) {
 	require(process.cwd()+'/app.js');
 }
+// Start this app in interactive mode
+else if ( _.contains(['console'], argv._[0]) ) {
+	require(process.cwd()+'/app.js');
+	setTimeout(function () {
+	  	console.log('Sails Console started');
+  		console.log('To exit, type ".exit"');
+	}, 1000);
+	repl = require("repl").start("Sails> ");
+	repl.on('exit', function () {
+  		console.log('Closing Console');
+  		process.exit();
+	});
+}
 // Get the sails version
 else if (argv.v || argv.version || argv._[0] === 'version') {
 	sails.log.info('v'+sails.version);
@@ -177,6 +190,7 @@ function sailsUsage () {
 	sails.log.info('Usage: sails <command>\n'+
 		'\n'+
 		'sails lift\t\tRun this Sails app (in the current dir)\n'+
+		'sails console\t\tRun this Sails app (in the current dir & in interactive mode.)\n'+
 		'sails new <appName>\t\tCreate a new Sails project in the current dir\n'+
 		'sails generate <foo>\tGenerate model and controller for this app\n'+
 		'sails version\t\tGet the current globally installed Sails version'
