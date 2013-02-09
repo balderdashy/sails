@@ -3,6 +3,8 @@ var _ = require('underscore');
 var parley = require('parley');
 var uuid = require('node-uuid');
 
+var Collection = require('./collection.js');
+
 // (for sorting)
 var MAX_INTEGER = 4294967295;
 
@@ -12,55 +14,40 @@ var config = require('./config.js');
 var normalize = require('./normalize.js');
 
 // Extend adapter definition
-module.exports = function(adapter) {
+module.exports = function(adapterDef, cb) {
 	var self = this;
 
 	// Absorb configuration
-	this.config = _.extend({}, adapter.config || {});
+	this.config = _.extend({}, adapterDef.config || {});
 
 	// Absorb identity
-	this.identity = adapter.identity;
+	this.identity = adapterDef.identity;
 
-	// Store reference to app-level adapter inside this wrapper object
-	this._adapter = adapter;
+	// Store reference to app-level adapterDef inside this wrapper object
+	this._adapter = adapterDef;
 	
-	// Maintain an in-memory cache of this adapter's collections' schema for quicker lookup
+	// Maintain an in-memory cache of this adapterDef's collections' schema for quicker lookup
 	// (this will be populated as new collections are instantiated)
 	// (uses the app collections)
 	this._adapter.schema = {};
 
 
-	// Initialize is fired once-per-adapter
-	this.initialize = function(cb) {
-		// Make logger easily accessible
-		adapter.log = self.config.log;
-		if (adapter.initialize) adapter.initialize(cb);
-		else cb();
-	};
-
 	// Logic to handle the (re)instantiation of collections
-	this.initializeCollection = function(collectionName, cb) {
-		if (adapter.initializeCollection) {
-			adapter.initializeCollection.apply(this,arguments);
+	this.registerCollection = function(collection, cb) {
+		if (adapterDef.registerCollection) {
+			adapterDef.registerCollection(collection,cb);
 		}
 		else cb && cb();
 	};
 
 	// Teardown is fired once-per-adapter
+	// Should tear down any open connections, etc. for each collection
 	// (i.e. tear down any remaining connections to the underlying data model)
+	// (i.e. flush data to disk before the adapter shuts down)
 	this.teardown = function(cb) {
-		if (adapter.teardown) adapter.teardown.apply(this,arguments);
+		if (adapterDef.teardown) adapterDef.teardown.apply(this,arguments);
 		else cb && cb();
 	}; 
-
-	// teardownCollection is fired once-per-collection
-	// (i.e. flush data to disk before the adapter shuts down)
-	this.teardownCollection = function(collectionName,cb) {
-		if (adapter.teardownCollection) {
-			adapter.teardownCollection.apply(this,arguments);
-		}
-		else cb && cb();
-	};
 
 
 
@@ -81,32 +68,32 @@ module.exports = function(adapter) {
 			if(err) return cb(err, attributes);
 			else if(existingAttributes) return cb("Trying to define a collection (" + collectionName + ") which already exists.");
 			
-			if (adapter.define) adapter.define(collectionName, attributes, cb);
+			if (adapterDef.define) adapterDef.define(collectionName, attributes, cb);
 			else cb();
 		});
 	};
 
 	this.describe = function(collectionName, cb) {
-		if (adapter.describe) {
-			adapter.describe(collectionName, cb);
+		if (adapterDef.describe) {
+			adapterDef.describe(collectionName, cb);
 		}
 		else cb();
 	};
 	this.drop = function(collectionName, cb) {
-		if (adapter.drop) {
-			adapter.drop(collectionName, cb);
+		if (adapterDef.drop) {
+			adapterDef.drop(collectionName, cb);
 		}
 		else cb();
 	};
 	this.alter = function(collectionName, attributes, cb) {
 		var self = this;
 
-		// If the adapter defines alter, use that
-		if (adapter.alter) {
-			adapter.alter(collectionName, attributes, cb);
+		// If the adapterDef defines alter, use that
+		if (adapterDef.alter) {
+			adapterDef.alter(collectionName, attributes, cb);
 		}
-		// If the adapter defines column manipulation, use it
-		else if (adapter.addAttribute && adapter.removeAttribute) {
+		// If the adapterDef defines column manipulation, use it
+		else if (adapterDef.addAttribute && adapterDef.removeAttribute) {
 			// Update the data belonging to this attribute to reflect the new properties
 			// Realistically, this will mainly be about constraints, and primarily uniquness
 			// It'd be good if waterline could enforce all constraints at this time,
@@ -142,13 +129,13 @@ module.exports = function(adapter) {
 					}
 				});
 
-				// Add and remove attributes using the specified adapter
+				// Add and remove attributes using the specified adapterDef
 				async.forEach(_.keys(newAttributes), function (attrName, cb) {
-					adapter.addAttribute(collectionName, attrName, newAttributes[attrName], cb);
+					adapterDef.addAttribute(collectionName, attrName, newAttributes[attrName], cb);
 				}, function (err) {
 					if (err) throw err;
 					async.forEach(_.keys(deprecatedAttributes), function (attrName, cb) {
-						adapter.removeAttribute(collectionName, attrName, deprecatedAttributes[attrName], cb);
+						adapterDef.removeAttribute(collectionName, attrName, deprecatedAttributes[attrName], cb);
 					}, cb);
 				});
 			});
@@ -163,7 +150,7 @@ module.exports = function(adapter) {
 	// DQL
 	//////////////////////////////////////////////////////////////////////
 	this.create = function(collectionName, values, cb) {
-		if(!adapter.create) return cb("No create() method defined in adapter!");
+		if(!adapterDef.create) return cb("No create() method defined in adapter!");
 
 		// TODO: Populate default values
 		// (just use describe(), but first we need an in-memory cache for calls to describe())
@@ -174,14 +161,14 @@ module.exports = function(adapter) {
 		if (self.config.createdAt) values.createdAt = new Date();
 		if (self.config.updatedAt) values.updatedAt = new Date();
 
-		adapter.create(collectionName, values, cb);
+		adapterDef.create(collectionName, values, cb);
 	};
 
 	// Find a set of models
 	this.findAll = function(collectionName, criteria, cb) {
-		if(!adapter.find) return cb("No find() method defined in adapter!");
+		if(!adapterDef.find) return cb("No find() method defined in adapter!");
 		criteria = normalize.criteria(criteria);
-		adapter.find(collectionName, criteria, cb);
+		adapterDef.find(collectionName, criteria, cb);
 	};
 
 	// Find exactly one model
@@ -199,30 +186,30 @@ module.exports = function(adapter) {
 	this.count = function(collectionName, criteria, cb) {
 		var self = this;
 		criteria = normalize.criteria(criteria);
-		if (!adapter.count) {
+		if (!adapterDef.count) {
 			self.findAll(collectionName, criteria, function (err,models){
 				cb(err,models.length);
 			});
 		}
-		else adapter.count(collectionName, criteria, cb);
+		else adapterDef.count(collectionName, criteria, cb);
 	};
 
 
 	this.update = function(collectionName, criteria, values, cb) {
-		if(!adapter.update) return cb("No update() method defined in adapter!");
+		if(!adapterDef.update) return cb("No update() method defined in adapter!");
 		criteria = normalize.criteria(criteria);
 
 		// TODO: Validate constraints using Anchor
 
 		// Automatically change updatedAt (if enabled)
 		if (self.config.updatedAt) values.updatedAt = new Date();
-		adapter.update(collectionName, criteria, values, cb);
+		adapterDef.update(collectionName, criteria, values, cb);
 	};
 
 	this.destroy = function(collectionName, criteria, cb) {
-		if(!adapter.destroy) return cb("No destroy() method defined in adapter!");
+		if(!adapterDef.destroy) return cb("No destroy() method defined in adapter!");
 		criteria = normalize.criteria(criteria);
-		adapter.destroy(collectionName, criteria, cb);
+		adapterDef.destroy(collectionName, criteria, cb);
 	};
 
 	//////////////////////////////////////////////////////////////////////
@@ -235,8 +222,8 @@ module.exports = function(adapter) {
 		if (!values) values = criteria.where ? criteria.where : criteria;
 		criteria = normalize.criteria(criteria);
 
-		if(adapter.findOrCreate) {
-			adapter.findOrCreate(collectionName, criteria, values, cb);
+		if(adapterDef.findOrCreate) {
+			adapterDef.findOrCreate(collectionName, criteria, values, cb);
 		}
 		
 		// Default behavior
@@ -266,7 +253,7 @@ module.exports = function(adapter) {
 		var my = this;
 
 		// Custom user adapter behavior
-		if (adapter.createEach) adapter.createEach.apply(this,arguments);
+		if (adapterDef.createEach) adapterDef.createEach.apply(this,arguments);
 		
 		// Default behavior
 		else {
@@ -283,7 +270,7 @@ module.exports = function(adapter) {
 		var my = this;
 
 		// Custom user adapter behavior
-		if (adapter.findOrCreateEach) adapter.findOrCreateEach(collectionName,valuesList,cb);
+		if (adapterDef.findOrCreateEach) adapterDef.findOrCreateEach(collectionName,valuesList,cb);
 		
 		// Default behavior
 		else {
@@ -310,6 +297,9 @@ module.exports = function(adapter) {
 	*/
 	this.transaction = function(transactionName, atomicLogic, afterUnlock) {
 		var self = this;
+
+		// Use the adapter definition's transaction() if specified
+		if (adapterDef.transaction) return adapterDef.transaction(transactionName, atomicLogic, afterUnlock);
 
 		// Generate unique lock
 		var newLock = {
@@ -424,12 +414,12 @@ module.exports = function(adapter) {
 	};
 
 	// Share this method with the child adapter
-	adapter.getAutoIncrementAttribute = this.getAutoIncrementAttribute;
+	adapterDef.getAutoIncrementAttribute = this.getAutoIncrementAttribute;
 
 	// If @collectionName and @otherCollectionName are both using this adapter, do a more efficient remote join.
 	// (By default, an inner join, but right and left outer joins are also supported.)
 	this.join = function(collectionName, otherCollectionName, key, foreignKey, left, right, cb) {
-		adapter.join ? adapter.join(collectionName, otherCollectionName, key, foreignKey, left, right, cb) : cb();
+		adapterDef.join ? adapterDef.join(collectionName, otherCollectionName, key, foreignKey, left, right, cb) : cb();
 	};
 
 	// Sync given collection's schema with the underlying data model
@@ -470,13 +460,25 @@ module.exports = function(adapter) {
 	};
 
 	// Bind adapter methods to self
-	_.bindAll(adapter);
+	_.bindAll(adapterDef);
 	_.bindAll(this);
 	_.bind(this.sync.drop, this);
 	_.bind(this.sync.alter, this);
 
 	// Mark as valid adapter
 	this._isWaterlineAdapter = true;
+
+	// Make waterline logger easily accessible in adapterDef
+	adapterDef.log = self.config.log;
+
+
+	// Generate commit log collection if commitLog is not disabled in config
+	if (this.config.commitLog) {
+		this.commitLog = new Collection(this.config.commitLog, self, function (err) {
+			return cb(err,self);
+		});
+	}
+	else return cb && cb(null, self);
 };
 
 

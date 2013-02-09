@@ -10,6 +10,7 @@ var Collection = require('./collection.js');
 
 // Util
 var modules = require('sails-moduleloader');
+var util = require('sails-util');
 
 /**
 * Prepare waterline to interact with adapters
@@ -17,49 +18,113 @@ var modules = require('sails-moduleloader');
 module.exports = function (options,cb) {
 	var self = this;
 
-	// Read global config
-	// Extend default config with user options
-	var globalConfig = require('./config.js');
-	globalConfig = _.extend(globalConfig, options);
+	// Read default global waterline config and extend with user options
+	var waterlineConfig = require('./config.js');
+	waterlineConfig = _.extend(waterlineConfig, options);
 
 	// Only tear down waterline once 
 	// (if teardown() is called explicitly, don't tear it down when the process exits)
 	var tornDown = false;
 
+	// If logger was passed in, use it.  Otherwise, use the console.
 	var log = options.log || console.log;
+	
+	var adapterDefs = _.extend({},options.adapters);
+
+	// Create dictionaries out of adapter and collection defs
+	var collectionDefs = _.extend({},options.collections);
+
+	// Extend collection defs using waterline defaults
+	util.objMap(collectionDefs, function (collectionDef) {
+		return _.defaults(collectionDef, waterlineConfig.collection);
+	});
+
+	// Search collections for adapters not passed in and require them
+	// Then merge that set with the passed-in adapters
+	_.extend(adapterDefs,getMissingAdapters(collectionDefs));
+
+	// Spawn asynchronous thread of execution
 	var $$ = new parley();
 
-	var collections = {};
-	var adapters = {};
+	// Instantiate adapters
+	var adapters = _.clone(adapterDefs);
+	$$(async.forEach)(_.keys(adapters), instantiateAdapter);
 
-	// Extend with adapter and collection defs passed in 
-	collections = _.extend(collections,options.collections);
-	adapters = _.extend(adapters,options.adapters);
+	// Instantiate collections
+	var collections = _.clone(collectionDefs);
+	$$(async.forEach)(_.keys(collections), instantiateCollection);
+
+	// Provide hook for process-end event and teardown waterline
+	$$(listenForProcessEnd)();
+	
+	// Waterline is ready-- fire the callback,
+	// passing back instantiated adapters and models
+	$$(cb)(null, {
+		adapters: adapters,
+		collections: collections
+	});
 
 
-	// then associate each collection with its adapter and sync its schema
-	$$(async).forEach(_.keys(collections),prepareCollection);
-
-	// Now that everything is instantiated, augment the live collections with a transaction collection
-	$$(async).forEach(_.values(collections),addTransactionCollection);
-
-	// And sync them
-	$$(async).forEach(_.values(collections),syncCollection);
 
 
-	// Fire teardown() on process-end and make it public
+	// Discover and include any "missing" adapters
+	// (adapters which are defined in collections but were not passed in)
+	function getMissingAdapters (collectionDefs) {
+		var foundAdapterDefs = {};
+
+		_.each(collectionDefs, function (collectionDef, collectionName) {
+			var adapterName = collectionDef.adapter;
+			console.log("Checking collection "+collectionName+" for unknown adapters.");
+
+			// If the adapter def is not a string, something is not right
+			if (!_.isString(adapterName)) throw new Error("Invalid adapter name ("+adapterName+") in collection (" + collectionName +")");
+
+			// User adapter defined-- use that
+			else if (adapterDefs[adapterName]) foundAdapterDefs[adapterName] = adapterDefs[adapterName];
+
+			// If this adapter is unknown, try to require it
+			else {
+				try {
+					log('Loading module ' + adapterName + "...");
+					foundAdapterDefs[adapterName] = require(adapterName);
+				}
+				catch (e) {
+					throw new Error("Unknown adapter ("+adapterName+") in collection (" + collectionName +")");
+				}
+			}
+		});
+
+		return foundAdapterDefs;
+	}
+
+
+	// Adapter definition must be called as a function
+	// Defining adapters as functions allows them maximum flexibility (vs. simple objects)
+	function instantiateAdapter (adapterName, cb) {		
+		return new Adapter(adapters[adapterName](), function (err, adapter) {
+			adapters[adapterName] = adapter;
+			return cb(err);
+		});
+	}
+
+	// Instantiate a new collection
+	function instantiateCollection (collectionName, cb) {
+		var collectionDef = collections[collectionName];
+
+		// Get instantiated adapter for this collection
+		var adapter = adapters[collectionDef.adapter];
+
+		// Instantiate new collection using definition and adapter
+		return new Collection(collectionDef, adapter, function(err, collection) {
+			collections[collectionName] = collection;
+			return cb(err);
+		});
+	}
+
+
+	// Assign listener for process-end
 	// (this logic lives here to avoid assigning multiple events in each adapter and collection)
-	$$(function (xcb) {
-
-		// Make teardown() public
-		module.exports.teardown = function(options,cb) {
-			teardown({
-				adapters: adapters,
-				collections: collections
-			},cb);
-		};
-
-		// When process ends, fire teardown
+	function listenForProcessEnd(xcb) {
 		var exiting = false;
 		process.on('SIGINT', serverOnHalt);
 		process.on('SIGTERM', serverOnHalt);
@@ -69,161 +134,28 @@ module.exports = function (options,cb) {
 		});
 		function serverOnHalt (){
 			exiting = true;
-			teardown({
-				adapters: adapters,
-				collections: collections
-			}, function () {
+			teardown(function () {
 				process.exit();
 			});
 		}
 		xcb();
-	})();
-
-	
-	// Pass back instantiated adapters and models
-	$$(function (xcb) {
-		cb(null,{
-			adapters: adapters,
-			collections: collections
-		});
-
-		xcb();
-	})();
-
-
-	// Instantiate an adapter object
-	function prepareAdapter (adapterName, config, cb) {
-		// Instantiate adapter (if it hasn't been already)
-		if (_.isFunction (adapters[adapterName])) {
-			adapters[adapterName] = adapters[adapterName](config);
-		}
-		
-		// Pass waterline config down to adapters
-		adapters[adapterName].config = _.extend({
-			log: log
-		}, globalConfig, adapters[adapterName].config, config);
-		// console.log("config:",config,adapterName);
-
-
-		// Build actual adapter object from definition
-		// and replace the entry in the adapter dictionary
-		adapters[adapterName] = new Adapter(adapters[adapterName]);
-
-		// Load adapter data source
-		adapters[adapterName].initialize(cb);
 	}
 
-	// Instantiate a collection object and store it back in the dictionary
-	function prepareCollection (collectionName, cb) {
-		var collection = collections[collectionName];
-		instantiateCollection(collection,function (err,collection) {
-			collections[collectionName] = collection;
-			cb(err,collection);
-		});
-	}
-
-
-	// Instantiate a collection object
-	function instantiateCollection (definition, cb) {
-
-		// If no adapter is specifed, the default adapter will be used
-		if (!definition.adapter) {
-			definition.adapter = globalConfig.defaultAdapter;
-		}
-
-		if (!_.isString(definition.adapter)) {
-			sails.log.error("Invalid adapter defintion:", definition.adapter, " in ",definition.identity);
-			process.exit(1);
-		}
-
-		
-
-		var identity = definition.adapter;
-
-		if (!adapters[identity]) {
-			// If the adapter doesn't exist yet, try to require it
-			adapters[identity] = require(identity);
-		}
-
-		// Then prepare the adapter
-		return prepareAdapter(identity, definition, function (err) {
-			return afterwards (err, adapters[identity]);
-		});
-
-		function afterwards(err, adapter) {
-			if (err) return cb(err);
-			
-			// Check that a valid adapter object was retrieved (or already existed)
-			if (!adapter || !_.isObject(adapter)) {
-				console.error("Invalid adapter:",definition.adapter);
-				throw new Error("Invalid adapter!");
-			}
-
-			// Inject a reference to the true adapter object in the collection def
-			definition.adapter = adapter;
-
-			// Build actual collection object from definition
-			var collection = new Collection(definition);
-
-			// Update the adapter's in-memory schema cache (if one exists)
-			if (adapter._adapter.schema) {
-				adapter._adapter.schema[collection.identity] = collection.schema;
-			}
-
-			// Call initializeCollection() event on adapter
-			collection.adapter.initializeCollection(collection.identity,function (err) {
-				if (err) throw err;
-
-				cb(err,collection);
-			});
-		}
-
-	}
-
-	// add transaction collection to each collection's adapter
-	function addTransactionCollection (collection, cb) {
-		if (collection.adapter.transactionCollection) return cb();
-		else {
-			instantiateCollection(require('./defaultTransactionCollection.js'), function (err, result) {
-				collection.adapter.transactionCollection = result;
-				cb(err, result);
-			});
-		}
-	}
-
-	// Sync a collection w/ its adapter's data store
-	function syncCollection (collection,cb) {
-		// Synchronize schema with data source
-		collection.sync(function (err) { 
-			if (err) throw err;
-			cb(err,collection); 
-		});
-	}
-
-	// Tear down all open waterline adapters and collections
-	function teardown (options,cb) {
+	// Tear down all open waterline adapters (and therefore, collections)
+	function teardown (cb) {
 		cb = cb || function(){};
 
 		// Only tear down once
-		if (tornDown) return cb();
+		if (tornDown) return cb("Waterline is already torn down!  I can't do it again!");
 		tornDown = true;
 
-		async.auto({
-
-			// Fire each adapter's teardown event
-			adapters: function (cb) {
-				async.forEach(_.values(options.adapters),function (adapter,cb) {
-					adapter.teardown(cb);
-				},cb);
-			},
-
-			// Fire each collection's teardown event
-			collections: function (cb) {
-				async.forEach(_.values(options.collections),function (collection,cb) {
-					collection.adapter.teardownCollection(collection.identity,cb);
-				},cb);
-			}
-		}, cb);
+		// Fire each adapter's teardown event
+		async.forEach(_.values(adapters),function (adapter,cb) {
+			adapter.teardown(cb);
+		},cb);
 	}
-};
 
+	// Expose public teardown() method
+	module.exports.teardown = teardown;
+
+};

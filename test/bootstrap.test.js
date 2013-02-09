@@ -58,10 +58,7 @@ function initialize (done) {
 
 // Tear down adapters and collections
 function teardown (done) {
-	bootstrap.waterline.teardown({
-		adapters: bootstrap.adapters,
-		collections: bootstrap.collections
-	},done);
+	bootstrap.waterline.teardown(done);
 }
 
 // Use silent logger for testing
