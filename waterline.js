@@ -103,6 +103,10 @@ module.exports = function (options,cb) {
 		var foundAdapterDefs = {};
 
 		_.each(collectionDefs, function (collectionDef, collectionName) {
+
+			// Assume default adapter if adapter is not defined
+			if (!collectionDef.adapter) collectionDef.adapter = waterlineConfig.collection.adapter;
+			
 			var adapterName = collectionDef.adapter;
 
 			// If the adapter def is not a string, something is not right
