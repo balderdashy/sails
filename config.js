@@ -11,18 +11,12 @@ module.exports = {
 	// TODO: move this logic as a configuration option into the actual transaction collection
 	transactionTimeout: 15000,
 
-	// Default commit log collection def
-	commitLog: {
-
-		// Prevent recursive descent of commit logs
-		commitLog: false
-	},
-
 	// Default config for all waterline collections
 	collection: {
 
 		migrate: 'alter',
 
+		// Make collection globally accessible as globalId
 		globalize: true,
 
 		adapter: 'waterline-dirty',
@@ -30,12 +24,12 @@ module.exports = {
 		// This uses an auto-incrementing integer attirbute (id) as the primary key for the collection
 		// This is a common pattern and best-practice in relational and non-relational databases,
 		// since it eliminates confusion when more than one developer hops on the project
-		defaultPK: true,
+		autoPK: true,
 
 		// Automatically define updatedAt field in schema and refresh with the current timestamp when models are updated
-		updatedAt: true,
+		autoUpdatedAt: true,
 
 		// Automatically define createdAt field in schema and populate with the current timestamp during model creation
-		createdAt: true
+		autoCreatedAt: true
 	}
 };

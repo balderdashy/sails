@@ -23,16 +23,17 @@ module.exports = Collection;
 function Collection (definition, adapter, cb) {
 	var self = this;
 
-	// Pass up default options from adapter
-	_.defaults(definition, adapter.config);
+	// Absorb options and methods from definition
+	_.extend(this, definition);
 
-	// Pass down appropriate configuration items to adapter
-	// TODO: remove this and fix the adapter so it's not necessary
-	_.each(['defaultPK', 'updatedAt', 'createdAt'], function(key) {
-		if(!_.isUndefined(this[key])) {
-			adapter.config[key] = this[key];
-		}
-	});
+
+	//////////////////////////////////////////
+	// DDL
+	//////////////////////////////////////////
+	this.describe = function (cb) {
+		return adapter.describe(definition.identity, cb);
+	};
+
 
 	//////////////////////////////////////////
 	// Dynamic finders
@@ -117,7 +118,7 @@ function Collection (definition, adapter, cb) {
 
 	// Clone attributes and augment with id, createdAt, updatedAt, etc. if necessary
 	var attributes = _.clone(this.attributes) || {};
-	attributes = require('./augmentAttributes')(attributes, adapter.config);
+	attributes = require('./augmentAttributes')(attributes, this);
 
 	// Maintain an in-memory cache of the schema for quicker lookup
 	this.schema = attributes;
@@ -180,6 +181,15 @@ function Collection (definition, adapter, cb) {
 		}
 		var usage = _.str.capitalize(this.identity) + '.create({someAttr: "someValue"},callback)';
 
+
+		// TODO: Populate default values
+		// (just use describe(), but first we need an in-memory cache for calls to describe())
+
+		// TODO: Validate constraints using Anchor
+
+		// Automatically add updatedAt and createdAt (if enabled)
+		if (this.autoCreatedAt) values.createdAt = new Date();
+		if (this.autoUpdatedAt) values.updatedAt = new Date();
 
 		// If no callback specified, return deferred object
 		if(!_.isFunction(cb)) {
@@ -353,6 +363,11 @@ function Collection (definition, adapter, cb) {
 		if(!newValues) usageError('No updated values specified!', usage);
 		if(!_.isFunction(cb)) usageError('Invalid callback specified!', usage);
 
+		// TODO: Validate constraints using Anchor
+
+		// Automatically change updatedAt (if enabled)
+		if (this.autoUpdatedAt) newValues.updatedAt = new Date();
+
 		// If no callback specified, return deferred object
 		if(!_.isFunction(cb)) {
 			return new Deferred({
@@ -463,6 +478,7 @@ function Collection (definition, adapter, cb) {
 
 
 	// Absorb options and methods from definition
+	// ONE MORE TIME to override any methods
 	_.extend(this, definition);
 
 	// Bind method context to self
@@ -479,20 +495,18 @@ function Collection (definition, adapter, cb) {
 		global[globalName] = this;
 	}
 
-	// Assign synchronization behavior depending on migrate option
-	if(this.migrate === 'drop') {
-		this.sync = _.bind(adapter.sync.drop, adapter, this);
-	} else if(this.migrate === 'alter') {
-		this.sync = _.bind(adapter.sync.alter, adapter, this);
-	} else if(this.migrate === 'safe') {
-		this.sync = _.bind(adapter.sync.safe, adapter, this);
-	}
 
-
-	//////////////////////////////////////////////////////////////////////
 	// Inform the adapter that a new collection has been instantiated
-	//////////////////////////////////////////////////////////////////////
-	adapter.registerCollection(this, cb);
+	adapter.registerCollection(self, function (err) {
+
+		// Assign synchronization behavior depending on migrate option
+		// Sync with datastore
+		if (self.migrate === 'drop' ||
+			self.migrate === 'alter' ||
+			self.migrate === 'safe') {
+			adapter.sync[self.migrate].apply(adapter,[self, cb]);
+		}
+	});
 }
 
 

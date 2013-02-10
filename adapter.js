@@ -5,20 +5,18 @@ var uuid = require('node-uuid');
 
 var Collection = require('./collection.js');
 
+
 // (for sorting)
 var MAX_INTEGER = 4294967295;
 
-// Read global config
-var config = require('./config.js');
+// Read global waterline config
+var waterlineConfig = require('./config.js');
 
 var normalize = require('./normalize.js');
 
 // Extend adapter definition
 module.exports = function(adapterDef, cb) {
 	var self = this;
-
-	// Absorb configuration
-	this.config = _.extend({}, adapterDef.config || {});
 
 	// Absorb identity
 	this.identity = adapterDef.identity;
@@ -30,6 +28,9 @@ module.exports = function(adapterDef, cb) {
 	// (this will be populated as new collections are instantiated)
 	// (uses the app collections)
 	this._adapter.schema = {};
+
+	// Pass through defaults from adapterDef
+	this.defaults = adapterDef.defaults;
 
 
 	// Logic to handle the (re)instantiation of collections
@@ -60,7 +61,7 @@ module.exports = function(adapterDef, cb) {
 		var attributes = definition.attributes || {};
 
 		// Marshal attributes to a standard format
-		attributes = require('./augmentAttributes')(attributes,this.config);
+		attributes = require('./augmentAttributes')(attributes,definition);
 
 		// Verify that collection doesn't already exist
 		// and then define it and trigger callback
@@ -152,15 +153,6 @@ module.exports = function(adapterDef, cb) {
 	this.create = function(collectionName, values, cb) {
 		if(!adapterDef.create) return cb("No create() method defined in adapter!");
 
-		// TODO: Populate default values
-		// (just use describe(), but first we need an in-memory cache for calls to describe())
-
-		// TODO: Validate constraints using Anchor
-		
-		// Automatically add updatedAt and createdAt (if enabled)
-		if (self.config.createdAt) values.createdAt = new Date();
-		if (self.config.updatedAt) values.updatedAt = new Date();
-
 		adapterDef.create(collectionName, values, cb);
 	};
 
@@ -199,10 +191,6 @@ module.exports = function(adapterDef, cb) {
 		if(!adapterDef.update) return cb("No update() method defined in adapter!");
 		criteria = normalize.criteria(criteria);
 
-		// TODO: Validate constraints using Anchor
-
-		// Automatically change updatedAt (if enabled)
-		if (self.config.updatedAt) values.updatedAt = new Date();
 		adapterDef.update(collectionName, criteria, values, cb);
 	};
 
@@ -310,7 +298,6 @@ module.exports = function(adapterDef, cb) {
 		};
 
 		// write new lock to commit log
-		console.log(this.identity, "TRANSACTION:",this.transactionCollection);
 		this.transactionCollection.create(newLock, function afterCreatingTransaction(err, newLock) {
 			if(err) return atomicLogic(err, function() {
 				throw err;
@@ -353,7 +340,7 @@ module.exports = function(adapterDef, cb) {
 
 		var warningTimer = setTimeout(function() {
 			console.error("Transaction :: " + newLock.name + " is taking an abnormally long time (> " + self.config.transactionWarningTimer + "ms)");
-		}, self.config.transactionWarningTimer);
+		}, waterlineConfig.transactionWarningTimer);
 
 		newLock.atomicLogic(null, function unlock () {
 			clearTimeout(warningTimer);
@@ -464,21 +451,44 @@ module.exports = function(adapterDef, cb) {
 	_.bindAll(this);
 	_.bind(this.sync.drop, this);
 	_.bind(this.sync.alter, this);
+	_.bind(this.sync.safe, this);
 
 	// Mark as valid adapter
 	this._isWaterlineAdapter = true;
 
-	// Make waterline logger easily accessible in adapterDef
-	adapterDef.log = self.config.log;
 
+	// Generate commit log collection if commitLog is not disabled
+	if (adapterDef.commitLog) {
 
-	// Generate commit log collection if commitLog is not disabled in config
-	if (this.config.commitLog) {
-		this.commitLog = new Collection(this.config.commitLog, self, function (err) {
-			return cb(err,self);
-		});
+		// Assign transactionCollection
+		this.transactionCollection = new Collection({
+
+			// Generate identity based on parent collection
+			identity: '__'+this.identity+'_transaction',
+
+			// Inherit parent collection's adapter
+			adapter: this.identity,
+
+			// Don't mess with it once it's been created
+			migrate: 'alter',
+
+			// Never grant global access to the collection
+			globalize: false,
+
+			// Always use the auto-incremented primary key, id
+			autoPK: true,
+			
+			// Explicitly disable commit log to prevent recursion
+			commitLog: false
+
+		}, this, afterwards);
+
 	}
-	else return cb && cb(null, self);
+	else afterwards();
+
+	function afterwards() {
+		return cb && cb(null, self);
+	}
 };
 
 

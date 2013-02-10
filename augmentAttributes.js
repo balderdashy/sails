@@ -11,7 +11,7 @@ module.exports = function (attributes,config) {
 
 	// If id is not defined, add it
 	// TODO: Make this check for ANY primary key
-	if(config.defaultPK && !attributes.id) {
+	if(config.autoPK && !attributes.id) {
 		newAttributes.id = {
 			type: 'INTEGER',
 			autoIncrement: true,
@@ -24,10 +24,10 @@ module.exports = function (attributes,config) {
 	}
 
 	// If the adapter config allows it, and they aren't already specified,
-	// extend definition with updatedAt and createdAt
+	// extend definition with autoUpdatedAt and autoCreatedAt
 	var now = {type: 'DATE', 'default': 'NOW'};
-	if(config.createdAt && !attributes.createdAt) newAttributes.createdAt = now;
-	if(config.updatedAt && !attributes.updatedAt) newAttributes.updatedAt = now;
+	if(config.autoCreatedAt && !attributes.createdAt) newAttributes.createdAt = now;
+	if(config.autoUpdatedAt && !attributes.updatedAt) newAttributes.updatedAt = now;
 
 	// Convert string-defined attributes into fully defined objects
 	for(var attr in attributes) {

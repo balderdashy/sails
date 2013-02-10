@@ -34,10 +34,6 @@ module.exports = function (options,cb) {
 	// Create dictionaries out of adapter and collection defs
 	var collectionDefs = _.extend({},options.collections);
 
-	// Extend collection defs using waterline defaults
-	util.objMap(collectionDefs, function (collectionDef) {
-		return _.defaults(collectionDef, waterlineConfig.collection);
-	});
 
 	// Search collections for adapters not passed in and require them
 	// Then merge that set with the passed-in adapters
@@ -49,6 +45,15 @@ module.exports = function (options,cb) {
 	// Instantiate adapters
 	var adapters = _.clone(adapterDefs);
 	$$(async.forEach)(_.keys(adapters), instantiateAdapter);
+
+	// Extend collection defs using their adapter defaults,
+	// then waterline defaults
+	$$(function (xcb) {
+		collectionDefs = util.objMap(collectionDefs, function (collectionDef) {
+			return _.defaults(collectionDef, adapters[collectionDef.adapter].defaults, waterlineConfig.collection);
+		});
+		xcb();
+	})();
 
 	// Instantiate collections
 	var collections = _.clone(collectionDefs);
@@ -74,7 +79,6 @@ module.exports = function (options,cb) {
 
 		_.each(collectionDefs, function (collectionDef, collectionName) {
 			var adapterName = collectionDef.adapter;
-			console.log("Checking collection "+collectionName+" for unknown adapters.");
 
 			// If the adapter def is not a string, something is not right
 			if (!_.isString(adapterName)) throw new Error("Invalid adapter name ("+adapterName+") in collection (" + collectionName +")");
@@ -101,7 +105,7 @@ module.exports = function (options,cb) {
 	// Adapter definition must be called as a function
 	// Defining adapters as functions allows them maximum flexibility (vs. simple objects)
 	function instantiateAdapter (adapterName, cb) {		
-		return new Adapter(adapters[adapterName](), function (err, adapter) {
+		new Adapter(adapters[adapterName](), function (err, adapter) {
 			adapters[adapterName] = adapter;
 			return cb(err);
 		});
@@ -115,7 +119,7 @@ module.exports = function (options,cb) {
 		var adapter = adapters[collectionDef.adapter];
 
 		// Instantiate new collection using definition and adapter
-		return new Collection(collectionDef, adapter, function(err, collection) {
+		new Collection(collectionDef, adapter, function(err, collection) {
 			collections[collectionName] = collection;
 			return cb(err);
 		});

@@ -27,12 +27,6 @@ before(bootstrap.init);
 // When this suite of tests is complete, shut down waterline to allow other tests to run without conflicts
 after(bootstrap.teardown);
 
-// Make some objects globally accessible for the purpose of testing
-beforeEach(function() {
-	User = bootstrap.collections.user;
-	return;
-});
-
 
 // Initialize waterline
 function initialize (done) {
