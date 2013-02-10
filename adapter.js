@@ -61,7 +61,7 @@ module.exports = function(adapterDef, cb) {
 		var attributes = definition.attributes || {};
 
 		// Marshal attributes to a standard format
-		attributes = require('./augmentAttributes')(attributes,definition);
+		definition.attributes = require('./augmentAttributes')(attributes,definition);
 
 		// Verify that collection doesn't already exist
 		// and then define it and trigger callback
@@ -69,22 +69,15 @@ module.exports = function(adapterDef, cb) {
 			if(err) return cb(err, attributes);
 			else if(existingAttributes) return cb("Trying to define a collection (" + collectionName + ") which already exists.");
 			
-			if (adapterDef.define) adapterDef.define(collectionName, attributes, cb);
-			else cb();
+			adapterDef.define(collectionName, definition, cb);
 		});
 	};
 
 	this.describe = function(collectionName, cb) {
-		if (adapterDef.describe) {
-			adapterDef.describe(collectionName, cb);
-		}
-		else cb();
+		adapterDef.describe(collectionName, cb);
 	};
 	this.drop = function(collectionName, cb) {
-		if (adapterDef.drop) {
-			adapterDef.drop(collectionName, cb);
-		}
-		else cb();
+		adapterDef.drop(collectionName, cb);
 	};
 	this.alter = function(collectionName, attributes, cb) {
 		var self = this;
@@ -142,7 +135,7 @@ module.exports = function(adapterDef, cb) {
 			});
 		}
 		// Otherwise don't do anything, it's too dangerous 
-		// (dropping and readding the data could cause corruption if the user stops the server midway through)
+		// (dropping and reading the data could cause corruption if the user stops the server midway through)
 		else cb();
 	};
 
@@ -288,7 +281,11 @@ module.exports = function(adapterDef, cb) {
 
 		// Use the adapter definition's transaction() if specified
 		if (adapterDef.transaction) return adapterDef.transaction(transactionName, atomicLogic, afterUnlock);
-		else if (!adapterDef.commitLog) throw new Error("Cannot process transaction. Commit log disabled in adapter, and no custom transaction logic is defined.");
+		else if (!adapterDef.commitLog) {
+			return atomicLogic(null, function (err) {
+				afterUnlock && afterUnlock();
+			});
+		}
 
 		// Generate unique lock
 		var newLock = {
