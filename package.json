@@ -1,6 +1,6 @@
 {
   "name": "waterline",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Adaptable data access layer for Node.js",
   "main": "waterline.js",
   "directories": {
