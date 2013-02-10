@@ -288,6 +288,7 @@ module.exports = function(adapterDef, cb) {
 
 		// Use the adapter definition's transaction() if specified
 		if (adapterDef.transaction) return adapterDef.transaction(transactionName, atomicLogic, afterUnlock);
+		else if (!adapterDef.commitLog) throw new Error("Cannot process transaction. Commit log disabled in adapter, and no custom transaction logic is defined.");
 
 		// Generate unique lock
 		var newLock = {
