@@ -55,6 +55,31 @@ module.exports = function (options,cb) {
 		xcb();
 	})();
 
+	// Set up transaction collections for each adapter, if they have a commitLog defined
+	$$(async.forEach)(_.keys(adapters), function (adapterName, cb) {
+		var commitLog = adapters[adapterName].commitLog;
+		if (!commitLog) return cb();
+
+		var transactionAdapter = adapters[commitLog.adapter];
+		
+		// If transaction adapter unknown, fetch it
+		if (!transactionAdapter) {
+			adapters[commitLog.adapter] = requireAdapter(commitLog.adapter);
+			instantiateAdapter(commitLog.adapter, afterwards);
+		}
+		else afterwards(null, transactionAdapter);
+	
+		function afterwards(err, transactionAdapter) {
+			if (err) return cb(err);
+
+			// Instantiate transaction collection
+			new Collection(commitLog, transactionAdapter, function (err,transactionCollection) {
+				adapters[adapterName].transactionCollection = transactionCollection;
+				return cb();
+			});
+		}
+	});
+
 	// Instantiate collections
 	var collections = _.clone(collectionDefs);
 	$$(async.forEach)(_.keys(collections), instantiateCollection);
@@ -84,30 +109,33 @@ module.exports = function (options,cb) {
 			if (!_.isString(adapterName)) throw new Error("Invalid adapter name ("+adapterName+") in collection (" + collectionName +")");
 
 			// User adapter defined-- use that
-			else if (adapterDefs[adapterName]) foundAdapterDefs[adapterName] = adapterDefs[adapterName];
+			else if (adapterDefs[adapterName]) foundAdapterDefs[adapterName] = adapterDefs[adapterName]();
 
 			// If this adapter is unknown, try to require it
-			else {
-				try {
-					log('Loading module ' + adapterName + "...");
-					foundAdapterDefs[adapterName] = require(adapterName);
-				}
-				catch (e) {
-					throw new Error("Unknown adapter ("+adapterName+") in collection (" + collectionName +")");
-				}
-			}
+			else foundAdapterDefs[adapterName] = requireAdapter(adapterName);
 		});
 
 		return foundAdapterDefs;
+	}
+
+	// Try to import an unknown adapter
+	function requireAdapter(adapterName) {
+		try {
+			log('Loading module ' + adapterName + "...");
+			return require(adapterName)();
+		}
+		catch (e) {
+			throw new Error("Unknown adapter ("+adapterName+") in collection (" + collectionName +")");
+		}
 	}
 
 
 	// Adapter definition must be called as a function
 	// Defining adapters as functions allows them maximum flexibility (vs. simple objects)
 	function instantiateAdapter (adapterName, cb) {		
-		new Adapter(adapters[adapterName](), function (err, adapter) {
+		new Adapter(adapters[adapterName], function (err, adapter) {
 			adapters[adapterName] = adapter;
-			return cb(err);
+			return cb(err, adapter);
 		});
 	}
 

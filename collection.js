@@ -506,13 +506,20 @@ function Collection (definition, adapter, cb) {
 
 	// Inform the adapter that a new collection has been instantiated
 	adapter.registerCollection(self, function (err) {
+		if (err) return cb(err);
 
 		// Assign synchronization behavior depending on migrate option
-		// Sync with datastore
 		if (self.migrate === 'drop' ||
 			self.migrate === 'alter' ||
 			self.migrate === 'safe') {
-			adapter.sync[self.migrate].apply(adapter,[self, cb]);
+
+			// Sync with datastore
+			var sync = adapter.sync[self.migrate];
+			sync.apply(adapter,[self, function (err) {
+
+				// Finally trigger callback, passing back instantiated collection
+				return cb(err, self);
+			}]);
 		}
 	});
 }

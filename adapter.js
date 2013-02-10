@@ -15,19 +15,23 @@ var waterlineConfig = require('./config.js');
 var normalize = require('./normalize.js');
 
 // Extend adapter definition
+// (also pass in access to complete adapter set in case it's necessary)
 module.exports = function(adapterDef, cb) {
 	var self = this;
 
 	// Absorb identity
 	this.identity = adapterDef.identity;
 
-	// Store reference to app-level adapterDef inside this wrapper object
-	this._adapter = adapterDef;
+	// PROBABLY DEPRECATED
+	////////////////////////////////////////////////////////////////////////////////////
+	// // Store reference to app-level adapterDef inside this wrapper object
+	// this._adapter = adapterDef;
 	
-	// Maintain an in-memory cache of this adapterDef's collections' schema for quicker lookup
-	// (this will be populated as new collections are instantiated)
-	// (uses the app collections)
-	this._adapter.schema = {};
+	// // Maintain an in-memory cache of this adapterDef's collections' schema for quicker lookup
+	// // (this will be populated as new collections are instantiated)
+	// // (uses the app collections)
+	// this._adapter.schema = {};
+	////////////////////////////////////////////////////////////////////////////////////
 
 	// Pass through defaults from adapterDef
 	this.defaults = adapterDef.defaults;
@@ -281,11 +285,7 @@ module.exports = function(adapterDef, cb) {
 
 		// Use the adapter definition's transaction() if specified
 		if (adapterDef.transaction) return adapterDef.transaction(transactionName, atomicLogic, afterUnlock);
-		else if (!adapterDef.commitLog) {
-			return atomicLogic(null, function (err) {
-				afterUnlock && afterUnlock();
-			});
-		}
+		else if (!adapterDef.commitLog) throw new Error("Cannot process transaction. Commit log disabled in adapter, and no custom transaction logic is defined.");
 
 		// Generate unique lock
 		var newLock = {
@@ -296,6 +296,11 @@ module.exports = function(adapterDef, cb) {
 		};
 
 		// write new lock to commit log
+		if (!this.transactionCollection) {
+			console.error("Trying to start transaction ("+transactionName+") in collection:",this.identity);
+			console.error("But the transactionCollection is: ",this.transactionCollection);
+			throw new Error("Transaction collection not defined!");
+		}
 		this.transactionCollection.create(newLock, function afterCreatingTransaction(err, newLock) {
 			if(err) return atomicLogic(err, function() {
 				throw err;
@@ -458,14 +463,11 @@ module.exports = function(adapterDef, cb) {
 	// Generate commit log collection if commitLog is not disabled
 	if (adapterDef.commitLog) {
 
-		// Assign transactionCollection
-		this.transactionCollection = new Collection({
+		// Build commit log definition using defaults and adapter def
+		this.commitLog = _.extend({
 
-			// Generate identity based on parent collection
-			identity: '__'+this.identity+'_transaction',
-
-			// Inherit parent collection's adapter
-			adapter: this.identity,
+			// Use waterline-dirty by default as adapter
+			adapter: 'waterline-dirty',
 
 			// Don't mess with it once it's been created
 			migrate: 'alter',
@@ -479,14 +481,10 @@ module.exports = function(adapterDef, cb) {
 			// Explicitly disable commit log to prevent recursion
 			commitLog: false
 
-		}, this, afterwards);
-
+		},adapterDef.commitLog);
 	}
-	else afterwards();
 
-	function afterwards() {
-		return cb && cb(null, self);
-	}
+	return cb && cb(null, self);
 };
 
 
