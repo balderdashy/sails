@@ -34,6 +34,14 @@ function Collection (definition, adapter, cb) {
 		return adapter.describe(definition.identity, cb);
 	};
 
+	this.alter = function (attributes, cb) {
+		return adapter.alter(definition.identity, attributes, cb);
+	};
+
+	this.drop = function (cb) {
+		return adapter.drop(definition.identity, cb);
+	};
+
 
 	//////////////////////////////////////////
 	// Dynamic finders
