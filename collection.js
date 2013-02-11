@@ -26,6 +26,13 @@ function Collection (definition, adapter, cb) {
 	// Absorb options and methods from definition
 	_.extend(this, definition);
 
+	// Absorb methods from adapter, but prepend the collectionName as the first argument	
+	var adapterMethods = {};
+	_.each(_.functions(adapter), function (methodName) {
+		adapterMethods[methodName] = _.bind(adapter[methodName], adapter, definition.identity);
+	});
+	_.defaults(this, adapterMethods);
+	
 
 	//////////////////////////////////////////
 	// DDL

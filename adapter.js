@@ -17,14 +17,16 @@ var normalize = require('./normalize.js');
 module.exports = function(adapterDef, cb) {
 	var self = this;
 
-	// Absorb identity
-	this.identity = adapterDef.identity;
 
-	// Absorb syncable
-	this.syncable = adapterDef.syncable;
+	// Absorb any properties/methods from definition that are undefined here
+
+	// this.identity = adapterDef.identity;
+	// this.syncable = adapterDef.syncable;
 
 	// Pass through defaults from adapterDef
-	this.defaults = adapterDef.defaults;
+	// this.defaults = adapterDef.defaults;
+
+	_.defaults(this,adapterDef);
 
 
 	// Logic to handle the (re)instantiation of collections
