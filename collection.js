@@ -432,6 +432,9 @@ function Collection (definition, adapter, cb) {
 			cb = values;
 			values = null;
 		}
+		if (_.isArray(criteria)) {
+			return this.findOrCreateEach(criteria,cb);
+		}
 		var usage = _.str.capitalize(this.identity) + '.findOrCreate(criteria, values, callback)';
 		if(!criteria) usageError('No criteria option specified!', usage);
 		if(!_.isFunction(cb)) usageError('Invalid callback specified!', usage);
