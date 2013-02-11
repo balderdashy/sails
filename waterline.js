@@ -24,8 +24,6 @@ module.exports = function (options,cb) {
 	waterlineConfig = _.extend(waterlineConfig, options);
 	waterlineConfig.collection = collectionDefaults;
 
-	console.log("WATERLINE CONFIG:",waterlineConfig);
-
 	// Only tear down waterline once 
 	// (if teardown() is called explicitly, don't tear it down when the process exits)
 	var tornDown = false;
