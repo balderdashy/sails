@@ -3,8 +3,6 @@ var _ = require('underscore');
 var parley = require('parley');
 var uuid = require('node-uuid');
 
-var Collection = require('./collection.js');
-
 
 // (for sorting)
 var MAX_INTEGER = 4294967295;

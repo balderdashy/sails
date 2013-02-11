@@ -33,16 +33,16 @@ exports.identity = 'User';
 ////////////////////////////////////////////////////////
 // development: temporal (in-memory dirtydb)
 ////////////////////////////////////////////////////////
-// exports.adapter = 'waterline-dirty';
-// exports.inMemory = true;
+exports.adapter = 'waterline-dirty';
+exports.inMemory = true;
 
 ////////////////////////////////////////////////////////
 // mySQL
 ////////////////////////////////////////////////////////
-exports.adapter = 'waterline-mysql';
-exports.database = 'waterline';
-exports.user = 'waterline';
-exports.password = 'abc123';
+//exports.adapter = 'waterline-mysql';
+//exports.database = 'waterline';
+//exports.user = 'waterline';
+//exports.password = 'abc123';
 
 ////////////////////////////////////////////////////////
 // mySQL: connection pooling enabled

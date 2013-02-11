@@ -20,7 +20,9 @@ module.exports = function (options,cb) {
 
 	// Read default global waterline config and extend with user options
 	var waterlineConfig = require('./config.js');
+	var collectionDefaults = _.extend(waterlineConfig.collection,options.collection);
 	waterlineConfig = _.extend(waterlineConfig, options);
+	waterlineConfig.collection = collectionDefaults;
 
 	// Only tear down waterline once 
 	// (if teardown() is called explicitly, don't tear it down when the process exits)
@@ -106,11 +108,14 @@ module.exports = function (options,cb) {
 
 			// Assume default adapter if adapter is not defined
 			if (!collectionDef.adapter) collectionDef.adapter = waterlineConfig.collection.adapter;
-			
+
 			var adapterName = collectionDef.adapter;
 
 			// If the adapter def is not a string, something is not right
 			if (!_.isString(adapterName)) throw new Error("Invalid adapter name ("+adapterName+") in collection (" + collectionName +")");
+
+			// Already found
+			else if (foundAdapterDefs[adapterName]) return;
 
 			// User adapter defined-- use that
 			else if (adapterDefs[adapterName]) foundAdapterDefs[adapterName] = adapterDefs[adapterName]();
