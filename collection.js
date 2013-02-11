@@ -516,6 +516,8 @@ function Collection (definition, adapter, cb) {
 			self.migrate === 'alter' ||
 			self.migrate === 'safe') {
 
+			console.log("COLLEECTION",self.identity,"CONFIG",self.inMemory,self.filePath);
+
 			// Sync with datastore
 			var sync = adapter.sync[self.migrate];
 			sync.apply(adapter,[self, function (err) {

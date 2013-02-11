@@ -23,17 +23,6 @@ module.exports = function(adapterDef, cb) {
 	// Absorb syncable
 	this.syncable = adapterDef.syncable;
 
-	// PROBABLY DEPRECATED
-	////////////////////////////////////////////////////////////////////////////////////
-	// // Store reference to app-level adapterDef inside this wrapper object
-	// this._adapter = adapterDef;
-	
-	// // Maintain an in-memory cache of this adapterDef's collections' schema for quicker lookup
-	// // (this will be populated as new collections are instantiated)
-	// // (uses the app collections)
-	// this._adapter.schema = {};
-	////////////////////////////////////////////////////////////////////////////////////
-
 	// Pass through defaults from adapterDef
 	this.defaults = adapterDef.defaults;
 

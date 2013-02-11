@@ -24,6 +24,8 @@ module.exports = function (options,cb) {
 	waterlineConfig = _.extend(waterlineConfig, options);
 	waterlineConfig.collection = collectionDefaults;
 
+	console.log("WATERLINE CONFIG:",waterlineConfig);
+
 	// Only tear down waterline once 
 	// (if teardown() is called explicitly, don't tear it down when the process exits)
 	var tornDown = false;
@@ -52,7 +54,7 @@ module.exports = function (options,cb) {
 	// then waterline defaults
 	$$(function (xcb) {
 		collectionDefs = util.objMap(collectionDefs, function (collectionDef) {
-			return _.defaults(collectionDef, adapters[collectionDef.adapter].defaults, waterlineConfig.collection);
+			return _.defaults(collectionDef, waterlineConfig.collection, adapters[collectionDef.adapter].defaults);
 		});
 		xcb();
 	})();
