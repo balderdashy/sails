@@ -20,6 +20,9 @@ module.exports = function(adapterDef, cb) {
 	// Absorb identity
 	this.identity = adapterDef.identity;
 
+	// Absorb syncable
+	this.syncable = adapterDef.syncable;
+
 	// PROBABLY DEPRECATED
 	////////////////////////////////////////////////////////////////////////////////////
 	// // Store reference to app-level adapterDef inside this wrapper object

@@ -508,6 +508,9 @@ function Collection (definition, adapter, cb) {
 	adapter.registerCollection(self, function (err) {
 		if (err) return cb(err);
 
+		// If not syncable, don't sync, get on out
+		if (!adapter.syncable) return cb(null,self);
+
 		// Assign synchronization behavior depending on migrate option
 		if (self.migrate === 'drop' ||
 			self.migrate === 'alter' ||

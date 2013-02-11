@@ -121,14 +121,14 @@ module.exports = function (options,cb) {
 			else if (adapterDefs[adapterName]) foundAdapterDefs[adapterName] = adapterDefs[adapterName]();
 
 			// If this adapter is unknown, try to require it
-			else foundAdapterDefs[adapterName] = requireAdapter(adapterName);
+			else foundAdapterDefs[adapterName] = requireAdapter(adapterName, collectionName);
 		});
 
 		return foundAdapterDefs;
 	}
 
 	// Try to import an unknown adapter
-	function requireAdapter(adapterName) {
+	function requireAdapter(adapterName, collectionName) {
 		try {
 			log('Loading module ' + adapterName + "...");
 			return require(adapterName)();
