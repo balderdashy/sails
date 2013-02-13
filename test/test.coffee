@@ -15,8 +15,11 @@ describe 'the sails cli', ->
         rm.on 'exit', ->
             sails = spawn sailsBin, ['new', testProject]
             sails.stderr.setEncoding 'utf8'
+            sails.stdout.setEncoding 'utf8'
             data = ''
             sails.stderr.on 'data', (buffer) ->
+                data += buffer
+            sails.stdout.on 'data', (buffer) ->
                 data += buffer
             sails.on 'exit', (code) ->
                 code.should.equal 0
