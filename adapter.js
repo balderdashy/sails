@@ -123,7 +123,7 @@ module.exports = function(adapterDef, cb) {
 				async.forEach(_.keys(newAttributes), function (attrName, cb) {
 					adapterDef.addAttribute(collectionName, attrName, newAttributes[attrName], cb);
 				}, function (err) {
-					if (err) throw err;
+					if (err) return cb(err);
 					async.forEach(_.keys(deprecatedAttributes), function (attrName, cb) {
 						adapterDef.removeAttribute(collectionName, attrName, deprecatedAttributes[attrName], cb);
 					}, cb);
@@ -139,14 +139,43 @@ module.exports = function(adapterDef, cb) {
 	//////////////////////////////////////////////////////////////////////
 	// DQL
 	//////////////////////////////////////////////////////////////////////
-	this.create = function(collectionName, values, cb) {
-		if(!adapterDef.create) return cb("No create() method defined in adapter!");
 
+	this.save = function (collectionName, values, cb) {
+		// TODO: create or update adapter
+		// BUT don't include the save() method!
+
+		cb("save() NOT SUPPORTED YET!");
+	};
+
+	// Build a callback function which will decorate a model
+	// with a save() method
+	this.decorateModel = function (collectionName, cb) {
+		return function (err, set) {
+			if (!set) return cb(err,set);
+			else {
+				// Add save() method to set
+				_.each(set, function (model) {
+					if (!_.isObject(model)) return;
+					if (!model.save) model.save = _.bind(self.save, self, collectionName, model);
+				});
+				return cb(err,set);
+			}
+		};
+	};
+
+	this.create = function(collectionName, values, cb) {
+		// Build enhanced callback fn
+		cb = this.decorateModel(collectionName, cb);
+
+		if(!adapterDef.create) return cb("No create() method defined in adapter!");
 		adapterDef.create(collectionName, values, cb);
 	};
 
 	// Find a set of models
 	this.findAll = function(collectionName, criteria, cb) {
+		// Build enhanced callback fn
+		cb = this.decorateModel(collectionName, cb);
+
 		if(!adapterDef.find) return cb("No find() method defined in adapter!");
 		criteria = normalize.criteria(criteria);
 		adapterDef.find(collectionName, criteria, cb);
@@ -154,18 +183,22 @@ module.exports = function(adapterDef, cb) {
 
 	// Find exactly one model
 	this.find = function(collectionName, criteria, cb) {
+
 		// If no criteria specified AT ALL, use first model
 		if (!criteria) criteria = {limit: 1};
 
 		this.findAll(collectionName, criteria, function (err, models) {
-			if (!models) return cb();
-			if (models.length < 1) return cb();
+			if (!models) return cb(err);
+			if (models.length < 1) return cb(err);
 			else if (models.length > 1) return cb("More than one "+collectionName+" returned!");
 			else return cb(null,models[0]);
 		});
 	};
 
 	this.count = function(collectionName, criteria, cb) {
+		// Build enhanced callback fn
+		cb = this.decorateModel(collectionName, cb);
+
 		var self = this;
 		criteria = normalize.criteria(criteria);
 		if (!adapterDef.count) {
@@ -178,6 +211,9 @@ module.exports = function(adapterDef, cb) {
 
 
 	this.update = function(collectionName, criteria, values, cb) {
+		// Build enhanced callback fn
+		cb = this.decorateModel(collectionName, cb);
+
 		if(!adapterDef.update) return cb("No update() method defined in adapter!");
 		criteria = normalize.criteria(criteria);
 
@@ -185,6 +221,9 @@ module.exports = function(adapterDef, cb) {
 	};
 
 	this.destroy = function(collectionName, criteria, cb) {
+		// Build enhanced callback fn
+		cb = this.decorateModel(collectionName, cb);
+
 		if(!adapterDef.destroy) return cb("No destroy() method defined in adapter!");
 		criteria = normalize.criteria(criteria);
 		adapterDef.destroy(collectionName, criteria, cb);
@@ -201,6 +240,9 @@ module.exports = function(adapterDef, cb) {
 		criteria = normalize.criteria(criteria);
 
 		if(adapterDef.findOrCreate) {
+			// Build enhanced callback fn
+			cb = this.decorateModel(collectionName, cb);
+
 			adapterDef.findOrCreate(collectionName, criteria, values, cb);
 		}
 		
@@ -231,7 +273,12 @@ module.exports = function(adapterDef, cb) {
 		var self = this;
 
 		// Custom user adapter behavior
-		if (adapterDef.createEach) adapterDef.createEach.apply(this,arguments);
+		if (adapterDef.createEach) {
+			// Build enhanced callback fn
+			cb = this.decorateModel(collectionName, cb);
+
+			adapterDef.createEach(collectionName, valuesList, cb);
+		}
 		
 		// Default behavior
 		else {
@@ -248,7 +295,12 @@ module.exports = function(adapterDef, cb) {
 		var self = this;
 
 		// Custom user adapter behavior
-		if (adapterDef.findOrCreateEach) adapterDef.findOrCreateEach(collectionName, attributesToCheck, valuesList,cb);
+		if (adapterDef.findOrCreateEach) {
+			// Build enhanced callback fn
+			cb = this.decorateModel(collectionName, cb);
+
+			adapterDef.findOrCreateEach(collectionName, attributesToCheck, valuesList, cb);
+		}
 		
 		// Default behavior
 		else {
@@ -286,7 +338,7 @@ module.exports = function(adapterDef, cb) {
 
 		// Use the adapter definition's transaction() if specified
 		if (adapterDef.transaction) return adapterDef.transaction(transactionName, atomicLogic, afterUnlock);
-		else if (!adapterDef.commitLog) throw new Error("Cannot process transaction. Commit log disabled in adapter, and no custom transaction logic is defined.");
+		else if (!adapterDef.commitLog) return afterUnlock("Cannot process transaction. Commit log disabled in adapter, and no custom transaction logic is defined.");
 
 		// Generate unique lock
 		var newLock = {
@@ -300,7 +352,7 @@ module.exports = function(adapterDef, cb) {
 		if (!this.transactionCollection) {
 			console.error("Trying to start transaction ("+transactionName+") in collection:",this.identity);
 			console.error("But the transactionCollection is: ",this.transactionCollection);
-			throw new Error("Transaction collection not defined!");
+			return afterUnlock("Transaction collection not defined!");
 		}
 		this.transactionCollection.create(newLock, function afterCreatingTransaction(err, newLock) {
 			if(err) return atomicLogic(err, function() {
@@ -422,7 +474,7 @@ module.exports = function(adapterDef, cb) {
 		drop: function(collection, cb) {
 			var self = this;
 			this.drop(collection.identity, function afterDrop (err, data) {
-				if(err) cb(err);
+				if(err) return cb(err);
 				else self.define(collection.identity, collection, cb);
 			});
 		},
