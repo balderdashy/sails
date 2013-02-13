@@ -26,6 +26,19 @@ if (argv._.length === 0) {
 else if ( _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l'], argv._[0]) ) {
 	require(process.cwd()+'/app.js');
 }
+// Start this app in interactive mode
+else if ( _.contains(['console'], argv._[0]) ) {
+	require(process.cwd()+'/app.js');
+	setTimeout(function () {
+	  	console.log('Sails Console started');
+  		console.log('To exit, type ".exit"');
+	}, 1000);
+	repl = require("repl").start("Sails> ");
+	repl.on('exit', function () {
+  		console.log('Closing Console');
+  		process.exit();
+	});
+}
 // Get the sails version
 else if (argv.v || argv.version || argv._[0] === 'version') {
 	sails.log.info('v'+sails.version);
@@ -73,12 +86,21 @@ else if(argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^generat$|^gener
 }
 
 // Create a new app
+// second argument == app name
 else if(argv._[0].match(/^n$|^ne$|^new$/) || argv.n || argv['new']) {
-	sails.log.info("Generating Sails project...");
-	verifyArg(1, "Please specify the name of the new project directory as the first argument.");
+	createNewApp(argv._[1]);
+}
 
-	// If not an action, first argument == app name
-	var appName = argv._[1];
+// Unknown command, assume creating a new app w/ that name
+// First argument == app name
+else  {
+	verifyArg(0, "Please specify the name of the new project directory as the first argument.");
+	createNewApp(argv._[0]);
+}
+
+function createNewApp (appName) {
+	sails.log.info("Generating Sails project ("+appName+")...");
+
 	outputPath = outputPath + "/" + appName;
 	verifyDoesntExist(outputPath, "A file or directory already exists at: " + outputPath);
 
@@ -94,14 +116,15 @@ else if(argv._[0].match(/^n$|^ne$|^new$/) || argv.n || argv['new']) {
 	generateDir("ui/public/js");
 	generateDir(sails.config.paths.views);
 	generateDir(sails.config.paths.templates);
+	generateFile('404.ejs', sails.config.paths['404']);
 	generateFile('layout.ejs', sails.config.paths.layout);
 
 	generateDir('api');
 	generateDir(sails.config.paths.models);
 	generateDir(sails.config.paths.controllers);
 	generateDir(sails.config.paths.middleware);
-	// NOTE: We are not creating an adapters directory for now to keep things simple.
-	// NOTE: We are not creating a services directory for now to keep things simple.
+	generateDir(sails.config.paths.services);
+	// NOTE: We are not creating an adapters directory for now to keep things simple for new users.
 	
 	generateDir('config');
 	generateFile('config/routes.js', 'config/routes.js');
@@ -160,11 +183,6 @@ else if(argv._[0].match(/^n$|^ne$|^new$/) || argv.n || argv['new']) {
 	sails.log.debug("Generating README.md...");
 	fs.writeFileSync(outputPath + '/README.md', '# ' + appName + '\n### a Sails application');
 }
-// Unknown command
-else  {
-	sails.log.error("Unknown usage!");
-	sailsUsage();
-}
 
 
 // Display usage
@@ -172,6 +190,7 @@ function sailsUsage () {
 	sails.log.info('Usage: sails <command>\n'+
 		'\n'+
 		'sails lift\t\tRun this Sails app (in the current dir)\n'+
+		'sails console\t\tRun this Sails app (in the current dir & in interactive mode.)\n'+
 		'sails new <appName>\t\tCreate a new Sails project in the current dir\n'+
 		'sails generate <foo>\tGenerate model and controller for this app\n'+
 		'sails version\t\tGet the current globally installed Sails version'
