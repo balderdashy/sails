@@ -140,26 +140,45 @@ module.exports = function(adapterDef, cb) {
 	// DQL
 	//////////////////////////////////////////////////////////////////////
 
-	this.save = function (collectionName, values, cb) {
-		// TODO: create or update adapter
+	this.__save = function (collectionName, values, cb) {
+		// TODO: create or update model in adapter, using id to determine the model in question
 		// BUT don't include the save() method!
 
-		cb("save() NOT SUPPORTED YET!");
+		// TODO: use whatever the primary key is configured to, not just `id`
+		var pk = 'id';
+		var pkValue = values[pk];
+
+		// TODO: use updateOrCreate()
+		this.update(collectionName, pkValue, values, cb);
+	};
+
+	this.__destroy = function (collectionName, cb) {
+		// TODO: destroy in adapter, using id to determine the model in question
+		cb("destroy() NOT SUPPORTED YET!");
 	};
 
 	// Build a callback function which will decorate a model
 	// with a save() method
 	this.decorateModel = function (collectionName, cb) {
 		return function (err, set) {
-			if (!set) return cb(err,set);
-			else {
+			if (_.isArray(set)) {
+
 				// Add save() method to set
 				_.each(set, function (model) {
 					if (!_.isObject(model)) return;
-					if (!model.save) model.save = _.bind(self.save, self, collectionName, model);
+					if (!model.save) model.save = _.bind(self.__save, self, collectionName, model);
+					if (!model.destroy) model.destroy = _.bind(self.__destroy, self, collectionName, model);
 				});
 				return cb(err,set);
 			}
+			else if (_.isObject(set)) {
+
+				// Add save() method to model
+				if (!set.save) set.save = _.bind(self.__save, self, collectionName, set);
+				if (!set.destroy) set.destroy = _.bind(self.__destroy, self, collectionName, set);
+				return cb(err,set);
+			}
+			else return cb(err,set);
 		};
 	};
 
