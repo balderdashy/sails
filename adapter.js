@@ -228,7 +228,7 @@ module.exports = function(adapterDef, cb) {
 
 	// If an optimized createEach exists, use it, otherwise use an asynchronous loop with create()
 	this.createEach = function (collectionName, valuesList, cb) {
-		var my = this;
+		var self = this;
 
 		// Custom user adapter behavior
 		if (adapterDef.createEach) adapterDef.createEach.apply(this,arguments);
@@ -236,26 +236,34 @@ module.exports = function(adapterDef, cb) {
 		// Default behavior
 		else {
 			// Create transaction name based on collection
-			my.transaction(collectionName+'.waterline.default.createEach', function (err,done) {
+			self.transaction(collectionName+'.waterline.default.createEach', function (err,done) {
 				async.forEach(valuesList, function (values,cb) {
-					my.create(collectionName, values, cb);
+					self.create(collectionName, values, cb);
 				}, done);
 			},cb);
 		}
 	};
 	// If an optimized findOrCreateEach exists, use it, otherwise use an asynchronous loop with create()
-	this.findOrCreateEach = function (collectionName, valuesList, cb) {
-		var my = this;
+	this.findOrCreateEach = function (collectionName, attributesToCheck, valuesList, cb) {
+		var self = this;
 
 		// Custom user adapter behavior
-		if (adapterDef.findOrCreateEach) adapterDef.findOrCreateEach(collectionName,valuesList,cb);
+		if (adapterDef.findOrCreateEach) adapterDef.findOrCreateEach(collectionName, attributesToCheck, valuesList,cb);
 		
 		// Default behavior
 		else {
 			// Create transaction name based on collection
-			my.transaction(collectionName+'.waterline.default.createEach', function (err,done) {
+			self.transaction(collectionName+'.waterline.default.findOrCreateEach', function (err,done) {
 				async.forEach(valuesList, function (values,cb) {
-					my.findOrCreate(collectionName, values, null, cb);
+
+					// Check that each of the criteria keys match:
+					// build a criteria query
+					var criteria = {};
+					_.each(attributesToCheck, function (attrName) {
+						criteria[attrName] = values[attrName];
+					});
+
+					return self.findOrCreate(collectionName, criteria, values, cb);
 				}, done);
 			},cb);
 		}

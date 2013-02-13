@@ -90,7 +90,14 @@ describe('CRUD :: Aggreagate methods and transactions', function (){
 
 
 		it ('should not fail',function (done) {
-			User.findOrCreateEach(testData,done);
+			User.findOrCreateEach(['name','type'], testData, done);
+		});
+
+		it ('SHOULD fail when only one arg is specified',function (done) {
+			User.findOrCreateEach(testData, function (err) {
+				if (err) return done();
+				else done("Should have failed, since no attributesToCheck arg was specified!");
+			});
 		});
 
 		it ('should have saved the proper values (with auto-increment values)',function (done) {

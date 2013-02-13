@@ -77,8 +77,8 @@ function Collection (definition, adapter, cb) {
 
 
 			var usage = _.str.capitalize(this.identity) + '.' + actualMethodName + '(someValue,[options],callback)';
-			if(_.isUndefined(value)) usageError('No value specified!', usage);
-			if(options.where) usageError('Cannot specify `where` option in a dynamic ' + method + '*() query!', usage);
+			if(_.isUndefined(value)) return usageError('No value specified!', usage, cb);
+			if(options.where) return usageError('Cannot specify `where` option in a dynamic ' + method + '*() query!', usage, cb);
 
 
 			// Build criteria query and submit it
@@ -259,7 +259,7 @@ function Collection (definition, adapter, cb) {
 		}
 
 		if(_.isFunction(criteria) || _.isFunction(options)) {
-			return usageError('Invalid options specified!', usage);
+			return usageError('Invalid options specified!', usage, cb);
 		}
 
 		// If no callback specified, return deferred object
@@ -289,14 +289,14 @@ function Collection (definition, adapter, cb) {
 		var usage = _.str.capitalize(this.identity) + '.findLike([criteria],[options],callback)';
 		if(criteria = normalize.likeCriteria(criteria, attributes)) {
 			return this.find(criteria, options, cb);
-		} else usageError('Criteria must be string or object!', usage);
+		} else return usageError('Criteria must be string or object!', usage, cb);
 	};
 
 	this.findAllLike = function(criteria, options, cb) {
 		var usage = _.str.capitalize(this.identity) + '.findAllLike([criteria],[options],callback)';
 		if(criteria = normalize.likeCriteria(criteria, attributes)) {
 			return this.findAll(criteria, options, cb);
-		} else usageError('Criteria must be string or object!', usage);
+		} else return usageError('Criteria must be string or object!', usage, cb);
 	};
 
 	
@@ -307,7 +307,7 @@ function Collection (definition, adapter, cb) {
 			return criteria + '%';
 		})) {
 			return this.findAll(criteria, options, cb);
-		} else usageError('Criteria must be a string or object!', usage);
+		} else return usageError('Criteria must be a string or object!', usage, cb);
 		throw new notImplementedError();
 	};
 
@@ -319,7 +319,7 @@ function Collection (definition, adapter, cb) {
 			return '%' + criteria + '%';
 		})) {
 			return this.findAll(criteria, options, cb);
-		} else usageError('Criteria must be a string or object!', usage);
+		} else return usageError('Criteria must be a string or object!', usage, cb);
 		throw new notImplementedError();
 	};
 
@@ -331,7 +331,7 @@ function Collection (definition, adapter, cb) {
 			return '%' + criteria;
 		})) {
 			return this.findAll(criteria, options, cb);
-		} else usageError('Criteria must be a string or object!', usage);
+		} else return usageError('Criteria must be a string or object!', usage, cb);
 		throw new notImplementedError();
 	};
 
@@ -359,9 +359,9 @@ function Collection (definition, adapter, cb) {
 			options = null;
 		} else if(_.isObject(options)) {
 			criteria = _.extend({}, criteria, options);
-		} else usageError('Invalid options specified!', usage);
+		} else return usageError('Invalid options specified!', usage, cb);
 
-		if(!_.isFunction(cb)) usageError('Invalid callback specified!', usage);
+		if(!_.isFunction(cb)) return usageError('Invalid callback specified!', usage, cb);
 
 		return adapter.count(this.identity, criteria, cb);
 	};
@@ -375,8 +375,8 @@ function Collection (definition, adapter, cb) {
 			options = null;
 		}
 		var usage = _.str.capitalize(this.identity) + '.update(criteria, newValues, callback)';
-		if(!newValues) usageError('No updated values specified!', usage);
-		if(!_.isFunction(cb)) usageError('Invalid callback specified!', usage);
+		if(!newValues) return usageError('No updated values specified!', usage, cb);
+		if(!_.isFunction(cb)) return usageError('Invalid callback specified!', usage, cb);
 
 		// TODO: Validate constraints using Anchor
 
@@ -432,12 +432,15 @@ function Collection (definition, adapter, cb) {
 			cb = values;
 			values = null;
 		}
-		if (_.isArray(criteria)) {
-			return this.findOrCreateEach(criteria,cb);
+
+		// This is actually an implicit call to findOrCreateEach
+		if (_.isArray(criteria) && _.isArray(values)) {
+			return this.findOrCreateEach(criteria, values, cb);
 		}
-		var usage = _.str.capitalize(this.identity) + '.findOrCreate(criteria, values, callback)';
-		if(!criteria) usageError('No criteria option specified!', usage);
-		if(!_.isFunction(cb)) usageError('Invalid callback specified!', usage);
+
+		var usage = _.str.capitalize(this.identity) + '.findOrCreate([criteria], values, callback)';
+		if(!criteria) return usageError('No criteria option specified!', usage, cb);
+		if(!_.isFunction(cb)) return usageError('Invalid callback specified!', usage, cb);
 
 		return adapter.findOrCreate(this.identity, criteria, values, cb);
 	};
@@ -447,21 +450,28 @@ function Collection (definition, adapter, cb) {
 	// Aggregate methods
 	//////////////////////////////////////////
 	this.createEach = function(valuesList, cb) {
+
 		var usage = _.str.capitalize(this.identity) + '.createEach(valuesList, callback)';
-		if(!valuesList) usageError('No valuesList specified!', usage);
-		if(!_.isArray(valuesList)) usageError('Invalid valuesList specified (should be an array!)', usage);
-		if(!_.isFunction(cb)) usageError('Invalid callback specified!', usage);
+		if(!valuesList) return usageError('No valuesList specified!', usage, cb);
+		if(!_.isArray(valuesList)) return usageError('Invalid valuesList specified (should be an array!)', usage, cb);
+		if(!_.isFunction(cb)) return usageError('Invalid callback specified!', usage, cb);
 		adapter.createEach(this.identity, valuesList, cb);
 	};
 
 	// Iterate through a list of objects, trying to find each one
 	// For any that don't exist, create them
-	this.findOrCreateEach = function(valuesList, cb) {
-		var usage = _.str.capitalize(this.identity) + '.findOrCreateEach(valuesList, callback)';
-		if(!valuesList) usageError('No valuesList specified!', usage);
-		if(!_.isArray(valuesList)) usageError('Invalid valuesList specified (should be an array!)', usage);
-		if(!_.isFunction(cb)) usageError('Invalid callback specified!', usage);
-		adapter.findOrCreateEach(this.identity, valuesList, cb);
+	this.findOrCreateEach = function(attributesToCheck, valuesList, cb) {
+		if(_.isFunction(valuesList)) {
+			cb = valuesList;
+			valuesList = null;
+		}
+		var usage = _.str.capitalize(this.identity) + '.findOrCreateEach(attributesToCheck, valuesList, callback)';
+		if(!_.isFunction(cb)) return usageError('Invalid callback specified!', usage, cb);
+		if(!attributesToCheck) return usageError('No attributesToCheck specified!', usage, cb);
+		if(!_.isArray(attributesToCheck)) return usageError('No attributesToCheck specified!', usage, cb);
+		if(!valuesList) return usageError('No valuesList specified!', usage, cb);
+		if(!_.isArray(valuesList)) return usageError('Invalid valuesList specified (should be an array!)', usage, cb);
+		adapter.findOrCreateEach(this.identity, attributesToCheck, valuesList, cb);
 	};
 
 	//////////////////////////////////////////
@@ -470,11 +480,11 @@ function Collection (definition, adapter, cb) {
 	this.transaction = function(transactionName, atomicLogic, afterUnlock) {
 		var usage = _.str.capitalize(this.identity) + '.transaction(transactionName, atomicLogicFunction, afterUnlockFunction)';
 		if(!atomicLogic) {
-			return usageError('Missing required parameter: atomicLogicFunction!', usage);
+			return usageError('Missing required parameter: atomicLogicFunction!', usage, cb);
 		} else if(!_.isFunction(atomicLogic)) {
-			return usageError('Invalid atomicLogicFunction!  Not a function: ' + atomicLogic, usage);
+			return usageError('Invalid atomicLogicFunction!  Not a function: ' + atomicLogic, usage, cb);
 		} else if(afterUnlock && !_.isFunction(afterUnlock)) {
-			return usageError('Invalid afterUnlockFunction!  Not a function: ' + afterUnlock, usage);
+			return usageError('Invalid afterUnlockFunction!  Not a function: ' + afterUnlock, usage, cb);
 		} else return adapter.transaction(this.identity + '.' + transactionName, atomicLogic, afterUnlock);
 	};
 
@@ -538,9 +548,13 @@ function Collection (definition, adapter, cb) {
 }
 
 
-function usageError(err, usage) {
-	console.error("\n\n");
-	throw new Error(err + '\n==============================================\nProper usage :: \n' + usage + '\n==============================================\n');
+function usageError(err, usage, cb) {
+	var message = err + '\n==============================================\nProper usage :: \n' + usage + '\n==============================================\n';
+	if (cb) return cb(message);
+	else {
+		console.error("\n\n");
+		throw new Error(message);
+	}
 }
 
 
