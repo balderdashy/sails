@@ -52,6 +52,7 @@
   },
   "dependencies": {
     "waterline": "0.4.7",
+    "waterline-dirty": "0.4.2",
     "express": "= 2.5.11",
     "socket.io": "= 0.9.6",
     "ejs": "=0.7.2",
@@ -65,7 +66,7 @@
     "glob": "=3.1.14",
     "winston": "~0.6.2",
     "sails-moduleloader": "~1.1.5",
-    "sails-util": "0.1.0",
+    "sails-util": "0.2.0",
     "fs-extra": "~0.3.2",
     "i18n": "~0.3.5"
   },
