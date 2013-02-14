@@ -134,7 +134,10 @@ module.exports = function (options,cb) {
 			return require(adapterName)();
 		}
 		catch (e) {
-			throw new Error("Unknown adapter ("+adapterName+") in collection (" + collectionName +")");
+			var err = "Unknown adapter ("+adapterName+") in collection (" + collectionName +")";
+			log.error(err);
+			log.error("Try running: npm install "+adapterName);
+			process.exit();
 		}
 	}
 
