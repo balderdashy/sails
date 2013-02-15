@@ -27,7 +27,6 @@ module.exports = function (options,cb) {
 
 	// Trim slashes off of app path
 	waterlineConfig.appPath = _.str.rtrim(waterlineConfig.appPath,'/');
-	console.log("APP PATH",waterlineConfig.appPath);
 
 	// Only tear down waterline once 
 	// (if teardown() is called explicitly, don't tear it down when the process exits)
