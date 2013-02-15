@@ -1,6 +1,9 @@
 // Global adapter defaults
 module.exports = {
 
+	// By default assume the app path is the current directory
+	appPath: __dirname,
+
 	// ms to wait before warning that a tranaction is taking too long
 	// TODO: move this logic as a configuration option into the actual transaction collection
 	transactionWarningTimer: 2000,

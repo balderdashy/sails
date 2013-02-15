@@ -11,6 +11,7 @@ var Collection = require('./collection.js');
 // Util
 var modules = require('sails-moduleloader');
 var util = require('sails-util');
+var fs = require('fs-extra');
 
 /**
 * Prepare waterline to interact with adapters
@@ -23,6 +24,10 @@ module.exports = function (options,cb) {
 	var collectionDefaults = _.extend(waterlineConfig.collection,options.collection);
 	waterlineConfig = _.extend(waterlineConfig, options);
 	waterlineConfig.collection = collectionDefaults;
+
+	// Trim slashes off of app path
+	waterlineConfig.appPath = _.str.rtrim(waterlineConfig.appPath,'/');
+	console.log("APP PATH",waterlineConfig.appPath);
 
 	// Only tear down waterline once 
 	// (if teardown() is called explicitly, don't tear it down when the process exits)
@@ -129,17 +134,22 @@ module.exports = function (options,cb) {
 
 	// Try to import an unknown adapter
 	function requireAdapter(adapterName, collectionName) {
-		try {
-			log('Loading module ' + adapterName + "...");
-			return require(adapterName)();
-		}
-		catch (e) {
+
+		// First, try to stat the adapter module
+		var modulePath = waterlineConfig.appPath+'/node_modules/'+adapterName;
+		var exists = fs.existsSync(modulePath);
+		log.verbose('Loading module ' + adapterName + "...");
+
+		// If it exists, require it.
+		if (exists) return require(modulePath)();
+		else {
 			var err = "Unknown adapter ("+adapterName+") in collection (" + collectionName +")";
 			log.error(err);
 			log.error("Try running: npm install "+adapterName);
 			log.error("To save the adapter as a permanent dependency, run: npm install "+adapterName+" --save");
-			process.exit();
+			process.exit(1);
 		}
+		
 	}
 
 
