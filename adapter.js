@@ -168,7 +168,7 @@ module.exports = function(adapterDef, cb) {
 					if (!_.isObject(model)) return;
 					if (!model.save) model.save = _.bind(self.__save, self, collectionName, model);
 					if (!model.destroy) model.destroy = _.bind(self.__destroy, self, collectionName, model);
-					if (!model.values) model.values = _.omit(self,['save','destroy','values']);
+					if (!model.values) model.values = _.omit(model,['save','destroy','values']);
 				});
 				return cb(err,set);
 			}
@@ -177,7 +177,7 @@ module.exports = function(adapterDef, cb) {
 				// Add save() method to model
 				if (!set.save) set.save = _.bind(self.__save, self, collectionName, set);
 				if (!set.destroy) set.destroy = _.bind(self.__destroy, self, collectionName, set);
-				if (!set.values) set.values = _.omit(self,['save','destroy','values']);
+				if (!set.values) set.values = _.omit(set,['save','destroy','values']);
 				return cb(err,set);
 			}
 			else return cb(err,set);
