@@ -7,21 +7,24 @@ require('sails').lift({
 	// Path to application root (defaults to current directory, or __dirname)
 	appPath: __dirname,
 
-	rigging: {
+	// Asset rack configuration
+	assets: {
 
 		// Destination for compiled assets
 		outputPath: './.tmp',
 
 		// Source directories, in order, which will be recursively parsed for css, javascript, and templates
-		// and then automatically injected into your layout file.
+		// and then can be automatically injected in your layout/views
+		// ( assets.css(), assets.js() and assets.templateLibrary() )
 		sequence: ['./ui/dependencies', './ui/public', './ui/views/templates']
 	},
 
 	// The environment the app is deployed in 
-	// (`development`, `production`, or `test`)
-	environment: 'development',
+	// (`development` or `production`)
+	environment: 'production',
 
-	// Default data store adapter 
-	// (can be overriden in models)
-	adapter: 'memory'
+	// Default model properties (can be overriden in models)
+	modelDefaults: {
+		adapter: 'memory'
+	}
 });

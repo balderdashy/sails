@@ -4,7 +4,6 @@
 ---------------------*/
 module.exports = {
 	
-	// Attributes / Schema
 	attributes	: {
 
 		// Simple attribute:

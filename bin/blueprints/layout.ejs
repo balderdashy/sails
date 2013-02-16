@@ -7,14 +7,14 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		
 		<!-- JavaScript and stylesheets from your public folder are included here -->
-		<%- rigging.css %>
-		<%- rigging.js %>
+		<%- assets.css() %>
+		<%- assets.js() %>
 	</head>
 
 	<body>
 		<%- body %>
 
 		<!-- Templates from your view path are included here -->
-		<%- rigging.templateLibrary %>
+		<%- assets.templateLibrary() %>
 	</body>
 </html>
