@@ -166,18 +166,18 @@ module.exports = function(adapterDef, cb) {
 				// Add save() method to set
 				_.each(set, function (model) {
 					if (!_.isObject(model)) return;
-					if (!model.save) model.save = _.bind(self.__save, self, collectionName, model);
-					if (!model.destroy) model.destroy = _.bind(self.__destroy, self, collectionName, model);
-					if (!model.values) model.values = _.omit(model,['save','destroy','values']);
+					model.save = _.bind(self.__save, self, collectionName, model);
+					model.destroy = _.bind(self.__destroy, self, collectionName, model);
+					model.values = _.omit(model,['save','destroy','values']);
 				});
 				return cb(err,set);
 			}
 			else if (_.isObject(set)) {
 
 				// Add save() method to model
-				if (!set.save) set.save = _.bind(self.__save, self, collectionName, set);
-				if (!set.destroy) set.destroy = _.bind(self.__destroy, self, collectionName, set);
-				if (!set.values) set.values = _.omit(set,['save','destroy','values']);
+				set.save = _.bind(self.__save, self, collectionName, set);
+				set.destroy = _.bind(self.__destroy, self, collectionName, set);
+				set.values = _.omit(set,['save','destroy','values']);
 				return cb(err,set);
 			}
 			else return cb(err,set);
@@ -232,13 +232,24 @@ module.exports = function(adapterDef, cb) {
 
 
 	this.update = function(collectionName, criteria, values, cb) {
+
+		if (!criteria) return cb('No criteria or id specified!');
+
+		this.updateAll(collectionName, criteria, values, function (err, models) {
+			if (!models) return cb(err);
+			if (models.length < 1) return cb(err);
+			else if (models.length > 1) return cb("More than one "+collectionName+" returned!");
+			else return cb(null,models[0]);
+		});
+	};
+
+	this.updateAll = function (collectionName, criteria, values, cb) {
 		// Build enhanced callback fn
 		cb = this.decorateModel(collectionName, cb);
 
 		if(!adapterDef.update) return cb("No update() method defined in adapter!");
 		criteria = normalize.criteria(criteria);
-
-		adapterDef.update(collectionName, criteria, values, cb);
+		return adapterDef.update(collectionName, criteria, values, cb);
 	};
 
 	this.destroy = function(collectionName, criteria, cb) {

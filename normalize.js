@@ -40,14 +40,6 @@ var normalize = module.exports = {
 		// If where is null, turn it into an object
 		else if(_.isNull(criteria.where)) criteria.where = {};
 
-		// If any item in criteria is a parsable finite number, 
-		// search for both the INTEGER and STRING versions
-		for(var attrName in criteria.where) {
-			if(Math.pow(+criteria.where[attrName], 2) > 0) {
-				criteria.where[attrName] = [+criteria.where[attrName], criteria.where[attrName]];
-			}
-		}
-
 		// If WHERE is {}, always change it back to null
 		if(criteria.where && _.keys(criteria.where).length === 0) {
 			criteria.where = null;
