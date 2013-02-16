@@ -128,7 +128,7 @@ function createNewApp (appName) {
 	
 	generateDir('config');
 	generateFile('config/routes.js', 'config/routes.js');
-	generateFile('config/policy.js', 'config/policy.js');
+	generateFile('config/policies.js', 'config/policies.js');
 	generateDir('config/locales');
 	generateFile('config/locales/english.js', 'config/locales/english.js');
 	generateFile('config/local.js', 'config/local.js');

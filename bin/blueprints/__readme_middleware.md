@@ -1,3 +1,3 @@
-/middleware
+/policies
 
-The middleware directory contains middleware which can be assigned to run before routing to a particular controller.  Middlware can be assigned to controllers and actions in the policy.js file.
+The policies directory contains policies which can be assigned to run before routing to a particular controller.  Policies can be assigned to controllers and actions in the policies.js file.
