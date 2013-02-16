@@ -1,17 +1,11 @@
 // lift sails                                                                                                          
 require('sails').lift({
 
-	// Name of the application (for use in the HTML title entity)
+	// Name of the application (default for the layout <title>)
 	appName: "Sails Application",
-
-	// Path to application root (defaults to current directory, or __dirname)
-	appPath: __dirname,
 
 	// Asset rack configuration
 	assets: {
-
-		// Destination for compiled assets
-		outputPath: './.tmp',
 
 		// Source directories, in order, which will be recursively parsed for css, javascript, and templates
 		// and then can be automatically injected in your layout/views
@@ -25,6 +19,10 @@ require('sails').lift({
 
 	// Default model properties (can be overriden in models)
 	modelDefaults: {
-		adapter: 'memory'
+
+		// During development, store data on disk
+		// In production, you'll want to change this 
+		// to the adapter for your database of choice
+		adapter: 'disk'
 	}
 });

@@ -122,7 +122,7 @@ function createNewApp (appName) {
 	generateDir('api');
 	generateDir(sails.config.paths.models);
 	generateDir(sails.config.paths.controllers);
-	generateDir(sails.config.paths.middleware);
+	generateDir(sails.config.paths.policies);
 	generateDir(sails.config.paths.services);
 	// NOTE: We are not creating an adapters directory for now to keep things simple for new users.
 	
@@ -147,14 +147,14 @@ function createNewApp (appName) {
 	// Create default css reset
 	generateFile('reset.css', sails.config.paths['public'] + "/styles/reset.css");
 
-	// Create default user management and auth middleware
+	// Create default user management and auth policy
 	// TODO	
 
 	// Create readme files
 	// generateFile('__readme_models.md', "models/__readme.md");
 	// generateFile('__readme_controllers.md', "controllers/__readme.md");
 	// generateFile('__readme_views.md', "views/__readme.md");
-	// generateFile('__readme_middleware.md', "middleware/__readme_middleware.md");
+	// generateFile('__readme_policies.md', "policies/__readme_policies.md");
 
 	// Create .gitignore
 	generateFile('gitignore', '.gitignore');

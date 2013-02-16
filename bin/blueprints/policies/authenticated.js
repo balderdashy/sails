@@ -3,10 +3,13 @@
 */
 module.exports = function (req,res,ok) {
 	
+	// User is allowed, proceed to controller
 	if (req.session.authenticated) {
-		ok();
+		return ok();
 	}
+
+	// User is not allowed
 	else {
-		res.send(403);
+		return res.send(403);
 	}
 };
