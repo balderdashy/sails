@@ -15,7 +15,7 @@ require('sails').lift({
 
 	// The environment the app is deployed in 
 	// (`development` or `production`)
-	environment: 'production',
+	environment: 'development',
 
 	// Default model properties (can be overriden in models)
 	modelDefaults: {
