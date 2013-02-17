@@ -22,8 +22,8 @@ sails new testProject
 
 Lift Sails
 ```sh
-# cd into the new folder and install local dependencies
-cd testProject && sudo npm install sails
+# cd into the new folder
+cd testProject
 
 # Fire up the server  
 sails lift
