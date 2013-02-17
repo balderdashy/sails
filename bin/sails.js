@@ -30,13 +30,13 @@ else if ( _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 
 else if ( _.contains(['console'], argv._[0]) ) {
 	require(process.cwd()+'/app.js');
 	setTimeout(function () {
-	  	console.log('Sails Console started');
-  		console.log('To exit, type ".exit"');
+		console.log('Sails Console started');
+		console.log('To exit, type ".exit"');
 	}, 1000);
 	repl = require("repl").start("Sails> ");
 	repl.on('exit', function () {
-  		console.log('Closing Console');
-  		process.exit();
+		console.log('Closing Console');
+		process.exit();
 	});
 }
 // Get the sails version
@@ -116,7 +116,8 @@ function createNewApp (appName) {
 	generateDir("ui/public/js");
 	generateDir(sails.config.paths.views);
 	generateDir(sails.config.paths.templates);
-	generateFile('404.ejs', sails.config.paths['404']);
+	generateFile('404.ejs', sails.config.paths.views+'/404.ejs');
+	generateFile('500.ejs', sails.config.paths.views+'/500.ejs');
 	generateFile('layout.ejs', sails.config.paths.layout);
 
 	generateDir('api');
