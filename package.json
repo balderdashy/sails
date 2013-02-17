@@ -1,7 +1,7 @@
 {
   "name": "waterline",
   "version": "0.5.0",
-  "description": "Adaptable data access layer for Node.js",
+  "description": "Active Record for Node.js",
   "main": "waterline.js",
   "directories": {
     "test": "test"
@@ -14,16 +14,16 @@
     "url": "git://github.com/balderdashy/waterline.git"
   },
   "keywords": [
+    "active record",
+    "activerecord",
     "orm",
     "mysql",
     "mongo",
     "mongodb",
-    "neo4j",
     "postgres",
-    "sqlite",
     "adapter",
-    "waterline",
-    "sails"
+    "sails",
+    "rails"
   ],
   "author": "Mike McNeil",
   "license": "MIT",
