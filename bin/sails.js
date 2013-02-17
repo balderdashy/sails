@@ -17,34 +17,43 @@ var sails = require('./mockSails.js');
 // Output in directory where cmdline tool was run
 var outputPath = '.';
 
-// Basic usage
-if (argv._.length === 0) {
-	sails.log.info('Welcome to Sails!\n');
-	sailsUsage();
-}
+
 // Start this app
-else if ( _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l'], argv._[0]) ) {
+if ( argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l'], argv._[0]) ) {
 	require(process.cwd()+'/app.js');
 }
 // Start this app in interactive mode
 else if ( _.contains(['console'], argv._[0]) ) {
-	require(process.cwd()+'/app.js');
-	setTimeout(function () {
-		console.log('Sails Console started');
-		console.log('To exit, type ".exit"');
-	}, 1000);
-	repl = require("repl").start("Sails> ");
-	repl.on('exit', function () {
-		console.log('Closing Console');
-		process.exit();
+	// require(process.cwd()+'/app.js');
+	// setTimeout(function () {
+		sails.log.ship();
+		sails.log('Welcome to Sails.js!');
+		sails.log('( to exit, type <CTRL>+<C> )');
+	// }, 1000);
+
+	require('sails').lift({
+		log: {
+			level: 'warn'
+		}
+	}, function (){
+		repl = require("repl").start("sails> ");
+		repl.on('exit', function () {
+			sails.log('Closing console');
+			process.exit();
+		});
 	});
 }
 // Get the sails version
-else if (argv.v || argv.version || argv._[0] === 'version') {
+else if (argv.v || argv.version || (argv._[0] && _.contains(['v', 'version'], argv._[0]))) {
 	sails.log.info('v'+sails.version);
 }
+// Basic usage
+else if (argv._.length === 0) {
+	sails.log.info('Welcome to Sails!\n');
+	sailsUsage();
+}
 // Generate file(s)
-else if(argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^generat$|^generate$/) || argv.g || argv.generate) {
+else if(argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^generat$|^generate$/) || argv.g || argv.generate) {
 
 	verifyArg(1, "Please specify the name for the new model and controller as the second argument.");
 
