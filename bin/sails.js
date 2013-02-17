@@ -80,10 +80,21 @@ else if(argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^ge
 		generateController(entity, options);
 	}
 
+	// Generate a view
+	else if(argv._[1] === 'view') {
+		var entity = argv._[2];
+		verifyArg(2, "Please specify the name for the new view as the third argument.");
+		
+		// Figure out actions based on args
+		var options = _.extend({},argv);
+		options.actions = argv._.splice(3);
+		generateView(entity, options);
+	}
+
 	// Otherwise generate a model, controller, and view directory
 	else {
 		var entity = argv._[1];
-		verifyArg(1, "Please specify the name of the entity to generate a model, controller, and view for as the second argument.");
+		verifyArg(1, "Please specify the name of the entity as the second argument to generate a model, controller, and view.");
 		sails.log.info("Generating model and controller for " + entity);
 		
 		var options = _.extend({},argv);
@@ -291,6 +302,24 @@ function generateModel(entity, options) {
 		entity: capitalize(entity),
 		suffix: ".js"
 	});
+}
+
+function generateView(entity, options) {
+	var viewPath = sails.config.paths.views+'/'+entity;
+	generateDir(viewPath);
+
+	_.each(options.actions, function (action) {
+		action = verifyValidEntity(action, "Invalid view name: " + action);
+
+		return generate({
+			blueprint: 'view.' + sails.config.viewEngine,
+			prefix: viewPath,
+			entity: entity,
+			action: action,
+			suffix: '.' + sails.config.viewEngine
+		});
+	});
+
 }
 
 
