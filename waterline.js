@@ -182,9 +182,9 @@ module.exports = function (options,cb) {
 		var exiting = false;
 		process.on('SIGINT', serverOnHalt);
 		process.on('SIGTERM', serverOnHalt);
-		// If SIGINT or SIGTERM wasn't run, this is a dirty exit-- 
 		process.on('exit', function process_exit() {
-			if (!exiting) log.info("Sails lowered- server shut down.");
+			// If SIGINT or SIGTERM wasn't run, this is a dirty exit-- 
+			if (!exiting) log.verbose('Server stopped.');
 		});
 		function serverOnHalt (){
 			exiting = true;
