@@ -29,11 +29,14 @@ cd testProject && sudo npm install sails
 sails lift
 ```
 
-The default port for Sails is 1337.  At this point if you visit <a href="http://localhost:1337/">http://localhost:1337/</a> You will see
-the default index.html page.  Now, let's get Sails to tell us Hello.
+The default port for Sails is 1337.  At this point if you visit <a href="http://localhost:1337/">http://localhost:1337/</a> You will see the default index.html page.  
+
+<!--
+Now, let's get Sails to tell us Hello.
 
 
 # Hello, Sails!
+
 To get Sails to say "Hello World!", you need only to define one controller with an action and define
 one route. Lets start with the controller.
 
@@ -92,6 +95,7 @@ sails lift
 
 Now when you visit <a href="http://localhost:1337/">http://localhost:1337/</a> your browser should say **'Hello World!'**.
 
+-->
 
 # Creating a Model
 Creating a model is very easy with the command line tool. You can even define attributes and their
