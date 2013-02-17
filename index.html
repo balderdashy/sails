@@ -54,70 +54,18 @@ sails new testProject
 
 <p>Lift Sails</p>
 
-<div class="highlight"><pre><span class="c"># cd into the new folder</span>
-<span class="nb">cd </span>testProject
+
+<div class="highlight"><pre><span class="c"># cd into the new folder and install local dependencies</span>
+<span class="nb">cd </span>testProject <span class="o">&amp;&amp;</span> sudo npm install sails
+
 
 <span class="c"># Fire up the server  </span>
 sails lift
 </pre></div>
 
-<p>The default port for Sails is 1337.  At this point if you visit <a href="http://localhost:1337/">http://localhost:1337/</a> You will see
-the default index.html page.  Now, let's get Sails to tell us Hello.</p>
 
-<h1>Hello, Sails!</h1>
+<p>The default port for Sails is 1337.  At this point if you visit <a href="http://localhost:1337/">http://localhost:1337/</a> You will see the default index.html page.  </p>
 
-<p>To get Sails to say "Hello World!", you need only to define one controller with an action and define
-one route. Lets start with the controller.</p>
-
-<div class="highlight"><pre>sails generate controller hello index
-</pre></div>
-
-<p>This will generate a file called <code>HelloController.js</code> in your app's <code>api/controllers</code> directory with one action, <code>index()</code>.</p>
-
-<p>Now let's edit that action to send back the string <code>'Hello World!'</code>.</p>
-
-<div class="highlight"><pre>
-<span class="kd">var</span> <span class="nx">HelloController</span> <span class="o">=</span> <span class="p">{</span>
-
-    <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">'Hello World!'</span><span class="p">);</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">HelloController</span><span class="p">;</span>
-</pre></div>
-
-<p>After you have added that, you will want to remove the default index.html page that shows at the
-start of your application.</p>
-
-<div class="highlight"><pre>rm ui/public/index.html
-</pre></div>
-
-<p>We want the application to display this hello response when a request for the root "/" route
-comes in. Go into the <strong>/config/routes.js</strong> file. Here you can manually define these mappings,
-and here we will do so. Change the file to look like this.</p>
-
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">routes</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">'/'</span><span class="o">:</span> <span class="p">{</span>
-        <span class="nx">controller</span><span class="o">:</span> <span class="s1">'hello'</span><span class="p">,</span>
-        <span class="nx">action</span><span class="o">:</span> <span class="s1">'index'</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">routes</span><span class="p">;</span>
-</pre></div>
-
-<p>As you will see when working more with Sails, one great feature is that by default, you do not have
-to define incoming routes to controller actions. This is talked more about in the 
-<a href="https://github.com/balderdashy/sails/wiki/Routing">Routing page</a> of this wiki.</p>
-
-<p>Finally, restart the server by going to your node terminal and pressing control+c. Then enter the
-following.</p>
-
-<div class="highlight"><pre>sails lift
-</pre></div>
-
-<p>Now when you visit <a href="http://localhost:1337/">http://localhost:1337/</a> your browser should say <strong>'Hello World!'</strong>.</p>
 
 <h1>Creating a Model</h1>
 
@@ -199,15 +147,6 @@ http://localhost:1337/user/destroy/1
 
 <p>Tested with node 0.8.1
 Sails is built on the rock-solid foundations of ExpressJS and Socket.io.  </p>
-
-<p><img src="http://i.imgur.com/hXc06.png" alt="icon_circlechart@2x.png"></p>
-
-<h2>Demo</h2>
-
-<p><em>Try it in two browser windows</em></p>
-
-<p><a href="http://sailsjs.com:1337/experiment#subcomponents">http://sailsjs.com:1337/experiment#subcomponents</a></p>
-
 
 
 <p><img src="http://i.imgur.com/liHPV.png" alt="icon_circleheart@2x.png"></p>
