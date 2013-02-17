@@ -22,8 +22,8 @@ sails new testProject
 
 Lift Sails
 ```sh
-# cd into the new folder
-cd testProject
+# cd into the new folder and install local dependencies
+cd testProject && sudo npm install sails
 
 # Fire up the server  
 sails lift
@@ -179,7 +179,7 @@ Sails is built on the rock-solid foundations of ExpressJS and Socket.io.
 
 
 
-
+<!--
 ![icon_circlechart@2x.png](http://i.imgur.com/hXc06.png) 
 
 Demo
@@ -189,7 +189,7 @@ Demo
 
 http://sailsjs.com:1337/experiment#subcomponents
 
-<!--
+
 #### Code
 https://github.com/balderdashy/sails-example
 -->
