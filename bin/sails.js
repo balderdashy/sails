@@ -20,16 +20,13 @@ var outputPath = '.';
 
 // Start this app
 if ( argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l'], argv._[0]) ) {
-	require(process.cwd()+'/app.js');
+	require('sails').lift();
 }
 // Start this app in interactive mode
 else if ( _.contains(['console'], argv._[0]) ) {
-	// require(process.cwd()+'/app.js');
-	// setTimeout(function () {
-		sails.log.ship();
-		sails.log('Welcome to Sails.js!');
-		sails.log('( to exit, type <CTRL>+<C> )');
-	// }, 1000);
+	sails.log.ship();
+	sails.log('Welcome to Sails.js!');
+	sails.log('( to exit, type <CTRL>+<C> )');
 
 	require('sails').lift({
 		log: {
@@ -49,7 +46,8 @@ else if (argv.v || argv.version || (argv._[0] && _.contains(['v', 'version'], ar
 }
 // Basic usage
 else if (argv._.length === 0) {
-	sails.log.info('Welcome to Sails!\n');
+	sails.log.ship();
+	sails.log('Welcome to Sails!\n');
 	sailsUsage();
 }
 // Generate file(s)
@@ -147,12 +145,19 @@ function createNewApp (appName) {
 	generateDir(sails.config.paths.services);
 	// NOTE: We are not creating an adapters directory for now to keep things simple for new users.
 	
+	// Basic config
 	generateDir('config');
 	generateFile('config/routes.js', 'config/routes.js');
 	generateFile('config/policies.js', 'config/policies.js');
+	generateFile('config/application.js', 'config/application.js');
+	generateFile('config/assets.js', 'config/assets.js');
+	generateFile('config/environment.js', 'config/environment.js');
+	generateFile('config/local.js', 'config/local.js');
+	generateFile('config/modelDefaults.js', 'config/modelDefaults.js');
+
+	// Internationalization config
 	generateDir('config/locales');
 	generateFile('config/locales/english.js', 'config/locales/english.js');
-	generateFile('config/local.js', 'config/local.js');
 	
 
 
