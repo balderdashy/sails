@@ -4,3 +4,4 @@
 // this is where you include configuration overrides for your local system
 // or for a production deployment.
 // (e.g. port, database credentials)
+module.exports.local = {};

@@ -20,7 +20,7 @@
 //       JSON API for the model which matches :controller.
 //   - if no view OR model exists, Sails will respond with a 404.
 //
-var routes = {
+module.exports.routes = {
 	
 	// Routes look like:
 	// '/whateverYouWant': {
@@ -80,4 +80,3 @@ var routes = {
 	}
 	*/
 };
-module.exports = routes;
