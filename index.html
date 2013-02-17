@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Sails by balderdashy</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Sails</h1>
+          <h2>Realtime MVC Framework for Node.js</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/balderdashy/sails/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/balderdashy/sails/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/balderdashy/sails" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <p><img src="http://i.imgur.com/Tj9Nk.png" alt="image_devInTub@2x.png"></p>
+
+<h1>Sails</h1>
+
+<p>Sails makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development.  It's especially good for building realtime features like chat.</p>
+
+<h1>Installation</h1>
+
+<p>To install the latest stable release with the command-line tool:</p>
+
+<div class="highlight"><pre>sudo npm -g install sails
+</pre></div>
+
+<h1>Creating a New Sails Project</h1>
+
+<p>Create a new app</p>
+
+<div class="highlight"><pre><span class="c"># Create the app</span>
+sails new testProject
+</pre></div>
+
+<p>Lift Sails</p>
+
+<div class="highlight"><pre><span class="c"># cd into the new folder and install local dependencies</span>
+<span class="nb">cd </span>testProject <span class="o">&amp;&amp;</span> sudo npm install sails
+
+<span class="c"># Fire up the server  </span>
+sails lift
+</pre></div>
+
+<p>The default port for Sails is 1337.  At this point if you visit <a href="http://localhost:1337/">http://localhost:1337/</a> You will see the default index.html page.  </p>
+
+
+
+<h1>Creating a Model</h1>
+
+<p>Creating a model is very easy with the command line tool. You can even define attributes and their
+type by adding arguments at the end of the command. To generate a User model, enter the following:</p>
+
+<pre><code>sails generate model User
+</code></pre>
+
+<p>You will see that this creates a user model at <strong>/api/model/User.js</strong>.  Let's give her a name-- try uncommenting the name attribute so it looks more or less like this:</p>
+
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">User</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">attributes</span>      <span class="o">:</span> <span class="p">{</span>
+                <span class="nx">name</span><span class="o">:</span> <span class="s1">'STRING'</span>
+        <span class="p">}</span>
+
+<span class="p">};</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">User</span><span class="p">;</span>
+</pre></div>
+
+<h1>What's Better Than Scaffolding?  How About a free JSON API?</h1>
+
+<p>Sails API scaffolding is nothing like Rails scaffolding. HTML scaffolds just don't make sense for 
+modern web apps! Instead, Sails automatically builds a RESTful JSON API for your models. Best of
+all, it supports HTTP <em>and</em> WebSockets! By default for every controller you create, you get the
+basic CRUD operations created automatically.</p>
+
+<p>For instance, after generating the User model above, if you visit <code>http://localhost:1337/user/create</code>, you'll see:</p>
+
+<div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">"createdAt"</span><span class="p">:</span> <span class="s2">"2013-01-10T01:33:19.105Z"</span><span class="p">,</span>
+  <span class="nt">"updatedAt"</span><span class="p">:</span> <span class="s2">"2013-01-10T01:33:19.105Z"</span><span class="p">,</span>
+  <span class="nt">"id"</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>That's it!  You just created a model in the database!  You can also <code>find</code>, <code>update</code>, and <code>destroy</code> users:</p>
+
+<pre><code># List of all users
+http://localhost:1337/user
+
+# Find the user with id 1
+http://localhost:1337/user/1
+
+# Create a new user
+http://localhost:1337/user/create?name=Fisslewick
+(or send an HTTP POST to http://localhost:1337/user)
+
+# Update the name of the user with id 1
+http://localhost:1337/user/update/1?name=Gordo
+(or send an HTTP PUT to http://localhost:1337/user/1)
+
+# Destroy the user with id 1
+http://localhost:1337/user/destroy/1
+(or send an HTTP DELETE to http://localhost:1337/user/1)
+</code></pre>
+
+<h2>Additional Features</h2>
+
+<p>Sails does a few things other Node.js MVC frameworks can't do:</p>
+
+<ul>
+<li>Automatically generated JSON API for manipulating models means you don't have to write any backend code to build simple database apps</li>
+<li>Built-in authentication, role-based access control, and customizable policies assignable at the controller/action level</li>
+<li>Transport agnostic routing: Sails controllers also handle Socket.io / WebSocket messages!  This makes it much easier to send the server-originated or 'comet' notifications you need for features like chat, realtime analytics, and multiplayer games.</li>
+<li>Automatic asset minification with Rigging: Your UI code is automatically included in development mode, and minified into a simple, gzipped file in production.
+
+<ul>
+<li>Support for:</li>
+<li>CoffeeScript</li>
+<li>LESS</li>
+<li>SASS / SCSS</li>
+</ul>
+</li>
+</ul><p>To learn more, check out the documentation here: 
+<a href="https://github.com/balderdashy/sails/wiki/_pages">https://github.com/balderdashy/sails/wiki/_pages</a></p>
+
+<h2>Dependencies and Compatibility</h2>
+
+<p>Tested with node 0.8.1
+Sails is built on the rock-solid foundations of ExpressJS and Socket.io.  </p>
+
+
+
+<p><img src="http://i.imgur.com/liHPV.png" alt="icon_circleheart@2x.png"></p>
+
+<h2>Who Built This?</h2>
+
+<p>The Sails framework was developed by Mike McNeil (<a href="https://github.com/mikermcneil" class="user-mention">@mikermcneil</a>) and is maintained by Balderdash (<a href="https://github.com/balderdashy" class="user-mention">@balderdashy</a>), a realtime web &amp; mobile studio I started with Heather White (<a href="https://github.com/hdesignsit" class="user-mention">@hdesignsit</a>) in Austin, TX.</p>
+
+<p>After building a few realtime javascript apps and taking them into production, we realized that the  JavaScript development landscape is very much still the Wild West.  Over time, after trying lots of different methodologies (on the front end and the back), we decided to crystallize all of our best practices into this framework.  I hope it saves you some time :)</p>
+
+<p><img src="http://i.imgur.com/eOFXn.png" alt="icon_circlelightbulb@2x.png"></p>
+
+<h2>License</h2>
+
+<p>Sails is built around so many great open-source technologies that it would never have crossed our minds to keep it proprietary.  We owe huge gratitude and props to TJ Holowaychuk (<a href="https://github.com/visionmedia" class="user-mention">@visionmedia</a>) and Guillermo Rauch (<a href="https://github.com/guille" class="user-mention">@guille</a>) for the work they did, as well as the stewards of all the other open-source modules we use.  Sails could never have been developed without your tremendous contributions to the node community.</p>
+
+<h2>The MIT License (MIT)</h2>
+
+<p>Copyright © 2012-2013 Mike McNeil</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+
+<p><a href="http://githalytics.com/balderdashy/sails"><img src="https://cruel-carlota.pagodabox.com/8acf2fc2ca0aca8a3018e355ad776ed7" alt="githalytics.com alpha" title="githalytics.com"></a></p>
+        </section>
+
+        <footer>
+          Sails is maintained by <a href="https://github.com/balderdashy">balderdashy</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
