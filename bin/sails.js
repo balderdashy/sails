@@ -89,16 +89,16 @@ else if(argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^ge
 		generateController(entity, options);
 	}
 
-	// Generate a view
-	else if(argv._[1] === 'view') {
-		var entity = argv._[2];
-		verifyArg(2, "Please specify the name for the new view as the third argument.");
+	// // Generate a view
+	// else if(argv._[1] === 'view') {
+	// 	var entity = argv._[2];
+	// 	verifyArg(2, "Please specify the name for the new view as the third argument.");
 		
-		// Figure out actions based on args
-		var options = _.extend({},argv);
-		options.actions = argv._.splice(3);
-		generateView(entity, options);
-	}
+	// 	// Figure out actions based on args
+	// 	var options = _.extend({},argv);
+	// 	options.actions = argv._.splice(3);
+	// 	generateView(entity, options);
+	// }
 
 	// Otherwise generate a model, controller, and view directory
 	else {
@@ -138,22 +138,22 @@ function createNewApp (appName) {
 	
 	// Create default app structure
 	generateDir('ui');
-	generateDir(sails.config.paths.dependencies);
-	generateDir(sails.config.paths['public']);
+	generateDir('ui/dependencies');
+	generateDir('ui/public');
 	generateDir("ui/public/styles");
 	generateDir("ui/public/images");
 	generateDir("ui/public/js");
-	generateDir(sails.config.paths.views);
-	generateDir(sails.config.paths.templates);
-	generateFile('404.ejs', sails.config.paths.views+'/404.ejs');
-	generateFile('500.ejs', sails.config.paths.views+'/500.ejs');
-	generateFile('layout.ejs', sails.config.paths.layout);
+	generateDir('ui/views');
+	generateDir('ui/views/templates');
+	generateFile('404.ejs', 'ui/views/404.ejs');
+	generateFile('500.ejs', 'ui/views/500.ejs');
+	generateFile('layout.ejs', 'ui/views/layout.ejs');
 
 	generateDir('api');
-	generateDir(sails.config.paths.models);
-	generateDir(sails.config.paths.controllers);
-	generateDir(sails.config.paths.policies);
-	generateDir(sails.config.paths.services);
+	generateDir('api/models');
+	generateDir('api/controllers');
+	generateDir('api/policies');
+	generateDir('api/services');
 	// NOTE: We are not creating an adapters directory for now to keep things simple for new users.
 	
 	// Basic config
@@ -176,13 +176,13 @@ function createNewApp (appName) {
 	generateFile('app.js', 'app.js');
 
 	// Create default home page
-	generateFile('index.html', sails.config.paths['public'] + '/index.html');
+	generateFile('index.html', 'ui/public/index.html');
 
 	// Copy default favicon
-	copyBlueprint('favicon.ico',sails.config.paths['public'] + '/favicon.ico');
+	copyBlueprint('favicon.ico','ui/public/favicon.ico');
 
 	// Create default css reset
-	generateFile('reset.css', sails.config.paths['public'] + "/styles/reset.css");
+	generateFile('reset.css', 'ui/public/styles/reset.css');
 
 	// Create default user management and auth policy
 	// TODO	
@@ -335,7 +335,6 @@ function generateView(entity, options) {
 			suffix: '.' + sails.config.viewEngine
 		});
 	});
-
 }
 
 
