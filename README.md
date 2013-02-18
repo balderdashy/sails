@@ -22,8 +22,8 @@ sails new testProject
 
 Lift Sails
 ```sh
-# cd into the new folder and install local dependencies
-cd testProject && sudo npm install sails
+# cd into the new folder
+cd testProject
 
 # Fire up the server  
 sails lift
@@ -103,8 +103,10 @@ type by adding arguments at the end of the command. To generate a User model, en
 ```
 sails generate model User
 ```
+If you check out your app, you'll notice that this created a file at **/api/model/User.js**.
 
-You will see that this creates a user model at **/api/model/User.js**.  Let's give her a name-- try uncommenting the name attribute so it looks more or less like this:
+<!--
+  Let's give her a name-- try uncommenting the name attribute so it looks more or less like this:
 
 ```javascript
 var User = {
@@ -115,6 +117,7 @@ var User = {
 };
 module.exports = User;
 ```
+-->
 
 # What's Better Than Scaffolding?  How About a free JSON API?
 
