@@ -20,7 +20,18 @@ var outputPath = '.';
 
 // Start this app
 if ( argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l'], argv._[0]) ) {
-	require('sails').lift();
+
+
+	// check if node_modules/sails exists in current directory
+	if (fs.existsSync(sails.config.appPath + '/node_modules/sails')) {
+		
+		// if it does, use the local version of sails
+		require(sails.config.appPath + '/node_modules/sails/lib/common.js').lift();
+	}
+	else {
+		// otherwise, use the global installation of sails
+		require('sails').lift();
+	}
 }
 // Start this app in interactive mode
 else if ( _.contains(['console'], argv._[0]) ) {
