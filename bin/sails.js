@@ -41,7 +41,7 @@ else if ( _.contains(['console'], argv._[0]) ) {
 
 	require('sails').lift({
 		log: {
-			level: 'warn'
+			level: 'silent'
 		}
 	}, function (){
 		repl = require("repl").start("sails> ");
