@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha --globals ___transaction --recursive  --globals User -b -R landing -t 8000"
+    "test": "node ./node_modules/mocha/bin/mocha --globals ___transaction --recursive  --globals User -b -R landing -t 8000"
   },
   "repository": {
     "type": "git",
@@ -37,5 +37,9 @@
     "parley": "0.0.2",
     "sails-util": "0.1.0",
     "sails-moduleloader": "~1.1.5"
+  },
+  "devDependencies": {
+    "waterline-dirty": "~0.4.3",
+    "mocha": "~1.8.1"
   }
 }
