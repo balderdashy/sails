@@ -30,17 +30,18 @@
   "license": "MIT",
   "dependencies": {
     "underscore": "=1.4.3",
-    "underscore.string": "~2.3.1",
-    "async": "~0.1.22",
-    "node-uuid": "~1.4.0",
-    "fs-extra": "~0.3.2",
+    "underscore.string": "2.3.1",
+    "async": "0.1.22",
+    "node-uuid": "1.4.0",
+    "fs-extra": "0.3.2",
     "require-all": "0.0.5",
     "parley": "0.0.2",
     "sails-util": "0.1.0",
-    "sails-moduleloader": "~1.1.5"
+    "sails-moduleloader": "1.1.5"
   },
   "devDependencies": {
     "waterline-dirty": "~0.4.3",
-    "mocha": "~1.8.1"
+    "mocha": "~1.8.1",
+    "waterline-mysql": "~0.5.0"
   }
 }

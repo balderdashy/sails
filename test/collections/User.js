@@ -3,6 +3,35 @@
 	-> collection
 ---------------------*/
 
+var _ = require('underscore');
+
+//////////////////////////////////////////////////
+// Testing fns
+//
+// (these are here purely to make testing easier)
+//////////////////////////////////////////////////
+
+exports.testExists = function (exists, cb) {
+	return function (err, result) {
+		if(err) return cb(new Error(err));
+		else if(exists && !result) return cb(new Error('No result was returned, but it should have been.'));
+		else if(!exists && result) return cb(new Error('Result(s) returned, but it should NOT have been.'));
+		else cb();
+	};
+};
+
+// find() should return exactly n things
+exports.testCount = function (count, cb) {
+	return function (err, results) {
+		if(err) return cb(new Error(err));
+		else if(!results || !_.isArray(results)) return cb(new Error('Results should have been a list, instead it was: '+results+'.'));
+		else if(results.length !== count) return cb(new Error(results.length+' results were returned, but there should have been '+count+'.'));
+		else cb();
+	};
+};
+
+
+
 // Each CRUD test will set the adapter property to match the adapter being tested
 // exports.adapter = 'dirty';
 
@@ -39,10 +68,10 @@ exports.inMemory = true;
 ////////////////////////////////////////////////////////
 // mySQL
 ////////////////////////////////////////////////////////
-//exports.adapter = 'waterline-mysql';
-//exports.database = 'waterline';
-//exports.user = 'waterline';
-//exports.password = 'abc123';
+// exports.adapter = 'waterline-mysql';
+// exports.database = 'waterline';
+// exports.user = 'waterline';
+// exports.password = 'abc123';
 
 ////////////////////////////////////////////////////////
 // mySQL: connection pooling enabled
