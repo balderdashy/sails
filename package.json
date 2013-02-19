@@ -14,9 +14,10 @@
     "url": "git://github.com/balderdashy/waterline.git"
   },
   "keywords": [
-    "active record",
+    "active-record",
     "activerecord",
     "orm",
+    "model",
     "mysql",
     "mongo",
     "mongodb",
