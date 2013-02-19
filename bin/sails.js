@@ -17,7 +17,6 @@ var sails = require('./mockSails.js');
 // Output in directory where cmdline tool was run
 var outputPath = '.';
 
-
 // Start this app
 if ( argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l'], argv._[0]) ) {
 
@@ -302,6 +301,7 @@ function generateController(entity, options) {
 			});
 		}
 
+console.log("***** ",sails.config.paths.controllers);
 		return generate({
 			blueprint: 'controller.js',
 			prefix: sails.config.paths.controllers,
@@ -344,7 +344,7 @@ function generate(options) {
 	sails.log.debug("Generating " + options.blueprint + " for " + options.entity + "...");
 
 	// Trim slashes
-	options.prefix = trimSlashes(options.prefix) + '/';
+	options.prefix = _.str.rtrim(options.prefix, '/') + '/';
 
 	if(!options.entity) throw new Error('No output file name specified!');
 	
