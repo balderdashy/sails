@@ -15,10 +15,66 @@ var async = require('async');
 var parley = require('parley');
 var assert = require("assert");
 
+describe('findOrCreate()', function () {
+
+	var testName = 'findOrCreate([])';
+	var testData = [
+		{name: 'marge', type: testName},
+		{name: 'richie', type: testName},
+		{name: ''+Math.round(Math.random()*10000), type: testName},
+		{name: ''+Math.round(Math.random()*10000), type: testName},
+		{name: ''+Math.round(Math.random()*10000), type: testName},
+		{name: ''+Math.round(Math.random()*10000), type: testName}
+	];
+
+	before(function (done) {
+		User.create(testData, done); 
+	});
+
+	it ('should create new user(s) for the one that doesn\'t exist', function (cb) {
+		
+		User.findOrCreateEach(['type','name'],[{
+			name: 'NOT IN THE SET',
+			type: testName
+		}], User.testCount(1, cb));
+	});
+
+	it ('should create properly using shorthand', function (cb) {
+		
+		User.findOrCreateEach(['type','name'],[{
+			name: 'ANOTHER ONE NOT IN THE SET',
+			type: testName
+		}], User.testCount(1, cb));
+	});
+
+	it ('should NOT create new user(s) for the one that DOES exist', function (cb) {
+		User.findOrCreateEach(['name'],[{
+			name: 'richie',
+			type: testName
+		},{
+			name: 'marge',
+			type: testName
+		}], function (err, users) {
+
+			// console.log(users);
+			cb();
+		});
+	});
+	// it ('should find existing models properly using shorthand', function (cb) {
+	// 	User.findOrCreateEach(['name'],[{
+	// 		name: 'richie',
+	// 		type: testName
+	// 	}, {
+	// 		name: 'marge'
+	// 	}], User.testCount(2, cb));
+	// });
+
+});
+
 
 describe('CRUD :: Aggreagate methods and transactions', function (){
 
-	describe ('overloaded usage',function () {
+	describe ('overloaded usage of create',function () {
 		
 		var testName = 'test create a list';
 		var testData = [

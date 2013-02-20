@@ -336,9 +336,13 @@ module.exports = function(adapterDef, cb) {
 		
 		// Default behavior
 		else {
+			// Build a list of models
+			var models = [];
+
 			// Create transaction name based on collection
 			self.transaction(collectionName+'.waterline.default.findOrCreateEach', function (err,done) {
-				async.forEach(valuesList, function (values,cb) {
+
+				async.forEachSeries(valuesList, function (values,cb) {
 
 					// Check that each of the criteria keys match:
 					// build a criteria query
@@ -347,9 +351,16 @@ module.exports = function(adapterDef, cb) {
 						criteria[attrName] = values[attrName];
 					});
 
-					return self.findOrCreate(collectionName, criteria, values, cb);
+					return self.findOrCreate(collectionName, criteria, values, function (err, model) {
+						// Add model to list
+						if (model) models.push(model);
+						return cb(err, model);
+					});
 				}, done);
-			},cb);
+			},function (err) {
+				// Pass back found/created models
+				cb(err,models);
+			});
 		}
 	};
 
