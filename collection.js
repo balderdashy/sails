@@ -34,6 +34,25 @@ function Collection (definition, adapter, cb) {
 	_.defaults(this, adapterMethods);
 	
 
+	// Validate and marshal attribute defs
+	if (definition.attributes) {
+		definition.attributes = util.objMap(definition.attributes, function (attr, attrName) {
+			var type;
+			if (_.isString(attr)) attr = {
+				type: attr
+			};
+			else if (!_.isArray(attr) && _.isObject(attr)) {}
+			else {
+				"Invalid attribute '"+attrName+"' in model ("+definition.identity+").";
+			}
+
+			// Lowercase attr type
+			attr.type = attr.type.toLowerCase();
+
+			return attr;
+		});
+	}
+
 	//////////////////////////////////////////
 	// DDL
 	//////////////////////////////////////////
