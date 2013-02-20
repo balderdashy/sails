@@ -48,8 +48,8 @@
     "lib": "lib"
   },
   "dependencies": {
-    "waterline": "0.5.1",
-    "waterline-dirty": "0.4.3",
+    "waterline": "0.5.2",
+    "waterline-dirty": "0.4.4",
     "express": "2.5.11",
     "socket.io": "0.9.6",
     "ejs": "0.7.2",
