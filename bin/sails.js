@@ -181,6 +181,9 @@ function createNewApp (appName) {
 	// Create default css reset
 	generateFile('reset.css', 'ui/public/styles/reset.css');
 
+	// Copy over special sails.io.js client
+	copyBlueprint('sails.io.js','ui/dependencies/sails.io.js');
+
 	// Create default user management and auth policy
 	// TODO	
 
