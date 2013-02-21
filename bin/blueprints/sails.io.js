@@ -1538,32 +1538,6 @@
 
   io.util.mixin(Socket, io.EventEmitter);
 
-  /************************************************************ 
-  *
-  * Additional functionality for the Sails.js framework
-  *
-  * Make a call to a server endpoint over the socket
-  *   label:   the request label (usually the destination URL)
-  *   params:  data to pass with the request
-  *   callback:  optional callback fired when server responds
-  */
-  Socket.prototype.request = function (label, params, callback) {
-    this.send(label, io.JSON.stringify(params),function(result) {
-      var parsedResult;
-      try {
-        parsedResult = io.JSON.parse(result);
-      }
-      catch (e) {
-        throw new Error("Server response could not be parsed! "+result);
-      }
-
-      // Call success callback if specified
-      callback && callback(parsedResult);
-    });
-  }
-  /*
-  *
-  ************************************************************/
 
   /**
    * Returns a namespace listener/emitter for this socket
@@ -2131,6 +2105,33 @@
 
     return this.packet(packet);
   };
+
+  /************************************************************ 
+  *
+  * Additional functionality for the Sails.js framework
+  *
+  * Make a call to a server endpoint over the socket
+  *   label:   the request label (usually the destination URL)
+  *   params:  data to pass with the request
+  *   callback:  optional callback fired when server responds
+  */
+  SocketNamespace.prototype.request = function (label, params, callback) {
+    this.send(label, io.JSON.stringify(params),function(result) {
+      var parsedResult;
+      try {
+        parsedResult = io.JSON.parse(result);
+      }
+      catch (e) {
+        throw new Error("Server response could not be parsed! "+result);
+      }
+
+      // Call success callback if specified
+      callback && callback(parsedResult);
+    });
+  }
+  /*
+  *
+  ************************************************************/
 
   /**
    * Emits an event
