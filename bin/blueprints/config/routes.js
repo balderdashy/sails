@@ -22,22 +22,15 @@
 //
 module.exports.routes = {
 	
-	// Routes look like:
-	// '/whateverYouWant': {
-	//		controller	: 'someController',
-	//		action		: 'someAction'
-	// }
-
-	// To route the home page:
-	// '/' : {
-	//		controller	: 'someController',
-	//		action		: 'someAction'
-	// }
+	// To route the home page to the "index" action of the "home" controller:
+	'/' : {
+		controller	: 'home'
+	}
 
 	// If you want to set up a route only for a particular HTTP method/verb 
 	// (GET, POST, PUT, DELETE) you can specify the verb before the path:
 	// 'post /signup': {
-	//		controller	: 'auth',
+	//		controller	: 'user',
 	//		action		: 'signup'
 	// }
 
@@ -50,31 +43,25 @@ module.exports.routes = {
 	// and routes will exist for them as follows:
 	/*
 
-	'/user': {
+	// Standard RESTful routing
+	// (if index is not defined, findAll will be used)
+	'get /user': {
 		controller	: 'user',
-		action		: 'findAll'
+		action		: 'index'
 	}
-	'/user/:id': {
+	'get /user/:id': {
 		controller	: 'user',
 		action		: 'find'
 	}
-	'/user/create': {
+	'post /user': {
 		controller	: 'user',
 		action		: 'create'
 	}
-	'/user/find': {
-		controller	: 'user',
-		action		: 'find'
-	}
-	'/user/findAll': {
-		controller	: 'user',
-		action		: 'findAll'
-	}
-	'/user/update': {
+	'put /user/:id': {
 		controller	: 'user',
 		action		: 'update'
 	}
-	'/user/destroy': {
+	'delete /user/:id': {
 		controller	: 'user',
 		action		: 'destroy'
 	}

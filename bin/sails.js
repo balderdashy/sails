@@ -171,8 +171,9 @@ function createNewApp (appName) {
 	
 
 
-	// Create default home page
-	generateFile('index.html', 'ui/public/index.html');
+	// Create default home view
+	generateDir('ui/views/home');
+	generateFile('index.ejs', 'ui/views/home/index.ejs');
 
 	// Copy default favicon
 	copyBlueprint('favicon.ico','ui/public/favicon.ico');
@@ -297,8 +298,6 @@ function generateController(entity, options) {
 				actions += fnString;
 			});
 		}
-
-console.log("***** ",sails.config.paths.controllers);
 		return generate({
 			blueprint: 'controller.js',
 			prefix: sails.config.paths.controllers,
