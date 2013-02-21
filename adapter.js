@@ -120,11 +120,11 @@ module.exports = function(adapterDef, cb) {
 				});
 
 				// Add and remove attributes using the specified adapterDef
-				async.forEach(_.keys(newAttributes), function (attrName, cb) {
+				async.forEachSeries(_.keys(newAttributes), function (attrName, cb) {
 					adapterDef.addAttribute(collectionName, attrName, newAttributes[attrName], cb);
 				}, function (err) {
 					if (err) return cb(err);
-					async.forEach(_.keys(deprecatedAttributes), function (attrName, cb) {
+					async.forEachSeries(_.keys(deprecatedAttributes), function (attrName, cb) {
 						adapterDef.removeAttribute(collectionName, attrName, deprecatedAttributes[attrName], cb);
 					}, cb);
 				});
@@ -316,7 +316,7 @@ module.exports = function(adapterDef, cb) {
 		else {
 			// Create transaction name based on collection
 			self.transaction(collectionName+'.waterline.default.createEach', function (err,done) {
-				async.forEach(valuesList, function (values,cb) {
+				async.forEachSeries(valuesList, function (values,cb) {
 					self.create(collectionName, values, cb);
 				}, done);
 			},cb);
