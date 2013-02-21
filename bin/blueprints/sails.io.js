@@ -2110,23 +2110,48 @@
   *
   * Additional functionality for the Sails.js framework
   *
-  * Make a call to a server endpoint over the socket
-  *   label:   the request label (usually the destination URL)
-  *   params:  data to pass with the request
-  *   callback:  optional callback fired when server responds
+  * Simulate an HTTP request to the backend
+  *   url:   the request label (usually the destination URL)
+  *   data:  data to pass with the request
+  *   options:  optional callback or config object
+  *   method:  HTTP method
   */
-  SocketNamespace.prototype.request = function (label, params, callback) {
-    this.send(label, io.JSON.stringify(params),function(result) {
-      var parsedResult;
+  SocketNamespace.prototype.request = function (url, data, options, method) {
+    // Remove trailing slashes and spaces
+    url = url.replace(/\/*\s*$/,'');
+
+    // If url is empty, use /
+    if (url === '') url = '/';
+
+    // If options is a function, treat it as a callback
+    // Otherwise the "success" property will be treated as the callback
+    var cb;
+    if (typeof options === 'function') cb = options;
+    else cb = options.success;
+
+    var json = io.JSON.stringify({
+      url: url,
+      data: data,
+      method: method || 'get'
+    });
+
+    this.emit('message',json,function (result) {
+
+      var parsedResult = result
       try {
         parsedResult = io.JSON.parse(result);
       }
       catch (e) {
-        throw new Error("Server response could not be parsed! "+result);
+        debug.debug("Could not parse:",result,e);
+        throw new Error("Server response could not be parsed!");
       }
 
-      // Call success callback if specified
-      callback && callback(parsedResult);
+      // TODO: Handle errors more effectively
+      if (parsedResult === 404) throw new Error("404: Not found");
+      if (parsedResult === 403) throw new Error("403: Forbidden");
+      if (parsedResult === 500) throw new Error("500: Server error");
+
+      cb(parsedResult);
     });
   }
   /*
