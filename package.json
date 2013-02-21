@@ -40,8 +40,8 @@
     "sails-moduleloader": "1.1.5"
   },
   "devDependencies": {
-    "waterline-dirty": "~0.4.4",
+    "waterline-dirty": "0.4.5",
     "mocha": "~1.8.1",
-    "waterline-mysql": "~0.5.0"
+    "waterline-mysql": "0.5.0"
   }
 }
