@@ -171,9 +171,6 @@ function createNewApp (appName) {
 	
 
 
-	// Create driver file
-	generateFile('app.js', 'app.js');
-
 	// Create default home page
 	generateFile('index.html', 'ui/public/index.html');
 
