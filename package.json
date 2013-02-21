@@ -1,6 +1,6 @@
 {
   "name": "waterline",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "description": "Active Record for Node.js",
   "main": "waterline.js",
   "directories": {
