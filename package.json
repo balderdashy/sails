@@ -73,7 +73,8 @@
     "uglify-js": "2.2.4",
     "asset-rack": "2.0.6",
     "rigging": "13.0.0",
-    "node-uuid": "~1.4.0"
+    "node-uuid": "~1.4.0",
+    "parley": "0.0.2"
   },
   "devDependencies": {
     "mocha": "*",
