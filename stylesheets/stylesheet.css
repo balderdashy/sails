@@ -158,10 +158,20 @@ a.button span {
 #download-tar-gz span {
   background: transparent url(../images/tar-gz-icon.png) 12px 50% no-repeat;
 }
+#changelog span {
+  background: transparent url(../images/changelog.png) 16px 60% no-repeat;
+  background-size: 23px
+}
+#install-with-npm span {
+  background: transparent url(../images/npm.png) 6px 60% no-repeat;
+  background-size: 35px;
+}
 #view-on-github span {
   background: transparent url(../images/octocat-icon.png) 12px 50% no-repeat;
 }
-#view-on-github {
+
+/* Last one, doesn't need margin */
+#changelog {
   margin-right: 0;
 }
 
