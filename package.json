@@ -27,7 +27,7 @@
       "email": "curtis.lacy@ldengine.com"
     }
   ],
-  "version": "0.8.78",
+  "version": "0.8.79",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
   "homepage": "http://sailsjs.com",
   "keywords": [
