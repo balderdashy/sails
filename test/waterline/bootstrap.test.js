@@ -31,9 +31,9 @@ after(bootstrap.teardown);
 // Initialize waterline
 function initialize (done) {
 	// Keep a reference to waterline to use for teardown()
-	bootstrap.waterline = require("../waterline.js");
+	bootstrap.waterline = require("../lib/waterline/waterline.js");
 
-	var collections = require('sails-moduleloader').required({
+	var collections = require('../lib/loader').required({
 		dirname		: __dirname + '/collections', 
 		filter		: /(.+)\.js$/
 	});
