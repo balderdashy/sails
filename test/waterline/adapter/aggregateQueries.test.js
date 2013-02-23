@@ -194,6 +194,11 @@ describe('CRUD :: Aggreagate methods and transactions', function() {
 
 				if(err) done(new Error(err));
 				else if(!pluckEqual(users, testData, 'name')) {
+					console.log("\n\n\nTESTDATA");
+					console.log(testData);
+					console.log("\n\n\nUSERS");
+					console.log(users);
+					console.log("\n\n\n");
 					done(new Error('Proper user names were not saved!'));
 				} else if(!validAutoIncrementIds(users)) {
 					console.error(users, properAutoIncrementVals);
