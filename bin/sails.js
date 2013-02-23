@@ -104,6 +104,15 @@ else if(argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^ge
 	// 	generateView(entity, options);
 	// }
 
+	// Generate an adapter
+	else if(argv._[1] === 'adapter') {
+		var entity = argv._[2];
+		verifyArg(2, "Please specify the name for the new argument as the third argument.");
+
+		// Figure out attributes based on args
+		var options = _.extend({},argv);
+		generateAdapter(entity, options);
+	}
 	// Otherwise generate a model, controller, and view directory
 	else {
 		var entity = argv._[1];
@@ -117,6 +126,8 @@ else if(argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^ge
 		generateController(entity,options);
 	}
 }
+
+
 
 // Create a new app
 // second argument == app name
@@ -311,6 +322,15 @@ function generateModel(entity, options) {
 		prefix: sails.config.paths.models,
 		entity: capitalize(entity),
 		suffix: ".js"
+	});
+}
+
+function generateAdapter(entity, options) {
+	return generate({
+		blueprint: 'adapter.js',
+		prefix: sails.config.paths.adapters,
+		entity: capitalize(entity),
+		suffix: "Adapter.js"
 	});
 }
 
