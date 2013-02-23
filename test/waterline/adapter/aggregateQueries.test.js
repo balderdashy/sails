@@ -25,16 +25,16 @@ describe('findOrCreate()', function() {
 		name: 'richie',
 		type: testName
 	}, {
-		name: '' + Math.round(Math.random() * 10000),
+		name: Math.round(Math.random() * 10000),
 		type: testName
 	}, {
-		name: '' + Math.round(Math.random() * 10000),
+		name: Math.round(Math.random() * 10000),
 		type: testName
 	}, {
-		name: '' + Math.round(Math.random() * 10000),
+		name: Math.round(Math.random() * 10000),
 		type: testName
 	}, {
-		name: '' + Math.round(Math.random() * 10000),
+		name: Math.round(Math.random() * 10000),
 		type: testName
 	}];
 
@@ -66,8 +66,6 @@ describe('findOrCreate()', function() {
 			name: 'marge',
 			type: testName
 		}], function(err, users) {
-
-			// console.log(users);
 			cb();
 		});
 	});
@@ -88,16 +86,16 @@ describe('CRUD :: Aggreagate methods and transactions', function() {
 
 		var testName = 'test create a list';
 		var testData = [{
-			name: '' + Math.round(Math.random() * 10000),
+			name: Math.round(Math.random() * 10000),
 			type: testName
 		}, {
-			name: '' + Math.round(Math.random() * 10000),
+			name: Math.round(Math.random() * 10000),
 			type: testName
 		}, {
-			name: '' + Math.round(Math.random() * 10000),
+			name: Math.round(Math.random() * 10000),
 			type: testName
 		}, {
-			name: '' + Math.round(Math.random() * 10000),
+			name: Math.round(Math.random() * 10000),
 			type: testName
 		}];
 
@@ -125,16 +123,16 @@ describe('CRUD :: Aggreagate methods and transactions', function() {
 
 		var testName = 'test createEach';
 		var testData = [{
-			name: '' + Math.round(Math.random() * 10000),
+			name: Math.round(Math.random() * 10000),
 			type: testName
 		}, {
-			name: '' + Math.round(Math.random() * 10000),
+			name: Math.round(Math.random() * 10000),
 			type: testName
 		}, {
-			name: '' + Math.round(Math.random() * 10000),
+			name: Math.round(Math.random() * 10000),
 			type: testName
 		}, {
-			name: '' + Math.round(Math.random() * 10000),
+			name: Math.round(Math.random() * 10000),
 			type: testName
 		}];
 
@@ -194,11 +192,6 @@ describe('CRUD :: Aggreagate methods and transactions', function() {
 
 				if(err) done(new Error(err));
 				else if(!pluckEqual(users, testData, 'name')) {
-					console.log("\n\n\nTESTDATA");
-					console.log(testData);
-					console.log("\n\n\nUSERS");
-					console.log(users);
-					console.log("\n\n\n");
 					done(new Error('Proper user names were not saved!'));
 				} else if(!validAutoIncrementIds(users)) {
 					console.error(users, properAutoIncrementVals);
@@ -217,6 +210,10 @@ function pluckEqual(listA, listB, attrName) {
 
 	// Order doesn't matter
 	return _.every(_.pluck(listA, attrName), function(item) {
+
+		// Cast item to number if possible
+		if (Math.pow(+item, 2) > 0) item = +item;
+
 		return _.contains(_.pluck(listB, attrName), item);
 	});
 
