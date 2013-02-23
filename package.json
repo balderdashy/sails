@@ -44,9 +44,12 @@
     "active-record",
     "socket.io"
   ],
-  "main": "lib/common",
+  "main": "./lib/sails",
   "bin": {
     "sails": "./bin/sails.js"
+  },
+  "scripts": {
+    "test": "node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive -b -R landing -t 8000"
   },
   "directories": {
     "lib": "lib"
@@ -72,7 +75,8 @@
     "asset-rack": "2.0.6",
     "rigging": "13.0.0",
     "node-uuid": "~1.4.0",
-    "parley": "0.0.2"
+    "parley": "0.0.2",
+    "include-all": "0.0.5"
   },
   "devDependencies": {
     "mocha": "*",

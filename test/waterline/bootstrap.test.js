@@ -31,15 +31,16 @@ after(bootstrap.teardown);
 // Initialize waterline
 function initialize (done) {
 	// Keep a reference to waterline to use for teardown()
-	bootstrap.waterline = require("../lib/waterline/waterline.js");
+	bootstrap.waterline = require("../../lib/waterline/waterline.js");
 
-	var collections = require('../lib/loader').required({
+	var collections = require('../../lib/loader.js').required({
 		dirname		: __dirname + '/collections', 
 		filter		: /(.+)\.js$/
 	});
 
 	bootstrap.waterline({
 		collections: collections,
+		appPath: __dirname + "/../../",
 		log: blackhole
 	}, function (err, waterlineData){
 

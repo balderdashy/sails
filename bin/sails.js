@@ -20,15 +20,20 @@ var outputPath = '.';
 // Start this app
 if ( argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l'], argv._[0]) ) {
 
+	// TODO: check package.json for required version
 
 	// check if node_modules/sails exists in current directory
 	if (fs.existsSync(sails.config.appPath + '/node_modules/sails')) {
-		
+
 		// if it does, use the local version of sails
-		require(sails.config.appPath + '/node_modules/sails/lib/common.js').lift();
+		require(sails.config.appPath + '/node_modules/sails/lib/sails.js').lift();
+
+		// TODO: if local version is too young, throw an error, if too old, upgrade it
 	}
+	// otherwise, use the global installation of sails
 	else {
-		// otherwise, use the global installation of sails
+
+		// TODO: if global throw an error
 		require('sails').lift();
 	}
 }
