@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "waterline": "0.6.1",
-    "waterline-dirty": "0.4.6",
+    "waterline-dirty": "0.4.7",
     "express": "2.5.11",
     "socket.io": "0.9.6",
     "ejs": "0.7.2",
