@@ -72,14 +72,3 @@ exports.inMemory = true;
 // exports.database = 'waterline';
 // exports.user = 'waterline';
 // exports.password = 'abc123';
-
-////////////////////////////////////////////////////////
-// mySQL: connection pooling enabled
-////////////////////////////////////////////////////////
-// exports.adapter = {
-//	identity	: 'waterline-mysql',
-//	database	: 'waterline',
-//	user		: 'waterline',
-//	password	: 'abc123',
-//	pool		: true
-// };

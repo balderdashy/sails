@@ -177,7 +177,6 @@ function createNewApp (appName) {
 	generateFile('config/policies.js', 'config/policies.js');
 	generateFile('config/application.js', 'config/application.js');
 	generateFile('config/assets.js', 'config/assets.js');
-	generateFile('config/environment.js', 'config/environment.js');
 	generateFile('config/local.js', 'config/local.js');
 	generateFile('config/adapters.js', 'config/adapters.js');
 
