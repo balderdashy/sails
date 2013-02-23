@@ -141,24 +141,35 @@ function createNewApp (appName) {
 	generateDir();
 	
 	// Create default app structure
-	generateDir('ui');
-	generateDir('ui/dependencies');
-	generateDir('ui/public');
-	generateDir("ui/public/styles");
-	generateDir("ui/public/images");
-	generateDir("ui/public/js");
-	generateDir('ui/views');
-	generateDir('ui/views/templates');
-	generateFile('404.ejs', 'ui/views/404.ejs');
-	generateFile('500.ejs', 'ui/views/500.ejs');
-	generateFile('layout.ejs', 'ui/views/layout.ejs');
+	generateDir('public');
+	copyBlueprint('favicon.ico','public/favicon.ico'); // Copy default favicon
+	copyBlueprint('robots.txt','public/robots.txt'); // Copy robots.txt
+	generateDir('public/images');
 
+	generateDir('assets');
+	generateDir('assets/js');
+	generateDir('assets/templates');
+	generateDir('assets/mixins');
+	copyBlueprint('sails.io.js','assets/mixins/sails.io.js'); // Copy over special sails.io.js client
+	generateDir('assets/styles');
+	generateFile('reset.css', 'assets/styles/reset.css'); // Create default css reset
+
+	generateDir('views');
+	generateDir('views/home'); // Create default home view
+	generateFile('index.ejs', 'views/home/index.ejs');	
+	generateFile('404.ejs', 'views/404.ejs'); // Create 404, 500, and 422/403 pages
+	generateFile('500.ejs', 'views/500.ejs');
+	generateFile('layout.ejs', 'views/layout.ejs'); // Create layout
+
+
+	// API server
 	generateDir('api');
 	generateDir('api/models');
+	generateDir('api/adapters');
 	generateDir('api/controllers');
-	generateDir('api/policies');
 	generateDir('api/services');
-	// NOTE: We are not creating an adapters directory for now to keep things simple for new users.
+	generateDir('api/policies');
+	// TODO: generateFile('authenticated.js', 'policies/authenticated.js')
 	
 	// Basic config
 	generateDir('config');
@@ -168,35 +179,14 @@ function createNewApp (appName) {
 	generateFile('config/assets.js', 'config/assets.js');
 	generateFile('config/environment.js', 'config/environment.js');
 	generateFile('config/local.js', 'config/local.js');
-	generateFile('config/modelDefaults.js', 'config/modelDefaults.js');
+	generateFile('config/adapters.js', 'config/adapters.js');
 
 	// Internationalization config
 	generateDir('config/locales');
 	generateFile('config/locales/english.js', 'config/locales/english.js');
 	
 
-
-	// Create default home view
-	generateDir('ui/views/home');
-	generateFile('index.ejs', 'ui/views/home/index.ejs');
-
-	// Copy default favicon
-	copyBlueprint('favicon.ico','ui/public/favicon.ico');
-
-	// Create default css reset
-	generateFile('reset.css', 'ui/public/styles/reset.css');
-
-	// Copy over special sails.io.js client
-	copyBlueprint('sails.io.js','ui/dependencies/sails.io.js');
-
-	// Create default user management and auth policy
-	// TODO	
-
-	// Create readme files
-	// generateFile('__readme_models.md', "models/__readme.md");
-	// generateFile('__readme_controllers.md', "controllers/__readme.md");
-	// generateFile('__readme_views.md', "views/__readme.md");
-	// generateFile('__readme_policies.md', "policies/__readme_policies.md");
+	
 
 	// Create .gitignore
 	generateFile('gitignore', '.gitignore');
@@ -212,7 +202,8 @@ function createNewApp (appName) {
 			sails: sails.version
 		},
 		scripts: {
-			test: 'mocha -b',
+			// Include this later when we have "sails test" ready.
+			// test: './node_modules/mocha/bin/mocha -b',
 			start: 'node app.js'
 		},
 		main: 'app.js',
