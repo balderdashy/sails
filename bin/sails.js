@@ -180,7 +180,9 @@ function createNewApp (appName) {
 	generateDir('api/controllers');
 	generateDir('api/services');
 	generateDir('api/policies');
-	// TODO: generateFile('authenticated.js', 'policies/authenticated.js')
+
+	// Default policies
+	generateFile('policies/authenticated.js', 'api/policies/authenticated.js');
 	
 	// Basic config
 	generateDir('config');
