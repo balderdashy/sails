@@ -192,6 +192,7 @@ function createNewApp (appName) {
 	generateFile('config/assets.js', 'config/assets.js');
 	generateFile('config/local.js', 'config/local.js');
 	generateFile('config/adapters.js', 'config/adapters.js');
+	generateFile('config/bootstrap.js', 'config/bootstrap.js');
 
 	// Internationalization config
 	generateDir('config/locales');
