@@ -163,11 +163,7 @@ Sails does a few things other Node.js MVC frameworks can't do:
 - Automatically generated JSON API for manipulating models means you don't have to write any backend code to build simple database apps
 - Built-in authentication, role-based access control, and customizable policies assignable at the controller/action level
 - Transport agnostic routing: Sails controllers also handle Socket.io / WebSocket messages!  This makes it much easier to send the server-originated or 'comet' notifications you need for features like chat, realtime analytics, and multiplayer games.
-- Automatic asset minification with Rigging: Your UI code is automatically included in development mode, and minified into a simple, gzipped file in production.
-  - Support for:
-    - CoffeeScript
-    - LESS
-    - SASS / SCSS
+- Automatic asset minification: Your UI code is automatically included in development mode, and minified into a simple, gzipped file in production.  Also supports LESS and CoffeeScript.
 
 
 To learn more, check out the documentation here: 
