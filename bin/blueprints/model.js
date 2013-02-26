@@ -2,9 +2,8 @@
 	:: <%- entity %> 
 	-> model
 ---------------------*/
-var <%- entity %> = {
+module.exports = {
 	
-	// Attributes / Schema
 	attributes	: {
 
 		// Simple attribute:
@@ -18,4 +17,3 @@ var <%- entity %> = {
 	}
 
 };
-module.exports = <%- entity %>;

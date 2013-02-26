@@ -1,8 +1,10 @@
 ![image_devInTub@2x.png](http://i.imgur.com/Tj9Nk.png) 
 
-# Sails
-Sails makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development.  It's especially good for building realtime features like chat.
+# Sails.js
+Sails.js makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development.  It's especially good for building realtime features like chat.
 
+# Introduction
+http://www.youtube.com/watch?v=GK-tFvpIR7c
 
 # Installation
 
@@ -29,11 +31,14 @@ cd testProject
 sails lift
 ```
 
-The default port for Sails is 1337.  At this point if you visit <a href="http://localhost:1337/">http://localhost:1337/</a> You will see
-the default index.html page.  Now, let's get Sails to tell us Hello.
+The default port for Sails is 1337.  At this point if you visit <a href="http://localhost:1337/">http://localhost:1337/</a> You will see the default index.html page.  
+
+<!--
+Now, let's get Sails to tell us Hello.
 
 
 # Hello, Sails!
+
 To get Sails to say "Hello World!", you need only to define one controller with an action and define
 one route. Lets start with the controller.
 
@@ -92,6 +97,7 @@ sails lift
 
 Now when you visit <a href="http://localhost:1337/">http://localhost:1337/</a> your browser should say **'Hello World!'**.
 
+-->
 
 # Creating a Model
 Creating a model is very easy with the command line tool. You can even define attributes and their
@@ -99,8 +105,10 @@ type by adding arguments at the end of the command. To generate a User model, en
 ```
 sails generate model User
 ```
+If you check out your app, you'll notice that this created a file at **/api/model/User.js**.
 
-You will see that this creates a user model at **/api/model/User.js**.  Let's give her a name-- try uncommenting the name attribute so it looks more or less like this:
+<!--
+  Let's give her a name-- try uncommenting the name attribute so it looks more or less like this:
 
 ```javascript
 var User = {
@@ -111,6 +119,7 @@ var User = {
 };
 module.exports = User;
 ```
+-->
 
 # What's Better Than Scaffolding?  How About a free JSON API?
 
@@ -156,11 +165,7 @@ Sails does a few things other Node.js MVC frameworks can't do:
 - Automatically generated JSON API for manipulating models means you don't have to write any backend code to build simple database apps
 - Built-in authentication, role-based access control, and customizable policies assignable at the controller/action level
 - Transport agnostic routing: Sails controllers also handle Socket.io / WebSocket messages!  This makes it much easier to send the server-originated or 'comet' notifications you need for features like chat, realtime analytics, and multiplayer games.
-- Automatic asset minification with Rigging: Your UI code is automatically included in development mode, and minified into a simple, gzipped file in production.
-  - Support for:
-    - CoffeeScript
-    - LESS
-    - SASS / SCSS
+- Automatic asset minification: Your UI code is automatically included in development mode, and minified into a simple, gzipped file in production.  Also supports LESS and CoffeeScript.
 
 
 To learn more, check out the documentation here: 
@@ -179,7 +184,7 @@ Sails is built on the rock-solid foundations of ExpressJS and Socket.io.
 
 
 
-
+<!--
 ![icon_circlechart@2x.png](http://i.imgur.com/hXc06.png) 
 
 Demo
@@ -189,7 +194,7 @@ Demo
 
 http://sailsjs.com:1337/experiment#subcomponents
 
-<!--
+
 #### Code
 https://github.com/balderdashy/sails-example
 -->

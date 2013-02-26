@@ -4,11 +4,15 @@
   "contributors": [
     {
       "name": "Mike McNeil",
-      "email": "mike@balderdash.co"
+      "email": "mike@balderdash.co",
+      "url": "http://michaelmcneil.com"
     },
     {
-      "name": "Balderdash Design Co.",
-      "email": "dev@balderdash.co"
+      "name": "virpool"
+    },
+    {
+      "name": "Dennis Bartlett",
+      "email": "dcbartlett@gmail.com"
     },
     {
       "name": "Gabe Hernandez",
@@ -16,60 +20,65 @@
     },
     {
       "name": "Brad Carleton",
-      "email": "brad@techpines.com"
+      "email": "brad@techpines.com",
+      "url": "http://techpines.com"
     },
     {
       "name": "Curtis Lacy",
       "email": "curtis.lacy@ldengine.com"
     }
   ],
-  "version": "0.7.8",
+  "version": "0.8.82",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
   "homepage": "http://sailsjs.com",
   "keywords": [
-    "realtime",
     "mvc",
-    "socket.io",
-    "websockets",
-    "restful",
-    "API",
-    "auth",
+    "web-framework",
     "rails",
-    "orm",
-    "async",
-    "asynchronous",
-    "active-record",
+    "ruby-on-rails",
     "express",
     "sails",
-    "mysql"
+    "REST",
+    "API",
+    "orm",
+    "mysql",
+    "active-record",
+    "socket.io"
   ],
-  "main": "lib/common",
+  "main": "./lib/sails",
   "bin": {
     "sails": "./bin/sails.js"
+  },
+  "scripts": {
+    "test": "node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive -b -R landing -t 8000"
   },
   "directories": {
     "lib": "lib"
   },
   "dependencies": {
-    "waterline": "0.4.7",
-    "express": "= 2.5.11",
-    "socket.io": "= 0.9.6",
-    "ejs": "=0.7.2",
-    "connect": "=1.8.3",
-    "async": "=0.1.22",
-    "underscore": "=1.4.2",
-    "less": "=1.3.0",
-    "optimist": "=0.3.4",
-    "underscore.string": "=2.3.0",
-    "glob": "=3.1.14",
-    "winston": "~0.6.2",
-    "sails-moduleloader": "~1.1.5",
-    "sails-util": "0.1.0",
-    "fs-extra": "~0.3.2",
-    "i18n": "~0.3.5",
+    "waterline": "0.6.1",
+    "waterline-dirty": "0.5.0",
+    "express": "2.5.11",
+    "socket.io": "0.9.6",
+    "ejs": "0.7.2",
+    "connect": "1.8.3",
+    "async": "0.1.22",
+    "underscore": "1.4.2",
+    "less": "1.3.0",
+    "optimist": "0.3.4",
+    "underscore.string": "2.3.0",
+    "glob": "3.1.14",
+    "winston": "0.6.2",
+    "fs-extra": "0.3.2",
+    "i18n": "0.3.5",
     "wrench": "1.4.4",
     "uglify-js": "2.2.4",
-    "asset-rack": "2.0.6"
+    "asset-rack": "2.0.6",
+    "rigging": "13.0.0",
+    "node-uuid": "~1.4.0",
+    "parley": "0.0.2",
+    "include-all": "0.0.5",
+    "clean-css": "0.10.1"
   },
   "devDependencies": {
     "mocha": "*",

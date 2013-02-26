@@ -17,34 +17,56 @@ var sails = require('./mockSails.js');
 // Output in directory where cmdline tool was run
 var outputPath = '.';
 
-// Basic usage
-if (argv._.length === 0) {
-	sails.log.info('Welcome to Sails!\n');
-	sailsUsage();
-}
 // Start this app
-else if ( _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l'], argv._[0]) ) {
-	require(process.cwd()+'/app.js');
+if ( argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l'], argv._[0]) ) {
+
+	// TODO: check package.json for required version
+
+	// check if node_modules/sails exists in current directory
+	if (fs.existsSync(sails.config.appPath + '/node_modules/sails')) {
+
+		// if it does, use the local version of sails
+		require(sails.config.appPath + '/node_modules/sails/lib/sails.js').lift();
+
+		// TODO: if local version is too young, throw an error, if too old, upgrade it
+	}
+	// otherwise, use the global installation of sails
+	else {
+
+		// TODO: if global throw an error
+		require('sails').lift();
+	}
 }
 // Start this app in interactive mode
 else if ( _.contains(['console'], argv._[0]) ) {
-	require(process.cwd()+'/app.js');
-	setTimeout(function () {
-	  	console.log('Sails Console started');
-  		console.log('To exit, type ".exit"');
-	}, 1000);
-	repl = require("repl").start("Sails> ");
-	repl.on('exit', function () {
-  		console.log('Closing Console');
-  		process.exit();
+	sails.log.ship();
+	sails.log('Welcome to Sails.js!');
+	sails.log('( to exit, type <CTRL>+<C> )');
+
+	require('sails').lift({
+		log: {
+			level: 'silent'
+		}
+	}, function (){
+		repl = require("repl").start("sails> ");
+		repl.on('exit', function () {
+			sails.log('Closing console');
+			process.exit();
+		});
 	});
 }
 // Get the sails version
-else if (argv.v || argv.version || argv._[0] === 'version') {
+else if (argv.v || argv.version || (argv._[0] && _.contains(['v', 'version'], argv._[0]))) {
 	sails.log.info('v'+sails.version);
 }
+// Basic usage
+else if (argv._.length === 0) {
+	sails.log.ship();
+	sails.log('Welcome to Sails!\n');
+	sailsUsage();
+}
 // Generate file(s)
-else if(argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^generat$|^generate$/) || argv.g || argv.generate) {
+else if(argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^generat$|^generate$/) || argv.g || argv.generate) {
 
 	verifyArg(1, "Please specify the name for the new model and controller as the second argument.");
 
@@ -71,10 +93,30 @@ else if(argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^generat$|^gener
 		generateController(entity, options);
 	}
 
+	// // Generate a view
+	// else if(argv._[1] === 'view') {
+	// 	var entity = argv._[2];
+	// 	verifyArg(2, "Please specify the name for the new view as the third argument.");
+		
+	// 	// Figure out actions based on args
+	// 	var options = _.extend({},argv);
+	// 	options.actions = argv._.splice(3);
+	// 	generateView(entity, options);
+	// }
+
+	// Generate an adapter
+	else if(argv._[1] === 'adapter') {
+		var entity = argv._[2];
+		verifyArg(2, "Please specify the name for the new argument as the third argument.");
+
+		// Figure out attributes based on args
+		var options = _.extend({},argv);
+		generateAdapter(entity, options);
+	}
 	// Otherwise generate a model, controller, and view directory
 	else {
 		var entity = argv._[1];
-		verifyArg(1, "Please specify the name of the entity to generate a model, controller, and view for as the second argument.");
+		verifyArg(1, "Please specify the name of the entity as the second argument to generate a model, controller, and view.");
 		sails.log.info("Generating model and controller for " + entity);
 		
 		var options = _.extend({},argv);
@@ -84,6 +126,8 @@ else if(argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^generat$|^gener
 		generateController(entity,options);
 	}
 }
+
+
 
 // Create a new app
 // second argument == app name
@@ -108,53 +152,54 @@ function createNewApp (appName) {
 	generateDir();
 	
 	// Create default app structure
-	generateDir('ui');
-	generateDir(sails.config.paths.dependencies);
-	generateDir(sails.config.paths['public']);
-	generateDir("ui/public/styles");
-	generateDir("ui/public/images");
-	generateDir("ui/public/js");
-	generateDir(sails.config.paths.views);
-	generateDir(sails.config.paths.templates);
-	generateFile('404.ejs', sails.config.paths['404']);
-	generateFile('layout.ejs', sails.config.paths.layout);
+	generateDir('public');
+	copyBlueprint('favicon.ico','public/favicon.ico'); // Copy default favicon
+	copyBlueprint('robots.txt','public/robots.txt'); // Copy robots.txt
+	generateDir('public/images');
 
+	generateDir('assets');
+	generateDir('assets/js');
+	generateDir('assets/templates');
+	generateDir('assets/mixins');
+	copyBlueprint('sails.io.js','assets/mixins/sails.io.js'); // Copy over special sails.io.js client
+	generateDir('assets/styles');
+	generateFile('reset.css', 'assets/styles/reset.css'); // Create default css reset
+
+	generateDir('views');
+	generateDir('views/home'); // Create default home view
+	generateFile('index.ejs', 'views/home/index.ejs');	
+	generateFile('404.ejs', 'views/404.ejs'); // Create 404, 500, and 422/403 pages
+	generateFile('500.ejs', 'views/500.ejs');
+	generateFile('layout.ejs', 'views/layout.ejs'); // Create layout
+
+
+	// API server
 	generateDir('api');
-	generateDir(sails.config.paths.models);
-	generateDir(sails.config.paths.controllers);
-	generateDir(sails.config.paths.middleware);
-	generateDir(sails.config.paths.services);
-	// NOTE: We are not creating an adapters directory for now to keep things simple for new users.
+	generateDir('api/models');
+	generateDir('api/adapters');
+	generateDir('api/controllers');
+	generateDir('api/services');
+	generateDir('api/policies');
+
+	// Default policies
+	generateFile('policies/authenticated.js', 'api/policies/authenticated.js');
 	
+	// Basic config
 	generateDir('config');
 	generateFile('config/routes.js', 'config/routes.js');
-	generateFile('config/policy.js', 'config/policy.js');
+	generateFile('config/policies.js', 'config/policies.js');
+	generateFile('config/application.js', 'config/application.js');
+	generateFile('config/assets.js', 'config/assets.js');
+	generateFile('config/local.js', 'config/local.js');
+	generateFile('config/adapters.js', 'config/adapters.js');
+	generateFile('config/bootstrap.js', 'config/bootstrap.js');
+
+	// Internationalization config
 	generateDir('config/locales');
 	generateFile('config/locales/english.js', 'config/locales/english.js');
-	generateFile('config/local.js', 'config/local.js');
 	
 
-
-	// Create driver file
-	generateFile('app.js', 'app.js');
-
-	// Create default home page
-	generateFile('index.html', sails.config.paths['public'] + '/index.html');
-
-	// Copy default favicon
-	copyBlueprint('favicon.ico',sails.config.paths['public'] + '/favicon.ico');
-
-	// Create default css reset
-	generateFile('reset.css', sails.config.paths['public'] + "/styles/reset.css");
-
-	// Create default user management and auth middleware
-	// TODO	
-
-	// Create readme files
-	// generateFile('__readme_models.md', "models/__readme.md");
-	// generateFile('__readme_controllers.md', "controllers/__readme.md");
-	// generateFile('__readme_views.md', "views/__readme.md");
-	// generateFile('__readme_middleware.md', "middleware/__readme_middleware.md");
+	
 
 	// Create .gitignore
 	generateFile('gitignore', '.gitignore');
@@ -170,7 +215,8 @@ function createNewApp (appName) {
 			sails: sails.version
 		},
 		scripts: {
-			test: 'mocha -b',
+			// Include this later when we have "sails test" ready.
+			// test: './node_modules/mocha/bin/mocha -b',
 			start: 'node app.js'
 		},
 		main: 'app.js',
@@ -264,7 +310,6 @@ function generateController(entity, options) {
 				actions += fnString;
 			});
 		}
-
 		return generate({
 			blueprint: 'controller.js',
 			prefix: sails.config.paths.controllers,
@@ -283,6 +328,32 @@ function generateModel(entity, options) {
 	});
 }
 
+function generateAdapter(entity, options) {
+	return generate({
+		blueprint: 'adapter.js',
+		prefix: sails.config.paths.adapters,
+		entity: capitalize(entity),
+		suffix: "Adapter.js"
+	});
+}
+
+function generateView(entity, options) {
+	var viewPath = sails.config.paths.views+'/'+entity;
+	generateDir(viewPath);
+
+	_.each(options.actions, function (action) {
+		action = verifyValidEntity(action, "Invalid view name: " + action);
+
+		return generate({
+			blueprint: 'view.' + sails.config.viewEngine,
+			prefix: viewPath,
+			entity: entity,
+			action: action,
+			suffix: '.' + sails.config.viewEngine
+		});
+	});
+}
+
 
 // Utility class to generate a file given the blueprint and output paths,
 // as well as an optional ejs render override.
@@ -290,7 +361,7 @@ function generate(options) {
 	sails.log.debug("Generating " + options.blueprint + " for " + options.entity + "...");
 
 	// Trim slashes
-	options.prefix = trimSlashes(options.prefix) + '/';
+	options.prefix = _.str.rtrim(options.prefix, '/') + '/';
 
 	if(!options.entity) throw new Error('No output file name specified!');
 	
