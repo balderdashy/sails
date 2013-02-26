@@ -180,7 +180,9 @@ function createNewApp (appName) {
 	generateDir('api/controllers');
 	generateDir('api/services');
 	generateDir('api/policies');
-	// TODO: generateFile('authenticated.js', 'policies/authenticated.js')
+
+	// Default policies
+	generateFile('policies/authenticated.js', 'api/policies/authenticated.js');
 	
 	// Basic config
 	generateDir('config');
@@ -190,6 +192,7 @@ function createNewApp (appName) {
 	generateFile('config/assets.js', 'config/assets.js');
 	generateFile('config/local.js', 'config/local.js');
 	generateFile('config/adapters.js', 'config/adapters.js');
+	generateFile('config/bootstrap.js', 'config/bootstrap.js');
 
 	// Internationalization config
 	generateDir('config/locales');
