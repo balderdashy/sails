@@ -77,7 +77,8 @@
     "rigging": "13.0.0",
     "node-uuid": "~1.4.0",
     "parley": "0.0.2",
-    "include-all": "0.0.5"
+    "include-all": "0.0.5",
+    "clean-css": "0.10.1"
   },
   "devDependencies": {
     "mocha": "*",
