@@ -1,9 +1,10 @@
 var sys = require('sys');
 var exec = require('child_process').exec;
 var spawn = require('child_process').spawn;
+var sails = require('sails');
+
 var parley = require('parley');
 var $ = new parley();
-var sails = require('sails');
 
 // Build log
 var log = sails.log;
