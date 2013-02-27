@@ -1,8 +1,10 @@
 ![image_devInTub@2x.png](http://i.imgur.com/Tj9Nk.png) 
 
-# Sails
-Sails makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development.  It's especially good for building realtime features like chat.
+# Sails.js
+Sails.js makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development.  It's especially good for building realtime features like chat.
 
+# Introduction
+http://www.youtube.com/watch?v=GK-tFvpIR7c
 
 # Installation
 
