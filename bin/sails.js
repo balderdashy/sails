@@ -157,18 +157,27 @@ else if(argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^ge
 // Create a new app
 // second argument == app name
 else if(argv._[0].match(/^new$/)) {
+
+  console.log('create new app', argv.template);
+
 	verifyArg(1, "Please specify the name of the new project directory to create.");
-	createNewApp(argv._[1]);
+
+  var template = 'ejs';
+
+  if (argv['template'] && argv.template == 'jade') {
+    template = 'jade';
+  }
+  createNewApp(argv._[1], template);
 }
 
 // Unknown command, assume creating a new app w/ that name
 // First argument == app name
 else {
 	verifyArg(0, "Please specify the name of the new project directory as the first argument.");
-	createNewApp(argv._[0]);
+	createNewApp(argv._[0], 'ejs');
 }
 
-function createNewApp(appName) {
+function createNewApp(appName, templateLang) {
 	sails.log.info("Generating Sails project (" + appName + ")...");
 
 	outputPath = outputPath + "/" + appName;
@@ -192,10 +201,18 @@ function createNewApp(appName) {
 	generateFile('reset.css', 'assets/styles/reset.css'); // Create default css reset
 	generateDir('views');
 	generateDir('views/home'); // Create default home view
-	generateFile('index.ejs', 'views/home/index.ejs');
-	generateFile('404.ejs', 'views/404.ejs'); // Create 404, 500, and 422/403 pages
-	generateFile('500.ejs', 'views/500.ejs');
-	generateFile('layout.ejs', 'views/layout.ejs'); // Create layout
+
+  if (templateLang === 'jade') {
+    generateFile('jade/index.jade', 'views/home/index.jade');
+    generateFile('jade/404.jade', 'views/404.jade'); // Create 404, 500, and 422/403 pages
+    generateFile('jade/500.jade', 'views/500.jade');
+    generateFile('jade/layout.jade', 'views/layout.jade'); // Create layout
+  } else {
+	  generateFile('ejs/index.ejs', 'views/home/index.ejs');
+	  generateFile('ejs/404.ejs', 'views/404.ejs'); // Create 404, 500, and 422/403 pages
+	  generateFile('ejs/500.ejs', 'views/500.ejs');
+	  generateFile('ejs/layout.ejs', 'views/layout.ejs'); // Create layout
+  }
 
 	// API server
 	generateDir('api');
@@ -212,7 +229,11 @@ function createNewApp(appName) {
 	generateDir('config');
 	generateFile('config/routes.js', 'config/routes.js');
 	generateFile('config/policies.js', 'config/policies.js');
-	generateFile('config/application.js', 'config/application.js');
+  if (templateLang === 'jade') {
+    generateFile('config/application-jade.js', 'config/application.js');
+  } else {
+	  generateFile('config/application.js', 'config/application.js');
+  }
 	generateFile('config/assets.js', 'config/assets.js');
 	generateFile('config/local.js', 'config/local.js');
 	generateFile('config/adapters.js', 'config/adapters.js');
