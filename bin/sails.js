@@ -17,6 +17,11 @@ var sails = require('./mockSails.js');
 // Output in directory where cmdline tool was run
 var outputPath = '.';
 
+// Stringify args
+argv._ = _.map(argv._, function (arg) {
+	return arg+"";
+});
+
 // Start this app
 if(argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l'], argv._[0])) {
 
@@ -151,7 +156,8 @@ else if(argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^ge
 
 // Create a new app
 // second argument == app name
-else if(argv._[0].match(/^n$|^ne$|^new$/) || argv.n || argv['new']) {
+else if(argv._[0].match(/^new$/)) {
+	verifyArg(1, "Please specify the name of the new project directory to create.");
 	createNewApp(argv._[1]);
 }
 
@@ -275,6 +281,7 @@ function generateDir(newPath) {
 	var newDirPath = outputPath + "/" + (newPath || "");
 	verifyDoesntExist(newDirPath, "A file/directory already exists at " + newDirPath);
 	fs.mkdirSync(newDirPath);
+	generateFile('.gitkeep', (newPath || "") + '/.gitkeep');
 }
 
 function generateController(entity, options) {
