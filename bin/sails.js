@@ -266,9 +266,16 @@ function sailsUsage() {
 
 
 function generateFile(blueprintPath, newPath) {
-	var file = fs.readFileSync(__dirname + '/blueprints/' + (blueprintPath || ""), 'utf8');
+	var fullBpPath = __dirname + '/blueprints/' + (blueprintPath || "");
+	var file = fs.readFileSync(fullBpPath, 'utf8');
 	var newFilePath = outputPath + '/' + (newPath || "");
 	verifyDoesntExist(newFilePath, "A file/directory already exists at " + newFilePath);
+
+	// Touch output file to make sure the path to it exists
+	if (fs.createFileSync(newFilePath)) {
+		sails.log.error('Could not create file, '+newFilePath+'!');
+		process.exit(1);
+	}
 	fs.writeFileSync(newFilePath, file);
 }
 
@@ -396,6 +403,12 @@ function generate(options) {
 	var fileEntity = options.action || options.entity;
 	var newFilePath = options.prefix + fileEntity + options.suffix;
 	verifyDoesntExist(newFilePath, "A file or directory already exists at: " + newFilePath);
+	
+	// Touch output file to make sure the path to it exists
+	if (fs.createFileSync(newFilePath)) {
+		sails.log.error('Could not create file, '+newFilePath+'!');
+		process.exit(1);
+	}
 	fs.writeFileSync(newFilePath, file);
 }
 
