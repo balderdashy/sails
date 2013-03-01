@@ -4,8 +4,6 @@
 ---------------------*/
 var adapter = {
 
-	identity: '<%- entity %>',
-
 	// The complete set of reusable connections from the main app to this adapter
 	clamps: {},
 
