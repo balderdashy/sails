@@ -24,16 +24,44 @@ argv._ = _.map(argv._, function (arg) {
 
 // Known errors
 var errors = {
-	badLocalSails: 'Please reinstall (npm install) or remove to use your global installation(rm -rf node_modules/sails)'
+	badLocalSails: function (requiredVersion) {
+		return 'Please reinstall Sails locally (npm install sails@'+requiredVersion+').';
+	}
 };
+
+// Read package.json file in specified path
+function getPackage(path) {
+	path = _.str.rtrim(path,'/');
+	var packageJson = fs.readFileSync(path + '/package.json', 'utf-8');
+	try { packageJson = JSON.parse(packageJson); }
+	catch (e) { return false; }
+	return packageJson;
+}
 
 // Start this app
 if(argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l'], argv._[0])) {
 
 	var localSailsPath = sails.config.appPath + '/node_modules/sails';
 
-	// TODO: check project package.json for sails.js dependency version
-	var requiredSailsVersion = '0.8.82';
+	// Check project package.json for sails.js dependency version
+	var appPackageJson = getPackage(sails.config.appPath);
+
+	// If no package.json file exists, don't try to start the server
+	if (!appPackageJson) {
+		sails.log.error('Cannot read package.json in the current directory.  '+
+						'It could be missing or corrupt.  '+
+						'Are you sure this is a sails app?');
+		process.exit(1);
+	}
+
+	// If sails dependency unspecified, allow anything, but throw a warning
+	var requiredSailsVersion = 0;
+	if (!(appPackageJson.dependencies && appPackageJson.dependencies.sails)) {
+		sails.log.warn('The app in the current directory does not list sails as a dependency.');
+	}
+	else {
+		requiredSailsVersion = appPackageJson.dependencies && appPackageJson.dependencies.sails;
+	}
 
 	// check if node_modules/sails exists in current directory
 	if (fs.existsSync(localSailsPath)) {
@@ -41,21 +69,28 @@ if(argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run',
 		// check package.json INSIDE local install of Sails
 		// No package.json means local sails means it must be corrupted
 		if(!fs.existsSync(localSailsPath + '/package.json')) {
-			throw new Error ('Locally installed Sails.js appears to be corrupted '+
-							'(missing package.json file).\n' + errors.badLocalSails);
+			sails.log.error('Locally installed Sails.js appears to be corrupted '+
+			'(missing package.json file).');
+			sails.log.error(errors.badLocalSails(requiredSailsVersion));
+			process.exit(1);
 		}
 
 		// Read package.json to detect version
 		var localSailsPackage = fs.readFileSync(localSailsPath + '/package.json', 'utf-8');
 		try { localSailsPackage = JSON.parse(localSailsPackage); }
 		catch (e) {
-			throw new Error ('Unable to parse package.json in local node_modules/sails!\n' + errors.badLocalSails);
+			sails.log.error('Unable to parse package.json in local node_modules/sails!\n');
+			sails.log.error(errors.badLocalSails(requiredSailsVersion));
+			process.exit(1);
 		}
 
 		// Error out if it has the wrong version in its package.json
+
+		// TODO: use npm's native version comparator
 		if (requiredSailsVersion !== localSailsPackage.version) {
-			throw new Error('Local node_modules/sails (version '+localSailsPackage.version+')'+
-							' is the wrong version (should be '+requiredSailsVersion+')\n'+errors.badLocalSails);
+			sails.log.error('This app requires version '+requiredSailsVersion+' of Sails, but local node_modules/sails version is '+localSailsPackage.version);
+			sails.log.error(errors.badLocalSails(requiredSailsVersion));
+			process.exit(1);
 		}
 		
 		// If we made it this far, we're good to go-- fire 'er up, chief
@@ -65,7 +100,7 @@ if(argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run',
 	// otherwise, copy the global installation of sails locally
 	else {
 		var globalSailsPath = __dirname + '/../';
-		require('sails').lift();
+		require('../lib/sails').lift();
 		
 		// sails.log.verbose("Installing Sails in this project...");
 		// fs.mkdirsSync(localSailsPath);
