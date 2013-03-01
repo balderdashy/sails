@@ -22,19 +22,45 @@ argv._ = _.map(argv._, function (arg) {
 	return arg+"";
 });
 
+// Known errors
+var errors = {
+	badLocalSails: 'Please reinstall (npm install) or remove to use your global installation(rm -rf node_modules/sails)'
+};
+
 // Start this app
 if(argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l'], argv._[0])) {
 
 	var localSailsPath = sails.config.appPath + '/node_modules/sails';
 
-	// TODO: check package.json for required version
-	// check if node_modules/sails exists in current directory
-	if(fs.existsSync(localSailsPath)) {
+	// TODO: check project package.json for sails.js dependency version
+	var requiredSailsVersion = '0.8.82';
 
-		// if it does, use the local version of sails
+	// check if node_modules/sails exists in current directory
+	if (fs.existsSync(localSailsPath)) {
+
+		// check package.json INSIDE local install of Sails
+		// No package.json means local sails means it must be corrupted
+		if(!fs.existsSync(localSailsPath + '/package.json')) {
+			throw new Error ('Locally installed Sails.js appears to be corrupted '+
+							'(missing package.json file).\n' + errors.badLocalSails);
+		}
+
+		// Read package.json to detect version
+		var localSailsPackage = fs.readFileSync(localSailsPath + '/package.json', 'utf-8');
+		try { localSailsPackage = JSON.parse(localSailsPackage); }
+		catch (e) {
+			throw new Error ('Unable to parse package.json in local node_modules/sails!\n' + errors.badLocalSails);
+		}
+
+		// Error out if it has the wrong version in its package.json
+		if (requiredSailsVersion !== localSailsPackage.version) {
+			throw new Error('Local node_modules/sails (version '+localSailsPackage.version+')'+
+							' is the wrong version (should be '+requiredSailsVersion+')\n'+errors.badLocalSails);
+		}
+		
+		// If we made it this far, we're good to go-- fire 'er up, chief
 		require(sails.config.appPath + '/node_modules/sails/lib/sails.js').lift();
 
-		// TODO: if local version is too young, throw an error, if too old, upgrade it
 	}
 	// otherwise, copy the global installation of sails locally
 	else {
