@@ -69,8 +69,7 @@ if(argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run',
 		// check package.json INSIDE local install of Sails
 		// No package.json means local sails means it must be corrupted
 		if(!fs.existsSync(localSailsPath + '/package.json')) {
-			sails.log.error('Locally installed Sails.js appears to be corrupted '+
-			'(missing package.json file).');
+			sails.log.error('Locally installed Sails.js has corrupted or missing package.json file.');
 			sails.log.error(errors.badLocalSails(requiredSailsVersion));
 			process.exit(1);
 		}
@@ -109,30 +108,30 @@ if(argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run',
 		// });
 	}
 }
-// Daemonize server
-else if(argv.d || argv._[0] && _.contains(['forever'], argv._[0])) {
-	var forever = require('forever');
-	forever.startServer();
-	forever.startDaemon('sails lift');
+// // Daemonize server
+// else if(argv.d || argv._[0] && _.contains(['forever'], argv._[0])) {
+// 	var forever = require('forever');
+// 	forever.startServer();
+// 	forever.startDaemon('sails lift');
 
-	// Create temporary app file
-	// fs.writeFileSync(sails.config.appPath + '/.app.js', function (){});
-	// copy down global install of sails locally if one doesn't already exist
-	// if(!fs.existsSync(sails.config.appPath + '/node_modules/sails')) {}
+// 	// Create temporary app file
+// 	// fs.writeFileSync(sails.config.appPath + '/.app.js', function (){});
+// 	// copy down global install of sails locally if one doesn't already exist
+// 	// if(!fs.existsSync(sails.config.appPath + '/node_modules/sails')) {}
 
-	// run file
-}
-// Stop all servers
-else if(argv._[0] && _.contains(['stop', 'kill'], argv._[0])) {
+// 	// run file
+// }
+// // Stop all servers
+// else if(argv._[0] && _.contains(['stop', 'kill'], argv._[0])) {
 
-}
+// }
 // Start this app in interactive mode
 else if(_.contains(['console'], argv._[0])) {
 	sails.log.ship();
 	sails.log('Welcome to Sails.js!');
 	sails.log('( to exit, type <CTRL>+<C> )');
 
-	require('sails').lift({
+	require('../lib/sails').lift({
 		log: {
 			level: 'silent'
 		}
