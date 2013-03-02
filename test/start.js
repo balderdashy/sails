@@ -1,7 +1,7 @@
 var sys = require('sys');
 var exec = require('child_process').exec;
 var spawn = require('child_process').spawn;
-var sails = require('sails');
+var sails = require('../lib/sails');
 
 var parley = require('parley');
 var $ = new parley();
