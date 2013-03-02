@@ -132,8 +132,13 @@ var adapter = {
 
 
 	// REQUIRED method if users expect to call Model.stream()
-	stream: function (collectionName,cb) {
-		cb();
+	stream: function(collectionName, options, stream) {
+		// options is a standard criteria/options object (like in find)
+
+		// stream.write() and stream.end() should be called.
+		// for an example, check out:
+		// https://github.com/balderdashy/sails-dirty/blob/master/DirtyAdapter.js#L247
+
 	}
 
 	
