@@ -4,11 +4,11 @@
   "contributors": [
     {
       "name": "Mike McNeil",
-      "email": "mike@balderdash.co"
+      "email": "mike@balderdash.co",
+      "url": "http://michaelmcneil.com"
     },
     {
-      "name": "Balderdash Design Co.",
-      "email": "dev@balderdash.co"
+      "name": "virpool"
     },
     {
       "name": "Dennis Bartlett",
@@ -20,14 +20,15 @@
     },
     {
       "name": "Brad Carleton",
-      "email": "brad@techpines.com"
+      "email": "brad@techpines.com",
+      "url": "http://techpines.com"
     },
     {
       "name": "Curtis Lacy",
       "email": "curtis.lacy@ldengine.com"
     }
   ],
-  "version": "0.8.82",
+  "version": "0.8.82-jade",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
   "homepage": "http://sailsjs.com",
   "keywords": [
@@ -49,7 +50,7 @@
     "sails": "./bin/sails.js"
   },
   "scripts": {
-    "test": "node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive -b -R landing -t 8000"
+    "test": "node test/start.js"
   },
   "directories": {
     "lib": "lib"
@@ -68,7 +69,7 @@
     "underscore.string": "2.3.0",
     "glob": "3.1.14",
     "winston": "0.6.2",
-    "fs-extra": "0.3.2",
+    "fs-extra": "0.5.0",
     "i18n": "0.3.5",
     "wrench": "1.4.4",
     "uglify-js": "2.2.4",
@@ -76,7 +77,11 @@
     "rigging": "13.0.0",
     "node-uuid": "~1.4.0",
     "parley": "0.0.2",
-    "include-all": "0.0.5"
+    "include-all": "0.0.5",
+    "forever": "~0.10.0",
+    "clean-css": "0.10.1",
+    "fs-watch-tree": "~0.2.2",
+    "jade" : "0.28.0"
   },
   "devDependencies": {
     "mocha": "*",

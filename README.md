@@ -1,7 +1,10 @@
 ![image_devInTub@2x.png](http://i.imgur.com/Tj9Nk.png) 
 
-# Sails
-Sails makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development.  It's especially good for building realtime features like chat.
+# Sails.js
+Sails.js makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development.  It's especially good for building realtime features like chat.
+
+# Intro to Sails.js
+[![ScreenShot](http://balderdashy.github.com/sails/images/screenshot.png)](http://youtu.be/GK-tFvpIR7c)
 
 
 # Installation
@@ -163,11 +166,7 @@ Sails does a few things other Node.js MVC frameworks can't do:
 - Automatically generated JSON API for manipulating models means you don't have to write any backend code to build simple database apps
 - Built-in authentication, role-based access control, and customizable policies assignable at the controller/action level
 - Transport agnostic routing: Sails controllers also handle Socket.io / WebSocket messages!  This makes it much easier to send the server-originated or 'comet' notifications you need for features like chat, realtime analytics, and multiplayer games.
-- Automatic asset minification with Rigging: Your UI code is automatically included in development mode, and minified into a simple, gzipped file in production.
-  - Support for:
-    - CoffeeScript
-    - LESS
-    - SASS / SCSS
+- Automatic asset minification: Your UI code is automatically included in development mode, and minified into a simple, gzipped file in production.  Also supports LESS and CoffeeScript.
 
 
 To learn more, check out the documentation here: 
