@@ -284,6 +284,8 @@ function createNewApp(appName) {
 	generateFile('config/locales/english.js', 'config/locales/english.js');
 
 
+	// Default app launcher file (for situations where sails lift isn't good enough)
+	generateFile('app.js', '.app.js');
 
 	// Create .gitignore
 	generateFile('gitignore', '.gitignore');
@@ -303,7 +305,7 @@ function createNewApp(appName) {
 			// test: './node_modules/mocha/bin/mocha -b',
 			start: 'node app.js'
 		},
-		main: 'app.js',
+		main: '.app.js',
 		repository: '',
 		author: '',
 		license: 'MIT'
