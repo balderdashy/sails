@@ -303,7 +303,8 @@ function createNewApp(appName) {
 		scripts: {
 			// Include this later when we have "sails test" ready.
 			// test: './node_modules/mocha/bin/mocha -b',
-			start: 'node app.js'
+			start: 'node .app.js',
+			debug: 'node debug .app.js'
 		},
 		main: '.app.js',
 		repository: '',
