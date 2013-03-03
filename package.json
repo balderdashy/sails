@@ -80,7 +80,8 @@
     "include-all": "0.0.5",
     "forever": "~0.10.0",
     "clean-css": "0.10.1",
-    "fs-watch-tree": "~0.2.2"
+    "fs-watch-tree": "~0.2.2",
+    "jade" : "0.28.0"
   },
   "devDependencies": {
     "mocha": "*",

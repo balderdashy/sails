@@ -18,28 +18,32 @@ var sails = require('./mockSails.js');
 var outputPath = '.';
 
 // Stringify args
-argv._ = _.map(argv._, function (arg) {
-	return arg+"";
+argv._ = _.map(argv._, function(arg) {
+	return arg + "";
 });
 
 // Known errors
 var errors = {
-	badLocalSails: function (requiredVersion) {
-		return 'Please reinstall Sails locally (npm install sails@'+requiredVersion+').';
+	badLocalSails: function(requiredVersion) {
+		return 'Please reinstall Sails locally (npm install sails@' + requiredVersion + ').';
 	}
 };
 
 // Read package.json file in specified path
+
 function getPackage(path) {
-	path = _.str.rtrim(path,'/');
+	path = _.str.rtrim(path, '/');
 	var packageJson = fs.readFileSync(path + '/package.json', 'utf-8');
-	try { packageJson = JSON.parse(packageJson); }
-	catch (e) { return false; }
+	try {
+		packageJson = JSON.parse(packageJson);
+	} catch (e) {
+		return false;
+	}
 	return packageJson;
 }
 
 // Start this app
-if(argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l'], argv._[0])) {
+if (argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l'], argv._[0])) {
 
 	var localSailsPath = sails.config.appPath + '/node_modules/sails';
 
@@ -48,9 +52,9 @@ if(argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run',
 
 	// If no package.json file exists, don't try to start the server
 	if (!appPackageJson) {
-		sails.log.error('Cannot read package.json in the current directory.  '+
-						'It could be missing or corrupt.  '+
-						'Are you sure this is a sails app?');
+		sails.log.error('Cannot read package.json in the current directory.  ' +
+			'It could be missing or corrupt.  ' +
+			'Are you sure this is a sails app?');
 		process.exit(1);
 	}
 
@@ -58,8 +62,7 @@ if(argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run',
 	var requiredSailsVersion = 0;
 	if (!(appPackageJson.dependencies && appPackageJson.dependencies.sails)) {
 		sails.log.warn('The app in the current directory does not list sails as a dependency.');
-	}
-	else {
+	} else {
 		requiredSailsVersion = appPackageJson.dependencies && appPackageJson.dependencies.sails;
 	}
 
@@ -68,7 +71,7 @@ if(argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run',
 
 		// check package.json INSIDE local install of Sails
 		// No package.json means local sails means it must be corrupted
-		if(!fs.existsSync(localSailsPath + '/package.json')) {
+		if (!fs.existsSync(localSailsPath + '/package.json')) {
 			sails.log.error('Locally installed Sails.js has corrupted or missing package.json file.');
 			sails.log.error(errors.badLocalSails(requiredSailsVersion));
 			process.exit(1);
@@ -76,8 +79,9 @@ if(argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run',
 
 		// Read package.json to detect version
 		var localSailsPackage = fs.readFileSync(localSailsPath + '/package.json', 'utf-8');
-		try { localSailsPackage = JSON.parse(localSailsPackage); }
-		catch (e) {
+		try {
+			localSailsPackage = JSON.parse(localSailsPackage);
+		} catch (e) {
 			sails.log.error('Unable to parse package.json in local node_modules/sails!\n');
 			sails.log.error(errors.badLocalSails(requiredSailsVersion));
 			process.exit(1);
@@ -87,11 +91,11 @@ if(argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run',
 
 		// TODO: use npm's native version comparator
 		if (requiredSailsVersion !== localSailsPackage.version) {
-			sails.log.error('This app requires version '+requiredSailsVersion+' of Sails, but local node_modules/sails version is '+localSailsPackage.version);
+			sails.log.error('This app requires version ' + requiredSailsVersion + ' of Sails, but local node_modules/sails version is ' + localSailsPackage.version);
 			sails.log.error(errors.badLocalSails(requiredSailsVersion));
 			process.exit(1);
 		}
-		
+
 		// If we made it this far, we're good to go-- fire 'er up, chief
 		require(sails.config.appPath + '/node_modules/sails/lib/sails.js').lift();
 
@@ -100,7 +104,7 @@ if(argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run',
 	else {
 		var globalSailsPath = __dirname + '/../';
 		require('../lib/sails').lift();
-		
+
 		// sails.log.verbose("Installing Sails in this project...");
 		// fs.mkdirsSync(localSailsPath);
 		// fs.copy(globalSailsPath, localSailsPath, function(err) {
@@ -126,7 +130,7 @@ if(argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run',
 
 // }
 // Start this app in interactive mode
-else if(_.contains(['console'], argv._[0])) {
+else if (_.contains(['console'], argv._[0])) {
 	sails.log.ship();
 	sails.log('Welcome to Sails.js!');
 	sails.log('( to exit, type <CTRL>+<C> )');
@@ -144,22 +148,22 @@ else if(_.contains(['console'], argv._[0])) {
 	});
 }
 // Get the sails version
-else if(argv.v || argv.version || (argv._[0] && _.contains(['v', 'version'], argv._[0]))) {
+else if (argv.v || argv.version || (argv._[0] && _.contains(['v', 'version'], argv._[0]))) {
 	sails.log.info('v' + sails.version);
 }
 // Basic usage
-else if(argv._.length === 0) {
+else if (argv._.length === 0) {
 	sails.log('Welcome to Sails!\n');
 	sailsUsage();
 }
 // Generate file(s)
-else if(argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^generat$|^generate$/) || argv.g || argv.generate) {
+else if (argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^generat$|^generate$/) || argv.g || argv.generate) {
 
 	verifyArg(1, "Please specify the name for the new model and controller as the second argument.");
 
 
 	// Generate a model
-	if(argv._[1] === 'model') {
+	if (argv._[1] === 'model') {
 		var entity = argv._[2];
 		verifyArg(2, "Please specify the name for the new model as the third argument.");
 
@@ -170,7 +174,7 @@ else if(argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^ge
 	}
 
 	// Generate a controller
-	else if(argv._[1] === 'controller') {
+	else if (argv._[1] === 'controller') {
 		var entity = argv._[2];
 		verifyArg(2, "Please specify the name for the new controller as the third argument.");
 
@@ -190,7 +194,7 @@ else if(argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^ge
 	// 	generateView(entity, options);
 	// }
 	// Generate an adapter
-	else if(argv._[1] === 'adapter') {
+	else if (argv._[1] === 'adapter') {
 		var entity = argv._[2];
 		verifyArg(2, "Please specify the name for the new argument as the third argument.");
 
@@ -216,19 +220,28 @@ else if(argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^ge
 
 // Create a new app
 // second argument == app name
-else if(argv._[0].match(/^new$/)) {
+else if (argv._[0].match(/^new$/)) {
+
+	console.log('create new app', argv.template);
+
 	verifyArg(1, "Please specify the name of the new project directory to create.");
-	createNewApp(argv._[1]);
+
+	var template = 'ejs';
+
+	if (argv['template'] && argv.template == 'jade') {
+		template = 'jade';
+	}
+	createNewApp(argv._[1], template);
 }
 
 // Unknown command, assume creating a new app w/ that name
 // First argument == app name
 else {
 	verifyArg(0, "Please specify the name of the new project directory as the first argument.");
-	createNewApp(argv._[0]);
+	createNewApp(argv._[0], 'ejs');
 }
 
-function createNewApp(appName) {
+function createNewApp(appName, templateLang) {
 	sails.log.info("Generating Sails project (" + appName + ")...");
 
 	outputPath = outputPath + "/" + appName;
@@ -252,10 +265,18 @@ function createNewApp(appName) {
 	generateFile('reset.css', 'assets/styles/reset.css'); // Create default css reset
 	generateDir('views');
 	generateDir('views/home'); // Create default home view
-	generateFile('index.ejs', 'views/home/index.ejs');
-	generateFile('404.ejs', 'views/404.ejs'); // Create 404, 500, and 422/403 pages
-	generateFile('500.ejs', 'views/500.ejs');
-	generateFile('layout.ejs', 'views/layout.ejs'); // Create layout
+
+	if (templateLang === 'jade') {
+		generateFile('jade/index.jade', 'views/home/index.jade');
+		generateFile('jade/404.jade', 'views/404.jade'); // Create 404, 500, and 422/403 pages
+		generateFile('jade/500.jade', 'views/500.jade');
+		generateFile('jade/layout.jade', 'views/layout.jade'); // Create layout
+	} else {
+		generateFile('ejs/index.ejs', 'views/home/index.ejs');
+		generateFile('ejs/404.ejs', 'views/404.ejs'); // Create 404, 500, and 422/403 pages
+		generateFile('ejs/500.ejs', 'views/500.ejs');
+		generateFile('ejs/layout.ejs', 'views/layout.ejs'); // Create layout
+	}
 
 	// API server
 	generateDir('api');
@@ -269,10 +290,14 @@ function createNewApp(appName) {
 	generateFile('policies/authenticated.js', 'api/policies/authenticated.js');
 
 	// Basic config
+	if (templateLang === 'jade') {
+		generateFile('config/application-jade.js', 'config/application.js');
+	} else {
+		generateFile('config/application.js', 'config/application.js');
+	}
 	generateDir('config');
 	generateFile('config/routes.js', 'config/routes.js');
 	generateFile('config/policies.js', 'config/policies.js');
-	generateFile('config/application.js', 'config/application.js');
 	generateFile('config/assets.js', 'config/assets.js');
 	generateFile('config/local.js', 'config/local.ex.js');
 	generateFile('config/local.js', 'config/local.js');
@@ -337,7 +362,7 @@ function generateFile(blueprintPath, newPath) {
 
 	// Touch output file to make sure the path to it exists
 	if (fs.createFileSync(newFilePath)) {
-		sails.log.error('Could not create file, '+newFilePath+'!');
+		sails.log.error('Could not create file, ' + newFilePath + '!');
 		process.exit(1);
 	}
 	fs.writeFileSync(newFilePath, file);
@@ -347,7 +372,7 @@ function generateFile(blueprintPath, newPath) {
 
 
 function generateDir(newPath) {
-	if(!newPath) sails.log.debug("Generating app directory...");
+	if (!newPath) sails.log.debug("Generating app directory...");
 	else sails.log.debug("Generating directory " + newPath + "...");
 	var newDirPath = outputPath + "/" + (newPath || "");
 	verifyDoesntExist(newDirPath, "A file/directory already exists at " + newDirPath);
@@ -363,7 +388,7 @@ function generateController(entity, options) {
 	verifyDoesntExist(newFederatedControllerPath, "A controller already exists at: " + newFederatedControllerPath);
 
 	// Federated controller
-	if(options && (options.f || options.federated)) {
+	if (options && (options.f || options.federated)) {
 
 		generateDir(newFederatedControllerPath);
 		_.each(options.actions, function(action) {
@@ -387,7 +412,7 @@ function generateController(entity, options) {
 		var actions = "";
 
 		// Add each requested function
-		if(options && options.actions) {
+		if (options && options.actions) {
 			_.each(options.actions, function(action) {
 				var fnString = renderBlueprint('action.js', {
 					action: action,
@@ -398,7 +423,7 @@ function generateController(entity, options) {
 				});
 
 				// If this is not the first action, add a comma
-				if(actions !== "") {
+				if (actions !== "") {
 					fnString = ',\n\n' + fnString;
 				}
 				actions += fnString;
@@ -460,17 +485,17 @@ function generate(options) {
 	// Trim slashes
 	options.prefix = _.str.rtrim(options.prefix, '/') + '/';
 
-	if(!options.entity) throw new Error('No output file name specified!');
+	if (!options.entity) throw new Error('No output file name specified!');
 
 	var file = renderBlueprint(options.blueprint, options);
 
 	var fileEntity = options.action || options.entity;
 	var newFilePath = options.prefix + fileEntity + options.suffix;
 	verifyDoesntExist(newFilePath, "A file or directory already exists at: " + newFilePath);
-	
+
 	// Touch output file to make sure the path to it exists
 	if (fs.createFileSync(newFilePath)) {
-		sails.log.error('Could not create file, '+newFilePath+'!');
+		sails.log.error('Could not create file, ' + newFilePath + '!');
 		process.exit(1);
 	}
 	fs.writeFileSync(newFilePath, file);
@@ -501,28 +526,28 @@ function copyBlueprint(blueprint, destination, cb) {
 
 
 function verifyArg(argNo, msg) {
-	if(!argv._[argNo]) {
+	if (!argv._[argNo]) {
 		sails.log.error(msg);
 		process.exit(1);
 	}
 }
 
 function verifyDoesntExist(path, msg) {
-	if(fileExists(path)) {
+	if (fileExists(path)) {
 		sails.log.error(msg);
 		process.exit(1);
 	}
 }
 
 function verifyExists(path, msg) {
-	if(!fileExists(path)) {
+	if (!fileExists(path)) {
 		sails.log.error(msg);
 		process.exit(1);
 	}
 }
 
 function verifyValidEntity(entity, msg) {
-	if(!isValidECMA51Variable(entity)) {
+	if (!isValidECMA51Variable(entity)) {
 		sails.log.error(msg);
 		process.exit(1);
 	} else return entity;
@@ -541,10 +566,10 @@ function fileExists(path) {
 		var stats = fs.lstatSync(path);
 
 		// Is it a directory?
-		if(stats.isDirectory() || stats.isFile()) {
+		if (stats.isDirectory() || stats.isFile()) {
 			return true;
 		}
-	} catch(e) {
+	} catch (e) {
 		// ...
 	}
 
