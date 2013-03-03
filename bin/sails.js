@@ -277,6 +277,7 @@ function createNewApp(appName, templateLang) {
 
 	// Basic config
 	generateDir('config');
+	generateFile('config/application.js', 'config/application.js');
 	generateFile('config/routes.js', 'config/routes.js');
 	generateFile('config/policies.js', 'config/policies.js');
 	generateFile('config/assets.js', 'config/assets.js');

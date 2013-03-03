@@ -14,7 +14,6 @@ module.exports = {
 	// The downside?  Harder to debug, and the server takes longer to start.
 	environment: 'development',
 
-
 	// Logger
 	// Valid `level` configs:
 	// 
