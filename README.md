@@ -32,16 +32,13 @@ cd testProject
 sails lift
 ```
 
-The default port for Sails is 1337.  At this point if you visit <a href="http://localhost:1337/">http://localhost:1337/</a> You will see the default index.html page.  
+The default port for Sails is 1337.  At this point if you visit <a href="http://localhost:1337/">http://localhost:1337/</a> You will see the default home page.  
 
-<!--
-Now, let's get Sails to tell us Hello.
-
+Now, let's get Sails to do cool stuff.
 
 # Hello, Sails!
 
-To get Sails to say "Hello World!", you need only to define one controller with an action and define
-one route. Lets start with the controller.
+To get Sails to say "Hello World!", you need only to change the view for the default home page in `views/home/index.ejs`.  But that doesn't really teach us a whole lot-- instead, let's create a new controller and have IT tell us hello.
 
 ```sh
 sails generate controller hello index
@@ -63,20 +60,13 @@ var HelloController = {
 module.exports = HelloController;
 ```
 
-After you have added that, you will want to remove the default index.html page that shows at the
-start of your application.
 
-```sh
-rm ui/public/index.html
-```
-
-We want the application to display this hello response when a request for the root "/" route
-comes in. Go into the **/config/routes.js** file. Here you can manually define these mappings,
-and here we will do so. Change the file to look like this.
+Let's say we want the application to display this hello response when a request comes in for `http://localhost:1337/hi`. 
+Go into the **/config/routes.js** file. Here you can manually define these mappings as you like. Change the file to look like this.
 
 ```javascript
 var routes = {
-	'/': {
+	'/hi': {
 		controller: 'hello',
 		action: 'index'
 	}
@@ -85,10 +75,6 @@ var routes = {
 module.exports = routes;
 ```
 
-As you will see when working more with Sails, one great feature is that by default, you do not have
-to define incoming routes to controller actions. This is talked more about in the 
-<a href="https://github.com/balderdashy/sails/wiki/Routing">Routing page</a> of this wiki.
-
 Finally, restart the server by going to your node terminal and pressing control+c. Then enter the
 following.
 
@@ -96,9 +82,19 @@ following.
 sails lift
 ```
 
-Now when you visit <a href="http://localhost:1337/">http://localhost:1337/</a> your browser should say **'Hello World!'**.
+Now when you visit <a href="http://localhost:1337/">http://localhost:1337/hi</a> your browser will say **'Hello World!'**.
 
--->
+> ### Notes:
+> We could have omitted `action: 'index'`, since it's the default, but I left it in for clarity.
+
+> As you will see when working more with Sails.js, one great feature is that by default, you do not **have**
+to define routes for controller actions. Sails.js will do its best to understand what you're talking about.  
+For instance, if you were to visit http://localhost:1337/hello, you'd notice that it routes you to the index action of `HelloController`.
+
+> Finally, if you were to omit HelloController altogether, but included a view in `views/hello/index.ejs`, Sails.js will serve that view when you visit `/hello`.
+
+> You can learn more about that on the <a href="https://github.com/balderdashy/sails/wiki/Routing">Routing</a> section of this wiki.
+
 
 # Creating a Model
 Creating a model is very easy with the command line tool. You can even define attributes and their
