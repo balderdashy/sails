@@ -222,8 +222,6 @@ else if (argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^g
 // second argument == app name
 else if (argv._[0].match(/^new$/)) {
 
-	console.log('create new app', argv.template);
-
 	verifyArg(1, "Please specify the name of the new project directory to create.");
 
 	// Default to ejs templates for new projects, but allow user to override with --template
@@ -266,6 +264,32 @@ function createNewApp(appName, templateLang) {
 	generateDir('views');
 	generateDir('views/home'); // Create default home view
 
+	// API server
+	generateDir('api');
+	generateDir('api/models');
+	generateDir('api/adapters');
+	generateDir('api/controllers');
+	generateDir('api/services');
+	generateDir('api/policies');
+
+	// Default policies
+	generateFile('policies/authenticated.js', 'api/policies/authenticated.js');
+
+	// Basic config
+	generateDir('config');
+	generateFile('config/routes.js', 'config/routes.js');
+	generateFile('config/policies.js', 'config/policies.js');
+	generateFile('config/assets.js', 'config/assets.js');
+	generateFile('config/local.js', 'config/local.ex.js');
+	generateFile('config/local.js', 'config/local.js');
+	generateFile('config/adapters.js', 'config/adapters.js');
+	generateFile('config/bootstrap.js', 'config/bootstrap.js');
+
+	// Internationalization config
+	generateDir('config/locales');
+	generateFile('config/locales/english.js', 'config/locales/english.js');
+
+	// Different stuff for different view engines
 	if (templateLang === 'jade') {
 		generateFile('jade/index.jade', 'views/home/index.jade');
 		generateFile('jade/404.jade', 'views/404.jade'); // Create 404, 500, and 422/403 pages
@@ -280,35 +304,6 @@ function createNewApp(appName, templateLang) {
 		generateFile('ejs/config.js', 'config/views.js'); // Create views.js config
 	}
 
-	// API server
-	generateDir('api');
-	generateDir('api/models');
-	generateDir('api/adapters');
-	generateDir('api/controllers');
-	generateDir('api/services');
-	generateDir('api/policies');
-
-	// Default policies
-	generateFile('policies/authenticated.js', 'api/policies/authenticated.js');
-
-	// Basic config
-	if (templateLang === 'jade') {
-		generateFile('config/application-jade.js', 'config/application.js');
-	} else {
-		generateFile('config/application.js', 'config/application.js');
-	}
-	generateDir('config');
-	generateFile('config/routes.js', 'config/routes.js');
-	generateFile('config/policies.js', 'config/policies.js');
-	generateFile('config/assets.js', 'config/assets.js');
-	generateFile('config/local.js', 'config/local.ex.js');
-	generateFile('config/local.js', 'config/local.js');
-	generateFile('config/adapters.js', 'config/adapters.js');
-	generateFile('config/bootstrap.js', 'config/bootstrap.js');
-
-	// Internationalization config
-	generateDir('config/locales');
-	generateFile('config/locales/english.js', 'config/locales/english.js');
 
 
 	// Default app launcher file (for situations where sails lift isn't good enough)
