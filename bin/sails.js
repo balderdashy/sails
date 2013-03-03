@@ -226,10 +226,10 @@ else if (argv._[0].match(/^new$/)) {
 
 	verifyArg(1, "Please specify the name of the new project directory to create.");
 
+	// Default to ejs templates for new projects, but allow user to override with --template
 	var template = 'ejs';
-
-	if (argv['template'] && argv.template == 'jade') {
-		template = 'jade';
+	if (argv['template']) {
+		template = argv['template'];
 	}
 	createNewApp(argv._[1], template);
 }
@@ -271,11 +271,13 @@ function createNewApp(appName, templateLang) {
 		generateFile('jade/404.jade', 'views/404.jade'); // Create 404, 500, and 422/403 pages
 		generateFile('jade/500.jade', 'views/500.jade');
 		generateFile('jade/layout.jade', 'views/layout.jade'); // Create layout
+		generateFile('jade/config.js', 'config/views.js'); // Create views.js config
 	} else {
 		generateFile('ejs/index.ejs', 'views/home/index.ejs');
 		generateFile('ejs/404.ejs', 'views/404.ejs'); // Create 404, 500, and 422/403 pages
 		generateFile('ejs/500.ejs', 'views/500.ejs');
 		generateFile('ejs/layout.ejs', 'views/layout.ejs'); // Create layout
+		generateFile('ejs/config.js', 'config/views.js'); // Create views.js config
 	}
 
 	// API server
