@@ -346,11 +346,20 @@ function createNewApp(appName, templateLang) {
 
 // Display usage
 function sailsUsage() {
-	sails.log.info('Usage: sails <command>\n\nsails lift\t\tRun this Sails app (in the current dir)\n' + 
-		'sails console\t\tRun this Sails app (in the current dir & in interactive mode.)\n' + 
-		'sails new <appName>\tCreate a new Sails project in the current dir\n' + 
-		'sails generate <foo>\tGenerate model and controller for this app\n' + 
-		'sails version\t\tGet the current globally installed Sails version');
+	function leftColumn (str) {
+		var n = (33-str.length);
+		return str + _.str.repeat(' ',n);
+	}
+
+	var usage = 'Usage: sails <command>\n\n';
+	usage += leftColumn('sails lift') + 'Run this Sails app (in the current dir)\n';
+	usage += leftColumn('sails console') + 'Run this Sails app (in the current dir & in interactive mode.)\n';
+	usage += leftColumn('sails new <appName>') + 'Create a new Sails project in the current dir\n';
+	usage += leftColumn('sails generate model <foo>') + 'Generate api/models/Foo.js\n';
+	usage += leftColumn('sails generate controller <foo>') + 'Generate api/controllers/FooController.js\n';
+	usage += leftColumn('sails version') + 'Get the current globally installed Sails version';
+
+	sails.log.info(usage);
 }
 
 
