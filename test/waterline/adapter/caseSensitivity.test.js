@@ -89,6 +89,16 @@ describe('case sensitivity', function() {
 					type: testName
 				},
 
+				{
+					name: 'AR)H$daxx',
+					type: testName
+				},
+
+				{
+					name: 'AR)H$daxxy',
+					type: testName
+				},
+
 				// ends with est
 				{
 					name: '0n3 m0r3 est',
@@ -132,6 +142,15 @@ describe('case sensitivity', function() {
 				},
 				type: testName
 			},User.testCount(3, cb));
+		});
+
+		it('endsWith should actually enforce endswith', function(cb) {
+			User.findAll({
+				name: {
+					endsWith: 'AR)H$daxx'
+				},
+				type: testName
+			},User.testCount(1, cb));
 		});
 	});
 });
