@@ -153,7 +153,9 @@ else if (argv.v || argv.version || (argv._[0] && _.contains(['v', 'version'], ar
 }
 // Basic usage
 else if (argv._.length === 0) {
-	sails.log('Welcome to Sails!\n');
+	console.log('');
+	sails.log('Welcome to Sails!');
+	console.log('');
 	sailsUsage();
 }
 // Generate file(s)
@@ -222,7 +224,7 @@ else if (argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^g
 // second argument == app name
 else if (argv._[0].match(/^new$/)) {
 
-	verifyArg(1, "Please specify the name of the new project directory to create.");
+	verifyArg(1, "Please specify the name of the new project directory to create: e.g.\n sails new <appName>");
 
 	// Default to ejs templates for new projects, but allow user to override with --template
 	var template = 'ejs';
@@ -235,8 +237,9 @@ else if (argv._[0].match(/^new$/)) {
 // Unknown command, assume creating a new app w/ that name
 // First argument == app name
 else {
-	verifyArg(0, "Please specify the name of the new project directory as the first argument.");
-	createNewApp(argv._[0], 'ejs');
+	console.log("");
+	sailsUsage();
+	sails.log.error (argv._[0] + " is not a valid action.");
 }
 
 function createNewApp(appName, templateLang) {
@@ -342,16 +345,16 @@ function createNewApp(appName, templateLang) {
 
 
 // Display usage
-
-
 function sailsUsage() {
-	sails.log.info('Usage: sails <command>\n' + '\n' + 'sails lift\t\tRun this Sails app (in the current dir)\n' + 'sails console\t\tRun this Sails app (in the current dir & in interactive mode.)\n' + 'sails new <appName>\t\tCreate a new Sails project in the current dir\n' + 'sails generate <foo>\tGenerate model and controller for this app\n' + 'sails version\t\tGet the current globally installed Sails version');
+	sails.log.info('Usage: sails <command>\n\nsails lift\t\tRun this Sails app (in the current dir)\n' + 
+		'sails console\t\tRun this Sails app (in the current dir & in interactive mode.)\n' + 
+		'sails new <appName>\tCreate a new Sails project in the current dir\n' + 
+		'sails generate <foo>\tGenerate model and controller for this app\n' + 
+		'sails version\t\tGet the current globally installed Sails version');
 }
 
 
 // Generate a file
-
-
 function generateFile(blueprintPath, newPath) {
 	var fullBpPath = __dirname + '/blueprints/' + (blueprintPath || "");
 	var file = fs.readFileSync(fullBpPath, 'utf8');
@@ -367,8 +370,6 @@ function generateFile(blueprintPath, newPath) {
 }
 
 // Generate a directory
-
-
 function generateDir(newPath) {
 	if (!newPath) sails.log.debug("Generating app directory...");
 	else sails.log.debug("Generating directory " + newPath + "...");
