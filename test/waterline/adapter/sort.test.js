@@ -43,6 +43,31 @@ describe('sort', function() {
 		User.findAllByType(testName, { sort: 'phone' }, cb);
 	});
 
+	it('sort by date should work', function(cb) {
+
+		// Stall a second or so, then 
+		setTimeout(function () {
+			// update one of the models so the updatedAt will change
+			User.update({
+				name:  testName + '_user2'
+			}, {}, function (err) {
+				if (err) throw new Error(err);
+
+				// Get sorted models
+				User.findAllByType(testName, { sort: 'updatedAt' }, function (err, users) {
+					var returnedFromWaterline = _.clone(users);
+					var originals = _.clone(origUsers);
+
+					// Make sure the order has changed
+					if (_.isEqual(originals, returnedFromWaterline)) {
+						throw new Error('updatedAt not sorted properly.');
+					}
+					cb(err);
+				});
+			});
+		}, 1001);
+	});
+
 
 	it('it should effectively sort the list (ASC)', function(cb) {
 		User.findAllByType(testName, { sort: 'phone ASC' }, function(err, users) {
