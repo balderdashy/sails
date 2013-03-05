@@ -72,3 +72,8 @@ exports.inMemory = true;
 // exports.database = 'waterline';
 // exports.user = 'waterline';
 // exports.password = 'abc123';
+
+////////////////////////////////////////////////////////
+// mongo
+////////////////////////////////////////////////////////
+// exports.adapter = 'sails-mongo';
