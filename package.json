@@ -64,7 +64,7 @@
     "lib": "lib"
   },
   "dependencies": {
-    "sails-dirty": "0.7.0",
+    "sails-dirty": "0.7.2",
     "express": "2.5.11",
     "socket.io": "0.9.6",
     "ejs": "0.7.2",
