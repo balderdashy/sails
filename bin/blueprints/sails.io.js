@@ -2142,8 +2142,10 @@
         parsedResult = io.JSON.parse(result);
       }
       catch (e) {
-        debug.debug("Could not parse:",result,e);
-        throw new Error("Server response could not be parsed!");
+        if (typeof console !== 'undefined') {
+          console.log("Could not parse:",result,e);
+        }
+        throw new Error("Server response could not be parsed!  "+result);
       }
 
       // TODO: Handle errors more effectively
