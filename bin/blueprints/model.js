@@ -1,9 +1,9 @@
 /*---------------------
-	:: <%- entity %> 
+	:: <%- entity %>
 	-> model
 ---------------------*/
 module.exports = {
-	
+
 	attributes	: {
 
 		// Simple attribute:
@@ -14,6 +14,7 @@ module.exports = {
 		//	type: 'STRING',
 		//	defaultValue: '555-555-5555'
 		// }
+		<%- attributes %>
 	}
 
 };
