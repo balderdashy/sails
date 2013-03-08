@@ -171,7 +171,19 @@ else if (argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^g
 
 		// Figure out attributes based on args
 		var options = _.extend({}, argv);
-		options.attributes = argv._.splice(3);
+		var args = argv._.splice(3);
+		options.attributes = [];
+		_.each(args,function(attribute,i){
+			var parts = attribute.split(':');
+			if (!parts[1]) {
+				sails.log.error('Please specify the type for attribute '+(i+1)+ ' "'+parts[0]+'".');
+				process.exit(1);
+			}
+			options.attributes.push({
+				name: parts[0],
+				type: parts[1].toUpperCase()
+			});
+		});
 		generateModel(entity, options);
 	}
 
@@ -448,10 +460,33 @@ function generateController(entity, options) {
 }
 
 function generateModel(entity, options) {
+	var attributes = "";
+
+	// Add each requested attribute
+	if (options && options.attributes) {
+		_.each(options.attributes, function(attribute) {
+			attribute.name = verifyValidEntity(attribute.name, "Invalid attribute: " + attribute.name);
+
+			var fnString = renderBlueprint('attribute.js', {
+				attribute: attribute,
+				entity: entity,
+				viewEngine: sails.config.viewEngine,
+				viewPath: _.str.rtrim(sails.config.paths.views, '/'),
+				baseurl: '/' + entity
+			});
+
+			// If this is not the first attribute, add a comma
+			if (attributes !== "") {
+				fnString = ',\n\n' + fnString;
+			}
+			attributes += fnString;
+		});
+	}
 	return generate({
 		blueprint: 'model.js',
 		prefix: sails.config.paths.models,
 		entity: capitalize(entity),
+		attributes: attributes,
 		suffix: ".js"
 	});
 }
