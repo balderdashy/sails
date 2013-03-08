@@ -132,7 +132,7 @@ if (argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run'
 // Start this app in interactive mode
 else if (_.contains(['console'], argv._[0])) {
 	sails.log.ship();
-	sails.log('Welcome to Sails.js!');
+	sails.log('Welcome to Sails (v'+sails.version +')');
 	sails.log('( to exit, type <CTRL>+<C> )');
 
 	require('../lib/sails').lift({
@@ -154,7 +154,7 @@ else if (argv.v || argv.version || (argv._[0] && _.contains(['v', 'version'], ar
 // Basic usage
 else if (argv._.length === 0) {
 	console.log('');
-	sails.log('Welcome to Sails!');
+	sails.log('Welcome to Sails! (v'+sails.version + ')');
 	console.log('');
 	sailsUsage();
 }
