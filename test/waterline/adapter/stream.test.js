@@ -43,7 +43,6 @@ describe('streaming', function() {
 			async.auto({
 				streamReady: function (cb) {
 					userstream.on('end', function (){
-						streamedData = JSON.parse(streamedData);
 						cb(null, streamedData);
 					});
 				},
@@ -51,6 +50,9 @@ describe('streaming', function() {
 				findAllReady: function (cb) {
 					User.findAll().done(function (err,users) {
 						users = _.pluck(users, 'values');
+
+						// Serialize to JSON so it will match the streamed output
+						users = JSON.stringify(users);
 						cb(err,users);
 					});
 				}
@@ -60,8 +62,8 @@ describe('streaming', function() {
 				
 				// Check equality of findAll() and stream() result sets
 				var equals = _.isEqual(results.findAllReady, results.streamReady);
-				console.log(equals);
-				cb();
+				if (!equals) cb(new Error('JSON over stream does not equal JSON-stringified findAll() model values!'));
+				else cb();
 			});
 		});
 		
