@@ -47,11 +47,11 @@ if (argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run'
 
 	var localSailsPath = sails.config.appPath + '/node_modules/sails';
 
-	// Check project package.json for sails.js dependency version
-	var appPackageJson = getPackage(sails.config.appPath);
-
+	// Check project package.json for sails.js dependency version and
 	// If no package.json file exists, don't try to start the server
-	if (!appPackageJson) {
+	if (fs.existsSync(sails.config.appPath + "/package.json")) {
+		appPackageJson = getPackage(sails.config.appPath);
+	} else {
 		sails.log.error('Cannot read package.json in the current directory.  ' +
 			'It could be missing or corrupt.  ' +
 			'Are you sure this is a sails app?');
