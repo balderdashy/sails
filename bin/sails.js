@@ -312,6 +312,12 @@ function createNewApp(appName, templateLang) {
 		generateFile('jade/500.jade', 'views/500.jade');
 		generateFile('jade/layout.jade', 'views/layout.jade'); // Create layout
 		generateFile('jade/config.js', 'config/views.js'); // Create views.js config
+	} else if (templateLang === 'haml') {	
+		generateFile('haml/index.haml', 'views/home/index.haml');
+		generateFile('haml/404.haml', 'views/404.haml'); // Create 404, 500, and 422/403 pages
+		generateFile('haml/500.haml', 'views/500.haml');
+		generateFile('haml/layout.haml', 'views/layout.haml'); // Create layout
+		generateFile('haml/config.js', 'config/views.js'); // Create views.js config
 	} else {
 		generateFile('ejs/index.ejs', 'views/home/index.ejs');
 		generateFile('ejs/404.ejs', 'views/404.ejs'); // Create 404, 500, and 422/403 pages
