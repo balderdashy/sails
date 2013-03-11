@@ -47,11 +47,11 @@ if (argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run'
 
 	var localSailsPath = sails.config.appPath + '/node_modules/sails';
 
-	// Check project package.json for sails.js dependency version
-	var appPackageJson = getPackage(sails.config.appPath);
-
+	// Check project package.json for sails.js dependency version and
 	// If no package.json file exists, don't try to start the server
-	if (!appPackageJson) {
+	if (fs.existsSync(sails.config.appPath + "/package.json")) {
+		appPackageJson = getPackage(sails.config.appPath);
+	} else {
 		sails.log.error('Cannot read package.json in the current directory.  ' +
 			'It could be missing or corrupt.  ' +
 			'Are you sure this is a sails app?');
@@ -312,6 +312,12 @@ function createNewApp(appName, templateLang) {
 		generateFile('jade/500.jade', 'views/500.jade');
 		generateFile('jade/layout.jade', 'views/layout.jade'); // Create layout
 		generateFile('jade/config.js', 'config/views.js'); // Create views.js config
+	} else if (templateLang === 'haml') {	
+		generateFile('haml/index.haml', 'views/home/index.haml');
+		generateFile('haml/404.haml', 'views/404.haml'); // Create 404, 500, and 422/403 pages
+		generateFile('haml/500.haml', 'views/500.haml');
+		generateFile('haml/layout.haml', 'views/layout.haml'); // Create layout
+		generateFile('haml/config.js', 'config/views.js'); // Create views.js config
 	} else {
 		generateFile('ejs/index.ejs', 'views/home/index.ejs');
 		generateFile('ejs/404.ejs', 'views/404.ejs'); // Create 404, 500, and 422/403 pages
