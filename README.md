@@ -120,12 +120,12 @@ module.exports = User;
 
 # What's Better Than Scaffolding?  How About a free JSON API?
 
-Sails API scaffolding is nothing like Rails scaffolding. HTML scaffolds just don't make sense for 
-modern web apps! Instead, Sails automatically builds a RESTful JSON API for your models. Best of
-all, it supports HTTP _and_ WebSockets! By default for every controller you create, you get the
-basic CRUD operations created automatically.
+Sails API blueprints are nothing like Rails scaffolding. HTML scaffolds don't really make sense for 
+modern web apps. Instead, Sails automatically builds a RESTful JSON API for your models.
+Most importantly, it supports HTTP _and_ WebSockets. By default for every model you generate, you get the
+basic CRUD operations automatically.
 
-For instance, after generating the User model above, if you visit `http://localhost:1337/user/create`, you'll see:
+For instance, after generating the User model above, if you POST to `http://localhost:1337/user` or visit `http://localhost:1337/user/create`, you'll see:
 ```json
 {
   "createdAt": "2013-01-10T01:33:19.105Z",
@@ -155,6 +155,9 @@ http://localhost:1337/user/update/1?name=Gordo
 http://localhost:1337/user/destroy/1
 (or send an HTTP DELETE to http://localhost:1337/user/1)
 ```
+
+
+One last thing to note-- `findAll` automatically supports search, limit, skip (pagination), sorting, startsWith, endsWith, contains, greaterThan, lessThan, and not filtering.
 
 
 ## Additional Features
