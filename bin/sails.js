@@ -43,7 +43,7 @@ function getPackage(path) {
 }
 
 // Start this app
-if (argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l'], argv._[0])) {
+if (argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l', 'console'], argv._[0])) {
 
 	var localSailsPath = sails.config.appPath + '/node_modules/sails';
 
@@ -96,6 +96,27 @@ if (argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run'
 			process.exit(1);
 		}
 
+
+		// Check if console was requested, if so, launch console
+		if (_.contains(['console'], argv._[0])) {
+			sails.log.ship();
+			sails.log('Welcome to Sails (v'+sails.version +')');
+			sails.log('( to exit, type <CTRL>+<C> )');
+
+			require('../lib/sails').lift({
+				log: {
+					level: 'silent'
+				}
+			}, function() {
+				repl = require("repl").start("sails> ");
+				repl.on('exit', function() {
+					sails.log.verbose('Closing console');
+					process.exit();
+				});
+			});
+			return; //exit before accidently starting a second sails.
+		}
+
 		// If we made it this far, we're good to go-- fire 'er up, chief
 		require(sails.config.appPath + '/node_modules/sails/lib/sails.js').lift();
 
@@ -129,24 +150,7 @@ if (argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run'
 // else if(argv._[0] && _.contains(['stop', 'kill'], argv._[0])) {
 
 // }
-// Start this app in interactive mode
-else if (_.contains(['console'], argv._[0])) {
-	sails.log.ship();
-	sails.log('Welcome to Sails (v'+sails.version +')');
-	sails.log('( to exit, type <CTRL>+<C> )');
 
-	require('../lib/sails').lift({
-		log: {
-			level: 'silent'
-		}
-	}, function() {
-		repl = require("repl").start("sails> ");
-		repl.on('exit', function() {
-			sails.log.verbose('Closing console');
-			process.exit();
-		});
-	});
-}
 // Check for newer version and upgrade if available.
 else if (_.contains(['upgrade'], argv._[0])) {
 	var sys = require('sys');
