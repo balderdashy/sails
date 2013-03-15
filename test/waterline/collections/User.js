@@ -44,12 +44,16 @@ exports.migrate = 'drop';
 
 // Attributes for the user data model
 exports.attributes = {
-	name	: 'STRING',
-	email	: 'STRING',
-	title	: 'STRING',
-	phone	: 'STRING',
-	type	: 'STRING',
-	age		: 'INTEGER'
+	name	: 'string',
+	email	: 'string',
+	title	: 'string',
+	phone	: 'string',
+	type	: 'string',
+	favoriteFruit	: {
+		defaultsTo: 'blueberry',
+		type: 'string'
+	},
+	age		: 'integer'
 };
 
 // Identity is here to facilitate unit testing
