@@ -176,7 +176,7 @@ https://github.com/balderdashy/sails/wiki/_pages
 Dependencies and Compatibility
 --
 
-Tested with node 0.8.1
+Tested with node v0.8.22
 Sails is built on the rock-solid foundations of ExpressJS and Socket.io.  
 
 
