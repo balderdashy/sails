@@ -102,7 +102,7 @@ type by adding arguments at the end of the command. To generate a User model, en
 ```
 sails generate model User
 ```
-If you check out your app, you'll notice that this created a file at **/api/model/User.js**.
+If you check out your app, you'll notice that this created a file at **/api/models/User.js**.
 
 <!--
   Let's give her a name-- try uncommenting the name attribute so it looks more or less like this:
