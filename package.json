@@ -109,6 +109,6 @@
     "url": "http://github.com/balderdashy/sails/issues"
   },
   "engines": {
-    "node": ">= 0.8.1"
+    "node": "<= 0.8.22"
   }
 }
