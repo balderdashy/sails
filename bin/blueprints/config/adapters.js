@@ -5,7 +5,7 @@ module.exports.adapters = {
 
 	// If you leave the adapter config unspecified 
 	// in a model definition, 'default' will be used.
-	'default': 'disk',
+	'default': 'memory',
 	
 	// In-memory adapter for DEVELOPMENT ONLY
 	// (data is NOT preserved when the server shuts down)
@@ -16,6 +16,8 @@ module.exports.adapters = {
 
 	// Persistent adapter for DEVELOPMENT ONLY
 	// (data IS preserved when the server shuts down)
+	// PLEASE NOTE: disk adapter not compatible with node 0.10.0 currently 
+	//				because of limitations in node-dirty
 	disk: {
 		module: 'sails-dirty',
 		filePath: './.tmp/dirty.db',
