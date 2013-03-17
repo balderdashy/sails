@@ -87,7 +87,8 @@
     "forever": "~0.10.0",
     "clean-css": "0.10.1",
     "fs-watch-tree": "~0.2.2",
-    "jade": "0.28.0"
+    "jade": "0.28.0",
+	"node-typescript": "0.1.3"
   },
   "devDependencies": {
     "mocha": "*",
