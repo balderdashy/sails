@@ -316,7 +316,7 @@ function createNewApp(appName, templateLang) {
 	generateDir('assets/mixins');
 	copyBlueprint('sails.io.js', 'assets/mixins/sails.io.js'); // Copy over special sails.io.js client
 	generateDir('assets/styles');
-	generateFile('reset.css', 'assets/styles/reset.css'); // Create default css reset
+	generateFile('reset.css', 'assets/mixins/reset.css'); // Create default css reset
 	generateDir('views');
 	generateDir('views/home'); // Create default home view
 
