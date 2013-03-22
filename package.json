@@ -41,6 +41,10 @@
     {
       "name": "Curtis Lacy",
       "email": "curtis.lacy@ldengine.com"
+    },
+    {
+      "name": "Ameen Ahmed",
+      "email": "ameen.ahmed.b@gmail.com"
     }
   ],
   "version": "0.8.895",
@@ -96,6 +100,7 @@
     "clean-css": "0.10.1",
     "fs-watch-tree": "~0.2.2",
     "jade": "0.28.0",
+    "inflection": "1.2.5",
 	"node-typescript": "0.1.3"
   },
   "devDependencies": {

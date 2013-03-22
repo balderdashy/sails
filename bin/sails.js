@@ -297,8 +297,14 @@ else {
 
 function createNewApp(appName, templateLang) {
 	sails.log.info("Generating Sails project (" + appName + ")...");
-
-	outputPath = outputPath + "/" + appName;
+	
+	//Check if the appName is an absolute path, if so don't prepend './'
+	if(appName.substr(0,1) == '/') {
+		outputPath = appName;
+	} else {
+		outputPath = outputPath + "/" + appName;
+	}
+	
 	verifyDoesntExist(outputPath, "A file or directory already exists at: " + outputPath);
 
 	// Create app directory
