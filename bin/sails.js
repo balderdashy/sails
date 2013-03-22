@@ -306,15 +306,15 @@ function createNewApp(appName, templateLang) {
 
 	// Create default app structure
 	generateDir('public');
-	copyBlueprint('favicon.ico', 'public/favicon.ico'); // Copy default favicon
-	copyBlueprint('robots.txt', 'public/robots.txt'); // Copy robots.txt
+	copyBoilerplate('favicon.ico', 'public/favicon.ico'); // Copy default favicon
+	copyBoilerplate('robots.txt', 'public/robots.txt'); // Copy robots.txt
 	generateDir('public/images');
 
 	generateDir('assets');
 	generateDir('assets/js');
 	generateDir('assets/templates');
 	generateDir('assets/mixins');
-	copyBlueprint('sails.io.js', 'assets/mixins/sails.io.js'); // Copy over special sails.io.js client
+	copyBoilerplate('sails.io.js', 'assets/mixins/sails.io.js'); // Copy over special sails.io.js client
 	generateDir('assets/styles');
 	generateFile('reset.css', 'assets/mixins/reset.css'); // Create default css reset
 	generateDir('views');
@@ -423,8 +423,8 @@ function sailsUsage() {
 
 
 // Generate a file
-function generateFile(blueprintPath, newPath) {
-	var fullBpPath = __dirname + '/blueprints/' + (blueprintPath || "");
+function generateFile(boilerplatePath, newPath) {
+	var fullBpPath = __dirname + '/boilerplates/' + (boilerplatePath || "");
 	var file = fs.readFileSync(fullBpPath, 'utf8');
 	var newFilePath = outputPath + '/' + (newPath || "");
 	verifyDoesntExist(newFilePath, "A file/directory already exists at " + newFilePath);
@@ -463,7 +463,7 @@ function generateController(entity, options) {
 			action = verifyValidEntity(action, "Invalid action name: " + action);
 
 			return generate({
-				blueprint: 'federatedAction.js',
+				boilerplate: 'federatedAction.js',
 				prefix: sails.config.paths.controllers + '/' + entity,
 				entity: entity,
 				action: action,
@@ -481,7 +481,7 @@ function generateController(entity, options) {
 		// Add each requested function
 		if (options && options.actions) {
 			_.each(options.actions, function(action) {
-				var fnString = renderBlueprint('action.js', {
+				var fnString = renderBoilerplate('action.js', {
 					action: action,
 					entity: entity,
 					viewEngine: sails.config.viewEngine,
@@ -497,7 +497,7 @@ function generateController(entity, options) {
 			});
 		}
 		return generate({
-			blueprint: 'controller.js',
+			boilerplate: 'controller.js',
 			prefix: sails.config.paths.controllers,
 			entity: capitalize(entity),
 			actions: actions,
@@ -514,7 +514,7 @@ function generateModel(entity, options) {
 		_.each(options.attributes, function(attribute) {
 			attribute.name = verifyValidEntity(attribute.name, "Invalid attribute: " + attribute.name);
 
-			var fnString = renderBlueprint('attribute.js', {
+			var fnString = renderBoilerplate('attribute.js', {
 				attribute: attribute,
 				entity: entity,
 				viewEngine: sails.config.viewEngine,
@@ -530,7 +530,7 @@ function generateModel(entity, options) {
 		});
 	}
 	return generate({
-		blueprint: 'model.js',
+		boilerplate: 'model.js',
 		prefix: sails.config.paths.models,
 		entity: capitalize(entity),
 		attributes: attributes,
@@ -540,7 +540,7 @@ function generateModel(entity, options) {
 
 function generateAdapter(entity, options) {
 	return generate({
-		blueprint: 'adapter.js',
+		boilerplate: 'adapter.js',
 		prefix: sails.config.paths.adapters,
 		entity: capitalize(entity),
 		suffix: "Adapter.js"
@@ -555,7 +555,7 @@ function generateView(entity, options) {
 		action = verifyValidEntity(action, "Invalid view name: " + action);
 
 		return generate({
-			blueprint: 'view.' + sails.config.viewEngine,
+			boilerplate: 'view.' + sails.config.viewEngine,
 			prefix: viewPath,
 			entity: entity,
 			action: action,
@@ -565,19 +565,19 @@ function generateView(entity, options) {
 }
 
 
-// Utility class to generate a file given the blueprint and output paths,
+// Utility class to generate a file given the boilerplate and output paths,
 // as well as an optional ejs render override.
 
 
 function generate(options) {
-	sails.log.debug("Generating " + options.blueprint + " for " + options.entity + "...");
+	sails.log.debug("Generating " + options.boilerplate + " for " + options.entity + "...");
 
 	// Trim slashes
 	options.prefix = _.str.rtrim(options.prefix, '/') + '/';
 
 	if (!options.entity) throw new Error('No output file name specified!');
 
-	var file = renderBlueprint(options.blueprint, options);
+	var file = renderBoilerplate(options.boilerplate, options);
 
 	var fileEntity = options.action || options.entity;
 	var newFilePath = options.prefix + fileEntity + options.suffix;
@@ -591,22 +591,22 @@ function generate(options) {
 	fs.writeFileSync(newFilePath, file);
 }
 
-// Read a blueprint and render the template
+// Read a boilerplate and render the template
 
 
-function renderBlueprint(blueprint, data) {
-	var blueprintPath = __dirname + '/blueprints/' + blueprint;
-	verifyExists(blueprintPath, "Blueprint (" + blueprint + ") doesn't exist!");
-	var file = fs.readFileSync(blueprintPath, 'utf8');
+function renderBoilerplate(boilerplate, data) {
+	var boilerplatePath = __dirname + '/boilerplates/' + boilerplate;
+	verifyExists(boilerplatePath, "Boilerplate (" + boilerplate + ") doesn't exist!");
+	var file = fs.readFileSync(boilerplatePath, 'utf8');
 	return ejs.render(file, data);
 }
 
-// Copy a blueprint file
+// Copy a boilerplate file
 
 
-function copyBlueprint(blueprint, destination, cb) {
-	var blueprintPath = __dirname + '/blueprints/' + blueprint;
-	fs.copy(blueprintPath, outputPath + '/' + destination, function(err) {
+function copyBoilerplate(boilerplate, destination, cb) {
+	var boilerplatePath = __dirname + '/boilerplates/' + boilerplate;
+	fs.copy(boilerplatePath, outputPath + '/' + destination, function(err) {
 		return cb && cb(err);
 	});
 }
