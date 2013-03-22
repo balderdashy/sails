@@ -140,7 +140,7 @@ if (argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run'
 // 	forever.startDaemon('sails lift');
 
 // 	// Create temporary app file
-// 	// fs.writeFileSync(sails.config.appPath + '/.app.js', function (){});
+// 	// fs.writeFileSync(sails.config.appPath + '/app.js', function (){});
 // 	// copy down global install of sails locally if one doesn't already exist
 // 	// if(!fs.existsSync(sails.config.appPath + '/node_modules/sails')) {}
 
@@ -394,10 +394,10 @@ function createNewApp(appName, templateLang) {
 		scripts: {
 			// Include this later when we have "sails test" ready.
 			// test: './node_modules/mocha/bin/mocha -b',
-			start: 'node .app.js',
-			debug: 'node debug .app.js'
+			start: 'node app.js',
+			debug: 'node debug app.js'
 		},
-		main: '.app.js',
+		main: 'app.js',
 		repository: '',
 		author: '',
 		license: 'MIT'
