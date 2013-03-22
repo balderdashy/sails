@@ -376,7 +376,7 @@ function createNewApp(appName, templateLang) {
 
 
 	// Default app launcher file (for situations where sails lift isn't good enough)
-	generateFile('app.js', '.app.js');
+	generateFile('app.js', 'app.js');
 
 	// Create .gitignore
 	generateFile('gitignore', '.gitignore');
