@@ -101,7 +101,8 @@
     "fs-watch-tree": "~0.2.2",
     "jade": "0.28.0",
     "inflection": "~1.2.5",
-    "node-typescript": "0.1.3"
+    "node-typescript": "0.1.3",
+    "connect-redis": "1.4.5"
   },
   "devDependencies": {
     "mocha": "*",
