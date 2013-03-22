@@ -8,22 +8,31 @@
       "url": "http://michaelmcneil.com"
     },
     {
-      "name": "virpool"
-    },
-    {
       "name": "Dennis Bartlett",
       "email": "dcbartlett@gmail.com"
-    },
-    {
-      "name": "themouette"
-    },
-    {
-      "name": "valinorsgatekeeper"
     },
     {
       "name": "Brad Carleton",
       "email": "brad@techpines.com",
       "url": "http://techpines.com"
+    },
+    {
+      "name": "Victor Powell",
+      "email": "",
+      "url": ""
+    },
+    {
+      "name": "virpool",
+      "email": "",
+      "url": ""
+    },
+    {
+      "name": "themouette",
+      "email": "",
+      "url": ""
+    },
+    {
+      "name": "valinorsgatekeeper"
     },
     {
       "name": "Gabe Hernandez",
@@ -32,9 +41,13 @@
     {
       "name": "Curtis Lacy",
       "email": "curtis.lacy@ldengine.com"
+    },
+    {
+      "name": "Ameen Ahmed",
+      "email": "ameen.ahmed.b@gmail.com"
     }
   ],
-  "version": "0.8.894",
+  "version": "0.8.895",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
   "homepage": "http://sailsjs.com",
   "keywords": [
@@ -64,14 +77,13 @@
     "lib": "lib"
   },
   "dependencies": {
-    "sails-dirty": "0.7.2",
+    "sails-dirty": "0.7.3",
     "express": "2.5.11",
     "socket.io": "0.9.6",
     "ejs": "0.7.2",
     "connect": "1.8.3",
     "async": "0.1.22",
     "underscore": "1.4.2",
-    "less": "1.3.0",
     "optimist": "0.3.4",
     "underscore.string": "2.3.0",
     "glob": "3.1.14",
@@ -80,14 +92,17 @@
     "i18n": "0.3.5",
     "wrench": "1.4.4",
     "uglify-js": "2.2.4",
-    "asset-rack": "2.0.6",
+    "asset-rack": "2.1.4",
     "node-uuid": "~1.4.0",
     "parley": "0.0.2",
     "include-all": "0.0.5",
     "forever": "~0.10.0",
     "clean-css": "0.10.1",
     "fs-watch-tree": "~0.2.2",
-    "jade": "0.28.0"
+    "jade": "0.28.0",
+    "inflection": "~1.2.5",
+    "node-typescript": "0.1.3",
+    "connect-redis": "1.4.5"
   },
   "devDependencies": {
     "mocha": "*",
@@ -109,6 +124,6 @@
     "url": "http://github.com/balderdashy/sails/issues"
   },
   "engines": {
-    "node": "<= 0.8.22"
+    "node": "<= 0.10.0"
   }
 }

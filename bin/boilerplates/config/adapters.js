@@ -16,8 +16,9 @@ module.exports.adapters = {
 
 	// Persistent adapter for DEVELOPMENT ONLY
 	// (data IS preserved when the server shuts down)
-	// PLEASE NOTE: disk adapter not compatible with node 0.10.0 currently 
+	// PLEASE NOTE: disk adapter not compatible with node v0.10.0 currently 
 	//				because of limitations in node-dirty
+	//				See https://github.com/felixge/node-dirty/issues/34
 	disk: {
 		module: 'sails-dirty',
 		filePath: './.tmp/dirty.db',
