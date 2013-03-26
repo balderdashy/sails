@@ -171,6 +171,7 @@ Sails does a few things other Node.js MVC frameworks can't do:
 To learn more, check out the documentation here: 
 https://github.com/balderdashy/sails/wiki/_pages
 
+Join us on IRC at #sailsjs on freenode
 
 
 Dependencies and Compatibility
