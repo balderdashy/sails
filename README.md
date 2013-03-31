@@ -93,7 +93,7 @@ For instance, if you were to visit http://localhost:1337/hello, you'd notice tha
 
 > Finally, if you were to omit HelloController altogether, but included a view in `views/hello/index.ejs`, Sails.js will serve that view when you visit `/hello`.
 
-> You can learn more about that on the <a href="https://github.com/balderdashy/sails/wiki/Routing">Routing</a> section of this wiki.
+> You can learn more about that on the <a href="https://github.com/balderdashy/sails/wiki/Routes">Routes</a> section of this wiki.
 
 
 # Creating a Model
