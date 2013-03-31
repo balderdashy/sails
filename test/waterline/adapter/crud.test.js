@@ -138,7 +138,11 @@ describe('adapter', function() {
 			User.create({
         id: 'abc',
 				name: "Johnny"
-			}, done);
+			}, function(err, user) {
+        if (err) throw err;
+        else if (user.id !== 'abc') throw 'Did not create string id';
+        else done(err, user);
+      });
 		});
 
     it('should work', function(done) {
