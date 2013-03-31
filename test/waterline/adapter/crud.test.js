@@ -132,6 +132,33 @@ describe('adapter', function() {
 		});
 	});
 
+  describe('#destroying() Johnny by id', function() {
+
+		it('should create Johnny with string id', function(done) {
+			User.create({
+        id: 'abc',
+				name: "Johnny"
+			}, done);
+		});
+
+    it('should work', function(done) {
+      User.destroy({
+        id: 'abc'
+      }, done);
+    });
+
+    it('should mean trying to find Johnny should return an empty array', function(done) {
+			User.findAll({
+				name: "Johnny"
+			}, function(err, users) {
+				if(err) throw err;
+				else if(!users || !_.isArray(users) || users.length > 0) throw "A non-empty list was returned!";
+				else done(err, users);
+			});
+		});
+
+  });
+
 	describe('#destroyAll()', function() {
 
 		before(function(cb) {
