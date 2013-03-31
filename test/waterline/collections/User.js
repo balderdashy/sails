@@ -80,4 +80,6 @@ exports.inMemory = true;
 ////////////////////////////////////////////////////////
 // mongo
 ////////////////////////////////////////////////////////
-// exports.adapter = 'sails-mongo';
+exports.adapter = 'sails-mongo';
+exports.database = 'test';
+exports.host = 'localhost';
