@@ -137,7 +137,7 @@ describe('adapter', function() {
 		it('should create Johnny with string id', function(done) {
 			User.create({
         id: 'abc',
-				name: "Johnny"
+				name: 'Johnny'
 			}, function(err, user) {
         if (err) throw err;
         else if (user.id !== 'abc') throw 'Did not create string id';
@@ -153,10 +153,10 @@ describe('adapter', function() {
 
     it('should mean trying to find Johnny should return an empty array', function(done) {
 			User.findAll({
-				name: "Johnny"
+				name: 'Johnny'
 			}, function(err, users) {
 				if(err) throw err;
-				else if(!users || !_.isArray(users) || users.length > 0) throw "A non-empty list was returned!";
+				else if(!users || !_.isArray(users) || users.length > 0) throw 'A non-empty list was returned!';
 				else done(err, users);
 			});
 		});
