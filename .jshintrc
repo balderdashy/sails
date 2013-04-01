@@ -1,4 +1,7 @@
 {
+  "bitwise": true,
+  "camelcase": true,
+  "node": true,
   "undef": true,
   "unused": true,
   "curly": true,
@@ -7,7 +10,7 @@
   "noarg": true,
   "noempty": true,
   "plusplus": true,
-  "quotmark": true,
+  "quotmark": "single",
   "trailing": true,
   "asi": false,
   "eqnull": true,
