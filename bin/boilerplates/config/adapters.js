@@ -5,7 +5,7 @@ module.exports.adapters = {
 
 	// If you leave the adapter config unspecified 
 	// in a model definition, 'default' will be used.
-	'default': 'dirty',
+	'default': 'disk',
 	
 	// In-memory adapter for DEVELOPMENT ONLY
 	// (data is NOT preserved when the server shuts down)
