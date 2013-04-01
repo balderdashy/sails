@@ -8,7 +8,6 @@
   "noempty": true,
   "plusplus": true,
   "quotmark": true,
-  "strict": true,
   "trailing": true,
   "asi": false,
   "eqnull": true,
