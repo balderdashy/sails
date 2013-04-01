@@ -215,7 +215,7 @@ else if (argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^g
 		var options = _.extend({}, argv);
 		var args = argv._.splice(3);
 		options.attributes = [];
-		_.each(args,function(attribute,i){
+		_.each(args,function(attribriggingute,i){
 			var parts = attribute.split(':');
 			if (!parts[1]) {
 				sails.log.error('Please specify the type for attribute '+(i+1)+ ' "'+parts[0]+'".');
@@ -226,6 +226,10 @@ else if (argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^g
 				type: parts[1].toUpperCase()
 			});
 		});
+
+		sails.log.warn('This method of generating a model will be depreciated soon.');
+		sails.log.warn('Please use \'sails generate "model_name"\' next time.');
+		sails.log.warn('This will create the model and controller for blueprint purposes.');
 		generateModel(entity, options);
 	}
 
@@ -237,6 +241,10 @@ else if (argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^g
 		// Figure out actions based on args
 		var options = _.extend({}, argv);
 		options.actions = argv._.splice(3);
+
+		sails.log.warn('This method of generating a controller will be depreciated soon.');
+		sails.log.warn('Please use \'sails generate "model_name"\' next time.');
+		sails.log.warn('This will create the model and controller for blueprint purposes.');
 		generateController(entity, options);
 	}
 
@@ -249,6 +257,7 @@ else if (argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^g
 	// 	options.actions = argv._.splice(3);
 	// 	generateView(entity, options);
 	// }
+	
 	// Generate an adapter
 	else if (argv._[1] === 'adapter') {
 		var entity = argv._[2];

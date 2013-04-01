@@ -1,0 +1,28 @@
+*#
+node_modules
+ssl
+.DS_STORE
+*~
+.idea
+
+nbproject
+
+# Ignore config file w/ sensitive information
+config/db.js
+
+# Ignore dev minified/compiled assets
+public/stylesheets/_*.css
+public/js/_*.js
+
+# Ignore production minified/compiled assets
+public/_target/*.js
+public/_target/*.css
+
+*.swo
+*.swp
+*.swn
+*.swm
+
+
+#Ignore JSHint RC file for NPM
+.jshintrc
