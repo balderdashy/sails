@@ -227,24 +227,20 @@ else if (argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^g
 			});
 		});
 
-		sails.log.warn('This method of generating a model will be depreciated soon.');
-		sails.log.warn('Please use \'sails generate "model_name"\' next time.');
-		sails.log.warn('This will create the model and controller for blueprint purposes.');
+		sails.log.warn('In order to serve the blueprint API for this model, you must now also generate an empty controller.');
+		sails.log.warn('If you want this behavior, run \'sails generate controller '+ entity +'\' to create a blank controller.');
 		generateModel(entity, options);
 	}
 
 	// Generate a controller
 	else if (argv._[1] === 'controller') {
 		var entity = argv._[2];
-		verifyArg(2, "Please specify the name for the new controller as the third argument.");
+		verifyArg(2, 'Please specify the name for the new controller as the third argument.');
 
 		// Figure out actions based on args
 		var options = _.extend({}, argv);
 		options.actions = argv._.splice(3);
 
-		sails.log.warn('This method of generating a controller will be depreciated soon.');
-		sails.log.warn('Please use \'sails generate "model_name"\' next time.');
-		sails.log.warn('This will create the model and controller for blueprint purposes.');
 		generateController(entity, options);
 	}
 
