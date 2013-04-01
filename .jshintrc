@@ -1,0 +1,18 @@
+{
+  "undef": true,
+  "unused": true,
+  "curly": true,
+  "immed": true,
+  "latedef": true,
+  "noarg": true,
+  "noempty": true,
+  "plusplus": true,
+  "quotmark": true,
+  "strict": true,
+  "trailing": true,
+  "asi": false,
+  "eqnull": true,
+  "eval": true,
+  "sub": true,
+  "supernew": true,
+}
