@@ -203,19 +203,19 @@ else if (argv._.length === 0) {
 // Generate file(s)
 else if (argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^generat$|^generate$/) || argv.g || argv.generate) {
 
-	verifyArg(1, "Please specify the name for the new model and controller as the second argument.");
+	verifyArg(1, 'Please specify the name for the new model and controller as the second argument.');
 
 
 	// Generate a model
 	if (argv._[1] === 'model') {
 		var entity = argv._[2];
-		verifyArg(2, "Please specify the name for the new model as the third argument.");
+		verifyArg(2, 'Please specify the name for the new model as the third argument.');
 
 		// Figure out attributes based on args
 		var options = _.extend({}, argv);
 		var args = argv._.splice(3);
 		options.attributes = [];
-		_.each(args,function(attribriggingute,i){
+		_.each(args,function(attribute,i){
 			var parts = attribute.split(':');
 			if (!parts[1]) {
 				sails.log.error('Please specify the type for attribute '+(i+1)+ ' "'+parts[0]+'".');
