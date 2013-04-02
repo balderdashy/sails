@@ -91,9 +91,12 @@ if (argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run'
 
 		// TODO: use npm's native version comparator
 		if (requiredSailsVersion !== localSailsPackage.version) {
-			sails.log.error('This app requires version ' + requiredSailsVersion + ' of Sails, but local node_modules/sails version is ' + localSailsPackage.version);
+			sails.log.error('This app specifies Sails version ' + requiredSailsVersion + ', but local node_modules/sails version is ' + localSailsPackage.version);
 			sails.log.error(errors.badLocalSails(requiredSailsVersion));
-			process.exit(1);
+			sails.log.error('');
+			sails.log.error('You may consider running:');
+			sails.log.error('npm install sails@'+requiredSailsVersion);
+			sails.log.error('');
 		}
 
 
