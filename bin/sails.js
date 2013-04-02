@@ -19,13 +19,13 @@ var outputPath = '.';
 
 // Stringify args
 argv._ = _.map(argv._, function(arg) {
-	return arg + "";
+	return arg + '';
 });
 
 // Known errors
 var errors = {
 	badLocalSails: function(requiredVersion) {
-		return 'Please reinstall Sails locally (npm install sails@' + requiredVersion + ').';
+		return 'You may consider reinstalling Sails locally (npm install sails@' + requiredVersion + ').';
 	}
 };
 
@@ -93,10 +93,6 @@ if (argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run'
 		if (requiredSailsVersion !== localSailsPackage.version) {
 			sails.log.error('This app specifies Sails version ' + requiredSailsVersion + ', but local node_modules/sails version is ' + localSailsPackage.version);
 			sails.log.error(errors.badLocalSails(requiredSailsVersion));
-			sails.log.error('');
-			sails.log.error('You may consider running:');
-			sails.log.error('npm install sails@'+requiredSailsVersion);
-			sails.log.error('');
 		}
 
 
