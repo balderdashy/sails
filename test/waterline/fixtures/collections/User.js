@@ -67,7 +67,7 @@ exports.identity = 'User';
 // development: temporal (in-memory dirtydb)
 ////////////////////////////////////////////////////////
 // exports.adapter = 'sails-dirty';
-// exports.inMemory = true;
+// exports.inMemory = false;
 
 ////////////////////////////////////////////////////////
 // mySQL
