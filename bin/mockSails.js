@@ -1,10 +1,10 @@
 var sails = {};
 
 // Get Sails logger
-sails.log = require('../lib/logger.js')();
+sails.log = require('../lib/logger')();
 
 // Extend w/ data from Sails package.json
-var packageConfig = require('../lib/package.js');
+var packageConfig = require('../lib/configuration/package');
 sails.version = packageConfig.version;
 sails.dependencies = packageConfig.dependencies;
 
