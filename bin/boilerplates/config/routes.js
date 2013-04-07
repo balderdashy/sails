@@ -48,19 +48,19 @@ module.exports.routes = {
 	'get /user': {
 		controller	: 'user',
 		action		: 'index'
-	}
+	},
 	'get /user/:id': {
 		controller	: 'user',
 		action		: 'find'
-	}
+	},
 	'post /user': {
 		controller	: 'user',
 		action		: 'create'
-	}
+	},
 	'put /user/:id': {
 		controller	: 'user',
 		action		: 'update'
-	}
+	},
 	'delete /user/:id': {
 		controller	: 'user',
 		action		: 'destroy'
