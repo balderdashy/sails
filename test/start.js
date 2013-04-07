@@ -45,7 +45,7 @@ $log('Running tests...');
 // - configuration applied properly
 // - services are accessible
 // - active record (aka waterline)
-$log("Testing active record (aka waterline)...");
+$log("Testing waterline (ORM)...");
 $runTest("node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive -b -R landing -t 8000 test/waterline");
 
 //////////////////////////////////////////////////////

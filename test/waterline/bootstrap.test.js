@@ -34,7 +34,7 @@ function initialize (done) {
 	bootstrap.waterline = require("../../lib/waterline/waterline.js");
 
 	var collections = require('../../lib/loader.js').required({
-		dirname		: __dirname + '/collections', 
+		dirname		: __dirname + '/fixtures/collections', 
 		filter		: /(.+)\.js$/
 	});
 

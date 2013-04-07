@@ -66,20 +66,20 @@ exports.identity = 'User';
 ////////////////////////////////////////////////////////
 // development: temporal (in-memory dirtydb)
 ////////////////////////////////////////////////////////
-exports.adapter = 'sails-dirty';
-exports.inMemory = true;
+// exports.adapter = 'sails-dirty';
+// exports.inMemory = true;
 
 ////////////////////////////////////////////////////////
 // mySQL
 ////////////////////////////////////////////////////////
-// exports.adapter = 'sails-mysql';
-// exports.database = 'waterline';
-// exports.user = 'waterline';
-// exports.password = 'abc123';
+exports.adapter = 'sails-mysql';
+exports.database = 'waterline';
+exports.user = 'waterline';
+exports.password = 'abc123';
 
 ////////////////////////////////////////////////////////
 // mongo
 ////////////////////////////////////////////////////////
-exports.adapter = 'sails-mongo';
-exports.database = 'test';
-exports.host = 'localhost';
+// exports.adapter = 'sails-mongo';
+// exports.database = 'test';
+// exports.host = 'localhost';
