@@ -341,24 +341,24 @@ function createNewApp(appName, templateLang) {
 	generateDir('public');
 	copyBoilerplate('favicon.ico', 'public/favicon.ico'); // Copy default favicon
 	copyBoilerplate('robots.txt', 'public/robots.txt'); // Copy robots.txt
-	generateDir('public/images');
+	generateDir('public/images', 'gitkeep');
 
 	generateDir('assets');
-	generateDir('assets/js');
-	generateDir('assets/templates');
+	generateDir('assets/js', 'gitkeep');
+	generateDir('assets/templates', 'gitkeep');
 	generateDir('assets/mixins');
 	copyBoilerplate('sails.io.js', 'assets/mixins/sails.io.js'); // Copy over special sails.io.js client
-	generateDir('assets/styles');
+	generateDir('assets/styles', 'gitkeep');
 	generateFile('reset.css', 'assets/mixins/reset.css'); // Create default css reset
 	generateDir('views');
 	generateDir('views/home'); // Create default home view
 
 	// API server
 	generateDir('api');
-	generateDir('api/models');
-	generateDir('api/adapters');
-	generateDir('api/controllers');
-	generateDir('api/services');
+	generateDir('api/models', 'gitkeep');
+	generateDir('api/adapters', 'gitkeep');
+	generateDir('api/controllers', 'gitkeep');
+	generateDir('api/services', 'gitkeep');
 	generateDir('api/policies');
 
 	// Default policies
@@ -386,11 +386,10 @@ function createNewApp(appName, templateLang) {
 		generateFile('jade/500.jade', 'views/500.jade');
 		generateFile('jade/layout.jade', 'views/layout.jade'); // Create layout
 		generateFile('jade/config.js', 'config/views.js'); // Create views.js config
-	} else if (templateLang === 'haml') {	
+	} else if (templateLang === 'haml') {
 		generateFile('haml/index.haml', 'views/home/index.haml');
 		generateFile('haml/404.haml', 'views/404.haml'); // Create 404, 500, and 422/403 pages
 		generateFile('haml/500.haml', 'views/500.haml');
-		generateFile('haml/layout.haml', 'views/layout.haml'); // Create layout
 		generateFile('haml/config.js', 'config/views.js'); // Create views.js config
 	} else {
 		generateFile('ejs/index.ejs', 'views/home/index.ejs');
@@ -471,13 +470,16 @@ function generateFile(boilerplatePath, newPath) {
 }
 
 // Generate a directory
-function generateDir(newPath) {
-	if (!newPath) sails.log.debug("Generating app directory...");
-	else sails.log.debug("Generating directory " + newPath + "...");
-	var newDirPath = outputPath + "/" + (newPath || "");
-	verifyDoesntExist(newDirPath, "A file/directory already exists at " + newDirPath);
+function generateDir(newPath, gitkeep) {
+	if (!newPath) sails.log.debug('Generating app directory...');
+	else sails.log.debug('Generating directory ' + newPath + '...');
+	var newDirPath = outputPath + '/' + (newPath || '');
+	verifyDoesntExist(newDirPath, 'A file/directory already exists at ' + newDirPath);
 	fs.mkdirSync(newDirPath);
-	generateFile('.gitkeep', (newPath || "") + '/.gitkeep');
+	// If directory will be empty, create a .gitkeep in it
+	if (gitkeep) {
+		generateFile('.gitkeep', newPath + '/.gitkeep');
+	}
 }
 
 function generateController(entity, options) {
