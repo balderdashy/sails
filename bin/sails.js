@@ -295,25 +295,47 @@ else if (argv._[0].match(/^new$/)) {
 // Unknown command, assume creating a new app w/ that name
 // First argument == app name
 else {
-	console.log("");
+	console.log('');
 	sailsUsage();
-	sails.log.error (argv._[0] + " is not a valid action.");
+	sails.log.error (argv._[0] + ' is not a valid action.');
 }
 
 function createNewApp(appName, templateLang) {
-	sails.log.info("Generating Sails project (" + appName + ")...");
-	
-	//Check if the appName is an absolute path, if so don't prepend './'
-	if(appName.substr(0,1) == '/') {
+	// Whether the project being made in an existing directory or not
+	var existingDirectory;
+
+	// If app is being created inside the current directory
+	if (appName === '.') {
+
+		// The app name is the current directory name
+		appName = _.last(process.cwd().split('/'));
+
+		// Set the current directory to the parent directory of the new app
+		process.chdir('../');
+
+		// This will be checked to determine if a new app directory needs to be made
+		existingDirectory = true;
+	}
+
+	sails.log.info('Generating Sails project (' + appName + ')...');
+
+	// Check if the appName is an absolute path, if so don't prepend './'
+	if (appName.substr(0, 1) === '/') {
 		outputPath = appName;
 	} else {
-		outputPath = outputPath + "/" + appName;
+		outputPath = outputPath + '/' + appName;
 	}
 	
-	verifyDoesntExist(outputPath, "A file or directory already exists at: " + outputPath);
+	// If app is being created in new directory
+	if (!existingDirectory) {
 
-	// Create app directory
-	generateDir();
+		// Check if there is a directory in the current directory with the new
+		// app name, throw an error if there is
+		verifyDoesntExist(outputPath, 'A file or directory already exists at: ' + outputPath);
+
+		// Create a directory with the specified app name
+		generateDir();
+	}
 
 	// Create default app structure
 	generateDir('public');
