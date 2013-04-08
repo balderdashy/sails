@@ -96,36 +96,22 @@ For instance, if you were to visit http://localhost:1337/hello, you'd notice tha
 > You can learn more about that on the <a href="https://github.com/balderdashy/sails/wiki/Routes">Routes</a> section of this wiki.
 
 
-# Creating a Model
-Creating a model is very easy with the command line tool. You can even define attributes and their
-type by adding arguments at the end of the command. To generate a User model, enter the following:
+# Creating an API
+Creating a RESTful JSON API is very easy with the command line tool. You can define a model with attributes by adding arguments at the end of the command. To generate a User model and empty controller, enter the following:
+
 ```
-sails generate model User
+sails generate user
 ```
-If you check out your app, you'll notice that this created a file at **/api/models/User.js**.
 
-<!--
-  Let's give her a name-- try uncommenting the name attribute so it looks more or less like this:
+If you check out your app, you'll notice that this created a file at **/api/models/User.js** and **/api/controllers/UserController.js**.  
 
-```javascript
-var User = {
-        attributes      : {
-                name: 'STRING'
-        }
 
-};
-module.exports = User;
-```
--->
-
-# What's Better Than Scaffolding?  How About a free JSON API?
-
-Sails API blueprints are nothing like Rails scaffolding. HTML scaffolds don't really make sense for 
+Sails API blueprints are more than scaffolds. Generating HTML don't really make sense for 
 modern web apps. Instead, Sails automatically builds a RESTful JSON API for your models.
-Most importantly, it supports HTTP _and_ WebSockets. By default for every model you generate, you get the
-basic CRUD operations automatically.
+Most importantly, this API supports HTTP _and_ WebSockets. By default for every model and controller you generate, you get the basic CRUD operations automatically.  
+If you need more fine-grained control, you can just override the appropriate method in the controller.  (see the documentation for more information on how to do this)  Controllers are just Express middleware, the most popular framework for writing code in Node.js.  And most importantly, all of that code, even the custom controller, still supports WebSocekts out of the box.
 
-For instance, after generating the User model above, if you POST to `http://localhost:1337/user` or visit `http://localhost:1337/user/create`, you'll see:
+For instance, after generating the User above, if you POST to `http://localhost:1337/user` or visit `http://localhost:1337/user/create`, you'll see:
 ```json
 {
   "createdAt": "2013-01-10T01:33:19.105Z",
