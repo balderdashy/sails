@@ -41,12 +41,14 @@ $log('Running tests...');
 
 // - Server starts successfully
 // - CLI (sails generate, sails new, etc.)
+$log('Testing cli)...');
+$runTest('node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive -b -R nyan -t 8000 test/cli');
 // - all modules included properly
 // - configuration applied properly
 // - services are accessible
 // - active record (aka waterline)
-$log("Testing waterline (ORM)...");
-$runTest("node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive -b -R landing -t 8000 test/waterline");
+$log('Testing waterline (ORM)...');
+$runTest('node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive -b -R nyan -t 8000 test/waterline');
 
 //////////////////////////////////////////////////////
 // Run web integration tests
