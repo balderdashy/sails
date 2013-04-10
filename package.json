@@ -95,7 +95,7 @@
     "asset-rack": "2.1.5",
     "node-uuid": "~1.4.0",
     "parley": "0.0.2",
-    "include-all": "0.0.5",
+    "include-all": "0.0.6",
     "forever": "~0.10.0",
     "clean-css": "0.10.1",
     "fs-watch-tree": "~0.2.2",
