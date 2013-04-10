@@ -9,4 +9,7 @@ services:
   - mysql
 
 before_script:
-  - mysql -e 'create database waterline;'
+  - mysql -e "create database waterline;"
+
+notifications:
+    irc: "irc.freenode.org#sailsjs"
