@@ -8,13 +8,13 @@
 		
 		<!-- JavaScript and stylesheets from your assets folder are included here -->
 		<%- assets.css() %>
-		<%- assets.js() %>
 	</head>
 
 	<body>
 		<%- body %>
 
 		<!-- Templates from your view path are included here -->
+		<%- assets.js() %>
 		<%- assets.templateLibrary() %>
 	</body>
 </html>
