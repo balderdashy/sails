@@ -22,10 +22,21 @@ describe('New app generator', function () {
 		it('should create new app in new folder', function(done) {
 
 			exec(sailsbin + ' new ' + appName, function (err) {
-				if (err) done(new Error(err));
+				if (err) { done(new Error(err)); }
 
 				assert(checkGeneratedFiles(appName, defaultTemplateLang));
 				done();
+			});
+		});
+
+		it('should not overwrite a folder', function(done) {
+			exec('mkdir ' + appName, function (err) {
+				if (err) { done(new Error(err)); }
+
+				exec(sailsbin + ' new ' + appName, function(err) {
+					assert.equal(err.code, 1);
+					done();
+				});
 			});
 		});
 	});
@@ -39,13 +50,24 @@ describe('New app generator', function () {
 			process.chdir(appName);
 
 			exec( '.' + sailsbin + ' new .', function (err) {
-				if (err) done(new Error(err));
+				if (err) { done(new Error(err)); }
 
 				// move from app to its parent directory
 				process.chdir('../');
 
 				assert(checkGeneratedFiles(appName, defaultTemplateLang));
 				done();
+			});
+		});
+
+		it('should not overwrite a folder', function(done) {
+			exec('mkdir ' + appName, function (err) {
+				if (err) { done(new Error(err)); }
+
+				exec( '.' + sailsbin + ' new ' + appName, function(err) {
+					assert.equal(err.code, 127); // Command fails
+					done();
+				});
 			});
 		});
 	});
@@ -55,7 +77,7 @@ describe('New app generator', function () {
 		it('should create new app with ejs templates', function(done) {
 
 			exec(sailsbin + ' new ' + appName, function (err) {
-				if (err) done(new Error(err));
+				if (err) { done(new Error(err)); }
 
 				assert(checkGeneratedFiles(appName, 'ejs'));
 
@@ -71,7 +93,7 @@ describe('New app generator', function () {
 		it('should create new app with ejs templates', function(done) {
 
 			exec(sailsbin + ' new ' + appName + ' --template=ejs', function (err) {
-				if (err) done(new Error(err));
+				if (err) { done(new Error(err)); }
 
 				assert(checkGeneratedFiles(appName, 'ejs'));
 
@@ -87,7 +109,7 @@ describe('New app generator', function () {
 		it('should create new app with jade templates', function(done) {
 
 			exec(sailsbin + ' new ' + appName + ' --template=jade', function (err) {
-				if (err) done(new Error(err));
+				if (err) { done(new Error(err)); }
 
 				assert(checkGeneratedFiles(appName, 'jade'));
 
@@ -103,7 +125,7 @@ describe('New app generator', function () {
 		it('should create new app with haml templates', function(done) {
 
 			exec(sailsbin + ' new ' + appName + ' --template=haml', function (err) {
-				if (err) done(new Error(err));
+				if (err) { done(new Error(err)); }
 
 				assert(checkGeneratedFiles(appName, 'haml'));
 
