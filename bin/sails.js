@@ -33,7 +33,7 @@ var errors = {
 
 function getPackage(path) {
 	path = _.str.rtrim(path, '/');
-	var packageJson = fs.readFile(path + '/package.json', 'utf-8', function() {
+	fs.readFile(path + '/package.json', 'utf-8', function(err, packageJson) {
 		try {
 			packageJson = JSON.parse(packageJson);
 		} catch (e) {
