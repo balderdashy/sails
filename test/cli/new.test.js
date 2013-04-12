@@ -2,19 +2,28 @@ var assert = require('assert');
 var fs = require('fs');
 var wrench = require('wrench');
 var exec = require('child_process').exec;
-// Todo:
-// create tests to check for warnings if you try to make an app but there is
-// already a folder of that name or if there are already files that sails new is
-// supposed to generate
 
 describe('New app generator', function () {
 	var sailsbin = './bin/sails.js';
 	var appName = 'testApp';
 	var defaultTemplateLang = 'ejs';
 
+	beforeEach(function(done) {
+		fs.exists(appName, function(exists) {
+			if (exists) {
+				wrench.rmdirSyncRecursive(appName);
+			}
+			done();
+		});
+	});
+
 	afterEach(function(done) {
-		wrench.rmdirSyncRecursive(appName);
-		done();
+		fs.exists(appName, function(exists) {
+			if (exists) {
+				wrench.rmdirSyncRecursive(appName);
+			}
+			done();
+		});
 	});
 
 	describe('sails new <appname>', function () {

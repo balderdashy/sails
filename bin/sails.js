@@ -156,7 +156,7 @@ else if (_.contains(['console'], argv._[0])) {
 			process.exit();
 		});
 	});
-	return; // exit before accidently starting a second sails
+	return; //exit before accidently starting a second sails
 }
 
 // Check for newer version and upgrade if available.
