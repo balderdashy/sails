@@ -33,13 +33,14 @@ var errors = {
 
 function getPackage(path) {
 	path = _.str.rtrim(path, '/');
-	var packageJson = fs.readFileSync(path + '/package.json', 'utf-8');
-	try {
-		packageJson = JSON.parse(packageJson);
-	} catch (e) {
-		return false;
-	}
-	return packageJson;
+	fs.readFile(path + '/package.json', 'utf-8', function(err, packageJson) {
+		try {
+			packageJson = JSON.parse(packageJson);
+		} catch (e) {
+			return false;
+		}
+		return packageJson;
+	});
 }
 
 // Start this app
@@ -49,14 +50,16 @@ if (argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run'
 
 	// Check project package.json for sails.js dependency version and
 	// If no package.json file exists, don't try to start the server
-	if (fs.existsSync(sails.config.appPath + "/package.json")) {
-		appPackageJson = getPackage(sails.config.appPath);
-	} else {
-		sails.log.error('Cannot read package.json in the current directory.  ' +
-			'It could be missing or corrupt.  ' +
-			'Are you sure this is a sails app?');
-		process.exit(1);
-	}
+	fs.exists(sails.config.appPath + "/package.json", function (exists){
+		if (exists) {
+			appPackageJson = getPackage(sails.config.appPath);
+		} else {
+			sails.log.error('Cannot read package.json in the current directory.  ' +
+				'It could be missing or corrupt.  ' +
+				'Are you sure this is a sails app?');
+			process.exit(1);
+		}
+	});
 
 	// If sails dependency unspecified, allow anything, but throw a warning
 	var requiredSailsVersion = 0;
@@ -67,50 +70,55 @@ if (argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run'
 	}
 
 	// check if node_modules/sails exists in current directory
-	if (fs.existsSync(localSailsPath)) {
+	fs.exists(localSailsPath, function(exists) {
+		if (exists) {
 
-		// check package.json INSIDE local install of Sails
-		// No package.json means local sails means it must be corrupted
-		if (!fs.existsSync(localSailsPath + '/package.json')) {
-			sails.log.error('Locally installed Sails.js has corrupted or missing package.json file.');
-			sails.log.error(errors.badLocalSails(requiredSailsVersion));
-			process.exit(1);
+			// check package.json INSIDE local install of Sails
+			// No package.json means local sails means it must be corrupted
+			fs.exists(localSailsPath + '/package.json', function() {
+				if (!exists) {
+					sails.log.error('Locally installed Sails.js has corrupted or missing package.json file.');
+					sails.log.error(errors.badLocalSails(requiredSailsVersion));
+					process.exit(1);
+				}
+			});
+
+			// Read package.json to detect version
+			fs.readFile(localSailsPath + '/package.json', 'utf-8', function(err, localSailsPackage) {
+				try {
+					localSailsPackage = JSON.parse(localSailsPackage);
+				} catch (e) {
+					sails.log.error('Unable to parse package.json in local node_modules/sails!\n');
+					sails.log.error(errors.badLocalSails(requiredSailsVersion));
+					process.exit(1);
+				}
+
+				// Error out if it has the wrong version in its package.json
+
+				// TODO: use npm's native version comparator
+				if (requiredSailsVersion !== localSailsPackage.version) {
+					sails.log.error('This app specifies Sails version ' + requiredSailsVersion + ', but local node_modules/sails version is ' + localSailsPackage.version);
+					sails.log.error(errors.badLocalSails(requiredSailsVersion));
+				}
+			});
+
+
+			// If we made it this far, we're good to go-- fire 'er up, chief
+			require(sails.config.appPath + '/node_modules/sails/lib/sails.js').lift();
+
 		}
+		// otherwise, copy the global installation of sails locally
+		else {
+			var globalSailsPath = __dirname + '/../';
+			require('../lib/sails').lift();
 
-		// Read package.json to detect version
-		var localSailsPackage = fs.readFileSync(localSailsPath + '/package.json', 'utf-8');
-		try {
-			localSailsPackage = JSON.parse(localSailsPackage);
-		} catch (e) {
-			sails.log.error('Unable to parse package.json in local node_modules/sails!\n');
-			sails.log.error(errors.badLocalSails(requiredSailsVersion));
-			process.exit(1);
+			//sails.log.verbose("Installing Sails in this project...");
+			//fs.mkdirsSync(localSailsPath);
+			//fs.copy(globalSailsPath, localSailsPath, function(err) {
+			//	if(err) throw new Error(err);
+			//});
 		}
-
-		// Error out if it has the wrong version in its package.json
-
-		// TODO: use npm's native version comparator
-		if (requiredSailsVersion !== localSailsPackage.version) {
-			sails.log.error('This app specifies Sails version ' + requiredSailsVersion + ', but local node_modules/sails version is ' + localSailsPackage.version);
-			sails.log.error(errors.badLocalSails(requiredSailsVersion));
-		}
-
-
-		// If we made it this far, we're good to go-- fire 'er up, chief
-		require(sails.config.appPath + '/node_modules/sails/lib/sails.js').lift();
-
-	}
-	// otherwise, copy the global installation of sails locally
-	else {
-		var globalSailsPath = __dirname + '/../';
-		require('../lib/sails').lift();
-
-		// sails.log.verbose("Installing Sails in this project...");
-		// fs.mkdirsSync(localSailsPath);
-		// fs.copy(globalSailsPath, localSailsPath, function(err) {
-		// 	if(err) throw new Error(err);
-		// });
-	}
+	});
 }
 // // Daemonize server
 // else if(argv.d || argv._[0] && _.contains(['forever'], argv._[0])) {
@@ -148,7 +156,7 @@ else if (_.contains(['console'], argv._[0])) {
 			process.exit();
 		});
 	});
-	return; //exit before accidently starting a second sails.
+	return; //exit before accidently starting a second sails
 }
 
 // Check for newer version and upgrade if available.
@@ -200,7 +208,7 @@ else if (argv._.length === 0) {
 	sailsUsage();
 }
 // Generate file(s)
-else if (argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^generat$|^generate$/) || argv.g || argv.generate) {
+else if (argv._[0] && (argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^generat$|^generate$/) || argv.g || argv.generate)) {
 
 	verifyArg(1, 'Please specify the name for the new model and controller as the second argument.');
 
@@ -286,14 +294,13 @@ else if (argv._[0].match(/^new$/)) {
 
 	// Default to ejs templates for new projects, but allow user to override with --template
 	var template = 'ejs';
-	if (argv['template']) {
-		template = argv['template'];
+	if (argv.template) {
+		template = argv.template;
 	}
 	createNewApp(argv._[1], template);
 }
 
-// Unknown command, assume creating a new app w/ that name
-// First argument == app name
+// Unknown command, print out usage
 else {
 	console.log('');
 	sailsUsage();
@@ -317,25 +324,25 @@ function createNewApp(appName, templateLang) {
 		existingDirectory = true;
 	}
 
-	sails.log.info('Generating Sails project (' + appName + ')...');
-
 	// Check if the appName is an absolute path, if so don't prepend './'
 	if (appName.substr(0, 1) === '/') {
 		outputPath = appName;
 	} else {
 		outputPath = outputPath + '/' + appName;
 	}
-	
+
 	// If app is being created in new directory
 	if (!existingDirectory) {
 
 		// Check if there is a directory in the current directory with the new
-		// app name, throw an error if there is
+		// app name, log and exit if there is
 		verifyDoesntExist(outputPath, 'A file or directory already exists at: ' + outputPath);
 
 		// Create a directory with the specified app name
 		generateDir();
 	}
+
+	sails.log.info('Generating Sails project (' + appName + ')...');
 
 	// Create default app structure
 	generateDir('public');
@@ -409,7 +416,7 @@ function createNewApp(appName, templateLang) {
 
 	// Generate package.json
 	sails.log.debug("Generating package.json...");
-	fs.writeFileSync(outputPath + '/package.json', JSON.stringify({
+	fs.writeFile(outputPath + '/package.json', JSON.stringify({
 		name: appName,
 		'private': true,
 		version: '0.0.0',
@@ -431,7 +438,7 @@ function createNewApp(appName, templateLang) {
 
 	// Generate README
 	sails.log.debug("Generating README.md...");
-	fs.writeFileSync(outputPath + '/README.md', '# ' + appName + '\n### a Sails application');
+	fs.writeFile(outputPath + '/README.md', '# ' + appName + '\n### a Sails application');
 }
 
 
@@ -457,27 +464,36 @@ function sailsUsage() {
 // Generate a file
 function generateFile(boilerplatePath, newPath) {
 	var fullBpPath = __dirname + '/boilerplates/' + (boilerplatePath || "");
-	var file = fs.readFileSync(fullBpPath, 'utf8');
-	var newFilePath = outputPath + '/' + (newPath || "");
-	verifyDoesntExist(newFilePath, "A file/directory already exists at " + newFilePath);
+	fs.readFile(fullBpPath, 'utf8', function(err, file) {
+		var newFilePath = outputPath + '/' + (newPath || "");
+		verifyDoesntExist(newFilePath, "A file/directory already exists at " + newFilePath);
 
-	// Touch output file to make sure the path to it exists
-	if (fs.createFileSync(newFilePath)) {
-		sails.log.error('Could not create file, ' + newFilePath + '!');
-		process.exit(1);
-	}
-	fs.writeFileSync(newFilePath, file);
+		// Touch output file to make sure the path to it exists
+		fs.createFile(newFilePath, function(err) {
+			if (err) {
+				sails.log.error('Could not create file, ' + newFilePath + '!');
+				process.exit(1);
+			}
+			else {
+				fs.writeFile(newFilePath, file);
+			}
+		});
+	});
 }
 
 // Generate a directory
 function generateDir(newPath, gitkeep) {
-	if (!newPath) sails.log.debug('Generating app directory...');
-	else sails.log.debug('Generating directory ' + newPath + '...');
+	if (!newPath) {
+		sails.log.debug('Generating app directory...');
+	}
+	else {
+		sails.log.debug('Generating directory ' + newPath + '...');
+	}
 	var newDirPath = outputPath + '/' + (newPath || '');
 	verifyDoesntExist(newDirPath, 'A file/directory already exists at ' + newDirPath);
-	fs.mkdirSync(newDirPath);
+	fs.mkdir(newDirPath, function() {});
 	// If directory will be empty, create a .gitkeep in it
-	if (gitkeep) {
+	if (gitkeep && newPath) {
 		generateFile('.gitkeep', newPath + '/.gitkeep');
 	}
 }
@@ -610,7 +626,9 @@ function generate(options) {
 	// Trim slashes
 	options.prefix = _.str.rtrim(options.prefix, '/') + '/';
 
-	if (!options.entity) throw new Error('No output file name specified!');
+	if (!options.entity) {
+		throw new Error('No output file name specified!');
+	}
 
 	var file = renderBoilerplate(options.boilerplate, options);
 
@@ -619,11 +637,15 @@ function generate(options) {
 	verifyDoesntExist(newFilePath, "A file or directory already exists at: " + newFilePath);
 
 	// Touch output file to make sure the path to it exists
-	if (fs.createFileSync(newFilePath)) {
-		sails.log.error('Could not create file, ' + newFilePath + '!');
-		process.exit(1);
-	}
-	fs.writeFileSync(newFilePath, file);
+	fs.createFile(newFilePath, function(err, file) {
+		if (err) {
+			sails.log.error('Could not create file, ' + newFilePath + '!');
+			process.exit(1);
+		}
+		else {
+			fs.writeFile(newFilePath, file);
+		}
+	});
 }
 
 // Read a boilerplate and render the template
@@ -632,8 +654,9 @@ function generate(options) {
 function renderBoilerplate(boilerplate, data) {
 	var boilerplatePath = __dirname + '/boilerplates/' + boilerplate;
 	verifyExists(boilerplatePath, "Boilerplate (" + boilerplate + ") doesn't exist!");
-	var file = fs.readFileSync(boilerplatePath, 'utf8');
-	return ejs.render(file, data);
+	fs.readFile(boilerplatePath, 'utf8', function(err, file) {
+		return ejs.render(file, data);
+	});
 }
 
 // Copy a boilerplate file
@@ -675,7 +698,10 @@ function verifyValidEntity(entity, msg) {
 	if (!isValidECMA51Variable(entity)) {
 		sails.log.error(msg);
 		process.exit(1);
-	} else return entity;
+	}
+	else {
+		return entity;
+	}
 }
 
 function isValidECMA51Variable(v) {
@@ -683,7 +709,6 @@ function isValidECMA51Variable(v) {
 }
 
 // Check if a file or directory exists
-
 
 function fileExists(path) {
 	try {

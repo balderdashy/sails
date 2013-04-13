@@ -24,8 +24,7 @@ function runTest(cmd, cb) {
 	test.stdout.on('data', sys.print);
 	test.stderr.on('data', log.error);
 	test.on('exit', function (code) {
-		if (code) return cb("Returned with code: "+code);
-		else return cb();
+		return code ? cb("Returned with code: " + code) : cb();
 	});
 }
 var $runTest = function (cmd) {
@@ -41,7 +40,7 @@ $log('Running tests...');
 
 // - Server starts successfully
 // - CLI (sails generate, sails new, etc.)
-$log('Testing cli)...');
+$log('Testing cli...');
 $runTest('node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive -b -R nyan -t 8000 test/cli');
 // - all modules included properly
 // - configuration applied properly
