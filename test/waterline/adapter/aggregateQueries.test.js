@@ -15,9 +15,9 @@ var async = require('async');
 var parley = require('parley');
 var assert = require("assert");
 
-describe('findOrCreate()', function() {
+describe('findOrCreateEach()', function() {
 
-	var testName = 'findOrCreate([])';
+	var testName = 'findOrCreateEach([])';
 	var testData = [{
 		name: 'marge',
 		type: testName
