@@ -2,19 +2,28 @@ var assert = require('assert');
 var fs = require('fs');
 var wrench = require('wrench');
 var exec = require('child_process').exec;
-// Todo:
-// create tests to check for warnings if you try to make an app but there is
-// already a folder of that name or if there are already files that sails new is
-// supposed to generate
 
 describe('New app generator', function () {
 	var sailsbin = './bin/sails.js';
 	var appName = 'testApp';
 	var defaultTemplateLang = 'ejs';
 
+	beforeEach(function(done) {
+		fs.exists(appName, function(exists) {
+			if (exists) {
+				wrench.rmdirSyncRecursive(appName);
+			}
+			done();
+		});
+	});
+
 	afterEach(function(done) {
-		wrench.rmdirSyncRecursive(appName);
-		done();
+		fs.exists(appName, function(exists) {
+			if (exists) {
+				wrench.rmdirSyncRecursive(appName);
+			}
+			done();
+		});
 	});
 
 	describe('sails new <appname>', function () {
@@ -22,10 +31,21 @@ describe('New app generator', function () {
 		it('should create new app in new folder', function(done) {
 
 			exec(sailsbin + ' new ' + appName, function (err) {
-				if (err) done(new Error(err));
+				if (err) { done(new Error(err)); }
 
 				assert(checkGeneratedFiles(appName, defaultTemplateLang));
 				done();
+			});
+		});
+
+		it('should not overwrite a folder', function(done) {
+			exec('mkdir ' + appName, function (err) {
+				if (err) { done(new Error(err)); }
+
+				exec(sailsbin + ' new ' + appName, function(err) {
+					assert.equal(err.code, 1);
+					done();
+				});
 			});
 		});
 	});
@@ -39,13 +59,24 @@ describe('New app generator', function () {
 			process.chdir(appName);
 
 			exec( '.' + sailsbin + ' new .', function (err) {
-				if (err) done(new Error(err));
+				if (err) { done(new Error(err)); }
 
 				// move from app to its parent directory
 				process.chdir('../');
 
 				assert(checkGeneratedFiles(appName, defaultTemplateLang));
 				done();
+			});
+		});
+
+		it('should not overwrite a folder', function(done) {
+			exec('mkdir ' + appName, function (err) {
+				if (err) { done(new Error(err)); }
+
+				exec( '.' + sailsbin + ' new ' + appName, function(err) {
+					assert.equal(err.code, 127); // Command fails
+					done();
+				});
 			});
 		});
 	});
@@ -55,7 +86,7 @@ describe('New app generator', function () {
 		it('should create new app with ejs templates', function(done) {
 
 			exec(sailsbin + ' new ' + appName, function (err) {
-				if (err) done(new Error(err));
+				if (err) { done(new Error(err)); }
 
 				assert(checkGeneratedFiles(appName, 'ejs'));
 
@@ -71,7 +102,7 @@ describe('New app generator', function () {
 		it('should create new app with ejs templates', function(done) {
 
 			exec(sailsbin + ' new ' + appName + ' --template=ejs', function (err) {
-				if (err) done(new Error(err));
+				if (err) { done(new Error(err)); }
 
 				assert(checkGeneratedFiles(appName, 'ejs'));
 
@@ -87,7 +118,7 @@ describe('New app generator', function () {
 		it('should create new app with jade templates', function(done) {
 
 			exec(sailsbin + ' new ' + appName + ' --template=jade', function (err) {
-				if (err) done(new Error(err));
+				if (err) { done(new Error(err)); }
 
 				assert(checkGeneratedFiles(appName, 'jade'));
 
@@ -103,7 +134,7 @@ describe('New app generator', function () {
 		it('should create new app with haml templates', function(done) {
 
 			exec(sailsbin + ' new ' + appName + ' --template=haml', function (err) {
-				if (err) done(new Error(err));
+				if (err) { done(new Error(err)); }
 
 				assert(checkGeneratedFiles(appName, 'haml'));
 
