@@ -122,7 +122,7 @@ For instance, after generating the User above, if you POST to `http://localhost:
 
 That's it!  You just created a model in the database!  You can also `find`, `update`, and `destroy` users:
 
-```
+```bash
 # List of all users
 http://localhost:1337/user
 
@@ -160,43 +160,20 @@ https://github.com/balderdashy/sails/wiki/_pages
 Join us on IRC at #sailsjs on freenode
 
 
-Dependencies and Compatibility
+Version, Dependencies and Compatibility
 --
+#### Latest stable release: `v0.8.9`
 
-Tested with node v0.8.22
+Tested with node v0.8.22 and v0.10.x
 Sails is built on the rock-solid foundations of ExpressJS and Socket.io.  
 
+### [Roadmap](https://github.com/balderdashy/sails/wiki/roadmap)
+### [Changelog](https://github.com/balderdashy/sails/wiki/changelog)
 
+<br/>
+<br/>
 
-
-
-
-<!--
-![icon_circlechart@2x.png](http://i.imgur.com/hXc06.png) 
-
-Demo
---
-
-*Try it in two browser windows*
-
-http://sailsjs.com:1337/experiment#subcomponents
-
-
-#### Code
-https://github.com/balderdashy/sails-example
--->
-
-
-
-
-
-
-
-
-
-
-![icon_circleheart@2x.png](http://i.imgur.com/liHPV.png) 
-## Who Built This?
+![icon_circleheart@2x.png](http://i.imgur.com/liHPV.png) ## Who Built This?
 
 The Sails framework was developed by Mike McNeil (@mikermcneil) and is maintained by Balderdash (@balderdashy), a realtime web & mobile studio I started with Heather White (@hdesignsit) in Austin, TX.
 
