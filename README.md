@@ -173,7 +173,9 @@ Sails is built on the rock-solid foundations of ExpressJS and Socket.io.
 <br/>
 <br/>
 
-![icon_circleheart@2x.png](http://i.imgur.com/liHPV.png) ## Who Built This?
+![icon_circleheart@2x.png](http://i.imgur.com/liHPV.png)
+
+## Who Built This?
 
 The Sails framework was developed by Mike McNeil (@mikermcneil) and is maintained by Balderdash (@balderdashy), a realtime web & mobile studio I started with Heather White (@hdesignsit) in Austin, TX.
 
