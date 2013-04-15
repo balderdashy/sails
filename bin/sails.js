@@ -262,7 +262,7 @@ else if (argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^g
 		var options = _.extend({}, argv);
 		generateAdapter(entity, options);
 	}
-	// Otherwise generate a model, controller, and view directory
+	// Otherwise generate a model and controller
 	else {
 		var entity = argv._[1];
 		verifyArg(1, "Please specify the name of the entity as the second argument to generate a model, controller, and view.");
