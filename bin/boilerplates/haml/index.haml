@@ -4,7 +4,6 @@
     %title= title
     %meta{ :content => "width=device-width, initial-scale=1, maximum-scale=1", :name => "viewport" }
     !{assets.css()}
-    !{assets.js()}
   %body
     %h1.header
       %a{ :href => '/' } Hello world
@@ -21,8 +20,8 @@
       .footer
         %a.copyright{ :href => "http://sailsjs.com" } built with Sails.js
 
-
     !{assets.templateLibrary()}
+    !{assets.js()}
 
   :css
     /* Styles included inline since you'll probably be deleting this page anyway */
