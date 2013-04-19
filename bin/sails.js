@@ -472,15 +472,14 @@ function generateFile(boilerplatePath, newPath) {
 function generateDir(newPath, gitkeep) {
 	if (!newPath) {
 		sails.log.debug('Generating app directory...');
-	}
-	else {
+	} else {
 		sails.log.debug('Generating directory ' + newPath + '...');
 	}
 	var newDirPath = outputPath + '/' + (newPath || '');
 	verifyDoesntExist(newDirPath, 'A file/directory already exists at ' + newDirPath);
 	fs.mkdirSync(newDirPath);
 	// If directory will be empty, create a .gitkeep in it
-	if (gitkeep && newPath) {
+	if (gitkeep) {
 		generateFile('.gitkeep', newPath + '/.gitkeep');
 	}
 }
@@ -680,8 +679,7 @@ function verifyValidEntity(entity, msg) {
 	if (!isValidECMA51Variable(entity)) {
 		sails.log.error(msg);
 		process.exit(1);
-	}
-	else {
+	} else {
 		return entity;
 	}
 }
