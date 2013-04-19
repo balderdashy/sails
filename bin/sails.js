@@ -430,7 +430,7 @@ function createNewApp(appName, templateLang) {
 	}, null, 4));
 
 	// Generate README
-	sails.log.debug("Generating README.md...");
+	sails.log.debug('Generating README.md...');
 	fs.writeFileSync(outputPath + '/README.md', '# ' + appName + '\n### a Sails application');
 }
 
@@ -446,6 +446,7 @@ function sailsUsage() {
 	usage += leftColumn('sails lift') + 'Run this Sails app (in the current dir)\n';
 	usage += leftColumn('sails console') + 'Run this Sails app (in the current dir & in interactive mode.)\n';
 	usage += leftColumn('sails new <appName>') + 'Create a new Sails project in the current dir\n';
+	usage += leftColumn('sails generate <foo>') + 'Generate api/models/Foo.js and api/controllers/FooController.js\n';
 	usage += leftColumn('sails generate model <foo>') + 'Generate api/models/Foo.js\n';
 	usage += leftColumn('sails generate controller <foo>') + 'Generate api/controllers/FooController.js\n';
 	usage += leftColumn('sails version') + 'Get the current globally installed Sails version';
@@ -456,10 +457,10 @@ function sailsUsage() {
 
 // Generate a file
 function generateFile(boilerplatePath, newPath) {
-	var fullBpPath = __dirname + '/boilerplates/' + (boilerplatePath || "");
+	var fullBpPath = __dirname + '/boilerplates/' + (boilerplatePath || '');
 	var file = fs.readFileSync(fullBpPath, 'utf8');
-	var newFilePath = outputPath + '/' + (newPath || "");
-	verifyDoesntExist(newFilePath, "A file/directory already exists at " + newFilePath);
+	var newFilePath = outputPath + '/' + (newPath || '');
+	verifyDoesntExist(newFilePath, 'A file/directory already exists at ' + newFilePath);
 
 	// Touch output file to make sure the path to it exists
 	if (fs.createFileSync(newFilePath)) {
