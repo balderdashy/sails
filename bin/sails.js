@@ -200,7 +200,7 @@ else if (argv._.length === 0) {
 	sailsUsage();
 }
 // Generate file(s)
-else if (argv._[0] && argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^generat$|^generate$/) || argv.g || argv.generate) {
+else if (argv._[0] && (argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^generat$|^generate$/) || argv.g || argv.generate)) {
 
 	verifyArg(1, 'Please specify the name for the new model and controller as the second argument.');
 
@@ -286,14 +286,13 @@ else if (argv._[0].match(/^new$/)) {
 
 	// Default to ejs templates for new projects, but allow user to override with --template
 	var template = 'ejs';
-	if (argv['template']) {
-		template = argv['template'];
+	if (argv.template) {
+		template = argv.template;
 	}
 	createNewApp(argv._[1], template);
 }
 
-// Unknown command, assume creating a new app w/ that name
-// First argument == app name
+// Unknown command, print out usage
 else {
 	console.log('');
 	sailsUsage();
@@ -317,25 +316,25 @@ function createNewApp(appName, templateLang) {
 		existingDirectory = true;
 	}
 
-	sails.log.info('Generating Sails project (' + appName + ')...');
-
 	// Check if the appName is an absolute path, if so don't prepend './'
 	if (appName.substr(0, 1) === '/') {
 		outputPath = appName;
 	} else {
 		outputPath = outputPath + '/' + appName;
 	}
-	
+
 	// If app is being created in new directory
 	if (!existingDirectory) {
 
 		// Check if there is a directory in the current directory with the new
-		// app name, throw an error if there is
+		// app name, log and exit if there is
 		verifyDoesntExist(outputPath, 'A file or directory already exists at: ' + outputPath);
 
 		// Create a directory with the specified app name
 		generateDir();
 	}
+
+	sails.log.info('Generating Sails project (' + appName + ')...');
 
 	// Create default app structure
 	generateDir('public');
@@ -472,8 +471,11 @@ function generateFile(boilerplatePath, newPath) {
 
 // Generate a directory
 function generateDir(newPath, gitkeep) {
-	if (!newPath) sails.log.debug('Generating app directory...');
-	else sails.log.debug('Generating directory ' + newPath + '...');
+	if (!newPath) {
+		sails.log.debug('Generating app directory...');
+	} else {
+		sails.log.debug('Generating directory ' + newPath + '...');
+	}
 	var newDirPath = outputPath + '/' + (newPath || '');
 	verifyDoesntExist(newDirPath, 'A file/directory already exists at ' + newDirPath);
 	fs.mkdirSync(newDirPath);
@@ -611,7 +613,9 @@ function generate(options) {
 	// Trim slashes
 	options.prefix = _.str.rtrim(options.prefix, '/') + '/';
 
-	if (!options.entity) throw new Error('No output file name specified!');
+	if (!options.entity) {
+		throw new Error('No output file name specified!');
+	}
 
 	var file = renderBoilerplate(options.boilerplate, options);
 
@@ -676,7 +680,9 @@ function verifyValidEntity(entity, msg) {
 	if (!isValidECMA51Variable(entity)) {
 		sails.log.error(msg);
 		process.exit(1);
-	} else return entity;
+	} else {
+		return entity;
+	}
 }
 
 function isValidECMA51Variable(v) {
@@ -684,7 +690,6 @@ function isValidECMA51Variable(v) {
 }
 
 // Check if a file or directory exists
-
 
 function fileExists(path) {
 	try {
