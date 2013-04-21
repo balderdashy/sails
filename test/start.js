@@ -53,6 +53,8 @@ $runTest('node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive -b -R n
 // Run web integration tests
 //////////////////////////////////////////////////////
 
+$log('Testing http...');
+$runTest('node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive -b -R nyan -t 8000 test/http');
 // - HTTP: Specified routes work appropriately
 // - HTTP: Automatic controller routes work appropriately
 // - HTTP: Automatic view routes work appropriately
