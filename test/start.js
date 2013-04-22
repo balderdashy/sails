@@ -1,6 +1,5 @@
 var sys = require('sys');
 var exec = require('child_process').exec;
-var spawn = require('child_process').spawn;
 var sails = require('../lib/sails');
 
 var parley = require('parley');
@@ -9,11 +8,16 @@ var $ = new parley();
 // Build log
 var log = sails.log;
 
+// Final exit code (for travis)
+var result = 0;
+
 // Build deferred log
 var $log = function (msg) {
 	return $(function (msg, xcb) {
 		sails.log(msg);
 		xcb();
+		// Exit with code based on result of tests
+		if (msg === 'Tests complete.') process.exit(result);
 	})(msg);
 };
 
@@ -24,7 +28,9 @@ function runTest(cmd, cb) {
 	test.stdout.on('data', sys.print);
 	test.stderr.on('data', log.error);
 	test.on('exit', function (code) {
-		return code ? cb("Returned with code: " + code) : cb();
+		// If test fails, set exit code to failing test code
+		if (code !== 0) result = code;
+		return code ? cb('Returned with code: ' + code) : cb();
 	});
 }
 var $runTest = function (cmd) {
@@ -41,18 +47,20 @@ $log('Running tests...');
 // - Server starts successfully
 // - CLI (sails generate, sails new, etc.)
 $log('Testing cli...');
-$runTest('node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive -b -R nyan -t 8000 test/cli');
+$runTest('node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive  -R dot -t 8000 test/cli');
 // - all modules included properly
 // - configuration applied properly
 // - services are accessible
 // - active record (aka waterline)
 $log('Testing waterline (ORM)...');
-$runTest('node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive -b -R nyan -t 8000 test/waterline');
+$runTest('node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive  -R dot -t 8000 test/waterline');
 
 //////////////////////////////////////////////////////
 // Run web integration tests
 //////////////////////////////////////////////////////
 
+$log('Testing http...');
+$runTest('node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive  -R dot -t 8000 test/http');
 // - HTTP: Specified routes work appropriately
 // - HTTP: Automatic controller routes work appropriately
 // - HTTP: Automatic view routes work appropriately
@@ -100,5 +108,3 @@ $runTest('node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive -b -R n
 
 
 $log('Tests complete.');
-
-
