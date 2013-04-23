@@ -3,6 +3,7 @@ language: node_js
 node_js:
   - "0.8"
   - "0.10"
+  - "0.11"
 
 services:
   - mongodb
@@ -18,11 +19,11 @@ notifications:
   irc:
     channels:
       - "irc.freenode.org#sailsjs"
-    on_success: never # default: always
-    on_failure: always # default: always
-	template:
-		- "%{commit} by %{author} has failed:"
-		- "Travis states: %{message}"
-		- "Build Details: %{build_url}"
-		- "Change View: %{compare_url}"
-	skip_join: true
+    on_success: never
+    on_failure: always
+    template:
+      - "%{commit} by %{author} has failed:"
+      - "Travis states: %{message}"
+      - "Build Details: %{build_url}"
+      - "Change View: %{compare_url}"
+    skip_join: true
