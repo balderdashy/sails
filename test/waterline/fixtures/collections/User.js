@@ -74,8 +74,8 @@ exports.identity = 'User';
 ////////////////////////////////////////////////////////
 exports.adapter = 'sails-mysql';
 exports.database = 'waterline';
-exports.user = 'waterline';
-exports.password = 'abc123';
+exports.user = 'root';
+exports.password = '';
 
 ////////////////////////////////////////////////////////
 // mongo
