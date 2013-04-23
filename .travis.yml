@@ -14,4 +14,15 @@ before_script:
   - mysql -e "create database waterline;"
 
 notifications:
-    irc: "irc.freenode.org#sailsjs"
+  email: false
+  irc:
+    channels:
+      - "irc.freenode.org#sailsjs"
+    on_success: never # default: always
+    on_failure: always # default: always
+	template:
+		- "%{commit} by %{author} has failed:"
+		- "Travis states: %{message}"
+		- "Build Details: %{build_url}"
+		- "Change View: %{compare_url}"
+	skip_join: true
