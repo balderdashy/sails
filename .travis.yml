@@ -9,6 +9,7 @@ services:
   - mysql
 
 before_script:
+  - npm install sails-mysql sails-mongo sails-redis
   - mysql -e "create database waterline;"
 
 notifications:
