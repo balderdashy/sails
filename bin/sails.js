@@ -8,8 +8,7 @@ var fs = require('fs-extra');
 var util = require('util');
 var forever = require('forever');
 
-var optimist = require('optimist');
-var argv = optimist.argv;
+var argv = require('optimist').argv;
 
 // Build mock sails object
 var sails = require('./mockSails.js');
@@ -97,13 +96,13 @@ if (argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run'
 
 
 		// If we made it this far, we're good to go-- fire 'er up, chief
-		require(sails.config.appPath + '/node_modules/sails/lib/sails.js').lift();
+		require(sails.config.appPath + '/node_modules/sails/lib/sails.js').lift(argv);
 
 	}
 	// otherwise, copy the global installation of sails locally
 	else {
 		var globalSailsPath = __dirname + '/../';
-		require('../lib/sails').lift();
+		require('../lib/sails').lift(argv);
 
 		// sails.log.verbose("Installing Sails in this project...");
 		// fs.mkdirsSync(localSailsPath);
@@ -414,7 +413,8 @@ function createNewApp(appName, templateLang) {
 		version: '0.0.0',
 		description: 'a Sails application',
 		dependencies: {
-			sails: sails.version
+			sails: sails.version,
+			'optimist': '~0.4.0'
 		},
 		scripts: {
 			// Include this later when we have "sails test" ready.
