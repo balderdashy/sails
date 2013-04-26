@@ -1,46 +1,22 @@
 var assert = require('assert');
-var fs = require('fs');
-var wrench = require('wrench');
 var httpHelper = require('./helpers/httpHelper.js');
-var exec = require('child_process').exec;
-var sailsBin = './bin/sails.js';
+var appHelper = require('./helpers/appHelper');
 
 describe('Specified routes', function() {
 	var appName = 'testApp';
 
 	before(function(done) {
+    appHelper.build(function(err) {
+      if(err) return done(err);
+      process.chdir(appName);
+      done();
+    });
+  });
 
-		if (fs.existsSync(appName)) {
-			wrench.rmdirSyncRecursive(appName);
-		}
-
-		exec(sailsBin + ' new ' + appName, function(err) {
-			if (err) done(new Error(err));
-
-			// Get test controller content
-			var testController = fs.readFileSync('test/http/fixtures/TestController.js');
-
-			// Move into app directory and update sailsBin relative path
-			process.chdir(appName);
-			sailsBin = '.' + sailsBin;
-
-			// Add test controller to app
-			fs.writeFileSync('api/controllers/TestController.js', testController);
-
-			done();
-		});
-	});
-
-	after(function() {
-
-		// return to test directory
-		process.chdir('../');
-
-		if (fs.existsSync(appName)) {
-			wrench.rmdirSyncRecursive(appName);
-		}
-
-	});
+  after(function() {
+    process.chdir('../');
+    appHelper.teardown();
+  });
 
 	describe('with an unspecified http method', function() {
 
