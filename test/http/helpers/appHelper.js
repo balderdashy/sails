@@ -19,7 +19,7 @@ module.exports.build = function(/* [appName], done */) {
       appName = 'testApp';
 
   // Allow App Name to be optional
-  if(args.length) appName = args[0];
+  if(args.length > 0) appName = args[0];
 
   // Cleanup old test fixtures
   if (fs.existsSync(appName)) {
