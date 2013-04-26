@@ -1,48 +1,22 @@
 var assert = require('assert');
-var fs = require('fs');
-var wrench = require('wrench');
-var exec = require('child_process').exec;
 var httpHelper = require('./helpers/httpHelper.js');
-var sailsBin = './bin/sails.js';
+var appHelper = require('./helpers/appHelper');
 
 describe('Default controller routing', function() {
 	var appName = 'testApp';
 
 	before(function(done) {
+    appHelper.build(function(err) {
+      if(err) return done(err);
+      process.chdir(appName);
+      done();
+    });
+  });
 
-		if (fs.existsSync(appName)) {
-			wrench.rmdirSyncRecursive(appName);
-		}
-
-		exec(sailsBin + ' new ' + appName, function(err) {
-			if (err) done(new Error(err));
-
-			// Get test controller content
-			var testController = fs.readFileSync('test/http/fixtures/TestController.js');
-
-			// Move into app directory and update sailsBin relative path
-			process.chdir(appName);
-			sailsBin = '.' + sailsBin;
-
-			// Add test controller to app
-			fs.writeFileSync('api/controllers/TestController.js', testController);
-
-			// Add empty router file to app
-			httpHelper.writeRoutes({});
-
-			done();
-		});
-	});
-
-	after(function() {
-
-		// return to test directory
-		process.chdir('../');
-
-		if (fs.existsSync(appName)) {
-			wrench.rmdirSyncRecursive(appName);
-		}
-	});
+  after(function() {
+    process.chdir('../');
+    appHelper.teardown();
+  });
 
 	describe('requests to :controller/:method', function() {
 
