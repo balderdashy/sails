@@ -53,7 +53,11 @@ exports.attributes = {
 		defaultsTo: 'blueberry',
 		type: 'string'
 	},
-	age		: 'integer'
+	age		: 'integer',
+	status: {
+		type: 'boolean',
+		defaultsTo: 0
+	}
 };
 
 // Identity is here to facilitate unit testing
