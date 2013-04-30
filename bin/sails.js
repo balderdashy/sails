@@ -9,6 +9,7 @@ var util = require('util');
 var forever = require('forever');
 
 var argv = require('optimist').argv;
+require('coffee-script');
 
 // Build mock sails object
 var sails = require('./mockSails.js');
