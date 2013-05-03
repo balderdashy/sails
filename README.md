@@ -5,7 +5,7 @@ Sails.js makes it easy to build custom, enterprise-grade Node.js apps. It is des
 
 # Intro to Sails.js
 [![ScreenShot](http://balderdashy.github.com/sails/images/screenshot.png)](http://youtu.be/GK-tFvpIR7c)
-
+[![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)
 
 # Installation
 
