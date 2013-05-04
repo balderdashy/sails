@@ -45,6 +45,10 @@
     {
       "name": "Ameen Ahmed",
       "email": "ameen.ahmed.b@gmail.com"
+    },
+    {
+      "name": "Colin Wren",
+      "email": "colin@cawren.com"
     }
   ],
   "version": "0.8.91",
@@ -108,7 +112,6 @@
   "devDependencies": {
     "mocha": "*",
     "chai": "*",
-    "coffee-script": "*",
     "request": "*"
   },
   "repository": {
