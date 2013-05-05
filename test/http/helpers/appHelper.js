@@ -1,4 +1,4 @@
-var fs = require('fs');
+var fs = require('fs-extra');
 var wrench = require('wrench');
 var exec = require('child_process').exec;
 var path = require('path');
@@ -44,6 +44,9 @@ module.exports.build = function(/* [appName], done */) {
 
       // Copy File to Test App
       var data = fs.readFileSync(filePath);
+
+      // Create file and any missing parent directories in its path
+      fs.createFileSync(path.resolve('./', appName, file), data);
       fs.writeFileSync(path.resolve('./', appName, file), data);
     });
 
