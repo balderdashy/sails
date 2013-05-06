@@ -49,9 +49,13 @@
     {
       "name": "Colin Wren",
       "email": "colin@cawren.com"
+    },
+    {
+      "name": "Robin Cafolla",
+      "email": "robin@zombiemongoose.com"
     }
   ],
-  "version": "0.8.91",
+  "version": "0.8.91-hbs",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
   "homepage": "http://sailsjs.com",
   "keywords": [
@@ -107,7 +111,8 @@
     "inflection": "~1.2.5",
     "node-typescript": "0.1.3",
     "coffee-script": "1.6.2",
-    "connect-redis": "1.4.5"
+    "connect-redis": "1.4.5",
+    "hbs": "2.1.0"
   },
   "devDependencies": {
     "mocha": "*",

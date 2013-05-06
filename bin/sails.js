@@ -390,6 +390,12 @@ function createNewApp(appName, templateLang) {
 		generateFile('haml/404.haml', 'views/404.haml'); // Create 404, 500, and 422/403 pages
 		generateFile('haml/500.haml', 'views/500.haml');
 		generateFile('haml/config.js', 'config/views.js'); // Create views.js config
+	} else if (templateLang === 'handlebars' || templateLang === 'hbs') {	
+		generateFile('hbs/index.hbs', 'views/home/index.hbs');
+		generateFile('hbs/404.hbs', 'views/404.hbs');
+		generateFile('hbs/500.hbs', 'views/500.hbs');
+		generateFile('hbs/layout.hbs', 'views/layout.hbs');
+		generateFile('hbs/config.js', 'config/views.js');
 	} else {
 		generateFile('ejs/index.ejs', 'views/home/index.ejs');
 		generateFile('ejs/404.ejs', 'views/404.ejs'); // Create 404, 500, and 422/403 pages
