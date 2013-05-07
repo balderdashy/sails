@@ -450,6 +450,8 @@ function sailsUsage() {
 
 	var usage = 'Usage: sails <command>\n\n';
 	usage += leftColumn('sails lift') + 'Run this Sails app (in the current dir)\n';
+	usage += leftColumn('  [--dev]') + 'with development environment specified \n';
+	usage += leftColumn('  [--prod]') + 'with production environment specified \n';
 	usage += leftColumn('sails console') + 'Run this Sails app (in the current dir & in interactive mode.)\n';
 	usage += leftColumn('sails new <appName>') + 'Create a new Sails project in the current dir\n';
 	usage += leftColumn('sails generate <foo>') + 'Generate api/models/Foo.js and api/controllers/FooController.js\n';
