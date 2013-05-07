@@ -55,7 +55,7 @@
       "email": "robin@zombiemongoose.com"
     }
   ],
-  "version": "0.8.91-hbs",
+  "version": "0.8.91",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
   "homepage": "http://sailsjs.com",
   "keywords": [
