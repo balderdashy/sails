@@ -3,7 +3,7 @@ var fs = require('fs');
 var wrench = require('wrench');
 var exec = require('child_process').exec;
 
-describe('New app generator', function () {
+describe('New app generator', function() {
 	var sailsbin = './bin/sails.js';
 	var appName = 'testApp';
 	var defaultTemplateLang = 'ejs';
@@ -26,11 +26,11 @@ describe('New app generator', function () {
 		});
 	});
 
-	describe('sails new <appname>', function () {
+	describe('sails new <appname>', function() {
 
 		it('should create new app in new folder', function(done) {
 
-			exec(sailsbin + ' new ' + appName, function (err) {
+			exec(sailsbin + ' new ' + appName, function(err) {
 				if (err) { done(new Error(err)); }
 
 				assert(checkGeneratedFiles(appName, defaultTemplateLang));
@@ -39,7 +39,7 @@ describe('New app generator', function () {
 		});
 
 		it('should not overwrite a folder', function(done) {
-			exec('mkdir ' + appName, function (err) {
+			exec('mkdir ' + appName, function(err) {
 				if (err) { done(new Error(err)); }
 
 				exec(sailsbin + ' new ' + appName, function(err) {
@@ -50,7 +50,7 @@ describe('New app generator', function () {
 		});
 	});
 
-	describe('sails new .', function () {
+	describe('sails new .', function() {
 
 		it('should create new app in existing folder', function(done) {
 
@@ -58,7 +58,7 @@ describe('New app generator', function () {
 			fs.mkdirSync(appName);
 			process.chdir(appName);
 
-			exec( '.' + sailsbin + ' new .', function (err) {
+			exec( '.' + sailsbin + ' new .', function(err) {
 				if (err) { done(new Error(err)); }
 
 				// move from app to its parent directory
@@ -70,7 +70,7 @@ describe('New app generator', function () {
 		});
 
 		it('should not overwrite a folder', function(done) {
-			exec('mkdir ' + appName, function (err) {
+			exec('mkdir ' + appName, function(err) {
 				if (err) { done(new Error(err)); }
 
 				exec( '.' + sailsbin + ' new ' + appName, function(err) {
@@ -81,11 +81,11 @@ describe('New app generator', function () {
 		});
 	});
 
-	describe('sails new with no template option', function () {
+	describe('sails new with no template option', function() {
 
 		it('should create new app with ejs templates', function(done) {
 
-			exec(sailsbin + ' new ' + appName, function (err) {
+			exec(sailsbin + ' new ' + appName, function(err) {
 				if (err) { done(new Error(err)); }
 
 				assert(checkGeneratedFiles(appName, 'ejs'));
@@ -97,11 +97,11 @@ describe('New app generator', function () {
 		});
 	});
 
-	describe('sails new <appname> with options --template=ejs', function () {
+	describe('sails new <appname> with options --template=ejs', function() {
 
 		it('should create new app with ejs templates', function(done) {
 
-			exec(sailsbin + ' new ' + appName + ' --template=ejs', function (err) {
+			exec(sailsbin + ' new ' + appName + ' --template=ejs', function(err) {
 				if (err) { done(new Error(err)); }
 
 				assert(checkGeneratedFiles(appName, 'ejs'));
@@ -113,11 +113,11 @@ describe('New app generator', function () {
 		});
 	});
 
-	describe('sails new <appname> with options --template=jade', function () {
+	describe('sails new <appname> with options --template=jade', function() {
 
 		it('should create new app with jade templates', function(done) {
 
-			exec(sailsbin + ' new ' + appName + ' --template=jade', function (err) {
+			exec(sailsbin + ' new ' + appName + ' --template=jade', function(err) {
 				if (err) { done(new Error(err)); }
 
 				assert(checkGeneratedFiles(appName, 'jade'));
@@ -129,17 +129,33 @@ describe('New app generator', function () {
 		});
 	});
 
-	describe('sails new <appname> with options --template=haml', function () {
+	describe('sails new <appname> with options --template=haml', function() {
 
 		it('should create new app with haml templates', function(done) {
 
-			exec(sailsbin + ' new ' + appName + ' --template=haml', function (err) {
+			exec(sailsbin + ' new ' + appName + ' --template=haml', function(err) {
 				if (err) { done(new Error(err)); }
 
 				assert(checkGeneratedFiles(appName, 'haml'));
 
 				var viewConfig = fs.readFileSync('./' + appName + '/config/views.js', 'utf8');
 				assert(viewConfig.indexOf('haml') !== -1);
+				done();
+			});
+		});
+	});
+
+	describe('sails new <appname> with options --template=handlebars', function() {
+
+		it('should create new app with handlebars templates', function(done) {
+
+			exec(sailsbin + ' new ' + appName + ' --template=handlebars', function(err) {
+				if (err) { done(new Error(err)); }
+
+				assert(checkGeneratedFiles(appName, 'handlebars'));
+
+				var viewConfig = fs.readFileSync('./' + appName + '/config/views.js', 'utf8');
+				assert(viewConfig.indexOf('hbs') !== -1);
 				done();
 			});
 		});
@@ -223,6 +239,15 @@ function checkGeneratedFiles(appName, templateLang) {
 			'views/500.haml',
 			'views/home',
 			'views/home/index.haml'
+		];
+	} else if (templateLang === 'handlebars') {
+
+		templateFiles = [
+			'views/404.hbs',
+			'views/500.hbs',
+			'views/home',
+			'views/layout.hbs',
+			'views/home/index.hbs'
 		];
 	}
 
