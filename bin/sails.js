@@ -450,6 +450,8 @@ function sailsUsage() {
 
 	var usage = 'Usage: sails <command>\n\n';
 	usage += leftColumn('sails lift') + 'Run this Sails app (in the current dir)\n';
+	usage += leftColumn('  [--dev]') + 'with development environment specified \n';
+	usage += leftColumn('  [--prod]') + 'with production environment specified \n';
 	usage += leftColumn('sails console') + 'Run this Sails app (in the current dir & in interactive mode.)\n';
 	usage += leftColumn('sails new <appName>') + 'Create a new Sails project in the current dir\n';
 	usage += leftColumn('sails generate <foo>') + 'Generate api/models/Foo.js and api/controllers/FooController.js\n';
@@ -508,7 +510,7 @@ function generateController(entity, options) {
 			action = verifyValidEntity(action, "Invalid action name: " + action);
 
 			return generate({
-				boilerplate: 'federatedAction.js',
+				boilerplate: 'federatedAction.ejs',
 				prefix: sails.config.paths.controllers + '/' + entity,
 				entity: entity,
 				action: action,
@@ -526,7 +528,7 @@ function generateController(entity, options) {
 		// Add each requested function
 		if (options && options.actions) {
 			_.each(options.actions, function(action) {
-				var fnString = renderBoilerplate('action.js', {
+				var fnString = renderBoilerplateTemplate('action.ejs', {
 					action: action,
 					entity: entity,
 					viewEngine: sails.config.viewEngine,
@@ -542,7 +544,7 @@ function generateController(entity, options) {
 			});
 		}
 		return generate({
-			boilerplate: 'controller.js',
+			boilerplate: 'controller.ejs',
 			prefix: sails.config.paths.controllers,
 			entity: capitalize(entity),
 			actions: actions,
@@ -559,7 +561,7 @@ function generateModel(entity, options) {
 		_.each(options.attributes, function(attribute) {
 			attribute.name = verifyValidEntity(attribute.name, "Invalid attribute: " + attribute.name);
 
-			var fnString = renderBoilerplate('attribute.js', {
+			var fnString = renderBoilerplateTemplate('attribute.ejs', {
 				attribute: attribute,
 				entity: entity,
 				viewEngine: sails.config.viewEngine,
@@ -575,7 +577,7 @@ function generateModel(entity, options) {
 		});
 	}
 	return generate({
-		boilerplate: 'model.js',
+		boilerplate: 'model.ejs',
 		prefix: sails.config.paths.models,
 		entity: capitalize(entity),
 		attributes: attributes,
@@ -585,7 +587,7 @@ function generateModel(entity, options) {
 
 function generateAdapter(entity, options) {
 	return generate({
-		boilerplate: 'adapter.js',
+		boilerplate: 'adapter.ejs',
 		prefix: sails.config.paths.adapters,
 		entity: capitalize(entity),
 		suffix: "Adapter.js"
@@ -615,7 +617,8 @@ function generateView(entity, options) {
 
 
 function generate(options) {
-	sails.log.debug("Generating " + options.boilerplate + " for " + options.entity + "...");
+	var boilerplateName = options.boilerplate.split('.')[0];
+	sails.log.debug('Generating ' + boilerplateName + ' for ' + options.entity + '...');
 
 	// Trim slashes
 	options.prefix = _.str.rtrim(options.prefix, '/') + '/';
@@ -624,11 +627,11 @@ function generate(options) {
 		throw new Error('No output file name specified!');
 	}
 
-	var file = renderBoilerplate(options.boilerplate, options);
+	var file = renderBoilerplateTemplate(options.boilerplate, options);
 
 	var fileEntity = options.action || options.entity;
 	var newFilePath = options.prefix + fileEntity + options.suffix;
-	verifyDoesntExist(newFilePath, "A file or directory already exists at: " + newFilePath);
+	verifyDoesntExist(newFilePath, 'A file or directory already exists at: ' + newFilePath);
 
 	// Touch output file to make sure the path to it exists
 	if (fs.createFileSync(newFilePath)) {
@@ -641,8 +644,8 @@ function generate(options) {
 // Read a boilerplate and render the template
 
 
-function renderBoilerplate(boilerplate, data) {
-	var boilerplatePath = __dirname + '/boilerplates/' + boilerplate;
+function renderBoilerplateTemplate(boilerplate, data) {
+	var boilerplatePath = __dirname + '/boilerplates/templates/' + boilerplate;
 	verifyExists(boilerplatePath, "Boilerplate (" + boilerplate + ") doesn't exist!");
 	var file = fs.readFileSync(boilerplatePath, 'utf8');
 	return ejs.render(file, data);
