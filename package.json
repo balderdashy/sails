@@ -96,7 +96,7 @@
     "i18n": "0.3.5",
     "wrench": "1.4.4",
     "uglify-js": "2.2.4",
-    "asset-rack": "2.1.5",
+    "asset-rack": ">=2.1.5",
     "node-uuid": "~1.4.0",
     "parley": "0.0.2",
     "include-all": "0.0.6",
