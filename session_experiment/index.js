@@ -1,3 +1,10 @@
+////////////////////////////////////////////////////////////////////
+// Approach
+//
+// Use Connect's special Redis client (which automatically 
+// handles resolves sid encryption and knowing which Redis key to use)
+////////////////////////////////////////////////////////////////////
+
 // Basic libs
 var express = require('express'),
 	socketio = require('socket.io'),
@@ -9,7 +16,7 @@ var parseConnectCookie = require('./cookie');
 // Keep track of session+cookie configuration information separately
 // so it can be shared by both Socket.io and Express/Connect
 var sessionSecret = 'kqsdjfmlksdhfhzirzeoibrzecrbzuzefcuercazeafxzeokwdfzeijfxcerig';
-var cookieKey = '';
+var cookieKey = 'connect.sid';
 
 
 
@@ -70,13 +77,6 @@ io.set('store', new IoRedis({
 }));
 
 
-////////////////////////////////////////////////////////
-// NOTE:	There is no magic bullet, no "io-redis"
-//			for configuring socket.io sessions
-//			That's up to us.
-////////////////////////////////////////////////////////
-
-
 // Instantiate redis client to facilitate accessing session
 // Works for connect/express or socket.io, but mainly useful for socket.io
 // since connect-redis does all the nice Express-y things for you.
@@ -92,18 +92,20 @@ app.listen(3000, function() {
 		// Attach authorization policy to socket event receiver
 		console.log("Cookie: ", data.headers.cookie);
 
-		// TODO: transform cookie into session id
-		data.sessionId = data.headers.cookie;
+		// Transform cookie into session id
+		var cookies = parseConnectCookie(data.headers.cookie);
+		data.sessionId = cookies[cookieKey];
+		console.log("Parsed sid from cookie: ",parseConnectCookie(data.headers.cookie));
 
 		// If session exists, use it
-		sessionClient.get('session:' + data.sessionId, function(err, session) {
+		sessionClient.get(data.sessionId, function(err, session) {
 			if (err) return cb(err);
 
 			// If no session already exists
 			if (!session) {
 
 				// Set up initial session
-				sessionClient.set('session:' + data.sessionId, JSON.stringify({
+				sessionClient.set(data.sessionId, JSON.stringify({
 					counter: 1
 				}));
 			}
@@ -130,7 +132,7 @@ app.listen(3000, function() {
 
 			console.log('Retrieving sesssion... ', socket.handshake.sessionId);
 
-			sessionClient.get('session:' + socket.handshake.sessionId, function(err, session) {
+			sessionClient.get(socket.handshake.sessionId, function(err, session) {
 				if (err) return cb(err);
 
 				session = JSON.parse(session);
@@ -144,7 +146,7 @@ app.listen(3000, function() {
 				updatedSession = JSON.stringify(updatedSession);
 
 				// Persist updated session
-				sessionClient.set('session:' + socket.handshake.sessionId, updatedSession);
+				sessionClient.set(socket.handshake.sessionId, updatedSession);
 				console.log('Session updated!', updatedSession);
 				cb(null, session);
 			});
