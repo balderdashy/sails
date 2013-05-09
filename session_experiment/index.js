@@ -1,9 +1,14 @@
 ////////////////////////////////////////////////////////////////////
 // Approach
 //
-// Use Connect's special Redis client (which automatically 
-// handles resolves sid encryption and knowing which Redis key to use)
+// ...
+//
+// Very important:
+// https://github.com/senchalabs/connect/issues/588
+//
 ////////////////////////////////////////////////////////////////////
+
+var _ = require('underscore');
 
 // Basic libs
 var express = require('express'),
@@ -20,7 +25,10 @@ var cookieKey = 'connect.sid';
 
 
 
-
+// Instantiate redis client to facilitate accessing session
+// Works for connect/express or socket.io, but mainly useful for socket.io
+// since connect-redis does all the nice Express-y things for you.
+var sessionClient = redis.createClient();
 
 // Instantiate redis store object
 // (requires anonymous redis client for some reason)
@@ -28,7 +36,7 @@ var ConnectRedisAdapter = require('connect-redis')(express);
 var redisSessionStore = new ConnectRedisAdapter({
 	host: 'localhost',
 	port: 6379,
-	client: redis.createClient()
+	client: sessionClient
 });
 
 // Create Express server
@@ -77,10 +85,31 @@ io.set('store', new IoRedis({
 }));
 
 
-// Instantiate redis client to facilitate accessing session
-// Works for connect/express or socket.io, but mainly useful for socket.io
-// since connect-redis does all the nice Express-y things for you.
-var sessionClient = redis.createClient();
+// Returns a connect session object
+// NOTE: this is the minimum required content of the session key
+function buildConnectSession(options) {
+	var tenYearsInMs = 1000*60*60*24*365*10;
+	options = options || {};
+
+	return _.extend({
+		lastAccess: (new Date()).getTime(),
+		cookie: _.extend({
+			originalMaxAge: 14400000,
+			expires: new Date( (new Date()).getTime() + tenYearsInMs),
+			httpOnly: true,
+			path: '/'
+		}, options.cookie || {})
+	}, options);
+	
+	// e.g. 
+	// lastAccess: 1368080991745,
+	// cookie: {
+	// 	originalMaxAge: 14400000,
+	// 	expires: '2013-05-09T10:29:50.179Z',
+	// 	httpOnly: true,
+	// 	path: '/'
+	// }
+}
 
 
 // Wait until the Express server is ready
@@ -95,21 +124,26 @@ app.listen(3000, function() {
 		// Transform cookie into session id
 		var cookies = parseConnectCookie(data.headers.cookie);
 		data.sessionId = cookies[cookieKey];
-		console.log("Parsed sid from cookie: ",parseConnectCookie(data.headers.cookie));
+		console.log("Parsed sid "+data.sessionId+" from cookie "+data.headers.cookie);
 
-		// If session exists, use it
-		sessionClient.get(data.sessionId, function(err, session) {
+		// Look up the session
+		sessionClient.get('sess:'+data.sessionId, function(err, session) {
 			if (err) return cb(err);
 
 			// If no session already exists
 			if (!session) {
 
 				// Set up initial session
-				sessionClient.set(data.sessionId, JSON.stringify({
+				sessionClient.set('sess:'+data.sessionId, JSON.stringify(buildConnectSession({
 					counter: 1
-				}));
+				})));
 			}
+
+			// Otherwise, a session exists so use it
+
+
 		});
+
 
 		acceptConnection();
 
@@ -132,7 +166,7 @@ app.listen(3000, function() {
 
 			console.log('Retrieving sesssion... ', socket.handshake.sessionId);
 
-			sessionClient.get(socket.handshake.sessionId, function(err, session) {
+			sessionClient.get('sess:'+socket.handshake.sessionId, function(err, session) {
 				if (err) return cb(err);
 
 				session = JSON.parse(session);
@@ -140,13 +174,13 @@ app.listen(3000, function() {
 
 				// Update session
 				// This basic example adds one to the counter in the session every time
-				var updatedSession = {
+				var updatedSession = buildConnectSession({
 					counter: session.counter + 1
-				};
+				});
 				updatedSession = JSON.stringify(updatedSession);
 
 				// Persist updated session
-				sessionClient.set(socket.handshake.sessionId, updatedSession);
+				sessionClient.set('sess:'+socket.handshake.sessionId, updatedSession);
 				console.log('Session updated!', updatedSession);
 				cb(null, session);
 			});
@@ -159,5 +193,8 @@ app.listen(3000, function() {
 // Handle an http request
 app.get('/', function(req, res) {
 	console.log('Cookie: ',req.cookies, ' was automatically set on the HTTP request by Connect-Redis.');
+
+	req.session.counter = req.session.counter + 1;
+	console.log("Session updated!", req.session);
 	res.json(req.session);
 });
