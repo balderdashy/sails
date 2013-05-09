@@ -46,7 +46,7 @@ var io = socketio.listen(app);
 // Create redis clients for use as Socket.io's message queue
 var pub = redis.createClient(),
 	sub = redis.createClient(),
-	redisMessageQueue = redis.createClient();
+	redisMessageQueueClient = redis.createClient();
 
 // Load up Redis message queue library for socket.io
 var IoRedis = require('socket.io/lib/stores/redis');
@@ -56,9 +56,15 @@ io.set('store', new IoRedis({
 	redis: redis,
 	redisPub: pub,
 	redisSub: sub,
-	redisClient: redisMessageQueue
+	redisClient: redisMessageQueueClient
 }));
 
+
+////////////////////////////////////////////////////////
+// NOTE:	There is no magic bullet, no "io-redis"
+//			for configuring socket.io sessions
+//			That's up to us.
+////////////////////////////////////////////////////////
 
 
 // Wait until the Express server is ready
@@ -134,6 +140,6 @@ app.listen(3000, function() {
 
 // Handle an http request
 app.get('/', function(req, res) {
-	console.log('Automatically set cookie.');
+	console.log('Cookie was automatically set on the HTTP request by Connect-Redis.');
 	res.send('Hello!');
 });
