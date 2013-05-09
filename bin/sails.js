@@ -8,6 +8,9 @@ var fs = require('fs-extra');
 var util = require('util');
 var forever = require('forever');
 
+// Make existsSync not crash on older versions of Node
+fs.existsSync = fs.existsSync || require('path').existsSync;
+
 var argv = require('optimist').argv;
 require('coffee-script');
 

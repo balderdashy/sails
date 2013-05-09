@@ -4,6 +4,9 @@ var exec = require('child_process').exec;
 var path = require('path');
 var sailsBin = path.resolve('./bin/sails.js');
 
+// Make existsSync not crash on older versions of Node
+fs.existsSync = fs.existsSync || path.existsSync;
+
 /**
  * Uses the Sails binary to create a namespaced test app
  * If no appName is given use 'testApp'

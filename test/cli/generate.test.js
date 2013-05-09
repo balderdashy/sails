@@ -3,6 +3,9 @@ var fs = require('fs');
 var wrench = require('wrench');
 var exec = require('child_process').exec;
 
+// Make existsSync not crash on older versions of Node
+fs.existsSync = fs.existsSync || require('path').existsSync;
+
 function capitalize(string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 }
