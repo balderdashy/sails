@@ -5,8 +5,7 @@ var path = require('path');
 var sailsBin = path.resolve('./bin/sails.js');
 
 // Make existsSync not crash on older versions of Node
-var existsSync = fs.existsSync || path.existsSync;
-fs.existsSync = existsSync;
+fs.existsSync = fs.existsSync || path.existsSync;
 
 /**
  * Uses the Sails binary to create a namespaced test app
