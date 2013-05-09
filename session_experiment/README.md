@@ -9,3 +9,9 @@ This experiment is an attempt to reconcile this, then merge the findings back in
 I welcome your help!
 
 -Mike
+
+
+## Update
++ Thu. May 09, 2013
+
+This works now.  Merging it back into the core.
