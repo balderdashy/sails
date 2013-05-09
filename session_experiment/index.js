@@ -6,15 +6,23 @@ var express = require('express'),
 // Logic to handle serialization/deserialization of connect cookies
 var parseConnectCookie = require('./cookie');
 
+// Keep track of session+cookie configuration information separately
+// so it can be shared by both Socket.io and Express/Connect
+var sessionSecret = 'kqsdjfmlksdhfhzirzeoibrzecrbzuzefcuercazeafxzeokwdfzeijfxcerig';
+var cookieKey = '';
 
 
 
 
 
-
-// Create redis store object and client for use w/ connect/express
+// Instantiate redis store object
+// (requires anonymous redis client for some reason)
 var ConnectRedisAdapter = require('connect-redis')(express);
-var connectRedisClient = redis.createClient();
+var redisSessionStore = new ConnectRedisAdapter({
+	host: 'localhost',
+	port: 6379,
+	client: redis.createClient()
+});
 
 // Create Express server
 var app = express.createServer();
@@ -29,12 +37,8 @@ app.configure(function () {
     
 	// Configure Express session store to use connect-redis adapter
 	app.use(express.session({
-		secret: "kqsdjfmlksdhfhzirzeoibrzecrbzuzefcuercazeafxzeokwdfzeijfxcerig",
-		store: new ConnectRedisAdapter({
-			host: 'localhost',
-			port: 6379,
-			client: connectRedisClient
-		})
+		secret: sessionSecret,
+		store: redisSessionStore
 	}));
 });
 
@@ -47,6 +51,12 @@ var io = socketio.listen(app);
 var pub = redis.createClient(),
 	sub = redis.createClient(),
 	redisMessageQueueClient = redis.createClient();
+
+// Configure redis MQ clients with server credentials
+// pub.auth(password, function (err) { if (err) throw err; });
+// sub.auth(password, function (err) { if (err) throw err; });
+// client.auth(password, function (err) { if (err) throw err; });
+
 
 // Load up Redis message queue library for socket.io
 var IoRedis = require('socket.io/lib/stores/redis');
@@ -67,6 +77,12 @@ io.set('store', new IoRedis({
 ////////////////////////////////////////////////////////
 
 
+// Instantiate redis client to facilitate accessing session
+// Works for connect/express or socket.io, but mainly useful for socket.io
+// since connect-redis does all the nice Express-y things for you.
+var sessionClient = redis.createClient();
+
+
 // Wait until the Express server is ready
 app.listen(3000, function() {
 
@@ -80,14 +96,14 @@ app.listen(3000, function() {
 		data.sessionId = data.headers.cookie;
 
 		// If session exists, use it
-		redisMessageQueue.get('session:' + data.sessionId, function(err, session) {
+		sessionClient.get('session:' + data.sessionId, function(err, session) {
 			if (err) return cb(err);
 
 			// If no session already exists
 			if (!session) {
 
 				// Set up initial session
-				redisMessageQueue.set('session:' + data.sessionId, JSON.stringify({
+				sessionClient.set('session:' + data.sessionId, JSON.stringify({
 					counter: 1
 				}));
 			}
@@ -114,7 +130,7 @@ app.listen(3000, function() {
 
 			console.log('Retrieving sesssion... ', socket.handshake.sessionId);
 
-			redisMessageQueue.get('session:' + socket.handshake.sessionId, function(err, session) {
+			sessionClient.get('session:' + socket.handshake.sessionId, function(err, session) {
 				if (err) return cb(err);
 
 				session = JSON.parse(session);
@@ -128,7 +144,7 @@ app.listen(3000, function() {
 				updatedSession = JSON.stringify(updatedSession);
 
 				// Persist updated session
-				redisMessageQueue.set('session:' + socket.handshake.sessionId, updatedSession);
+				sessionClient.set('session:' + socket.handshake.sessionId, updatedSession);
 				console.log('Session updated!', updatedSession);
 				cb(null, session);
 			});
@@ -140,6 +156,6 @@ app.listen(3000, function() {
 
 // Handle an http request
 app.get('/', function(req, res) {
-	console.log('Cookie was automatically set on the HTTP request by Connect-Redis.');
-	res.send('Hello!');
+	console.log('Cookie: ',req.cookies, ' was automatically set on the HTTP request by Connect-Redis.');
+	res.json(req.session);
 });
