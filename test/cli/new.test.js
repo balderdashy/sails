@@ -33,7 +33,7 @@ describe('New app generator', function() {
 			exec(sailsbin + ' new ' + appName, function(err) {
 				if (err) { done(new Error(err)); }
 
-				assert(checkGeneratedFiles(appName, defaultTemplateLang));
+				assert(checkGeneratedFiles(appName, defaultTemplateLang), 'generated files don\'t match expected files');
 				done();
 			});
 		});
@@ -64,7 +64,7 @@ describe('New app generator', function() {
 				// move from app to its parent directory
 				process.chdir('../');
 
-				assert(checkGeneratedFiles(appName, defaultTemplateLang));
+				assert(checkGeneratedFiles(appName, defaultTemplateLang), 'generated files don\'t match expected files');
 				done();
 			});
 		});
@@ -88,10 +88,10 @@ describe('New app generator', function() {
 			exec(sailsbin + ' new ' + appName, function(err) {
 				if (err) { done(new Error(err)); }
 
-				assert(checkGeneratedFiles(appName, 'ejs'));
+				assert(checkGeneratedFiles(appName, 'ejs'), 'generated files don\'t match expected files');
 
 				var viewConfig = fs.readFileSync('./' + appName + '/config/views.js', 'utf8');
-				assert(viewConfig.indexOf('ejs') !== -1);
+				assert(viewConfig.indexOf('ejs') !== -1, 'configuration file is incorrect');
 				done();
 			});
 		});
@@ -104,10 +104,10 @@ describe('New app generator', function() {
 			exec(sailsbin + ' new ' + appName + ' --template=ejs', function(err) {
 				if (err) { done(new Error(err)); }
 
-				assert(checkGeneratedFiles(appName, 'ejs'));
+				assert(checkGeneratedFiles(appName, 'ejs'), 'generated files don\'t match expected files');
 
 				var viewConfig = fs.readFileSync('./' + appName + '/config/views.js', 'utf8');
-				assert(viewConfig.indexOf('ejs') !== -1);
+				assert(viewConfig.indexOf('ejs') !== -1, 'configuration file is incorrect');
 				done();
 			});
 		});
@@ -120,10 +120,10 @@ describe('New app generator', function() {
 			exec(sailsbin + ' new ' + appName + ' --template=jade', function(err) {
 				if (err) { done(new Error(err)); }
 
-				assert(checkGeneratedFiles(appName, 'jade'));
+				assert(checkGeneratedFiles(appName, 'jade'), 'generated files don\'t match expected files');
 
 				var viewConfig = fs.readFileSync('./' + appName + '/config/views.js', 'utf8');
-				assert(viewConfig.indexOf('jade') !== -1);
+				assert(viewConfig.indexOf('jade') !== -1, 'configuration file is incorrect');
 				done();
 			});
 		});
@@ -136,10 +136,10 @@ describe('New app generator', function() {
 			exec(sailsbin + ' new ' + appName + ' --template=haml', function(err) {
 				if (err) { done(new Error(err)); }
 
-				assert(checkGeneratedFiles(appName, 'haml'));
+				assert(checkGeneratedFiles(appName, 'haml'), 'generated files don\'t match expected files');
 
 				var viewConfig = fs.readFileSync('./' + appName + '/config/views.js', 'utf8');
-				assert(viewConfig.indexOf('haml') !== -1);
+				assert(viewConfig.indexOf('haml') !== -1, 'configuration file is incorrect');
 				done();
 			});
 		});
@@ -152,10 +152,10 @@ describe('New app generator', function() {
 			exec(sailsbin + ' new ' + appName + ' --template=handlebars', function(err) {
 				if (err) { done(new Error(err)); }
 
-				assert(checkGeneratedFiles(appName, 'handlebars'));
+				assert(checkGeneratedFiles(appName, 'handlebars'), 'generated files don\'t match expected files');
 
 				var viewConfig = fs.readFileSync('./' + appName + '/config/views.js', 'utf8');
-				assert(viewConfig.indexOf('hbs') !== -1);
+				assert(viewConfig.indexOf('hbs') !== -1, 'configuration file is incorrect');
 				done();
 			});
 		});
