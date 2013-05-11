@@ -52,7 +52,7 @@ if (argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run'
 
 	// Check project package.json for sails.js dependency version and
 	// If no package.json file exists, don't try to start the server
-	if (fs.existsSync(sails.config.appPath + "/package.json")) {
+	if (fs.existsSync(sails.config.appPath + '/package.json')) {
 		appPackageJson = getPackage(sails.config.appPath);
 	} else {
 		sails.log.error('Cannot read package.json in the current directory.  ' +
@@ -340,73 +340,27 @@ function createNewApp(appName, templateLang) {
 	sails.log.info('Generating Sails project (' + appName + ')...');
 
 	// Create default app structure
-	generateDir('public');
-	copyBoilerplate('favicon.ico', 'public/favicon.ico'); // Copy default favicon
-	copyBoilerplate('robots.txt', 'public/robots.txt'); // Copy robots.txt
-	generateDir('public/images', 'gitkeep');
-
-	generateDir('assets');
-	generateDir('assets/js', 'gitkeep');
-	generateDir('assets/templates', 'gitkeep');
-	generateDir('assets/mixins');
-	copyBoilerplate('sails.io.js', 'assets/mixins/sails.io.js'); // Copy over special sails.io.js client
-	generateDir('assets/styles', 'gitkeep');
-	generateFile('reset.css', 'assets/mixins/reset.css'); // Create default css reset
-	generateDir('views');
-	generateDir('views/home'); // Create default home view
-
-	// API server
-	generateDir('api');
-	generateDir('api/models', 'gitkeep');
-	generateDir('api/adapters', 'gitkeep');
-	generateDir('api/controllers', 'gitkeep');
-	generateDir('api/services', 'gitkeep');
-	generateDir('api/policies');
-
-	// Default policies
-	generateFile('policies/authenticated.js', 'api/policies/authenticated.js');
-
-	// Basic config
-	generateDir('config');
-	generateFile('config/application.js', 'config/application.js');
-	generateFile('config/routes.js', 'config/routes.js');
-	generateFile('config/policies.js', 'config/policies.js');
-	generateFile('config/assets.js', 'config/assets.js');
-	generateFile('config/local.js', 'config/local.ex.js');
-	generateFile('config/local.js', 'config/local.js');
-	generateFile('config/adapters.js', 'config/adapters.js');
-	generateFile('config/bootstrap.js', 'config/bootstrap.js');
-
-	// Internationalization config
-	generateDir('config/locales');
-	generateFile('config/locales/english.js', 'config/locales/english.js');
+	copyBoilerplate('public', 'public');
+	copyBoilerplate('assets', 'assets');
+	copyBoilerplate('api', 'api');
+	copyBoilerplate('config', 'config');
 
 	// Different stuff for different view engines
-	if (templateLang === 'jade') {
-		generateFile('jade/index.jade', 'views/home/index.jade');
-		generateFile('jade/404.jade', 'views/404.jade'); // Create 404, 500, and 422/403 pages
-		generateFile('jade/500.jade', 'views/500.jade');
-		generateFile('jade/layout.jade', 'views/layout.jade'); // Create layout
-		generateFile('jade/config.js', 'config/views.js'); // Create views.js config
-	} else if (templateLang === 'haml') {
-		generateFile('haml/index.haml', 'views/home/index.haml');
-		generateFile('haml/404.haml', 'views/404.haml'); // Create 404, 500, and 422/403 pages
-		generateFile('haml/500.haml', 'views/500.haml');
-		generateFile('haml/config.js', 'config/views.js'); // Create views.js config
-	} else if (templateLang === 'handlebars' || templateLang === 'hbs') {	
-		generateFile('hbs/index.hbs', 'views/home/index.hbs');
-		generateFile('hbs/404.hbs', 'views/404.hbs');
-		generateFile('hbs/500.hbs', 'views/500.hbs');
-		generateFile('hbs/layout.hbs', 'views/layout.hbs');
-		generateFile('hbs/config.js', 'config/views.js');
-	} else {
-		generateFile('ejs/index.ejs', 'views/home/index.ejs');
-		generateFile('ejs/404.ejs', 'views/404.ejs'); // Create 404, 500, and 422/403 pages
-		generateFile('ejs/500.ejs', 'views/500.ejs');
-		generateFile('ejs/layout.ejs', 'views/layout.ejs'); // Create layout
-		generateFile('ejs/config.js', 'config/views.js'); // Create views.js config
+	if (templateLang === 'handlebars') templateLang = 'hbs';
+
+	copyBoilerplate('views/' + templateLang, 'views');
+
+	var viewConfig = {
+		viewEngine: templateLang
+	};
+
+	if (templateLang === 'jade' || templateLang === 'haml') {
+		viewConfig.layout = false;
 	}
 
+	fs.createFileSync(outputPath + '/config/views.js');
+	fs.writeFileSync(outputPath + '/config/views.js', 'module.exports = ' +
+		JSON.stringify(viewConfig , null, '\t').split('"').join('\'') + ';');
 
 
 	// Default app launcher file (for situations where sails lift isn't good enough)
@@ -416,7 +370,7 @@ function createNewApp(appName, templateLang) {
 	generateFile('gitignore', '.gitignore');
 
 	// Generate package.json
-	sails.log.debug("Generating package.json...");
+	sails.log.debug('Generating package.json...');
 	fs.writeFileSync(outputPath + '/package.json', JSON.stringify({
 		name: appName,
 		'private': true,
@@ -424,7 +378,7 @@ function createNewApp(appName, templateLang) {
 		description: 'a Sails application',
 		dependencies: {
 			sails: sails.version,
-			'optimist': '~0.4.0'
+			'optimist': '0.4.0'
 		},
 		scripts: {
 			// Include this later when we have "sails test" ready.
