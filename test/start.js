@@ -1,9 +1,9 @@
-var sys = require('sys');
-var exec = require('child_process').exec;
-var sails = require('../lib/sails');
-
-var parley = require('parley');
-var $ = new parley();
+var sys = require('sys'),
+	exec = require('child_process').exec,
+	sails = require('../lib/sails'),
+	parley = require('parley'),
+	test_timeout = '60000',
+	$ = new parley();
 
 // Build log
 var log = sails.log;
@@ -47,20 +47,20 @@ $log('Running tests...');
 // - Server starts successfully
 // - CLI (sails generate, sails new, etc.)
 $log('Testing cli...');
-$runTest('node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive  -R dot -t 8000 test/cli');
+$runTest('node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive  -R dot -t '+ test_timeout +' test/cli');
 // - all modules included properly
 // - configuration applied properly
 // - services are accessible
 // - active record (aka waterline)
 $log('Testing waterline (ORM)...');
-$runTest('node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive  -R dot -t 8000 test/waterline');
+$runTest('node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive  -R dot -t '+ test_timeout +' test/waterline');
 
 //////////////////////////////////////////////////////
 // Run web integration tests
 //////////////////////////////////////////////////////
 
 $log('Testing http...');
-$runTest('node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive  -R dot -t 8000 test/http');
+$runTest('node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive  -R dot -t '+ test_timeout +' test/http');
 // - HTTP: Specified routes work appropriately
 // - HTTP: Automatic controller routes work appropriately
 // - HTTP: Automatic view routes work appropriately
