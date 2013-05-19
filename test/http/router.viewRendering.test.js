@@ -26,7 +26,7 @@ describe('View routes', function() {
 			httpHelper.testRoute('get', '', function(err, response) {
 				if (err) done(new Error(err));
 
-				assert(response.body.indexOf('It works!') !== -1);
+				assert(response.body.indexOf('not found') < 0);
 				done();
 			});
 		});
