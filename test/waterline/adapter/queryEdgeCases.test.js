@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _ = require('lodash');
 describe ('query edge cases',function () {
 	describe ('find', function () {
 

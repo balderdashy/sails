@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // Dependencies
-var _ = require('underscore');
+var _ = require('lodash');
 _.str = require('underscore.string');
 var ejs = require('ejs');
 var fs = require('fs-extra');

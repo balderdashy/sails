@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _ = require('lodash');
 describe('sort', function() {
 
 	var testName = 'sort test';

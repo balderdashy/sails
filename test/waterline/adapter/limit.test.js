@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _ = require('lodash');
 describe('limit', function() {
 
 	var testName = 'limit test';

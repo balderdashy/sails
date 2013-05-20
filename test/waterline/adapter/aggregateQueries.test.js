@@ -10,7 +10,7 @@
  * to squash the operations into a single query to the database;
  */
 // Dependencies
-var _ = require('underscore');
+var _ = require('lodash');
 var async = require('async');
 var parley = require('parley');
 var assert = require("assert");
