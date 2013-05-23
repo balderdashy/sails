@@ -114,7 +114,7 @@ describe('Policies', function() {
     });
   });
 
-  describe('wildcard policies as array', function() {
+  describe('chaining wildcard "*" policies', function() {
 
     before(function() {
       var policy = {
@@ -123,7 +123,7 @@ describe('Policies', function() {
         }
       };
 
-    var config = "module.exports.policies = " + JSON.stringify(policy);
+      var config = "module.exports.policies = " + JSON.stringify(policy);
       fs.writeFileSync(path.resolve('../', appName, 'config/policies.js'), config);
     });
 
@@ -140,6 +140,5 @@ describe('Policies', function() {
       });
     });
   });
-
 
 });
