@@ -113,4 +113,33 @@ describe('Policies', function() {
       });
     });
   });
+
+  describe('wildcard policies as array', function() {
+
+    before(function() {
+      var policy = {
+        'test': {
+          '*': ['fake_auth', 'authenticated']
+        }
+      };
+
+    var config = "module.exports.policies = " + JSON.stringify(policy);
+      fs.writeFileSync(path.resolve('../', appName, 'config/policies.js'), config);
+    });
+
+    describe('a get request to /:controller', function() {
+
+      it('should return a string', function(done) {
+
+        httpHelper.testRoute('get', {url: 'test', json: true}, function(err, response) {
+          if (err) done(err);
+
+          assert.equal(response.body, "index");
+          done();
+        });
+      });
+    });
+  });
+
+
 });
