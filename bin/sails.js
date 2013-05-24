@@ -350,7 +350,7 @@ function createNewApp(appName, templateLang) {
 	// Generate session secret
 	var boilerplatePath = __dirname + '/boilerplates/config/session.js';
 	var newSessionConfig = ejs.render(fs.readFileSync(boilerplatePath, 'utf8'), {
-		secret: generateSessionSecret()
+		secret: require('../lib/session').generateSecret()
 	});
 	fs.writeFileSync(boilerplatePath, newSessionConfig, 'utf8');
 
@@ -683,26 +683,4 @@ function trimSlashes(str) {
 
 function capitalize(str) {
 	return _.str.capitalize(str);
-}
-
-
-// Generate session secret
-function generateSessionSecret() {
-	
-	// Combine random and case-specific factors into a base string
-	var factors = {
-		creationDate: (new Date()).getTime(),
-		random: Math.random() * (Math.random() * 1000),
-		nodeVersion: process.version
-	};
-	var basestring = '';
-	_.each(factors, function (val) { basestring += val; });
-
-	// Build hash
-	var hash = require("crypto")
-	.createHash("md5")
-	.update(basestring)
-	.digest("hex");
-
-	return hash;
 }
