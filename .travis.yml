@@ -21,8 +21,15 @@ notifications:
     on_success: never
     on_failure: always
     template:
-      - "%{commit} by %{author} has failed:"
+      - "Build by %{author} has failed:"
+      - "Git Info: %{branch} - %{commit}"
       - "Travis states: %{message}"
       - "Build Details: %{build_url}"
       - "Change View: %{compare_url}"
     skip_join: true
+
+# whitelisted branches
+branches:
+  only:
+    - master
+    - development
