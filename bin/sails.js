@@ -140,6 +140,8 @@ else if (_.contains(['console'], argv._[0])) {
 	sails.log('Welcome to Sails (v'+sails.version +')');
 	sails.log('( to exit, type <CTRL>+<C> )');
 
+	// TODO: instead of lifting the servers, just fire up the ORM and include all the modules
+
 	require('../lib/sails').lift({
 		log: {
 			level: 'silent'
