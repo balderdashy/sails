@@ -1,6 +1,7 @@
 var _ = require('lodash');
 _.str = require('underscore.string');
 var fs = require('fs-extra');
+var ejs = require('ejs');
 var utils = require('./utils.js');
 
 // Output in directory where cmdline tool was run
@@ -46,16 +47,16 @@ module.exports = function createNewApp(appName, templateLang) {
 		utils.verifyDoesntExist(outputPath, 'A file or directory already exists at: ' + outputPath);
 
 		// Create a directory with the specified app name
-		utils.generateDir();
+		utils.generateDir(outputPath);
 	}
 
 	sails.log.info('Generating Sails project (' + appName + ')...');
 
 	// Create default app structure
-	utils.copyBoilerplate('public', 'public');
-	utils.copyBoilerplate('assets', 'assets');
-	utils.copyBoilerplate('api', 'api');
-	utils.copyBoilerplate('config', 'config');
+	utils.copyBoilerplate('public', outputPath + '/public');
+	utils.copyBoilerplate('assets', outputPath + '/assets');
+	utils.copyBoilerplate('api', outputPath + '/api');
+	utils.copyBoilerplate('config', outputPath + '/config');
 
 	// Generate session secret
 	var boilerplatePath = __dirname + '/boilerplates/config/session.js';
@@ -67,7 +68,7 @@ module.exports = function createNewApp(appName, templateLang) {
 	// Different stuff for different view engines
 	if (templateLang === 'handlebars') templateLang = 'hbs';
 
-	utils.copyBoilerplate('views/' + templateLang, 'views');
+	utils.copyBoilerplate('views/' + templateLang, outputPath + '/views');
 
 	var viewConfig = {
 		viewEngine: templateLang
@@ -83,10 +84,10 @@ module.exports = function createNewApp(appName, templateLang) {
 
 
 	// Default app launcher file (for situations where sails lift isn't good enough)
-	utils.generateFile('app.js', 'app.js');
+	utils.generateFile('app.js', outputPath + '/app.js');
 
 	// Create .gitignore
-	utils.generateFile('gitignore', '.gitignore');
+	utils.generateFile('gitignore', outputPath + '/.gitignore');
 
 	// Generate package.json
 	sails.log.debug('Generating package.json...');
