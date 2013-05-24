@@ -573,8 +573,6 @@ function generateView(entity, options) {
 
 // Utility class to generate a file given the boilerplate and output paths,
 // as well as an optional ejs render override.
-
-
 function generate(options) {
 	var boilerplateName = options.boilerplate.split('.')[0];
 	sails.log.debug('Generating ' + boilerplateName + ' for ' + options.entity + '...');
@@ -601,8 +599,6 @@ function generate(options) {
 }
 
 // Read a boilerplate and render the template
-
-
 function renderBoilerplateTemplate(boilerplate, data) {
 	var boilerplatePath = __dirname + '/boilerplates/templates/' + boilerplate;
 	verifyExists(boilerplatePath, "Boilerplate (" + boilerplate + ") doesn't exist!");
@@ -611,8 +607,6 @@ function renderBoilerplateTemplate(boilerplate, data) {
 }
 
 // Copy a boilerplate file
-
-
 function copyBoilerplate(boilerplate, destination, cb) {
 	var boilerplatePath = __dirname + '/boilerplates/' + boilerplate;
 	fs.copy(boilerplatePath, outputPath + '/' + destination, function(err) {
@@ -622,8 +616,6 @@ function copyBoilerplate(boilerplate, destination, cb) {
 
 
 // Verify that an argument exists
-
-
 function verifyArg(argNo, msg) {
 	if (!argv._[argNo]) {
 		sails.log.error(msg);
@@ -659,7 +651,6 @@ function isValidECMA51Variable(v) {
 }
 
 // Check if a file or directory exists
-
 function fileExists(path) {
 	try {
 		// Query the entry
@@ -679,7 +670,6 @@ function fileExists(path) {
 
 
 // String convenience utilities
-
 function trimSlashes(str) {
 	return _.str.trim(str, '/');
 }
