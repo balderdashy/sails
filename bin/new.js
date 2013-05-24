@@ -3,6 +3,9 @@ _.str = require('underscore.string');
 var fs = require('fs-extra');
 var utils = require('./utils.js');
 
+// Output in directory where cmdline tool was run
+var outputPath = '.';
+
 // Make existsSync not crash on older versions of Node
 fs.existsSync = fs.existsSync || require('path').existsSync;
 
@@ -40,19 +43,19 @@ module.exports = function createNewApp(appName, templateLang) {
 
 		// Check if there is a directory in the current directory with the new
 		// app name, log and exit if there is
-		verifyDoesntExist(outputPath, 'A file or directory already exists at: ' + outputPath);
+		utils.verifyDoesntExist(outputPath, 'A file or directory already exists at: ' + outputPath);
 
 		// Create a directory with the specified app name
-		generateDir();
+		utils.generateDir();
 	}
 
 	sails.log.info('Generating Sails project (' + appName + ')...');
 
 	// Create default app structure
-	copyBoilerplate('public', 'public');
-	copyBoilerplate('assets', 'assets');
-	copyBoilerplate('api', 'api');
-	copyBoilerplate('config', 'config');
+	utils.copyBoilerplate('public', 'public');
+	utils.copyBoilerplate('assets', 'assets');
+	utils.copyBoilerplate('api', 'api');
+	utils.copyBoilerplate('config', 'config');
 
 	// Generate session secret
 	var boilerplatePath = __dirname + '/boilerplates/config/session.js';
@@ -64,7 +67,7 @@ module.exports = function createNewApp(appName, templateLang) {
 	// Different stuff for different view engines
 	if (templateLang === 'handlebars') templateLang = 'hbs';
 
-	copyBoilerplate('views/' + templateLang, 'views');
+	utils.copyBoilerplate('views/' + templateLang, 'views');
 
 	var viewConfig = {
 		viewEngine: templateLang
@@ -80,10 +83,10 @@ module.exports = function createNewApp(appName, templateLang) {
 
 
 	// Default app launcher file (for situations where sails lift isn't good enough)
-	generateFile('app.js', 'app.js');
+	utils.generateFile('app.js', 'app.js');
 
 	// Create .gitignore
-	generateFile('gitignore', '.gitignore');
+	utils.generateFile('gitignore', '.gitignore');
 
 	// Generate package.json
 	sails.log.debug('Generating package.json...');
