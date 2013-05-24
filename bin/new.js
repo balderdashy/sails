@@ -11,7 +11,7 @@ require('coffee-script');
 // Build mock sails object
 var sails = require('./mockSails.js');
 
-module.exports = function (appName, templateLang) {
+module.exports = function createNewApp(appName, templateLang) {
 	// Whether the project being made in an existing directory or not
 	var existingDirectory;
 
@@ -29,11 +29,10 @@ module.exports = function (appName, templateLang) {
 	}
 
 	// Check if the appName is an absolute path, if so don't prepend './'
-    var outputPath;
 	if (appName.substr(0, 1) === '/') {
 		outputPath = appName;
 	} else {
-		outputPath = './' + appName;
+		outputPath = outputPath + '/' + appName;
 	}
 
 	// If app is being created in new directory
@@ -41,24 +40,31 @@ module.exports = function (appName, templateLang) {
 
 		// Check if there is a directory in the current directory with the new
 		// app name, log and exit if there is
-		utils.verifyDoesntExist(outputPath, 'A file or directory already exists at: ' + outputPath);
+		verifyDoesntExist(outputPath, 'A file or directory already exists at: ' + outputPath);
 
 		// Create a directory with the specified app name
-		utils.generateDir(outputPath);
+		generateDir();
 	}
 
 	sails.log.info('Generating Sails project (' + appName + ')...');
 
 	// Create default app structure
-	utils.copyBoilerplate('public', outputPath + '/public');
-	utils.copyBoilerplate('assets', outputPath + '/assets');
-	utils.copyBoilerplate('api', outputPath + '/api');
-	utils.copyBoilerplate('config', outputPath + '/config');
+	copyBoilerplate('public', 'public');
+	copyBoilerplate('assets', 'assets');
+	copyBoilerplate('api', 'api');
+	copyBoilerplate('config', 'config');
+
+	// Generate session secret
+	var boilerplatePath = __dirname + '/boilerplates/config/session.js';
+	var newSessionConfig = ejs.render(fs.readFileSync(boilerplatePath, 'utf8'), {
+		secret: require('../lib/session').generateSecret()
+	});
+	fs.writeFileSync(boilerplatePath, newSessionConfig, 'utf8');
 
 	// Different stuff for different view engines
 	if (templateLang === 'handlebars') templateLang = 'hbs';
 
-	utils.copyBoilerplate('views/' + templateLang, outputPath + '/views');
+	copyBoilerplate('views/' + templateLang, 'views');
 
 	var viewConfig = {
 		viewEngine: templateLang
@@ -74,10 +80,10 @@ module.exports = function (appName, templateLang) {
 
 
 	// Default app launcher file (for situations where sails lift isn't good enough)
-	utils.generateFile('app.js', outputPath + '/app.js');
+	generateFile('app.js', 'app.js');
 
 	// Create .gitignore
-	utils.generateFile( '/gitignore', outputPath + '/.gitignore');
+	generateFile('gitignore', '.gitignore');
 
 	// Generate package.json
 	sails.log.debug('Generating package.json...');

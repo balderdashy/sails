@@ -23,6 +23,26 @@ argv._ = _.map(argv._, function(arg) {
 	return arg + '';
 });
 
+// Known errors
+var errors = {
+	badLocalSails: function(requiredVersion) {
+		return 'You may consider reinstalling Sails locally (npm install sails@' + requiredVersion + ').';
+	}
+};
+
+// Read package.json file in specified path
+
+function getPackage(path) {
+	path = _.str.rtrim(path, '/');
+	var packageJson = fs.readFileSync(path + '/package.json', 'utf-8');
+	try {
+		packageJson = JSON.parse(packageJson);
+	} catch (e) {
+		return false;
+	}
+	return packageJson;
+}
+
 // Start this app
 if (argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l'], argv._[0])) {
 
@@ -52,6 +72,8 @@ else if (_.contains(['console'], argv._[0])) {
 	sails.log.ship();
 	sails.log('Welcome to Sails (v'+sails.version +')');
 	sails.log('( to exit, type <CTRL>+<C> )');
+
+	// TODO: instead of lifting the servers, just fire up the ORM and include all the modules
 
 	require('../lib/sails').lift({
 		log: {
@@ -151,6 +173,7 @@ else if (argv._[0] && (argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^
 	else if (argv._[1] === 'controller') {
 		var entity = argv._[2];
 		verifyArg(2, 'Please specify the name for the new controller as the third argument.');
+
 		// Figure out actions based on args
 		var options = _.extend({}, argv);
 		options.actions = argv._.splice(3);
@@ -216,6 +239,7 @@ else {
 
 
 
+
 // Display usage
 function sailsUsage() {
 	function leftColumn (str) {
@@ -239,8 +263,6 @@ function sailsUsage() {
 
 
 // Verify that an argument exists
-
-
 function verifyArg(argNo, msg) {
 	if (!argv._[argNo]) {
 		sails.log.error(msg);
