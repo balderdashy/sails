@@ -188,7 +188,7 @@ function checkGeneratedFiles(appName, templateLang) {
 		'assets/styles',
 		'assets/templates',
 		'assets/js/.gitkeep',
-		'assets/mixins/reset.css',
+		'assets/mixins/normalize.css',
 		'assets/mixins/sails.io.js',
 		'assets/styles/.gitkeep',
 		'assets/templates/.gitkeep',
