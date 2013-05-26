@@ -187,4 +187,35 @@ describe('Specified routes', function() {
 			});
 		});
 	});
+
+    describe('enhance routing', function() {
+
+        it('should allow enhanced routes to pass additional info to the controller', function(done) {
+
+            httpHelper.writeRoutes({
+                'get /test/enhanced': {
+                    controller: 'test',
+                    action: 'route',
+                    enhanceMeBaby: 'byYourCommand'
+                }
+            });
+
+            httpHelper.testRoute('get', 'test/enhanced', function(err, response) {
+                if (err) done(new Error(err));
+
+                var expected = JSON.stringify(
+                    {
+                        'controller': 'test',
+                        'action': 'route',
+                        'enhanceMeBaby': 'byYourCommand',
+                        'verb': 'get'
+                    }
+                );
+
+                assert(expected === response.body);
+                done();
+            });
+        });
+    });
+
 });

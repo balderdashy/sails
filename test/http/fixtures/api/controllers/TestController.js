@@ -25,5 +25,9 @@ module.exports = {
 
 	destroy: function(req, res) {
 		res.send('destroy');
-	}
+	},
+
+    route: function(req, res) {
+        res.send(req.params.target);
+    }
 };
