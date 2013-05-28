@@ -88,7 +88,8 @@
     "coffee-script": "1.6.2",
     "connect-redis": "1.4.5",
     "hbs": "2.1.0",
-    "cookie": "0.0.6"
+    "cookie": "0.0.6",
+    "connect-mongo": "0.3.2"
   },
   "devDependencies": {
     "mocha": "*",
