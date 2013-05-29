@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _ = require('lodash');
 describe('count', function() {
 
 	var testName = 'count test';

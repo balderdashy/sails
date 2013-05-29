@@ -3,7 +3,7 @@
  *
  */
 // Dependencies
-var _ = require('underscore');
+var _ = require('lodash');
 var async = require('async');
 var assert = require("assert");
 

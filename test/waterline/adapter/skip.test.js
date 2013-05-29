@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _ = require('lodash');
 describe('skip', function() {
 
 	var testName = 'skip test';

@@ -3,7 +3,7 @@
  */
 
 // Dependencies
-var _ = require('underscore');
+var _ = require('lodash');
 var parley = require('parley');
 var assert = require("assert");
 

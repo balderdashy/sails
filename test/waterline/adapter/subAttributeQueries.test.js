@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _ = require('lodash');
 
 describe('sub-attribute criteria queries', function(cb) {
 	describe('lessThan (<, <=)', function(cb) {

@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _ = require('lodash');
 
 describe('LIKE: basic query usage', function() {
 	it ('should return the user with the given name',function (done) {

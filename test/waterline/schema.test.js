@@ -1,7 +1,7 @@
 // /*
 //  * Tests schema operations
 //  */
-// var _ = require('underscore');
+// var _ = require('lodash');
 
 // describe('schema', function() {
 

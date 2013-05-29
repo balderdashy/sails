@@ -7,7 +7,7 @@
  * autoIncrement(), findOrCreate(), findAndUpdate(), findAndDestroy()
  */
 // Dependencies
-var _ = require('underscore');
+var _ = require('lodash');
 var async = require('async');
 var parley = require('parley');
 var assert = require("assert");

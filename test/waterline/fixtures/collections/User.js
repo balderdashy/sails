@@ -3,7 +3,7 @@
 	-> collection
 ---------------------*/
 
-var _ = require('underscore');
+var _ = require('lodash');
 
 //////////////////////////////////////////////////
 // Testing fns
@@ -70,16 +70,16 @@ exports.identity = 'User';
 ////////////////////////////////////////////////////////
 // development: temporal (in-memory dirtydb)
 ////////////////////////////////////////////////////////
-// exports.adapter = 'sails-dirty';
-// exports.inMemory = false;
+exports.adapter = 'sails-dirty';
+exports.inMemory = false;
 
 ////////////////////////////////////////////////////////
 // mySQL
 ////////////////////////////////////////////////////////
-exports.adapter = 'sails-mysql';
-exports.database = 'waterline';
-exports.user = 'root';
-exports.password = '';
+// exports.adapter = 'sails-mysql';
+// exports.database = 'waterline';
+// exports.user = 'root';
+// exports.password = '';
 
 ////////////////////////////////////////////////////////
 // mongo
