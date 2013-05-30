@@ -103,6 +103,14 @@ function copyBoilerplate(boilerplate, destination, cb) {
 	});
 }
 
+// Copy Sails into a project as a local dependency
+function copyBoilerplate(destination, cb) {
+	var path = __dirname + '/../';
+	fs.copy(path, destination, function(err) {
+		return cb && cb(err);
+	});
+}
+
 // Copy a Sails dependency, in a smart way
 function copySailsDependency(moduleName, pathToNewNodeModules, cb) {
 	var path = __dirname + '/../node_modules/' + moduleName;
