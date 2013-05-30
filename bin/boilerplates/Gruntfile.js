@@ -70,11 +70,11 @@ module.exports = function(grunt) {
     watch : {
       api: {
         files: ['api/**/*'],
-        tasks: ['api']
+        tasks: ['apiChanged']
       },
       assets: {
         files: ['assets/**/*'],
-        tasks: ['assets']
+        tasks: ['assetsChanged']
       }
     }
   });
@@ -87,28 +87,31 @@ module.exports = function(grunt) {
 
   // When Sails is lifted:
   grunt.registerTask('default', [
-    'watch:api',
-    'watch:assets',
+    'reloadAssets',
+    'watch'
+    // 'watch:api',
+  ]);
+
+  grunt.registerTask('reloadAssets', [
     'clean:dev',
     'jst:dev',
     'copy:dev',
     'scriptlinker:devJs',
     'scriptlinker:devStyles',
     'scriptlinker:devTpl'
+  ]);
+
+  grunt.registerTask('reloadApi', [
+
   ]);
 
   // When API files are changed:
-  grunt.registerTask('api', [
-    
+  grunt.registerTask('apiChanged', [
+    'reloadApi'
   ]);
 
   // When assets are changed:
-  grunt.registerTask('assets', [
-    'clean:dev',
-    'jst:dev',
-    'copy:dev',
-    'scriptlinker:devJs',
-    'scriptlinker:devStyles',
-    'scriptlinker:devTpl'
+  grunt.registerTask('assetsChanged', [
+    'reloadAssets'
   ]);
 };
