@@ -7,7 +7,6 @@ var ejs = require('ejs');
 var fs = require('fs-extra');
 var utils = require('./utils.js');
 var generate = require('./generate.js');
-var forever = require('forever');
 
 // Make existsSync not crash on older versions of Node
 fs.existsSync = fs.existsSync || require('path').existsSync;
@@ -48,23 +47,6 @@ if (argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run'
 
 	require('./lift.js')(argv);
 }
-// // Daemonize server
-// else if(argv.d || argv._[0] && _.contains(['forever'], argv._[0])) {
-// 	var forever = require('forever');
-// 	forever.startServer();
-// 	forever.startDaemon('sails lift');
-
-// 	// Create temporary app file
-// 	// fs.writeFileSync(sails.config.appPath + '/app.js', function (){});
-// 	// copy down global install of sails locally if one doesn't already exist
-// 	// if(!fs.existsSync(sails.config.appPath + '/node_modules/sails')) {}
-
-// 	// run file
-// }
-// // Stop all servers
-// else if(argv._[0] && _.contains(['stop', 'kill'], argv._[0])) {
-
-// }
 
 
 // Check if console was requested, if so, launch console

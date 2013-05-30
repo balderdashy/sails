@@ -1,7 +1,6 @@
 var _ = require('lodash');
 _.str = require('underscore.string');
 var fs = require('fs-extra');
-var forever = require('forever');
 
 // Make existsSync not crash on older versions of Node
 fs.existsSync = fs.existsSync || require('path').existsSync;
