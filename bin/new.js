@@ -97,6 +97,7 @@ module.exports = function createNewApp(appName, templateLang) {
 		description: 'a Sails application',
 		dependencies: {
 			sails: sails.version,
+			optimist: '0.3.4',
 			grunt: '0.4.1',
 			'grunt-contrib-copy': '0.4.1',
 			'grunt-contrib-clean': '0.4.1',
@@ -125,12 +126,13 @@ module.exports = function createNewApp(appName, templateLang) {
 
 	// Copy dependencies (to avoid having to do a local npm install in new projects)
 	utils.generateDir(outputPath + '/node_modules');
+	utils.copySailsDependency('optimist', outputPath + '/node_modules');
 	utils.copySailsDependency('grunt', outputPath + '/node_modules');
 	utils.copySailsDependency('grunt-contrib-copy', outputPath + '/node_modules');
 	utils.copySailsDependency('grunt-contrib-clean', outputPath + '/node_modules');
 	utils.copySailsDependency('grunt-contrib-jst', outputPath + '/node_modules');
 	utils.copySailsDependency('grunt-scriptlinker', outputPath + '/node_modules');
 
-	// Copy sails itself into new project as a local dependency
+	// Copy Sails itself into new project as a local dependency
 	utils.copySails(outputPath + '/node_modules/sails');
 };

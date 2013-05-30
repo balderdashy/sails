@@ -16,6 +16,7 @@ module.exports = {
 	fileExists: fileExists,
 	renderBoilerplateTemplate: renderBoilerplateTemplate,
 	verfiyExists: verifyExists,
+	copySails: copySails,
 	copyBoilerplate: copyBoilerplate,
 	copySailsDependency: copySailsDependency,
 	verifyValidEntity: verifyValidEntity,
@@ -104,9 +105,18 @@ function copyBoilerplate(boilerplate, destination, cb) {
 }
 
 // Copy Sails into a project as a local dependency
-function copyBoilerplate(destination, cb) {
-	var path = __dirname + '/../';
-	fs.copy(path, destination, function(err) {
+function copySails(destination, cb) {
+	sails.log.debug('Copying Sails.js runtime into new project...');
+	try {
+		fs.mkdirSync(destination);
+	}
+	catch(e) {
+		return cb && cb(e);
+	}
+
+	require('async').forEach(['lib', 'package.json', 'node_modules'], function (fileOrDir, cb) {
+		fs.copy(__dirname + '/../' + fileOrDir, destination + '/' + fileOrDir, cb);
+	}, function (err) {
 		return cb && cb(err);
 	});
 }
