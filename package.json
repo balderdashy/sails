@@ -88,7 +88,12 @@
     "coffee-script": "1.6.2",
     "connect-redis": "1.4.5",
     "hbs": "2.1.0",
-    "cookie": "0.0.6"
+    "cookie": "0.0.6",
+    "grunt": "0.4.1",
+    "grunt-contrib-copy": "0.4.1",
+    "grunt-contrib-clean": "0.4.1",
+    "grunt-scriptlinker": "0.1.1",
+    "grunt-contrib-jst": "0.5.0"
   },
   "devDependencies": {
     "mocha": "*",

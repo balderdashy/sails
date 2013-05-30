@@ -17,6 +17,7 @@ module.exports = {
 	renderBoilerplateTemplate: renderBoilerplateTemplate,
 	verfiyExists: verifyExists,
 	copyBoilerplate: copyBoilerplate,
+	copySailsDependency: copySailsDependency,
 	verifyValidEntity: verifyValidEntity,
 	trimSlashes: trimSlashes,
 	capitalize: capitalize
@@ -94,8 +95,7 @@ function verifyExists(path, msg) {
 	}
 }
 
-// Copy a boilerplate file
-
+// Copy a boilerplate directory or file
 function copyBoilerplate(boilerplate, destination, cb) {
 	var boilerplatePath = __dirname + '/boilerplates/' + boilerplate;
 	fs.copy(boilerplatePath, destination, function(err) {
@@ -103,6 +103,48 @@ function copyBoilerplate(boilerplate, destination, cb) {
 	});
 }
 
+// Copy a Sails dependency, in a smart way
+function copySailsDependency(moduleName, pathToNewNodeModules, cb) {
+	var path = __dirname + '/../node_modules/' + moduleName;
+	fs.copy(path, pathToNewNodeModules + '/' + moduleName, function(err) {
+		if (err) return cb && cb(err);
+
+		// Parse the module's package.json
+		var packageJSONPath = path + '/package.json';
+		var packageJSON;
+		try {
+			packageJSON = JSON.parse(fs.readFileSync(packageJSONPath, 'utf-8'));
+		}
+		catch (e) { 
+
+			// Ignore missing package.json
+			packageJSON = { dependencies: {} };
+		}
+
+		// Get actual dependencies in this module's node_modules directory
+		var dependencies;
+		try {
+			dependencies = fs.readdirSync(path + '/node_modules');
+			
+			// Remove hidden files
+			_.without(dependencies, function (val) {
+				return val.match(/\..+/);
+			});
+		} 
+		catch(e) { 
+			// Assume empty dependencies
+			dependencies = {};
+		}
+
+		// If there are any missing dependencies which are being pulled from Sails,
+		// copy them from Sails' main node_modules directory
+		var missingModules = _.difference(_.keys(packageJSON.dependencies || {}), _.values(dependencies));
+		_.each(missingModules, function (missingModuleName) {
+			copySailsDependency(missingModuleName, pathToNewNodeModules + '/' + moduleName + '/node_modules/');
+		});
+		return cb && cb(err);
+	});
+}
 
 function verifyValidEntity(entity, msg) {
 	if (!isValidECMA51Variable(entity)) {

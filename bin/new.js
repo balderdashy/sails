@@ -122,4 +122,12 @@ module.exports = function createNewApp(appName, templateLang) {
 	// Generate README
 	sails.log.debug('Generating README.md...');
 	fs.writeFileSync(outputPath + '/README.md', '# ' + appName + '\n### a Sails application');
+
+	// Copy dependencies (to avoid having to do a local npm install in new projects)
+	utils.generateDir(outputPath + '/node_modules');
+	utils.copySailsDependency('grunt', outputPath + '/node_modules');
+	utils.copySailsDependency('grunt-contrib-copy', outputPath + '/node_modules');
+	utils.copySailsDependency('grunt-contrib-clean', outputPath + '/node_modules');
+	utils.copySailsDependency('grunt-contrib-jst', outputPath + '/node_modules');
+	utils.copySailsDependency('grunt-scriptlinker', outputPath + '/node_modules');
 };
