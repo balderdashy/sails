@@ -158,7 +158,7 @@ function copySailsDependency(moduleName, pathToNewNodeModules, cb) {
 		// copy them from Sails' main node_modules directory
 		var missingModules = _.difference(_.keys(packageJSON.dependencies || {}), _.values(dependencies));
 		_.each(missingModules, function (missingModuleName) {
-			sails.log.verbose('Resolving '+moduleName+'\'s missing dependency ('+missingModuleName+') using the version in Sails.');
+			sails.log('Resolving '+moduleName+'\'s missing dependency ('+missingModuleName+') using the version in Sails.');
 			copySailsDependency(missingModuleName, pathToNewNodeModules + '/' + moduleName + '/node_modules/');
 		});
 		return cb && cb(err);
