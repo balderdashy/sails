@@ -68,9 +68,13 @@ module.exports = function(grunt) {
     },
 
     watch : {
-      src: {
+      api: {
+        files: ['api/**/*'],
+        tasks: ['api']
+      },
+      assets: {
         files: ['assets/**/*'],
-        tasks: ['default']
+        tasks: ['assets']
       }
     }
   });
@@ -81,14 +85,30 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jst');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  // Default task(s).
+  // When Sails is lifted:
   grunt.registerTask('default', [
+    'watch:api',
+    'watch:assets',
     'clean:dev',
     'jst:dev',
     'copy:dev',
     'scriptlinker:devJs',
     'scriptlinker:devStyles',
-    'scriptlinker:devTpl',
-    'watch:src'
+    'scriptlinker:devTpl'
+  ]);
+
+  // When API files are changed:
+  grunt.registerTask('api', [
+    
+  ]);
+
+  // When assets are changed:
+  grunt.registerTask('assets', [
+    'clean:dev',
+    'jst:dev',
+    'copy:dev',
+    'scriptlinker:devJs',
+    'scriptlinker:devStyles',
+    'scriptlinker:devTpl'
   ]);
 };
