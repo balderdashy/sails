@@ -212,6 +212,12 @@ else if (argv._[0].match(/^new$/)) {
 	require('./new.js')(argv._[1], template);
 }
 
+
+// Build a www directory of everyting from /.tmp/public (aka /assets)
+else if (argv._[0].match(/^build$/)) {
+	// TODO: stub
+}
+
 // Unknown command, print out usage
 else {
 	console.log('');
