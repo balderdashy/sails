@@ -69,8 +69,7 @@ module.exports = function(grunt) {
 
     watch : {
       api: {
-        files: ['api/**/*'],
-        tasks: ['apiChanged']
+        files: ['api/**/*']
       },
       assets: {
         files: ['assets/**/*'],
@@ -102,15 +101,24 @@ module.exports = function(grunt) {
     'scriptlinker:devTpl'
   ]);
 
-  // When API files are changed:
-  grunt.registerTask('apiChanged', function(a,b) {
-     console.log('reloading api!',a,b);
-     grunt.log.writeln('Currently running the "reloadApi" task.');
-
-  });
-
   // When assets are changed:
   grunt.registerTask('assetsChanged', [
     'reloadAssets'
   ]);
+
+  // When API files are changed:
+  grunt.event.on('watch', function(action, filepath) {
+    grunt.log.writeln(filepath + ' has ' + action);
+
+    // Send a request to a development-only endpoint on the server
+    // which will reuptake the file that was changed.
+    var baseurl = grunt.option('baseurl');
+    var gruntSignalRoute = grunt.option('signalpath');
+    var url = baseurl + gruntSignalRoute + '?action=' + action + '&filepath=' + filepath;
+
+    require('http').get(url)
+    .on('error', function(e) {
+      console.error(filepath + ' has ' + action + ', but could not signal the Sails.js server: ' + e.message);
+    });
+  });
 };
