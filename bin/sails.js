@@ -30,7 +30,6 @@ var errors = {
 };
 
 // Read package.json file in specified path
-
 function getPackage(path) {
 	path = _.str.rtrim(path, '/');
 	var packageJson = fs.readFileSync(path + '/package.json', 'utf-8');
@@ -172,7 +171,7 @@ else if (argv._[0] && (argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^
 	// 	options.actions = argv._.splice(3);
 	// 	generate.generateView(entity, options);
 	// }
-	
+
 	// Generate an adapter
 	else if (argv._[1] === 'adapter') {
 		var entity = argv._[2];
@@ -215,7 +214,17 @@ else if (argv._[0].match(/^new$/)) {
 
 // Build a www directory of everyting from /.tmp/public (aka /assets)
 else if (argv._[0].match(/^build$/)) {
-	// TODO: stub
+
+	// TODO: hook into grunt build command.
+
+	sails.log.info('Building assets into directory...');
+	fs.copy(sails.config.appPath+'/.tmp/public', sails.config.appPath+'/www', function (err) {
+		if (err) {
+			sails.log.error('There was a problem during the build process.');
+			return sails.log.error(err);
+		}
+		sails.log.info('Successfully built \'www\' directory in the application root.');
+	});
 }
 
 // Unknown command, print out usage
