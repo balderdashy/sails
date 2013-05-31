@@ -154,13 +154,16 @@ function copySailsDependency(moduleName, pathToNewNodeModules, cb) {
 			dependencies = {};
 		}
 
+		// sails.log.verbose('For '+moduleName,'dependencies -> ',_.values(dependencies), 'packagejson deps -> ', _.keys(packageJSON.dependencies));
+
 		// If there are any missing dependencies which are being pulled from Sails,
 		// copy them from Sails' main node_modules directory
 		var missingModules = _.difference(_.keys(packageJSON.dependencies || {}), _.values(dependencies));
 		_.each(missingModules, function (missingModuleName) {
-			sails.log('Resolving '+moduleName+'\'s missing dependency ('+missingModuleName+') using the version in Sails.');
+			sails.log.verbose('Resolving '+moduleName+'\'s missing dependency ('+missingModuleName+') using the version in Sails.');
 			copySailsDependency(missingModuleName, pathToNewNodeModules + '/' + moduleName + '/node_modules/');
 		});
+		
 		return cb && cb(err);
 	});
 }

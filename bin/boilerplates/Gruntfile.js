@@ -79,17 +79,18 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-scriptlinker');
-  grunt.loadNpmTasks('grunt-contrib-jst');
-  grunt.loadNpmTasks('grunt-contrib-watch');
+  // Get path to core grunt dependencies from Sails
+  var depsPath = grunt.option('gdsrc');
+  grunt.loadTasks(depsPath + '/grunt-contrib-clean/tasks');
+  grunt.loadTasks(depsPath + '/grunt-contrib-copy/tasks');
+  grunt.loadTasks(depsPath + '/grunt-scriptlinker/tasks');
+  grunt.loadTasks(depsPath + '/grunt-contrib-jst/tasks');
+  grunt.loadTasks(depsPath + '/grunt-contrib-watch/tasks');
 
   // When Sails is lifted:
   grunt.registerTask('default', [
     'reloadAssets',
     'watch'
-    // 'watch:api',
   ]);
 
   grunt.registerTask('reloadAssets', [
@@ -101,14 +102,12 @@ module.exports = function(grunt) {
     'scriptlinker:devTpl'
   ]);
 
-  grunt.registerTask('reloadApi', [
-
-  ]);
-
   // When API files are changed:
-  grunt.registerTask('apiChanged', [
-    'reloadApi'
-  ]);
+  grunt.registerTask('apiChanged', function(a,b) {
+     console.log('reloading api!',a,b);
+     grunt.log.writeln('Currently running the "reloadApi" task.');
+
+  });
 
   // When assets are changed:
   grunt.registerTask('assetsChanged', [
