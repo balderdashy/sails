@@ -53,7 +53,6 @@ module.exports = function createNewApp(appName, templateLang) {
 	sails.log.info('Generating Sails project (' + appName + ')...');
 
 	// Create default app structure
-	utils.copyBoilerplate('public', outputPath + '/public');
 	utils.copyBoilerplate('assets', outputPath + '/assets');
 	utils.copyBoilerplate('api', outputPath + '/api');
 	utils.copyBoilerplate('config', outputPath + '/config');
@@ -98,7 +97,13 @@ module.exports = function createNewApp(appName, templateLang) {
 		description: 'a Sails application',
 		dependencies: {
 			sails: sails.version,
-			'optimist': '0.4.0'
+			optimist: '0.3.4',
+			grunt: '0.4.1',
+			'grunt-contrib-copy': '0.4.1',
+			'grunt-contrib-clean': '0.4.1',
+			'grunt-scriptlinker': '0.1.1',
+			'grunt-contrib-jst': '0.5.0',
+			'grunt-contrib-watch': '0.4.4'
 		},
 		scripts: {
 			// Include this later when we have "sails test" ready.
@@ -112,7 +117,24 @@ module.exports = function createNewApp(appName, templateLang) {
 		license: 'MIT'
 	}, null, 4));
 
+	// Copy Gruntfile
+	sails.log.debug('Generating README.md...');
+	utils.generateFile('Gruntfile.js', outputPath + '/Gruntfile.js');
+
 	// Generate README
 	sails.log.debug('Generating README.md...');
 	fs.writeFileSync(outputPath + '/README.md', '# ' + appName + '\n### a Sails application');
+
+	// Copy dependencies (to avoid having to do a local npm install in new projects)
+	utils.generateDir(outputPath + '/node_modules');
+	utils.copySailsDependency('optimist', outputPath + '/node_modules');
+	utils.copySailsDependency('grunt', outputPath + '/node_modules');
+	utils.copySailsDependency('grunt-contrib-copy', outputPath + '/node_modules');
+	utils.copySailsDependency('grunt-contrib-clean', outputPath + '/node_modules');
+	utils.copySailsDependency('grunt-contrib-jst', outputPath + '/node_modules');
+	utils.copySailsDependency('grunt-scriptlinker', outputPath + '/node_modules');
+	utils.copySailsDependency('grunt-contrib-watch', outputPath + '/node_modules');
+
+	// Copy Sails itself into new project as a local dependency
+	utils.copySails(outputPath + '/node_modules/sails');
 };

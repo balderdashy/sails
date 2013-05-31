@@ -7,7 +7,6 @@ var ejs = require('ejs');
 var fs = require('fs-extra');
 var utils = require('./utils.js');
 var generate = require('./generate.js');
-var forever = require('forever');
 
 // Make existsSync not crash on older versions of Node
 fs.existsSync = fs.existsSync || require('path').existsSync;
@@ -31,7 +30,6 @@ var errors = {
 };
 
 // Read package.json file in specified path
-
 function getPackage(path) {
 	path = _.str.rtrim(path, '/');
 	var packageJson = fs.readFileSync(path + '/package.json', 'utf-8');
@@ -48,23 +46,6 @@ if (argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run'
 
 	require('./lift.js')(argv);
 }
-// // Daemonize server
-// else if(argv.d || argv._[0] && _.contains(['forever'], argv._[0])) {
-// 	var forever = require('forever');
-// 	forever.startServer();
-// 	forever.startDaemon('sails lift');
-
-// 	// Create temporary app file
-// 	// fs.writeFileSync(sails.config.appPath + '/app.js', function (){});
-// 	// copy down global install of sails locally if one doesn't already exist
-// 	// if(!fs.existsSync(sails.config.appPath + '/node_modules/sails')) {}
-
-// 	// run file
-// }
-// // Stop all servers
-// else if(argv._[0] && _.contains(['stop', 'kill'], argv._[0])) {
-
-// }
 
 
 // Check if console was requested, if so, launch console
@@ -190,7 +171,7 @@ else if (argv._[0] && (argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^
 	// 	options.actions = argv._.splice(3);
 	// 	generate.generateView(entity, options);
 	// }
-	
+
 	// Generate an adapter
 	else if (argv._[1] === 'adapter') {
 		var entity = argv._[2];
@@ -228,6 +209,22 @@ else if (argv._[0].match(/^new$/)) {
 		template = argv.template;
 	}
 	require('./new.js')(argv._[1], template);
+}
+
+
+// Build a www directory of everyting from /.tmp/public (aka /assets)
+else if (argv._[0].match(/^build$/)) {
+
+	// TODO: hook into grunt build command.
+
+	sails.log.info('Building assets into directory...');
+	fs.copy(sails.config.appPath+'/.tmp/public', sails.config.appPath+'/www', function (err) {
+		if (err) {
+			sails.log.error('There was a problem during the build process.');
+			return sails.log.error(err);
+		}
+		sails.log.info('Successfully built \'www\' directory in the application root.');
+	});
 }
 
 // Unknown command, print out usage
