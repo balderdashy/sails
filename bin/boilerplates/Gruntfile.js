@@ -11,11 +11,17 @@ module.exports = function(grunt) {
         files: [
           {expand: true, cwd: './assets', src: ['**/*'], dest: '.tmp/public'}
         ]
+      },
+      build: {
+        files: [
+          {expand: true, cwd: '.tmp/public', src: ['**/*'], dest: 'www'}
+        ]
       }
     },
 
     clean: {
-      dev: ['.tmp/public/**']
+      dev: ['.tmp/public/**'],
+      build: ['www']
     },
 
     jst: {
@@ -104,6 +110,12 @@ module.exports = function(grunt) {
   // When assets are changed:
   grunt.registerTask('assetsChanged', [
     'reloadAssets'
+  ]);
+
+  // Build the assets into a web accessable folder.
+  grunt.registerTask('build', [
+    'clean:build',
+    'copy:build'
   ]);
 
   // When API files are changed:

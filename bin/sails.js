@@ -214,17 +214,7 @@ else if (argv._[0].match(/^new$/)) {
 
 // Build a www directory of everyting from /.tmp/public (aka /assets)
 else if (argv._[0].match(/^build$/)) {
-
-	// TODO: hook into grunt build command.
-
-	sails.log.info('Building assets into directory...');
-	fs.copy(sails.config.appPath+'/.tmp/public', sails.config.appPath+'/www', function (err) {
-		if (err) {
-			sails.log.error('There was a problem during the build process.');
-			return sails.log.error(err);
-		}
-		sails.log.info('Successfully built \'www\' directory in the application root.');
-	});
+	require('./build.js')();
 }
 
 // Unknown command, print out usage
