@@ -114,6 +114,7 @@ module.exports = function(grunt) {
 
   // Build the assets into a web accessable folder.
   grunt.registerTask('build', [
+    'reloadAssets',
     'clean:build',
     'copy:build'
   ]);
