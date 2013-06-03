@@ -83,13 +83,13 @@ module.exports = function(argv) {
 
 
 		// If we made it this far, we're good to go-- fire 'er up, chief
-		require(sails.config.appPath + '/node_modules/sails/lib/sails.js').lift(argv);
+		require(sails.config.appPath + '/node_modules/sails/lib').lift(argv);
 
 	}
 	// otherwise, copy the global installation of sails locally
 	else {
 		var globalSailsPath = __dirname + '/../';
-		require('../lib/sails').lift(argv);
+		require('../lib').lift(argv);
 
 		// sails.log.verbose("Installing Sails in this project...");
 		// fs.mkdirsSync(localSailsPath);
