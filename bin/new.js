@@ -10,6 +10,10 @@ var outputPath = '.';
 // Make existsSync not crash on older versions of Node
 fs.existsSync = fs.existsSync || require('path').existsSync;
 
+
+// Build mock sails object
+var sails = require('./mockSails.js');
+
 // If coffeescript is not installed, fail silently
 try {
 	require('coffee-script');
@@ -18,9 +22,6 @@ try {
 catch (e) {
 	sails.log.verbose('CoffeeScript not installed.');
 }
-
-// Build mock sails object
-var sails = require('./mockSails.js');
 
 module.exports = function createNewApp(appName, templateLang) {
 	// Whether the project being made in an existing directory or not

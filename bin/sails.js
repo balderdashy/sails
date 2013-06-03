@@ -11,10 +11,18 @@ var generate = require('./generate.js');
 fs.existsSync = fs.existsSync || require('path').existsSync;
 
 var argv = require('optimist').argv;
-require('coffee-script');
 
 // Build mock sails object
 var sails = require('./mockSails.js');
+
+// If coffeescript is not installed, fail silently
+try {
+	require('coffee-script');
+	sails.log.verbose('Enabling CoffeeScript...');
+}
+catch (e) {
+	sails.log.verbose('CoffeeScript not installed.');
+}
 
 // Stringify args
 argv._ = _.map(argv._, function(arg) {
