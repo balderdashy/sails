@@ -62,7 +62,6 @@
   "dependencies": {
     "ejs": "0.7.2",
     "jade": "0.28.0",
-    "socket.io": "0.9.6",
     "connect-redis": "1.4.5",
     "winston": "0.6.2",
     "async": "0.1.22",
@@ -78,7 +77,8 @@
     "inflection": "1.2.5",
     "node-uuid": "*",
     "express": "~3.2.6",
-    "connect": "~2.7.11"
+    "connect": "~2.7.11",
+    "socket.io": "~0.9.14"
   },
   "devDependencies": {
     "grunt": "0.4.1",
