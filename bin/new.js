@@ -10,7 +10,14 @@ var outputPath = '.';
 // Make existsSync not crash on older versions of Node
 fs.existsSync = fs.existsSync || require('path').existsSync;
 
-require('coffee-script');
+// If coffeescript is not installed, fail silently
+try {
+	require('coffee-script');
+	sails.log.verbose('Enabling CoffeeScript...');
+}
+catch (e) {
+	sails.log.verbose('CoffeeScript not installed.');
+}
 
 // Build mock sails object
 var sails = require('./mockSails.js');

@@ -41,7 +41,6 @@
     "fs-extra": "0.5.0",
     "lodash": "1.2.1",
     "glob": "3.1.14",
-    "cookie": "0.0.6",
     "underscore.string": "2.3.0",
     "include-all": "0.0.6",
     "inflection": "1.2.5",
