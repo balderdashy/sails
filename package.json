@@ -37,7 +37,6 @@
     "winston": "0.6.2",
     "async": "0.1.22",
     "i18n": "0.3.5",
-    "coffee-script": "1.6.2",
     "optimist": "0.3.4",
     "fs-extra": "0.5.0",
     "lodash": "1.2.1",
@@ -58,7 +57,11 @@
     "sails-dirty": "0.7.4",
     "mocha": "*",
     "request": "*",
-    "grunt-contrib-watch": "~0.4.4"
+    "grunt-contrib-watch": "~0.4.4",
+    "ejs": "~0.8.4"
+  },
+  "optionalDependencies": {
+    "coffee-script": "1.6.2"
   },
   "repository": {
     "type": "git",

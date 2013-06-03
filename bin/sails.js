@@ -3,7 +3,6 @@
 // Dependencies
 var _ = require('lodash');
 _.str = require('underscore.string');
-var ejs = require('ejs');
 var fs = require('fs-extra');
 var utils = require('./utils.js');
 var generate = require('./generate.js');

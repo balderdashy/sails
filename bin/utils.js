@@ -81,7 +81,6 @@ function fileExists(path) {
 }
 
 // Read a boilerplate and render the template
-
 function renderBoilerplateTemplate(boilerplate, data) {
 	var boilerplatePath = __dirname + '/boilerplates/templates/' + boilerplate;
 	verifyExists(boilerplatePath, "Boilerplate (" + boilerplate + ") doesn't exist!");
@@ -153,8 +152,6 @@ function copySailsDependency(moduleName, pathToNewNodeModules, cb) {
 			// Assume empty dependencies
 			dependencies = {};
 		}
-
-		// sails.log.verbose('For '+moduleName,'dependencies -> ',_.values(dependencies), 'packagejson deps -> ', _.keys(packageJSON.dependencies));
 
 		// If there are any missing dependencies which are being pulled from Sails,
 		// copy them from Sails' main node_modules directory
