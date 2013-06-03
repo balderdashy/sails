@@ -60,11 +60,9 @@
     "lib": "lib"
   },
   "dependencies": {
-    "express": "2.5.11",
     "ejs": "0.7.2",
     "jade": "0.28.0",
     "socket.io": "0.9.6",
-    "connect": "1.8.3",
     "connect-redis": "1.4.5",
     "winston": "0.6.2",
     "async": "0.1.22",
@@ -78,7 +76,8 @@
     "underscore.string": "2.3.0",
     "include-all": "0.0.6",
     "inflection": "1.2.5",
-    "node-uuid": "*"
+    "node-uuid": "*",
+    "express": "~3.2.6"
   },
   "devDependencies": {
     "grunt": "0.4.1",
