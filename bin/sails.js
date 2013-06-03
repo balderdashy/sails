@@ -63,7 +63,7 @@ else if (_.contains(['console'], argv._[0])) {
 
 	// TODO: instead of lifting the servers, just fire up the ORM and include all the modules
 
-	require('../lib/sails').lift({
+	require('../lib').lift({
 		log: {
 			level: 'silent'
 		}

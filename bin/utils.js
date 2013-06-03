@@ -113,7 +113,7 @@ function copySails(destination, cb) {
 		return cb && cb(e);
 	}
 
-	require('async').forEach(['lib', 'package.json', 'node_modules'], function (fileOrDir, cb) {
+	require('async').each(['lib', 'package.json', 'node_modules'], function (fileOrDir, cb) {
 		fs.copy(__dirname + '/../' + fileOrDir, destination + '/' + fileOrDir, cb);
 	}, function (err) {
 		return cb && cb(err);
