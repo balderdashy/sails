@@ -49,7 +49,7 @@
     "active-record",
     "socket.io"
   ],
-  "main": "./lib/sails",
+  "main": "./lib/lift/index",
   "bin": {
     "sails": "./bin/sails.js"
   },
