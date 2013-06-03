@@ -77,7 +77,8 @@
     "include-all": "0.0.6",
     "inflection": "1.2.5",
     "node-uuid": "*",
-    "express": "~3.2.6"
+    "express": "~3.2.6",
+    "connect": "~2.7.11"
   },
   "devDependencies": {
     "grunt": "0.4.1",
