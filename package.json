@@ -1,36 +1,7 @@
 {
   "name": "sails",
   "author": "Mike McNeil <mike@balderdash.co>",
-  "contributors": [
-    {
-      "name": "Mike McNeil",
-      "email": "mike@balderdash.co",
-      "url": "http://michaelmcneil.com"
-    },
-    {
-      "name": "Dennis Bartlett",
-      "email": "dcbartlett@balderdash.co",
-      "url": "http://dcbartlett.info"
-    },
-    {
-      "name": "Colin Wren",
-      "email": "colin@cawren.com"
-    },
-    {
-      "name": "Brad Carleton",
-      "email": "brad@techpines.com",
-      "url": "http://techpines.com"
-    },
-    {
-      "name": "Ameen Ahmed",
-      "email": "ameen.ahmed.b@gmail.com"
-    },
-    {
-      "name": "Robin Cafolla",
-      "email": "robin@zombiemongoose.com"
-    }
-  ],
-  "version": "0.8.91",
+  "version": "0.9.0",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
   "homepage": "http://sailsjs.com",
   "keywords": [
