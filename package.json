@@ -33,6 +33,7 @@
   "dependencies": {
     "express": "~3.2.6",
     "socket.io": "~0.9.14",
+    "waterline": "0.9.0",
     "connect-redis": "1.4.5",
     "async": "~0.2.9",
     "winston": "~0.7.1",
