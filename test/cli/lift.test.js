@@ -70,7 +70,7 @@ describe('Starting sails server with lift', function() {
 				sailsServer.stdout.on('data', function(data) {
 					var dataString = data + '';
 					assert(dataString.indexOf('error') === -1);
-
+					sailsServer.kill();
 					// Move out of app directory
 					process.chdir('../');
 					done();
@@ -79,14 +79,23 @@ describe('Starting sails server with lift', function() {
 		});
 
 		it('should respond to a request to port 1337 with a 200 status code', function(done) {
+			process.chdir(appName);
+			sailsServer = spawn(sailsBin, ['lift']);
+			
+			setTimeout(function(){
+				request('http://localhost:1337/', function(err, response) {
+					if (err){
+						sailsServer.kill();
+						done(new Error(err));
+					}
 
-			request('http://localhost:1337/', function(err, response) {
-				if (err) done(new Error(err));
-
-				assert(response.statusCode === 200);
-				sailsServer.kill();
-				done();
-			});
+					assert(response.statusCode === 200);
+					sailsServer.kill();
+					process.chdir('../');
+					done();
+				});
+			
+			}, 4000)
 		});
 	});
 
