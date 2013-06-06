@@ -68,7 +68,7 @@ module.exports = function createNewApp(appName, templateLang) {
 	// Generate session secret
 	var boilerplatePath = __dirname + '/boilerplates/config/session.js';
 	var newSessionConfig = ejs.render(fs.readFileSync(boilerplatePath, 'utf8'), {
-		secret: require('../lib/session').generateSecret()
+		secret: require('../lib/session/generateSecret')()
 	});
 	fs.writeFileSync(boilerplatePath, newSessionConfig, 'utf8');
 
@@ -132,6 +132,7 @@ module.exports = function createNewApp(appName, templateLang) {
 	utils.generateDir(outputPath + '/node_modules');
 	utils.copySailsDependency('optimist', outputPath + '/node_modules');
 	utils.copySailsDependency('grunt', outputPath + '/node_modules');
+	utils.copySailsDependency('sails-disk', outputPath + '/node_modules');
 
 	// Other grunt dependencies are automatically pulled from sails core deps.
 
