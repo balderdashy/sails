@@ -63,14 +63,18 @@ module.exports = function createNewApp(appName, templateLang) {
 	// Create default app structure
 	utils.copyBoilerplate('assets', outputPath + '/assets');
 	utils.copyBoilerplate('api', outputPath + '/api');
-	utils.copyBoilerplate('config', outputPath + '/config');
+	utils.copyBoilerplate('config', outputPath + '/config', function () {
 
-	// Generate session secret
-	var boilerplatePath = __dirname + '/boilerplates/config/session.js';
-	var newSessionConfig = ejs.render(fs.readFileSync(boilerplatePath, 'utf8'), {
-		secret: require('../lib/session/generateSecret')()
+		// Generate session secret
+		var boilerplatePath = __dirname + '/boilerplates/config/session.js';
+		var newSessionConfig = ejs.render(fs.readFileSync(boilerplatePath, 'utf8'), {
+			secret: require('../lib/session/generateSecret')()
+		});
+		
+		fs.writeFileSync(outputPath + '/config/session.js', newSessionConfig, 'utf8');
+		
 	});
-	fs.writeFileSync(boilerplatePath, newSessionConfig, 'utf8');
+
 
 	// Different stuff for different view engines
 	if (templateLang === 'handlebars') templateLang = 'hbs';

@@ -21,7 +21,7 @@ module.exports.io = {
 	// By default, Sails provides support for Redis.
 	// adapter: 'redis',
 
-	// With the above coniguration, the local redis instance will be used on the default port.
+	// With the above configuration, the local redis instance will be used on the default port.
 	// If you need to use a remote redis instance (which is probable!) 
 	// you can use the raw socket.io `store` config for now (see below)
 	
