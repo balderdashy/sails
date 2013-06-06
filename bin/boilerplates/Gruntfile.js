@@ -38,6 +38,7 @@ module.exports = function(grunt) {
     },
 
     scriptlinker: {
+
       devJs: {
         options: {
           startTag: '<!--SCRIPTS-->',
@@ -46,9 +47,10 @@ module.exports = function(grunt) {
           appRoot: '.tmp/public/'
         },
         files: {
-          '.tmp/public/index.html': ['.tmp/public/js/jquery.js', '.tmp/public/js/foobar.js', '.tmp/public/js/**/*.js']
+          '.tmp/public/index.html': ['.tmp/public/mixins/**/*.js', '.tmp/public/js/**/*.js']
         }
       },
+
       devStyles: {
         options: {
           startTag: '<!--STYLES-->',
@@ -57,18 +59,20 @@ module.exports = function(grunt) {
           appRoot: '.tmp/public/'
         },
         files: {
-          '.tmp/public/index.html': ['.tmp/public/styles/**/*.css']
+          '.tmp/public/index.html': ['.tmp/public/mixins/**/*.css', '.tmp/public/styles/**/*.css']
         }
       },
+
+      // Bring in JST template object
       devTpl: {
         options: {
           startTag: '<!--TEMPLATES-->',
           endTag: '<!--TEMPLATES END-->',
-          fileTmpl: '\n<script src="%s"></script>\n',
+          fileTmpl: '\n<script type="text/javascript" src="%s"></script>\n',
           appRoot: '.tmp/public/'
         },
         files: {
-          '.tmp/public/index.html': ['.tmp/public/templates/**/*']
+          '.tmp/public/index.html': ['.tmp/public/jst.js']
         }
       }
     },
