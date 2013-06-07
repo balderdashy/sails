@@ -40,7 +40,7 @@ module.exports = function(grunt) {
           }
         },
         files: {
-          '.tmp/public/templates/templates.js': ['assets/templates/**/*.html']
+          '.tmp/public/jst.js': ['assets/templates/**/*.html']
         }
       }
     },
