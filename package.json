@@ -32,8 +32,8 @@
   },
   "dependencies": {
     "express": "~3.2.6",
+    "waterline": "git://github.com/balderdashy/waterline.git",
     "socket.io": "~0.9.14",
-    "waterline": "0.9.0",
     "connect-redis": "1.4.5",
     "async": "~0.2.9",
     "winston": "~0.7.1",
@@ -52,13 +52,16 @@
     "grunt-cli": "~0.1.9",
     "grunt-contrib-copy": "0.4.1",
     "grunt-contrib-clean": "0.4.1",
+    "grunt-contrib-concat": "~0.3.0",
     "grunt-scriptlinker": "0.1.1",
     "grunt-contrib-jst": "0.5.0",
     "sails-disk": "~0.1.0",
     "grunt-contrib-watch": "~0.4.4",
     "mocha": "*",
     "request": "*",
-    "ejs": "~0.8.4"
+    "ejs": "~0.8.4",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-cssmin": "~0.6.1"
   },
   "optionalDependencies": {
     "coffee-script": "1.6.2"

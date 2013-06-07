@@ -37,6 +37,31 @@ module.exports = function(grunt) {
       }
     },
 
+    concat: {
+      js: {
+        src: ['.tmp/public/mixins/**/*.js', '.tmp/public/js/**/*.js'],
+        dest: '.tmp/public/concat/production.js'
+      },
+      css: {
+        src: ['.tmp/public/mixins/**/*.css', '.tmp/public/styles/**/*.css'],
+        dest: '.tmp/public/concat/production.css'
+      }
+    },
+
+    uglify: {
+      dist: {
+        src: ['.tmp/public/concat/production.js'],
+        dest: '.tmp/public/min/production.js'
+      }
+    },
+
+    cssmin: {
+      dist: {
+        src: ['.tmp/public/concat/production.css'],
+        dest: '.tmp/public/min/production.css'
+      }
+    },
+
     scriptlinker: {
 
       devJs: {
@@ -51,6 +76,18 @@ module.exports = function(grunt) {
         }
       },
 
+      prodJs: {
+        options: {
+          startTag: '<!--SCRIPTS-->',
+          endTag: '<!--SCRIPTS END-->',
+          fileTmpl: '\n<script src="%s"></script>\n',
+          appRoot: '.tmp/public/'
+        },
+        files: {
+          '.tmp/public/index.html': ['.tmp/public/min/production.js']
+        }
+      },
+
       devStyles: {
         options: {
           startTag: '<!--STYLES-->',
@@ -60,6 +97,18 @@ module.exports = function(grunt) {
         },
         files: {
           '.tmp/public/index.html': ['.tmp/public/mixins/**/*.css', '.tmp/public/styles/**/*.css']
+        }
+      },
+
+      prodStyles: {
+        options: {
+          startTag: '<!--STYLES-->',
+          endTag: '<!--STYLES END-->',
+          fileTmpl: '\n<link rel="stylesheet" href="%s">\n',
+          appRoot: '.tmp/public/'
+        },
+        files: {
+          '.tmp/public/index.html': ['.tmp/public/min/production.css']
         }
       },
 
@@ -89,13 +138,15 @@ module.exports = function(grunt) {
   });
 
   // Get path to core grunt dependencies from Sails
-  var depsPath = grunt.option('gdsrc');
+  var depsPath = grunt.option('gdsrc') || 'node_modules/sails/node_modules';;
   grunt.loadTasks(depsPath + '/grunt-contrib-clean/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-copy/tasks');
+  grunt.loadTasks(depsPath + '/grunt-contrib-concat/tasks');
   grunt.loadTasks(depsPath + '/grunt-scriptlinker/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-jst/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-watch/tasks');
-
+  grunt.loadTasks(depsPath + '/grunt-contrib-uglify/tasks');
+  grunt.loadTasks(depsPath + '/grunt-contrib-cssmin/tasks');
   // When Sails is lifted:
   grunt.registerTask('default', [
     'reloadAssets',
@@ -121,6 +172,19 @@ module.exports = function(grunt) {
     'reloadAssets',
     'clean:build',
     'copy:build'
+  ]);
+
+  // When sails is lifted in production
+  grunt.registerTask('prod', [
+    'clean:dev',
+    'jst:dev',
+    'copy:dev',
+    'concat',
+    'uglify',
+    'cssmin',
+    'scriptlinker:prodJs',
+    'scriptlinker:prodStyles',
+    'scriptlinker:devTpl',
   ]);
 
   // When API files are changed:
