@@ -25,6 +25,10 @@ module.exports = {
 	//
 	log: {
 		level: 'info'
-	}
+	},
+	
+	// CSRF middleware protection, all non-GET requests must send '_csrf' parmeter
+	// _csrf is a parameter for views, and is also available via GET at /csrfToken
+	csrf: false
 
 };

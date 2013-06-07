@@ -12,6 +12,7 @@ module.exports = function(grunt) {
   grunt.loadTasks(depsPath + '/grunt-contrib-watch/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-uglify/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-cssmin/tasks');
+  grunt.loadTasks(depsPath + '/grunt-contrib-less/tasks');
 
   // Project configuration.
   grunt.initConfig({
@@ -45,6 +46,20 @@ module.exports = function(grunt) {
         files: {
           '.tmp/public/jst.js': ['assets/templates/**/*.html']
         }
+      }
+    },
+    
+    less: {
+      dev: {
+        files: [
+          {
+            expand: true,
+            cwd: 'assets/styles/',
+            src: ['*.less'],
+            dest: '.tmp/public/styles/',
+            ext: '.css'
+          }
+        ]
       }
     },
 
@@ -164,11 +179,8 @@ module.exports = function(grunt) {
   grunt.registerTask('compileAssets', [
     'clean:dev',
     'jst:dev',
-    'copy:dev'
-  ]);
-
-  grunt.registerTask('linkAssets', [
-
+    'less:dev',
+    'copy:dev',
     // Update link/script/template references in `assets` index.html
     'scriptlinker:devJs',
     'scriptlinker:devStyles',
@@ -189,13 +201,14 @@ module.exports = function(grunt) {
   grunt.registerTask('prod', [
     'clean:dev',
     'jst:dev',
+    'less:dev',
     'copy:dev',
     'concat',
     'uglify',
     'cssmin',
     'scriptlinker:prodJs',
     'scriptlinker:prodStyles',
-    'scriptlinker:devTpl',
+    'scriptlinker:devTpl'
   ]);
 
   // When API files are changed:
