@@ -36,6 +36,20 @@ module.exports = function(grunt) {
         }
       }
     },
+    
+    less: {
+      dev: {
+        files: [
+          {
+            expand: true,
+            cwd: 'assets/styles/',
+            src: ['*.less'],
+            dest: '.tmp/public/styles/',
+            ext: '.css'
+          }
+        ]
+      }
+    },
 
     concat: {
       js: {
@@ -147,6 +161,7 @@ module.exports = function(grunt) {
   grunt.loadTasks(depsPath + '/grunt-contrib-watch/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-uglify/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-cssmin/tasks');
+  grunt.loadTasks(depsPath + '/grunt-contrib-less/tasks');
   // When Sails is lifted:
   grunt.registerTask('default', [
     'reloadAssets',
@@ -156,6 +171,7 @@ module.exports = function(grunt) {
   grunt.registerTask('reloadAssets', [
     'clean:dev',
     'jst:dev',
+    'less:dev',
     'copy:dev',
     'scriptlinker:devJs',
     'scriptlinker:devStyles',
@@ -178,6 +194,7 @@ module.exports = function(grunt) {
   grunt.registerTask('prod', [
     'clean:dev',
     'jst:dev',
+    'less:dev',
     'copy:dev',
     'concat',
     'uglify',

@@ -61,7 +61,8 @@
     "request": "*",
     "ejs": "~0.8.4",
     "grunt-contrib-uglify": "~0.2.2",
-    "grunt-contrib-cssmin": "~0.6.1"
+    "grunt-contrib-cssmin": "~0.6.1",
+    "grunt-contrib-less": "~0.5.2"
   },
   "optionalDependencies": {
     "coffee-script": "1.6.2"
