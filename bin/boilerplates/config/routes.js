@@ -24,7 +24,8 @@ module.exports.routes = {
 	
 	// To route the home page to the "index" action of FooController
 	// '/' : {
-	// 	controller	: 'foo'
+	//     controller  : 'foo',
+	//     action      : 'index',
 	// }
 
 	// If you want to set up a route only for a particular HTTP method/verb 
