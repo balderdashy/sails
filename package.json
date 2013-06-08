@@ -59,6 +59,8 @@
     "grunt-contrib-watch": "~0.4.4",
     "mocha": "*",
     "request": "*",
+    "should": "*",
+    "supertest": "*",
     "ejs": "~0.8.4",
     "grunt-contrib-uglify": "~0.2.2",
     "grunt-contrib-cssmin": "~0.6.1",

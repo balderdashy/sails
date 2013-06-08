@@ -1,0 +1,28 @@
+var request = require('supertest'),
+	sailsHelper = require("../helpers/sailsHelper");
+
+describe('<%- entity %> Controller', function(){
+
+	// Reference for the app
+	var app;
+
+	before(function(done){
+		sailsHelper.init(
+			function(){
+				// Attach to the app
+				app = sails.express.app;
+				// drop the logging level - keep it clean
+				sails.config.log.level = "warn";
+				// Looks like we're up
+				done();
+			}
+		);
+	});
+
+	after(function(done){
+		sailsHelper.lower(done);
+	});
+
+<%- actions %>
+
+});
