@@ -180,7 +180,11 @@ module.exports = function(grunt) {
     'clean:dev',
     'jst:dev',
     'less:dev',
-    'copy:dev',
+    'copy:dev'
+  ]);
+
+  grunt.registerTask('linkAssets', [
+
     // Update link/script/template references in `assets` index.html
     'scriptlinker:devJs',
     'scriptlinker:devStyles',
