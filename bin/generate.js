@@ -13,8 +13,99 @@ module.exports = {
 	generateController: generateController,
 	generateModel: generateModel,
 	generateAdapter: generateAdapter,
-	generateView: generateView
+	generateView: generateView,
+	generateTest: generateTest
 };
+
+function generateTest(entity, options) {
+	var controllerName = sails.config.paths.controllers + '/' + utils.capitalize(entity) + 'Controller.js';
+
+	if (!utils.fileExists(controllerName)) {
+		sails.log.debug("Controller " + controllerName + " doesn' exist");
+		process.exit(1)
+	}
+
+	// we have a winner - matched a controller
+	var newTestPath = sails.config.paths.tests + '/controller/' + utils.capitalize(entity) + 'Controller.js';
+
+	// Some sanity checking to allow tests to be regenerated
+	options.force = options.force || false;
+	if (utils.fileExists(newTestPath)) {
+		if (!options.force) {
+			sails.log.debug("Test " + newTestPath + " already exists - use --force to recreate it or use the usual bypass approach to merge tests");
+		} else {
+			sails.log.warn("Test " + newTestPath + " already exists - overwriting");
+		}
+	}
+	// let's load the controller
+	var controller = require(controllerName);
+
+	// Lets see what methods it has
+	var controllerActions = _.keys(controller);
+	//sails.log.verbose("actions", controllerActions, options.actions); // Debugging
+
+	if (!_.isEmpty(options.actions)) {
+		// We've been actions from the command line - so some sanity checking is needed
+		if (!_.isArray(options.actions)) {
+			options.actions = [options.actions];
+		}
+
+		// Check all the passed actions actually exist
+		var actionsInController = _.every(options.actions,
+			function(action){
+				return _.contains(controllerActions, String(action));
+			}
+		);
+
+		if (!actionsInController) {
+			// a little overhead for a more descriptive message
+			var missingActions = _.collect(options.actions,
+				function(action){
+					if (!_.contains(controllerActions, String(action))) {
+						return action;
+					} else {
+						return false;
+					}
+				}
+			);
+			sails.log.error("The actions '" + _.compact(missingActions).join(", ") + "' don't exist in "+controllerName);
+			process.exit(1);
+		}
+	} else {
+		// No actions passed - so lets' do it for all the actions in the controller
+		options.actions = controllerActions;
+	}
+
+	// Ok - we have a controller, we have a match with the actions passed to those in the controller
+	// So we can start creating things
+
+	// This is a backup really - for existing projects that have upgraded sails
+	if (!utils.fileExists(sails.config.paths.tests)) {
+		utils.generateDir(sails.config.paths.tests);
+	}
+	if (!utils.fileExists(sails.config.paths.tests + '/controller/')) {
+		utils.generateDir(sails.config.paths.tests + '/controller/');
+	}
+
+	var genTestActions = _.map(options.actions, function(action) {
+		var fnString = utils.renderBoilerplateTemplate('api-test-methods.ejs', {
+			controller: entity.toLowerCase(),
+			action: action,
+			entity: entity,
+		});
+		return fnString;
+	});
+
+	// and push it out
+	return generate({
+		boilerplate: 'api-test.ejs',
+		prefix: sails.config.paths.tests+"/controller",
+		entity: utils.capitalize(entity),
+		actions: genTestActions.join("\n\n"),
+		suffix: "Controller.js"
+	});
+
+}
 
 function generateController(entity, options) {
 	var newControllerPath = sails.config.paths.controllers + '/' + utils.capitalize(entity) + 'Controller.js';

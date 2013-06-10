@@ -63,6 +63,7 @@ module.exports = function createNewApp(appName, templateLang) {
 	// Create default app structure
 	utils.copyBoilerplate('assets', outputPath + '/assets');
 	utils.copyBoilerplate('api', outputPath + '/api');
+	utils.copyBoilerplate('test', outputPath + '/test');
 	utils.copyBoilerplate('config', outputPath + '/config', function () {
 
 		// Generate session secret
@@ -70,9 +71,9 @@ module.exports = function createNewApp(appName, templateLang) {
 		var newSessionConfig = ejs.render(fs.readFileSync(boilerplatePath, 'utf8'), {
 			secret: require('../lib/session/generateSecret')()
 		});
-		
+
 		fs.writeFileSync(outputPath + '/config/session.js', newSessionConfig, 'utf8');
-		
+
 	});
 
 
@@ -116,7 +117,8 @@ module.exports = function createNewApp(appName, templateLang) {
 			// Include this later when we have "sails test" ready.
 			// test: './node_modules/mocha/bin/mocha -b',
 			start: 'node app.js',
-			debug: 'node debug app.js'
+			debug: 'node debug app.js',
+			test: "mocha test/controller/"
 		},
 		main: 'app.js',
 		repository: '',
@@ -143,7 +145,7 @@ module.exports = function createNewApp(appName, templateLang) {
 	// Copy Sails itself into new project as a local dependency
 	//
 	// TODO:	examine using a symbolic link for the node_modules
-	// 			instead of copying the directory over directly, 
+	// 			instead of copying the directory over directly,
 	//			since it would be much quicker, and wouldn't hurt anything
 	utils.copySails(outputPath + '/node_modules/sails');
 };

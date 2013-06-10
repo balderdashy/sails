@@ -188,6 +188,19 @@ else if (argv._[0] && (argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^
 		var options = _.extend({}, argv);
 		generate.generateAdapter(entity, options);
 	}
+
+	// Generate an adapter
+	else if (argv._[1] === 'test') {
+		var entity = argv._[2];
+		verifyArg(2, "Please specify the name for the new test as the third argument.");
+
+		// Figure out actions based on args
+		var options = _.extend({}, argv);
+		options.actions = argv._.splice(3);
+
+		generate.generateTest(entity, options);
+	}
+
 	// Otherwise generate a model and controller
 	else {
 		var entity = argv._[1];
@@ -250,6 +263,7 @@ function sailsUsage() {
 	usage += leftColumn('sails generate <foo>') + 'Generate api/models/Foo.js and api/controllers/FooController.js\n';
 	usage += leftColumn('sails generate model <foo>') + 'Generate api/models/Foo.js\n';
 	usage += leftColumn('sails generate controller <foo>') + 'Generate api/controllers/FooController.js\n';
+	usage += leftColumn('sails generate test <foo>') + 'Generate test/controller/FooController.js\n';
 	usage += leftColumn('sails version') + 'Get the current globally installed Sails version';
 
 	sails.log.info(usage);

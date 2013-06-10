@@ -1,0 +1,29 @@
+	describe('<%- action %> method', function () {
+
+		describe('GET /', function () {
+
+			it('responds with HTTP 200', function(done){
+				// supertest allows us to pass in the express app - and not have to worry about host:ports
+				request(app) // app
+					.get('/<%- controller %>/<%- action %>')
+					.expect(200, done);
+			});
+
+			it('respond properly when no-content type is set', function(done){
+				request(app) // app
+					.get('/<%- controller %>/<%- action %>')
+					.expect(/generated successfully and ready to go!/, done); // If generate some base templates - we can put something more appropriate in here
+			});
+
+			it('respond properly when content-type is set to json', function(done){
+				request(app) // app
+					.get('/<%- controller %>/<%- action %>')
+					.set('Accept', 'application/json')
+					.expect('Content-Type', /json/)
+					.expect(JSON.stringify({"content": "generated successfully and ready to go!"}))
+					.expect(200, done)
+			});
+
+		});
+
+	});

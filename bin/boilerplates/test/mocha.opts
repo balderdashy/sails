@@ -1,0 +1,4 @@
+--reporter spec
+--recursive
+--growl
+--require should
