@@ -98,7 +98,7 @@ $runTest('node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive  -R dot
 
 // sails-twitter
 // sails-facebook
-
+// sails-couch
 
 
 $log('Tests complete.');
