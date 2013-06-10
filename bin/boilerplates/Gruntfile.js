@@ -2,6 +2,18 @@ module.exports = function(grunt) {
 
   'use strict';
 
+  // Get path to core grunt dependencies from Sails
+  var depsPath = grunt.option('gdsrc') || 'node_modules/sails/node_modules';
+  grunt.loadTasks(depsPath + '/grunt-contrib-clean/tasks');
+  grunt.loadTasks(depsPath + '/grunt-contrib-copy/tasks');
+  grunt.loadTasks(depsPath + '/grunt-contrib-concat/tasks');
+  grunt.loadTasks(depsPath + '/grunt-scriptlinker/tasks');
+  grunt.loadTasks(depsPath + '/grunt-contrib-jst/tasks');
+  grunt.loadTasks(depsPath + '/grunt-contrib-watch/tasks');
+  grunt.loadTasks(depsPath + '/grunt-contrib-uglify/tasks');
+  grunt.loadTasks(depsPath + '/grunt-contrib-cssmin/tasks');
+  grunt.loadTasks(depsPath + '/grunt-contrib-less/tasks');
+
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -32,7 +44,7 @@ module.exports = function(grunt) {
           }
         },
         files: {
-          '.tmp/public/templates/templates.js': ['assets/templates/**/*.html']
+          '.tmp/public/jst.js': ['assets/templates/**/*.html']
         }
       }
     },
@@ -142,50 +154,49 @@ module.exports = function(grunt) {
 
     watch : {
       api: {
+
+        // API files to watch:
         files: ['api/**/*']
       },
       assets: {
+
+        // Assets to watch:
         files: ['assets/**/*'],
-        tasks: ['assetsChanged']
+
+        // When assets are changed:
+        tasks: ['compileAssets', 'linkAssets']
       }
     }
   });
 
-  // Get path to core grunt dependencies from Sails
-  var depsPath = grunt.option('gdsrc') || 'node_modules/sails/node_modules';;
-  grunt.loadTasks(depsPath + '/grunt-contrib-clean/tasks');
-  grunt.loadTasks(depsPath + '/grunt-contrib-copy/tasks');
-  grunt.loadTasks(depsPath + '/grunt-contrib-concat/tasks');
-  grunt.loadTasks(depsPath + '/grunt-scriptlinker/tasks');
-  grunt.loadTasks(depsPath + '/grunt-contrib-jst/tasks');
-  grunt.loadTasks(depsPath + '/grunt-contrib-watch/tasks');
-  grunt.loadTasks(depsPath + '/grunt-contrib-uglify/tasks');
-  grunt.loadTasks(depsPath + '/grunt-contrib-cssmin/tasks');
-  grunt.loadTasks(depsPath + '/grunt-contrib-less/tasks');
   // When Sails is lifted:
   grunt.registerTask('default', [
-    'reloadAssets',
+    'compileAssets',
+    'linkAssets',
     'watch'
   ]);
 
-  grunt.registerTask('reloadAssets', [
+  grunt.registerTask('compileAssets', [
     'clean:dev',
     'jst:dev',
     'less:dev',
-    'copy:dev',
+    'copy:dev'
+  ]);
+
+  grunt.registerTask('linkAssets', [
+
+    // Update link/script/template references in `assets` index.html
     'scriptlinker:devJs',
     'scriptlinker:devStyles',
     'scriptlinker:devTpl'
   ]);
+  
 
-  // When assets are changed:
-  grunt.registerTask('assetsChanged', [
-    'reloadAssets'
-  ]);
-
-  // Build the assets into a web accessable folder.
+  // Build the assets into a web accessible folder.
+  // (handy for phone gap apps, chrome extensions, etc.)
   grunt.registerTask('build', [
-    'reloadAssets',
+    'compileAssets',
+    'linkAssets',
     'clean:build',
     'copy:build'
   ]);
@@ -201,22 +212,22 @@ module.exports = function(grunt) {
     'cssmin',
     'scriptlinker:prodJs',
     'scriptlinker:prodStyles',
-    'scriptlinker:devTpl',
+    'scriptlinker:devTpl'
   ]);
 
   // When API files are changed:
-  grunt.event.on('watch', function(action, filepath) {
-    grunt.log.writeln(filepath + ' has ' + action);
+  // grunt.event.on('watch', function(action, filepath) {
+  //   grunt.log.writeln(filepath + ' has ' + action);
 
-    // Send a request to a development-only endpoint on the server
-    // which will reuptake the file that was changed.
-    var baseurl = grunt.option('baseurl');
-    var gruntSignalRoute = grunt.option('signalpath');
-    var url = baseurl + gruntSignalRoute + '?action=' + action + '&filepath=' + filepath;
+  //   // Send a request to a development-only endpoint on the server
+  //   // which will reuptake the file that was changed.
+  //   var baseurl = grunt.option('baseurl');
+  //   var gruntSignalRoute = grunt.option('signalpath');
+  //   var url = baseurl + gruntSignalRoute + '?action=' + action + '&filepath=' + filepath;
 
-    require('http').get(url)
-    .on('error', function(e) {
-      console.error(filepath + ' has ' + action + ', but could not signal the Sails.js server: ' + e.message);
-    });
-  });
+  //   require('http').get(url)
+  //   .on('error', function(e) {
+  //     console.error(filepath + ' has ' + action + ', but could not signal the Sails.js server: ' + e.message);
+  //   });
+  // });
 };
