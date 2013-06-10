@@ -43,7 +43,7 @@
     "lodash": "1.2.1",
     "glob": "3.1.14",
     "underscore.string": "2.3.0",
-    "include-all": "0.0.6",
+    "include-all": "0.1.0",
     "inflection": "1.2.5",
     "node-uuid": "*"
   },
