@@ -5,6 +5,7 @@
 Sails.js makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development.  It's especially good for building realtime features like chat.
 
 # Intro to Sails.js
+<a href="http://net.tutsplus.com/tutorials/javascript-ajax/working-with-data-in-sails-js/">Nettuts+ Working With Data in Sails.js</a>  
 [![ScreenShot](http://balderdashy.github.com/sails/images/screenshot.png)](http://youtu.be/GK-tFvpIR7c)
 
 # Installation
