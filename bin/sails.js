@@ -13,8 +13,9 @@ require('../lib/configuration')(sails).load(function (err) {
 	var _			= require('lodash'),
 		utils		= require('./utils.js')(sails),
 		fs			= utils.fs,
-		generate	= require('./generate.js'),
-		argv		= require('optimist').argv;
+		generate	= require('./generate.js')(sails),
+		argv		= require('optimist').argv,
+		newSailsApp = require('./new.js')(sails);
 
 
 
@@ -235,7 +236,7 @@ require('../lib/configuration')(sails).load(function (err) {
 		if (argv.template) {
 			template = argv.template;
 		}
-		require('./new.js')(argv._[1], template);
+		newSailsApp(argv._[1], template);
 	}
 
 

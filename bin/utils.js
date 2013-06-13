@@ -10,14 +10,14 @@ module.exports = function (sails) {
 
 
 	/**
-	 * Expose new instance of `Generator`
+	 * Expose new instance of `UtilityBelt`
 	 */
 
-	return new Generator();
+	return new UtilityBelt();
 
 
 
-	function Generator ( ) {
+	function UtilityBelt ( ) {
 
 
 		/**
@@ -41,7 +41,7 @@ module.exports = function (sails) {
 			var fullBpPath = __dirname + '/boilerplates/' + (boilerplatePath || '');
 			var file = fs.readFileSync(fullBpPath, 'utf8');
 			var newFilePath = (newPath || '');
-			verifyDoesntExist(newFilePath, 'A file/directory already exists at ' + newFilePath);
+			this.verifyDoesntExist(newFilePath, 'A file/directory already exists at ' + newFilePath);
 
 			// Touch output file to make sure the path to it exists
 			if (fs.createFileSync(newFilePath)) {
@@ -66,7 +66,7 @@ module.exports = function (sails) {
 				sails.log.debug('Generating directory ' + newPath + '...');
 			}
 			var newDirPath = (newPath || '');
-			verifyDoesntExist(newDirPath, 'A file/directory already exists at ' + newDirPath);
+			this.verifyDoesntExist(newDirPath, 'A file/directory already exists at ' + newDirPath);
 			fs.mkdirSync(newDirPath);
 			// If directory will be empty, create a .gitkeep in it
 			if (gitkeep) {
@@ -82,7 +82,7 @@ module.exports = function (sails) {
 		 */
 
 		this.verifyDoesntExist = function (path, msg) {
-			if (fileExists(path)) {
+			if (this.fileExists(path)) {
 				sails.log.error(msg);
 				process.exit(1);
 			}
@@ -124,7 +124,7 @@ module.exports = function (sails) {
 
 		this.renderBoilerplateTemplate = function (boilerplate, data) {
 			var boilerplatePath = __dirname + '/boilerplates/templates/' + boilerplate;
-			verifyExists(boilerplatePath, "Boilerplate (" + boilerplate + ") doesn't exist!");
+			this.verifyExists(boilerplatePath, "Boilerplate (" + boilerplate + ") doesn't exist!");
 			var file = fs.readFileSync(boilerplatePath, 'utf8');
 			return ejs.render(file, data);
 		};
@@ -139,7 +139,7 @@ module.exports = function (sails) {
 		 */
 
 		this.verifyExists = function (path, msg) {
-			if (!fileExists(path)) {
+			if (!this.fileExists(path)) {
 				sails.log.error(msg);
 				process.exit(1);
 			}
@@ -197,6 +197,7 @@ module.exports = function (sails) {
 		 */
 
 		this.copySailsDependency = function (moduleName, pathToNewNodeModules, cb) {
+			var self = this;
 			var path = __dirname + '/../node_modules/' + moduleName;
 			fs.copy(path, pathToNewNodeModules + '/' + moduleName, function(err) {
 				if (err) return cb && cb(err);
@@ -233,12 +234,12 @@ module.exports = function (sails) {
 				var missingModules = _.difference(_.keys(packageJSON.dependencies || {}), _.values(dependencies));
 				_.each(missingModules, function (missingModuleName) {
 					sails.log.verbose('Resolving '+moduleName+'\'s missing dependency ('+missingModuleName+') using the version in Sails.');
-					copySailsDependency(missingModuleName, pathToNewNodeModules + '/' + moduleName + '/node_modules/');
+					self.copySailsDependency(missingModuleName, pathToNewNodeModules + '/' + moduleName + '/node_modules/');
 				});
 				
 				return cb && cb(err);
 			});
-		}
+		};
 
 
 		/** 
