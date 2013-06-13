@@ -242,7 +242,7 @@ require('../lib/configuration')(sails).load(function (err) {
 
 	// Build a www directory of everyting from /.tmp/public (aka /assets)
 	else if (argv._[0].match(/^build$/)) {
-		require('./build.js')();
+		return sails.build();
 	}
 
 
