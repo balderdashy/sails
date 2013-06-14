@@ -8,7 +8,8 @@ module.exports = function (sails) {
 	var _			= require( 'lodash' ),
 		utils		= require( './utils' )(sails),
 		fs			= utils.fs,
-		ejs			= require('ejs');
+		ejs			= require('ejs'),
+		Session	= require('../lib/session')(sails);
 
 
 	// Output in directory where cmdline tool was run
@@ -72,7 +73,7 @@ module.exports = function (sails) {
 			// Generate session secret
 			var boilerplatePath = __dirname + '/boilerplates/config/session.js';
 			var newSessionConfig = ejs.render(fs.readFileSync(boilerplatePath, 'utf8'), {
-				secret: require('../lib/session/generateSecret')()
+				secret: Session.generateSecret()
 			});
 			
 			fs.writeFileSync(outputPath + '/config/session.js', newSessionConfig, 'utf8');
