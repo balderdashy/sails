@@ -1,7 +1,4 @@
 module.exports = {
-	
-	// Name of the application (used as default <title>)
-	appName: "Sails Application",
 
 	// Port this Sails application will live on
 	port: process.env.PORT || 1337,
@@ -12,23 +9,6 @@ module.exports = {
 	// In `production` mode, all css and js are bundled up and minified
 	// And your views and templates are cached in-memory.  Gzip is also used.
 	// The downside?  Harder to debug, and the server takes longer to start.
-	environment: 'development',
-
-	// Logger
-	// Valid `level` configs:
-	// 
-	// - error
-	// - warn
-	// - debug
-	// - info
-	// - verbose
-	//
-	log: {
-		level: 'info'
-	},
-	
-	// CSRF middleware protection, all non-GET requests must send '_csrf' parmeter
-	// _csrf is a parameter for views, and is also available via GET at /csrfToken
-	csrf: false
+	environment: 'development'
 
 };
