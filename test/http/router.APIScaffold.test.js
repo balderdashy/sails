@@ -96,4 +96,19 @@ describe('API scaffold routes', function() {
 			});
 		});
 	});
+
+	// Test for pluralized controller. if one works, the should all work
+	describe('a get request to /:controller(s)', function() {
+
+		it('should return JSON for all instances of the test model', function(done) {
+
+			httpHelper.testRoute('get', {url: 'empties', json: true}, function(err, response) {
+				if (err) done(new Error(err));
+
+				assert(response.body[0].id === 1);
+				assert(response.body[1].id === 2);
+				done();
+			});
+		});
+	});
 });
