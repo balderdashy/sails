@@ -46,6 +46,7 @@
     "include-all": "0.0.6",
     "inflection": "1.2.5",
     "node-uuid": "*",
+    "sails-disk": "~0.1.0",
     "grunt": "0.4.1",
     "grunt-cli": "~0.1.9",
     "grunt-contrib-copy": "0.4.1",
@@ -59,7 +60,6 @@
     "grunt-contrib-less": "~0.5.2"
   },
   "devDependencies": {
-    "sails-disk": "~0.1.0",
     "mocha": "*",
     "request": "*",
     "ejs": "~0.8.4"
