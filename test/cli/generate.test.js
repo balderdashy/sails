@@ -179,90 +179,90 @@ describe('API and adapter generators', function () {
 		});
 	});
 
-  describe('sails destroy <modelname>', function(){
-    var modelName = 'post';
+	describe('sails destroy <modelname>', function(){
+		var modelName = 'post';
 
-    it('should throw an error if no model name is specified', function(done) {
-      exec(sailsBin + ' destroy', function (err) {
-        assert.equal(err.code, 1);
-        done();
-      });
-    });
+		it('should throw an error if no model name is specified', function(done) {
+			exec(sailsBin + ' destroy', function (err) {
+				assert.equal(err.code, 1);
+				done();
+			});
+		});
 
-    it('should delete a model and controller file', function(done) {
-      exec(sailsBin + ' generate ' + modelName, function (err) {
+		it('should delete a model and controller file', function(done) {
+			exec(sailsBin + ' generate ' + modelName, function (err) {
 
-        exec(sailsBin + ' destroy ' + modelName, function (err){
-          if (err) done(new Error(err));
+				exec(sailsBin + ' destroy ' + modelName, function (err){
+					if (err) done(new Error(err));
 
-          assert.throws(function() {
-            fs.readFileSync('./api/models/' + capitalize(modelName) + '.js', 'utf8');
-          });
+					assert.throws(function() {
+						fs.readFileSync('./api/models/' + capitalize(modelName) + '.js', 'utf8');
+					});
 
-          assert.throws(function() {
-            fs.readFileSync('./api/controllers/' + capitalize(controllerName) + 'Controller.js', 'utf8');
-          });
+					assert.throws(function() {
+						fs.readFileSync('./api/controllers/' + capitalize(controllerName) + 'Controller.js', 'utf8');
+					});
 
-          done();
-        })
-      })
-    })
+					done();
+				})
+			})
+		})
 
 
-  });
+	});
 
-  describe('sails destroy model <modelname>', function(){
-    var modelName = 'post';
+	describe('sails destroy model <modelname>', function(){
+		var modelName = 'post';
 
-    it('should throw an error if no model name is specified', function(done) {
-      exec(sailsBin + ' destroy model', function (err) {
-        assert.equal(err.code, 1);
-        done();
-      });
-    });
+		it('should throw an error if no model name is specified', function(done) {
+			exec(sailsBin + ' destroy model', function (err) {
+				assert.equal(err.code, 1);
+				done();
+			});
+		});
 
-    it('should delete a model file in models folder', function(done) {
-      exec(sailsBin + ' generate model ' + modelName, function (err) {
+		it('should delete a model file in models folder', function(done) {
+			exec(sailsBin + ' generate model ' + modelName, function (err) {
 
-        exec(sailsBin + ' destroy model ' + modelName, function (err){
-          if (err) done(new Error(err));
+				exec(sailsBin + ' destroy model ' + modelName, function (err){
+					if (err) done(new Error(err));
 
-          assert.throws(function() {
-            fs.readFileSync('./api/models/' + capitalize(modelName) + '.js', 'utf8');
-          });
+					assert.throws(function() {
+						fs.readFileSync('./api/models/' + capitalize(modelName) + '.js', 'utf8');
+					});
 
-          done();
-        })
-      })
-    })
+					done();
+				})
+			})
+		})
 
-  });
+	});
 
-  describe('sails destroy controller <modelname>', function(){
-    var controllerName = 'post';
+	describe('sails destroy controller <modelname>', function(){
+		var controllerName = 'post';
 
-    it('should throw an error if no controller name is specified', function(done) {
-      exec(sailsBin + ' destroy controller', function (err) {
-        assert.equal(err.code, 1);
-        done();
-      });
-    });
+		it('should throw an error if no controller name is specified', function(done) {
+			exec(sailsBin + ' destroy controller', function (err) {
+				assert.equal(err.code, 1);
+				done();
+			});
+		});
 
-    it('should delete a controller file in controller folder', function(done) {
-      exec(sailsBin + ' generate controller ' + controllerName, function (err) {
+		it('should delete a controller file in controller folder', function(done) {
+			exec(sailsBin + ' generate controller ' + controllerName, function (err) {
 
-        exec(sailsBin + ' destroy controller ' + controllerName, function (err){
-          if (err) done(new Error(err));
+				exec(sailsBin + ' destroy controller ' + controllerName, function (err){
+					if (err) done(new Error(err));
 
-          assert.throws(function() {
-            fs.readFileSync('./api/controllers/' + capitalize(controllerName) + 'Controller.js', 'utf8');
-          });
+					assert.throws(function() {
+						fs.readFileSync('./api/controllers/' + capitalize(controllerName) + 'Controller.js', 'utf8');
+					});
 
-          done();
-        })
-      })
-    })
+					done();
+				})
+			})
+		})
 
-  });
+	});
 
 });

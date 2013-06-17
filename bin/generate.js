@@ -14,8 +14,8 @@ module.exports = {
 	generateModel: generateModel,
 	generateAdapter: generateAdapter,
 	generateView: generateView,
-  destroyModel: destroyModel,
-  destroyController: destroyController
+	destroyModel: destroyModel,
+	destroyController: destroyController
 };
 
 function generateController(entity, options) {
@@ -110,12 +110,12 @@ function generateModel(entity, options) {
 }
 
 function destroyController(entity) {
-  return destroy({
-    boilerplate: 'controller.ejs',
-    prefix: sails.config.paths.controllers,
-    entity: utils.capitalize(entity),
-    suffix: "Controller.js"
-  });
+	return destroy({
+		boilerplate: 'controller.ejs',
+		prefix: sails.config.paths.controllers,
+		entity: utils.capitalize(entity),
+		suffix: "Controller.js"
+	});
 }
 
 function destroyModel(entity) {
@@ -181,22 +181,22 @@ function generate(options) {
 }
 
 function destroy(options) {
-  var boilerplateName = options.boilerplate.split('.')[0];
-  sails.log.debug('Destroying ' + boilerplateName + ' for ' + options.entity + '...');
+	var boilerplateName = options.boilerplate.split('.')[0];
+	sails.log.debug('Destroying ' + boilerplateName + ' for ' + options.entity + '...');
 
-  options.prefix = _.str.rtrim(options.prefix, '/') + '/';
+	options.prefix = _.str.rtrim(options.prefix, '/') + '/';
 
-  if (!options.entity) {
-    throw new Error('No output file name specified!');
-  }
+	if (!options.entity) {
+		throw new Error('No output file name specified!');
+	}
 
-  var fileEntity = options.action || options.entity;
-  var filePath = options.prefix + fileEntity + options.suffix;
+	var fileEntity = options.action || options.entity;
+	var filePath = options.prefix + fileEntity + options.suffix;
 
-  if (utils.fileExists(filePath)) {
-    fs.unlink(filePath)
-  } else {
-    sails.log.error('Could not delete file, ' + filePath + '!');
-  }
+	if (utils.fileExists(filePath)) {
+		fs.unlink(filePath)
+	} else {
+		sails.log.error('Could not delete file, ' + filePath + '!');
+	}
 
 }
