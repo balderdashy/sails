@@ -31,7 +31,7 @@
     "lib": "lib"
   },
   "dependencies": {
-    "express": "~3.2.6",
+    "express": "3.2.6",
     "waterline": "git://github.com/balderdashy/waterline.git",
     "socket.io": "~0.9.14",
     "connect-redis": "1.4.5",
