@@ -137,6 +137,20 @@ else if (argv._.length === 0) {
 	console.log('');
 	sailsUsage();
 }
+// Destroy files
+else if (argv._[0] && (argv._[0].match(/^destroy|^d$/) {
+	verifyArg(1, 'Please specify the name of the model and controller to be destroy as the second argument.');
+
+  if (argv._[1] === 'model') {
+    var entity = argv._[2];
+    verifyArg(2, 'Please specify the name for the model as the third argument.');
+    generate.destroyModel(entity);
+  } else if(argv._[1] === 'controller') {
+    var entity = argv._[2];
+    verifyArg(2, 'Please specify the name for the controller as the third argument.');
+    generate.destroyController(entity, options);
+  }
+}
 // Generate file(s)
 else if (argv._[0] && (argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^generat$|^generate$/) || argv.g || argv.generate)) {
 
@@ -190,7 +204,7 @@ else if (argv._[0] && (argv._[0].match(/^g$|^ge$|^gen$|^gene$|^gener$|^genera$|^
 	// 	options.actions = argv._.splice(3);
 	// 	generate.generateView(entity, options);
 	// }
-	
+
 	// Generate an adapter
 	else if (argv._[1] === 'adapter') {
 		var entity = argv._[2];
@@ -256,6 +270,8 @@ function sailsUsage() {
 	usage += leftColumn('sails generate <foo>') + 'Generate api/models/Foo.js and api/controllers/FooController.js\n';
 	usage += leftColumn('sails generate model <foo>') + 'Generate api/models/Foo.js\n';
 	usage += leftColumn('sails generate controller <foo>') + 'Generate api/controllers/FooController.js\n';
+	usage += leftColumn('sails destroy model <foo>') + 'Destroys api/models/Foo.js\n';
+	usage += leftColumn('sails destroy controller <foo>') + 'Destroys api/controllers/FooController.js\n';
 	usage += leftColumn('sails version') + 'Get the current globally installed Sails version';
 
 	sails.log.info(usage);
