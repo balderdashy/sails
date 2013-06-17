@@ -138,7 +138,7 @@ else if (argv._.length === 0) {
 	sailsUsage();
 }
 // Destroy files
-else if (argv._[0] && (argv._[0].match(/^destroy|^d$/) {
+else if (argv._[0] && (argv._[0].match(/^d$|^destroy$/))) {
 	verifyArg(1, 'Please specify the name of the model and controller to be destroy as the second argument.');
 
   if (argv._[1] === 'model') {
@@ -148,7 +148,11 @@ else if (argv._[0] && (argv._[0].match(/^destroy|^d$/) {
   } else if(argv._[1] === 'controller') {
     var entity = argv._[2];
     verifyArg(2, 'Please specify the name for the controller as the third argument.');
-    generate.destroyController(entity, options);
+    generate.destroyController(entity);
+  } else {
+    var entity = argv._[1];
+    generate.destroyModel(entity);
+    generate.destroyController(entity);
   }
 }
 // Generate file(s)

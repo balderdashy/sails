@@ -13,7 +13,9 @@ module.exports = {
 	generateController: generateController,
 	generateModel: generateModel,
 	generateAdapter: generateAdapter,
-	generateView: generateView
+	generateView: generateView,
+  destroyModel: destroyModel,
+  destroyController: destroyController
 };
 
 function generateController(entity, options) {
@@ -178,7 +180,7 @@ function generate(options) {
 	fs.writeFileSync(newFilePath, file);
 }
 
-function destory(options) {
+function destroy(options) {
   var boilerplateName = options.boilerplate.split('.')[0];
   sails.log.debug('Destroying ' + boilerplateName + ' for ' + options.entity + '...');
 
@@ -188,12 +190,10 @@ function destory(options) {
     throw new Error('No output file name specified!');
   }
 
-  var file = utils.renderBoilerplateTemplate(options.boilerplate, options);
-
   var fileEntity = options.action || options.entity;
   var filePath = options.prefix + fileEntity + options.suffix;
 
-  if utils.fileExists(filePath) {
+  if (utils.fileExists(filePath)) {
     fs.unlink(filePath)
   } else {
     sails.log.error('Could not delete file, ' + filePath + '!');
