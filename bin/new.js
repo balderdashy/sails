@@ -63,7 +63,8 @@ module.exports = function createNewApp(appName, templateLang) {
 	var newSessionConfig = ejs.render(fs.readFileSync(boilerplatePath, 'utf8'), {
 		secret: require('../lib/session').generateSecret()
 	});
-	fs.writeFileSync(boilerplatePath, newSessionConfig, 'utf8');
+	fs.createFileSync(outputPath + '/config/session.js');
+	fs.writeFileSync(outputPath + '/config/session.js', newSessionConfig, 'utf8');
 
 	// Different stuff for different view engines
 	if (templateLang === 'handlebars') templateLang = 'hbs';
