@@ -8,21 +8,14 @@ module.exports.adapters = {
 	'default': 'disk',
 	
 	// In-memory adapter for DEVELOPMENT ONLY
-	// (data is NOT preserved when the server shuts down)
 	memory: {
-		module: 'sails-dirty',
-		inMemory: true
+		module: 'sails-memory'
 	},
 
 	// Persistent adapter for DEVELOPMENT ONLY
 	// (data IS preserved when the server shuts down)
-	// PLEASE NOTE: disk adapter not compatible with node v0.10.0 currently 
-	//				because of limitations in node-dirty
-	//				See https://github.com/felixge/node-dirty/issues/34
 	disk: {
-		module: 'sails-dirty',
-		filePath: './.tmp/dirty.db',
-		inMemory: false
+		module: 'sails-disk'
 	},
 
 	// MySQL is the world's most popular relational database.

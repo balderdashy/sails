@@ -1,12 +1,8 @@
 var sys = require('sys'),
 	exec = require('child_process').exec,
-	sails = require('../lib/sails'),
 	parley = require('parley'),
 	test_timeout = '60000',
 	$ = new parley();
-
-// Build log
-var log = sails.log;
 
 // Final exit code (for travis)
 var result = 0;
@@ -14,7 +10,7 @@ var result = 0;
 // Build deferred log
 var $log = function (msg) {
 	return $(function (msg, xcb) {
-		sails.log(msg);
+	  	console.log(msg);
 		xcb();
 		// Exit with code based on result of tests
 		if (msg === 'Tests complete.') process.exit(result);
@@ -23,10 +19,9 @@ var $log = function (msg) {
 
 // Execute a cmd, then trigger callback when it finishes
 function runTest(cmd, cb) {
-	log();
 	var test = exec(cmd);
 	test.stdout.on('data', sys.print);
-	test.stderr.on('data', log.error);
+    test.stdout.on('data', process.stdout.write);
 	test.on('exit', function (code) {
 		// If test fails, set exit code to failing test code
 		if (code !== 0) result = code;
@@ -98,13 +93,12 @@ $runTest('node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive  -R dot
 // sails-mongo
 // sails-redis
 // sails-sqlite
-// sails-couch
 
 // sails-smtp
 
 // sails-twitter
 // sails-facebook
-
+// sails-couch
 
 
 $log('Tests complete.');

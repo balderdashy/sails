@@ -1,36 +1,7 @@
 {
   "name": "sails",
   "author": "Mike McNeil <mike@balderdash.co>",
-  "contributors": [
-    {
-      "name": "Mike McNeil",
-      "email": "mike@balderdash.co",
-      "url": "http://michaelmcneil.com"
-    },
-    {
-      "name": "Dennis Bartlett",
-      "email": "dcbartlett@balderdash.co",
-      "url": "http://dcbartlett.info"
-    },
-    {
-      "name": "Colin Wren",
-      "email": "colin@cawren.com"
-    },
-    {
-      "name": "Brad Carleton",
-      "email": "brad@techpines.com",
-      "url": "http://techpines.com"
-    },
-    {
-      "name": "Ameen Ahmed",
-      "email": "ameen.ahmed.b@gmail.com"
-    },
-    {
-      "name": "Robin Cafolla",
-      "email": "robin@zombiemongoose.com"
-    }
-  ],
-  "version": "0.8.93",
+  "version": "0.9.0RC",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
   "homepage": "http://sailsjs.com",
   "keywords": [
@@ -49,7 +20,7 @@
     "active-record",
     "socket.io"
   ],
-  "main": "./lib/sails",
+  "main": "./lib/lift/index",
   "bin": {
     "sails": "./bin/sails.js"
   },
@@ -60,40 +31,42 @@
     "lib": "lib"
   },
   "dependencies": {
-    "sails-dirty": "0.7.4",
-    "express": "2.5.11",
-    "socket.io": "0.9.6",
-    "ejs": "0.7.2",
-    "connect": "1.8.3",
-    "async": "0.1.22",
-    "lodash": "1.2.1",
-    "optimist": "0.3.4",
-    "underscore.string": "2.3.0",
-    "glob": "3.1.14",
-    "winston": "0.6.2",
-    "fs-extra": "0.5.0",
-    "i18n": "0.3.5",
-    "wrench": "1.4.4",
-    "uglify-js": "2.2.4",
-    "asset-rack": "2.1.5",
-    "node-uuid": "1.4.0",
-    "parley": "0.0.2",
-    "include-all": "0.0.6",
-    "forever": "0.10.0",
-    "clean-css": "0.10.1",
-    "fs-watch-tree": "0.2.2",
-    "jade": "0.28.0",
-    "inflection": "1.2.5",
-    "node-typescript": "0.1.3",
-    "coffee-script": "1.6.2",
+    "express": "3.2.6",
+    "waterline": "git://github.com/balderdashy/waterline.git",
+    "socket.io": "~0.9.14",
     "connect-redis": "1.4.5",
-    "hbs": "2.1.0",
-    "cookie": "0.0.6",
-    "connect-mongo": "0.3.2"
+    "connect-mongo": "0.3.2",
+    "async": "~0.2.9",
+    "winston": "~0.7.1",
+    "i18n": "0.3.5",
+    "optimist": "0.3.4",
+    "fs-extra": "0.5.0",
+    "lodash": "1.2.1",
+    "glob": "3.1.14",
+    "underscore.string": "2.3.0",
+    "include-all": "0.1.0",
+    "inflection": "1.2.5",
+    "node-uuid": "*",
+    "sails-disk": "~0.1.0",
+    "grunt": "0.4.1",
+    "grunt-cli": "~0.1.9",
+    "grunt-contrib-copy": "0.4.1",
+    "grunt-contrib-clean": "0.4.1",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-scriptlinker": "0.1.1",
+    "grunt-contrib-jst": "0.5.0",
+    "grunt-contrib-watch": "~0.4.4",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-cssmin": "~0.6.1",
+    "grunt-contrib-less": "~0.5.2"
   },
   "devDependencies": {
     "mocha": "*",
-    "request": "*"
+    "request": "*",
+    "ejs": "~0.8.4"
+  },
+  "optionalDependencies": {
+    "coffee-script": "1.6.2"
   },
   "repository": {
     "type": "git",
@@ -109,6 +82,6 @@
     "url": "http://github.com/balderdashy/sails/issues"
   },
   "engines": {
-    "node": "<= 0.10.2"
+    "node": ">= 0.10.0"
   }
 }

@@ -22,10 +22,12 @@
 //
 module.exports.routes = {
 	
-	// To route the home page to the "index" action of the "home" controller:
-	'/' : {
-		controller	: 'home'
-	}
+	// To route the home page to the "index" action of FooController
+	// (if no controller exists, Sails will look for a view called `views/home/index.*`)
+	// '/' : {
+	//     controller  : 'foo',
+	//     action      : 'index',
+	// }
 
 	// If you want to set up a route only for a particular HTTP method/verb 
 	// (GET, POST, PUT, DELETE) you can specify the verb before the path:
