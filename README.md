@@ -1,22 +1,18 @@
-# Sails.js 0.9 Edge Version [![Build Status](https://travis-ci.org/balderdashy/sails.png?branch=development)](https://travis-ci.org/balderdashy/sails)
+# Sails.js Edge Version [![Build Status](https://travis-ci.org/balderdashy/sails.png?branch=development)](https://travis-ci.org/balderdashy/sails)
 
-![image_devInTub@2x.png](http://i.imgur.com/Tj9Nk.png)
+> If you'd like to contribute, please send a pull request!  If you're thinking of biting off something big, or have some questions, join us on IRC 
+at #sailsjs on freenode or email the Google group.
 
-
-Join us on IRC at #sailsjs on freenode
-
-Version, Dependencies and Compatibility
---
-#### Latest stable release: `v0.8.93`
-
-Tested with node v0.8.22 and v0.10.x
-Sails is built on the rock-solid foundations of ExpressJS and Socket.io.  
+### This branch is the release candiate for Sails v0.9.0.
 
 + [Roadmap](https://github.com/balderdashy/sails/wiki/roadmap)
++ 
 + [Changelog](https://github.com/balderdashy/sails/wiki/changelog)
 
 <br/>
 <br/>
+
+
 
 License
 --
