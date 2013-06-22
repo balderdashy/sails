@@ -45,9 +45,8 @@
     "underscore.string": "2.3.0",
     "include-all": "0.1.0",
     "inflection": "1.2.5",
-    "node-uuid": "*"
-  },
-  "devDependencies": {
+    "node-uuid": "*",
+    "sails-disk": "~0.1.0",
     "grunt": "0.4.1",
     "grunt-cli": "~0.1.9",
     "grunt-contrib-copy": "0.4.1",
@@ -55,14 +54,15 @@
     "grunt-contrib-concat": "~0.3.0",
     "grunt-scriptlinker": "0.1.1",
     "grunt-contrib-jst": "0.5.0",
-    "sails-disk": "~0.1.0",
     "grunt-contrib-watch": "~0.4.4",
-    "mocha": "*",
-    "request": "*",
-    "ejs": "~0.8.4",
     "grunt-contrib-uglify": "~0.2.2",
     "grunt-contrib-cssmin": "~0.6.1",
     "grunt-contrib-less": "~0.5.2"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "request": "*",
+    "ejs": "~0.8.4"
   },
   "optionalDependencies": {
     "coffee-script": "1.6.2"
