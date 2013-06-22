@@ -6,13 +6,8 @@ at #sailsjs on freenode or email the Google group.
 ### This branch is the release candiate for Sails v0.9.0.
 
 + [Roadmap](https://github.com/balderdashy/sails/wiki/roadmap)
-+ 
+
 + [Changelog](https://github.com/balderdashy/sails/wiki/changelog)
-
-<br/>
-<br/>
-
-
 
 License
 --
