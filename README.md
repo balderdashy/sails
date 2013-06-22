@@ -3,7 +3,7 @@
 > If you'd like to contribute, please send a pull request!  If you're thinking of biting off something big, or have some questions, join us on IRC 
 at #sailsjs on freenode or email the Google group.
 
-### This branch is the release candiate for Sails v0.9.0.
+### This branch is the release candidate for Sails v0.9.0.
 
 + [Roadmap](https://github.com/balderdashy/sails/wiki/roadmap)
 
