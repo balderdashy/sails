@@ -20,7 +20,7 @@
     "active-record",
     "socket.io"
   ],
-  "main": "./lib/lift/index",
+  "main": "./lib/index",
   "bin": {
     "sails": "./bin/sails.js"
   },
