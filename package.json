@@ -58,8 +58,7 @@
     "grunt-contrib-watch": "~0.4.4",
     "grunt-contrib-uglify": "~0.2.2",
     "grunt-contrib-cssmin": "~0.6.1",
-    "grunt-contrib-less": "~0.5.2",
-    "parley": "0.0.2"
+    "grunt-contrib-less": "~0.5.2"
   },
   "devDependencies": {
     "mocha": "*",
