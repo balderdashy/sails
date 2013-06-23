@@ -1,7 +1,7 @@
 # Sails.js Edge Version [![Build Status](https://travis-ci.org/balderdashy/sails.png?branch=development)](https://travis-ci.org/balderdashy/sails)
 
 > Disclaimer:  This branch is for core development of the framework, and is not necessarily in a stable state!  
-> If you'd like to contribute, please send a pull request!  If you're thinking of biting off something big, or have some questions, join us on IRC 
+> If you'd like to contribute, please send a pull request.  If you're thinking of biting off something big, or have some questions, join us on IRC 
 at #sailsjs on freenode or email the Google group.
 
 ### This branch is the release candidate for Sails v0.9.0.
