@@ -14,7 +14,8 @@ before_script:
   - mysql -e "create database waterline;"
 
 notifications:
-  email: false
+  email: 
+    - travis-ci@balderdash.co
   irc:
     channels:
       - "irc.freenode.org#sailsjs"
