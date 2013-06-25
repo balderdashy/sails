@@ -15,7 +15,10 @@ before_script:
 
 notifications:
   email: 
-    - travis-ci@balderdash.co
+    recipients:
+      - travis-ci@balderdash.co
+    on_success: never
+    on_failure: always
   irc:
     channels:
       - "irc.freenode.org#sailsjs"
