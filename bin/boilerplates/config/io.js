@@ -48,7 +48,7 @@ module.exports.io = {
 	'polling duration': 20,
 
 	// Enable the flash policy server if the flashsocket transport is enabled
-	'flash policy server': true,
+	// 'flash policy server': true,
 
 	// By default the Socket.IO client will check port 10843 on your server 
 	// to see if flashsocket connections are allowed.
