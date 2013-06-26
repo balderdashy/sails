@@ -12,19 +12,22 @@ module.exports.io = {
 	],
 
 	// Setup adapter to use for socket.io MQ (pubsub) store
-	// (`undefined` indicates default memory store)
 	// NOTE: Default memory store will not work for clustered deployments with multiple instances.
-	adapter: undefined,
+	adapter: 'memory',
 
 	// In production, to scale horizontally to multiple Sails.js servers,
 	// you'll need to defer pubsub processing to a messaging queue.
 	// By default, Sails provides support for Redis.
 	// adapter: 'redis',
 
-	// With the above configuration, the local redis instance will be used on the default port.
-	// If you need to use a remote redis instance (which is probable!) 
-	// you can use the raw socket.io `store` config for now (see below)
-	
+	// The following values are optional, if no options are set a redis instance running
+	// on localhost is expected.
+	//
+	// host: '127.0.0.1',
+	// port: 6379,
+	// db: sails,
+	// pass: <redis auth password>
+
 	// Match string representing the origins that are allowed to connect to the Socket.IO server
 	origins: '*:*',
 
