@@ -4,19 +4,39 @@ module.exports.session = {
 	// It can be easily replaced here:
 	secret: '<%= secret %>'
 
-	// Uncomment the following lines to use your Mongo adapter as a session store
-	// Information about setting up a Mongo adapter can be found here: https://github.com/balderdashy/sails-mongo
-	// adapter: 'mongo',
-	// url: require('./adapters').adapters.mongo.url
-
 	// In production, uncomment the following lines to set up a shared redis session store
 	// that can be shared across multiple Sails.js servers
-	// adapter: 'redis'
+	// adapter: 'redis',
+	//
+	// The following values are optional, if no options are set a redis instance running
+	// on localhost is expected.
+	// Read more about options at: https://github.com/visionmedia/connect-redis
+	//
+	// host: 'localhost',
+	// port: 6379,
+	// ttl: <redis session TTL in seconds>,
+	// db: 0,
+	// pass: <redis auth password>
+	// prefix: 'sess:'
 
-	// With the above coniguration, the local redis instance will be used on the default port.
-	// If you need to use a remote redis instance (which is probable!) 
-	// you can use the raw connect session `store` config for now
-	// (see https://github.com/visionmedia/express/blob/master/examples/session/redis.js)
 
+	// Uncomment the following lines to use your Mongo adapter as a session store
+	// adapter: 'mongo',
+	//
+	// host: 'localhost',
+	// port: 27017,
+	// db: 'sails',
+	// collection: 'sessions',
+	//
+	// Optional Values:
+	//
+	// # Note: url will override other connection settings
+	// url: 'mongodb://user:pass@host:port/database/collection',
+	//
+	// username: '',
+	// password: '',
+	// auto_reconnect: false,
+	// ssl: false,
+	// stringify: true
 
 };
