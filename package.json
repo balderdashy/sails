@@ -59,8 +59,8 @@
     "grunt-contrib-uglify": "~0.2.2",
     "grunt-contrib-cssmin": "~0.6.1",
     "grunt-contrib-less": "~0.5.2",
-    "express-partials": "~0.1.1",
-    "ejs": "~0.8.4"
+    "ejs": "~0.8.4",
+    "ejs-locals": "~1.0.2"
   },
   "devDependencies": {
     "mocha": "*",
