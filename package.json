@@ -58,12 +58,12 @@
     "grunt-contrib-watch": "~0.4.4",
     "grunt-contrib-uglify": "~0.2.2",
     "grunt-contrib-cssmin": "~0.6.1",
-    "grunt-contrib-less": "~0.5.2"
+    "grunt-contrib-less": "~0.5.2",
+    "ejs": "~0.8.4"
   },
   "devDependencies": {
     "mocha": "*",
-    "request": "*",
-    "ejs": "~0.8.4"
+    "request": "*"
   },
   "optionalDependencies": {
     "coffee-script": "1.6.2"
