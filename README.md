@@ -108,7 +108,7 @@ sails generate user
 If you check out your app, you'll notice that this created a file at **/api/models/User.js** and **/api/controllers/UserController.js**.  
 
 
-Sails API blueprints are more than scaffolds. Generating HTML don't really make sense for 
+Sails API blueprints are more than scaffolds. Generating HTML doesn't really make sense for 
 modern web apps. Instead, Sails automatically builds a RESTful JSON API for your models.
 Most importantly, this API supports HTTP _and_ WebSockets. By default for every model and controller you generate, you get the basic CRUD operations automatically.  
 If you need more fine-grained control, you can just override the appropriate method in the controller.  (see the documentation for more information on how to do this)  Controllers are just Express middleware, the most popular framework for writing code in Node.js.  And most importantly, all of that code, even the custom controller, still supports WebSocekts out of the box.
