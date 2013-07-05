@@ -1,16 +1,16 @@
 module.exports = {
-	
-	// Logger
-	// Valid `level` configs:
-	// 
-	// - error
-	// - warn
-	// - debug
-	// - info
-	// - verbose
-	//
-	log: {
-		level: 'info'
-	}
+
+  // Logger
+  // Valid `level` configs:
+  //
+  // - error
+  // - warn
+  // - debug
+  // - info
+  // - verbose
+  //
+  log: {
+    level: 'info'
+  }
 
 };
