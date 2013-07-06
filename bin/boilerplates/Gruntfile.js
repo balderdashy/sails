@@ -98,7 +98,7 @@ module.exports = function(grunt) {
           appRoot: '.tmp/public/'
         },
         files: {
-          '.tmp/public/index.html': ['.tmp/public/mixins/**/*.js', '.tmp/public/js/**/*.js']
+          '.tmp/public/**/*.html': ['.tmp/public/mixins/**/*.js', '.tmp/public/js/**/*.js']
         }
       },
 
@@ -110,7 +110,7 @@ module.exports = function(grunt) {
           appRoot: '.tmp/public/'
         },
         files: {
-          '.tmp/public/index.html': ['.tmp/public/min/production.js']
+          '.tmp/public/**/*.html': ['.tmp/public/min/production.js']
         }
       },
 
@@ -122,7 +122,7 @@ module.exports = function(grunt) {
           appRoot: '.tmp/public/'
         },
         files: {
-          '.tmp/public/index.html': ['.tmp/public/mixins/**/*.css', '.tmp/public/styles/**/*.css']
+          '.tmp/public/**/*.html': ['.tmp/public/mixins/**/*.css', '.tmp/public/styles/**/*.css']
         }
       },
 
