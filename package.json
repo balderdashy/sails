@@ -7,8 +7,6 @@
   "keywords": [
     "mvc",
     "web-framework",
-    "rails",
-    "ruby-on-rails",
     "express",
     "sails",
     "sailsjs",
@@ -16,8 +14,6 @@
     "REST",
     "API",
     "orm",
-    "mysql",
-    "active-record",
     "socket.io"
   ],
   "main": "./lib/index",

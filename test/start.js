@@ -1,21 +1,10 @@
 var sys = require('sys'),
 	exec = require('child_process').exec,
-	parley = require('parley'),
-	test_timeout = '60000',
-	$ = new parley();
+	test_timeout = '60000';
 
 // Final exit code (for travis)
 var result = 0;
 
-// Build deferred log
-var $log = function (msg) {
-	return $(function (msg, xcb) {
-	  	console.log(msg);
-		xcb();
-		// Exit with code based on result of tests
-		if (msg === 'Tests complete.') process.exit(result);
-	})(msg);
-};
 
 // Execute a cmd, then trigger callback when it finishes
 function runTest(cmd, cb) {
@@ -31,6 +20,9 @@ function runTest(cmd, cb) {
 var $runTest = function (cmd) {
 	return $(runTest)(cmd);
 };
+
+$log('Testing waterline (ORM)...');
+$runTest('node ./node_modules/mocha/bin/mocha --ignore-leaks --recursive  -R dot -t '+ test_timeout +' test/waterline');
 
 
 $log('Running tests...');
