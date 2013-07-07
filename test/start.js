@@ -40,10 +40,12 @@ var
 
 async.series([
 
-	// TODO: move to node_modules
-	// runTest( DEFAULT_TEST_CMD + 'test/waterline' ),
+	// Run built-in waterline tests in node_modules
+	runTest( DEFAULT_TEST_CMD + 'node_modules/waterline/test/**/**' ),
 
-	runTest( DEFAULT_TEST_CMD + 'test/unit/router' )
+	// runTest( DEFAULT_TEST_CMD + 'test/unit/router' )
+
+	function placeholder (cb) {cb();}
 
 
 ], function (err) {
