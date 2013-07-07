@@ -38,10 +38,12 @@ var
  * Run unit tests, one at a time
  */
 
+logger.log('\n Running unit tests...\n=============================================\n');
+
 async.series([
 
 	// Run built-in waterline tests in node_modules
-	runTest( DEFAULT_TEST_CMD + 'node_modules/waterline/test/**/**' ),
+	runTest( DEFAULT_TEST_CMD + 'node_modules/waterline/test/**/**', 'waterline (orm)' ),
 
 	// runTest( DEFAULT_TEST_CMD + 'test/unit/router' )
 
@@ -51,7 +53,7 @@ async.series([
 ], function (err) {
 	_throw(err, logger.error);
 	
-	logger.log('Tests completed successfully!');
+	logger.log('\n=============================================\n\n All tests passed.\n');
 
 });
 
@@ -64,19 +66,28 @@ async.series([
 /**
  * Return async fn that runs the specified command and triggers its cb when finished
  * @param {String} cmd
+ * @param {String} label [optional]
  */
 
-function runTest ( cmd ) {
+function runTest ( cmd, label ) {
 
 	// Execute a cmd, then trigger callback when it finishes
 	return function (cb) {
+
+		label = label || cmd;
+		logger.log(' *->  Running test :: ' + label + '...');
+
 		var test = exec(cmd);
 		test.stdout.on('data', sys.print);
 	    test.stdout.on('data', process.stdout.write);
 		test.on('exit', function (code) {
 
 			// If test fails, set exit code to failing test code
-			if (code !== 0) EXIT_CODE = code;
+			if (code !== 0) {
+				EXIT_CODE = code;
+				logger.error('Failed :: ' + label);
+			}
+
 			return code ? cb('Returned with code: ' + code) : cb();
 		});
 	};
