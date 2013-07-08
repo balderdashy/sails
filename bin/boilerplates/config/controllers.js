@@ -1,54 +1,48 @@
 module.exports = {
 	
+	// Routes to automatically inject
 	// (Note: global blueprint config may be overridden on a per-controller basis
 	//			by setting the 'blueprint' property in a controller)
-	blueprints: {
+	routes: {
 
 		// Optional mount path prefix for blueprint routes
 		// e.g. '/api/v2'
 		prefix: '',
+		
+
+		// Whether routes are automatically generated for every action in your controllers
+		// (also maps `index` to /:controller)
+		// '/:controller', '/:controller/index', and '/:controller/:action'
+		actions: true,
 
 
-		// Routes to automatically inject
-		routes: {
-
-			// Automatically create routes for every action in the controller
-			// (also maps `index` to /:controller)
-			'get /:controller/:action?': true,
-			'post /:controller/:action?': true,
-			'put /:controller/:action?': true,
-			'delete /:controller/:action?': true,
-
-
-			// REST shortcuts
-			//
-			// ** NOTE **
-			// These REST shortcuts exist for your convenience during development,
-			// but you'll want to disable them in production.
-			'/:controller/find/:id?': true,
-			'/:controller/create': true,
-			'/:controller/update/:id': true,
-			'/:controller/destroy/:id': true,
+		// ** NOTE **
+		// These CRUD shortcuts exist for your convenience during development,
+		// but you'll want to disable them in production.
+		// '/:controller/find/:id?'
+		// '/:controller/create'
+		// '/:controller/update/:id'
+		// '/:controller/destroy/:id'
+		shortcuts: true,
 
 
-			// REST methods
-			'get /:controller/:id?': true,
-			'post /:controller': true,
-			'put /:controller/:id': true,
-			'delete /:controller/:id': true
+		// Automatic REST blueprints enabled?
+		// e.g.
+		// 'get /:controller/:id?'
+		// 'post /:controller'
+		// 'put /:controller/:id'
+		// 'delete /:controller/:id'
+		rest: true,
 
-		},
 
-
-		// If a blueprint REST route catches a request,
-		// only match an `id` if it's an integer
+		// If a blueprint route catches a request,
+		// only match :id param if it's an integer
 		//
-		// e.g.	only fire route if requests look like:
+		// e.g.	only trigger route handler if requests look like:
 		//		get /user/8
 		// instead of:
 		//		get /user/a8j4g9jsd9ga4ghjasdha
 		expectIntegerId: true
-
 	},
 	
 	
