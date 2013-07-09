@@ -42,7 +42,7 @@ module.exports = {
 		//		get /user/8
 		// instead of:
 		//		get /user/a8j4g9jsd9ga4ghjasdha
-		expectIntegerId: true
+		expectIntegerId: false
 	},
 	
 	
