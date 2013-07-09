@@ -44,7 +44,7 @@ module.exports = function(grunt) {
           }
         },
         files: {
-          '.tmp/public/jst.js': ['assets/templates/**/*.html']
+          '.tmp/public/jst.js': ['assets/templates/**/*.html', 'assets/linker/templates/**/*.html']
         }
       }
     },
@@ -58,6 +58,12 @@ module.exports = function(grunt) {
             src: ['*.less'],
             dest: '.tmp/public/styles/',
             ext: '.css'
+          },{
+            expand: true,
+            cwd: 'assets/linker/styles/',
+            src: ['*.less'],
+            dest: '.tmp/public/linker/styles/',
+            ext: '.css'
           }
         ]
       }
@@ -65,11 +71,11 @@ module.exports = function(grunt) {
 
     concat: {
       js: {
-        src: ['.tmp/public/mixins/**/*.js', '.tmp/public/js/**/*.js'],
+        src: ['.tmp/public/linker/js/**/*.js'],
         dest: '.tmp/public/concat/production.js'
       },
       css: {
-        src: ['.tmp/public/mixins/**/*.css', '.tmp/public/styles/**/*.css'],
+        src: ['.tmp/public/linker/styles/**/*.css'],
         dest: '.tmp/public/concat/production.css'
       }
     },
@@ -98,7 +104,9 @@ module.exports = function(grunt) {
           appRoot: '.tmp/public/'
         },
         files: {
-          '.tmp/public/**/*.html': ['.tmp/public/mixins/**/*.js', '.tmp/public/js/**/*.js']
+          '.tmp/public/**/*.html': ['.tmp/public/linker/js/**/*.js'],
+          'views/**/*.html': ['.tmp/public/linker/js/**/*.js'],
+          'views/**/*.ejs': ['.tmp/public/linker/js/**/*.js']
         }
       },
 
@@ -110,7 +118,9 @@ module.exports = function(grunt) {
           appRoot: '.tmp/public/'
         },
         files: {
-          '.tmp/public/**/*.html': ['.tmp/public/min/production.js']
+          '.tmp/public/**/*.html': ['.tmp/public/min/production.js'],
+          'views/**/*.html': ['.tmp/public/min/production.js'],
+          'views/**/*.ejs': ['.tmp/public/min/production.js']
         }
       },
 
@@ -122,7 +132,9 @@ module.exports = function(grunt) {
           appRoot: '.tmp/public/'
         },
         files: {
-          '.tmp/public/**/*.html': ['.tmp/public/mixins/**/*.css', '.tmp/public/styles/**/*.css']
+          '.tmp/public/**/*.html': ['.tmp/public/linker/styles/**/*.css'],
+          'views/**/*.html': ['.tmp/public/linker/styles/**/*.css'],
+          'views/**/*.ejs': ['.tmp/public/linker/styles/**/*.css'],
         }
       },
 
@@ -134,7 +146,9 @@ module.exports = function(grunt) {
           appRoot: '.tmp/public/'
         },
         files: {
-          '.tmp/public/index.html': ['.tmp/public/min/production.css']
+          '.tmp/public/index.html': ['.tmp/public/min/production.css'],
+          'views/**/*.html': ['.tmp/public/min/production.css'],
+          'views/**/*.ejs': ['.tmp/public/min/production.css']
         }
       },
 
@@ -147,7 +161,9 @@ module.exports = function(grunt) {
           appRoot: '.tmp/public/'
         },
         files: {
-          '.tmp/public/index.html': ['.tmp/public/jst.js']
+          '.tmp/public/index.html': ['.tmp/public/jst.js'],
+          'views/**/*.html': ['.tmp/public/jst.js'],
+          'views/**/*.ejs': ['.tmp/public/jst.js']
         }
       }
     },
