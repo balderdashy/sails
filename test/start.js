@@ -45,15 +45,15 @@ async.series([
 	// Run built-in waterline tests in node_modules
 	runTest( DEFAULT_TEST_CMD + 'node_modules/waterline/test/**/**', 'waterline (orm)' ),
 
-	// runTest( DEFAULT_TEST_CMD + 'test/unit/router' )
+	runTest( DEFAULT_TEST_CMD + 'test/router/unit/*', 'router'),
 
 	function placeholder (cb) {cb();}
 
 
 ], function (err) {
-	_throw(err, logger.error);
+	_catch(err, logger.error);
 	
-	logger.log('\n=============================================\n\n All tests passed.\n');
+	logger.log('\n=============================================\n\n All tests complete.\n');
 
 });
 
@@ -75,20 +75,18 @@ function runTest ( cmd, label ) {
 	return function (cb) {
 
 		label = label || cmd;
-		logger.log(' *->  Running test :: ' + label + '...');
+		logger.log(' *->  Running test :: ' + label + '...', '\n(', cmd,')');
 
-		var test = exec(cmd);
-		test.stdout.on('data', sys.print);
-	    test.stdout.on('data', process.stdout.write);
-		test.on('exit', function (code) {
-
-			// If test fails, set exit code to failing test code
-			if (code !== 0) {
-				EXIT_CODE = code;
+		var test = exec(cmd, function (err, stdout, stderr) {
+			console.log(stdout);
+			console.error(stderr);
+			if (err) {
+				// If test fails, set exit code to failing test code
 				logger.error('Failed :: ' + label);
+				EXIT_CODE = 1;
+				return cb(err);
 			}
-
-			return code ? cb('Returned with code: ' + code) : cb();
+			return cb();
 		});
 	};
 }

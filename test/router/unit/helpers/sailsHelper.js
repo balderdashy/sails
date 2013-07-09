@@ -1,16 +1,18 @@
 /**
  * Module dependencies
  */
-
-var Sails = require('../../../../app');
+var Sails = require('../../../../lib/app');
 
 module.exports = {
 	
-	build: function () {
-		return new Sails();
+	build: function (cb) {
+		var sails = new Sails();
+		sails.load(function (err) {
+			cb(err,sails);
+		});
 	},
 
-	teardown: function () {
-		
+	teardown: function (sails, cb) {
+		sails.teardown(cb);
 	}
 };
