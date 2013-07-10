@@ -1,4 +1,4 @@
-module.exports = {
+module.exports.controllers = {
 	
 	// Routes to automatically inject
 	// (Note: global blueprint config may be overridden on a per-controller basis
