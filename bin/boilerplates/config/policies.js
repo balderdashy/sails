@@ -9,7 +9,7 @@ module.exports.policies = {
 	'*': true
 
 	/** Example mapping: 
-	someController: {
+	SomeController: {
 
 		// Apply the "authenticated" policy to all actions
 		'*': 'authenticated',
