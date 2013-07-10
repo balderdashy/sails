@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 
+var argv = require('optimist').argv;
+  
 // Build sails instance
 var sails = require('../lib');
 sails.config = {
-	appPath: process.cwd()
+	appPath: process.cwd(),
+  prod: argv.prod
 };
 require('../lib/configuration')(sails).load(function (err) {
 	if (err) throw new Error(err);
