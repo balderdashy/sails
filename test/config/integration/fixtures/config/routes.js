@@ -21,9 +21,8 @@
 //   - if no view OR model exists, Sails will respond with a 404.
 //
 module.exports.routes = {
-  '/': {
-    controller: 'foo',
-    action: 'bar'
+  '/': function(req, res){
+    res.send('');
   },
 	
 	// To route the home page to the "index" action of FooController

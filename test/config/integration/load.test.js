@@ -1,144 +1,105 @@
 var assert = require('assert');
-var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
 var path = require('path');
 var fs = require('fs');
 
-describe('Policies', function() {
-  var appName = 'testApp';
+describe('Configs', function () {
+  this.timeout(30000);
 
-  before(function(done) {
-    appHelper.build(function(err) {
-      if(err) return done(err);
+  var appName = 'testApp';
+  var config;
+  before(function (done) {
+
+    // build app
+    appHelper.build(function (err) {
+      if (err) return done(err);
       process.chdir(appName);
-      done();
+
+      // Start sails and pass it command line arguments
+      require(path.resolve('./../lib')).lift({}, function (err, sails) {
+        if (err) return done(err);
+        config = sails.config;
+        done();
+      });
     });
   });
 
-  after(function() {
+  after(function () {
     process.chdir('../');
     appHelper.teardown();
   });
 
-  describe('an error in the policy callback', function() {
-
-    before(function() {
-      var config = "module.exports.policies = { '*': 'error_policy' };";
-      fs.writeFileSync(path.resolve('../', appName, 'config/policies.js'), config);
-    });
-
-    it('should return a 500 status code', function(done) {
-      httpHelper.testRoute('get', {url: 'test', headers: {'Content-Type': 'application/json'}, json: true}, function(err, response) {
-        if (err) done(new Error(err));
-
-        assert.equal(response.statusCode, 500);
-        done();
-      });
-    });
-
-    it('should return default blueprint error', function(done) {
-      httpHelper.testRoute('get', {url: 'test', headers: {'Content-Type': 'application/json'}, json: true}, function(err, response) {
-        if (err) done(new Error(err));
-
-        assert(response.body instanceof Array);
-        assert.equal(response.body[0], 'Test Error');
-        done();
-      });
-    });
+  it('should load adapter configs', function () {
+    var conf = config.adapters;
+    assert(conf.
+    default.module === 'sails-disk');
+    assert(conf.custom && conf.custom.module === 'sails-disk');
+    assert(conf.sqlite.module === 'sails-sqlite');
+    assert(conf.sqlite.host === 'sqliteHOST');
+    assert(conf.sqlite.user === 'sqliteUSER');
   });
 
-  describe('custom policies', function() {
+  it('should load application configs', function () {
+    assert(config.port === 1702);
+    assert(config.host === 'GLaDOS');
 
-    before(function() {
-      var policy = {
-        'test': {
-          'index': 'error_policy'
-        }
-      };
-
-      var config = "module.exports.policies = " + JSON.stringify(policy);
-      fs.writeFileSync(path.resolve('../', appName, 'config/policies.js'), config);
-    });
-
-    describe('a get request to /:controller', function() {
-
-      it('should return an error', function(done) {
-
-        httpHelper.testRoute('get', {url: 'test', headers: {'Content-Type': 'application/json'}, json: true}, function(err, response) {
-          if (err) done(err);
-
-          assert.equal(response.body[0], 'Test Error');
-          done();
-        });
-      });
-    });
-
-    describe('a get request to /:controller/:id', function() {
-
-      it('should return a string', function(done) {
-
-        httpHelper.testRoute('get', {url: 'test/1', headers: {'Content-Type': 'application/json'}, json: true}, function(err, response) {
-          if (err) done(err);
-
-          assert.equal(response.body, "find");
-          done();
-        });
-      });
-    });
+    // this should have been overriden by the local conf file
+    assert(config.appName === 'portal2');
+    assert(config.environment === 'production');
+    assert(config.cache.maxAge === 9001);
+    assert(config.globals._ === false);
   });
 
-  describe('chaining policies', function() {
-
-    before(function() {
-      var policy = {
-        'test': {
-          'index': ['fake_auth', 'authenticated']
-        }
-      };
-
-      var config = "module.exports.policies = " + JSON.stringify(policy);
-      fs.writeFileSync(path.resolve('../', appName, 'config/policies.js'), config);
-    });
-
-    describe('a get request to /:controller', function() {
-
-      it('should return a string', function(done) {
-
-        httpHelper.testRoute('get', {url: 'test', json: true}, function(err, response) {
-          if (err) done(err);
-
-          assert.equal(response.body, "index");
-          done();
-        });
-      });
-    });
+  it('should load the controllers configs', function () {
+    var conf = config.controllers;
+    assert(conf.routes.actions === false);
+    assert(conf.routes.prefix === 'Z');
+    assert(conf.routes.expectIntegerId === true);
+    assert(conf.csrf === true);
   });
 
-  describe('chaining wildcard "*" policies', function() {
+  it('should load the io configs', function () {
+    var conf = config.io;
+    assert(conf.adapter === 'disk');
+    assert(conf.transports[0] === 'websocket');
+    assert(conf.origins === '*:1337');
+    assert(conf.heartbeats === false);
+    assert(conf['close timeout'] === 10);
+    assert(conf.authorization === false);
+    assert(conf['log level'] === 'error');
+    assert(conf['log colors'] === true);
+    assert(conf.static === false);
+    assert(conf.resource === '/all/the/sockets');
+  });
 
-    before(function() {
-      var policy = {
-        'test': {
-          '*': ['fake_auth', 'authenticated']
-        }
-      };
+  it('should override configs with locals config', function () {
+    assert(config.appName === 'portal2');
+  });
 
-      var config = "module.exports.policies = " + JSON.stringify(policy);
-      fs.writeFileSync(path.resolve('../', appName, 'config/policies.js'), config);
-    });
+  it('should load the log configs', function () {
+    assert(config.log.level === 'error');
+  });
 
-    describe('a get request to /:controller', function() {
+  it('should load the poly configs', function () {
+    assert(config.policies['*'] === false);
+  });
 
-      it('should return a string', function(done) {
+  it('should load the routes configs', function () {
+    assert(typeof config.routes['/'] === 'function');
+  });
 
-        httpHelper.testRoute('get', {url: 'test', json: true}, function(err, response) {
-          if (err) done(err);
+  it('should load the session configs', function () {
+    assert(config.session.secret === '1234567');
+    assert(config.session.adapter === 'memory');
+    assert(config.session.key === 'sails.sid');
+  });
 
-          assert.equal(response.body, "index");
-          done();
-        });
-      });
-    });
+  it('should load the views config', function () {
+    var conf = config.views;
+    assert(conf.engine === 'jade');
+    assert(conf.blueprints === false);
+    assert(conf.layout === false);
+
   });
 
 });

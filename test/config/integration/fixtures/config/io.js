@@ -109,15 +109,15 @@ module.exports.io = {
   // Direct access to the socket.io MQ store config
   // The 'adapter' property is the preferred method
   // (`undefined` indicates that Sails should defer to the 'adapter' config)
-  store: 0,
+  //store: undefined,
 
   // A logger instance that is used to output log information.
   // (`undefined` indicates deferment to the main Sails log config)
-  logger: 0,
+  //logger: undefined,
 
   // The amount of detail that the server should output to the logger.
   // (`undefined` indicates deferment to the main Sails log config)
-  'log level': 'info',
+  'log level': 'error',
 
   // Whether to color the log type when output to the logger.
   // (`undefined` indicates deferment to the main Sails log config)

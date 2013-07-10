@@ -32,28 +32,29 @@ module.exports.build = function(/* [appName], done */) {
   exec(sailsBin + ' new ' + appName, function(err) {
     if (err) done(err);
 
-    var fixtures = wrench.readdirSyncRecursive('./test/http/fixtures');
+    var fixtures = wrench.readdirSyncRecursive('./test/config/integration/fixtures');
     if(fixtures.length < 1) return done();
 
     // If fixtures copy them to the test app
     fixtures.forEach(function(file) {
-      var filePath = path.resolve('./test/http/fixtures/', file);
+      var filePath = path.resolve('./test/config/integration/fixtures', file);
 
       // Check if file is a directory
       var stat = fs.statSync(filePath);
 
       // Ignore directories
       if(stat.isDirectory()) return;
-
+      
       // Copy File to Test App
       var data = fs.readFileSync(filePath);
 
       // Create file and any missing parent directories in its path
       fs.createFileSync(path.resolve('./', appName, file), data);
       fs.writeFileSync(path.resolve('./', appName, file), data);
+      
     });
-
-    done();
+    
+    done()
   });
 };
 

@@ -1,4 +1,4 @@
-module.exports = {
+module.exports.views = {
 
 
   // Engine for views (can be ejs, haml, etc.)

@@ -13,7 +13,7 @@ module.exports.adapters = {
   sqlite: {
     module: 'sails-sqlite',
     host: 'sqliteHOST',
-    user: 'sqlitePASSWORD'
+    user: 'sqliteUSER'
   },
   
   // TESTS END //
