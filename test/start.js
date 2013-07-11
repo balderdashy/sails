@@ -46,6 +46,8 @@ async.series([
 	runTest( DEFAULT_TEST_CMD + 'node_modules/waterline/test/**/**', 'waterline (orm)' ),
 
 	runTest( DEFAULT_TEST_CMD + 'test/router/unit/*', 'router'),
+	
+	runTest( DEFAULT_TEST_CMD + 'test/router/integration/*', 'router'),
 
 	function placeholder (cb) {cb();}
 

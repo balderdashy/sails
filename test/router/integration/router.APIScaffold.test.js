@@ -35,7 +35,7 @@ describe('API scaffold routes', function() {
 
 		it('should return JSON for a newly created instance of the test model', function(done) {
 
-			httpHelper.testRoute('post', {url: 'empty/create', json: true}, function(err, response) {
+			httpHelper.testRoute('post', {url: 'empty/create', json: true, body: {}}, function(err, response) {
 				if (err) done(new Error(err));
 
 				assert(response.body.id === 2);
