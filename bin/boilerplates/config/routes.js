@@ -127,13 +127,34 @@ module.exports[404] = function notFound (req, res, defaultNotFoundBehavior) {
  * 500 (server error) handler
  */
 
-module.exports[500] = function (err, req, res, defaultErrorBehavior) {
-	
-	var displayedErrors = ( typeof errors !== 'object' || !errors.length ) ?
-		['Unknown error: ' + errors] :
+module.exports[500] = function (errors, req, res, defaultErrorBehavior) {
+
+	// Ensure that `errors` is a list
+	var displayedErrors = (typeof errors !== 'object' || !errors.length ) ?
+		[errors] :
 		errors;
 
-	res.view('500', {
-		errors: errors
-	});
+	// Ensure that each error is formatted correctly
+	// Then log them
+	for (var i in displayedErrors) {
+		if (!displayedErrors[i] instanceof Error) {
+			displayedErrors[i] = new Error(displayedErrors[i]);
+			sails.log.error(displayedErrors[i]);
+		}
+	}
+
+	// In production, don't display any identifying information about the error(s)
+	var response = {};
+	if (sails.config.environment === development) {
+		response = {
+			errors: displayedErrors
+		};
+	}
+
+	// Respond to request, respecting any attempts at content negotiation
+	if (req.wantsJSON) {
+		res.json(response, 500);
+	}
+	else res.view('500', response);
+	
 };

@@ -7,7 +7,7 @@
 		<h1>Error</h1>
 
 
-		<% if (sails.config.environment === 'development' && typeof errors !== 'undefined') {
+		<% if (typeof errors !== 'undefined') {
 			_.each(errors, function (error) { %>
 
 			<pre><code>	
