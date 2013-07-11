@@ -73,14 +73,14 @@ module.exports.routes = {
 
 	// Default error handler
 	// (because there are 4 arguments)
-	'/*': function (err, req, res, next) {
+	// '/*': function (err, req, res, next) {
 		
-		var displayedErrors = ( typeof errors !== 'object' || !errors.length ) ?
-			['Unknown error: ' + errors] :
-			errors;
+	// 	var displayedErrors = ( typeof errors !== 'object' || !errors.length ) ?
+	// 		['Unknown error: ' + errors] :
+	// 		errors;
 
-		res.view('500', {
-			errors: errors
-		});
-	}
+	// 	res.view('500', {
+	// 		errors: errors
+	// 	});
+	// }
 };
