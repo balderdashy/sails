@@ -13,6 +13,6 @@ module.exports = {
 	},
 
 	teardown: function (sails, cb) {
-		sails.teardown(cb);
+		sails.lower(cb);
 	}
 };
