@@ -8,9 +8,9 @@ module.exports.views = {
 	blueprints: true,
 
 	// Layout is on by default, in the top level of the view directory
-	// true === use default
+	// true === use default (layout)
 	// false === don't use a layout
-	// string === path to layout
+	// string === path to layout (relative path starting in views directory)
 	layout: true
 
 };
