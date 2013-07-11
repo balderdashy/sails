@@ -5,40 +5,88 @@
  */
 
 
-/**
- * (1) Static routes
- *
- * This object routes static URLs to handler functions--
- * In most cases, these functions are actions inside of your controllers.
- *
- */
-
-module.exports.routes = {
-	
-	// To route the home page to the "index" action of FooController
-	// (if no controller exists, Sails will look for a view called `views/home/index.*`)
-	'/' : {
-	    controller  : 'home'
-	}
-
-	// If you want to set up a route only for a particular HTTP method/verb 
-	// (GET, POST, PUT, DELETE) you can specify the verb before the path:
-	// 'post /signup': {
-	//		controller	: 'user',
-	//		action		: 'signup'
-	// }
-};
-
-
 
 /**
- * (2) Static assets
+ * (1) Static assets
  *
  * Flat files in your `assets` directory- (these are sometimes referred to as 'public')
  * If you have an image file at `/assets/images/foo.jpg`, it will be made available 
  * automatically via the route:  `/images/foo.jpg`
  *
  */
+
+
+
+
+/**
+ * (2) Static routes
+ *
+ * This object routes static URLs to handler functions--
+ * In most cases, these functions are actions inside of your controllers.
+ * For convenience, you can also connect routes directly to views or external URLs.
+ *
+ */
+
+module.exports.routes = {
+	
+	// By default, your root route (aka home page) points to a view
+	// located at `views/home/index.ejs`
+	// 
+	// (This would also work if you had a file at: `/views/home.ejs`)
+	'/' : {
+	    view  : 'home'
+	}
+
+	/*
+	// But what if you want your home page to display
+	// a signup form located at `views/user/signup.ejs`?
+	'/'	: {
+		view : 'user/signup'
+	}
+
+
+	// Let's say you're building an email client, like Gmail
+	// You might want your home route to serve an interface using custom logic.
+	// In this scenario, you have a custom controller `MessageController`
+	// with an `inbox` action.
+	'/'	: 'message.inbox'
+
+
+	// Alternatively, you can use the more verbose syntax:
+	'/': {
+		controller	: 'message',
+		action		: 'inbox'
+	}
+
+
+	// If you decided to call your action `index` instead of `inbox`,
+	// you can just use:
+	'/': 'message'
+
+
+	// Up until now, we haven't specified a specific HTTP method/verb
+	// The routes above will apply to ALL verbs!
+	// If you want to set up a route only for one in particular
+	// (GET, POST, PUT, DELETE, etc.), just specify the verb before the path.
+	// For example, if you have a `UserController` with a `signup` action,
+	// and somewhere else, you're serving a signup form looks like: 
+	<form action="/signup">
+		<input name="username" type="text"/>
+		<input name="password" type="password"/>
+	</form>
+
+
+	// You could define the following route:
+	'post /signup'	: 'user.signup'
+
+
+	// Finally, here's an example of how you would route all GET requests 
+	// to the `/google` route to Google's website:
+	'get /google'	: 'http://google.com'
+	
+	*/
+};
+
 
 
 
