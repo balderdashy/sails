@@ -8,7 +8,7 @@
  *   options:  optional callback or config object
  *   method:  HTTP method
  */
-SocketNamespace.prototype.request = function (url, data, options, method) {
+io.SocketNamespace.prototype.request = function (url, data, options, method) {
   // Remove trailing slashes and spaces
   url = url.replace(/\/*\s*$/, '');
 
