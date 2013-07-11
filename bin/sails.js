@@ -236,8 +236,17 @@ require('../lib/configuration')(sails).load(function (err) {
 		if (argv.template) {
 			template = argv.template;
 		}
-		newSailsApp(argv._[1], template);
 	}
+
+	// Default to not using the script linker functionality, but allow an override
+	// with --linker option
+		var useLinker = false
+		if (argv.linker) {
+			useLinker = true;
+		}
+		
+		// TODO: change to single options object we pass in.
+	newSailsApp(argv._[1], template, useLinker);
 
 
 	// Build a www directory of everyting from /.tmp/public (aka /assets)
