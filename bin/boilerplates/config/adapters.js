@@ -1,6 +1,13 @@
-// Configure installed adapters
-// If you define an attribute in your model definition, 
-// it will override anything from this global config.
+/**
+ * Configure installed adapters
+ * 
+ * If you define an attribute in your model definition, 
+ * it will override anything from this global config.
+ *
+ * For more information on routes, check out:
+ * http://sailsjs.org/#documentation
+ */
+ 
 module.exports.adapters = {
 
 	// If you leave the adapter config unspecified 
