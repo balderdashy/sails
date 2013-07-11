@@ -88,7 +88,17 @@ module.exports = function (sails) {
 		// Different stuff for different view engines
 		if (templateLang === 'handlebars') templateLang = 'hbs';
 
-		utils.copyBoilerplate('views/' + templateLang, outputPath + '/views');
+		utils.copyBoilerplate('views/' + templateLang, outputPath + '/views', function () {
+			// If using linker, override the layout file with linker layout file
+			if (useLinker) {
+
+				if (templateLang === 'hbs' || templateLang === 'jade') {
+					sails.log.warn('script linking does not work with the `'+templateLang+'` templating '+
+					'engine at this time. You must set up the Gruntfile yourself for this feature to work.');
+				}
+				utils.copyBoilerplate('linkerLayouts/' + templateLang, outputPath + '/views');
+			}
+		});
 
 		var viewConfig = {
 			viewEngine: templateLang
