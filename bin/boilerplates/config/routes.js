@@ -164,7 +164,7 @@ module.exports.routes = {
  *
  */
 
-module.exports[404] = function notFound (req, res, defaultNotFoundBehavior) {
+module.exports[404] = function pageNotFound (req, res, defaultNotFoundBehavior) {
 	
 	// Respond to request, respecting any attempts at content negotiation
 	if (req.wantsJSON) {
@@ -185,7 +185,7 @@ module.exports[404] = function notFound (req, res, defaultNotFoundBehavior) {
  * 500 (server error) handler
  */
 
-module.exports[500] = function (errors, req, res, defaultErrorBehavior) {
+module.exports[500] = function serverErrorOccurred (errors, req, res, defaultErrorBehavior) {
 
 	// Ensure that `errors` is a list
 	var displayedErrors = (typeof errors !== 'object' || !errors.length ) ?
