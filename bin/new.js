@@ -29,7 +29,7 @@ module.exports = function (sails) {
 	 * Expose `sails new` functionality
 	 */
 
-	return function createNewApp(appName, templateLang) {
+	return function createNewApp(appName, templateLang, useLinker) {
 		// Whether the project being made in an existing directory or not
 		var existingDirectory;
 
@@ -66,8 +66,14 @@ module.exports = function (sails) {
 
 		sails.log.info('Generating Sails project (' + appName + ')...');
 
-		// Create default app structure
-		utils.copyBoilerplate('assets', outputPath + '/assets');
+		// useLinker will determin the assets dir stucture for the new sails project 
+		if (useLinker) {
+			utils.copyBoilerplate('linkerAssets', outputPath + '/assets');
+		} else {
+			utils.copyBoilerplate('assets', outputPath + '/assets');
+		}
+
+		// Add these boilerplate dirs regardless
 		utils.copyBoilerplate('api', outputPath + '/api');
 		utils.copyBoilerplate('config', outputPath + '/config', function () {
 
@@ -76,16 +82,23 @@ module.exports = function (sails) {
 			var newSessionConfig = ejs.render(fs.readFileSync(boilerplatePath, 'utf8'), {
 				secret: Session.generateSecret()
 			});
-			
 			fs.writeFileSync(outputPath + '/config/session.js', newSessionConfig, 'utf8');
-			
 		});
-
 
 		// Different stuff for different view engines
 		if (templateLang === 'handlebars') templateLang = 'hbs';
 
-		utils.copyBoilerplate('views/' + templateLang, outputPath + '/views');
+		utils.copyBoilerplate('views/' + templateLang, outputPath + '/views', function () {
+			// If using linker, override the layout file with linker layout file
+			if (useLinker) {
+
+				if (templateLang === 'hbs' || templateLang === 'jade') {
+					sails.log.warn('script linking does not work with the `'+templateLang+'` templating '+
+					'engine at this time. You must set up the Gruntfile yourself for this feature to work.');
+				}
+				utils.copyBoilerplate('linkerLayouts/' + templateLang, outputPath + '/views');
+			}
+		});
 
 		var viewConfig = {
 			viewEngine: templateLang
