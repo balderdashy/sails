@@ -7,13 +7,17 @@
 		<h1>Error</h1>
 
 
-		<% _.each(errors, function (error) { %>
+		<% if (sails.config.environment === 'development' && typeof errors !== 'undefined') {
+			_.each(errors, function (error) { %>
 
-		<pre><code>	
-		<%= error %>
-		</code></pre>
+			<pre><code>	
+			<%= error %>
+			</code></pre>
 
-		<% }) %>
+			<%
+			});
+		}
+		%>
 
 
 
