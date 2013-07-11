@@ -100,13 +100,13 @@ module.exports = function(grunt) {
         options: {
           startTag: '<!--SCRIPTS-->',
           endTag: '<!--SCRIPTS END-->',
-          fileTmpl: '\n<script src="%s"></script>\n',
+          fileTmpl: '<script src="%s"></script>',
           appRoot: '.tmp/public/'
         },
         files: {
-          '.tmp/public/**/*.html': ['.tmp/public/linker/js/**/*.js'],
-          'views/**/*.html': ['.tmp/public/linker/js/**/*.js'],
-          'views/**/*.ejs': ['.tmp/public/linker/js/**/*.js']
+          '.tmp/public/**/*.html': ['.tmp/public/linker/**/*.js'],
+          'views/**/*.html': ['.tmp/public/linker/**/*.js'],
+          'views/**/*.ejs': ['.tmp/public/linker/**/*.js']
         }
       },
 
@@ -114,7 +114,7 @@ module.exports = function(grunt) {
         options: {
           startTag: '<!--SCRIPTS-->',
           endTag: '<!--SCRIPTS END-->',
-          fileTmpl: '\n<script src="%s"></script>\n',
+          fileTmpl: '<script src="%s"></script>',
           appRoot: '.tmp/public/'
         },
         files: {
@@ -128,13 +128,13 @@ module.exports = function(grunt) {
         options: {
           startTag: '<!--STYLES-->',
           endTag: '<!--STYLES END-->',
-          fileTmpl: '\n<link rel="stylesheet" href="%s">\n',
+          fileTmpl: '<link rel="stylesheet" href="%s">',
           appRoot: '.tmp/public/'
         },
         files: {
-          '.tmp/public/**/*.html': ['.tmp/public/linker/styles/**/*.css'],
-          'views/**/*.html': ['.tmp/public/linker/styles/**/*.css'],
-          'views/**/*.ejs': ['.tmp/public/linker/styles/**/*.css'],
+          '.tmp/public/**/*.html': ['.tmp/public/linker/**/*.css'],
+          'views/**/*.html': ['.tmp/public/linker/**/*.css'],
+          'views/**/*.ejs': ['.tmp/public/linker/**/*.css'],
         }
       },
 
@@ -142,7 +142,7 @@ module.exports = function(grunt) {
         options: {
           startTag: '<!--STYLES-->',
           endTag: '<!--STYLES END-->',
-          fileTmpl: '\n<link rel="stylesheet" href="%s">\n',
+          fileTmpl: '<link rel="stylesheet" href="%s">',
           appRoot: '.tmp/public/'
         },
         files: {
@@ -157,7 +157,7 @@ module.exports = function(grunt) {
         options: {
           startTag: '<!--TEMPLATES-->',
           endTag: '<!--TEMPLATES END-->',
-          fileTmpl: '\n<script type="text/javascript" src="%s"></script>\n',
+          fileTmpl: '<script type="text/javascript" src="%s"></script>',
           appRoot: '.tmp/public/'
         },
         files: {
@@ -165,7 +165,76 @@ module.exports = function(grunt) {
           'views/**/*.html': ['.tmp/public/jst.js'],
           'views/**/*.ejs': ['.tmp/public/jst.js']
         }
+      },
+      
+      
+      /*******************************************
+       * Jade linkers (TODO: clean this up)
+       *******************************************/
+      
+      devJsJADE: {
+        options: {
+          startTag: '// SCRIPTS',
+          endTag: '// SCRIPTS END',
+          fileTmpl: 'script(type="text/javascript", src="%s")',
+          appRoot: '.tmp/public/'
+        },
+        files: {
+          'views/**/*.jade': ['.tmp/public/linker/**/*.js']
+        }
+      },
+
+      prodJsJADE: {
+        options: {
+          startTag: '// SCRIPTS',
+          endTag: '// SCRIPTS END',
+          fileTmpl: 'script(type="text/javascript", src="%s")',
+          appRoot: '.tmp/public/'
+        },
+        files: {
+          'views/**/*.jade': ['.tmp/public/min/production.js']
+        }
+      },
+
+      devStylesJADE: {
+        options: {
+          startTag: '// STYLES',
+          endTag: '// STYLES END',
+          fileTmpl: 'link(rel="stylesheet", href="%s")',
+          appRoot: '.tmp/public/'
+        },
+        files: {
+          'views/**/*.jade': ['.tmp/public/linker/**/*.css']
+        }
+      },
+
+      prodStylesJADE: {
+        options: {
+          startTag: '// STYLES',
+          endTag: '// STYLES END',
+          fileTmpl: 'link(rel="stylesheet", href="%s")',
+          appRoot: '.tmp/public/'
+        },
+        files: {
+          'views/**/*.jade': ['.tmp/public/min/production.css']
+        }
+      },
+
+      // Bring in JST template object
+      devTplJADE: {
+        options: {
+          startTag: '// TEMPLATES',
+          endTag: '// TEMPLATES END',
+          fileTmpl: 'script(type="text/javascript", src="%s")',
+          appRoot: '.tmp/public/'
+        },
+        files: {
+          'views/**/*.jade': ['.tmp/public/jst.js']
+        }
       }
+      /************************************
+       * Jade linker end
+       ************************************/
     },
 
     watch : {
@@ -204,7 +273,10 @@ module.exports = function(grunt) {
     // Update link/script/template references in `assets` index.html
     'scriptlinker:devJs',
     'scriptlinker:devStyles',
-    'scriptlinker:devTpl'
+    'scriptlinker:devTpl',
+    'scriptlinker:devJsJADE',
+    'scriptlinker:devStylesJADE',
+    'scriptlinker:devTplJADE'
   ]);
   
 
@@ -228,7 +300,10 @@ module.exports = function(grunt) {
     'cssmin',
     'scriptlinker:prodJs',
     'scriptlinker:prodStyles',
-    'scriptlinker:devTpl'
+    'scriptlinker:devTpl',
+    'scriptlinker:prodJsJADE',
+    'scriptlinker:prodStylesJADE',
+    'scriptlinker:devTplJADE'
   ]);
 
   // When API files are changed:
