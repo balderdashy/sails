@@ -1,33 +1,25 @@
-// Routes
-// *********************
-// 
-// This table routes urls to controllers/actions.
-//
-// If the URL is not specified here, the default route for a URL is:  /:controller/:action/:id
-// where :controller, :action, and the :id request parameter are derived from the url
-//
-// If :action is not specified, Sails will redirect to the appropriate action 
-// based on the HTTP verb: (using REST/Backbone conventions)
-//
-//		GET:	/:controller/read/:id
-//		POST:	/:controller/create
-//		PUT:	/:controller/update/:id
-//		DELETE:	/:controller/destroy/:id
-//
-// If the requested controller/action doesn't exist:
-//   - if a view exists ( /views/:controller/:action.ejs ), Sails will render that view
-//   - if no view exists, but a model exists, Sails will automatically generate a 
-//       JSON API for the model which matches :controller.
-//   - if no view OR model exists, Sails will respond with a 404.
-//
+/**
+ * Sails uses a number of different strategies to route requests.
+ * Here they are top-to-bottom, in order of precedence:
+ *
+ */
+
+
+/**
+ * (1) Static routes
+ *
+ * This object routes static URLs to handler functions--
+ * In most cases, these functions are actions inside of your controllers.
+ *
+ */
+
 module.exports.routes = {
 	
 	// To route the home page to the "index" action of FooController
 	// (if no controller exists, Sails will look for a view called `views/home/index.*`)
-	// '/' : {
-	//     controller  : 'foo',
-	//     action      : 'index',
-	// }
+	'/' : {
+	    controller  : 'home'
+	}
 
 	// If you want to set up a route only for a particular HTTP method/verb 
 	// (GET, POST, PUT, DELETE) you can specify the verb before the path:
@@ -35,37 +27,113 @@ module.exports.routes = {
 	//		controller	: 'user',
 	//		action		: 'signup'
 	// }
+};
 
-	// Keep in mind default routes exist for each of your controllers
-	// So if you have a UserController with an action called "juggle" 
-	// a route will be automatically exist mapping it to /user/juggle.
-	//
-	// Additionally, unless you override them, new controllers will have 
-	// create(), find(), findAll(), update(), and destroy() actions, 
-	// and routes will exist for them as follows:
-	/*
 
-	// Standard RESTful routing
-	// (if index is not defined, findAll will be used)
-	'get /user': {
-		controller	: 'user',
-		action		: 'index'
-	},
-	'get /user/:id': {
-		controller	: 'user',
-		action		: 'find'
-	},
-	'post /user': {
-		controller	: 'user',
-		action		: 'create'
-	},
-	'put /user/:id': {
-		controller	: 'user',
-		action		: 'update'
-	},
-	'delete /user/:id': {
-		controller	: 'user',
-		action		: 'destroy'
-	}
-	*/
+
+/**
+ * (2) Static assets
+ *
+ * Flat files in your `assets` directory- (these are sometimes referred to as 'public')
+ * If you have an image file at `/assets/images/foo.jpg`, it will be made available 
+ * automatically via the route:  `/images/foo.jpg`
+ *
+ */
+
+
+
+/**
+ * (3) Action blueprints
+ *
+ * These routes can be disabled by setting (in config/controllers.js):
+ *		`module.exports.controllers.routes.actions = false`
+ *
+ * All of your controllers' actions are automatically bound to a route.  For example:
+ *   + If you have a controller, `FooController`:
+ *     + its action `bar` is accessible at `/foo/bar`
+ *     + its action `index` is accessible at `/foo/index`, and also `/foo`
+ */
+
+
+ /**
+ * (4) View blueprints
+ *
+ * These routes can be disabled by setting (in config/controllers.js):
+ *		`module.exports.views.routes = false`
+ *
+ * If you have a view file at `/views/foo/bar.ejs`, it will be rendered and served 
+ * automatically via the route:  `/foo/bar`
+ *
+ */
+
+ /**
+ * (5) Shortcut CRUD blueprints
+ * 
+ * These routes can be disabled by setting (in config/controllers.js)
+ *			`module.exports.controllers.routes.shortcuts = false`
+ *
+ * If you have a model, `Foo`, and a controller, `FooController`, 
+ * you can access CRUD operations for that model at:
+ *		/foo/find/:id?	->	search lampshades using specified criteria or with id=:id
+ *
+ *		/foo/create		->	create a lampshade using specified values
+ *				
+ *		/foo/update/:id	->	update the lampshade with id=:id
+ *				
+ *		/foo/destroy/:id	->	delete lampshade with id=:id
+ *				
+ */
+
+ /**
+ * (6) REST blueprints
+ * 
+ * These routes can be disabled by setting (in config/controllers.js)
+ *		`module.exports.controllers.routes.rest = false`
+ *
+ * If you have a model, `Foo`, and a controller, `FooController`, 
+ * you can access CRUD operations for that model at:
+ *
+ *		get /foo/:id?	->	search lampshades using specified criteria or with id=:id
+ *
+ *		post /foo		-> create a lampshade using specified values
+ *
+ *		put /foo/:id	->	update the lampshade with id=:id
+ *
+ *		delete /foo/:id	->	delete lampshade with id=:id
+ *
+ */
+
+
+
+
+/**
+ * (7) Default 404 (not found) handler
+ *
+ * If no matches are found, Sails will respond using this handler:
+ *
+ */
+
+module.exports[404] = function notFound (req, res, defaultNotFoundBehavior) {
+	res.view('404');
+};
+
+
+
+
+/**
+ * (!) Default server error handler
+ *
+ * If an error is thrown, Sails will respond using this default
+ * 500 (server error) handler
+ */
+
+module.exports[500] = function (err, req, res, defaultErrorBehavior) {
+	
+	var displayedErrors = ( typeof errors !== 'object' || !errors.length ) ?
+		['Unknown error: ' + errors] :
+		errors;
+
+	res.view('500', {
+		errors: errors
+	});
 };
