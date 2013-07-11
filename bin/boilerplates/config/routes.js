@@ -37,6 +37,7 @@ module.exports.routes = {
 	    view  : 'home'
 	}
 
+
 	/*
 	// But what if you want your home page to display
 	// a signup form located at `views/user/signup.ejs`?
@@ -49,19 +50,19 @@ module.exports.routes = {
 	// You might want your home route to serve an interface using custom logic.
 	// In this scenario, you have a custom controller `MessageController`
 	// with an `inbox` action.
-	'/'	: 'message.inbox'
+	'/'	: 'MessageController.inbox'
 
 
 	// Alternatively, you can use the more verbose syntax:
 	'/': {
-		controller	: 'message',
+		controller	: 'MessageController',
 		action		: 'inbox'
 	}
 
 
 	// If you decided to call your action `index` instead of `inbox`,
-	// you can just use:
-	'/': 'message'
+	// since the `index` action is the default, you can shortcut even further to:
+	'/': 'MessageController'
 
 
 	// Up until now, we haven't specified a specific HTTP method/verb
@@ -70,14 +71,16 @@ module.exports.routes = {
 	// (GET, POST, PUT, DELETE, etc.), just specify the verb before the path.
 	// For example, if you have a `UserController` with a `signup` action,
 	// and somewhere else, you're serving a signup form looks like: 
-	<form action="/signup">
-		<input name="username" type="text"/>
-		<input name="password" type="password"/>
-	</form>
+	//
+	//		<form action="/signup">
+	//			<input name="username" type="text"/>
+	//			<input name="password" type="password"/>
+	//			<input type="submit"/>
+	//		</form>
 
 
 	// You could define the following route:
-	'post /signup'	: 'user.signup'
+	'post /signup'	: 'UserController.signup'
 
 
 	// Finally, here's an example of how you would route all GET requests 
