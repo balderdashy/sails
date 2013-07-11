@@ -155,6 +155,8 @@ module.exports[500] = function (errors, req, res, defaultErrorBehavior) {
 	if (req.wantsJSON) {
 		res.json(response, 500);
 	}
+
+	// If the clients wants HTML, send the `views/500.*` page by default
 	else res.view('500', response);
 	
 };
