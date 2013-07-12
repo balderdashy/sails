@@ -182,7 +182,7 @@ describe('Specified routes', function() {
 						}
 					]);
 
-				assert(expected === response.body);
+				assert(expected === JSON.stringify(JSON.parse(response.body)));
 				done();
 			});
 		});
