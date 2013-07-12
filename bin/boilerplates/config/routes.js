@@ -168,13 +168,21 @@ module.exports.routes = {
 
 module.exports[404] = function pageNotFound (req, res, defaultNotFoundBehavior) {
 	
-	// Respond to request, respecting any attempts at content negotiation
-	if (req.wantsJSON) {
-		res.send(404);
+	// If the user-agent wants a JSON response,
+	if (req.wantsJSON || 
+		// the views hook is disabled,
+		!sails.config.hooks.views || 
+		// or the 404 view doesn't exist,
+		!sails.hooks.views.middleware[404]) {
+		// send JSON
+		return res.json({
+			status: 404
+		}, 404);
 	}
 
-	// If the clients wants HTML, send the `views/404.*` page by default
-	else res.view('404');
+	// Otherwise, serve the `views/404.*` page
+	res.view(404);
+	
 };
 
 
@@ -209,16 +217,22 @@ module.exports[500] = function serverErrorOccurred (errors, req, res, defaultErr
 	var response = {};
 	if (sails.config.environment === 'development') {
 		response = {
+			status: 500,
 			errors: displayedErrors
 		};
 	}
 
-	// Respond to request, respecting any attempts at content negotiation
-	if (req.wantsJSON) {
-		res.json(response, 500);
+	// If the user-agent wants a JSON response,
+	if (req.wantsJSON || 
+		// the views hook is disabled,
+		!sails.config.hooks.views || 
+		// or the 500 view doesn't exist,
+		!sails.hooks.views.middleware[500]) {
+		// send JSON
+		return res.json(response, 500);
 	}
 
-	// If the clients wants HTML, send the `views/500.*` page by default
-	else res.view('500', response);
+	// Otherwise, send the `views/500.*` page
+	res.view('500', response);
 	
 };
