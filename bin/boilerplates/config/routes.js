@@ -197,10 +197,12 @@ module.exports[500] = function serverErrorOccurred (errors, req, res, defaultErr
 	// Ensure that each error is formatted correctly
 	// Then log them
 	for (var i in displayedErrors) {
-		if (!displayedErrors[i] instanceof Error) {
+		if (!(displayedErrors[i] instanceof Error)) {
 			displayedErrors[i] = require('util').inspect(new Error(displayedErrors[i]));
 			sails.log.error(displayedErrors[i]);
-		}
+		} else {
+      displayedErrors[i] = displayedErrors[i].stack;
+    }
 	}
 
 	// In production, don't display any identifying information about the error(s)
