@@ -9,6 +9,7 @@
 * http://sailsjs.org/#documentation
 */
 
+
 module.exports.policies = {
 
 	// Default policy for all controllers and actions

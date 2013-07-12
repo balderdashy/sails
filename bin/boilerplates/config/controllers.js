@@ -1,11 +1,27 @@
+/**
+ * Controllers
+ *
+ * By default, Sails controllers automatically bind routes for each of their functions.
+ * Additionally, each controller will automatically bind routes for a CRUD API
+ * controlling the model which matches its name, if one exists.
+ * 
+ * 
+ * NOTE:	These settings are for the global configuration of controllers.	
+ *			You may also override these settings on a per-controller basis-
+ *			by setting the '_routes' property in your controller
+ *
+ */
 module.exports.controllers = {
+
 	
-	// Routes to automatically inject
-	// (Note: global blueprint config may be overridden on a per-controller basis
-	//			by setting the 'blueprint' property in a controller)
+	// 
+	// 
+	// 
+	//
 	routes: {
 
-		// Optional mount path prefix for blueprint routes
+		// Optional mount path prefix for blueprints
+		// (the automatically bound routes in your controllers)
 		// e.g. '/api/v2'
 		prefix: '',
 		
@@ -43,11 +59,6 @@ module.exports.controllers = {
 		// instead of:
 		//		get /user/a8j4g9jsd9ga4ghjasdha
 		expectIntegerId: false
-	},
-	
-	
-	// CSRF middleware protection, all non-GET requests must send '_csrf' parmeter
-	// _csrf is a parameter for views, and is also available via GET at /csrfToken
-	csrf: false
+	}
 
 };

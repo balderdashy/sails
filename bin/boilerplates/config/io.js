@@ -1,4 +1,11 @@
-// Configuration for internal socket.io server
+/**
+ * Socket.io Configuration
+ *
+ * These configuration options provide transparent access to the the encapsulated
+ * pubsub/socket server for complete customizability.
+ *
+ */
+
 module.exports.io = {
 
 	// A array of allowed transport methods which the clients will try to use.
@@ -11,13 +18,25 @@ module.exports.io = {
 		'jsonp-polling'
 	],
 
-	// Setup adapter to use for socket.io MQ (pubsub) store
-	// NOTE: Default memory store will not work for clustered deployments with multiple instances.
+
+	// Setup socket.io to store its message queue in memory (pubsub logic)
 	adapter: 'memory',
 
-	// In production, to scale horizontally to multiple Sails.js servers,
-	// you'll need to defer pubsub processing to a messaging queue.
-	// By default, Sails provides support for Redis.
+
+
+	// NOTE:
+	//		Sails.js apps scale horizontally.  In production, you'll want 
+	//		to copy your app onto multiple Sails.js servers behind a load balancer.
+	//
+	//		Unforunately, shared memory does not work for clustered, at-scale deployments.
+	//		There is no guarantee that a user will "stick" with the same server between
+	//		requests, since the load balancer will route each request to the server with the 
+	//		least impact on load. All pubsub processing and shared memory has to be offloaded
+	//		to a shared, remote messaging queue (usually Redis)
+
+
+	// By default, Sails provides MQ support for Redis.
+	// Just uncomment:
 	// adapter: 'redis',
 
 	// The following values are optional, if no options are set a redis instance running

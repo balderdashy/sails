@@ -1,11 +1,18 @@
 module.exports.views = {
 
-	// Engine for views (can be ejs, haml, etc.)
+	// Templating engine/language to be used for views 
+	// (must be ejs, jade, or hbs)
 	engine: 'ejs',
 
-	// Automatically serve views at the appropriate route
-	// (e.g. `views/404.ejs` is served at the route `/404`)
-	blueprints: true,
+	// If enabled, views are automatically served at logical routes,
+	// based on their paths. This comes in handy any time you just want to
+	// serve some static HTML. (i.e. a brochure site)
+	// 
+	// For example, the static view files below are available at the specified routes:
+	//		`views/catalog.ejs`			: `get /catalog`
+	//		`views/catalog/index.ejs`	: both `get /catalog` & `get /catalog/index`
+	//		`views/catalog/story.ejs`	: `get /catalog/story`
+	routes: true,
 
 	// Layout is on by default, in the top level of the view directory
 	// true === use default (layout)
