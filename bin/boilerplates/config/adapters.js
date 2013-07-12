@@ -1,7 +1,7 @@
 /**
  * Configure installed adapters
  * 
- * If you define an attribute in your model definition, 
+ * If you define an attribute in your model definitions, 
  * it will override anything from this global config.
  *
  * For more information on routes, check out:
