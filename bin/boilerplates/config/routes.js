@@ -36,7 +36,7 @@ module.exports.routes = {
 	// 
 	// (This would also work if you had a file at: `/views/home.ejs`)
 	'/' : {
-	    view  : 'home'
+	    view  : 'home/index'
 	}
 
 
@@ -181,7 +181,7 @@ module.exports[404] = function pageNotFound (req, res, defaultNotFoundBehavior) 
 	}
 
 	// Otherwise, serve the `views/404.*` page
-	res.view(404);
+	res.view('404');
 	
 };
 
@@ -195,10 +195,10 @@ module.exports[404] = function pageNotFound (req, res, defaultNotFoundBehavior) 
  * 500 (server error) handler
  */
 
-module.exports[500] = function serverErrorOccurred (errors, req, res, defaultErrorBehavior) {
+module.exports[500] = function serverErrorOccurred(errors, req, res, defaultErrorBehavior) {
 
 	// Ensure that `errors` is a list
-	var displayedErrors = (typeof errors !== 'object' || !errors.length ) ?
+	var displayedErrors = (typeof errors !== 'object' || !errors.length) ?
 		[errors] :
 		errors;
 
@@ -209,8 +209,9 @@ module.exports[500] = function serverErrorOccurred (errors, req, res, defaultErr
 			displayedErrors[i] = require('util').inspect(new Error(displayedErrors[i]));
 			sails.log.error(displayedErrors[i]);
 		} else {
-      displayedErrors[i] = displayedErrors[i].stack;
-    }
+			displayedErrors[i] = displayedErrors[i].stack;
+		}
+		sails.log.error(displayedErrors[i]);
 	}
 
 	// In production, don't display any identifying information about the error(s)
@@ -223,16 +224,16 @@ module.exports[500] = function serverErrorOccurred (errors, req, res, defaultErr
 	}
 
 	// If the user-agent wants a JSON response,
-	if (req.wantsJSON || 
-		// the views hook is disabled,
-		!sails.config.hooks.views || 
-		// or the 500 view doesn't exist,
-		!sails.hooks.views.middleware[500]) {
+	if (req.wantsJSON ||
+	// the views hook is disabled,
+	!sails.config.hooks.views ||
+	// or the 500 view doesn't exist,
+	!sails.hooks.views.middleware[500]) {
 		// send JSON
 		return res.json(response, 500);
 	}
 
 	// Otherwise, send the `views/500.*` page
 	res.view('500', response);
-	
+
 };
