@@ -80,6 +80,30 @@ describe('New app generator', function() {
 				});
 			});
 		});
+
+		it('should merge existing package.json', function(done) {
+      
+			// make app folder and move into directory
+			fs.mkdirSync(appName);
+			process.chdir(appName);
+
+			fs.writeFileSync('./package.json', JSON.stringify({
+				'name': 'Custom App Name'
+			}));
+
+			exec( '.' + sailsbin + ' new .', function(err) {
+				if (err) { done(new Error(err)); }
+
+				var packageContent = fs.readFileSync('./package.json', 'utf8');
+				assert(packageContent.indexOf('Custom App Name') !== -1, 'package.json was not merged correctly');
+
+				// move from app to its parent directory
+				process.chdir('../');
+
+				done();
+			});
+
+		});
 	});
 
 	describe('sails new with no template option', function() {
