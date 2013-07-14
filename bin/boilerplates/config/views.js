@@ -1,3 +1,16 @@
+/**
+ * Views
+ * 
+ * Server-sent views are a classic and effective way to get your app up and running.
+ * Views are normally served from controllers, but by default, Sails also exposes routes
+ * to allow you to preview your views in a browser.  This automatic routing can be disabled
+ * using the `blueprint` config below.  You can also configure your templating language/framework
+ * of choice, and configure Sails' layout support.
+ *
+ * For more information on views and layouts, check out:
+ * http://sailsjs.org/#documentation
+ */
+
 module.exports.views = {
 
 	// If enabled, views are automatically served at logical routes,

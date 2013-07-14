@@ -1,12 +1,14 @@
 /**
- * Socket.io Configuration
+ * Socket Configuration
  *
- * These configuration options provide transparent access to the the encapsulated
+ * These configuration options provide transparent access to Sails' encapsulated
  * pubsub/socket server for complete customizability.
  *
+ * For more information on using Sails with Sockets, check out:
+ * http://sailsjs.org/#documentation
  */
 
-module.exports.io = {
+module.exports.sockets = {
 
 	// A array of allowed transport methods which the clients will try to use.
 	// The flashsocket transport is disabled by default
@@ -18,34 +20,39 @@ module.exports.io = {
 		'jsonp-polling'
 	],
 
-
-	// Setup socket.io to store its message queue in memory (pubsub logic)
+	// The data store where socket.io will store its message queue 
+	// and answer pubsub logic
 	adapter: 'memory',
 
 
 
-	// NOTE:
-	//		Sails.js apps scale horizontally.  In production, you'll want 
-	//		to copy your app onto multiple Sails.js servers behind a load balancer.
+
+	// Node.js (and consequently Sails.js) apps scale horizontally.
+	// It's a powerful, efficient approach, but it involves a tiny bit of planning.
+	// At scale, you'll want to be able to copy your app onto multiple Sails.js servers
+	// and throw them behind a load balancer.
 	//
-	//		Unforunately, shared memory does not work for clustered, at-scale deployments.
-	//		There is no guarantee that a user will "stick" with the same server between
-	//		requests, since the load balancer will route each request to the server with the 
-	//		least impact on load. All pubsub processing and shared memory has to be offloaded
-	//		to a shared, remote messaging queue (usually Redis)
+	// One of the big challenges of scaling an application is that these sorts of clustered 
+	// deployments cannot share memory, since they are on physically different machines.
+	// On top of that, there is no guarantee that a user will "stick" with the same server between
+	// requests, since the load balancer will route each request to the server with the 
+	// least impact on load. All pubsub processing and shared memory has to be offloaded
+	// to a shared, remote messaging queue (usually Redis)
+	//
+	// Luckily, Sails provides production MQ support for Redis by default!
 
-
-	// By default, Sails provides MQ support for Redis.
-	// Just uncomment:
+	// To enable a remote redis pubsub server: 
 	// adapter: 'redis',
-
-	// The following values are optional, if no options are set a redis instance running
-	// on localhost is expected.
+	
+	// The IP address and configuration of your redis host:
+	// (if left unset, Sails will try to connect to a redis via port 6379 on localhost)
 	//
 	// host: '127.0.0.1',
 	// port: 6379,
-	// db: sails,
-	// pass: <redis auth password>
+	// db: 'sails',
+	// pass: '<redis auth password>'
+
+
 
 	// Match string representing the origins that are allowed to connect to the Socket.IO server
 	origins: '*:*',

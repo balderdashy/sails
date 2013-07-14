@@ -29,6 +29,8 @@
  * For traditional web apps, it's as easy as passing the data from a view into a form action.
  * In AJAX/Socket-heavy apps, just send a GET request to the /csrfToken route to get a valid token.
  * 
+ * For more information on CSRF, check out:
+ * http://en.wikipedia.org/wiki/Cross-site_request_forgery
  */
 
 module.exports.csrf = false;
