@@ -1,19 +1,22 @@
-/*---------------------
-	:: <%- entity %>
-	-> model
----------------------*/
+<%
+/**
+ * Boilerplate model
+ * 
+ * This is the template used when generating models via the CLI
+ * e.g. `sails generate model foo`
+ *
+ */
+%>/**
+ * <%= entity %>
+ *
+ * @description
+ *		A short summary of the kind of data this model represents.
+ *
+ */
 module.exports = {
 
 	attributes: {
-
-		// Simple attribute:
-		// name: 'STRING',
-
-		// Or for more flexibility:
-		// phoneNumber: {
-		//	type: 'STRING',
-		//	defaultsTo: '555-555-5555'
-		// }
+	
 		<%- attributes %>
 	}
 

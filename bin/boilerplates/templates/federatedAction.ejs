@@ -1,13 +1,20 @@
-/*------------------------------------
-	:: <%- entity %>.<%- action %> 
-	-> federated controller action
-------------------------------------*/
+<%
+/**
+ * Boilerplate federated controller
+ * 
+ * This is the template used when creating federated controllers 
+ * generated through the CLI
+ * e.g. `sails generate controller foo action -f`
+ *
+ */
+%>/**
+ * /<%= entity.toLowerCase() %>/<%= action %>
+ */ 
 
-// To trigger this action locally, visit: `http://localhost:port<%- baseurl %>/<%- action %>`
-function <%- action %> (req,res) {
+module.exports = function () <%= action %> (req,res) {
 	
-	// This will render the view: <%- viewPath %>/<%-entity%>/<%- action %>.<%- viewEngine %>
+	// This will render the view: 
+	// <%- viewPath %>/<%-entity%>/<%- action %>.<%- viewEngine %>
 	res.view();
 
 };
-module.exports = <%- action %>;
