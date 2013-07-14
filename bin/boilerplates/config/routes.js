@@ -101,7 +101,7 @@ module.exports.routes = {
  * (3) Action blueprints
  *
  * These routes can be disabled by setting (in config/controllers.js):
- *		`module.exports.controllers.routes.actions = false`
+ *		`module.exports.controllers.blueprints.actions = false`
  *
  * All of your controllers' actions are automatically bound to a route.  For example:
  *   + If you have a controller, `FooController`:
@@ -114,7 +114,7 @@ module.exports.routes = {
  * (4) View blueprints
  *
  * These routes can be disabled by setting (in config/controllers.js):
- *		`module.exports.views.routes = false`
+ *		`module.exports.views.blueprints = false`
  *
  * If you have a view file at `/views/foo/bar.ejs`, it will be rendered and served 
  * automatically via the route:  `/foo/bar`
@@ -125,7 +125,7 @@ module.exports.routes = {
  * (5) Shortcut CRUD blueprints
  * 
  * These routes can be disabled by setting (in config/controllers.js)
- *			`module.exports.controllers.routes.shortcuts = false`
+ *			`module.exports.controllers.blueprints.shortcuts = false`
  *
  * If you have a model, `Foo`, and a controller, `FooController`, 
  * you can access CRUD operations for that model at:
@@ -143,7 +143,7 @@ module.exports.routes = {
  * (6) REST blueprints
  * 
  * These routes can be disabled by setting (in config/controllers.js)
- *		`module.exports.controllers.routes.rest = false`
+ *		`module.exports.controllers.blueprints.rest = false`
  *
  * If you have a model, `Foo`, and a controller, `FooController`, 
  * you can access CRUD operations for that model at:
