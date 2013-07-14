@@ -96,7 +96,8 @@ module.exports.sockets = {
 	// Do we need to destroy non-socket.io upgrade requests?
 	'destroy upgrade': true,
 
-	// Does Socket.IO need to serve the static resources like socket.io.js and WebSocketMain.swf etc.
+	// Should Sails/Socket.io serve the `socket.io.js` client? 
+	// (as well as WebSocketMain.swf for Flash sockets, etc.)
 	'browser client': true,
 
 	// Cache the Socket.IO file generation in the memory of the process
@@ -118,7 +119,9 @@ module.exports.sockets = {
 	// So we don't have to spawn a gzip process for each request.
 	'browser client gzip': false,
 	
-	// A function that should serve all static handling, including socket.io.js et al.
+	// Optional override function to serve all static files, 
+	// including socket.io.js et al.
+	// Of the form :: function (req, res) { /* serve files */ }
 	'browser client handler': false,
 
 	// Meant to be used when running socket.io behind a proxy. 

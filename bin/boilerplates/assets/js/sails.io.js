@@ -1,14 +1,32 @@
-/************************************************************ 
+/**
+ * io.SocketNamespace.prototype.*
  *
  * Additional functionality for the Sails.js framework
+ * Extends Socket.io socket object with some convenience methods
+ *
+ */
+
+
+ /**
  *
  * Simulate an HTTP request to the backend
- *   url:   the request label (usually the destination URL)
- *   data:  data to pass with the request
- *   options:  optional callback or config object
- *   method:  HTTP method
+ *   @param {String} url    ::    the request label (usually the destination URL)
+ *   @param {Object} data   ::    data to pass with the request
+ *   @param {Object} options::    optional callback or config object
+ *   @param {String} method ::    HTTP method (aka verb)
+ *
+ *
+ * Note:  This should really be a private method, but it is
+ *        exposed for backwards compatibility with Sails 0.8.x.
+ *        The preferred usage in Sails v0.9+ is verb-based; e.g.,
+ *          *-> `connectedSocket.get()`
+ *          *-> `connectedSocket.post()`
+ *          *-> `connectedSocket.put()`
+ *          *-> `connectedSocket.delete()`
  */
+
 io.SocketNamespace.prototype.request = function (url, data, options, method) {
+
   // Remove trailing slashes and spaces
   url = url.replace(/\/*\s*$/, '');
 
@@ -46,7 +64,5 @@ io.SocketNamespace.prototype.request = function (url, data, options, method) {
 
     cb(parsedResult);
   });
-}
-/*
- *
- ************************************************************/
+};
+
