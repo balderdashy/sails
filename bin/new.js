@@ -64,7 +64,10 @@ module.exports = function (sails) {
 			utils.generateDir(outputPath);
 		}
 
-		sails.log.info('Generating Sails project (' + appName + ')...');
+		console.log('\n');
+		sails.log('Building new Sails.js app (' + appName + ')...');
+		// sails.log('Copying runtime into ' + outputPath + 'node_modules/sails...');
+		console.log('');
 
 		// useLinker will determin the assets dir stucture for the new sails project 
 		if (useLinker) {
@@ -120,7 +123,7 @@ module.exports = function (sails) {
 		utils.generateFile('gitignore', outputPath + '/.gitignore');
 
 		// Generate package.json
-		sails.log.debug('Generating package.json...');
+		sails.log.verbose('Generating package.json...');
 		fs.writeFileSync(outputPath + '/package.json', JSON.stringify({
 			name: appName,
 			'private': true,
@@ -144,11 +147,11 @@ module.exports = function (sails) {
 		}, null, 4));
 
 		// Copy Gruntfile
-		sails.log.debug('Generating README.md...');
+		sails.log.verbose('Generating Gruntfile...');
 		utils.generateFile('Gruntfile.js', outputPath + '/Gruntfile.js');
 
 		// Generate README
-		sails.log.debug('Generating README.md...');
+		sails.log.verbose('Generating README.md...');
 		fs.writeFileSync(outputPath + '/README.md', '# ' + appName + '\n### a Sails application');
 
 		// Copy dependencies (to avoid having to do a local npm install in new projects)

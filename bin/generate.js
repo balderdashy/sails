@@ -175,7 +175,7 @@ module.exports = function (sails) {
 
 		function generate (options) {
 			var boilerplateName = options.boilerplate.split('.')[0];
-			sails.log.debug('Generating ' + boilerplateName + ' for ' + options.entity + '...');
+			sails.log.verbose('Generating ' + boilerplateName + ' for ' + options.entity + '...');
 
 			// Trim slashes
 			options.prefix = require('underscore.string').rtrim(options.prefix, '/') + '/';
