@@ -1,26 +1,37 @@
-/*---------------------
-	:: <%- entity %> 
-	-> adapter
----------------------*/
-var adapter = {
-
-	// This method runs when a model is initially registered at server start time
-	registerCollection: function (collection, cb) {
-		cb();
-	}
-
-
-	// The following methods are optional
-	////////////////////////////////////////////////////////////
-
-	// Useful for tearing down remaining open connections, etc.
-	// when a model is unregistered, typically at server halt
-	// teardown: function (cb) {
-	// 	cb();
-	// }
+<%
+/**
+ * Boilerplate adapter
+ * 
+ * This is the template used when answering
+ * `sails generate adapter foo`
+ *
+ */
+%>module.exports = (function () {
 
 
-};
+	/**
+	 * <%- entity %>Adapter
+	 * 
+	 * @syncable false
+	 * @schema false
+	 */
 
-_.bindAll(adapter);
-module.exports = adapter;
+	var Adapter = {
+
+
+
+		/**
+		 * registerCollection() is run multiple times (once for each model, aka collection)
+		 * before the server ever starts.  It allows us to register our models with the
+		 * underlying adapter interface.  (don't forget to cb() when you're done!)
+		 */
+
+		registerCollection: function (collection, cb) {
+			cb();
+		}
+
+	};
+
+
+	return Adapter;
+})();

@@ -1,10 +1,26 @@
-/*---------------------
-	:: <%- entity %> 
-	-> controller
----------------------*/
-var <%- entity %>Controller = {
+<%
+/**
+ * Boilerplate controller
+ * 
+ * This is the template used when generating controllers via the CLI
+ * e.g. `sails generate controller foo`
+ *
+ */
+%>module.exports = (function () {
 
-<%- actions %>
 
-};
-module.exports = <%- entity %>Controller;
+
+	/**
+	 * <%- entity %>Controller
+	 * 
+	 */
+
+	var Controller = {
+
+	<%- actions %>
+
+	};
+
+	return Controller;
+	
+})();
