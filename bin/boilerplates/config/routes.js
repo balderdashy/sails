@@ -169,12 +169,12 @@ module.exports.routes = {
 module.exports[404] = function pageNotFound (req, res, defaultNotFoundBehavior) {
 	
 	// If the user-agent wants a JSON response,
+	// the views hook is disabled,
+	// or the 404 view doesn't exist,
+	// send JSON
 	if (req.wantsJSON || 
-		// the views hook is disabled,
-		!sails.config.hooks.views || 
-		// or the 404 view doesn't exist,
+		!sails.config.hooks.views || !res.view ||
 		!sails.hooks.views.middleware[404]) {
-		// send JSON
 		return res.json({
 			status: 404
 		}, 404);
@@ -206,10 +206,7 @@ module.exports[500] = function serverErrorOccurred(errors, req, res, defaultErro
 	// Then log them
 	for (var i in displayedErrors) {
 		if (!(displayedErrors[i] instanceof Error)) {
-			displayedErrors[i] = require('util').inspect(new Error(displayedErrors[i]));
-			sails.log.error(displayedErrors[i]);
-		} else {
-			displayedErrors[i] = displayedErrors[i].stack;
+			displayedErrors[i] = new Error(displayedErrors[i]);
 		}
 		sails.log.error(displayedErrors[i]);
 	}
@@ -224,16 +221,30 @@ module.exports[500] = function serverErrorOccurred(errors, req, res, defaultErro
 	}
 
 	// If the user-agent wants a JSON response,
-	if (req.wantsJSON ||
 	// the views hook is disabled,
-	!sails.config.hooks.views ||
 	// or the 500 view doesn't exist,
-	!sails.hooks.views.middleware[500]) {
-		// send JSON
+	// send JSON
+	if (req.wantsJSON ||
+		!sails.config.hooks.views || !res.view ||
+		!sails.hooks.views.middleware[500]) {
+
+		// Create JSON-readable version of errors
+		for (var j in response.errors) {
+			response.errors[j] = {
+				error: response.errors[j].message
+			};
+		}
+
 		return res.json(response, 500);
 	}
 
-	// Otherwise, send the `views/500.*` page
+
+	// Otherwise
+	// create HTML-readable stacks for errors
+	for (var k in response.errors) {
+		response.errors[k] = response.errors[k].stack;
+	}
+	// and send the `views/500.*` page
 	res.view('500', response);
 
 };
