@@ -2,6 +2,7 @@ var assert = require('assert');
 var fs = require('fs');
 var wrench = require('wrench');
 var exec = require('child_process').exec;
+var _ = require('lodash');
 
 describe('New app generator', function() {
 	var sailsbin = './bin/sails.js';
@@ -79,6 +80,30 @@ describe('New app generator', function() {
 				});
 			});
 		});
+
+		it('should merge existing package.json', function(done) {
+      
+			// make app folder and move into directory
+			fs.mkdirSync(appName);
+			process.chdir(appName);
+
+			fs.writeFileSync('./package.json', JSON.stringify({
+				'name': 'Custom App Name'
+			}));
+
+			exec( '.' + sailsbin + ' new .', function(err) {
+				if (err) { done(new Error(err)); }
+
+				var packageContent = fs.readFileSync('./package.json', 'utf8');
+				assert(packageContent.indexOf('Custom App Name') !== -1, 'package.json was not merged correctly');
+
+				// move from app to its parent directory
+				process.chdir('../');
+
+				done();
+			});
+
+		});
 	});
 
 	describe('sails new with no template option', function() {
@@ -128,38 +153,6 @@ describe('New app generator', function() {
 			});
 		});
 	});
-
-	describe('sails new <appname> with options --template=haml', function() {
-
-		it('should create new app with haml templates', function(done) {
-
-			exec(sailsbin + ' new ' + appName + ' --template=haml', function(err) {
-				if (err) { done(new Error(err)); }
-
-				assert(checkGeneratedFiles(appName, 'haml'), 'generated files don\'t match expected files');
-
-				var viewConfig = fs.readFileSync('./' + appName + '/config/views.js', 'utf8');
-				assert(viewConfig.indexOf('haml') !== -1, 'configuration file is incorrect');
-				done();
-			});
-		});
-	});
-
-	describe('sails new <appname> with options --template=handlebars', function() {
-
-		it('should create new app with handlebars templates', function(done) {
-
-			exec(sailsbin + ' new ' + appName + ' --template=handlebars', function(err) {
-				if (err) { done(new Error(err)); }
-
-				assert(checkGeneratedFiles(appName, 'handlebars'), 'generated files don\'t match expected files');
-
-				var viewConfig = fs.readFileSync('./' + appName + '/config/views.js', 'utf8');
-				assert(viewConfig.indexOf('hbs') !== -1, 'configuration file is incorrect');
-				done();
-			});
-		});
-	});
 });
 
 function checkGeneratedFiles(appName, templateLang) {
@@ -171,7 +164,6 @@ function checkGeneratedFiles(appName, templateLang) {
 		'assets',
 		'config',
 		'package.json',
-		'public',
 		'views',
 		'api/adapters',
 		'api/controllers',
@@ -184,31 +176,19 @@ function checkGeneratedFiles(appName, templateLang) {
 		'api/policies/authenticated.js',
 		'api/services/.gitkeep',
 		'assets/js',
-		'assets/mixins',
 		'assets/styles',
-		'assets/templates',
 		'assets/js/.gitkeep',
-		'assets/mixins/normalize.css',
-		'assets/mixins/sails.io.js',
 		'assets/styles/.gitkeep',
-		'assets/templates/.gitkeep',
 		'config/adapters.js',
-		'config/application.js',
-		'config/assets.js',
 		'config/bootstrap.js',
 		'config/io.js',
-		'config/local.ex.js',
 		'config/local.js',
 		'config/locales',
 		'config/policies.js',
 		'config/routes.js',
 		'config/session.js',
 		'config/views.js',
-		'config/locales/english.js',
-		'public/favicon.ico',
-		'public/images',
-		'public/robots.txt',
-		'public/images/.gitkeep'
+		'config/locales/default.js'
 	];
 
 	// Add template files of the specified language
@@ -229,35 +209,18 @@ function checkGeneratedFiles(appName, templateLang) {
 		templateFiles = [
 			'views/404.jade',
 			'views/500.jade',
-			'views/home',
-			'views/layout.jade',
-			'views/home/index.jade'
+			'views/layout.jade'
 		];
 
-	} else if (templateLang === 'haml') {
-
-		templateFiles = [
-			'views/404.haml',
-			'views/500.haml',
-			'views/home',
-			'views/home/index.haml'
-		];
-	} else if (templateLang === 'handlebars') {
-
-		templateFiles = [
-			'views/404.hbs',
-			'views/500.hbs',
-			'views/home',
-			'views/layout.hbs',
-			'views/home/index.hbs'
-		];
 	}
 
-	// Compare stringified arrays because [1,2,3] != (and !==) [1,2,3]
+	var filesExist = true;
 
-	expectedFiles = JSON.stringify(expectedFiles.concat(templateFiles));
+	expectedFiles = expectedFiles.concat(templateFiles);
 
-	var files = JSON.stringify(wrench.readdirSyncRecursive(appName));
+	_.each(expectedFiles, function (filename) {
+		return filesExist = fs.existsSync('./' + appName + '/' + filename);
+	});
 
-	return files === expectedFiles;
+	return filesExist;
 }

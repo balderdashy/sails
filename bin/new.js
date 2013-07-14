@@ -120,8 +120,16 @@ module.exports = function (sails) {
 		utils.generateFile('gitignore', outputPath + '/.gitignore');
 
 		// Generate package.json
+		var basePackage = {};
+
+		// If installing in an existing directory and package.json file exists,
+		// take its contents and use it in a merge
+		if (existingDirectory && fs.existsSync(outputPath + '/package.json')) {
+			basePackage = JSON.parse(fs.readFileSync(outputPath + '/package.json', 'utf8'));
+		}
+
 		sails.log.debug('Generating package.json...');
-		fs.writeFileSync(outputPath + '/package.json', JSON.stringify({
+		fs.writeFileSync(outputPath + '/package.json', JSON.stringify(_.merge({
 			name: appName,
 			'private': true,
 			version: '0.0.0',
@@ -141,10 +149,10 @@ module.exports = function (sails) {
 			repository: '',
 			author: '',
 			license: ''
-		}, null, 4));
+		}, basePackage), null, 4));
 
 		// Copy Gruntfile
-		sails.log.debug('Generating README.md...');
+		sails.log.debug('Generating Gruntfile...');
 		utils.generateFile('Gruntfile.js', outputPath + '/Gruntfile.js');
 
 		// Generate README
