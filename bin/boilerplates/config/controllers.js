@@ -12,6 +12,7 @@
  * For more information on controller configuration and blueprints, check out:
  * http://sailsjs.org/#documentation
  */
+ 
 module.exports.controllers = {
 
 
