@@ -1,5 +1,5 @@
 // Configuration for internal socket.io server
-module.exports.io = {
+module.exports.sockets = {
 // all uncommented configs will be tested
 
   // Setup adapter to use for socket.io MQ (pubsub) store
