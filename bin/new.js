@@ -144,7 +144,7 @@ module.exports = function (sails) {
 		}, null, 4));
 
 		// Copy Gruntfile
-		sails.log.debug('Generating README.md...');
+		sails.log.debug('Generating Gruntfile...');
 		utils.generateFile('Gruntfile.js', outputPath + '/Gruntfile.js');
 
 		// Generate README
