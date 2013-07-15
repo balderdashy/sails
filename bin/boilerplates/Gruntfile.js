@@ -1,4 +1,4 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
   'use strict';
 
@@ -21,12 +21,22 @@ module.exports = function(grunt) {
     copy: {
       dev: {
         files: [
-          {expand: true, cwd: './assets', src: ['**/*'], dest: '.tmp/public'}
+          {
+          expand: true,
+          cwd: './assets',
+          src: ['**/*'],
+          dest: '.tmp/public'
+        }
         ]
       },
       build: {
         files: [
-          {expand: true, cwd: '.tmp/public', src: ['**/*'], dest: 'www'}
+          {
+          expand: true,
+          cwd: '.tmp/public',
+          src: ['**/*'],
+          dest: 'www'
+        }
         ]
       }
     },
@@ -40,7 +50,7 @@ module.exports = function(grunt) {
       dev: {
         options: {
           templateSettings: {
-            interpolate : /\{\{(.+?)\}\}/g
+            interpolate: /\{\{(.+?)\}\}/g
           }
         },
         files: {
@@ -48,23 +58,23 @@ module.exports = function(grunt) {
         }
       }
     },
-    
+
     less: {
       dev: {
         files: [
           {
-            expand: true,
-            cwd: 'assets/styles/',
-            src: ['*.less'],
-            dest: '.tmp/public/styles/',
-            ext: '.css'
-          },{
-            expand: true,
-            cwd: 'assets/linker/styles/',
-            src: ['*.less'],
-            dest: '.tmp/public/linker/styles/',
-            ext: '.css'
-          }
+          expand: true,
+          cwd: 'assets/styles/',
+          src: ['*.less'],
+          dest: '.tmp/public/styles/',
+          ext: '.css'
+        }, {
+          expand: true,
+          cwd: 'assets/linker/styles/',
+          src: ['*.less'],
+          dest: '.tmp/public/linker/styles/',
+          ext: '.css'
+        }
         ]
       }
     },
@@ -166,12 +176,12 @@ module.exports = function(grunt) {
           'views/**/*.ejs': ['.tmp/public/jst.js']
         }
       },
-      
-      
+
+
       /*******************************************
        * Jade linkers (TODO: clean this up)
        *******************************************/
-      
+
       devJsJADE: {
         options: {
           startTag: '// SCRIPTS',
@@ -237,7 +247,7 @@ module.exports = function(grunt) {
        ************************************/
     },
 
-    watch : {
+    watch: {
       api: {
 
         // API files to watch:
@@ -278,7 +288,7 @@ module.exports = function(grunt) {
     'scriptlinker:devStylesJADE',
     'scriptlinker:devTplJADE'
   ]);
-  
+
 
   // Build the assets into a web accessible folder.
   // (handy for phone gap apps, chrome extensions, etc.)

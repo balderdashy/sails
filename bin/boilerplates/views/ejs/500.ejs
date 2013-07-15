@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Unexpected Error Occurred</title>
-	</head>
-	<body>
-		<h1>Error</h1>
+  <head>
+    <title>Unexpected Error Occurred</title>
+  </head>
+  <body>
+    <h1>Error</h1>
 
 
-		<% if (typeof errors !== 'undefined') {
-			_.each(errors, function (error) { %>
+    <% if (typeof errors !== 'undefined') {
+      _.each(errors, function (error) { %>
 
-			<pre><code>	
-			<%= error %>
-			</code></pre>
+      <pre><code>	
+      <%= error %>
+      </code></pre>
 
-			<%
-			});
-		}
-		%>
+      <%
+      });
+    }
+    %>
 
 
-		<style type="text/css">
-		/* Styles included inline since you'll probably be deleting this page anyway */
-		</style>
-	</body>
+    <style type="text/css">
+    /* Styles included inline since you'll probably be deleting this page anyway */
+    </style>
+  </body>
 </html>

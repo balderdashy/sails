@@ -1,13 +1,13 @@
 /*
-* German translations
-*
-* This file provided as an example- 
-* Note that this is part of a campaign to rebrand our app for the German market
-* as Bleistift Buben (or "Pencil Boys") 
-*/
+ * German translations
+ *
+ * This file provided as an example-
+ * Note that this is part of a campaign to rebrand our app for the German market
+ * as Bleistift Buben (or "Pencil Boys")
+ */
 
 module.exports = {
-	/*
+  /*
 		
 	// Key				: Value
 	// e.g.
