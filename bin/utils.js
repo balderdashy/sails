@@ -444,84 +444,84 @@ module.exports = function (sails) {
 
         this.draw = function () {
 
-          // Recalculate figure positions
-          var tugboat_x = t;
-          // var cargo_lag	= 8;
-          // var cargo_x		= tugboat_x - cargo_lag;
-
-          // Wipe canvas and reset writehead (if necessary)
-          clear();
-
-          // Set dirty flag
-          dirty = true;
-
-
-          turtle.down()
-            .left(1000);
-
-          // Render cargo
-          // var cargo = turtle.cargo;
-          // if (cargo_x < 0) {
-          // 	cargo = cargo.substr(cargo_x * -1);
-          // }
-          // if (cargo_x > 0) {
-          // 	turtle.drawWave1(cargo_x);
-          // }
-
-          // turtle.draw(cargo);
-
-          // Render waves
-          var wave_start_x = 0; //(cargo_x < 0) ? 0 : cargo_x;
-          var wave_length = tugboat_x;
-
-          // Odd wave
-          if (t % 2) {
-            wave_start_x = 1;
-            turtle.drawWave2();
-          }
-          // else {
-
-          // }
-
-          if (t % 2 === 0) {
-            for (var w = wave_start_x; w + 1 < wave_length; w++) {
-              if (w % 2) {
-                turtle.drawWave2();
-              } else {
-                turtle.drawWave1();
-              }
-            }
-          } else if (t % 4 !== 0) {
-            for (var o = wave_start_x; o + 1 < wave_length; o++) {
-              if (o % 2) {
-                turtle.drawWave2();
-              } else {
-                turtle.drawWave1();
-              }
-            }
-          } else {
-            for (var p = wave_start_x; p + 1 < wave_length; p++) {
-              turtle.drawWave2();
-            }
-          }
-
-          // Render tugboat body
-          // Render sails
-          turtle.left(1000)
-            .right(tugboat_x)
-            .drawDeck()
-            .up()
-            .left(1000)
-            .right(tugboat_x)
-            .space(sails_relx)
-            .drawSail();
-
-          // Draw progress message
-          turtle.left(1000)
-            .down(3)
-            .draw(msg)
-            .down(1)
-            .left(1000);
+//          // Recalculate figure positions
+//          var tugboat_x = t;
+//          // var cargo_lag	= 8;
+//          // var cargo_x		= tugboat_x - cargo_lag;
+//
+//          // Wipe canvas and reset writehead (if necessary)
+//          clear();
+//
+//          // Set dirty flag
+//          dirty = true;
+//
+//
+//          turtle.down()
+//            .left(1000);
+//
+//          // Render cargo
+//          // var cargo = turtle.cargo;
+//          // if (cargo_x < 0) {
+//          // 	cargo = cargo.substr(cargo_x * -1);
+//          // }
+//          // if (cargo_x > 0) {
+//          // 	turtle.drawWave1(cargo_x);
+//          // }
+//
+//          // turtle.draw(cargo);
+//
+//          // Render waves
+//          var wave_start_x = 0; //(cargo_x < 0) ? 0 : cargo_x;
+//          var wave_length = tugboat_x;
+//
+//          // Odd wave
+//          if (t % 2) {
+//            wave_start_x = 1;
+//            turtle.drawWave2();
+//          }
+//          // else {
+//
+//          // }
+//
+//          if (t % 2 === 0) {
+//            for (var w = wave_start_x; w + 1 < wave_length; w++) {
+//              if (w % 2) {
+//                turtle.drawWave2();
+//              } else {
+//                turtle.drawWave1();
+//              }
+//            }
+//          } else if (t % 4 !== 0) {
+//            for (var o = wave_start_x; o + 1 < wave_length; o++) {
+//              if (o % 2) {
+//                turtle.drawWave2();
+//              } else {
+//                turtle.drawWave1();
+//              }
+//            }
+//          } else {
+//            for (var p = wave_start_x; p + 1 < wave_length; p++) {
+//              turtle.drawWave2();
+//            }
+//          }
+//
+//          // Render tugboat body
+//          // Render sails
+//          turtle.left(1000)
+//            .right(tugboat_x)
+//            .drawDeck()
+//            .up()
+//            .left(1000)
+//            .right(tugboat_x)
+//            .space(sails_relx)
+//            .drawSail();
+//
+//          // Draw progress message
+//          turtle.left(1000)
+//            .down(3)
+//            .draw(msg)
+//            .down(1)
+//            .left(1000);
 
         };
 
