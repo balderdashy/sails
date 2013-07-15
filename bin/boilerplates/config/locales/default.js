@@ -1,27 +1,27 @@
 /*
-* Default stringfile
-* 
-* If you're building an internationalized application that needs support
-* for multiple languages, you'll want to pull all of the static strings
-* out of your application, then provide a translation file for each of your 
-* target languages.
-*
-* Example i18n usage:
-* ------------------------------------------------------
-* e.g. `/views/about.ejs`
-* ------------------------------------------------------
-*	<h2><%= __('whatIsApp?') %></h2>
-*	<p>	<%=	__('appDescription') %></p>
-* ------------------------------------------------------
-*
-* More about this implementation:
-* https://github.com/mashpie/i18n-node
-*/
+ * Default stringfile
+ *
+ * If you're building an internationalized application that needs support
+ * for multiple languages, you'll want to pull all of the static strings
+ * out of your application, then provide a translation file for each of your
+ * target languages.
+ *
+ * Example i18n usage:
+ * ------------------------------------------------------
+ * e.g. `/views/about.ejs`
+ * ------------------------------------------------------
+ *	<h2><%= __('whatIsApp?') %></h2>
+ *	<p>	<%=	__('appDescription') %></p>
+ * ------------------------------------------------------
+ *
+ * More about this implementation:
+ * https://github.com/mashpie/i18n-node
+ */
 
 
 module.exports = {
 
-	/*
+  /*
 	
 	// Key				: Value
 	// e.g.
