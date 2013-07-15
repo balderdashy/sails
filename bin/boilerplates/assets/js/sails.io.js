@@ -41,11 +41,10 @@ io.SocketNamespace.prototype.request = function (url, data, options, method) {
 
   var json = io.JSON.stringify({
     url: url,
-    data: data,
-    method: method || 'get'
+    data: data
   });
 
-  this.emit('message', json, function (result) {
+  this.emit(method || 'get', json, function (result) {
 
     var parsedResult = result
     try {
@@ -66,3 +65,18 @@ io.SocketNamespace.prototype.request = function (url, data, options, method) {
   });
 };
 
+io.SocketNamespace.prototype.get = function(url, data, options){
+  return this.request(url, data, options, 'get');
+}
+
+io.SocketNamespace.prototype.post = function(url, data, options){
+  return this.request(url, data, options, 'post');
+}
+
+io.SocketNamespace.prototype.put = function(url, data, options){
+  return this.request(url, data, options, 'put');
+}
+
+io.SocketNamespace.prototype.delete = function(url, data, options){
+  return this.request(url, data, options, 'delete');
+}
