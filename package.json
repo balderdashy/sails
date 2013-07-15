@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "express": "3.2.6",
-    "waterline": "git://github.com/balderdashy/waterline.git",
+    "waterline": "0.9.0",
     "socket.io": "0.9.14",
     "connect-redis": "1.4.5",
     "connect-mongo": "0.3.2",
@@ -43,7 +43,7 @@
     "include-all": "0.1.0",
     "inflection": "1.2.5",
     "node-uuid": "*",
-    "sails-disk": "~0.1.0",
+    "sails-disk": "~0.9.0",
     "grunt": "0.4.1",
     "grunt-cli": "~0.1.9",
     "grunt-contrib-copy": "0.4.1",
