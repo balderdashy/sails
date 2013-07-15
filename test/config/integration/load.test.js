@@ -59,7 +59,7 @@ describe('Configs', function () {
   });
 
   it('should load the io configs', function () {
-    var conf = config.io;
+    var conf = config.sockets;
     assert(conf.adapter === 'disk');
     assert(conf.transports[0] === 'websocket');
     assert(conf.origins === '*:1337');

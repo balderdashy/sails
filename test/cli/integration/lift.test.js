@@ -84,7 +84,7 @@ describe('Starting sails server with lift', function() {
 			sailsServer.stderr.on('data', function(data){
 				var dataString = data + '';
 				// Server has finished starting up
-				if(dataString.indexOf('Sails lifted') !== -1) {
+				if (dataString.match(/Sails \S+ lifted/)) {
 					setTimeout(function(){
 						request('http://localhost:1337/', function(err, response) {
 							if (err) {
