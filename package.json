@@ -21,7 +21,7 @@
     "sails": "./bin/sails.js"
   },
   "scripts": {
-    "test": "node test/start.js"
+    "test": "mocha"
   },
   "directories": {
     "lib": "lib"

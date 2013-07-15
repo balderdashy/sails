@@ -27,7 +27,7 @@ module.exports = {
 			var dataString = data + '';
 
 			// Make request once server has sucessfully started
-			if (dataString.indexOf('http://localhost:1337') !== -1) {
+			if (dataString.match(/Sails \S+ lifted/)) {
 
 				request[method](options, function(err, response) {
 					if (err) callback(err);
