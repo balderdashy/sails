@@ -1,7 +1,7 @@
 <%
 /**
  * Boilerplate controller
- * 
+ *
  * This is the template used when generating controllers via the CLI
  * e.g. `sails generate controller foo`
  *
@@ -13,45 +13,6 @@
 
 module.exports = {
 
-	<%- actions %>
-
-};
-
-
-
-/**
- * Sails controllers expose some logic automatically via blueprints.
- * 
- * Blueprints are enabled for all controllers by default, and they can be turned on or off
- * app-wide in `config/controllers.js`. The settings below are overrides provided specifically
- * for <%= entity%>Controller.
- *
- * NOTE:
- *		REST and CRUD shortcut blueprints are only enabled if a matching model file
- *		(`models/<%= entity %>.js`) exists.
- *
- * NOTE:
- *		You may also override the logic and leave the routes intact by creating your own
- *		custom middleware for <%= entity%>Controller's `find`, `create`, `update`, and/or 
- *		`destroy` actions.
- */
-
-module.exports.blueprints = {
-
-	// Expose a route for every method,
-	// e.g.
-	//	`/<%= entity.toLowerCase() %>/foo` => `foo: function (req, res) {}`
-	actions: true,
-
-
-	// Expose a RESTful API, e.g.
-	//	`post /<%= entity.toLowerCase() %>` => `create: function (req, res) {}`
-	rest: true,
-
-
-	// Expose simple CRUD shortcuts, e.g.
-	//	`/<%= entity.toLowerCase() %>/create` => `create: function (req, res) {}`
-	// (useful for prototyping)
-	shortcuts: true	
+  <%- actions %>
 
 };

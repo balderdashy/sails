@@ -9,28 +9,28 @@
 %>module.exports = (function () {
 
 
-	/**
-	 * <%- entity %>Adapter
-	 * 
-	 * @syncable false
-	 * @schema false
-	 */
+  /**
+   * <%- entity %>Adapter
+   * 
+   * @syncable false
+   * @schema false
+   */
 
-	var Adapter = {
+  var Adapter = {
 
 
 
-		/**
-		 * registerCollection() is run multiple times (once for each model, aka collection)
-		 * before the server ever starts.  It allows us to register our models with the
-		 * underlying adapter interface.  (don't forget to cb() when you're done!)
-		 */
+    /**
+     * registerCollection() is run multiple times (once for each model, aka collection)
+     * before the server ever starts.  It allows us to register our models with the
+     * underlying adapter interface.  (don't forget to cb() when you're done!)
+     */
 
-		registerCollection: function (collection, cb) {
-			cb();
-		}
+    registerCollection: function (collection, cb) {
+      cb();
+    }
 
-	};
+  };
 
 
 	return Adapter;
