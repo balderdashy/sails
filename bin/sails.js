@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 
+var argv = require('optimist').argv;
+
 // Build sails instance
 var sails = require('../lib');
 sails.config = {
   appPath: process.cwd(),
+  prod: argv.prod,
 
   // Indicate that this is a mock config
   mock: true
@@ -17,7 +20,6 @@ require('../lib/configuration')(sails).load(function (err) {
     utils = require('./utils.js')(sails),
     fs = utils.fs,
     generate = require('./generate.js')(sails),
-    argv = require('optimist').argv,
     newSailsApp = require('./new.js')(sails);
 
 
