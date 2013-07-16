@@ -45,7 +45,7 @@ module.exports = function (sails) {
 						prefix: sails.config.paths.controllers + '/' + entity,
 						entity: entity,
 						action: action,
-						viewEngine: sails.config.viewEngine,
+						viewEngine: sails.config.views.engine,
 						viewPath: require('underscore.string').rtrim(sails.config.paths.views, '/'),
 						baseurl: '/' + entity,
 						suffix: ".js"
@@ -62,7 +62,7 @@ module.exports = function (sails) {
 						var fnString = utils.renderBoilerplateTemplate('action.ejs', {
 							action: action,
 							entity: entity,
-							viewEngine: sails.config.viewEngine,
+							viewEngine: sails.config.views.engine,
 							viewPath: require('underscore.string').rtrim(sails.config.paths.views, '/'),
 							baseurl: '/' + entity
 						});
@@ -103,7 +103,7 @@ module.exports = function (sails) {
 					var fnString = utils.renderBoilerplateTemplate('attribute.ejs', {
 						attribute: attribute,
 						entity: entity,
-						viewEngine: sails.config.viewEngine,
+						viewEngine: sails.config.views.engine,
 						viewPath: require('underscore.string').rtrim(sails.config.paths.views, '/'),
 						baseurl: '/' + entity
 					});
@@ -156,11 +156,11 @@ module.exports = function (sails) {
 				action = utils.verifyValidEntity(action, "Invalid view name: " + action);
 
 				return generate({
-					boilerplate: 'view.' + sails.config.viewEngine,
+					boilerplate: 'view.' + sails.config.views.engine,
 					prefix: viewPath,
 					entity: entity,
 					action: action,
-					suffix: '.' + sails.config.viewEngine
+					suffix: '.' + sails.config.views.engine
 				});
 			});
 		};
