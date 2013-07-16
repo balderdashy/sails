@@ -2,6 +2,110 @@ module.exports = function (grunt) {
 
   'use strict';
 
+
+
+  /////////////////////////////////////////////////////////////////
+  // If you created your Sails app with `sails new foo --linker`, the following
+  // files will be automatically injected in order into your views.
+  /////////////////////////////////////////////////////////////////
+
+
+  /**
+   * CSS files to inject in order
+   * (uses Grunt-style wildcard/glob/splat expressions)
+   *
+   * By default, Sails also supports LESS in development and production.
+   * To use SASS/SCSS, Stylus, etc., edit the `scriptlinker:devStyles` task 
+   * below for more options.
+   */
+
+  var cssFilesToInject = [
+    'linker/**/*.css'
+  ];
+
+
+  /**
+   * Javascript files to inject in order
+   * (uses Grunt-style wildcard/glob/splat expressions)
+   *
+   * To use client-side CoffeeScript, TypeScript, etc., edit the 
+   * `scriptlinker:devJs` task below for more options.
+   */
+
+  var jsFilesToInject = [
+    'linker/**/*.js'
+  ];
+
+
+  /**
+   * Client-side HTML templates are injected using the sources below
+   * The ordering of these templates shouldn't matter.
+   * (uses Grunt-style wildcard/glob/splat expressions)
+   * 
+   * By default, Sails uses JST templates and precompiles them into functions for you.
+   * If you want to use jade, handlebars, dust, etc., edit the relevant sections below.
+   */
+
+  var templateFilesToInject = [
+    'linker/**/*.html'
+  ];
+
+
+
+
+
+
+    /////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  // TODO: wtf I thought we had LESS in the bag
+
+
+    /////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  // TODO: make coffeescript work by default
+
+    /////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  // TODO: clean this stuff up
+
+
+  /////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  //
+  // DANGER:
+  //
+  // With great power comes great responsibility.
+  //
+  /////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////
+
+  // Modify css file injection paths to use 
+  cssFilesToInject = cssFilesToInject.map(function (path) {
+    return '.tmp/public/' + path;
+  });
+
+  // Modify js file injection paths to use 
+  jsFilesToInject = jsFilesToInject.map(function (path) {
+    return '.tmp/public/' + path;
+  });
+
+
   // Get path to core grunt dependencies from Sails
   var depsPath = grunt.option('gdsrc') || 'node_modules/sails/node_modules';
   grunt.loadTasks(depsPath + '/grunt-contrib-clean/tasks');
@@ -114,9 +218,9 @@ module.exports = function (grunt) {
           appRoot: '.tmp/public'
         },
         files: {
-          '.tmp/public/**/*.html': ['.tmp/public/linker/**/*.js'],
-          'views/**/*.html': ['.tmp/public/linker/**/*.js'],
-          'views/**/*.ejs': ['.tmp/public/linker/**/*.js']
+          '.tmp/public/**/*.html': jsFilesToInject,
+          'views/**/*.html': jsFilesToInject,
+          'views/**/*.ejs': jsFilesToInject
         }
       },
 
@@ -141,10 +245,12 @@ module.exports = function (grunt) {
           fileTmpl: '<link rel="stylesheet" href="%s">',
           appRoot: '.tmp/public'
         },
+
+        // cssFilesToInject defined up top
         files: {
-          '.tmp/public/**/*.html': ['.tmp/public/linker/**/*.css'],
-          'views/**/*.html': ['.tmp/public/linker/**/*.css'],
-          'views/**/*.ejs': ['.tmp/public/linker/**/*.css'],
+          '.tmp/public/**/*.html': cssFilesToInject,
+          'views/**/*.html': cssFilesToInject,
+          'views/**/*.ejs': cssFilesToInject
         }
       },
 

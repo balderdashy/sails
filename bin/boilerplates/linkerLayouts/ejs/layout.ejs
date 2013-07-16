@@ -6,10 +6,19 @@
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <!-- Beefed-up socket.io client -->
-    <script type="text/javascript" src="/js/sails.io.js"></script>
     
-    <!-- Stylesheets from your assets/linker/styles folder are included here -->
+    <!--  
+        Stylesheets from your assets/linker/styles folder are included here
+        (IN NO PARTICULAR ORDER)
+          
+          + To include stylesheets / LESS ***IN ORDER***
+            + edit your Gruntfile
+            + or include them manually in order before the STYLES tags below)
+    
+          + To add support for SASS/SCSS, Stylus or other CSS preprocessors, 
+            install the relevant packages and edit your Gruntfile.
+    -->
+
     <!--STYLES-->
     <!--STYLES END-->
   </head>
@@ -21,7 +30,19 @@
     <!--TEMPLATES-->
     <!--TEMPLATES END-->
 
+
+    <!-- A few key dependencies -->
+    <!-- Bring in the socket.io client -->
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    
+    <!-- then beef it up with some convenience logic for talking to Sails.js -->
+    <script type="text/javascript" src="/js/sails.io.js"></script>
+
+    <!-- listen on socket.io for incoming messages -->
+    <script type="text/javascript" src="/js/app.js"></script>
+
     <!-- Javascripts from your assets/linker/js folder are included here -->
+    <!-- To include dependencies in order, edit the Gruntfile (or include them manually) -->
     <!--SCRIPTS-->
     <!--SCRIPTS END-->
   </body>
