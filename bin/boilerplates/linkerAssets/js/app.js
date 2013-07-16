@@ -13,7 +13,7 @@
   // as soon as this file is loaded, connect automatically, 
   var socket = io.connect();
   if (typeof console !== 'undefined') {
-    console.log('Connecting to Sails.js...');
+    log('Connecting to Sails.js...');
   }
 
   socket.on('connect', function socketConnected() {
@@ -26,7 +26,7 @@
       // to run when a new message arrives from the Sails.js
       // server.
       ///////////////////////////////////////////////////////////
-      alert('New comet message received :: \n' + message);
+      log('New comet message received :: ', message);
       //////////////////////////////////////////////////////
 
     });
@@ -37,16 +37,12 @@
     // when the browser establishes its socket connection to 
     // the Sails.js server.
     ///////////////////////////////////////////////////////////
-    if (typeof console !== 'undefined') {
-      console.log(
-        'Socket is now connected and globally accessible as `socket`.'
-      );
-      console.log(
+    log(
+        'Socket is now connected and globally accessible as `socket`.\n' + 
         'e.g. to send a GET request to Sails, try \n' + 
         '`socket.get("/", function (response) ' +
         '{ console.log(response); })`'
-      );
-    }
+    );
     ///////////////////////////////////////////////////////////
 
 
@@ -56,6 +52,15 @@
   // Expose connected `socket` instance globally so that it's easy
   // to experiment with from the browser console while prototyping.
   window.socket = socket;
+
+
+  // Simple log function to keep the example simple
+  function log () {
+    if (typeof console !== 'undefined') {
+      console.log.apply(console, arguments);
+    }
+  }
+  
 
 })(
 
