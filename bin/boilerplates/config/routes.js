@@ -80,14 +80,20 @@ module.exports.routes = {
   //			<input type="submit"/>
   //		</form>
 
-
-  // You could define the following route:
+  // You would want to define the following route to handle your form:
   'post /signup': 'UserController.signup'
 
 
-  // Finally, here's an example of how you would route all GET requests 
-  // to the `/google` route to Google's website:
-  'get /google': 'http://google.com'
+  // What about the ever-popular "vanity URLs" aka URL slugs?
+  // (you remember doing this with `mod_rewrite` in PHP)
+  //
+  // This is where you want to set up root-relative dynamic routes like:
+  // http://yourwebsite.com/twinkletoezz993
+  //
+  // You still want to allow requests through to the static assets,
+  // So we need to set up this route to allow URLs through that have a trailing ".":
+  // (e.g. your javascript, CSS, and image files)
+  'get /*(^.*)': 'UserController.profile'
 
   */
 };
