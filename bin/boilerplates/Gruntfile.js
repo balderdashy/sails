@@ -104,6 +104,11 @@ module.exports = function (grunt) {
   jsFilesToInject = jsFilesToInject.map(function (path) {
     return '.tmp/public/' + path;
   });
+	
+	
+	templateFilesToInject = templateFilesToInject.map(function (path) {
+    return 'assets/' + path;
+  });
 
 
   // Get path to core grunt dependencies from Sails
@@ -158,7 +163,7 @@ module.exports = function (grunt) {
           }
         },
         files: {
-          '.tmp/public/jst.js': ['assets/templates/**/*.html', 'assets/linker/templates/**/*.html']
+          '.tmp/public/jst.js': templateFilesToInject
         }
       }
     },
@@ -185,11 +190,11 @@ module.exports = function (grunt) {
 
     concat: {
       js: {
-        src: ['.tmp/public/linker/js/**/*.js'],
+        src: jsFilesToInject,
         dest: '.tmp/public/concat/production.js'
       },
       css: {
-        src: ['.tmp/public/linker/styles/**/*.css'],
+        src: cssFilesToInject,
         dest: '.tmp/public/concat/production.css'
       }
     },
@@ -296,7 +301,7 @@ module.exports = function (grunt) {
           appRoot: '.tmp/public'
         },
         files: {
-          'views/**/*.jade': ['.tmp/public/linker/**/*.js']
+          'views/**/*.jade': jsFilesToInject
         }
       },
 
@@ -320,7 +325,7 @@ module.exports = function (grunt) {
           appRoot: '.tmp/public'
         },
         files: {
-          'views/**/*.jade': ['.tmp/public/linker/**/*.css']
+          'views/**/*.jade': cssFilesToInject
         }
       },
 
