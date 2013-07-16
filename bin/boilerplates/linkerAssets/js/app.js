@@ -1,23 +1,66 @@
 /**
- * This file contains some reasonable defaults for your connection logic
+ * app.js
+ *
+ * This file contains some conventional defaults for working with Socket.io + Sails.
+ * It is designed to get you up and running fast, but is by no means anything special.
+ *
+ * Feel free to change none, some, or ALL of this file to fit your needs!
  */
 
 
-// Connect automatically
-window.socket = window.io.connect();
-window.socket.on('connect', function socketConnected() {
+(function (io) {
 
-  // Listen for messages from Sails
-  window.socket.on('message', function messageReceived(message) {
+  // as soon as this file is loaded, connect automatically, 
+  var socket = io.connect();
+  if (typeof console !== 'undefined') {
+    console.log('Connecting to Sails.js...');
+  }
 
-    //////////////////////////////////////////////////////
-    // Your custom connection logic goes here
-    //////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////
-    alert(message);
-    //////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////
+  socket.on('connect', function socketConnected() {
+
+    // Listen for Comet messages from Sails
+    socket.on('message', function messageReceived(message) {
+
+      ///////////////////////////////////////////////////////////
+      // Replace the following with your own custom logic
+      // to run when a new message arrives from the Sails.js
+      // server.
+      ///////////////////////////////////////////////////////////
+      alert('New comet message received :: \n' + message);
+      //////////////////////////////////////////////////////
+
+    });
+
+
+    ///////////////////////////////////////////////////////////
+    // Here's where you'll want to add any custom logic for
+    // when the browser establishes its socket connection to 
+    // the Sails.js server.
+    ///////////////////////////////////////////////////////////
+    if (typeof console !== 'undefined') {
+      console.log(
+        'Socket is now connected and globally accessible as `socket`.'
+      );
+      console.log(
+        'e.g. to send a GET request to Sails, try \n' + 
+        '`socket.get("/", function (response) ' +
+        '{ console.log(response); })`'
+      );
+    }
+    ///////////////////////////////////////////////////////////
+
 
   });
 
-});
+
+  // Expose connected `socket` instance globally so that it's easy
+  // to experiment with from the browser console while prototyping.
+  window.socket = socket;
+
+})(
+
+  // In case you're wrapping socket.io to prevent pollution of the global namespace,
+  // you can replace `window.io` with your own `io` here:
+  window.io
+
+);

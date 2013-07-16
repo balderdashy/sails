@@ -8,10 +8,10 @@
 
     
     <!--  
-        Stylesheets from your assets/linker/styles folder are included here
-        (IN NO PARTICULAR ORDER)
+        Stylesheets from your `assets/linker/styles` folder are included here,
+        (in no particular order)
           
-          + To include stylesheets / LESS ***IN ORDER***
+          + To include stylesheets in order
             + edit your Gruntfile
             + or include them manually in order before the STYLES tags below)
     
@@ -26,14 +26,19 @@
   <body>
     <%- body %>
 
-    <!-- Templates from your assets/linker/templates path are included here -->
+    <!--
+    		Templates from your `assets/linker/templates` folder are included here
+    		Thankfully, for templates, order doesn't matter.
+    -->
+
     <!--TEMPLATES-->
     <!--TEMPLATES END-->
 
 
-    <!-- A few key dependencies -->
+    <!-- A few key dependencies, linked in order -->
+
     <!-- Bring in the socket.io client -->
-    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/js/socket.io.js"></script>
     
     <!-- then beef it up with some convenience logic for talking to Sails.js -->
     <script type="text/javascript" src="/js/sails.io.js"></script>
@@ -41,7 +46,18 @@
     <!-- listen on socket.io for incoming messages -->
     <script type="text/javascript" src="/js/app.js"></script>
 
-    <!-- Javascripts from your assets/linker/js folder are included here -->
+    <!--
+      Javascripts from your `assets/linker/js` folder are included here
+      (in no particular order)
+
+        + To include dependencies in order
+          + edit your Gruntfile
+          + or include them manually in order before the SCRIPTS tags below
+
+        + To add support for Coffee, install the relevant package
+          and edit your Gruntfile.
+
+    -->
     <!-- To include dependencies in order, edit the Gruntfile (or include them manually) -->
     <!--SCRIPTS-->
     <!--SCRIPTS END-->
