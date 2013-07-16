@@ -1,13 +1,14 @@
 /**
- * io.SocketNamespace.prototype.*
+ * sails.io.js
  *
  * Additional functionality for the Sails.js framework
  * Extends Socket.io socket object with some convenience methods
  *
+ * window.io.SocketNamespace.prototype is used to make socket.io's live connected sockets.
  */
 
 
- /**
+/**
  *
  * Simulate an HTTP request to the backend
  *   @param {String} url    ::    the request label (usually the destination URL)
@@ -25,35 +26,47 @@
  *          *-> `connectedSocket.delete()`
  */
 
-io.SocketNamespace.prototype.request = function (url, data, options, method) {
+window.io.SocketNamespace.prototype.request = function (url, data, cb, method) {
+
+  var usage = 'Usage:\n socket.' +
+    (method || 'request') +
+    '( destinationURL, dataToSend, fnToCallWhenComplete )';
 
   // Remove trailing slashes and spaces
   url = url.replace(/\/*\s*$/, '');
 
-  // If url is empty, use /
-  if (url === '') url = '/';
+  // If method is undefined, use 'get'
+  method = method || 'get';
 
-  // If options is a function, treat it as a callback
-  // Otherwise the "success" property will be treated as the callback
-  var cb;
-  if (typeof options === 'function') cb = options;
-  else cb = options.success;
 
-  var json = io.JSON.stringify({
+  if ( typeof url !== 'string' ) {
+    throw new Error('Invalid or missing URL!\n' + usage);
+  }
+
+  // Allow data arg to be optional
+  if ( typeof data === 'function' ) {
+    cb = data;
+    data = {};
+  }
+
+  // Build to request
+  var json = window.io.JSON.stringify({
     url: url,
     data: data
   });
 
-  this.emit(method || 'get', json, function (result) {
 
-    var parsedResult = result
+  // Send the message over the socket
+  this.emit(method, json, function afterEmitted (result) {
+
+    var parsedResult = result;
     try {
-      parsedResult = io.JSON.parse(result);
+      parsedResult = window.io.JSON.parse(result);
     } catch (e) {
       if (typeof console !== 'undefined') {
-        console.log("Could not parse:", result, e);
+        console.warn("Could not parse:", result, e);
       }
-      throw new Error("Server response could not be parsed!  " + result);
+      throw new Error("Server response could not be parsed!\n" + result);
     }
 
     // TODO: Handle errors more effectively
@@ -61,22 +74,31 @@ io.SocketNamespace.prototype.request = function (url, data, options, method) {
     if (parsedResult === 403) throw new Error("403: Forbidden");
     if (parsedResult === 500) throw new Error("500: Server error");
 
-    cb(parsedResult);
+    cb && cb(parsedResult);
   });
 };
 
-io.SocketNamespace.prototype.get = function(url, data, options){
-  return this.request(url, data, options, 'get');
-}
 
-io.SocketNamespace.prototype.post = function(url, data, options){
-  return this.request(url, data, options, 'post');
-}
 
-io.SocketNamespace.prototype.put = function(url, data, options){
-  return this.request(url, data, options, 'put');
-}
+/**
+ * Simulate a GET request to the backend
+ *   @param {String} url    ::    the request label (usually the destination URL)
+ *   @param {Object} data   ::    data to pass with the request
+ *   @param {Function} cb   ::    optional callback
+ */
 
-io.SocketNamespace.prototype.delete = function(url, data, options){
-  return this.request(url, data, options, 'delete');
-}
+window.io.SocketNamespace.prototype.get = function (url, data, cb) {
+  return this.request(url, data, cb, 'get');
+};
+
+window.io.SocketNamespace.prototype.post = function (url, data, cb) {
+  return this.request(url, data, cb, 'post');
+};
+
+window.io.SocketNamespace.prototype.put = function (url, data, cb) {
+  return this.request(url, data, cb, 'put');
+};
+
+window.io.SocketNamespace.prototype['delete'] = function (url, data, cb) {
+  return this.request(url, data, cb, 'delete');
+};

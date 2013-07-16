@@ -1,0 +1,23 @@
+/**
+ * This file contains some reasonable defaults for your connection logic
+ */
+
+
+// Connect automatically
+window.socket = window.io.connect();
+window.socket.on('connect', function socketConnected() {
+
+  // Listen for messages from Sails
+  window.socket.on('message', function messageReceived(message) {
+
+    //////////////////////////////////////////////////////
+    // Your custom connection logic goes here
+    //////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
+    alert(message);
+    //////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////
+
+  });
+
+});
