@@ -15,6 +15,10 @@ module.exports[500] = function serverErrorOccurred(errors, req, res, defaultErro
   // Ensure that each error is formatted correctly
   // Then log them
   for (var i in displayedErrors) {
+
+    // Make error easier to read
+    displayedErrors[i] = require('util').inspect(displayedErrors[i]);
+
     if (!(displayedErrors[i] instanceof Error)) {
       displayedErrors[i] = new Error(displayedErrors[i]);
     }
