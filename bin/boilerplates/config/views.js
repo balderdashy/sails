@@ -13,14 +13,24 @@
 
 module.exports.views = {
 
+  // Templating engine/language to be used for your app's **server-side** views
+  // 
+  // Currently supported:
+  // 
+  //    ejs
+  //    jade
+  //
+  engine: 'ejs',
+
+
   // If enabled, views are automatically served at logical routes,
   // based on their paths. This comes in handy any time you just want to
   // serve some static HTML. (i.e. a brochure site)
   // 
   // For example, the static view files below are available at the specified routes:
-  //		`views/catalog.ejs`			: `get /catalog`
-  //		`views/catalog/index.ejs`	: both `get /catalog` & `get /catalog/index`
-  //		`views/catalog/story.ejs`	: `get /catalog/story`
+  //    `views/catalog.ejs`     : `get /catalog`
+  //    `views/catalog/index.ejs` : both `get /catalog` & `get /catalog/index`
+  //    `views/catalog/story.ejs` : `get /catalog/story`
   blueprints: true,
 
 
@@ -31,19 +41,25 @@ module.exports.views = {
   // With using a layout, when one of your views is served, it is injected into
   // the <%- body %> partial defined in the layout.  This lets you reuse header
   // and footer logic between views.
+  //
+  // NOTE:  Layout support is currently only necessary for the `ejs` view engine!
+  //        For other engines, it will be silently ignored.
   // 
   // The `layout` setting may be set to one of:
   // 
-  // true			::	use default ('layout'), located at `views/layout.ejs`
+  // true     ::  use default ('layout'), located at `views/layout.ejs`
   //
-  // false		::	don't use a layout
+  // false    ::  don't use a layout
   //
-  // "string"		::	the relative path to your layout from `views/`
-  //					the view engine extension, e.g. ".ejs", may be omitted)
+  // "string"   ::  the relative path to your layout from `views/`
+  //          the view engine extension, e.g. ".ejs", may be omitted)
   //
-  layout: 'layout',
+  layout: 'layout'
 
 
+
+  // Using Multiple Layouts
+  //
   // If you'd like to use more than one `layout` file, you can!
   // Before rendering a view, override the `layout` locally by setting `res.locals.layout`
   // (handy if you parts of your app are completely different from each other)
@@ -56,18 +72,7 @@ module.exports.views = {
 
 
 
-  // Templating engine/language to be used for your app's **server-side** views
-  // 
-  // Currently supported:
-  // 
-  //		ejs
-  //		jade
-  //
-  engine: 'ejs'
-
-
-
-  // *-> Using Layouts With Other View Engines
+  // Using Layouts With Other View Engines
   //
   // In Express 3, built-in support for layouts/partials was deprecated.
   // Instead, developers are expected to rely on the view engines themselves to 
