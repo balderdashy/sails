@@ -13,14 +13,20 @@
 
 module.exports.views = {
 
-  // Templating engine/language to be used for your app's **server-side** views
+  // View engine (aka template language)
+  // to use for your app's *server-side* views
   // 
-  // Currently supported:
+  // Sails+Express supports all view engines which implement
+  // TJ Holowaychuk's `consolidate.js`, including, but not limited to:
   // 
-  //    ejs
-  //    jade
-  //
+  // ejs, jade, handlebars, mustache
+  // underscore, hogan, haml, haml-coffee, dust
+  // atpl, eco, ect, jazz, jqtpl, JUST, liquor, QEJS, 
+  // swig, templayed, toffee, walrus, & whiskers
+
   engine: 'ejs',
+
+
 
 
   // If enabled, views are automatically served at logical routes,
@@ -31,6 +37,7 @@ module.exports.views = {
   //    `views/catalog.ejs`     : `get /catalog`
   //    `views/catalog/index.ejs` : both `get /catalog` & `get /catalog/index`
   //    `views/catalog/story.ejs` : `get /catalog/story`
+
   blueprints: true,
 
 
@@ -42,27 +49,30 @@ module.exports.views = {
   // the <%- body %> partial defined in the layout.  This lets you reuse header
   // and footer logic between views.
   //
-  // NOTE:  Layout support is only necessary for the `ejs` view engine!
-  //        For other engines, it will be silently ignored.
-  // 
+  // NOTE:  Layout support is only implemented for the `ejs` view engine!
+  //        For most other engines, it is not necessary, since they implement 
+  //        partials/layouts themselves.  In those cases, this config willwill be silently 
+  //        ignored.
+  //
   // The `layout` setting may be set to one of:
   // 
-  // true     ::  use default ('layout'), located at `views/layout.ejs`
+  // If `true`, Sails will look for the default, located at `views/layout.ejs`
+  // If `false`, layouts will be disabled.
+  // Otherwise, if a string is specified, it will be interpreted as the relative path 
+  // to your layout from `views/` folder.
+  // (the file extension, e.g. ".ejs", should be omitted)
   //
-  // false    ::  don't use a layout
-  //
-  // "string"   ::  the relative path to your layout from `views/`
-  //          the view engine extension, e.g. ".ejs", may be omitted)
-  //
+
   layout: 'layout'
 
 
 
   // Using Multiple Layouts with EJS
   //
-  // If you'd like to use more than one `layout` file, you can!
-  // Before rendering a view, override the `layout` locally by setting `res.locals.layout`
-  // (handy if you parts of your app are completely different from each other)
+  // If you're using the default engine, `ejs`, Sails supports the use of multiple
+  // `layout` files.  To take advantage of this, before rendering a view, override
+  // the `layout` local in your controller by setting `res.locals.layout`.
+  // (this is handy if you parts of your app's UI look completely different from each other)
   //
   // e.g. your default might be
   // layout: 'layouts/public'
@@ -70,23 +80,5 @@ module.exports.views = {
   // But you might override that in some of your controllers with:
   // layout: 'layouts/internal'
 
-
-
-  // Using Layouts With Other View Engines
-  //
-  // In Express 3, built-in support for layouts/partials was deprecated.
-  // Instead, developers are expected to rely on the view engines themselves to 
-  // implement this features.
-  // (see https://github.com/balderdashy/sails/issues/494 for more info on that)
-  //
-  // Since adopting Express 3, Sails has chosen to support the legacy `layouts` feature
-  // for convenience, backwards compatibility with Express 2.x and Sails 0.8.x apps,
-  // and in particular, familiarity for new community members coming from other MVC frameworks.
-  // 
-  // As a result, layouts are only necessary when using `ejs`, the default view engine.
-  //
-  // If layouts aren't your thing, or (for now) if you're using a server-side view engine 
-  // other than ejs, (e.g. Jade, handlebars, haml, dust) you'll need to set this option to:
-  // `layout:false` and then rely on your view engine's built-in layout/partial support.
 
 };
