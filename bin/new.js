@@ -160,6 +160,7 @@ module.exports = function(sails) {
 		utils.copySailsDependency('optimist', outputPath + '/node_modules');
 		utils.copySailsDependency('grunt', outputPath + '/node_modules');
 		utils.copySailsDependency('sails-disk', outputPath + '/node_modules');
+		utils.copySailsDependency('ejs', outputPath + '/node_modules');
 
 		// Other grunt dependencies are automatically pulled from sails core deps.
 

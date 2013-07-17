@@ -42,7 +42,7 @@ module.exports.views = {
   // the <%- body %> partial defined in the layout.  This lets you reuse header
   // and footer logic between views.
   //
-  // NOTE:  Layout support is currently only necessary for the `ejs` view engine!
+  // NOTE:  Layout support is only necessary for the `ejs` view engine!
   //        For other engines, it will be silently ignored.
   // 
   // The `layout` setting may be set to one of:
@@ -58,7 +58,7 @@ module.exports.views = {
 
 
 
-  // Using Multiple Layouts
+  // Using Multiple Layouts with EJS
   //
   // If you'd like to use more than one `layout` file, you can!
   // Before rendering a view, override the `layout` locally by setting `res.locals.layout`
@@ -83,7 +83,7 @@ module.exports.views = {
   // for convenience, backwards compatibility with Express 2.x and Sails 0.8.x apps,
   // and in particular, familiarity for new community members coming from other MVC frameworks.
   // 
-  // As a result, layouts have only been tested with the default view engine (ejs).
+  // As a result, layouts are only necessary when using `ejs`, the default view engine.
   //
   // If layouts aren't your thing, or (for now) if you're using a server-side view engine 
   // other than ejs, (e.g. Jade, handlebars, haml, dust) you'll need to set this option to:
