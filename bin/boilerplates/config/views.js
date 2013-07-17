@@ -21,7 +21,7 @@ module.exports.views = {
   //		`views/catalog.ejs`			: `get /catalog`
   //		`views/catalog/index.ejs`	: both `get /catalog` & `get /catalog/index`
   //		`views/catalog/story.ejs`	: `get /catalog/story`
-  routes: true,
+  blueprints: true,
 
 
   // Layouts are simply top-level HTML templates you can use as wrappers 
