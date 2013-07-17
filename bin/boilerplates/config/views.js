@@ -28,19 +28,6 @@ module.exports.views = {
 
 
 
-
-  // If enabled, views are automatically served at logical routes,
-  // based on their paths. This comes in handy any time you just want to
-  // serve some static HTML. (i.e. a brochure site)
-  // 
-  // For example, the static view files below are available at the specified routes:
-  //    `views/catalog.ejs`     : `get /catalog`
-  //    `views/catalog/index.ejs` : both `get /catalog` & `get /catalog/index`
-  //    `views/catalog/story.ejs` : `get /catalog/story`
-
-  blueprints: true,
-
-
   // Layouts are simply top-level HTML templates you can use as wrappers 
   // for your server-side views.  If you're using ejs, you can take advantage of
   // Sails' built-in `layout` support.
