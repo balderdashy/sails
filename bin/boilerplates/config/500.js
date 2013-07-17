@@ -7,7 +7,7 @@
  * http://expressjs.com/guide.html#error-handling
  */
 
-module.exports[500] = function serverErrorOccurred(errors, req, res, defaultErrorBehavior) {
+module.exports[500] = function serverErrorOccurred(errors, req, res, expressErrorHandler) {
 
   // Ensure that `errors` is a list
   var displayedErrors = (typeof errors !== 'object' || !errors.length) ? [errors] : errors;
@@ -22,6 +22,7 @@ module.exports[500] = function serverErrorOccurred(errors, req, res, defaultErro
     if (!(displayedErrors[i] instanceof Error)) {
       displayedErrors[i] = new Error(displayedErrors[i]);
     }
+
     sails.log.error(displayedErrors[i]);
   }
 
@@ -38,7 +39,7 @@ module.exports[500] = function serverErrorOccurred(errors, req, res, defaultErro
   // the views hook is disabled,
   // or the 500 view doesn't exist,
   // send JSON
-  if (req.wantsJSON || !sails.config.hooks.views || !res.view || !sails.hooks.views.middleware[500]) {
+  if (req.wantsJSON || !sails.config.hooks.views || !sails.hooks.views.middleware[500]) {
 
     // Create JSON-readable version of errors
     for (var j in response.errors) {
@@ -56,7 +57,13 @@ module.exports[500] = function serverErrorOccurred(errors, req, res, defaultErro
   for (var k in response.errors) {
     response.errors[k] = response.errors[k].stack;
   }
-  // and send the `views/500.*` page
-  res.view('500', response);
+
+  // If it can be rendered, render the `views/500.*` page is rendered
+  if (res.view) {
+    return res.view('500', response);
+  }
+
+  // Fall back to the underlying Express error behavior
+  return expressErrorHandler(errors);
 
 };
