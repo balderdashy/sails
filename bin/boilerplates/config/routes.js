@@ -11,13 +11,11 @@
 
 
 /**
- * (1) Static assets
+ * (1) Core middleware
  *
- * Flat files in your `assets` directory- (these are sometimes referred to as 'public')
- * If you have an image file at `/assets/images/foo.jpg`, it will be made available
- * automatically via the route:  `/images/foo.jpg`
- *
+ * Most middleware implemented with `app.use` is run first, before the router
  */
+
 
 
 
@@ -154,6 +152,16 @@ module.exports.routes = {
  *		delete /foo/:id	->	delete lampshade with id=:id
  *
  */
+
+/**
+ * (7) Static assets
+ *
+ * Flat files in your `assets` directory- (these are sometimes referred to as 'public')
+ * If you have an image file at `/assets/images/foo.jpg`, it will be made available
+ * automatically via the route:  `/images/foo.jpg`
+ *
+ */
+
 
 
 /**
