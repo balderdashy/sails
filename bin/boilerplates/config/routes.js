@@ -13,10 +13,8 @@
 /**
  * (1) Core middleware
  *
- * Most middleware implemented with `app.use` is run first, before the router
+ * Middleware included with `app.use` is run first, before the router
  */
-
-
 
 
 /**
