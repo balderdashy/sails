@@ -131,8 +131,10 @@ module.exports = function(sails) {
 			description: 'a Sails application',
 			dependencies: {
 				sails: sails.version,
-				grunt: '0.4.1',
-				optimist: '0.3.4' // TODO: remove this and handle it differently
+				grunt			: '0.4.1',
+				'sails-disk'	: '~0.9.0',
+				ejs				: '0.8.4',
+				optimist		: '0.3.4' // TODO: remove this and handle it differently
 			},
 			scripts: {
 				// Include this later when we have "sails test" ready.
