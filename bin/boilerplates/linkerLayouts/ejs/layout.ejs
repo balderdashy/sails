@@ -8,15 +8,23 @@
 
     
     <!--  
-        Stylesheets from your `assets/linker/styles` folder are included here,
-        (in no particular order)
-          
-          + To include stylesheets in order
-            + edit your Gruntfile
-            + or include them manually in order before the STYLES tags below)
-    
-          + To add support for SASS/SCSS, Stylus or other CSS preprocessors, 
-            install the relevant packages and edit your Gruntfile.
+        Stylesheets and Preprocessors
+        ==============================
+
+        You can always bring in CSS files manually with `link` tags, or asynchronously
+        on the client using a solution like AMD (RequireJS).  Or, if you like, you can
+        take advantage of Sails' boilerplate asset management.
+
+        By default, tylesheets from your `assets/linker/styles` folder are included
+        here automatically.  Both CSS (.css) and LESS (.less) are supported.
+        In production, your styles will be minified and concatenated into a single file.
+        
+        To customize any part of the built-in behavior, just edit your Gruntfile.
+        For example, here are a few things you could do:
+            
+            + Change the order of your CSS files
+            + Import stylesheets from other directories
+            + Use a different preprocessor, like SASS, SCSS or Stylus
     -->
 
     <!--STYLES-->
@@ -29,8 +37,24 @@
 
 
     <!--
-    		Templates from your `assets/linker/templates` folder are included here
-    		Thankfully, for templates, order doesn't matter.
+        Client-side Templates
+        ========================
+
+    		HTML templates are important prerequisites of modern, rich client applications.
+        To work their magic, frameworks like Backbone, Angular, Ember, and Knockout require
+        that you load these templates client-side.
+
+        By default, your Gruntfile is configured to automatically load and precompile
+        client-side JST templates in your `assets/linker/templates` folder, then
+        include them here automatically.
+        
+        To customize this behavior to fit your needs, just edit your Gruntfile.
+        For example, here are a few things you could do:
+
+            + Import templates from other directories
+            + Use a different template engine (handlebars, jade, dust, etc.)
+            + Internationalize your templates using a server-side stringfile
+              before they're served.
     -->
 
     <!--TEMPLATES-->
@@ -49,18 +73,27 @@
     <script type="text/javascript" src="/js/app.js"></script>
 
     <!--
-      Javascripts from your `assets/linker/js` folder are included here
-      (in no particular order)
 
-        + To include dependencies in order
-          + edit your Gruntfile
-          + or include them manually in order before the SCRIPTS tags below
+      Client-side Javascript
+      ========================
 
-        + To add support for Coffee, install the relevant package
-          and edit your Gruntfile.
+      You can always bring in JS files manually with `script` tags, or asynchronously
+      on the client using a solution like AMD (RequireJS).  Or, if you like, you can 
+      take advantage of Sails' boilerplate asset management.
+
+      By default, filesin your `assets/linker/js` folder are included here
+      automatically.  Both JavaScript (.js) and CoffeeScript (.coffee) are supported.
+      In production, your scripts will be minified and concatenated into a single file.
+      
+      To customize any part of the built-in behavior, just edit your Gruntfile.
+      For example, here are a few things you could do:
+          
+          + Change the order of your scripts
+          + Import scripts from other directories
+          + Use a different preprocessor, like TypeScript
 
     -->
-    <!-- To include dependencies in order, edit the Gruntfile (or include them manually) -->
+    
     <!--SCRIPTS-->
     <!--SCRIPTS END-->
   </body>
