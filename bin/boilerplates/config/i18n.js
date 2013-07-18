@@ -7,10 +7,6 @@ module.exports.i18n = {
   defaultLocale: 'en',
 
   // Where are your locale translations located?
-  localesDirectory: '/config/locales',
-
-  // Which format are your locales in?
-  // available: [po, plist, json]
-  translationType: 'json'
-
+  localesDirectory: '/config/locales'
+    
 };
