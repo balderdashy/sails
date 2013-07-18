@@ -56,7 +56,8 @@
     "grunt-contrib-cssmin": "0.6.1",
     "grunt-contrib-less": "0.5.2",
     "ejs": "0.8.4",
-    "ejs-locals": "1.0.2"
+    "ejs-locals": "1.0.2",
+    "i18n-abide": "0.0.10"
   },
   "devDependencies": {
     "mocha": "*",
