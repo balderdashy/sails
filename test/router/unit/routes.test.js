@@ -33,7 +33,7 @@ describe('Specified routes', function() {
 	describe('Static routes', function () {
 
 		it('should respond to requests that match the url pattern', function (done) {
-			console.log('!!!!');
+			// console.log('!!!!');
 			assert(true);
 			done();
 
