@@ -23,7 +23,7 @@ module.exports = function (grunt) {
    * (uses Grunt-style wildcard/glob/splat expressions)
    *
    * By default, Sails also supports LESS in development and production.
-   * To use SASS/SCSS, Stylus, etc., edit the `scriptlinker:devStyles` task 
+   * To use SASS/SCSS, Stylus, etc., edit the `sails-linker:devStyles` task 
    * below for more options.  For this to work, you may need to install new 
    * dependencies, e.g. `npm install grunt-contrib-sass`
    */
@@ -38,7 +38,7 @@ module.exports = function (grunt) {
    * (uses Grunt-style wildcard/glob/splat expressions)
    *
    * To use client-side CoffeeScript, TypeScript, etc., edit the 
-   * `scriptlinker:devJs` task below for more options.
+   * `sails-linker:devJs` task below for more options.
    */
 
   var jsFilesToInject = [
@@ -114,9 +114,9 @@ module.exports = function (grunt) {
   jsFilesToInject = jsFilesToInject.map(function (path) {
     return '.tmp/public/' + path;
   });
-	
-	
-	templateFilesToInject = templateFilesToInject.map(function (path) {
+  
+  
+  templateFilesToInject = templateFilesToInject.map(function (path) {
     return 'assets/' + path;
   });
 
@@ -126,7 +126,7 @@ module.exports = function (grunt) {
   grunt.loadTasks(depsPath + '/grunt-contrib-clean/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-copy/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-concat/tasks');
-  grunt.loadTasks(depsPath + '/grunt-scriptlinker/tasks');
+  grunt.loadTasks(depsPath + '/grunt-sails-linker/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-jst/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-watch/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-uglify/tasks');
@@ -223,7 +223,7 @@ module.exports = function (grunt) {
       }
     },
 
-    scriptlinker: {
+    'sails-linker': {
 
       devJs: {
         options: {
@@ -402,12 +402,12 @@ module.exports = function (grunt) {
   grunt.registerTask('linkAssets', [
 
     // Update link/script/template references in `assets` index.html
-    'scriptlinker:devJs',
-    'scriptlinker:devStyles',
-    'scriptlinker:devTpl',
-    'scriptlinker:devJsJADE',
-    'scriptlinker:devStylesJADE',
-    'scriptlinker:devTplJADE'
+    'sails-linker:devJs',
+    'sails-linker:devStyles',
+    'sails-linker:devTpl',
+    'sails-linker:devJsJADE',
+    'sails-linker:devStylesJADE',
+    'sails-linker:devTplJADE'
   ]);
 
 
@@ -429,12 +429,12 @@ module.exports = function (grunt) {
     'concat',
     'uglify',
     'cssmin',
-    'scriptlinker:prodJs',
-    'scriptlinker:prodStyles',
-    'scriptlinker:devTpl',
-    'scriptlinker:prodJsJADE',
-    'scriptlinker:prodStylesJADE',
-    'scriptlinker:devTplJADE'
+    'sails-linker:prodJs',
+    'sails-linker:prodStyles',
+    'sails-linker:devTpl',
+    'sails-linker:prodJsJADE',
+    'sails-linker:prodStylesJADE',
+    'sails-linker:devTplJADE'
   ]);
 
   // When API files are changed:
