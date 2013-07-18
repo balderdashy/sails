@@ -35,7 +35,7 @@
     "connect-mongo": "0.3.2",
     "async": "0.2.9",
     "winston": "0.7.1",
-    "i18n": "0.3.5",
+    "i18n": "~0.3.5",
     "optimist": "0.3.4",
     "fs-extra": "0.5.0",
     "lodash": "1.2.1",
@@ -57,7 +57,7 @@
     "grunt-contrib-less": "0.5.2",
     "ejs": "0.8.4",
     "ejs-locals": "1.0.2",
-    "i18n-abide": "0.0.10"
+    "locale": "0.0.10"
   },
   "devDependencies": {
     "mocha": "*",
