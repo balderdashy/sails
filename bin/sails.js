@@ -177,9 +177,10 @@ require('../lib/configuration')(sails).load(function (err) {
         });
       });
 
-      sails.log.warn('In order to serve the blueprint API for this model, you must now also generate an empty controller.');
-      sails.log.warn('If you want this behavior, run \'sails generate controller ' + entity + '\' to create a blank controller.');
+      sails.log.warn('For the record :: to serve the blueprint API for this model,');
+      sails.log.warn('you\'ll also need to have an empty controller.');
       generate.generateModel(entity, options);
+      sails.log.info("Generated model for " + entity + '!');
     }
 
     // Generate a controller
@@ -192,6 +193,7 @@ require('../lib/configuration')(sails).load(function (err) {
       options.actions = argv._.splice(3);
 
       generate.generateController(entity, options);
+      sails.log.info("Generated controller for " + entity + '!');
     }
 
     // // Generate a view
@@ -212,12 +214,13 @@ require('../lib/configuration')(sails).load(function (err) {
       // Figure out attributes based on args
       var options = _.extend({}, argv);
       generate.generateAdapter(entity, options);
+      sails.log.info("Generated adapter for " + entity + '!');
     }
     // Otherwise generate a model and controller
     else {
       var entity = argv._[1];
       verifyArg(1, "Please specify the name of the entity as the second argument to generate a model, controller, and view.");
-      sails.log.info("Generating model and controller for " + entity);
+      sails.log.info("Generating model and controller for " + entity + '...');
 
       var options = _.extend({}, argv);
       options.actions = argv._.splice(2);
