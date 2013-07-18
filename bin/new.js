@@ -64,10 +64,9 @@ module.exports = function(sails) {
 			utils.generateDir(outputPath);
 		}
 
-		console.log('\n');
-		sails.log.info('Building new Sails.js app in ' + outputPath + '...');
+		sails.log.debug('Building new Sails.js app in ' + outputPath + '...');
 		if (useLinker) {
-			sails.log.info('Using asset auto-linker...');
+			sails.log.info('Using asset linker...');
 		}
 
 		// useLinker will determin the assets dir stucture for the new sails project 
@@ -97,7 +96,7 @@ module.exports = function(sails) {
 			// If using linker, override the layout file with linker layout file
 			if (useLinker) {
 
-				if (templateLang === 'hbs' || templateLang === 'jade') {
+				if (templateLang !== 'ejs') {
 					sails.log.warn('Automatic asset linking is not implemented for the `' + templateLang + '` view ' +
 						'engine at this time. You must modify the Gruntfile yourself for this feature to work.');
 				}
