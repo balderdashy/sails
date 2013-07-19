@@ -130,7 +130,7 @@ module.exports = function(sails) {
 			version: '0.0.0',
 			description: 'a Sails application',
 			dependencies: {
-				sails: sails.version,
+				sails			: sails.version,
 				grunt			: '0.4.1',
 				'sails-disk'	: '~0.9.0',
 				ejs				: '0.8.4',
