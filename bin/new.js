@@ -110,10 +110,6 @@ module.exports = function(sails) {
 				utils.copyBoilerplate('linkerLayouts/' + templateLang, outputPath + '/views');
 			}
 
-			// Use {{ and }} as open and close tags as to not interfere with comment blocks
-			ejs.open = '{{';
-			ejs.close = '}}';
-
 			// Insert view engine and template layout in views config
 			var viewsBoilerplatePath = __dirname + '/boilerplates/config/views.js';
 			var newViewsConfig = ejs.render(fs.readFileSync(viewsBoilerplatePath, 'utf8'), {
