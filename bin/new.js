@@ -81,8 +81,8 @@ module.exports = function(sails) {
 		utils.copyBoilerplate('config', outputPath + '/config', function() {
 
 			// Generate session secret
-			var boilerplatePath = __dirname + '/boilerplates/config/session.js';
-			var newSessionConfig = ejs.render(fs.readFileSync(boilerplatePath, 'utf8'), {
+			var sessionBoilerplatePath = __dirname + '/boilerplates/config/session.js';
+			var newSessionConfig = ejs.render(fs.readFileSync(sessionBoilerplatePath, 'utf8'), {
 				secret: Session.generateSecret()
 			});
 			fs.writeFileSync(outputPath + '/config/session.js', newSessionConfig, 'utf8');
@@ -90,6 +90,13 @@ module.exports = function(sails) {
 
 		// Different stuff for different view engines
 		if (templateLang === 'handlebars') templateLang = 'hbs';
+
+		// Disable template layout for haml
+		if (templateLang === 'haml') {
+			var templateLayout = false;
+		} else {
+			var templateLayout = '\'layout\'';
+		}
 
 		utils.copyBoilerplate('views/' + templateLang, outputPath + '/views', function() {
 
@@ -102,19 +109,19 @@ module.exports = function(sails) {
 				}
 				utils.copyBoilerplate('linkerLayouts/' + templateLang, outputPath + '/views');
 			}
+
+			// Use {{ and }} as open and close tags as to not interfere with comment blocks
+			ejs.open = '{{';
+			ejs.close = '}}';
+
+			// Insert view engine and template layout in views config
+			var viewsBoilerplatePath = __dirname + '/boilerplates/config/views.js';
+			var newViewsConfig = ejs.render(fs.readFileSync(viewsBoilerplatePath, 'utf8'), {
+				engine: templateLang,
+				layout: templateLayout
+			});
+			fs.writeFileSync(outputPath + '/config/views.js', newViewsConfig, 'utf8');
 		});
-
-		var viewConfig = {
-			viewEngine: templateLang
-		};
-
-		if (templateLang === 'jade' || templateLang === 'haml') {
-			viewConfig.layout = false;
-		}
-
-		fs.createFileSync(outputPath + '/config/views.js');
-		fs.writeFileSync(outputPath + '/config/views.js', 'module.exports = ' + JSON.stringify(viewConfig, null, '\t').split('"').join('\'') + ';');
-
 
 		// Default app launcher file (for situations where sails lift isn't good enough)
 		utils.generateFile('app.js', outputPath + '/app.js');
