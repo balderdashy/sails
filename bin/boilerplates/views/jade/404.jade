@@ -1,11 +1,39 @@
-extends layout
+!!!
+//
+  |
+  |   _  _    ___  _  _   
+  |  | || |  / _ \| || |  
+  |  | || |_| | | | || |_ 
+  |  |__   _| |_| |__   _|
+  |     |_|  \___/   |_|  
+  |
+  | This is the default 404 page.  
+  | User agents that don't "Accept" HTML will see a JSON version instead.
+  | You can customize the control logic for your needs in `config/404.js`
+  |
+  | Sails considers a request to be in a "404: Not Found" state when a user
+  | requests a URL which doesn't match any of your app's routes or blueprints.  
 
-block body
-  h1 Page not found
-  h2 The view you were trying to reach does not exist.
+html
+  head
+    title Page Not Found
+    link(href='http://sailsjs.org/styles/fonts.css', rel='stylesheet')
+    style.
+      /* Styles included inline since you'll probably be deleting this page anyway */
+      html,body{text-align:left;font-size:1em}html,body,img,form,textarea,input,fieldset,div,p,div,ul,li,ol,dl,dt,dd,h1,h2,h3,h4,h5,h6,pre,code{margin:0;padding:0}ul,li{list-style:none}img{display:block}a img{border:0}a{text-decoration:none;font-weight:normal;font-family:inherit}*:active,*:focus{outline:0;-moz-outline-style:none}h1,h2,h3,h4,h5,h6,h7{font-weight:normal;font-size:1em}.clearfix:after{clear:both;content:".";display:block;font-size:0;height:0;line-height:0;visibility:hidden}.fourohfour .ocean{background:url('http://sailsjs.com/images/waves.png') #0c8da0 no-repeat center 0;height:315px}.fourohfour .ocean img{margin-right:auto;margin-left:auto}.fourohfour .waves{display:block;padding-top:25px;margin-right:auto;margin-left:auto}.fourohfour .main{display:block;margin-top:90px}.fourohfour .logo{width:150px;margin-top:3.5em;margin-left:auto;margin-right:auto}.fourohfour .fishy{display:block;padding-top:27px}.fourohfour .help{padding-top:2em}.fourohfour h1{font-family:"Open Sans","Myriad Pro",Arial,sans-serif;font-weight:bold;font-size:1.7em;color:#001c20;text-align:center}.fourohfour h2{font-family:"Open Sans","Myriad Pro",Arial,sans-serif;font-weight:300;font-size:1.5em;color:#001c20;text-align:center}.fourohfour p{font-family:"Open Sans","Myriad Pro",Arial,sans-serif;font-size:1.25em;color:#001c20;text-align:center}.fourohfour a{color:#118798}.fourohfour a:hover{color:#b1eef7}
+  body
 
+    .fourohfour
+      .ocean
+        img.fishy(src="http://sailsjs.org/images/fishy4.png")
 
-  style
-    //
-      Styles included inline since you'll probably be deleting this page anyway */
-    body{font:14px Helvetica,Arial,sans-serif}html{background:#e0e0e0}p{margin:3% 1% 3% 0}a{color:#00b7ff}input{padding:.5em;width:50%}h1{font-size:28px;font-weight:bold;margin:20px 0 15px;color:#444;text-shadow:0 0 5px rgba(150,150,150,0.6)}h2{color:#444;text-shadow:0 0 5px rgba(150,150,150,0.6);font-size:18px;font-weight:bold;margin:10px 0 10px}h3{font-size:18px;font-weight:bold;margin:10px 0 10px;color:#eee;text-shadow:0 0 5px rgba(0,0,0,0.6)}#controllers li a{background:#eee;border-radius:8px;padding:.5em 1em;margin-bottom:.3em;display:block;width:50%}#topbar{width:100%;padding:0 2em;background:black;position:fixed;top:0;left:0;z-index:100;box-shadow:0 2px 2px rgba(100,100,100,0.5)}#branding{margin:0;text-shadow:none;padding:12px 0 0;height:35px;font-size:19px;font-weight:normal;color:white;width:100px;float:left}#branding a{color:white}#topbar{overflow:auto}#topbar li{float:left}#topbar li a{color:#aaa;font-size:.94em;height:30px;padding:17px 1.5em 0;display:block}#topbar li a:hover{color:#ccc}#topbar li a.selected{color:#ddd;background:#444;font-weight:bold;font-size:.94em;height:30px;padding:17px 1.5em 0;display:block}#topbar-dropdown{float:right;margin-top:15px;margin-right:45px}#content{background:#c0c0c0;padding:50px 20px 30px;box-shadow:0 3px 1px rgba(150,150,150,0.2)}img.spinner{padding:.5em;margin:0 auto;display:block}#footer{padding:1em 0 3em;color:#999;font-size:.85em}#footer .copyright{color:#777;margin-left:2em;opacity:.8}#footer .copyright:hover{opacity:1;text-decoration:underline}input.error{border-color:red}span.error{display:block;font-size:85%;color:red}.mobile-only{display:none}@media screen and (max-width:980px){input.ui-list-search{width:45%;padding-top:7px;padding-bottom:7px}}@media screen and (max-width:480px){.widescreen-nav{display:none}a.create-node{margin-bottom:1em}input.ui-list-search{width:auto;display:block;float:none!important;margin-left:0;margin-right:0;margin-top:1em;clear:both}.mobile-only{display:block}}
+      .main
+        h1 Something's fishy here.
+        h2 The page you were trying to reach doesn't exist.
+        p.help
+          a(href="https://github.com/balderdashy/sails/issues") Why
+          |  might this be happening?
+        
+      .logo
+        a(href="http://sailsjs.org")
+          img(src="http://sailsjs.org/images/logo.png")

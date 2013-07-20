@@ -11,6 +11,9 @@ sails.config = {
   // Indicate that this is a mock config
   mock: true
 };
+if(argv.verbose){
+  sails.config.log = {level: 'verbose'};
+}
 require('../lib/configuration')(sails).load(function (err) {
   if (err) throw new Error(err);
 
