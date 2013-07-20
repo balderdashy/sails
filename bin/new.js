@@ -91,8 +91,8 @@ module.exports = function(sails) {
 		// Different stuff for different view engines
 		if (templateLang === 'handlebars') templateLang = 'hbs';
 
-		// Disable template layout for haml
-		if (templateLang === 'haml') {
+		// Disable template layout for jade and haml
+		if (templateLang === 'jade' || templateLang === 'haml') {
 			var templateLayout = false;
 		} else {
 			var templateLayout = '\'layout\'';
