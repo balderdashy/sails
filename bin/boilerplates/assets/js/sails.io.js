@@ -133,13 +133,16 @@
     socket.emit(method, json, function afterEmitted (result) {
 
       var parsedResult = result;
-      try {
-        parsedResult = window.io.JSON.parse(result);
-      } catch (e) {
-        if (typeof console !== 'undefined') {
-          console.warn("Could not parse:", result, e);
+
+      if (result && typeof result === 'string') {
+        try {
+          parsedResult = window.io.JSON.parse(result);
+        } catch (e) {
+          if (typeof console !== 'undefined') {
+            console.warn("Could not parse:", result, e);
+          }
+          throw new Error("Server response could not be parsed!\n" + result);
         }
-        throw new Error("Server response could not be parsed!\n" + result);
       }
 
       // TODO: Handle errors more effectively
