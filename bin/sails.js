@@ -72,11 +72,9 @@ require('../lib/configuration')(sails).load(function (err) {
 
   // Check if console was requested, if so, launch console
   else if (_.contains(['console'], argv._[0])) {
-    sails.log.ship();
-    sails.log('Welcome to Sails (v' + sails.version + ')');
+    console.log();
+    sails.log('Welcome to the Sails console (v' + sails.version + ')');
     sails.log('( to exit, type <CTRL>+<C> )');
-
-    // TODO: instead of lifting the servers, just fire up the ORM and include all the modules
 
     sails.lift({
       log: {
