@@ -50,9 +50,9 @@ module.exports.controllers = {
 
 
     // Enable JSONP callbacks on REST blueprints
-    // 
     // e.g.
-    // get /user/8?callback=?
+    // '/user/find/:id?callback=?'
+    // '/user/find/?where={"name":"ciaran"}&callback=?'
     jsonp: false,
 
 
