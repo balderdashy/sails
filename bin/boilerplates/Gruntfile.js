@@ -132,6 +132,7 @@ module.exports = function (grunt) {
   grunt.loadTasks(depsPath + '/grunt-contrib-uglify/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-cssmin/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-less/tasks');
+  grunt.loadTasks(depsPath + '/grunt-contrib-coffee/tasks');
 
   // Project configuration.
   grunt.initConfig({
