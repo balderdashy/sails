@@ -37,7 +37,7 @@ The default port for Sails is 1337.  At this point if you visit <a href="http://
 
 Now, let's get Sails to do cool stuff.
 
-Aditionally you can check out [generator-sails](https://github.com/colinwren/generator-sails) for [Yeoman](https://github.com/yeoman/yeoman). Note that this is still a WIP, not everything is expected to work yet.
+Additionally you can check out [generator-sails](https://github.com/colinwren/generator-sails) for [Yeoman](https://github.com/yeoman/yeoman). Note that this is still a WIP, not everything is expected to work yet.
 # Hello, Sails!
 
 To get Sails to say "Hello World!", you need only to change the view for the default home page in `views/home/index.ejs`.  But that doesn't really teach us a whole lot-- instead, let's create a new controller and have IT tell us hello.
