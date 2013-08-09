@@ -14,6 +14,10 @@ sails.config = {
 if(argv.verbose){
   sails.config.log = {level: 'verbose'};
 }
+if(argv.port){
+  sails.config.port = argv.port;
+}
+
 require('../lib/configuration')(sails).load(function (err) {
   if (err) throw new Error(err);
 
