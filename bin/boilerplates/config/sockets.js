@@ -73,9 +73,10 @@ module.exports.sockets = {
   // In this case, there is no way to keep track of the requesting user between requests,
   // since there is no identifying information to link him/her with a session.
   //
-  // // If you don't care about keeping track of your socket users between requests,
+  // If you don't care about keeping track of your socket users between requests,
   // you can bypass this cookie check by setting `authorization: false`
-  // which will silently create an anonymous cookie+session for the user (effectively a noop)
+  // which will disable the session for socket requests (req.session is still accessible 
+  // in each request, but it will be empty, and any changes to it will not be persisted)
   //
   // On the other hand, if you DO need to keep track of user sessions, 
   // you can pass along a ?cookie query parameter to the upgrade url, 
