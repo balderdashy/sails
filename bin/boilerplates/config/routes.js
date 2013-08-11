@@ -96,7 +96,12 @@ module.exports.routes = {
 
 
 
-/** (3) Action blueprints * * These routes can be disabled by setting( in config / controllers.js): * `module.exports.controllers.blueprints.actions = false` * * All of your controllers ' actions are automatically bound to a route.  For example:
+/** 
+ * (3) Action blueprints
+ * These routes can be disabled by setting (in `config/controllers.js`):
+ * `module.exports.controllers.blueprints.actions = false`
+ *
+ * All of your controllers ' actions are automatically bound to a route.  For example:
  *   + If you have a controller, `FooController`:
  *     + its action `bar` is accessible at `/foo/bar`
  *     + its action `index` is accessible at `/foo/index`, and also `/foo`
