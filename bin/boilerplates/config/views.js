@@ -22,16 +22,16 @@ module.exports.views = {
   // atpl, eco, ect, jazz, jqtpl, JUST, liquor, QEJS, 
   // swig, templayed, toffee, walrus, & whiskers
 
-  engine: 'ejs',
+  engine: '<%= engine %>',
 
 
 
   // Layouts are simply top-level HTML templates you can use as wrappers 
-  // for your server-side views.  If you're using ejs, you can take advantage of
+  // for your server-side views.  If you're using ejs or jade, you can take advantage of
   // Sails' built-in `layout` support.
   // 
-  // With using a layout, when one of your views is served, it is injected into
-  // the <%- body %> partial defined in the layout.  This lets you reuse header
+  // When using a layout, when one of your views is served, it is injected into
+  // the `body` partial defined in the layout.  This lets you reuse header
   // and footer logic between views.
   //
   // NOTE:  Layout support is only implemented for the `ejs` view engine!
@@ -48,7 +48,7 @@ module.exports.views = {
   // (the file extension, e.g. ".ejs", should be omitted)
   //
 
-  layout: 'layout'
+  layout: <%= layout %>
 
 
 
