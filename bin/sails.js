@@ -167,16 +167,16 @@ require('../lib/configuration')(sails).load(function (err) {
       verifyArg(2, 'Please specify the name for the new model as the third argument.');
 
       // Figure out attributes based on args
-      var options = _.extend({}, argv);
+      var modelOpts = _.extend({}, argv);
       var args = argv._.splice(3);
-      options.attributes = [];
+      modelOpts.attributes = [];
       _.each(args, function (attribute, i) {
         var parts = attribute.split(':');
         if (!parts[1]) {
           sails.log.error('Please specify the type for attribute ' + (i + 1) + ' "' + parts[0] + '".');
           process.exit(1);
         }
-        options.attributes.push({
+        modelOpts.attributes.push({
           name: parts[0],
           type: parts[1].toUpperCase()
         });
@@ -184,24 +184,23 @@ require('../lib/configuration')(sails).load(function (err) {
 
       sails.log.warn('For the record :: to serve the blueprint API for this model,');
       sails.log.warn('you\'ll also need to have an empty controller.');
-      generate.generateModel(entity, options);
+      generate.generateModel(entity, modelOpts);
       sails.log.info("Generated model for " + entity + '!');
     }
 
     // Generate a controller
     else if (argv._[1] === 'controller') {
-      var entity = argv._[2];
       verifyArg(2, 'Please specify the name for the new controller as the third argument.');
 
       // Figure out actions based on args
-      var options = _.extend({}, argv);
-      options.actions = argv._.splice(3);
-
-      generate.generateController(entity, options);
-      sails.log.info("Generated controller for " + entity + '!');
+      var controllerOpts = _.clone(argv);
+      controllerOpts.actions = argv._.splice(3);
+      generate.generateController(argv._[2], controllerOpts);
+      sails.log.info("Generated controller for " + argv._[2] + '!');
     }
 
-    // // Generate a view
+    // Generate a view
+    // TODO: Do this properly, per view engine!
     // else if(argv._[1] === 'view') {
     // 	var entity = argv._[2];
     // 	verifyArg(2, "Please specify the name for the new view as the third argument.");
@@ -211,27 +210,25 @@ require('../lib/configuration')(sails).load(function (err) {
     // 	generate.generateView(entity, options);
     // }
 
+    // TODO: Generate a policy
+
     // Generate an adapter
     else if (argv._[1] === 'adapter') {
-      var entity = argv._[2];
       verifyArg(2, "Please specify the name for the new argument as the third argument.");
 
       // Figure out attributes based on args
-      var options = _.extend({}, argv);
-      generate.generateAdapter(entity, options);
-      sails.log.info("Generated adapter for " + entity + '!');
+      generate.generateAdapter(argv._[2], _.clone(argv));
+      sails.log.info("Generated adapter for " + argv._[2] + '!');
     }
     // Otherwise generate a model and controller
     else {
-      var entity = argv._[1];
       verifyArg(1, "Please specify the name of the entity as the second argument to generate a model, controller, and view.");
-      sails.log.info("Generating model and controller for " + entity + '...');
+      sails.log.info("Generating model and controller for " + argv._[1] + '...');
 
-      var options = _.extend({}, argv);
-      options.actions = argv._.splice(2);
-
-      generate.generateModel(entity, options);
-      generate.generateController(entity, options);
+      var generateOptions = _.clone(argv);
+      generateOptions.actions = argv._.splice(2);
+      generate.generateModel(argv._[1], generateOptions);
+      generate.generateController(argv._[1], generateOptions);
     }
   }
 
