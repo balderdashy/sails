@@ -241,21 +241,17 @@ require('../lib/configuration')(sails).load(function (err) {
 
     verifyArg(1, "Please specify the name of the new project directory to create: e.g.\n sails new <appName>");
 
-    // Default to ejs templates for new projects, but allow user to override with --template
-    var template = 'ejs';
-    if (argv.template) {
-      template = argv.template;
-    }
+    // Change to single options object we pass in.
+    newSailsApp({
+      appName: argv._[1],
 
-    // Default to not using the script linker functionality, but allow an override
-    // with --linker option
-    var useLinker = false
-    if (argv.linker) {
-      useLinker = true;
-    }
+      // Default to ejs templates for new projects, but allow user to override with --template
+      templateLang: argv.template || 'ejs',
 
-    // TODO: change to single options object we pass in.
-    newSailsApp(argv._[1], template, useLinker);
+      // Default to not using the script linker functionality, 
+      // but use it if --linker option is set
+      useLinker: !!argv.linker
+    });
   }
 
   // Build a www directory of everyting from /.tmp/public (aka /assets)
