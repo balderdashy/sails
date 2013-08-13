@@ -81,8 +81,8 @@ module.exports = function(sails) {
 		utils.copyBoilerplate('config', outputPath + '/config', function() {
 
 			// Generate session secret
-			var boilerplatePath = __dirname + '/boilerplates/config/session.js';
-			var newSessionConfig = ejs.render(fs.readFileSync(boilerplatePath, 'utf8'), {
+			var sessionBoilerplatePath = __dirname + '/boilerplates/config/session.js';
+			var newSessionConfig = ejs.render(fs.readFileSync(sessionBoilerplatePath, 'utf8'), {
 				secret: Session.generateSecret()
 			});
 			fs.writeFileSync(outputPath + '/config/session.js', newSessionConfig, 'utf8');
@@ -91,7 +91,15 @@ module.exports = function(sails) {
 		// Different stuff for different view engines
 		if (options.templateLang === 'handlebars') options.templateLang = 'hbs';
 
-		utils.copyBoilerplate('views/' + options.templateLang, outputPath + '/views', function() {
+
+		// Disable template layout for jade and haml
+		if (templateLang === 'jade' || templateLang === 'haml') {
+			var templateLayout = false;
+		} else {
+			var templateLayout = '\'layout\'';
+		}
+
+		utils.copyBoilerplate('views/' + templateLang, outputPath + '/views', function() {
 
 			// If using linker, override the layout file with linker layout file
 			if (options.useLinker) {
@@ -115,6 +123,14 @@ module.exports = function(sails) {
 		fs.createFileSync(outputPath + '/config/views.js');
 		fs.writeFileSync(outputPath + '/config/views.js', 'module.exports = ' + JSON.stringify(viewConfig, null, '\t').split('"').join('\'') + ';');
 
+			// Insert view engine and template layout in views config
+			var viewsBoilerplatePath = __dirname + '/boilerplates/config/views.js';
+			var newViewsConfig = ejs.render(fs.readFileSync(viewsBoilerplatePath, 'utf8'), {
+				engine: templateLang,
+				layout: templateLayout
+			});
+			fs.writeFileSync(outputPath + '/config/views.js', newViewsConfig, 'utf8');
+		});
 
 		// Default app launcher file (for situations where sails lift isn't good enough)
 		utils.generateFile('app.js', outputPath + '/app.js');
