@@ -28,16 +28,16 @@ module.exports = function(sails) {
 	 * Expose `sails new` functionality
 	 */
 
-	return function createNewApp(appName, templateLang, useLinker) {
+	return function createNewApp(options) {
 
-		// Whether the project being made in an existing directory or not
+		// Whether the project is being made in an existing directory or not
 		var existingDirectory;
 
 		// If app is being created inside the current directory
-		if (appName === '.') {
+		if (options.appName === '.') {
 
 			// The app name is the current directory name
-			appName = _.last(process.cwd().split('/'));
+			options.appName = _.last(process.cwd().split('/'));
 
 			// Set the current directory to the parent directory of the new app
 			process.chdir('../');
@@ -46,11 +46,11 @@ module.exports = function(sails) {
 			existingDirectory = true;
 		}
 
-		// Check if the appName is an absolute path, if so don't prepend './'
-		if (appName.substr(0, 1) === '/') {
-			outputPath = appName;
+		// Check if the options.appName is an absolute path, if so don't prepend './'
+		if (options.appName.substr(0, 1) === '/') {
+			outputPath = options.appName;
 		} else {
-			outputPath = outputPath + '/' + appName;
+			outputPath = outputPath + '/' + options.appName;
 		}
 
 		// If app is being created in new directory
@@ -65,12 +65,12 @@ module.exports = function(sails) {
 		}
 
 		sails.log.debug('Building new Sails.js app in ' + outputPath + '...');
-		if (useLinker) {
+		if (options.useLinker) {
 			sails.log.info('Using asset linker...');
 		}
 
-		// useLinker will determin the assets dir stucture for the new sails project 
-		if (useLinker) {
+		// options.useLinker will determin the assets dir stucture for the new sails project 
+		if (options.useLinker) {
 			utils.copyBoilerplate('linkerAssets', outputPath + '/assets');
 		} else {
 			utils.copyBoilerplate('assets', outputPath + '/assets');
@@ -89,26 +89,26 @@ module.exports = function(sails) {
 		});
 
 		// Different stuff for different view engines
-		if (templateLang === 'handlebars') templateLang = 'hbs';
+		if (options.templateLang === 'handlebars') options.templateLang = 'hbs';
 
-		utils.copyBoilerplate('views/' + templateLang, outputPath + '/views', function() {
+		utils.copyBoilerplate('views/' + options.templateLang, outputPath + '/views', function() {
 
 			// If using linker, override the layout file with linker layout file
-			if (useLinker) {
+			if (options.useLinker) {
 
-				if (templateLang !== 'ejs') {
-					sails.log.warn('Automatic asset linking is not implemented for the `' + templateLang + '` view ' +
+				if (options.templateLang !== 'ejs') {
+					sails.log.warn('Automatic asset linking is not implemented for the `' + options.templateLang + '` view ' +
 						'engine at this time. You must modify the Gruntfile yourself for this feature to work.');
 				}
-				utils.copyBoilerplate('linkerLayouts/' + templateLang, outputPath + '/views');
+				utils.copyBoilerplate('linkerLayouts/' + options.templateLang, outputPath + '/views');
 			}
 		});
 
 		var viewConfig = {
-			viewEngine: templateLang
+			viewEngine: options.templateLang
 		};
 
-		if (templateLang === 'jade' || templateLang === 'haml') {
+		if (options.templateLang === 'jade' || options.templateLang === 'haml') {
 			viewConfig.layout = false;
 		}
 
@@ -125,7 +125,7 @@ module.exports = function(sails) {
 		// Generate package.json
 		sails.log.verbose('Generating package.json...');
 		fs.writeFileSync(outputPath + '/package.json', JSON.stringify({
-			name: appName,
+			name: options.appName,
 			'private': true,
 			version: '0.0.0',
 			description: 'a Sails application',
@@ -154,24 +154,32 @@ module.exports = function(sails) {
 
 		// Generate README
 		sails.log.verbose('Generating README.md...');
-		fs.writeFileSync(outputPath + '/README.md', '# ' + appName + '\n### a Sails application');
+		fs.writeFileSync(outputPath + '/README.md', '# ' + options.appName + '\n### a Sails application');
 
 		// Copy dependencies (to avoid having to do a local npm install in new projects)
 		utils.generateDir(outputPath + '/node_modules');
 		utils.copySailsDependency('optimist', outputPath + '/node_modules');
-		utils.copySailsDependency('grunt', outputPath + '/node_modules');
 		utils.copySailsDependency('sails-disk', outputPath + '/node_modules');
 		utils.copySailsDependency('ejs', outputPath + '/node_modules');
 
 		// Other grunt dependencies are automatically pulled from sails core deps.
+		utils.copySailsDependency('grunt', outputPath + '/node_modules');
 
-		// Copy Sails itself into new project as a local dependency
-		//
-		// TODO:	examine using a symbolic link for the node_modules
-		// 			instead of copying the directory over directly, 
-		//			since it would be much quicker, and wouldn't hurt anything
-		utils.copySails(outputPath + '/node_modules/sails');
+		// Conditionally, copy Sails itself into new project as a local dependency
+		if (generateLocalSailsDependency) {
 
+		}
+
+
+		function generateLocalSailsDependency() {
+			utils.copySails(outputPath + '/node_modules/sails');
+
+			// Using a symbolic link is much quicker than copying the directory over directly, 
+			// but it serves no purpose, since the global sails will be used automatically 
+			// if no local dependency exists
+			// var sailsGlobalInstallPath = __dirname + '/../.';
+			// fs.symlinkSync(sailsGlobalInstallPath, outputPath + '/node_modules/sails', 'dir');
+		}
 	};
 
 
