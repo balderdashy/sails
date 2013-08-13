@@ -93,11 +93,10 @@ module.exports = function(sails) {
 
 
 		// Disable template layout for jade and haml
+		var templateLayout;
 		if (templateLang === 'jade' || templateLang === 'haml') {
-			var templateLayout = false;
-		} else {
-			var templateLayout = '\'layout\'';
-		}
+			templateLayout = false;
+		} else templateLayout = '\'layout\'';
 
 		utils.copyBoilerplate('views/' + templateLang, outputPath + '/views', function() {
 
