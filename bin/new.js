@@ -134,7 +134,7 @@ module.exports = function(sails) {
 				grunt			: '0.4.1',
 				'sails-disk'	: '~0.9.0',
 				ejs				: '0.8.4',
-				optimist		: '0.3.4' // TODO: remove this and handle it differently
+				optimist		: '0.3.4' // TODO: remove this and handle it differently (maybe)
 			},
 			scripts: {
 				// Include this later when we have "sails test" ready.
@@ -166,19 +166,22 @@ module.exports = function(sails) {
 		utils.copySailsDependency('grunt', outputPath + '/node_modules');
 
 		// Conditionally, copy Sails itself into new project as a local dependency
-		if (generateLocalSailsDependency) {
-
-		}
-
-
-		function generateLocalSailsDependency() {
-			utils.copySails(outputPath + '/node_modules/sails');
+		if (options.copySails) {
+			utils.copySails(outputPath + '/node_modules/sails', copySails_cb);
 
 			// Using a symbolic link is much quicker than copying the directory over directly, 
 			// but it serves no purpose, since the global sails will be used automatically 
 			// if no local dependency exists
 			// var sailsGlobalInstallPath = __dirname + '/../.';
 			// fs.symlinkSync(sailsGlobalInstallPath, outputPath + '/node_modules/sails', 'dir');
+		}
+		else copySails_cb();
+
+
+		// Let the user know that `sails new` was successful
+		function copySails_cb (err) {
+			console.log('');
+			sails.log.info('New app created!');
 		}
 	};
 
