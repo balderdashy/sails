@@ -146,8 +146,8 @@ module.exports.sockets = {
   // `authorization: function (data, accept) { ... }`
   authorization: true,
 
-  // Allow sails to support custom on connection logic ontop of existing on connection
-  // `connection: module.exports = function(socket) { ... }`
+  // Allow sails to support custom on connection function on top of existing on connection logic
+  // `connection: function(socket) { ... }`
 
   // Direct access to the socket.io MQ store config
   // The 'adapter' property is the preferred method
