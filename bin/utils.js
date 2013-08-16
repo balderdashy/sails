@@ -199,9 +199,6 @@ module.exports = function(sails) {
 			function done(err) {
 				// If an error occurred, send it back
 				err = err || errorCopying;
-
-				console.log('');
-				sails.log.info('New app created!');
 				return cb && cb(err);
 			});
 
