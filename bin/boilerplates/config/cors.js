@@ -17,7 +17,6 @@
  *   action: 'bar',
  *   cors: {
  *     origin: 'http://foobar.com,https://owlhoot.com'	
- *     methods: 'GET, POST'
  *   }
  *  }
  * 
