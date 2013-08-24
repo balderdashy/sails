@@ -1,4 +1,5 @@
 --timeout 60000
 --reporter dot
 --ui bdd
+test/router/integration/policies.test.js
 node_modules/waterline/test/**/*.js
