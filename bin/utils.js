@@ -277,7 +277,7 @@ module.exports = function(sails) {
 		 */
 
 		this.verifyValidEntity = function(entity, msg) {
-			if (!isValidECMA51Variable(entity)) {
+			if (!this.isValidECMA51Variable(entity)) {
 				sails.log.error(msg);
 				process.exit(1);
 			} else {
