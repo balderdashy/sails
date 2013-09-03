@@ -169,8 +169,8 @@ Version, Dependencies and Compatibility
 Tested with node v0.8.22 and v0.10.x
 Sails is built on the rock-solid foundations of ExpressJS and Socket.io.  
 
-### [Roadmap](https://github.com/balderdashy/sails/wiki/roadmap)
-### [Changelog](https://github.com/balderdashy/sails/wiki/changelog)
+### [Roadmap](https://github.com/balderdashy/sails-wiki/blob/0.9/roadmap.md)
+### [Changelog](https://github.com/balderdashy/sails-wiki/blob/0.9/changelog.md)
 
 <br/>
 <br/>
