@@ -2,7 +2,7 @@ module.exports.views = {
 
 
   // Engine for views (can be ejs, haml, etc.)
-  engine: 'jade',
+  engine: 'ejs',
 
   // Automatically serve views at the appropriate route
   // (e.g. `views/404.ejs` is served at the route `/404`)

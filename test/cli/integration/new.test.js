@@ -166,13 +166,13 @@ describe('New app generator', function() {
 function checkGeneratedFiles(appName, templateLang) {
 	var expectedFiles = [
 		'.gitignore',
-		'Gruntfile.js',
-		'README.md',
 		'api',
 		'app.js',
 		'assets',
 		'config',
+		'Gruntfile.js',
 		'package.json',
+		'README.md',
 		'views',
 		'api/adapters',
 		'api/controllers',
@@ -187,20 +187,22 @@ function checkGeneratedFiles(appName, templateLang) {
 		'assets/favicon.ico',
 		'assets/images',
 		'assets/js',
-		'assets/mixins',
 		'assets/robots.txt',
 		'assets/styles',
 		'assets/images/.gitkeep',
 		'assets/js/.gitkeep',
+		'assets/js/app.js',
 		'assets/js/sails.io.js',
-		'assets/mixins/socket.io.js',
+		'assets/js/socket.io.js',
 		'assets/styles/.gitkeep',
 		'config/404.js',
 		'config/500.js',
 		'config/adapters.js',
 		'config/bootstrap.js',
 		'config/controllers.js',
+		'config/cors.js',
 		'config/csrf.js',
+		'config/i18n.js',
 		'config/local.js',
 		'config/locales',
 		'config/log.js',
@@ -209,9 +211,9 @@ function checkGeneratedFiles(appName, templateLang) {
 		'config/session.js',
 		'config/sockets.js',
 		'config/views.js',
-		'config/locales/_what_about_clientside.md',
-		'config/locales/de.js',
-		'config/locales/default.js'
+		'config/locales/_README.md',
+		'config/locales/en.json',
+		'config/locales/es.json'
 	];
 
 	// Add template files of the specified language
@@ -258,10 +260,11 @@ function checkGeneratedFiles(appName, templateLang) {
 
 	// Compare stringified arrays because [1,2,3] != (and !==) [1,2,3]
 
-	expectedFiles = JSON.stringify(expectedFiles.concat(templateFiles));
+	expectedFiles = expectedFiles.concat(templateFiles);
 
 	var files = wrench.readdirSyncRecursive(appName);
 	files = _.reject(files, function(f) { return f.match(/^node_modules/) });
 
-	return JSON.stringify(files) === expectedFiles;
+	return files.length == expectedFiles.length && _.difference(files, expectedFiles).length == 0;
+
 }
