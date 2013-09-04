@@ -132,6 +132,7 @@ module.exports = function (grunt) {
   grunt.loadTasks(depsPath + '/grunt-contrib-uglify/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-cssmin/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-less/tasks');
+  grunt.loadTasks(depsPath + '/grunt-contrib-coffee/tasks');
 
   // Project configuration.
   grunt.initConfig({
@@ -143,7 +144,7 @@ module.exports = function (grunt) {
           {
           expand: true,
           cwd: './assets',
-          src: ['**/*'],
+          src: ['**/*.!(coffee)'],
           dest: '.tmp/public'
         }
         ]
@@ -194,6 +195,29 @@ module.exports = function (grunt) {
           dest: '.tmp/public/linker/styles/',
           ext: '.css'
         }
+        ]
+      }
+    },
+    
+    coffee: {
+      dev: {
+        options:{
+          bare:true
+        },
+        files: [
+          {
+            expand: true,
+            cwd: 'assets/js/',
+            src: ['**/*.coffee'],
+            dest: '.tmp/public/js/',
+            ext: '.js'
+          }, {
+            expand: true,
+            cwd: 'assets/linker/js/',
+            src: ['**/*.coffee'],
+            dest: '.tmp/public/linker/js/',
+            ext: '.js'
+          }
         ]
       }
     },
@@ -396,7 +420,8 @@ module.exports = function (grunt) {
     'clean:dev',
     'jst:dev',
     'less:dev',
-    'copy:dev'
+    'copy:dev',    
+    'coffee:dev'
   ]);
 
   grunt.registerTask('linkAssets', [
@@ -426,6 +451,7 @@ module.exports = function (grunt) {
     'jst:dev',
     'less:dev',
     'copy:dev',
+    'coffee:dev',
     'concat',
     'uglify',
     'cssmin',
