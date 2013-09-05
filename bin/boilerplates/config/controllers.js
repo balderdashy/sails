@@ -49,6 +49,13 @@ module.exports.controllers = {
     rest: true,
 
 
+    // Enable JSONP callbacks on REST blueprints
+    // e.g.
+    // '/user/find/:id?callback=?'
+    // '/user/find/?where={"name":"ciaran"}&limit=10&callback=?'
+    jsonp: false,
+
+
     // If a blueprint route catches a request,
     // only match :id param if it's an integer
     //
