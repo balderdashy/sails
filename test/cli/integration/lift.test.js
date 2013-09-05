@@ -48,6 +48,7 @@ describe('Starting sails server with lift', function() {
 			sailsServer.stderr.on('data', function(data) {
 				var dataString = data + '';
 				assert(dataString.indexOf('error') !== -1);
+				sailsServer.stderr.removeAllListeners('data');
 				sailsServer.kill();
 				done();
 			});
@@ -67,9 +68,10 @@ describe('Starting sails server with lift', function() {
 
 				sailsServer = spawn(sailsBin, ['lift']);
 
-				sailsServer.stdout.on('data', function(data) {
+				sailsServer.stdout.on('data', function(data) {					
 					var dataString = data + '';
 					assert(dataString.indexOf('error') === -1);
+					sailsServer.stdout.removeAllListeners('data');
 					sailsServer.kill();
 					// Move out of app directory
 					process.chdir('../');
@@ -81,10 +83,11 @@ describe('Starting sails server with lift', function() {
 		it('should respond to a request to port 1337 with a 200 status code', function(done) {
 			process.chdir(appName);
 			sailsServer = spawn(sailsBin, ['lift']);
-			sailsServer.stderr.on('data', function(data){
+			sailsServer.stdout.on('data', function(data){
 				var dataString = data + '';
 				// Server has finished starting up
-				if (dataString.match(/Sails \S+ lifted/)) {
+				if (dataString.match(/Server lifted/)) {
+					sailsServer.stdout.removeAllListeners('data');
 					setTimeout(function(){
 						request('http://localhost:1337/', function(err, response) {
 							if (err) {
@@ -105,6 +108,7 @@ describe('Starting sails server with lift', function() {
 
 	describe('with command line arguments', function() {
 		afterEach(function() {
+			sailsServer.stderr.removeAllListeners('data');
 			sailsServer.kill();
 			process.chdir('../');
 		});

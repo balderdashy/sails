@@ -199,9 +199,6 @@ module.exports = function(sails) {
 			function done(err) {
 				// If an error occurred, send it back
 				err = err || errorCopying;
-
-				console.log('');
-				sails.log.info('New app created!');
 				return cb && cb(err);
 			});
 
@@ -280,7 +277,7 @@ module.exports = function(sails) {
 		 */
 
 		this.verifyValidEntity = function(entity, msg) {
-			if (!isValidECMA51Variable(entity)) {
+			if (!this.isValidECMA51Variable(entity)) {
 				sails.log.error(msg);
 				process.exit(1);
 			} else {

@@ -39,9 +39,9 @@ describe('Policies', function() {
     it('should return default blueprint error', function(done) {
       httpHelper.testRoute('get', {url: 'test', headers: {'Content-Type': 'application/json'}, json: true}, function(err, response) {
         if (err) done(new Error(err));
-
-        assert(response.body instanceof Array);
-        assert.equal(response.body[0], 'Test Error');
+        assert(response.body instanceof Object);
+        assert(response.body.errors instanceof Array);
+        assert.equal(response.body.errors[0].message, 'Test Error');
         done();
       });
     });
@@ -66,8 +66,7 @@ describe('Policies', function() {
 
         httpHelper.testRoute('get', {url: 'test', headers: {'Content-Type': 'application/json'}, json: true}, function(err, response) {
           if (err) done(err);
-
-          assert.equal(response.body[0], 'Test Error');
+          assert.equal(response.body.errors[0].message, 'Test Error');
           done();
         });
       });

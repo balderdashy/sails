@@ -8,6 +8,8 @@ describe('Configs', function () {
 
   var appName = 'testApp';
   var config;
+  var sailsserver;
+  var up = false;
   before(function (done) {
 
     // build app
@@ -18,15 +20,25 @@ describe('Configs', function () {
       // Start sails and pass it command line arguments
       require(path.resolve('./../lib')).lift({}, function (err, sails) {
         if (err) return done(err);
+        up = true;
         config = sails.config;
+        sailsserver = sails;
         done();
       });
     });
   });
 
   after(function () {
-    process.chdir('../');
-    appHelper.teardown();
+    sailsserver.lower(function(){
+      // Not sure why this runs multiple times, but checking "up" makes
+      // sure we only do chdir once
+      sailsserver.removeAllListeners();
+      if (up === true) {
+        up = false;
+        process.chdir('../');
+        appHelper.teardown();
+      }
+    });
   });
 
   it('should load adapter configs', function () {
@@ -41,7 +53,7 @@ describe('Configs', function () {
 
   it('should load application configs', function () {
     assert(config.port === 1702);
-    assert(config.host === 'GLaDOS');
+    assert(config.host === 'localhost');
 
     // this should have been overriden by the local conf file
     assert(config.appName === 'portal2');
@@ -96,7 +108,7 @@ describe('Configs', function () {
 
   it('should load the views config', function () {
     var conf = config.views;
-    assert(conf.engine === 'jade');
+    assert(conf.engine === 'ejs');
     assert(conf.blueprints === false);
     assert(conf.layout === false);
 

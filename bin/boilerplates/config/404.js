@@ -16,7 +16,7 @@ module.exports[404] = function pageNotFound(req, res, express404Handler) {
 
   // If the user-agent wants a JSON response, send json
   if (req.wantsJSON) {
-    return res.json(result, result.statusCode);
+    return res.json(result, result.status);
   }
 
   // Otherwise, serve the `views/404.*` page

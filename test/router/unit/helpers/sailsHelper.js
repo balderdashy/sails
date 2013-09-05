@@ -7,7 +7,7 @@ module.exports = {
 	
 	build: function (cb) {
 		var sails = new Sails();
-		sails.load(function (err) {
+		sails.load({hooks:{i18n: false}, log:{level:'error'}, session:{secret:'abc123'}}, function (err) {
 			cb(err,sails);
 		});
 	},

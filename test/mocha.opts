@@ -1,4 +1,3 @@
 --timeout 60000
 --reporter dot
 --ui bdd
-node_modules/waterline/test/**/*.js

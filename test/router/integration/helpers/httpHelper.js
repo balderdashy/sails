@@ -20,15 +20,15 @@ module.exports = {
 		}
 
 		// Start the sails server process
-		var sailsprocess = spawn('../bin/sails.js', ['lift']);
+		var sailsprocess = spawn('../bin/sails.js', ['lift', '--dev']);
 
-		sailsprocess.stderr.on('data',function(data) {
+		sailsprocess.stdout.on('data',function(data) {
 			// Change buffer to string
 			var dataString = data + '';
 
 			// Make request once server has sucessfully started
-			if (dataString.match(/Sails \S+ lifted/)) {
-
+			if (dataString.match(/Server lifted/)) {
+				sailsprocess.stdout.removeAllListeners('data');
 				request[method](options, function(err, response) {
 					if (err) callback(err);
 
