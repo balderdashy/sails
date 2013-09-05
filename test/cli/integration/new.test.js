@@ -130,22 +130,6 @@ describe('New app generator', function() {
 		});
 	});
 
-	describe('sails new <appname> with options --template=haml', function() {
-
-		it('should create new app with haml templates', function(done) {
-
-			exec(sailsbin + ' new ' + appName + ' --template=haml', function(err) {
-				if (err) { done(new Error(err)); }
-
-				assert(checkGeneratedFiles(appName, 'haml'), 'generated files don\'t match expected files');
-
-				var viewConfig = fs.readFileSync('./' + appName + '/config/views.js', 'utf8');
-				assert(viewConfig.indexOf('haml') !== -1, 'configuration file is incorrect');
-				done();
-			});
-		});
-	});
-
 	describe('sails new <appname> with options --template=handlebars', function() {
 
 		it('should create new app with handlebars templates', function(done) {
@@ -239,14 +223,6 @@ function checkGeneratedFiles(appName, templateLang) {
 			'views/home/index.jade'
 		];
 
-	} else if (templateLang === 'haml') {
-
-		templateFiles = [
-			'views/404.haml',
-			'views/500.haml',
-			'views/home',
-			'views/home/index.haml'
-		];
 	} else if (templateLang === 'handlebars') {
 
 		templateFiles = [

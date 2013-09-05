@@ -66,7 +66,6 @@ describe('Policies', function() {
 
         httpHelper.testRoute('get', {url: 'test', headers: {'Content-Type': 'application/json'}, json: true}, function(err, response) {
           if (err) done(err);
-          console.log(response.body);
           assert.equal(response.body.errors[0].message, 'Test Error');
           done();
         });

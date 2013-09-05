@@ -17,8 +17,6 @@ describe('Specified routes', function() {
 	var sails;
 
 	before(function(done) {
-		console.log('Newing up Sails app...');
-
 		sailsHelper.build(function(err, _sails) {
 			if (err || !_sails) return done(err || 'Sails could not be instantiated.');
 			sails = _sails;

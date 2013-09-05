@@ -5,7 +5,7 @@ module.exports = {
   port: 1702,
 
   // Self-awareness: the host the server *thinks it is*
-  host: 'GLaDOS',
+  host: 'localhost',
 
   // Name of application for layout title
   appName: 'portal',
