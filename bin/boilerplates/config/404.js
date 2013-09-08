@@ -7,12 +7,17 @@
  * http://expressjs.com/faq.html#404-handling
  */
 
-module.exports[404] = function pageNotFound(req, res, express404Handler) {
+module.exports[404] = function pageNotFound(message, req, res, express404Handler) {
 
   var statusCode = 404;
   var result = {
     status: statusCode
   };
+
+  // Optional message
+  if (message) {
+    result.message = message;
+  }
 
   // If the user-agent wants a JSON response, send json
   if (req.wantsJSON) {

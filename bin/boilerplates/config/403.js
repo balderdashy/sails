@@ -10,11 +10,16 @@
  *
  */
 
-module.exports[403] = function badRequest(req, res) {
+module.exports[403] = function badRequest(message, req, res) {
 
   var result = {
     status: 403
   };
+
+  // Optional message
+  if (message) {
+    result.message = message;
+  }
 
   // If the user-agent wants a JSON response, send json
   if (req.wantsJSON) {
