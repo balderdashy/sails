@@ -1,6 +1,17 @@
 # Changelog
 
-## 0.9.3  (latest stable)
+## 0.9.4  (latest stable)
+*September 5, 2013*
++ Main: CORS support added as a configurable hook.
++ Config: Sails core is no longer automatically copied as a dependency during `sails new`.  This speeds up the process significantly and avoids occassional recursive copy death spirals.
++ Config: Added explicit `--port` option to `sails lift`.
++ Assets: CoffeeScript can now be used in linked assets, and will automatically be compiled by Grunt.
++ i18n: Upgraded to 0.4.1.
++ Sockets: Added query string parsing to requests.
++ Sockets: Headers can now be specified in requests.
++ Routing: Fixed issues with default 404 and 500 responses.
+
+## 0.9.3
 
 ## 0.9.2
 
@@ -43,7 +54,7 @@
 ### Anchor
 + Validations:  Too many added to list, see [Validations]()
 
-## 0.8.9  (latest stable)
+## 0.8.9
 *April 9, 2013*
 
 + Controllers must now also be generated to use the default API (they can be empty)
