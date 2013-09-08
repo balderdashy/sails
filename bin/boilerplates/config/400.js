@@ -43,6 +43,10 @@ module.exports[400] = function badRequest(errors, previous, req, res) {
     return res.redirect(previous);
   }
 
+  // TODO: Depending on your app's needs, you may choose to look
+  // at the Referer header here and redirect back. Please do so at your own risk!
+  // For security reasons, Sails does not provide this affordance by default.
+
   // If the origin (previous page) was not specified, just respond w/ JSON
   return res.json(result, result.status);
 
