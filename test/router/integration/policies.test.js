@@ -140,4 +140,33 @@ describe('Policies', function() {
     });
   });
 
+  describe('policies for actions named with capital letters', function() {
+
+    before(function() {
+      var policy = {
+        '*' : false,
+        'test': {
+          '*': false,
+          'CapitalLetters': true
+        }
+      };
+
+      var config = "module.exports.policies = " + JSON.stringify(policy);
+      fs.writeFileSync(path.resolve('../', appName, 'config/policies.js'), config);
+    });
+
+    describe('a get request to /:controller', function() {
+
+      it('should return a string', function(done) {
+
+        httpHelper.testRoute('get', {url: 'test/CapitalLetters', json: true}, function(err, response) {
+          if (err) done(err);
+
+          assert.equal(response.body, "CapitalLetters");
+          done();
+        });
+      });
+    });
+  });
+
 });
