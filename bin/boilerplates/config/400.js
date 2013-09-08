@@ -39,14 +39,11 @@ module.exports[400] = function badRequest(errors, previous, req, res) {
 
   // Otherwise, try to determine where the bad request originated
   if (previous) {
-    sails.log('Got to previous');
     req.flash('errors', errors);
-    sails.log('Got TO REDIRECT');
     return res.redirect(previous);
   }
 
-  // If we can't figure out the source, run the `config/500.js` behavior and explain the situation
-  // (in production mode, this is silenced)
-  res.serverError(new Error('Bad request: Invalid input sent to server and previous page unknown.'));
+  // If the origin (previous page) was not specified, just respond w/ JSON
+  return res.json(result, result.status);
 
 };
