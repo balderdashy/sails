@@ -29,13 +29,15 @@ module.exports = {
 			// Make request once server has sucessfully started
 			if (dataString.match(/Server lifted/)) {
 				sailsprocess.stdout.removeAllListeners('data');
-				request[method](options, function(err, response) {
-					if (err) callback(err);
+				setTimeout(function () {
+					request[method](options, function(err, response) {
+						if (err) callback(err);
 
-					// Kill server process and return response
-					sailsprocess.kill();
-					callback(null, response);
-				});
+						// Kill server process and return response
+						sailsprocess.kill();
+						callback(null, response);
+					});
+				}, 1000);
 			}
 		});
 	}
