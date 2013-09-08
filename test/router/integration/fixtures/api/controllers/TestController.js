@@ -25,5 +25,9 @@ module.exports = {
 
 	destroy: function(req, res) {
 		res.send('destroy');
+	},
+
+	CapitalLetters: function(req, res) {
+		res.send('CapitalLetters');
 	}
 };
