@@ -179,6 +179,8 @@ function checkGeneratedFiles(appName, templateLang) {
 		'assets/js/sails.io.js',
 		'assets/js/socket.io.js',
 		'assets/styles/.gitkeep',
+		'config/400.js',
+		'config/403.js',
 		'config/404.js',
 		'config/500.js',
 		'config/adapters.js',
