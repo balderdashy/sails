@@ -88,6 +88,8 @@ module.exports = function(sails) {
 			});
 			fs.writeFileSync(outputPath + '/config/session.js', newSessionConfig, 'utf8');
 
+			// Insert view engine and template layout in views config
+
 			var viewsBoilerplatePath = __dirname + '/boilerplates/config/views.js';
 			var newViewsConfig = ejs.render(fs.readFileSync(viewsBoilerplatePath, 'utf8'), {
 				engine: options.templateLang,
@@ -119,22 +121,7 @@ module.exports = function(sails) {
 				utils.copyBoilerplate('linkerLayouts/' + options.templateLang, outputPath + '/views');
 			}
 
-		});
-
-		// // var viewConfig = {
-		// // 	viewEngine: options.templateLang
-		// // };
-
-		// // if (options.templateLang === 'jade' || options.templateLang === 'haml') {
-		// // 	viewConfig.layout = false;
-		// // }
-
-		// // fs.createFileSync(outputPath + '/config/views.js');
-		// // fs.writeFileSync(outputPath + '/config/views.js', 'module.exports = ' + JSON.stringify(viewConfig, null, '\t').split('"').join('\'') + ';');
-
-		// Insert view engine and template layout in views config
-
-	
+		});	
 
 		// Default app launcher file (for situations where sails lift isn't good enough)
 		utils.generateFile('app.js', outputPath + '/app.js');
