@@ -240,9 +240,28 @@ function checkGeneratedFiles(appName, templateLang) {
 
 	expectedFiles = expectedFiles.concat(templateFiles);
 
+	// Read actual generated files from disk
 	var files = wrench.readdirSyncRecursive(appName);
-	files = _.reject(files, function(f) { return f.match(/^node_modules/) });
 
-	return files.length == expectedFiles.length && _.difference(files, expectedFiles).length == 0;
+	// Disregard stupid files
+	// (fs-specific, OS-specific, editor-specific, yada yada)
+	files = _.reject(files, function(f) { 
+		return f.match(/^node_modules/) || f.match(/.DS_Store/gi) || f.match(/\*~$/); 
+	});
+
+
+	// Uneven # of files
+	if (files.length !== expectedFiles.length) {
+		return false;
+	}
+
+	// Files don't match
+	var diff = _.difference(files, expectedFiles);
+	if (diff.length !== 0) {
+		return false;
+	}
+
+	// Everything's ok!
+	return true;
 
 }
