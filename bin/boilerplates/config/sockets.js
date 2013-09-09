@@ -104,6 +104,12 @@ module.exports.sockets = {
   authorization: true,
 
 
+  // Allow sails to support custom onConnection function 
+  // that will run each time a new socket connects
+  // (AFTER built-in on connection logic and event bindings)
+  onConnect: function(socket) {
+    // By default: do nothing
+  },
 
 
   // Match string representing the origins that are allowed to connect to the Socket.IO server
