@@ -256,6 +256,48 @@ require('../lib/configuration')(sails).load(function (err) {
     return sails.build();
   }
 
+  /**
+   * Run a management command. Management commands should take a single callback argument.
+   * 
+   * Usage: sails issue <foo>
+   *    – where <foo> is exported from <sails.config.appPath>/commands
+   */
+  else if (argv._[0].match(/^issue$/)) {
+
+    verifyArg(1, 'Please specity the name of the command to run: e.g.\n sails issue <command>');
+
+    var command = argv._[1],
+        commands;
+
+    try {
+      commands = require(sails.config.appPath + '/commands');
+    } catch(e) {
+      sails.log.error('\nModule not found. Tips:\n' +
+        '* Make sure to run this command from your app path where app.js is located.\n' +
+        '* Make sure commands/index.js" exists at your app root.');
+      process.exit(e.code);
+    }
+
+    if (!_.has(commands, command)) {
+      sails.log.error('Command not found. Does ' + sails.config.appPath + '/commands/index.js export "' + command + '"?');
+      process.exit(1);
+    }
+
+    sails.lift({
+      log: {
+        level: 'silent'
+      }
+    }, function () {
+      sails.log.verbose('Issuing task "' + command + '"...');
+      commands[command](function() {
+        sails.log.verbose('Crew successfully carried out their task: "' + command + '"!');
+        process.exit();
+      });
+    });
+
+    return;
+  }
+
   // Unknown command, print out usage
   else {
     console.log('');
@@ -280,7 +322,8 @@ require('../lib/configuration')(sails).load(function (err) {
     usage += leftColumn('sails generate <foo>') + 'Generate api/models/Foo.js and api/controllers/FooController.js\n';
     usage += leftColumn('sails generate model <foo>') + 'Generate api/models/Foo.js\n';
     usage += leftColumn('sails generate controller <foo>') + 'Generate api/controllers/FooController.js\n';
-    usage += leftColumn('sails version') + 'Get the current globally installed Sails version';
+    usage += leftColumn('sails version') + 'Get the current globally installed Sails version\n';
+    usage += leftColumn('sails issue <command>') + 'Run a management command (exported by commands/index.js)';
 
     sails.log.info(usage);
   }
