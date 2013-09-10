@@ -100,9 +100,9 @@ describe('Starting sails server with lift', function() {
 							process.chdir('../');
 							done();
 						});
-					},1000)
+					},1000);
 				}
-			})
+			});
 		});
 	});
 
@@ -116,6 +116,7 @@ describe('Starting sails server with lift', function() {
 		it('--prod and --dev should throw an error', function(done) {
 
 			// Move into app directory
+			console.log('AP NAME: ', appName);
 			process.chdir(appName);
 
 			sailsServer = spawn(sailsBin, ['lift', '--dev', '--prod']);
