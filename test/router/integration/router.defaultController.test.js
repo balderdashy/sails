@@ -23,7 +23,7 @@ describe('Default controller routing', function() {
 		it('should call the specified method of the specified controller', function(done) {
 
 			httpHelper.testRoute('get', 'test/index', function(err, response) {
-				if (err) done(new Error(err));
+				if (err) return done(new Error(err));
 
 				assert(response.body === 'index');
 				done();
@@ -39,7 +39,7 @@ describe('Default controller routing', function() {
 			it('should call the controller index method', function(done) {
 
 				httpHelper.testRoute('get', 'test', function(err, response) {
-					if (err) done(new Error(err));
+					if (err) return done(new Error(err));
 
 					assert(response.body === 'index');
 					done();
@@ -52,7 +52,7 @@ describe('Default controller routing', function() {
 			it('should call the controller find method', function(done) {
 
 				httpHelper.testRoute('get', 'test/1', function(err, response) {
-					if (err) done(new Error(err));
+					if (err) return done(new Error(err));
 
 					assert(response.body === 'find');
 					done();
@@ -65,7 +65,7 @@ describe('Default controller routing', function() {
 			it('should call the controller create method', function(done) {
 
 				httpHelper.testRoute('get', 'test/create', function(err, response) {
-					if (err) done(new Error(err));
+					if (err) return done(new Error(err));
 
 					assert(response.body === 'create');
 					done();
@@ -78,7 +78,7 @@ describe('Default controller routing', function() {
 			it('should call the controller create method', function(done) {
 
 				httpHelper.testRoute('post', 'test/create', function(err, response) {
-					if (err) done(new Error(err));
+					if (err) return done(new Error(err));
 
 					assert(response.body === 'create');
 					done();
@@ -91,7 +91,7 @@ describe('Default controller routing', function() {
 			it('should call the controller update method', function(done) {
 
 				httpHelper.testRoute('put', 'test/1', function(err, response) {
-					if (err) done(new Error(err));
+					if (err) return done(new Error(err));
 
 					assert(response.body === 'update');
 					done();
@@ -104,7 +104,7 @@ describe('Default controller routing', function() {
 			it('should call the controller destroy method', function(done) {
 
 				httpHelper.testRoute('del', 'test/1', function(err, response) {
-					if (err) done(new Error(err));
+					if (err) return done(new Error(err));
 
 					assert(response.body === 'destroy');
 					done();

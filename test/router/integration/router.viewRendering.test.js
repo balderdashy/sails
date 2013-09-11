@@ -24,7 +24,7 @@ describe('View routes', function() {
 		it('should respond to a get request to localhost:1337 with welcome page', function(done) {
 
 			httpHelper.testRoute('get', '', function(err, response) {
-				if (err) done(new Error(err));
+				if (err) return done(new Error(err));
 
 				assert(response.body.indexOf('not found') < 0);
 				done();
@@ -40,7 +40,7 @@ describe('View routes', function() {
 			httpHelper.writeRoutes({});
 
 			httpHelper.testRoute('get', 'viewTest', function(err, response) {
-				if (err) done(new Error(err));
+				if (err) return done(new Error(err));
 
 				assert(response.body.indexOf('indexView') !== -1);
 				done();
@@ -50,7 +50,7 @@ describe('View routes', function() {
 		it('should respond to get request to :controller/:action with the template at views/:controller/:action.ejs', function(done) {
 
 			httpHelper.testRoute('get', 'viewTest/create', function(err, response) {
-				if (err) done(new Error(err));
+				if (err) return done(new Error(err));
 
 				assert(response.body.indexOf('createView') !== -1);
 				done();
