@@ -4,15 +4,6 @@ node_js:
   - "0.10"
   - "0.11"
 
-services:
-  - mongodb
-  - redis-server
-  - mysql
-
-before_script:
-  - npm install sails-mysql sails-mongo sails-redis
-  - mysql -e "create database waterline;"
-
 notifications:
   email: false
   irc:
