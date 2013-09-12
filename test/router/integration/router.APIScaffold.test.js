@@ -96,4 +96,30 @@ describe('API scaffold routes', function() {
 			});
 		});
 	});
+
+	describe('with pluralize turned on', function() {
+
+		before(function () {
+			httpHelper.writeBlueprint({pluralize: true});
+		});
+
+		it('should bind blueprint actions to plural controller names', function(done) {
+			httpHelper.testRoute('get', {url: 'empties', json: true}, function(err, response) {
+				if (err) done(new Error(err));
+
+				assert(response.body instanceof Array);
+				done();
+			});
+		});
+
+		it('should not bind blueprint actions to singular controller names', function(done) {
+			httpHelper.testRoute('get', {url: 'empty', json: true}, function(err, response) {
+				if (err) done(new Error(err));
+
+				assert(response.body instanceof Object);
+				assert(response.body.status === 404);
+				done();
+			});
+		});
+	});
 });
