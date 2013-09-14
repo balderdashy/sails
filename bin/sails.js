@@ -314,8 +314,10 @@ require('../lib/configuration')(sails).load(function (err) {
 
     var usage = 'Usage: sails <command>\n\n';
     usage += leftColumn('sails lift') + 'Run this Sails app (in the current dir)\n';
-    usage += leftColumn('  [--dev]') + 'with development environment specified \n';
-    usage += leftColumn('  [--prod]') + 'with production environment specified \n';
+    usage += leftColumn('  [--dev]') + 'in development environment \n';
+    usage += leftColumn('  [--prod]') + 'in production environment \n';
+    usage += leftColumn('  [--port 9000]') + 'on port 9000 \n';
+    usage += leftColumn('  [--verbose]') + 'with verbose logging enabled \n';
     usage += leftColumn('sails console') + 'Run this Sails app (in the current dir & in interactive mode.)\n';
     usage += leftColumn('sails new <appName>') + 'Create a new Sails project in a folder called <appName>\n';
     usage += leftColumn('sails new <appName> --linker') + 'Create a new Sails project in a folder called <appName>, using automatic asset linking\n';
