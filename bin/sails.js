@@ -66,7 +66,7 @@ require('../lib/configuration')(sails).load(function (err) {
 
 
   // Start this app
-  if (argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l'], argv._[0])) {
+  if (argv._[0] && _.contains(['lift', 'raise', 'start', 'server', 's', 'l'], argv._[0])) {
 
     require('./lift.js')(sails)(argv);
   }
@@ -262,9 +262,9 @@ require('../lib/configuration')(sails).load(function (err) {
    * Usage: sails issue <foo>
    *    – where <foo> is exported from <sails.config.appPath>/commands
    */
-  else if (argv._[0].match(/^issue$/)) {
+  else if (argv._[0].match(/^(issue|run)$/)) {
 
-    verifyArg(1, 'Please specity the name of the command to run: e.g.\n sails issue <command>');
+    verifyArg(1, 'Please specify the name of the command to run: e.g.\n sails run <command>');
 
     var command = argv._[1],
         commands;
@@ -313,7 +313,7 @@ require('../lib/configuration')(sails).load(function (err) {
     }
 
     var usage = 'Usage: sails <command>\n\n';
-    usage += leftColumn('sails lift') + 'Run this Sails app (in the current dir)\n';
+    usage += leftColumn('sails lift') + 'Run the Sails app in the current dir (if node_modules/sails exists, it will be used instead of the global install)\n';
     usage += leftColumn('  [--dev]') + 'in development environment \n';
     usage += leftColumn('  [--prod]') + 'in production environment \n';
     usage += leftColumn('  [--port 9000]') + 'on port 9000 \n';
@@ -325,7 +325,7 @@ require('../lib/configuration')(sails).load(function (err) {
     usage += leftColumn('sails generate model <foo>') + 'Generate api/models/Foo.js\n';
     usage += leftColumn('sails generate controller <foo>') + 'Generate api/controllers/FooController.js\n';
     usage += leftColumn('sails version') + 'Get the current globally installed Sails version\n';
-    usage += leftColumn('sails issue <command>') + 'Run a management command (exported by commands/index.js)';
+    usage += leftColumn('sails run <command>') + 'Run a management command (exported by YOUR_APP/commands/index.js)';
 
     sails.log.info(usage);
   }
