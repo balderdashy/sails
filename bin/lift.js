@@ -42,16 +42,21 @@ module.exports = function (sails) {
     if (fs.existsSync(sails.config.appPath + '/package.json')) {
       appPackageJson = getPackage(sails.config.appPath);
     } else {
-      sails.log.error('Cannot read package.json in the current directory.  ' +
-        'It could be missing or corrupt.  ' +
-        'Are you sure this is a sails app?');
+      sails.log.error(
+        'Cannot read package.json in the current directory (' + sails.config.appPath + ')\n' +
+        'Are you sure this is a Sails app?');
       process.exit(1);
     }
 
     // If sails dependency unspecified, allow anything, but throw a warning
     var requiredSailsVersion = 0;
     if (!(appPackageJson.dependencies && appPackageJson.dependencies.sails)) {
-      sails.log.warn('The app in the current directory does not list sails as a dependency.');
+      sails.log.error(
+        'The package.json in the current directory (' + sails.config.appPath + ') ' + 
+        'does not list Sails as a dependency...' + '\n' +
+        'Are you sure this is a Sails app?'
+      );
+      process.exit(1);
     } else {
       requiredSailsVersion = appPackageJson.dependencies && appPackageJson.dependencies.sails;
     }
@@ -60,47 +65,43 @@ module.exports = function (sails) {
     if (fs.existsSync(localSailsPath)) {
 
       // check package.json INSIDE local install of Sails
-      // No package.json means local sails means it must be corrupted
-      if (!fs.existsSync(localSailsPath + '/package.json')) {
-        sails.log.error('Locally installed Sails.js has corrupted or missing package.json file.');
-        sails.log.error(errors.badLocalSails(requiredSailsVersion));
-        process.exit(1);
-      }
-
       // Read package.json to detect version
-      var localSailsPackage = fs.readFileSync(localSailsPath + '/package.json', 'utf-8');
+      var localSailsPackage;
       try {
+        localSailsPackage = fs.readFileSync(localSailsPath + '/package.json', 'utf-8');
         localSailsPackage = JSON.parse(localSailsPackage);
       } catch (e) {
-        sails.log.error('Unable to parse package.json in local node_modules/sails!\n');
+
+        // No package.json means local sails means it must be corrupted
+        sails.log.error(
+          'Locally installed Sails.js dependency (' + localSailsPath + ') ' + 
+          'has corrupted, missing, or un-parsable package.json file!'
+        );
         sails.log.error(errors.badLocalSails(requiredSailsVersion));
         process.exit(1);
       }
 
-      // Error out if it has the wrong version in its package.json
 
+      // Error out if it has the wrong version in its package.json
       // TODO: use npm's native version comparator
       if (requiredSailsVersion !== localSailsPackage.version) {
-        sails.log.error('This app specifies Sails version ' + requiredSailsVersion + ', but local node_modules/sails version is ' + localSailsPackage.version);
-        sails.log.error(errors.badLocalSails(requiredSailsVersion));
+        sails.log.warn(
+          'The package.json in the current directory (' + sails.config.appPath + ') ' + 
+          'indicates a dependency on Sails ' + requiredSailsVersion + ', ' +
+          'but the locally installed Sails (`./node_modules/sails`) is ' + localSailsPackage.version + '.\n'
+        );
+        sails.log.warn(errors.badLocalSails(requiredSailsVersion));
       }
 
 
-      // If we made it this far, we're good to go-- fire 'er up, chief
+      // Run the app using the locally installed version of Sails
       require(sails.config.appPath + '/node_modules/sails/lib').lift(argv);
 
     }
-    // otherwise, copy the global installation of sails locally
-    else {
-      var globalSailsPath = __dirname + '/../';
-      require('../lib').lift(argv);
-
-      // sails.log.verbose("Installing Sails in this project...");
-      // fs.mkdirsSync(localSailsPath);
-      // fs.copy(globalSailsPath, localSailsPath, function(err) {
-      // 	if(err) throw new Error(err);
-      // });
-    }
+    
+    // Otherwise, run the app using the current Sails
+    // (probably the global install, since this is the CLI)
+    else require('../lib').lift(argv);
   };
 
 };
