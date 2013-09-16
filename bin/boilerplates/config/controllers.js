@@ -65,7 +65,10 @@ module.exports.controllers = {
     //    get /user/8
     // instead of:
     //    get /user/a8j4g9jsd9ga4ghjasdha
-    expectIntegerId: false
+    expectIntegerId: false,
+
+    // Pluralize controller names in generated routes
+    pluralize: false
   }
 
 };
