@@ -44,6 +44,7 @@ module.exports = function (sails) {
 						boilerplate: 'federatedAction.ejs',
 						prefix: sails.config.paths.controllers + '/' + entity,
 						entity: entity,
+						identity: entity.toLowerCase(),
 						action: action,
 						viewEngine: sails.config.views.engine,
 						viewPath: require('underscore.string').rtrim(sails.config.paths.views, '/'),

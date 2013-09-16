@@ -67,7 +67,12 @@ module.exports.controllers = {
     //    get /user/a8j4g9jsd9ga4ghjasdha
     expectIntegerId: false,
 
-    // Pluralize controller names in generated routes
+
+    // Whether to pluralize controller names in generated routes
+    //
+    // e.g. the GET REST blueprints for FooController with `pluralize` enabled:
+    //     get /foos
+    //     get /foos/3
     pluralize: false
   }
 

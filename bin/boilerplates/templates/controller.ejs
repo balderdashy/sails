@@ -15,6 +15,84 @@
 
 module.exports = {
 
+
+  /**
+   * Blueprint configuration
+   * When the server starts, these settings control the routes automatically generated
+   * for this controller.  
+   *
+   * Here, you can disable or modify the automatic API for the corresponding model.
+   */
+  blueprint: {
+    // Optional mount path prefix for blueprints
+    // (the automatically bound routes for this controller)
+    // e.g. setting prefix = '/api/v2/' would create routes like:
+    // '/api/v2/<%= identity %>/:action/:id?'
+    // 'get /api/v2/<%= identity %>'
+    // 'post /api/v2/<%= identity %>'
+    // etc.
+    prefix: '',
+
+
+    // Whether routes are automatically generated for every action in your controller
+    // (also maps `index` to `/<%= identity %>`)
+    // '/<%= identity %>'
+    // '/<%= identity %>/index'
+    // '/<%= identity %>/:action'
+    actions: true,
+
+
+    // CRUD shortcut routes enabld?
+    //
+    // ** NOTE **
+    // These CRUD shortcuts exist for your convenience during development,
+    // but you'll want to disable them in production.
+    //
+    // e.g.
+    // '/<%= identity %>/find/:id?'
+    // '/<%= identity %>/create'
+    // '/<%= identity %>/update/:id'
+    // '/<%= identity %>/destroy/:id'
+    shortcuts: true,
+
+
+    // Automatic REST blueprints enabled?
+    // e.g.
+    // 'get /<%= identity %>/:id?'
+    // 'post /<%= identity %>'
+    // 'put /<%= identity %>/:id'
+    // 'delete /<%= identity %>/:id'
+    rest: true,
+
+
+    // Enable JSONP callbacks on REST blueprints for this controller
+    //
+    // e.g. `jsonp: 'callback'` below would cause all blueprints to listen 
+    // for a parameter called `callback` and respond with JSONP whenever it is detected:
+    // `/user/find/:id?callback=?`
+    // `/user?name=ciaran&limit=10&callback=?`
+    jsonp: false,
+
+
+    // If a blueprint route catches a request, 
+    // only match the :id route parameter if it's an integer
+    // (you might want to set this to `true` when using Mongo, for instance)
+    //
+    // e.g. only trigger route handler if requests look like:
+    // get /user/8
+    // instead of:
+    // get /user/a8j4g9jsd9ga4ghjasdha
+    expectIntegerId: false,
+
+
+    // Whether to pluralize the name of this controller in route blueprints
+    //
+    // e.g.
+    // get /<%= pluralIdentity %>
+    // get /<%= pluralIdentity %>/3
+    pluralize: false
+  },
+
   /* e.g.
   sayHello: function (req, res) {
     res.send('hello world!');
