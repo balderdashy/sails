@@ -15,6 +15,21 @@
 
 module.exports = {
 
+  /** 
+   * Actions
+   *
+   * Code that should be run when Sails receives an HTTP request 
+   * or a properly structured message from Socket.io.
+   *
+   * e.g.
+   * sayHello: function (req, res) {
+   *   res.send('Hello world!');
+   * }
+   */ 
+      
+  <%- actions %>
+
+
 
   /**
    * Blueprint configuration
@@ -23,7 +38,10 @@ module.exports = {
    *
    * Here, you can disable or modify the automatic API for the corresponding model.
    */
+
   blueprint: {
+
+
     // Optional mount path prefix for blueprints
     // (the automatically bound routes for this controller)
     // e.g. setting prefix = '/api/v2/' would create routes like:
@@ -91,13 +109,6 @@ module.exports = {
     // get /<%= pluralIdentity %>
     // get /<%= pluralIdentity %>/3
     pluralize: false
-  },
-
-  /* e.g.
-  sayHello: function (req, res) {
-    res.send('hello world!');
   }
-  */
-  <%- actions %>
 
 };

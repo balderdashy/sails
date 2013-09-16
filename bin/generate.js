@@ -62,6 +62,7 @@ module.exports = function (sails) {
 
 				// Add each requested function
 				if (options && options.actions) {
+					var i = 0;
 					_.each(options.actions, function(action) {
 						var fnString = utils.renderBoilerplateTemplate('action.ejs', {
 							action: action,
@@ -70,11 +71,14 @@ module.exports = function (sails) {
 							viewPath: require('underscore.string').rtrim(sails.config.paths.views, '/'),
 							baseurl: '/' + entity
 						});
+						i++;
 
-						// If this is not the first action, add a comma
-						if (actions !== '') {
-							fnString = ',\n\n' + fnString;
-						}
+						// if (options.actions.length !== i) {}
+							
+						// Always add a comma
+						fnString = ',\n\n' + fnString;
+
+						// Append the action to the code string
 						actions += fnString;
 					});
 				}
@@ -82,6 +86,8 @@ module.exports = function (sails) {
 					boilerplate: 'controller.ejs',
 					prefix: sails.config.paths.controllers,
 					entity: utils.capitalize(entity),
+					identity: entity.toLowerCase(),
+					pluralIdentity: pluralize(entity),
 					actions: actions,
 					suffix: 'Controller.js'
 				});
