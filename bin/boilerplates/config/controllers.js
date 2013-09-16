@@ -68,7 +68,10 @@ module.exports.controllers = {
     expectIntegerId: false,
 
     // Pluralize controller names in generated routes
-    pluralize: false
+    pluralize: false,
+
+    // Enable JSON-API formatting of REST blueprint responses
+    jsonAPI: false
   }
 
 };
