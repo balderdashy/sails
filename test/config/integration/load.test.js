@@ -108,7 +108,7 @@ describe('Configs', function () {
 
   it('should load the views config', function () {
     var conf = config.views;
-    assert(conf.engine === 'ejs');
+    assert(conf.engine.ext === 'ejs');
     assert(conf.blueprints === false);
     assert(conf.layout === false);
 
