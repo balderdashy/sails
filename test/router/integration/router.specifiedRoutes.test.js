@@ -187,4 +187,56 @@ describe('Specified routes', function() {
 			});
 		});
 	});
+
+	it('should be case-insensitive', function(done) {
+
+		httpHelper.writeRoutes({
+			'get /testRoute': {
+				controller: 'test',
+				action: 'verb'
+			}
+		});
+
+		httpHelper.testRoute('get', 'tEStrOutE', function(err, response) {
+			if (err) done(new Error(err));
+
+			assert(response.body === 'get');
+			done();
+		});
+	});
+
+	it('should accept case-insensitive controller key', function(done) {
+
+		httpHelper.writeRoutes({
+			'get /testRoute': {
+				controller: 'tEsT',
+				action: 'verb'
+			}
+		});
+
+		httpHelper.testRoute('get', 'testRoute', function(err, response) {
+			if (err) done(new Error(err));
+
+			assert(response.body === 'get');
+			done();
+		});
+	});
+
+	it('should accept case-insensitive action key', function(done) {
+
+		httpHelper.writeRoutes({
+			'get /testRoute': {
+				controller: 'test',
+				action: 'capiTalleTTers'
+			}
+		});
+
+		httpHelper.testRoute('get', 'testRoute', function(err, response) {
+			if (err) done(new Error(err));
+
+			assert(response.body === 'CapitalLetters');
+			done();
+		});
+	});
+
 });
