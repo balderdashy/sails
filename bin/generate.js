@@ -7,7 +7,9 @@ module.exports = function (sails) {
 
 	var _			= require( 'lodash' ),
 		utils		= require( './utils' )(sails),
-		fs			= utils.fs;
+		fs			= utils.fs,
+		pluralize	= require('pluralize');
+		
 
 	/**
 	 * Expose new instance of `Generator`
@@ -45,6 +47,7 @@ module.exports = function (sails) {
 						prefix: sails.config.paths.controllers + '/' + entity,
 						entity: entity,
 						identity: entity.toLowerCase(),
+						pluralIdentity: pluralize(entity),
 						action: action,
 						viewEngine: sails.config.views.engine,
 						viewPath: require('underscore.string').rtrim(sails.config.paths.views, '/'),
