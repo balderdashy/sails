@@ -26,8 +26,11 @@ module.exports.sockets = {
 
 
 
-  // `adapter`
-  //
+  // Use this option to set the datastore socket.io will use to manage rooms/sockets/subscriptions:
+  // default: memory
+  adapter: 'memory',
+
+  
   // Node.js (and consequently Sails.js) apps scale horizontally.
   // It's a powerful, efficient approach, but it involves a tiny bit of planning.
   // At scale, you'll want to be able to copy your app onto multiple Sails.js servers
@@ -36,16 +39,11 @@ module.exports.sockets = {
   // One of the big challenges of scaling an application is that these sorts of clustered 
   // deployments cannot share memory, since they are on physically different machines.
   // On top of that, there is no guarantee that a user will "stick" with the same server between
-  // requests, since the load balancer will route each request to the server with the 
-  // least impact on load. All pubsub processing and shared memory has to be offloaded
-  // to a shared, remote messaging queue (usually Redis)
+  // requests (whether HTTP or sockets), since the load balancer will route each request to the 
+  // Sails server with the most available resources. However that means that all room/pubsub/socket
+  // processing and shared memory has to be offloaded to a shared, remote messaging queue (usually Redis)
   //
-  // Luckily, Sails provides production MQ support for Redis by default!
-  //
-  // The data store where socket.io will store its message queue 
-  // and answer pubsub logic
-  adapter: 'memory',
-  //
+  // Luckily, Socket.io (and consequently Sails.js) apps support Redis for sockets by default.
   // To enable a remote redis pubsub server: 
   // adapter: 'redis',
   // host: '127.0.0.1',
@@ -55,7 +53,6 @@ module.exports.sockets = {
   // Worth mentioning is that, if `adapter` config is `redis`, 
   // but host/port is left unset, Sails will try to connect to redis 
   // running on localhost via port 6379 
-
 
 
 
