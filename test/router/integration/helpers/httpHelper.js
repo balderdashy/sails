@@ -28,7 +28,15 @@ module.exports = {
 		// Start the sails server process
 		var sailsprocess = spawn('../bin/sails.js', ['lift', '--dev']);
 
+		sailsprocess.on('error',function(err) {
+			return callback(err);
+		});
+		sailsprocess.stderr.on('data',function(data) {
+			return callback(err);
+		});
+
 		sailsprocess.stdout.on('data',function(data) {
+
 			// Change buffer to string
 			var dataString = data + '';
 
