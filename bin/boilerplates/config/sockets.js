@@ -21,7 +21,7 @@ module.exports.sockets = {
   'htmlfile',
   'xhr-polling',
   'jsonp-polling'
- ],
+  ],
 
 
 
@@ -104,13 +104,20 @@ module.exports.sockets = {
   authorization: true,
 
 
-  // Allow sails to support custom onConnection function 
-  // that will run each time a new socket connects
-  // (AFTER built-in on connection logic and event bindings)
+  // This custom onConnect function will be run each time a new socket connects
+  // (AFTER it is austhorized and the events are hooked up)
   onConnect: function(socket) {
     // By default: do nothing
+    // This is a good place to do any initial subscriptions 
+    // or mix in custom socket.io logic
   },
 
+  // This custom onDisconnect function will be run each time a socket disconnects
+  onDisconnect: function(socket) {
+    // By default: do nothing
+    // This is a good place to broadcast a disconnect message to the appropriate users
+    // or mix in custom socket.io logic
+  },
 
   // Match string representing the origins that are allowed to connect to the Socket.IO server
   origins: '*:*',
