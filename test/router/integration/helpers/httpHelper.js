@@ -31,10 +31,6 @@ module.exports = {
 		sailsprocess.on('error',function(err) {
 			return callback(err);
 		});
-		sailsprocess.stderr.on('data',function(data) {
-			return callback(data);
-		});
-
 		sailsprocess.stdout.on('data',function(data) {
 
 			// Change buffer to string
