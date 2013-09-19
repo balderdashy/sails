@@ -29,8 +29,7 @@ describe('Policies', function() {
 
     it('should return a 500 status code', function(done) {
       httpHelper.testRoute('get', {url: 'test', headers: {'Content-Type': 'application/json'}, json: true}, function(err, response) {
-        if (err) done(new Error(err));
-
+        if (err) return done(new Error(err));
         assert.equal(response.statusCode, 500);
         done();
       });
@@ -38,7 +37,7 @@ describe('Policies', function() {
 
     it('should return default blueprint error', function(done) {
       httpHelper.testRoute('get', {url: 'test', headers: {'Content-Type': 'application/json'}, json: true}, function(err, response) {
-        if (err) done(new Error(err));
+        if (err) return done(new Error(err));
         assert(response.body instanceof Object);
         assert(response.body.errors instanceof Array);
         assert.equal(response.body.errors[0].message, 'Test Error');
@@ -65,7 +64,7 @@ describe('Policies', function() {
       it('should return an error', function(done) {
 
         httpHelper.testRoute('get', {url: 'test', headers: {'Content-Type': 'application/json'}, json: true}, function(err, response) {
-          if (err) done(err);
+          if (err) return done(err);
           assert.equal(response.body.errors[0].message, 'Test Error');
           done();
         });
@@ -77,7 +76,7 @@ describe('Policies', function() {
       it('should return a string', function(done) {
 
         httpHelper.testRoute('get', {url: 'test/1', headers: {'Content-Type': 'application/json'}, json: true}, function(err, response) {
-          if (err) done(err);
+          if (err) return done(err);
 
           assert.equal(response.body, "find");
           done();
@@ -104,7 +103,7 @@ describe('Policies', function() {
       it('should return a string', function(done) {
 
         httpHelper.testRoute('get', {url: 'test', json: true}, function(err, response) {
-          if (err) done(err);
+          if (err) return done(err);
 
           assert.equal(response.body, "index");
           done();
@@ -131,7 +130,7 @@ describe('Policies', function() {
       it('should return a string', function(done) {
 
         httpHelper.testRoute('get', {url: 'test', json: true}, function(err, response) {
-          if (err) done(err);
+          if (err) return done(err);
 
           assert.equal(response.body, "index");
           done();
@@ -160,7 +159,7 @@ describe('Policies', function() {
       it('should return a string', function(done) {
 
         httpHelper.testRoute('get', {url: 'test/CapitalLetters', json: true}, function(err, response) {
-          if (err) done(err);
+          if (err) return done(err);
 
           assert.equal(response.body, "CapitalLetters");
           done();

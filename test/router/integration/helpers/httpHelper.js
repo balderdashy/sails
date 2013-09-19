@@ -32,7 +32,7 @@ module.exports = {
 			return callback(err);
 		});
 		sailsprocess.stderr.on('data',function(data) {
-			return callback(err);
+			return callback(data);
 		});
 
 		sailsprocess.stdout.on('data',function(data) {
