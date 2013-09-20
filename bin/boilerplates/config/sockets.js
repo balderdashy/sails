@@ -10,6 +10,22 @@
 
 module.exports.sockets = {
 
+  // This custom onConnect function will be run each time a new socket connects
+  // (AFTER it is austhorized and the events are hooked up)
+  onConnect: function(session, socket, cb) {
+    // By default: do nothing
+    // This is a good place to do any initial subscriptions 
+    // or mix in custom socket.io logic
+  },
+
+  // This custom onDisconnect function will be run each time a socket disconnects
+  onDisconnect: function(session, socket, cb) {
+    // By default: do nothing
+    // This is a good place to broadcast a disconnect message to the appropriate users
+    // or mix in custom socket.io logic
+  },
+
+
 
   // `transports`
   //
