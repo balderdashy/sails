@@ -15,7 +15,7 @@ module.exports[500] = function serverErrorOccurred(errors, req, res, expressErro
   var displayedErrors = (typeof errors !== 'object' || !errors.length) ? [errors] : errors;
 
   // Build data for response
-  var response = {
+  var result = {
     status: statusCode
   };
 
@@ -39,24 +39,24 @@ module.exports[500] = function serverErrorOccurred(errors, req, res, expressErro
 
   // In production, don't display any identifying information about the error(s)
   if (sails.config.environment === 'development') {
-    response.errors = displayedErrors;
+    result.errors = displayedErrors;
   }
 
   // If the user-agent wants a JSON response,
   // respond with a JSON-readable version of errors
   if (req.wantsJSON) {
-    return res.json(response, response.status);
+    return res.json(result, result.status);
   }
 
   // Otherwise, if it can be rendered, the `views/500.*` page is rendered
   // If an error occurs rendering the 500 view ITSELF,
   // use the built-in Express error handler to render the errors
   var view = '500';
-  res.render(view, response, function (err) {
+  res.status(result.status).render(view, result, function (err) {
     if (err) {
       return expressErrorHandler(errors);
     }
-    res.render(view, response);
+    res.render(view, result);
   });
 
 };
