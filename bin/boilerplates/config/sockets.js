@@ -10,19 +10,22 @@
 
 module.exports.sockets = {
 
-  // This custom onConnect function will be run each time a new socket connects
-  // (AFTER it is austhorized and the events are hooked up)
-  onConnect: function(session, socket, cb) {
+  // This custom onConnect function will be run each time AFTER a new socket connects
+  // (To control whether a socket is allowed to connect, check out `authorization` config.)
+  // Keep in mind that Sails' RESTful simulation for sockets 
+  // mixes in socket.io events for your routes and blueprints automatically.
+  onConnect: function(session, socket) {
+
     // By default: do nothing
-    // This is a good place to do any initial subscriptions 
-    // or mix in custom socket.io logic
+    // This is a good place to subscribe a new socket to a room, inform other users that
+    // someone new has come online, or any other custom socket.io logic
   },
 
   // This custom onDisconnect function will be run each time a socket disconnects
-  onDisconnect: function(session, socket, cb) {
+  onDisconnect: function(session, socket) {
+
     // By default: do nothing
-    // This is a good place to broadcast a disconnect message to the appropriate users
-    // or mix in custom socket.io logic
+    // This is a good place to broadcast a disconnect message, or any other custom socket.io logic
   },
 
 
