@@ -141,7 +141,6 @@ module.exports = function(sails) {
 				grunt			: '0.4.1',
 				'sails-disk'	: '~0.9.0',
 				ejs				: '0.8.4',
-				consolidate		: '~0.9.1',
 				optimist		: '0.3.4' // TODO: remove this and handle it differently (maybe)
 			},
 			scripts: {
@@ -169,7 +168,6 @@ module.exports = function(sails) {
 		utils.copySailsDependency('optimist', outputPath + '/node_modules');
 		utils.copySailsDependency('sails-disk', outputPath + '/node_modules');
 		utils.copySailsDependency('ejs', outputPath + '/node_modules');
-		utils.copySailsDependency('consolidate', outputPath + '/node_modules');
 
 		// Other grunt dependencies are automatically pulled from sails core deps.
 		utils.copySailsDependency('grunt', outputPath + '/node_modules');
