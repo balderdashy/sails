@@ -27,10 +27,10 @@ module.exports[403] = function badRequest(message, req, res) {
   }
 
   // Otherwise, serve the `views/403.*` page
-  var view = '403';
-  res.render(view, result, function (err) {
-    if (err) return res.send(err, result.status);
-    res.render(view);
+  res.render('403', result, function (err) {
+    // If the view doesn't exist, or an error occured, send json
+    if (err) { return res.json(result, result.status); }
+    res.render('403');
   });
 
 };
