@@ -28,7 +28,7 @@ module.exports[403] = function badRequest(message, req, res) {
 
   // Otherwise, serve the `views/403.*` page
   var view = '403';
-  res.render(view, result, function (err) {
+  res.status(result.status).render(view, result, function (err) {
     if (err) return res.send(err, result.status);
     res.render(view);
   });
