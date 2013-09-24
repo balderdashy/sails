@@ -37,15 +37,17 @@ module.exports[400] = function badRequest(errors, previous, req, res) {
     return res.json(result, result.status);
   }
 
-  // Otherwise, try to determine where the bad request originated
+  // Set errors as flash message (in session) and redirect back
+  // to `previous` URL you specified, e.g. res.badRequest(yourValidationErrors, '/signup');
   if (previous) {
     req.flash('errors', errors);
     return res.redirect(previous);
   }
 
-  // TODO: Depending on your app's needs, you may choose to look
-  // at the Referer header here and redirect back. Please do so at your own risk!
+  // Depending on your app's needs, you may choose to look at the Referer header here 
+  // and redirect back. Please do so at your own risk!
   // For security reasons, Sails does not provide this affordance by default.
+  // It's safest to provide a 'previous' URL and redirect there directly.
 
   // If the origin (previous page) was not specified, just respond w/ JSON
   return res.json(result, result.status);

@@ -7,7 +7,7 @@
  * http://expressjs.com/faq.html#404-handling
  */
 
-module.exports[404] = function pageNotFound(message, req, res, express404Handler) {
+module.exports[404] = function pageNotFound(message, req, res) {
 
   var statusCode = 404;
   var result = {
@@ -24,13 +24,13 @@ module.exports[404] = function pageNotFound(message, req, res, express404Handler
     return res.json(result, result.status);
   }
 
-  // Otherwise, serve the `views/404.*` page
-  var view = '404';
-  res.render(view, result, function (err) {
-    if (err) {
-      return express404Handler();
-    }
-    res.render(view);
+  var viewFilePath = '404';
+  res.render(viewFilePath, result, function (err) {
+    // If the view doesn't exist, or an error occured, send json
+    if (err) { return res.json(result, result.status); }
+
+    // Otherwise, serve the `views/404.*` page
+    res.render(viewFilePath);
   });
 
 };

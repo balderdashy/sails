@@ -7,7 +7,7 @@
  * http://expressjs.com/guide.html#error-handling
  */
 
-module.exports[500] = function serverErrorOccurred(errors, req, res, expressErrorHandler) {
+module.exports[500] = function serverErrorOccurred(errors, req, res) {
 
   var statusCode = 500;
 
@@ -48,15 +48,14 @@ module.exports[500] = function serverErrorOccurred(errors, req, res, expressErro
     return res.json(response, response.status);
   }
 
-  // Otherwise, if it can be rendered, the `views/500.*` page is rendered
-  // If an error occurs rendering the 500 view ITSELF,
-  // use the built-in Express error handler to render the errors
-  var view = '500';
-  res.render(view, response, function (err) {
-    if (err) {
-      return expressErrorHandler(errors);
-    }
-    res.render(view, response);
+
+  var viewFilePath = '500';
+  res.render(viewFilePath, response, function (err) {
+    // If the view doesn't exist, or an error occured, send json
+    if (err) { return res.json(response, response.status); }
+    
+    // Otherwise, if it can be rendered, the `views/500.*` page is rendered
+    res.render(viewFilePath, response);
   });
 
 };
