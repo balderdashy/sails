@@ -1,55 +1,73 @@
 /**
- * Default 400 (bad request) handler
+ * Default 400 (Bad Request) handler
  *
- * Sails will respond using this handler when either:
- * (a) an unusable request hits the server
- * (b) or a blueprint is requested with missing or invalid parameters
+ * Sails will automatically respond using this middleware when a blueprint is requested
+ * with missing or invalid parameters
+ * (e.g. `POST /user` was used to create a user, but required parameters were missing)
  *
- * This handler can also be invoked manually with `res.badRequest()`
+ * This middleware can also be invoked manually from a controller or policy:
+ * res.badRequest( [validationErrors], [redirectTo] )
  *
- * `errors` is a set of errors, usually an array of validation errors.
- * `previous` is the URL of the previous page to redirect back to (only relevant for HTML requesters)
  *
- * Note: This handler works a bit differently from the others if the requester is expecting
- * an HTML response-- it will attempt to follow the best-practice of redirecting back to the page
- * where the bad request originated from, and populate a variable in the session ( req.flash('errors') )
- * with a semantic error object (what you'll probably want to use to render validation errors in your view).
- * However, if the source page cannot be determined, a 500 error page will be displayed instead indicating the situation.
+ * @param {Array|Object|String} validationErrors
+ *      optional errors
+ *      usually an array of validation errors from the ORM
  *
- * For requesters expecting JSON, everything works like you would expect-- a simple JSON response
- * indicating the 400: Bad Request status with relevant information will be returned. 
- *
+ * @param {String} redirectTo
+ *      optional URL
+ *      (absolute or relative, e.g. google.com/foo or /bar/baz) 
+ *      of the page to redirect to.  Usually only relevant for traditional HTTP requests,
+ *      since if this was triggered from an AJAX or socket request, JSON should be sent instead.
  */
 
-module.exports[400] = function badRequest(errors, previous, req, res) {
+module.exports[400] = function badRequest(validationErrors, redirectTo, req, res) {
+
+  /*
+   * NOTE: This function is Sails middleware-- that means that not only do `req` and `res`
+   * work just like their Express equivalents to handle HTTP requests, they also simulate
+   * the same interface for receiving socket messages.
+   */
+
+  var statusCode = 400;
 
   var result = {
-    status: 400
+    status: statusCode
   };
 
-  // Optional errors object
-  if (errors) {
-    result.errors = errors;
+  // Optional validationErrors object
+  if (validationErrors) {
+    result.validationErrors = validationErrors;
   }
 
-  // If the user-agent wants a JSON response, send json
+  // For requesters expecting JSON, everything works like you would expect-- a simple JSON response
+  // indicating the 400: Bad Request status with relevant information will be returned. 
   if (req.wantsJSON) {
     return res.json(result, result.status);
   }
 
-  // Set errors as flash message (in session) and redirect back
-  // to `previous` URL you specified, e.g. res.badRequest(yourValidationErrors, '/signup');
-  if (previous) {
-    req.flash('errors', errors);
-    return res.redirect(previous);
+  // For traditional (not-AJAX) web forms, this middleware follows best-practices
+  // for when a user submits invalid form data:
+  // i.   First, a one-time-use flash variable is populated, probably a string message or an array
+  //      of semantic validation error objects.
+  // ii.  Then the  user is redirected back to `redirectTo`, i.e. the URL where the bad request originated.
+  // iii. There, the controller and/or view might use the flash `errors` to either display a message or highlight
+  //      the invalid HTML form fields.
+  if (redirectTo) {
+
+    // Set flash message called `errors` (one-time-use in session)
+    req.flash('errors', validationErrors);
+
+    // then redirect back to the `redirectTo` URL
+    return res.redirect(redirectTo);
   }
+
 
   // Depending on your app's needs, you may choose to look at the Referer header here 
   // and redirect back. Please do so at your own risk!
   // For security reasons, Sails does not provide this affordance by default.
-  // It's safest to provide a 'previous' URL and redirect there directly.
+  // It's safest to provide a 'redirectTo' URL and redirect there directly.
 
-  // If the origin (previous page) was not specified, just respond w/ JSON
+  // If `redirectTo` was not specified, just respond w/ JSON
   return res.json(result, result.status);
 
 };
