@@ -14,11 +14,6 @@ module.exports[404] = function pageNotFound(req, res) {
     status: statusCode
   };
 
-  // Optional message
-  if (message) {
-    result.message = message;
-  }
-
   // If the user-agent wants a JSON response, send json
   if (req.wantsJSON) {
     return res.json(result, result.status);
