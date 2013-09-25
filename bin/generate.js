@@ -71,7 +71,6 @@ module.exports = function (sails) {
 							viewPath: require('underscore.string').rtrim(sails.config.paths.views, '/'),
 							baseurl: '/' + entity
 						});
-						i++;
 
 						// Append a comma, unless this is the last
 						if (options.actions.length !== i) {
@@ -81,6 +80,7 @@ module.exports = function (sails) {
 							// Append the action to the code string
 							actions += fnString;
 						}
+						i++;
 							
 					});
 				}
