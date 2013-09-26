@@ -12,11 +12,11 @@
 
 module.exports[403] = function badRequest(message, req, res) {
 
- /*
- * NOTE: This function is Sails middleware-- that means that not only do `req` and `res`
- * work just like their Express equivalents to handle HTTP requests, they also simulate
- * the same interface for receiving socket messages.
- */
+  /*
+   * NOTE: This function is Sails middleware-- that means that not only do `req` and `res`
+   * work just like their Express equivalents to handle HTTP requests, they also simulate
+   * the same interface for receiving socket messages.
+   */
 
   var viewFilePath = '403';
   var statusCode = 403;
@@ -35,7 +35,7 @@ module.exports[403] = function badRequest(message, req, res) {
     return res.json(result, result.status);
   }
 
-  res.render(viewFilePath, result, function (err) {
+  res.status(result.status).render(viewFilePath, result, function (err) {
     // If the view doesn't exist, or an error occured, send json
     if (err) { return res.json(result, result.status); }
     

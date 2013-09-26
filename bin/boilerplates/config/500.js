@@ -14,11 +14,11 @@
 
 module.exports[500] = function serverErrorOccurred(errors, req, res) {
 
- /*
- * NOTE: This function is Sails middleware-- that means that not only do `req` and `res`
- * work just like their Express equivalents to handle HTTP requests, they also simulate
- * the same interface for receiving socket messages.
- */
+  /*
+   * NOTE: This function is Sails middleware-- that means that not only do `req` and `res`
+   * work just like their Express equivalents to handle HTTP requests, they also simulate
+   * the same interface for receiving socket messages.
+   */
 
   var viewFilePath = '500';
   var statusCode = 500;
@@ -45,7 +45,7 @@ module.exports[500] = function serverErrorOccurred(errors, req, res) {
     return res.json(result, result.status);
   }
 
-  res.render(viewFilePath, result, function (err) {
+  res.status(result.status).render(viewFilePath, result, function (err) {
     // If the view doesn't exist, or an error occured, just send JSON
     if (err) { return res.json(result, result.status); }
     
