@@ -4,17 +4,18 @@
  *
  * This is the template used when generating controllers via the CLI
  * e.g. `sails generate controller foo`
- *
+ * 
  */
 %>/**
  * <%= entity %>Controller
  *
- * @module		:: Controller
+ * @module      :: Controller
  * @description	:: Contains logic for handling requests.
+ * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
 
 module.exports = {
-
+  <%
   /** 
    * Actions
    *
@@ -25,14 +26,14 @@ module.exports = {
    * sayHello: function (req, res) {
    *   res.send('Hello world!');
    * }
-   */ 
-      
+   */
+  %>  
   <%- actions %>
 
 
 
   /**
-   * Blueprint configuration
+   * To configure the automatically generated routes and actions blueprint configuration
    * When the server starts, these settings control the routes automatically generated
    * for this controller.  
    *

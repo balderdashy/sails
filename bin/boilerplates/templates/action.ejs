@@ -9,15 +9,14 @@
  */
 %>
   /**
-   * If action blueprints are enabled, automatically reachable from:
    * /<%= entity.toLowerCase() %>/<%= action %>
    */ 
   <%- action %>: function (req, res) {
-
+    <% if ( typeof verbose !== 'undefined') { %>
     /*
      * NOTE: This function is Sails middleware-- that means that not only do `req` and `res`
      * work just like their Express equivalents for HTTP requests, they also simulate
-     * the same interface for receiving socket messages.
+     * the same interface for receiving properly structured Socket.io messages.
      */
 
     // Send JSON:
@@ -33,5 +32,8 @@
 
     // Redirect to another route:
     // return res.redirect('/foo/bar')
-
+    <% } %>
+    return res.json({
+      hello: 'world'
+    });
   }
