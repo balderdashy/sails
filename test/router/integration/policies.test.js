@@ -61,10 +61,18 @@ describe('Policies', function() {
 
     describe('a get request to /:controller', function() {
 
-      it('should return an error', function(done) {
+      it('should return a proper serverError with a message', function(done) {
 
         httpHelper.testRoute('get', {url: 'test', headers: {'Content-Type': 'application/json'}, json: true}, function(err, response) {
           if (err) return done(err);
+
+          // Assert HTTP status code is correct
+          assert.equal(response.statusCode, 500);
+
+          // Assert that response has status: 500
+          assert.equal(response.body.status, 500);
+
+          // Assert that response has the proper error message
           assert.equal(response.body.errors[0].message, 'Test Error');
           done();
         });
