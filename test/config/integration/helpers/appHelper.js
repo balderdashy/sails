@@ -71,12 +71,3 @@ module.exports.teardown = function(appName) {
 	}
 };
 
-
-/**
- * Write session config file
- * that deliberately disables sessions
- */
-module.exports.writeNullSessionConfig = function() {
-	config = { adapter: null };
-	fs.writeFileSync('config/session.js', 'module.exports = ' + JSON.stringify(config));
-};
