@@ -6,17 +6,17 @@ describe('Specified routes', function() {
 	var appName = 'testApp';
 
 	before(function(done) {
-    appHelper.build(function(err) {
-      if(err) return done(err);
-      process.chdir(appName);
-      done();
-    });
-  });
+		appHelper.build(function(err) {
+			if (err) return done(err);
+			process.chdir(appName);
+			done();
+		});
+	});
 
-  after(function() {
-    process.chdir('../');
-    appHelper.teardown();
-  });
+	after(function() {
+		process.chdir('../');
+		appHelper.teardown();
+	});
 
 	describe('with an unspecified http method', function() {
 
@@ -172,15 +172,13 @@ describe('Specified routes', function() {
 			httpHelper.testRoute('get', 'test/shirts/large', function(err, response) {
 				if (err) done(new Error(err));
 
-				var expected = JSON.stringify([
-						{
-							'name': 'category',
-							'optional': false
-						}, {
-							'name':'size',
-							'optional':false
-						}
-					]);
+				var expected = JSON.stringify([{
+					'name': 'category',
+					'optional': false
+				}, {
+					'name': 'size',
+					'optional': false
+				}]);
 
 				assert(expected === JSON.stringify(JSON.parse(response.body)));
 				done();

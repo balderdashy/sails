@@ -38,8 +38,8 @@ module.exports = {
 			// Change buffer to string, then error
 			var dataString = (data + '');
 			var err = new Error( dataString ) ;
-			console.error(dataString);
-			return callback(err);
+			// console.error(dataString);
+			throw err;
 		});
 
 
@@ -51,6 +51,7 @@ module.exports = {
 			// Make request once server has sucessfully started
 			if (dataString.match(/Server lifted/)) {
 				sailsprocess.stdout.removeAllListeners('data');
+				sailsprocess.stderr.removeAllListeners('data');
 				setTimeout(function () {
 					request[method](options, function(err, response) {
 						if (err) callback(err);

@@ -30,12 +30,12 @@ module.exports.build = function(/* [appName], done */) {
   }
 
   exec(sailsBin + ' new ' + appName, function(err) {
-    if (err) done(err);
+    if (err) return done(err);
 
     var fixtures = wrench.readdirSyncRecursive('./test/config/integration/fixtures');
     if(fixtures.length < 1) return done();
 
-    // If fixtures copy them to the test app
+    // If fixtures, copy them to the test app
     fixtures.forEach(function(file) {
       var filePath = path.resolve('./test/config/integration/fixtures', file);
 
@@ -54,7 +54,7 @@ module.exports.build = function(/* [appName], done */) {
       
     });
     
-    done()
+    done();
   });
 };
 
