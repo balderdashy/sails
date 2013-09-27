@@ -32,14 +32,17 @@ module.exports = {
 			return callback(err);
 		});
 
-		// Catch stderr messages and always fire cb w/ error
-		// (automatically failing test)
+		// Catch stderr messages 
 		sailsprocess.stderr.on('data', function (data) {
 			// Change buffer to string, then error
 			var dataString = (data + '');
-			var err = new Error( dataString ) ;
-			// console.error(dataString);
-			throw err;
+
+			// Share error with user running tests
+			console.error(dataString);
+
+			// In some cases, fire cb w/ error (automatically failing test)
+			// var err = new Error( dataString );
+			// throw err;
 		});
 
 
@@ -54,7 +57,7 @@ module.exports = {
 				sailsprocess.stderr.removeAllListeners('data');
 				setTimeout(function () {
 					request[method](options, function(err, response) {
-						if (err) callback(err);
+						if (err) return callback(err);
 
 						// Kill server process and return response
 						sailsprocess.kill();
