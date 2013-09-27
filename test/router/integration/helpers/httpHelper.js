@@ -31,6 +31,18 @@ module.exports = {
 		sailsprocess.on('error',function(err) {
 			return callback(err);
 		});
+
+		// Catch stderr messages and always fire cb w/ error
+		// (automatically failing test)
+		sailsprocess.stderr.on('data', function (data) {
+			// Change buffer to string, then error
+			var dataString = (data + '');
+			var err = new Error( dataString ) ;
+			console.error(dataString);
+			return callback(err);
+		});
+
+
 		sailsprocess.stdout.on('data',function(data) {
 
 			// Change buffer to string
