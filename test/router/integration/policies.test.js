@@ -74,6 +74,7 @@ describe('Policies', function() {
 
           // Assert that response has the proper error message
           assert.equal(response.body.errors[0].message, 'Test Error');
+          // console.log( 'body :: ',response.body );
           done();
         });
       });
