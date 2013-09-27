@@ -7,15 +7,18 @@ describe('View routes', function() {
 
 	before(function(done) {
 		appHelper.build(function(err) {
-			if (err) return done(err);
-
+			// console.log('before chdir ' + appName + ', cwd was :: ' + process.cwd());
 			process.chdir(appName);
+			// console.log('after chdir ' + appName + ', new cwd is :: ' + process.cwd());
+			if (err) return done(err);
 			done();
 		});
 	});
 
 	after(function() {
+		// console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
 		process.chdir('../');
+		// console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
 		appHelper.teardown();
 	});
 
