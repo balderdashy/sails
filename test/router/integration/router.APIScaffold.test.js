@@ -10,7 +10,7 @@ var util = require('util');
  * Errors
  */
 var Err = {
-	badResponse: function (response) {
+	badResponse: function(response) {
 		return 'Wrong server response!  Response :::\n' + util.inspect(response.body);
 	}
 };
@@ -19,23 +19,26 @@ describe('API scaffold routes', function() {
 	var appName = 'testApp';
 
 	before(function(done) {
-    appHelper.build(function(err) {
-      if(err) return done(err);
-      process.chdir(appName);
-      done();
-    });
-  });
+		appHelper.build(function(err) {
+			if (err) return done(err);
+			process.chdir(appName);
+			done();
+		});
+	});
 
-  after(function() {
-    process.chdir('../');
-    appHelper.teardown();
-  });
+	after(function() {
+		process.chdir('../');
+		appHelper.teardown();
+	});
 
 	describe('a get request to /:controller/create', function() {
 
 		it('should return JSON for a newly created instance of the test model', function(done) {
 
-			httpHelper.testRoute('get', {url: 'empty/create', json: true}, function(err, response) {
+			httpHelper.testRoute('get', {
+				url: 'empty/create',
+				json: true
+			}, function(err, response) {
 				if (err) return done(new Error(err));
 
 				assert(response.body.id === 1, Err.badResponse(response));
@@ -48,7 +51,11 @@ describe('API scaffold routes', function() {
 
 		it('should return JSON for a newly created instance of the test model', function(done) {
 
-			httpHelper.testRoute('post', {url: 'empty/create', json: true, body: {}}, function(err, response) {
+			httpHelper.testRoute('post', {
+				url: 'empty/create',
+				json: true,
+				body: {}
+			}, function(err, response) {
 				if (err) return done(new Error(err));
 
 				assert(response.body.id === 2, Err.badResponse(response));
@@ -61,7 +68,10 @@ describe('API scaffold routes', function() {
 
 		it('should return JSON for all instances of the test model', function(done) {
 
-			httpHelper.testRoute('get', {url: 'empty', json: true}, function(err, response) {
+			httpHelper.testRoute('get', {
+				url: 'empty',
+				json: true
+			}, function(err, response) {
 				if (err) return done(new Error(err));
 
 				assert(response.body[0].id === 1, Err.badResponse(response));
@@ -75,7 +85,10 @@ describe('API scaffold routes', function() {
 
 		it('should return JSON for the instance of the test model with the specified id', function(done) {
 
-			httpHelper.testRoute('get', {url: 'empty/1', json: true}, function(err, response) {
+			httpHelper.testRoute('get', {
+				url: 'empty/1',
+				json: true
+			}, function(err, response) {
 				if (err) return done(new Error(err));
 
 				assert(response.body.id === 1, Err.badResponse(response));
@@ -88,7 +101,10 @@ describe('API scaffold routes', function() {
 
 		it('should return JSON for the updated instance of the test model', function(done) {
 
-			httpHelper.testRoute('put', {url: 'empty/1?foo=bar', json: true}, function(err, response) {
+			httpHelper.testRoute('put', {
+				url: 'empty/1?foo=bar',
+				json: true
+			}, function(err, response) {
 				if (err) return done(new Error(err));
 
 				assert(response.body.foo === 'bar', Err.badResponse(response));
@@ -101,7 +117,10 @@ describe('API scaffold routes', function() {
 
 		it('should return JSON for the destroyed instance of the test model', function(done) {
 
-			httpHelper.testRoute('del', {url: 'empty/1', json: true}, function(err, response) {
+			httpHelper.testRoute('del', {
+				url: 'empty/1',
+				json: true
+			}, function(err, response) {
 				if (err) return done(new Error(err));
 
 				assert(response.body.id === 1, Err.badResponse(response));
@@ -112,12 +131,17 @@ describe('API scaffold routes', function() {
 
 	describe('with pluralize turned on', function() {
 
-		before(function () {
-			httpHelper.writeBlueprint({pluralize: true});
+		before(function() {
+			httpHelper.writeBlueprint({
+				pluralize: true
+			});
 		});
 
 		it('should bind blueprint actions to plural controller names', function(done) {
-			httpHelper.testRoute('get', {url: 'empties', json: true}, function(err, response) {
+			httpHelper.testRoute('get', {
+				url: 'empties',
+				json: true
+			}, function(err, response) {
 				if (err) done(new Error(err));
 
 				assert(response.body instanceof Array);
@@ -126,7 +150,10 @@ describe('API scaffold routes', function() {
 		});
 
 		it('should not bind blueprint actions to singular controller names', function(done) {
-			httpHelper.testRoute('get', {url: 'empty', json: true}, function(err, response) {
+			httpHelper.testRoute('get', {
+				url: 'empty',
+				json: true
+			}, function(err, response) {
 				if (err) done(new Error(err));
 
 				assert(response.body instanceof Object);
