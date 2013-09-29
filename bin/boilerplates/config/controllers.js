@@ -5,11 +5,11 @@
  * certain routes automatically. These dynamically generated routes are called blueprints.
  *
  * These settings are for the global configuration of controllers & blueprint routes.
- * You may also override these settings on a per-controller basis by defining a 'blueprint'
- * config object in any of your controller files, e.g.:
+ * You may also override these settings on a per-controller basis by defining a '_config'
+ * key in any of your controller files, and assigning it an object, e.g.:
  * {
  *     // ...
- *     blueprint: { rest: false }
+ *     _config: { blueprints: { rest: false } }
  *     // ...
  * }
  *
@@ -26,8 +26,8 @@ module.exports.controllers = {
    * or your controllers' `find`, `create`, `update`, and `destroy` actions.
    *
    * It's important to realize that, even if you haven't defined these yourself, as long as
-   * a model exists with the same name as the controller, Sails will respond with a reasonable 
-   * default JSON API, including support for sort, pagination, and filtering.
+   * a model exists with the same name as the controller, Sails will respond with built-in CRUD
+   * logic in the form of a JSON API, including support for sort, pagination, and filtering.
   */
   blueprints: {
 
@@ -142,8 +142,9 @@ module.exports.controllers = {
    * `jsonp`
    *
    * If enabled, allows built-in CRUD methods to support JSONP for cross-domain requests.
+   *
    * Example usage (REST blueprint + UserController):
-   * `GET /user?name=ciaran&limit=10&callback=?`
+   * `GET /user?name=ciaran&limit=10&callback=receiveJSONPResponse`
    *
    * Defaults to false.
    */
