@@ -35,7 +35,13 @@ module.exports[403] = function badRequest(message, req, res) {
     return res.json(result, result.status);
   }
 
-  res.status(result.status).render(viewFilePath, result, function (err) {
+  // Set status code and view locals
+  res.status(result.status);
+  for (var key in result) {
+    res.locals[key] = result[key];
+  }
+  // And render view
+  res.render(viewFilePath, result, function (err) {
     // If the view doesn't exist, or an error occured, send json
     if (err) { return res.json(result, result.status); }
     

@@ -15,6 +15,7 @@ module.exports[404] = function pageNotFound(req, res) {
    * the same interface for receiving socket messages.
    */
 
+  var viewFilePath = '404';
   var statusCode = 404;
   var result = {
     status: statusCode
@@ -25,8 +26,8 @@ module.exports[404] = function pageNotFound(req, res) {
     return res.json(result, result.status);
   }
 
-  var viewFilePath = '404';
-  res.status(result.status).render(viewFilePath, result, function (err) {
+  res.status(result.status);
+  res.render(viewFilePath, function (err) {
     // If the view doesn't exist, or an error occured, send json
     if (err) { return res.json(result, result.status); }
 
