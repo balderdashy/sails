@@ -18,7 +18,7 @@ if(argv.port){
   sails.config.port = argv.port;
 }
 
-require('../lib/configuration')(sails).load(function (err) {
+require('../lib/configuration')(sails).load(function (err, config) {
   if (err) throw new Error(err);
 
 
@@ -30,8 +30,7 @@ require('../lib/configuration')(sails).load(function (err) {
     newSailsApp = require('./new.js')(sails);
 
 
-
-  // If coffeescript is not installed, fail silently
+  // If coffeescript is not installed, ignore silently
   try {
     require('coffee-script');
     sails.log.verbose('Enabling CoffeeScript...');
