@@ -9,9 +9,11 @@
  */
 %>
   /**
-   * /<%= entity.toLowerCase() %>/<%= action %>
-   */ 
-  <%- action %>: function (req, res) {
+   * Action blueprints:
+   *    `/<%= entity.toLowerCase() %>/<%= action %>`
+   *<% if (action === 'index') { %>    `/<%= entity.toLowerCase() %>`
+   */<% } else { %>/<% } %>
+   <%- action %>: function (req, res) {
     <% if ( typeof verbose !== 'undefined') { %>
     /*
      * NOTE: This function is Sails middleware-- that means that not only do `req` and `res`
@@ -33,6 +35,7 @@
     // Redirect to another route:
     // return res.redirect('/foo/bar')
     <% } %>
+    // Send a JSON response
     return res.json({
       hello: 'world'
     });

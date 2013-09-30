@@ -22,7 +22,7 @@
  *                 You can configure the blueprint URLs which trigger these actions (`config/controllers.js`)
  *                 and/or override them with custom routes (`config/routes.js`)
  *
- *                 NOTE: The code you write here works supports both HTTP and Socket.io automatically.
+ *                 NOTE: The code you write here supports both HTTP and Socket.io automatically.
  *
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
@@ -44,4 +44,11 @@ module.exports = {
   <%- actions %>
 
 
+  /**
+   * Overrides for the settings in `config/controllers.js`
+   * (specific to <%= entity %>Controller)
+   */
+  _config: {}
+
+  
 };
