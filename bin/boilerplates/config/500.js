@@ -20,8 +20,9 @@ module.exports[500] = function serverErrorOccurred(errors, req, res) {
    * the same interface for receiving socket messages.
    */
 
-  var viewFilePath = '500';
-  var statusCode = 500;
+  var viewFilePath = '500',
+      statusCode = 500,
+      i, errorToLog, errorToJSON;
 
   var result = {
     status: statusCode
@@ -30,10 +31,21 @@ module.exports[500] = function serverErrorOccurred(errors, req, res) {
   // Normalize a {String|Object|Error} or array of {String|Object|Error} 
   // into an array of proper, readable {Error}
   var errorsToDisplay = sails.util.normalizeErrors(errors);
+  for (i in errorsToDisplay) {
 
-  // Log error(s)
-  for (var e in errorsToDisplay) {
-    sails.log.error('Server (500)',errorsToDisplay[e]);
+    // Log error(s) as clean `stack`
+    // (avoids ending up with \n, etc.)
+    if ( errorsToDisplay[i].original ) {
+      errorToLog = sails.util.inspect(errorsToDisplay[i].original);
+    }
+    else {
+      errorToLog = errorsToDisplay[i].stack;
+    }
+    sails.log.error('Server Error (500)\n', errorToLog);
+
+    // Use original error if it exists
+    errorToJSON = errorsToDisplay[i].original || errorsToDisplay[i].message;
+    errorsToDisplay[i] = errorToJSON;
   }
 
   // Only include errors if application environment is set to 'development'
