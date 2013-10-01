@@ -33,7 +33,7 @@ module.exports[500] = function serverErrorOccurred(errors, req, res) {
 
   // Log error(s)
   for (var e in errorsToDisplay) {
-    sails.log.error('Server (500)',errorsToDisplay[e].stack);
+    sails.log.error('Server (500)',errorsToDisplay[e]);
   }
 
   // Only include errors if application environment is set to 'development'
