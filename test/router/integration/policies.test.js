@@ -34,7 +34,7 @@ describe('router :: ', function() {
 				fs.writeFileSync(path.resolve('../', appName, 'config/policies.js'), config);
 			});
 
-			it('should return a 500 status code', function(done) {
+			it('should return a 500 status code and message using default error handling in config/500.js', function(done) {
 				httpHelper.testRoute('get', {
 					url: 'test',
 					headers: {
@@ -44,19 +44,6 @@ describe('router :: ', function() {
 				}, function(err, response) {
 					if (err) return done(new Error(err));
 					assert.equal(response.statusCode, 500);
-					done();
-				});
-			});
-
-			it('should return default blueprint error', function(done) {
-				httpHelper.testRoute('get', {
-					url: 'test',
-					headers: {
-						'Content-Type': 'application/json'
-					},
-					json: true
-				}, function(err, response) {
-					if (err) return done(new Error(err));
 					assert(response.body instanceof Object);
 					assert(response.body.errors instanceof Array);
 					assert.equal(response.body.errors[0].message, 'Test Error');
