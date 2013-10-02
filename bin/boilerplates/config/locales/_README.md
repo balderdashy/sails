@@ -11,12 +11,13 @@ Here is an example locale stringfile for the Spanish language (`config/locales/e
 }
 ```
 ## Usage
-Locales can be accessed through either `res.i18n()`, or in views through the `i18n()` function.
+Locales can be accessed in controllers/policies through `res.i18n()`, or in views through the `__(key)` or `i18n(key)` functions.
 Remember that the keys are case sensitive and require exact key matches, e.g.
 
 ```ejs
-<h1> <%= i18n('Hello!') %> </h1>
-<h1> <%= i18n('Hello %s, how are you today?', 'Mike') %> </h1>
+<h1> <%= __('Welcome to PencilPals!') %> </h1>
+<h2> <%= i18n('Hello %s, how are you today?', 'Pencil Maven') %> </h2>
+<p> <%= i18n('That\'s right-- you can use either i18n() or __()') %> </p>
 ```
 
 ## Configuration
