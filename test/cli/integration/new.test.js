@@ -221,7 +221,9 @@ function checkGeneratedFiles(appName, templateLang) {
 		'config/views.js',
 		'config/locales/_README.md',
 		'config/locales/en.json',
-		'config/locales/es.json'
+		'config/locales/es.json',
+		'config/locales/fr.json',
+		'config/locales/de.json'
 	];
 
 	// Add template files of the specified language
