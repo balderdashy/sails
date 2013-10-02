@@ -46,7 +46,7 @@ describe('router :: ', function() {
 					assert.equal(response.statusCode, 500);
 					assert(response.body instanceof Object);
 					assert(response.body.errors instanceof Array);
-					assert.equal(response.body.errors[0].message, 'Test Error');
+					assert.equal(response.body.errors[0], 'Test Error');
 					done();
 				});
 			});
@@ -85,8 +85,7 @@ describe('router :: ', function() {
 						assert.equal(response.body.status, 500);
 
 						// Assert that response has the proper error message
-						assert.equal(response.body.errors[0].message, 'Test Error');
-						// console.log( 'body :: ',response.body );
+						assert.equal(response.body.errors[0], 'Test Error');
 						done();
 					});
 				});
