@@ -116,7 +116,7 @@ describe('router :: ', function() {
 			before(function() {
 				var policy = {
 					'test': {
-						'index': ['fake_auth', 'authenticated']
+						'index': ['fake_auth', 'isAuthenticated']
 					}
 				};
 
@@ -146,7 +146,7 @@ describe('router :: ', function() {
 			before(function() {
 				var policy = {
 					'test': {
-						'*': ['fake_auth', 'authenticated']
+						'*': ['fake_auth', 'isAuthenticated']
 					}
 				};
 
