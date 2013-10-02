@@ -11,7 +11,7 @@ Here is an example locale stringfile for the Spanish language (`config/locales/e
 }
 ```
 ## Usage
-Locales can be accessed through either `res.i18n()`, or in views through the `i18n()` function.
+Locales can be accessed in controllers/policies through `res.i18n()`, or in views through the `i18n()` function.
 Remember that the keys are case sensitive and require exact key matches, e.g.
 
 ```ejs
