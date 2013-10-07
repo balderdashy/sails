@@ -41,7 +41,8 @@ module.exports[500] = function serverErrorOccurred(errors, req, res) {
     else {
       errorToLog = errorsToDisplay[i].stack;
     }
-    sails.log.error('Server Error (500)\n', errorToLog);
+    sails.log.error('Server Error (500)');
+    sails.log.error(errorToLog);
 
     // Use original error if it exists
     errorToJSON = errorsToDisplay[i].original || errorsToDisplay[i].message;
