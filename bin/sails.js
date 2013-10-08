@@ -81,7 +81,7 @@ require('../lib/configuration')(sails).load(function (err, config) {
 
     sails.lift({
       log: {
-        level: 'silent'
+        level: 'error'
       }
     }, function () {
       repl = require("repl").start("sails> ");
