@@ -51,7 +51,6 @@ describe('Configs', function() {
 
 		it('should retain legacy `config.adapters` for backwards compat.', function() {
 			var legacyConfig = config.adapters;
-			console.log(config.adapters);
 			assert(legacyConfig.default.module === 'sails-disk');
 			assert(legacyConfig.custom && legacyConfig.custom.module === 'sails-disk');
 			assert(legacyConfig.sqlite.module === 'sails-sqlite');
@@ -60,12 +59,12 @@ describe('Configs', function() {
 		});
 
 		// it('should load connection configs', function() {
-		// 	var connectionConfig = config.connections;
-		// 	assert(legacyConfig.default.module === 'sails-disk');
-		// 	assert(legacyConfig.custom && legacyConfig.custom.module === 'sails-disk');
-		// 	assert(legacyConfig.sqlite.module === 'sails-sqlite');
-		// 	assert(legacyConfig.sqlite.host === 'sqliteHOST');
-		// 	assert(legacyConfig.sqlite.user === 'sqliteUSER');
+		// 	var connectionsConfig = config.connections;
+		// 	assert(config.model.adapter === 'sails-disk');
+		// 	assert(connectionsConfig.custom && connectionsConfig.custom.module === 'sails-disk');
+		// 	assert(connectionsConfig.sqlite.module === 'sails-sqlite');
+		// 	assert(connectionsConfig.sqlite.host === 'sqliteHOST');
+		// 	assert(connectionsConfig.sqlite.user === 'sqliteUSER');
 		// });
 
 		
