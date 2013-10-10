@@ -163,9 +163,9 @@ Join us on IRC at #sailsjs on freenode
 
 Version, Dependencies and Compatibility
 --
-#### Latest stable release: `v0.9.4`
+#### Latest stable release: `v0.9.7`
 
-Tested with node v0.8.22 and v0.10.x
+Tested with node versions 0.8.22 and 0.10.x
 Sails is built on the rock-solid foundations of ExpressJS and Socket.io.  
 
 ### [Roadmap](https://github.com/balderdashy/sails-wiki/blob/0.9/roadmap.md)
