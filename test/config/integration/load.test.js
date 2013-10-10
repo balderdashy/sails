@@ -51,7 +51,6 @@ describe('Configs', function() {
 
 		it('should retain legacy `config.adapters` for backwards compat.', function() {
 			var legacyConfig = config.adapters;
-			assert(legacyConfig.default.module === 'sails-disk');
 			assert(legacyConfig.custom && legacyConfig.custom.module === 'sails-disk');
 			assert(legacyConfig.sqlite.module === 'sails-sqlite');
 			assert(legacyConfig.sqlite.host === 'sqliteHOST');
