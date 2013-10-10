@@ -1,7 +1,7 @@
 {
   "name": "sails",
   "author": "Mike McNeil <mike@balderdash.co>",
-  "version": "0.10.pre",
+  "version": "0.10.0",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
   "homepage": "http://sailsjs.com",
   "keywords": [
@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "waterline": "git://github.com/balderdashy/waterline.git#associations",
-    "sails-disk": "~0.9.0",
+    "sails-disk": "https://github.com/balderdashy/sails-disk.git#associations",
     "express": "3.4.0",
     "socket.io": "0.9.14",
     "connect-redis": "1.4.5",
