@@ -51,8 +51,7 @@ describe('Configs', function() {
 
 		it('should load adapter configs', function() {
 			var conf = config.adapters;
-			assert(conf.
-				default.module === 'sails-disk');
+			assert(conf.default.module === 'sails-disk');
 			assert(conf.custom && conf.custom.module === 'sails-disk');
 			assert(conf.sqlite.module === 'sails-sqlite');
 			assert(conf.sqlite.host === 'sqliteHOST');
