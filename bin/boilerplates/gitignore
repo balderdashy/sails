@@ -1,10 +1,6 @@
-# ::::::::::::::::::::::::::::::::::::::::::::::::::::
-# ::::::::::::::::::::::::::::::::::::::::::::::::::::
-# ::::::::::::::::::::::::::::::::::::::::::::::::::::
-# .gitignore
-# ::::::::::::::::::::::::::::::::::::::::::::::::::::
-# ::::::::::::::::::::::::::::::::::::::::::::::::::::
-# ::::::::::::::::::::::::::::::::::::::::::::::::::::
+################################################
+###############  .gitignore   ##################
+################################################
 #
 # This file is only relevant if you are using git.
 #
@@ -12,17 +8,14 @@
 # be ignored by git.  This keeps random crap and
 # and sensitive credentials from being uploaded to 
 # your repository.  It allows you to configure your
-# app for your machine without accidentally committing
-# settings which will smash the local settings of other
-# developers on your team. 
+# app for your machine without accidentally
+# committing settings which will smash the local 
+# settings of  other developers on your team. 
 #
-# Some reasonable defaults are included below.
-# Feel free to change as you like!
-# 
-#
-# ::::::::::::::::::::::::::::::::::::::::::::::::::::
-# ::::::::::::::::::::::::::::::::::::::::::::::::::::
-# ::::::::::::::::::::::::::::::::::::::::::::::::::::
+# Some reasonable defaults are included below,
+# but, of course, you should modify/extend/prune
+# to fit your needs!
+################################################
 
 
 
