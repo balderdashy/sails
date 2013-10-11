@@ -16,45 +16,45 @@ fs.existsSync = fs.existsSync || path.existsSync;
  * about setting up the fixtures.
  */
 
-module.exports.build = function(/* [appName], done */) {
-  var args = Array.prototype.slice.call(arguments),
-      done = args.pop(),
-      appName = 'testApp';
+module.exports.build = function( /* [appName], done */ ) {
+	var args = Array.prototype.slice.call(arguments),
+		done = args.pop(),
+		appName = 'testApp';
 
-  // Allow App Name to be optional
-  if(args.length > 0) appName = args[0];
+	// Allow App Name to be optional
+	if (args.length > 0) appName = args[0];
 
-  // Cleanup old test fixtures
-  if (fs.existsSync(appName)) {
-    wrench.rmdirSyncRecursive(path.resolve('./', appName));
-  }
+	// Cleanup old test fixtures
+	if (fs.existsSync(appName)) {
+		wrench.rmdirSyncRecursive(path.resolve('./', appName));
+	}
 
-  exec(sailsBin + ' new ' + appName, function(err) {
-    if (err) done(err);
+	exec(sailsBin + ' new ' + appName, function(err) {
+		if (err) return done(err);
 
-    var fixtures = wrench.readdirSyncRecursive('./test/router/integration/fixtures');
-    if(fixtures.length < 1) return done();
+		var fixtures = wrench.readdirSyncRecursive('./test/router/integration/fixtures');
+		if (fixtures.length < 1) return done();
 
-    // If fixtures copy them to the test app
-    fixtures.forEach(function(file) {
-      var filePath = path.resolve('./test/router/integration/fixtures/', file);
+		// If fixtures copy them to the test app
+		fixtures.forEach(function(file) {
+			var filePath = path.resolve('./test/router/integration/fixtures/', file);
 
-      // Check if file is a directory
-      var stat = fs.statSync(filePath);
+			// Check if file is a directory
+			var stat = fs.statSync(filePath);
 
-      // Ignore directories
-      if(stat.isDirectory()) return;
+			// Ignore directories
+			if (stat.isDirectory()) return;
 
-      // Copy File to Test App
-      var data = fs.readFileSync(filePath);
+			// Copy File to Test App
+			var data = fs.readFileSync(filePath);
 
-      // Create file and any missing parent directories in its path
-      fs.createFileSync(path.resolve('./', appName, file), data);
-      fs.writeFileSync(path.resolve('./', appName, file), data);
-    });
+			// Create file and any missing parent directories in its path
+			fs.createFileSync(path.resolve('./', appName, file), data);
+			fs.writeFileSync(path.resolve('./', appName, file), data);
+		});
 
-    done();
-  });
+		return done();
+	});
 };
 
 
@@ -63,10 +63,9 @@ module.exports.build = function(/* [appName], done */) {
  */
 
 module.exports.teardown = function(appName) {
-  appName = appName ? appName : 'testApp';
-  var dir = path.resolve('./', appName);
-  if (fs.existsSync(dir)) {
-    wrench.rmdirSyncRecursive(dir);
-  }
+	appName = appName ? appName : 'testApp';
+	var dir = path.resolve('./', appName);
+	if (fs.existsSync(dir)) {
+		wrench.rmdirSyncRecursive(dir);
+	}
 };
-

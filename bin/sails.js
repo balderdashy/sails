@@ -18,7 +18,7 @@ if(argv.port){
   sails.config.port = argv.port;
 }
 
-require('../lib/configuration')(sails).load(function (err) {
+require('../lib/configuration')(sails).load(function (err, config) {
   if (err) throw new Error(err);
 
 
@@ -30,8 +30,7 @@ require('../lib/configuration')(sails).load(function (err) {
     newSailsApp = require('./new.js')(sails);
 
 
-
-  // If coffeescript is not installed, fail silently
+  // If coffeescript is not installed, ignore silently
   try {
     require('coffee-script');
     sails.log.verbose('Enabling CoffeeScript...');
@@ -66,7 +65,7 @@ require('../lib/configuration')(sails).load(function (err) {
 
 
   // Start this app
-  if (argv._[0] && _.contains(['lift', 'raise', 'launch', 'start', 'server', 'run', 's', 'l'], argv._[0])) {
+  if (argv._[0] && _.contains(['lift', 'raise', 'start', 'server', 's', 'l'], argv._[0])) {
 
     require('./lift.js')(sails)(argv);
   }
@@ -256,6 +255,48 @@ require('../lib/configuration')(sails).load(function (err) {
     return sails.build();
   }
 
+  /**
+   * Run a management command. Management commands should take a single callback argument.
+   * 
+   * Usage: sails issue <foo>
+   *    – where <foo> is exported from <sails.config.appPath>/commands
+   */
+  else if (argv._[0].match(/^(issue|run)$/)) {
+
+    verifyArg(1, 'Please specify the name of the command to run: e.g.\n sails run <command>');
+
+    var command = argv._[1],
+        commands;
+
+    try {
+      commands = require(sails.config.appPath + '/commands');
+    } catch(e) {
+      sails.log.error('\nModule not found. Tips:\n' +
+        '* Make sure to run this command from your app path where app.js is located.\n' +
+        '* Make sure commands/index.js" exists at your app root.');
+      process.exit(e.code);
+    }
+
+    if (!_.has(commands, command)) {
+      sails.log.error('Command not found. Does ' + sails.config.appPath + '/commands/index.js export "' + command + '"?');
+      process.exit(1);
+    }
+
+    sails.lift({
+      log: {
+        level: 'silent'
+      }
+    }, function () {
+      sails.log.verbose('Issuing task "' + command + '"...');
+      commands[command](function() {
+        sails.log.verbose('Crew successfully carried out their task: "' + command + '"!');
+        process.exit();
+      });
+    });
+
+    return;
+  }
+
   // Unknown command, print out usage
   else {
     console.log('');
@@ -271,16 +312,19 @@ require('../lib/configuration')(sails).load(function (err) {
     }
 
     var usage = 'Usage: sails <command>\n\n';
-    usage += leftColumn('sails lift') + 'Run this Sails app (in the current dir)\n';
-    usage += leftColumn('  [--dev]') + 'with development environment specified \n';
-    usage += leftColumn('  [--prod]') + 'with production environment specified \n';
+    usage += leftColumn('sails lift') + 'Run the Sails app in the current dir (if node_modules/sails exists, it will be used instead of the global install)\n';
+    usage += leftColumn('  [--dev]') + 'in development environment \n';
+    usage += leftColumn('  [--prod]') + 'in production environment \n';
+    usage += leftColumn('  [--port 9000]') + 'on port 9000 \n';
+    usage += leftColumn('  [--verbose]') + 'with verbose logging enabled \n';
     usage += leftColumn('sails console') + 'Run this Sails app (in the current dir & in interactive mode.)\n';
     usage += leftColumn('sails new <appName>') + 'Create a new Sails project in a folder called <appName>\n';
     usage += leftColumn('sails new <appName> --linker') + 'Create a new Sails project in a folder called <appName>, using automatic asset linking\n';
     usage += leftColumn('sails generate <foo>') + 'Generate api/models/Foo.js and api/controllers/FooController.js\n';
     usage += leftColumn('sails generate model <foo>') + 'Generate api/models/Foo.js\n';
     usage += leftColumn('sails generate controller <foo>') + 'Generate api/controllers/FooController.js\n';
-    usage += leftColumn('sails version') + 'Get the current globally installed Sails version';
+    usage += leftColumn('sails version') + 'Get the current globally installed Sails version\n';
+    usage += leftColumn('sails run <command>') + 'Run a management command (exported by YOUR_APP/commands/index.js)';
 
     sails.log.info(usage);
   }

@@ -9,6 +9,12 @@ module.exports = {
 		fs.writeFileSync('config/routes.js', 'module.exports.routes = ' + JSON.stringify(routes));
 	},
 
+	// Write routes object to blueprint config file
+	writeBlueprint: function(config) {
+		config = {controllers: {blueprints: config}};
+		fs.writeFileSync('config/controllers.js', 'module.exports = ' + JSON.stringify(config));
+	},
+
 	// Starts sails server, makes request, returns response, kills sails server
 	testRoute: function(method, options, callback) {
 
@@ -22,20 +28,42 @@ module.exports = {
 		// Start the sails server process
 		var sailsprocess = spawn('../bin/sails.js', ['lift', '--dev']);
 
+		sailsprocess.on('error',function(err) {
+			return callback(err);
+		});
+
+		// Catch stderr messages 
+		sailsprocess.stderr.on('data', function (data) {
+			// Change buffer to string, then error
+			var dataString = (data + '');
+
+			// Share error with user running tests
+			console.error(dataString);
+
+			// In some cases, fire cb w/ error (automatically failing test)
+			// var err = new Error( dataString );
+			// throw err;
+		});
+
+
 		sailsprocess.stdout.on('data',function(data) {
+
 			// Change buffer to string
 			var dataString = data + '';
 
 			// Make request once server has sucessfully started
 			if (dataString.match(/Server lifted/)) {
 				sailsprocess.stdout.removeAllListeners('data');
-				request[method](options, function(err, response) {
-					if (err) callback(err);
+				sailsprocess.stderr.removeAllListeners('data');
+				setTimeout(function () {
+					request[method](options, function(err, response) {
+						if (err) return callback(err);
 
-					// Kill server process and return response
-					sailsprocess.kill();
-					callback(null, response);
-				});
+						// Kill server process and return response
+						sailsprocess.kill();
+						callback(null, response);
+					});
+				}, 1000);
 			}
 		});
 	}

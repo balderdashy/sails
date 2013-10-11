@@ -3,10 +3,10 @@ module.exports.session = {
 	// Session secret is automatically generated when your new app is created
 	// It can be easily replaced here:
 	secret: '1234567',
-  
-  // Session store configuration
-  adapter: 'memory',
-  key: "sails.sid"
+
+	// Session store configuration
+	adapter: 'memory',
+	key: "sails.sid"
 
 	// In production, uncomment the following lines to set up a shared redis session store
 	// that can be shared across multiple Sails.js servers

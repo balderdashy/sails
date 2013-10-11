@@ -1,8 +1,29 @@
-var assert = require('assert');
-var fs = require('fs');
-var wrench = require('wrench');
-var exec = require('child_process').exec;
-var _ = require('lodash');
+/**
+ * Module dependencies
+ */
+var assert	= require('assert'),
+	fs		= require('fs'),
+	wrench	= require('wrench'),
+	exec	= require('child_process').exec,
+	_		= require('lodash'),
+	util	= require('util');
+
+
+
+/**
+ * Module errors
+ */
+var Err = {
+	UnexpectedGeneratedFiles: function (diff) {
+		return new Error('Generated files don\'t match expected files.\n' + 
+			'Diff ::\n' +
+			util.inspect(diff)
+		);
+	}
+};
+
+
+
 
 describe('New app generator', function() {
 	var sailsbin = './bin/sails.js';
@@ -148,6 +169,7 @@ describe('New app generator', function() {
 });
 
 function checkGeneratedFiles(appName, templateLang) {
+	
 	var expectedFiles = [
 		'.gitignore',
 		'api',
@@ -166,7 +188,7 @@ function checkGeneratedFiles(appName, templateLang) {
 		'api/adapters/.gitkeep',
 		'api/controllers/.gitkeep',
 		'api/models/.gitkeep',
-		'api/policies/authenticated.js',
+		'api/policies/isAuthenticated.js',
 		'api/services/.gitkeep',
 		'assets/favicon.ico',
 		'assets/images',
@@ -179,6 +201,8 @@ function checkGeneratedFiles(appName, templateLang) {
 		'assets/js/sails.io.js',
 		'assets/js/socket.io.js',
 		'assets/styles/.gitkeep',
+		'config/400.js',
+		'config/403.js',
 		'config/404.js',
 		'config/500.js',
 		'config/adapters.js',
@@ -197,7 +221,9 @@ function checkGeneratedFiles(appName, templateLang) {
 		'config/views.js',
 		'config/locales/_README.md',
 		'config/locales/en.json',
-		'config/locales/es.json'
+		'config/locales/es.json',
+		'config/locales/fr.json',
+		'config/locales/de.json'
 	];
 
 	// Add template files of the specified language
@@ -207,6 +233,7 @@ function checkGeneratedFiles(appName, templateLang) {
 
 		templateFiles = [
 			'views/404.ejs',
+			'views/403.ejs',
 			'views/500.ejs',
 			'views/home',
 			'views/layout.ejs',
@@ -217,6 +244,7 @@ function checkGeneratedFiles(appName, templateLang) {
 
 		templateFiles = [
 			'views/404.jade',
+			'views/403.jade',
 			'views/500.jade',
 			'views/home',
 			'views/layout.jade',
@@ -238,9 +266,31 @@ function checkGeneratedFiles(appName, templateLang) {
 
 	expectedFiles = expectedFiles.concat(templateFiles);
 
+	// Read actual generated files from disk
 	var files = wrench.readdirSyncRecursive(appName);
-	files = _.reject(files, function(f) { return f.match(/^node_modules/) });
 
-	return files.length == expectedFiles.length && _.difference(files, expectedFiles).length == 0;
+	// Disregard stupid files
+	// (fs-specific, OS-specific, editor-specific, yada yada)
+	files = _.reject(files, function(f) {
+		return f.match(/^node_modules/) || f.match(/.DS_Store/gi) || f.match(/\*~$/); 
+	});
+
+	// Generate diff
+	var diff = _.difference(files, expectedFiles);
+
+	// Uneven # of files
+	if (files.length !== expectedFiles.length) {
+		throw Err.UnexpectedGeneratedFiles(diff);
+		// return false;
+	}
+
+	// Files don't match
+	if (diff.length !== 0) {
+		throw Err.UnexpectedGeneratedFiles(diff);
+		// return false;
+	}
+
+	// Everything's ok!
+	return true;
 
 }

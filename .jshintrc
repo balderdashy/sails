@@ -22,7 +22,12 @@
   "loopfunc": true,
 
   // Suppress warnings about using assignments where conditionals are expected
-  "boss": true
+  "boss": true,
+
+  // Suppress warnings about "weird constructions"
+  // i.e. allow code like:
+  //  (new (function OneTimeUsePrototype () { } ))
+  "supernew": true
 
   // "bitwise": true,
   // "camelcase": true,

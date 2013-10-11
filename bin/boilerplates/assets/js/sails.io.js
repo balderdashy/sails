@@ -1,11 +1,10 @@
 /**
  * sails.io.js
  *
- * This file is completely optional, and merely here for your convenience.
+ * This file allows you to send and receive socket.io messages to & from Sails 
+ * by simulating a REST client interface on top of socket.io.
  *
- * It reduces the amount of browser code necessary to send and receive messages
- * to & from Sails by simulating a REST client interface on top of socket.io.
- * It models its API after the pattern in jQuery you might be familiar with.
+ * It models its API after the $.ajax pattern from jQuery you might be familiar with.
  * 
  * So to switch from using AJAX to Socket.io, instead of:
  *    `$.post( url, [data], [cb] )`

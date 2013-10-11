@@ -7,7 +7,9 @@ module.exports = function (sails) {
 
 	var _			= require( 'lodash' ),
 		utils		= require( './utils' )(sails),
-		fs			= utils.fs;
+		fs			= utils.fs,
+		pluralize	= require('pluralize');
+
 
 	/**
 	 * Expose new instance of `Generator`
@@ -29,8 +31,8 @@ module.exports = function (sails) {
 			var newControllerPath = sails.config.paths.controllers + '/' + utils.capitalize(entity) + 'Controller.js';
 			var newFederatedControllerPath = sails.config.paths.controllers + '/' + entity;
 
-			utils.verifyDoesntExist(newControllerPath, "A controller already exists at: " + newControllerPath);
-			utils.verifyDoesntExist(newFederatedControllerPath, "A controller already exists at: " + newFederatedControllerPath);
+			utils.verifyDoesntExist(newControllerPath, 'A controller already exists at: ' + newControllerPath);
+			utils.verifyDoesntExist(newFederatedControllerPath, 'A controller already exists at: ' + newFederatedControllerPath);
 
 			// Federated controller
 			if (options && (options.f || options.federated)) {
@@ -38,26 +40,29 @@ module.exports = function (sails) {
 				utils.generateDir('./' + newFederatedControllerPath);
 				_.each(options.actions, function(action) {
 
-					action = utils.verifyValidEntity(action, "Invalid action name: " + action);
+					action = utils.verifyValidEntity(action, 'Invalid action name: ' + action);
 
 					return generate({
 						boilerplate: 'federatedAction.ejs',
 						prefix: sails.config.paths.controllers + '/' + entity,
 						entity: entity,
+						identity: entity.toLowerCase(),
+						pluralIdentity: pluralize(entity),
 						action: action,
 						viewEngine: sails.config.views.engine,
 						viewPath: require('underscore.string').rtrim(sails.config.paths.views, '/'),
 						baseurl: '/' + entity,
-						suffix: ".js"
+						suffix: '.js'
 					});
 				});
 			}
 			// Monolithic controller
 			else {
-				var actions = "";
+				var actions = '';
 
 				// Add each requested function
 				if (options && options.actions) {
+					var i = 0;
 					_.each(options.actions, function(action) {
 						var fnString = utils.renderBoilerplateTemplate('action.ejs', {
 							action: action,
@@ -67,19 +72,26 @@ module.exports = function (sails) {
 							baseurl: '/' + entity
 						});
 
-						// If this is not the first action, add a comma
-						if (actions !== "") {
-							fnString = ',\n\n' + fnString;
+						// Append a comma, unless this is the last
+						if (options.actions.length !== i) {
+							
+							fnString = fnString + ',\n\n';
+
+							// Append the action to the code string
+							actions += fnString;
 						}
-						actions += fnString;
+						i++;
+							
 					});
 				}
 				return generate({
 					boilerplate: 'controller.ejs',
 					prefix: sails.config.paths.controllers,
 					entity: utils.capitalize(entity),
+					identity: entity.toLowerCase(),
+					pluralIdentity: pluralize(entity),
 					actions: actions,
-					suffix: "Controller.js"
+					suffix: 'Controller.js'
 				});
 			}
 		};
@@ -93,12 +105,12 @@ module.exports = function (sails) {
 		 */
 
 		this.generateModel = function (entity, options) {
-			var attributes = "";
+			var attributes = '';
 
 			// Add each requested attribute
 			if (options && options.attributes) {
 				_.each(options.attributes, function(attribute) {
-					attribute.name = utils.verifyValidEntity(attribute.name, "Invalid attribute: " + attribute.name);
+					attribute.name = utils.verifyValidEntity(attribute.name, 'Invalid attribute: ' + attribute.name);
 
 					var fnString = utils.renderBoilerplateTemplate('attribute.ejs', {
 						attribute: attribute,
@@ -109,7 +121,7 @@ module.exports = function (sails) {
 					});
 
 					// If this is not the first attribute, add a comma
-					if (attributes !== "") {
+					if (attributes !== '') {
 						fnString = ',\n\n' + fnString;
 					}
 					attributes += fnString;
@@ -120,7 +132,7 @@ module.exports = function (sails) {
 				prefix: sails.config.paths.models,
 				entity: utils.capitalize(entity),
 				attributes: attributes,
-				suffix: ".js"
+				suffix: '.js'
 			});
 		};
 
@@ -136,7 +148,7 @@ module.exports = function (sails) {
 				boilerplate: 'adapter.ejs',
 				prefix: sails.config.paths.adapters,
 				entity: utils.capitalize(entity),
-				suffix: "Adapter.js"
+				suffix: 'Adapter.js'
 			});
 		};
 
@@ -153,7 +165,7 @@ module.exports = function (sails) {
 			utils.generateDir(viewPath);
 
 			_.each(options.actions, function(action) {
-				action = utils.verifyValidEntity(action, "Invalid view name: " + action);
+				action = utils.verifyValidEntity(action, 'Invalid view name: ' + action);
 
 				return generate({
 					boilerplate: 'view.' + sails.config.views.engine,

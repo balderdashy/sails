@@ -1,23 +1,41 @@
 <!DOCTYPE html>
 <!-- 
-  ____   ___   ___  
- | ___| / _ \ / _ \ 
- |___ \| | | | | | |
-  ___) | |_| | |_| |
- |____/ \___/ \___/
+                                                         
+                                                         
+555555555555555555      000000000          000000000     
+5::::::::::::::::5    00:::::::::00      00:::::::::00   
+5::::::::::::::::5  00:::::::::::::00  00:::::::::::::00 
+5:::::555555555555 0:::::::000:::::::00:::::::000:::::::0
+5:::::5            0::::::0   0::::::00::::::0   0::::::0
+5:::::5            0:::::0     0:::::00:::::0     0:::::0
+5:::::5555555555   0:::::0     0:::::00:::::0     0:::::0
+5:::::::::::::::5  0:::::0 000 0:::::00:::::0 000 0:::::0
+555555555555:::::5 0:::::0 000 0:::::00:::::0 000 0:::::0
+            5:::::50:::::0     0:::::00:::::0     0:::::0
+            5:::::50:::::0     0:::::00:::::0     0:::::0
+5555555     5:::::50::::::0   0::::::00::::::0   0::::::0
+5::::::55555::::::50:::::::000:::::::00:::::::000:::::::0
+ 55:::::::::::::55  00:::::::::::::00  00:::::::::::::00 
+   55:::::::::55      00:::::::::00      00:::::::::00   
+     555555555          000000000          000000000     
+                                                         
+                                                         
 
-This is the default "500: Server Error" page.
+  This is the default "500: Server Error" page.
+  User agents that don't "Accept" HTML will see a JSON version instead.
+  You can customize the control logic for your needs in `config/500.js`
 
-User agents that don't "Accept" HTML will see a JSON version instead.
-You can customize the control logic for your needs in `config/500.js`
-
-Sails responds to a request with a "500: Server Error" state when 
-either `next(err)` is called in a controller or policy, or your app 
-throws an error.
+  Sails considers a request in a "500: Server Error" state when 
+  your app throws a catchable error (not inside of an asynchronous callback).
+  
+  You can also trigger this response from one of your controllers or policies with:
+  `return res.serverError( e );`
+  (where `e` is an optional message, error, or array of errors to include in the response)
+  
 -->
 <html>
   <head>
-    <title>Unexpected Error Occurred</title>
+    <title>Server Error</title>
     <link href='http://sailsjs.org/styles/fonts.css' rel='stylesheet'/>
     <style>
     /* Styles included inline since you'll probably be deleting this page anyway */
@@ -46,7 +64,7 @@ throws an error.
          <pre class="error"><code>
         <%
           _.each(errors, function (error) { %>
-          <%= error.stack %>
+          <%= error %>
           <%
           }); %>
         </code></pre>
@@ -54,7 +72,7 @@ throws an error.
 
        <p class="error">
           A team of highly trained sea bass is working on this as we speak.<br/>
-          If the problem persists, please <a href="http://github.com/balderdashy/sails">contact the system administrator</a> and inform them of the time that the error occured, and anything you might have done that may have caused the error.
+          If the problem persists, please <a href="mailto://you@your-domain.com">contact the system administrator</a> and inform them of the time that the error occured, and anything you might have done that may have caused the error.
         </p> 
       <% } %>
         

@@ -39,14 +39,14 @@ html
           pre.error
             code
               - _.each(errors, function (error) {
-                = error.stack
+                = error
               - });
         else
           p.error
             | A team of highly trained sea bass is working on this as we speak.
             br
             | If the problem persists, please 
-            a(href="http://github.com/balderdashy/sails") contact the system administrator
+            a(href="mailto://you@your-domain.com") contact the system administrator
             |  and inform them of the time that the error occured, and anything you might have done that may have caused the error.
 
       .logo

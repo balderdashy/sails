@@ -1,7 +1,7 @@
 {
   "name": "sails",
   "author": "Mike McNeil <mike@balderdash.co>",
-  "version": "0.9.4",
+  "version": "0.9.7",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
   "homepage": "http://sailsjs.com",
   "keywords": [
@@ -29,7 +29,7 @@
   "dependencies": {
     "waterline": "~0.9.6",
     "sails-disk": "~0.9.0",
-    "express": "3.2.6",
+    "express": "3.4.0",
     "socket.io": "0.9.14",
     "connect-redis": "1.4.5",
     "connect-mongo": "0.3.2",
@@ -41,7 +41,7 @@
     "lodash": "1.2.1",
     "glob": "3.1.14",
     "underscore.string": "2.3.0",
-    "include-all": "~0.1.0",
+    "include-all": "0.1.2",
     "inflection": "1.2.5",
     "node-uuid": "1.4.0",
     "grunt": "0.4.1",
@@ -49,7 +49,7 @@
     "grunt-contrib-copy": "0.4.1",
     "grunt-contrib-clean": "0.4.1",
     "grunt-contrib-concat": "0.3.0",
-    "grunt-sails-linker": "~0.9.2",
+    "grunt-sails-linker": "git://github.com/Zolmeister/grunt-sails-linker.git",
     "grunt-contrib-jst": "0.5.0",
     "grunt-contrib-watch": "0.4.4",
     "grunt-contrib-uglify": "0.2.2",
@@ -57,7 +57,9 @@
     "grunt-contrib-less": "0.5.2",
     "grunt-contrib-coffee": "~0.7.0",
     "ejs": "0.8.4",
-    "ejs-locals": "1.0.2"
+    "ejs-locals": "1.0.2",
+    "connect-flash": "0.1.1",
+    "pluralize": "0.0.5"
   },
   "devDependencies": {
     "mocha": "*",

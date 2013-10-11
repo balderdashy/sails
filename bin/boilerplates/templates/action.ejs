@@ -9,12 +9,34 @@
  */
 %>
   /**
-   * /<%= entity.toLowerCase() %>/<%= action %>
-   */ 
-  <%- action %>: function (req,res) {
+   * Action blueprints:
+   *    `/<%= entity.toLowerCase() %>/<%= action %>`
+   *<% if (action === 'index') { %>    `/<%= entity.toLowerCase() %>`
+   */<% } else { %>/<% } %>
+   <%- action %>: function (req, res) {
+    <% if ( typeof verbose !== 'undefined') { %>
+    /*
+     * NOTE: This function is Sails middleware-- that means that not only do `req` and `res`
+     * work just like their Express equivalents for HTTP requests, they also simulate
+     * the same interface for receiving properly structured Socket.io messages.
+     */
 
-    // This will render the view: 
-    // <%- viewPath %>/<%-entity%>/<%- action %>.<%- viewEngine %>
-    res.view();
+    // Send JSON:
+    // return res.json({ foo: 'some data the client needs' });
 
+    // -OR-
+
+    // Render a view with some locals: 
+    // (<%- viewPath %>/<%-entity%>/<%- action %>.<%- viewEngine %>)
+    // return res.view({ foo: 'some data for the view' });
+
+    // -OR-
+
+    // Redirect to another route:
+    // return res.redirect('/foo/bar')
+    <% } %>
+    // Send a JSON response
+    return res.json({
+      hello: 'world'
+    });
   }

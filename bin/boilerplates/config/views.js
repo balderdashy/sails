@@ -22,6 +22,9 @@ module.exports.views = {
   // atpl, eco, ect, jazz, jqtpl, JUST, liquor, QEJS, 
   // swig, templayed, toffee, walrus, & whiskers
 
+  // For more options, check out the docs:
+  // https://github.com/balderdashy/sails-wiki/blob/0.9/config.views.md#engine
+
   engine: '<%= engine %>',
 
 
