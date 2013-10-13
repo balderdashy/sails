@@ -18,7 +18,27 @@ if(argv.port){
   sails.config.port = argv.port;
 }
 
-require('../lib/configuration')(sails).load(function (err, config) {
+
+// Load sails, not just config, because we need the moduleLoader
+// (since moduleLoader is now a hook)
+sails.load({
+
+  // Disable all the other hooks to make it load faster
+  hooks: {
+    request   : false,
+    orm     : false,
+    views   : false,
+    controllers : false,
+    sockets   : false,
+    pubsub    : false,
+    policies  : false,
+    csrf    : false,
+    cors    : false,
+    i18n    : false,
+    http    : false
+  }
+}, function (err) {
+// require('../lib/configuration')(sails).load(function (err, config) {
   if (err) throw new Error(err);
 
 
