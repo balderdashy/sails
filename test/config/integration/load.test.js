@@ -66,7 +66,7 @@ describe('Configs', function() {
 		// 	assert(connectionsConfig.sqlite.user === 'sqliteUSER');
 		// });
 
-		
+
 
 		it('should load application configs', function() {
 

@@ -244,7 +244,7 @@ require('../lib/configuration')(sails).load(function (err, config) {
       // Default to ejs templates for new projects, but allow user to override with --template
       templateLang: argv.template || 'ejs',
 
-      // Default to not using the script linker functionality, 
+      // Default to not using the script linker functionality,
       // but use it if --linker option is set
       useLinker: !!argv.linker
     });
@@ -257,7 +257,7 @@ require('../lib/configuration')(sails).load(function (err, config) {
 
   /**
    * Run a management command. Management commands should take a single callback argument.
-   * 
+   *
    * Usage: sails issue <foo>
    *    – where <foo> is exported from <sails.config.appPath>/commands
    */

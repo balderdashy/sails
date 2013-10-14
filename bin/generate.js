@@ -74,14 +74,14 @@ module.exports = function (sails) {
 
 						// Append a comma, unless this is the last
 						if (options.actions.length !== i) {
-							
+
 							fnString = fnString + ',\n\n';
 
 							// Append the action to the code string
 							actions += fnString;
 						}
 						i++;
-							
+
 					});
 				}
 				return generate({

@@ -69,7 +69,7 @@ module.exports = function(sails) {
 			sails.log.info('Using asset linker...');
 		}
 
-		// options.useLinker will determin the assets dir stucture for the new sails project 
+		// options.useLinker will determin the assets dir stucture for the new sails project
 		if (options.useLinker) {
 			utils.copyBoilerplate('linkerAssets', outputPath + '/assets');
 		} else {
@@ -94,7 +94,7 @@ module.exports = function(sails) {
 			var newViewsConfig = ejs.render(fs.readFileSync(viewsBoilerplatePath, 'utf8'), {
 				engine: options.templateLang,
 				layout: templateLayout
-			});			
+			});
 			fs.writeFileSync(outputPath + '/config/views.js', newViewsConfig, 'utf8');
 
 		});
@@ -121,7 +121,7 @@ module.exports = function(sails) {
 				utils.copyBoilerplate('linkerLayouts/' + options.templateLang, outputPath + '/views');
 			}
 
-		});	
+		});
 
 		// Default app launcher file (for situations where sails lift isn't good enough)
 		utils.generateFile('app.js', outputPath + '/app.js');
@@ -176,8 +176,8 @@ module.exports = function(sails) {
 		if (options.copySails) {
 			utils.copySails(outputPath + '/node_modules/sails', copySails_cb);
 
-			// Using a symbolic link is much quicker than copying the directory over directly, 
-			// but it serves no purpose, since the global sails will be used automatically 
+			// Using a symbolic link is much quicker than copying the directory over directly,
+			// but it serves no purpose, since the global sails will be used automatically
 			// if no local dependency exists
 			// var sailsGlobalInstallPath = __dirname + '/../.';
 			// fs.symlinkSync(sailsGlobalInstallPath, outputPath + '/node_modules/sails', 'dir');

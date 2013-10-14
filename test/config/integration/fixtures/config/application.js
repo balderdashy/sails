@@ -1,6 +1,6 @@
 module.exports = {
 // all configs (not commented out) will be tested
-  
+
   // Port to run this app on
   port: 1702,
 
@@ -17,7 +17,7 @@ module.exports = {
   cache: {
     maxAge: 9001
   },
-  
+
   // Custom options for express server
   /*express: {
 
@@ -30,7 +30,7 @@ module.exports = {
     cookieParser: require('express').cookieParser,
     methodOverride: require('express').methodOverride
   },*/
-  
+
   // Variables which will be made globally accessible
   globals: {
     _: false,
@@ -40,7 +40,7 @@ module.exports = {
     adapters: false,
     models: false*/
   },
-  
+
   //ssl: {}
 
 };

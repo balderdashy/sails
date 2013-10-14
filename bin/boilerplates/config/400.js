@@ -15,7 +15,7 @@
  *
  * @param {String} redirectTo
  *      optional URL
- *      (absolute or relative, e.g. google.com/foo or /bar/baz) 
+ *      (absolute or relative, e.g. google.com/foo or /bar/baz)
  *      of the page to redirect to.  Usually only relevant for traditional HTTP requests,
  *      since if this was triggered from an AJAX or socket request, JSON should be sent instead.
  */
@@ -40,7 +40,7 @@ module.exports[400] = function badRequest(validationErrors, redirectTo, req, res
   }
 
   // For requesters expecting JSON, everything works like you would expect-- a simple JSON response
-  // indicating the 400: Bad Request status with relevant information will be returned. 
+  // indicating the 400: Bad Request status with relevant information will be returned.
   if (req.wantsJSON) {
     return res.json(result, result.status);
   }
@@ -62,7 +62,7 @@ module.exports[400] = function badRequest(validationErrors, redirectTo, req, res
   }
 
 
-  // Depending on your app's needs, you may choose to look at the Referer header here 
+  // Depending on your app's needs, you may choose to look at the Referer header here
   // and redirect back. Please do so at your own risk!
   // For security reasons, Sails does not provide this affordance by default.
   // It's safest to provide a 'redirectTo' URL and redirect there directly.
