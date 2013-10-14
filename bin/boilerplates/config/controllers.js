@@ -46,7 +46,7 @@ module.exports.controllers = {
      *
      * `EmailController.index`
      * :::::::::::::::::::::::::::::::::::::::::::::::::::::::
-     * `GET     /email/:id?`        `GET    /email/index/:id?`           
+     * `GET     /email/:id?`        `GET    /email/index/:id?`
      * `POST    /email/:id?`        `POST   /email/index/:id?`
      * `PUT     /email/:id?`        `PUT    /email/index/:id?`
      * `DELETE  /email/:id?`        `DELETE /email/index/:id?`
@@ -58,19 +58,19 @@ module.exports.controllers = {
      * `PUT     /email/send/:id?`
      * `DELETE  /email/send/:id?`
      *
-     * 
+     *
      * `actions` are enabled by default, and are OK for production-- however,
      * you must take great care not to inadvertently expose unsafe controller logic to GET requests.
      */
     actions: true,
 
 
-    
+
     /**
      * `rest`
      *
      * REST blueprints are the automatically generated routes Sails uses to expose
-     * a conventional REST API on top of a controller's `find`, `create`, `update`, and `destroy` 
+     * a conventional REST API on top of a controller's `find`, `create`, `update`, and `destroy`
      * actions.
      *
      * For example, a BoatController with `rest` enabled generates the following routes:
@@ -101,7 +101,7 @@ module.exports.controllers = {
     /**
      * `prefix`
      *
-     * An optional mount path for all blueprint routes on a controller, including `rest`, 
+     * An optional mount path for all blueprint routes on a controller, including `rest`,
      * `actions`, and `shortcuts`.  This allows you to continue to use blueprints, even if you
      * need to namespace your API methods.
      *

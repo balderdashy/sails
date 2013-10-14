@@ -5,7 +5,7 @@
 Sails.js makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development.  It's especially good for building realtime features like chat.
 
 # Intro to Sails.js
-<a href="http://net.tutsplus.com/tutorials/javascript-ajax/working-with-data-in-sails-js/">Nettuts+ Working With Data in Sails.js</a>  
+<a href="http://net.tutsplus.com/tutorials/javascript-ajax/working-with-data-in-sails-js/">Nettuts+ Working With Data in Sails.js</a>
 [![ScreenShot](http://balderdashy.github.com/sails/images/screenshot.png)](http://youtu.be/GK-tFvpIR7c)
 
 # Installation
@@ -29,11 +29,11 @@ Lift Sails
 # cd into the new folder
 cd testProject
 
-# Fire up the server  
+# Fire up the server
 sails lift
 ```
 
-The default port for Sails is 1337.  At this point if you visit <a href="http://localhost:1337/">http://localhost:1337/</a> You will see the default home page.  
+The default port for Sails is 1337.  At this point if you visit <a href="http://localhost:1337/">http://localhost:1337/</a> You will see the default home page.
 
 Now, let's get Sails to do cool stuff.
 
@@ -54,23 +54,23 @@ Now let's edit that action to send back the string `'Hello World!'`.
 var HelloController = {
 
     index: function(req, res) {
-  	res.send('Hello World!');
-	}
+      res.send('Hello World!');
+    }
 }
 
 module.exports = HelloController;
 ```
 
 
-Let's say we want the application to display this hello response when a request comes in for `http://localhost:1337/hi`. 
+Let's say we want the application to display this hello response when a request comes in for `http://localhost:1337/hi`.
 Go into the **/config/routes.js** file. Here you can manually define these mappings as you like. Change the file to look like this.
 
 ```javascript
 var routes = {
-	'/hi': {
-		controller: 'hello',
-		action: 'index'
-	}
+    '/hi': {
+        controller: 'hello',
+        action: 'index'
+    }
 }
 
 module.exports = routes;
@@ -89,7 +89,7 @@ Now when you visit <a href="http://localhost:1337/">http://localhost:1337/hi</a>
 > We could have omitted `action: 'index'`, since it's the default, but I left it in for clarity.
 
 > As you will see when working more with Sails.js, one great feature is that by default, you do not **have**
-to define routes for controller actions. Sails.js will do its best to understand what you're talking about.  
+to define routes for controller actions. Sails.js will do its best to understand what you're talking about.
 For instance, if you were to visit http://localhost:1337/hello, you'd notice that it routes you to the index action of `HelloController`.
 
 > Finally, if you were to omit HelloController altogether, but included a view in `views/hello/index.ejs`, Sails.js will serve that view when you visit `/hello`.
@@ -104,12 +104,12 @@ Creating a RESTful JSON API is very easy with the command line tool. You can def
 sails generate user
 ```
 
-If you check out your app, you'll notice that this created a file at **/api/models/User.js** and **/api/controllers/UserController.js**.  
+If you check out your app, you'll notice that this created a file at **/api/models/User.js** and **/api/controllers/UserController.js**.
 
 
-Sails API blueprints are more than scaffolds. Generating HTML doesn't really make sense for 
+Sails API blueprints are more than scaffolds. Generating HTML doesn't really make sense for
 modern web apps. Instead, Sails automatically builds a RESTful JSON API for your models.
-Most importantly, this API supports HTTP _and_ WebSockets. By default for every model and controller you generate, you get the basic CRUD operations automatically.  
+Most importantly, this API supports HTTP _and_ WebSockets. By default for every model and controller you generate, you get the basic CRUD operations automatically.
 If you need more fine-grained control, you can just override the appropriate method in the controller.  (see the documentation for more information on how to do this)  Controllers are just Express middleware, the most popular framework for writing code in Node.js.  And most importantly, all of that code, even the custom controller, still supports WebSocekts out of the box.
 
 For instance, after generating the User above, if you POST to `http://localhost:1337/user` or visit `http://localhost:1337/user/create`, you'll see:
@@ -155,7 +155,7 @@ Sails does a few things other Node.js MVC frameworks can't do:
 - Automatic asset minification: Your UI code is automatically included in development mode, and minified into a simple, gzipped file in production.  Also supports LESS and CoffeeScript.
 
 
-To learn more, check out the documentation here: 
+To learn more, check out the documentation here:
 https://github.com/balderdashy/sails/wiki/_pages
 
 Join us on IRC at #sailsjs on freenode
@@ -166,7 +166,7 @@ Version, Dependencies and Compatibility
 #### Latest stable release: `v0.9.7`
 
 Tested with node versions 0.8.22 and 0.10.x
-Sails is built on the rock-solid foundations of ExpressJS and Socket.io.  
+Sails is built on the rock-solid foundations of ExpressJS and Socket.io.
 
 ### [Roadmap](https://github.com/balderdashy/sails-wiki/blob/0.9/roadmap.md)
 ### [Changelog](https://github.com/balderdashy/sails-wiki/blob/0.9/changelog.md)
@@ -188,7 +188,7 @@ After building a few realtime javascript apps and taking them into production, w
 
 
 
-![icon_circlelightbulb@2x.png](http://i.imgur.com/eOFXn.png)  
+![icon_circlelightbulb@2x.png](http://i.imgur.com/eOFXn.png)
 
 License
 --

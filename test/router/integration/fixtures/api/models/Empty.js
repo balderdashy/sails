@@ -1,4 +1,4 @@
 module.exports = {
-	schema: false,
-	attributes: {}
+    schema: false,
+    attributes: {}
 };

@@ -1,8 +1,8 @@
 module.exports.controllers = {
   // all configs not commented out will be tested
-  
+
   // (Note: global controller.routes config may be overridden on a per-controller basis
-  //			by setting the 'blueprint' property in a controller)
+  //            by setting the 'blueprint' property in a controller)
   routes: {
 
     // Whether routes are automatically generated for controller actions

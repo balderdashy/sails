@@ -52,7 +52,7 @@ module.exports = function (sails) {
     var requiredSailsVersion = 0;
     if (!(appPackageJson.dependencies && appPackageJson.dependencies.sails)) {
       sails.log.error(
-        'The package.json in the current directory (' + sails.config.appPath + ') ' + 
+        'The package.json in the current directory (' + sails.config.appPath + ') ' +
         'does not list Sails as a dependency...' + '\n' +
         'Are you sure this is a Sails app?'
       );
@@ -74,7 +74,7 @@ module.exports = function (sails) {
 
         // No package.json means local sails means it must be corrupted
         sails.log.error(
-          'Locally installed Sails.js dependency (' + localSailsPath + ') ' + 
+          'Locally installed Sails.js dependency (' + localSailsPath + ') ' +
           'has corrupted, missing, or un-parsable package.json file!'
         );
         sails.log.error(errors.badLocalSails(requiredSailsVersion));
@@ -86,7 +86,7 @@ module.exports = function (sails) {
       // TODO: use npm's native version comparator
       if (requiredSailsVersion !== localSailsPackage.version) {
         sails.log.warn(
-          'The package.json in the current directory (' + sails.config.appPath + ') ' + 
+          'The package.json in the current directory (' + sails.config.appPath + ') ' +
           'indicates a dependency on Sails ' + requiredSailsVersion + ', ' +
           'but the locally installed Sails (`./node_modules/sails`) is ' + localSailsPackage.version + '.\n'
         );
@@ -98,7 +98,7 @@ module.exports = function (sails) {
       require(sails.config.appPath + '/node_modules/sails/lib').lift(argv);
 
     }
-    
+
     // Otherwise, run the app using the current Sails
     // (probably the global install, since this is the CLI)
     else require('../lib').lift(argv);

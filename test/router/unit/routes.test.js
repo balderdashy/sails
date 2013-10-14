@@ -3,7 +3,7 @@
  */
 
 var assert = require('assert'),
-	sailsHelper = require('./helpers/sailsHelper');
+    sailsHelper = require('./helpers/sailsHelper');
 
 
 
@@ -14,56 +14,56 @@ var assert = require('assert'),
 
 describe('Specified routes', function() {
 
-	var sails;
+    var sails;
 
-	before(function(done) {
-		sailsHelper.build(function(err, _sails) {
-			if (err || !_sails) return done(err || 'Sails could not be instantiated.');
-			sails = _sails;
-			return done();
-		});
-	});
+    before(function(done) {
+        sailsHelper.build(function(err, _sails) {
+            if (err || !_sails) return done(err || 'Sails could not be instantiated.');
+            sails = _sails;
+            return done();
+        });
+    });
 
-	after(function(done) {
-		sailsHelper.teardown(sails,done);
-	});
+    after(function(done) {
+        sailsHelper.teardown(sails,done);
+    });
 
-	describe('Static routes', function () {
+    describe('Static routes', function () {
 
-		it('should respond to requests that match the url pattern', function (done) {
-			// console.log('!!!!');
-			assert(true);
-			done();
+        it('should respond to requests that match the url pattern', function (done) {
+            // console.log('!!!!');
+            assert(true);
+            done();
 
-		});
-	});
+        });
+    });
 
-	// describe('with dynamic url paths specified', function() {
+    // describe('with dynamic url paths specified', function() {
 
-	// 	it('should respond to requests that match the url pattern', function(done) {
+    //     it('should respond to requests that match the url pattern', function(done) {
 
-	// 		httpHelper.writeRoutes({
-	// 			'get /test/:category/:size': {
-	// 				controller: 'test',
-	// 				action: 'dynamic'
-	// 			}
-	// 		});
+    //         httpHelper.writeRoutes({
+    //             'get /test/:category/:size': {
+    //                 controller: 'test',
+    //                 action: 'dynamic'
+    //             }
+    //         });
 
-	// 		httpHelper.testRoute('get', 'test/shirts/large', function(err, response) {
-	// 			if (err) done(new Error(err));
+    //         httpHelper.testRoute('get', 'test/shirts/large', function(err, response) {
+    //             if (err) done(new Error(err));
 
-	// 			var expected = JSON.stringify([{
-	// 					'name': 'category',
-	// 					'optional': false
-	// 				}, {
-	// 					'name': 'size',
-	// 					'optional': false
-	// 				}
-	// 			]);
+    //             var expected = JSON.stringify([{
+    //                     'name': 'category',
+    //                     'optional': false
+    //                 }, {
+    //                     'name': 'size',
+    //                     'optional': false
+    //                 }
+    //             ]);
 
-	// 			assert(expected === response.body);
-	// 			done();
-	// 		});
-	// 	});
-	// });
+    //             assert(expected === response.body);
+    //             done();
+    //         });
+    //     });
+    // });
 });
