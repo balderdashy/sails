@@ -9,7 +9,7 @@ module.exports = function(sails) {
 		utils = require('./utils')(sails),
 		fs = utils.fs,
 		ejs = require('ejs'),
-		Session = require('../lib/session')(sails);
+		Session = require('../lib/hooks/session')(sails);
 
 
 	// Output in directory where cmdline tool was run
