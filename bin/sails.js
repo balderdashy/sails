@@ -24,24 +24,7 @@ if(argv.port){
 sails.load({
 
   // Disable all the other hooks to make it load faster
-  hooks: {
-    session     : false,
-    userconfig  : false,
-    moduleloader: false,
-    services    : false,
-    request     : false,
-    orm         : false,
-    views       : false,
-    controllers : false,
-    sockets     : false,
-    pubsub      : false,
-    policies    : false,
-    csrf        : false,
-    cors        : false,
-    i18n        : false,
-    grunt       : false,
-    http        : false
-  }
+  hooks: false
 }, function (err) {
 // require('../lib/configuration')(sails).load(function (err, config) {
   if (err) throw new Error(err);
