@@ -70,11 +70,11 @@ module.exports.routes = {
   // For example, if you have a `UserController` with a `signup` action,
   // and somewhere else, you're serving a signup form looks like:
   //
-  //		<form action="/signup">
-  //			<input name="username" type="text"/>
-  //			<input name="password" type="password"/>
-  //			<input type="submit"/>
-  //		</form>
+  //        <form action="/signup">
+  //            <input name="username" type="text"/>
+  //            <input name="password" type="password"/>
+  //            <input type="submit"/>
+  //        </form>
 
   // You would want to define the following route to handle your form:
   'post /signup': 'UserController.signup'
@@ -113,17 +113,17 @@ module.exports.routes = {
  * (4) Shortcut CRUD blueprints
  *
  * These routes can be disabled by setting (in config/controllers.js)
- *			`module.exports.controllers.blueprints.shortcuts = false`
+ *            `module.exports.controllers.blueprints.shortcuts = false`
  *
  * If you have a model, `Foo`, and a controller, `FooController`,
  * you can access CRUD operations for that model at:
- *		/foo/find/:id?	->	search lampshades using specified criteria or with id=:id
+ *        /foo/find/:id?    ->    search lampshades using specified criteria or with id=:id
  *
- *		/foo/create		->	create a lampshade using specified values
+ *        /foo/create        ->    create a lampshade using specified values
  *
- *		/foo/update/:id	->	update the lampshade with id=:id
+ *        /foo/update/:id    ->    update the lampshade with id=:id
  *
- *		/foo/destroy/:id	->	delete lampshade with id=:id
+ *        /foo/destroy/:id    ->    delete lampshade with id=:id
  *
  */
 
@@ -131,18 +131,18 @@ module.exports.routes = {
  * (5) REST blueprints
  *
  * These routes can be disabled by setting (in config/controllers.js)
- *		`module.exports.controllers.blueprints.rest = false`
+ *        `module.exports.controllers.blueprints.rest = false`
  *
  * If you have a model, `Foo`, and a controller, `FooController`,
  * you can access CRUD operations for that model at:
  *
- *		get /foo/:id?	->	search lampshades using specified criteria or with id=:id
+ *        get /foo/:id?    ->    search lampshades using specified criteria or with id=:id
  *
- *		post /foo		-> create a lampshade using specified values
+ *        post /foo        -> create a lampshade using specified values
  *
- *		put /foo/:id	->	update the lampshade with id=:id
+ *        put /foo/:id    ->    update the lampshade with id=:id
  *
- *		delete /foo/:id	->	delete lampshade with id=:id
+ *        delete /foo/:id    ->    delete lampshade with id=:id
  *
  */
 

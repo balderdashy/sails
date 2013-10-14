@@ -54,8 +54,8 @@ Now let's edit that action to send back the string `'Hello World!'`.
 var HelloController = {
 
     index: function(req, res) {
-  	res.send('Hello World!');
-	}
+      res.send('Hello World!');
+    }
 }
 
 module.exports = HelloController;
@@ -67,10 +67,10 @@ Go into the **/config/routes.js** file. Here you can manually define these mappi
 
 ```javascript
 var routes = {
-	'/hi': {
-		controller: 'hello',
-		action: 'index'
-	}
+    '/hi': {
+        controller: 'hello',
+        action: 'index'
+    }
 }
 
 module.exports = routes;

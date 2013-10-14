@@ -201,12 +201,12 @@ require('../lib/configuration')(sails).load(function (err, config) {
     // Generate a view
     // TODO: Do this properly, per view engine!
     // else if(argv._[1] === 'view') {
-    // 	var entity = argv._[2];
-    // 	verifyArg(2, "Please specify the name for the new view as the third argument.");
-    // 	// Figure out actions based on args
-    // 	var options = _.extend({},argv);
-    // 	options.actions = argv._.splice(3);
-    // 	generate.generateView(entity, options);
+    //     var entity = argv._[2];
+    //     verifyArg(2, "Please specify the name for the new view as the third argument.");
+    //     // Figure out actions based on args
+    //     var options = _.extend({},argv);
+    //     options.actions = argv._.splice(3);
+    //     generate.generateView(entity, options);
     // }
 
     // TODO: Generate a policy
