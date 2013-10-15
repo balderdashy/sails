@@ -124,7 +124,7 @@ Just write a custom `create` method in your `UserController` and it will be avai
 Custom controllers are just Express middleware, the de facto standard for writing server code in Node.js. 
 
 e.g.
-```
+```javascript
 // api/controllers/UserController
 module.exports = {
   /**
