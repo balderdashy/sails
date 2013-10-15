@@ -263,7 +263,7 @@ Sails is tested with [node](http://nodejs.org/) versions 0.8.22 and 0.10.x, and 
 
 ## Who Built This?
 
-The Sails framework was developed by Mike McNeil ([@mikermcneil](twitter.com/mikermcneil)) and is maintained by [Balderdash](balderdash.co) ([@balderdashy](twitter.com/balderdashy)), a realtime web & mobile studio I started with Heather White (@hdesignsit) in Austin, TX a few years ago.  We design/build scalable Node.js apps for startups and enterprise customers.
+The Sails framework was developed by Mike McNeil ([@mikermcneil](http://twitter.com/mikermcneil)) and is maintained by [Balderdash](http://balderdash.co) ([@balderdashy](http://twitter.com/balderdashy)), a realtime web & mobile studio I started with Heather White (@hdesignsit) in Austin, TX a few years ago.  We design/build scalable Node.js apps for startups and enterprise customers.
 
 After building a few realtime JavaScript apps and taking them into production, we realized that the Node.js development landscape was very much still the Wild West.  Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  I hope it saves you some time :)
 
