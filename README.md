@@ -43,16 +43,31 @@ The default port for Sails is 1337, so at this point, if you visit <a href="http
 Now, let's get Sails to do cool stuff.
 
 
+## Creating a RESTful JSON API
 
-## Creating an API
+Sails.js API blueprints are nothing like scaffolds. Generated forms just don't make sense for modern web apps (no one uses them!)
+Instead, Sails allows you to generate a powerful RESTful JSON API using the command line tool.
+This is exactly what you need for [AJAX web pages](http://irlnathan.github.io/sailscasts/blog/2013/10/10/building-a-sails-application-ep22-manipulating-the-dom-based-upon-changes-via-real-time-model-events/), [realtime apps](http://lanyrd.com/2013/nodepdx/video/), [SPAs](https://www.youtube.com/watch?v=Di50_eHqI7I), [Backbone apps](http://net.tutsplus.com/tutorials/javascript-ajax/working-with-data-in-sails-js/), [Angular apps](https://github.com/rdroro/tulipe-personal-todolist), [Cordova/PhoneGap apps](https://groups.google.com/forum/#!topic/sailsjs/o7HaB0rvSKU), [native mobile apps](https://github.com/aug2uag/SampleAppiOS), [refrigerators](https://www.youtube.com/watch?v=tisWSKMPIg8), [lamps](https://www.youtube.com/watch?v=OmcQZD_LIAE), etc.
+
+Without writing any code, Sails supports:
+  + filtering (`where`)
+  + search (`or`, `and`, `in`, `startsWith`, `endsWith`, `contains`, `greaterThan`, `lessThan`, `not`)
+  + sorting (`sort`)
+  + pagination (`limit`, `skip`, `sort`)
+  + JSONP
+  + CORS
+  + csrf protection
+
+Best of all, all of these things work with both HTTP _and_ WebSockets, and work across any of the supported database adapters, including PostgreSQL, MongoDB, and MySQL.  Authentication and access control are implemented using [policies](https://github.com/balderdashy/sails-docs/blob/0.9/policies.md).  More on all that stuff here:
 
 [![Creating a REST API with Sails.js](http://i.imgur.com/drtMlWH.png)](//www.youtube.com/embed/xlOolpwwGQg?feature=player_embedded) [![Original Sails.js Screencast from March 2013](http://balderdashy.github.com/sails/images/screenshot.png)](http://youtu.be/GK-tFvpIR7c)
 
-While scaffolds are cool, generating HTML doesn't really make sense for modern web apps. With Sails, you can generate a powerful RESTful JSON API using the command line tool.
-By default, it supports basic filtering (`where`), search (`or`, `and`, `in`, `startsWith`, `endsWith`, `contains`, `greaterThan`, `lessThan`, `not`), sort (`sort`), and pagination (`limit`, `skip`, `sort`), over both HTTP _and_ WebSockets.  More on that [here](http://youtu.be/GK-tFvpIR7c).
+---------------------------------------------------------------------------------
 
-Enough talk!  Let's generate a User API.  We'll need an empty model and controller:
+###### Enough talk!  Let's generate a User API.
 
+
+We'll need an empty model and controller:
 ```
 sails generate user
 ```
