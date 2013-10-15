@@ -4,11 +4,18 @@
 
 Sails.js makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development.  It's especially good for building realtime features like chat.
 
-# Intro to Sails.js
-<a href="http://net.tutsplus.com/tutorials/javascript-ajax/working-with-data-in-sails-js/">Nettuts+ Working With Data in Sails.js</a>  
-[![ScreenShot](http://balderdashy.github.com/sails/images/screenshot.png)](http://youtu.be/GK-tFvpIR7c)
 
-# Installation
+
+## Getting Started
+
++ [SailsCasts](http://irlnathan.github.io/sailscasts/) - Short screencasts that take you through the basics of building traditional websites, single-page/mobile apps, and APIs using Sails.  Perfect for both novice and tenured developers, but does assume some background on MVC. 
++ [Nettuts+ Working With Data in Sails.js](http://net.tutsplus.com/tutorials/javascript-ajax/working-with-data-in-sails-js/)
++ [First screencast from March 2013](http://youtu.be/GK-tFvpIR7c)
+  
+  [![ScreenShot](http://balderdashy.github.com/sails/images/screenshot.png)](http://youtu.be/GK-tFvpIR7c)
+
+
+## Installation
 
 To install the latest stable release with the command-line tool:
 ```sh
@@ -16,7 +23,7 @@ sudo npm -g install sails
 ```
 
 
-# Creating a New Sails Project
+## Creating a New Sails Project
 
 Create a new app
 ```sh
@@ -37,7 +44,9 @@ The default port for Sails is 1337.  At this point if you visit <a href="http://
 
 Now, let's get Sails to do cool stuff.
 
-# Hello, Sails!
+
+
+## Hello, Sails!
 
 To get Sails to say "Hello World!", you need only to change the view for the default home page in `views/home/index.ejs`.  But that doesn't really teach us a whole lot-- instead, let's create a new controller and have IT tell us hello.
 
@@ -97,7 +106,7 @@ For instance, if you were to visit http://localhost:1337/hello, you'd notice tha
 > You can learn more about that on the <a href="https://github.com/balderdashy/sails/wiki/Routes">Routes</a> section of this wiki.
 
 
-# Creating an API
+## Creating an API
 Creating a RESTful JSON API is very easy with the command line tool. You can define a model with attributes by adding arguments at the end of the command. To generate a User model and empty controller, enter the following:
 
 ```
@@ -161,20 +170,29 @@ https://github.com/balderdashy/sails/wiki/_pages
 Join us on IRC at #sailsjs on freenode
 
 
-Version, Dependencies and Compatibility
---
-#### Latest stable release: `v0.9.7`
+## Version, Dependencies and Compatibility
 
-Tested with node versions 0.8.22 and 0.10.x
-Sails is built on the rock-solid foundations of ExpressJS and Socket.io.  
+#### Latest stable release
+[![NPM](https://nodei.co/npm/sails.png?downloads=true&stars=true)](https://nodei.co/npm/sails/)
 
-### [Roadmap](https://github.com/balderdashy/sails-wiki/blob/0.9/roadmap.md)
-### [Changelog](https://github.com/balderdashy/sails-wiki/blob/0.9/changelog.md)
+
+#### Dependencies
+Sails is tested with [node](http://nodejs.org/) versions 0.8.22 and 0.10.x, and built on the rock-solid foundations of [Express](http://expressjs.com/) and [Socket.io](http://socket.io/).
+
+[![NPM](https://nodei.co/npm/express.png?compact=true)](https://nodei.co/npm/express/)  [![NPM](https://nodei.co/npm/socket.io.png?compact=true)](https://nodei.co/npm/socket.io/)
+<!-- <img src="http://nodejs.org/images/logos/nodejs.png"/> -->
+
+#### What's Next?
++ [Roadmap](https://github.com/balderdashy/sails-wiki/blob/0.9/roadmap.md)
+
+#### What's Changed?
++ [Changelog](https://github.com/balderdashy/sails-wiki/blob/0.9/changelog.md)
 
 <br/>
 <br/>
 
-![icon_circleheart@2x.png](http://i.imgur.com/liHPV.png)
+
+<!-- ![icon_circleheart@2x.png](http://i.imgur.com/liHPV.png) -->
 
 ## Who Built This?
 
@@ -188,7 +206,7 @@ After building a few realtime javascript apps and taking them into production, w
 
 
 
-![icon_circlelightbulb@2x.png](http://i.imgur.com/eOFXn.png)  
+<!-- ![icon_circlelightbulb@2x.png](http://i.imgur.com/eOFXn.png)  -->
 
 License
 --
