@@ -38,7 +38,7 @@ cd testProject
 sails lift
 ```
 
-The default port for Sails is 1337.  At this point if you visit <a href="http://localhost:1337/">http://localhost:1337/</a> You will see the default home page.  
+The default port for Sails is 1337, so at this point, if you visit <a href="http://localhost:1337/">http://localhost:1337/</a>, you'll see the default home page.
 
 Now, let's get Sails to do cool stuff.
 
