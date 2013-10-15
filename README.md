@@ -6,13 +6,14 @@ Sails.js makes it easy to build custom, enterprise-grade Node.js apps. It is des
 
 
 
-## Getting Started
+## Intro to Sails.js
 
 + [SailsCasts](http://irlnathan.github.io/sailscasts/) - Short screencasts that take you through the basics of building traditional websites, single-page/mobile apps, and APIs using Sails.  Perfect for both novice and tenured developers, but does assume some background on MVC. 
 + [Nettuts+ Working With Data in Sails.js](http://net.tutsplus.com/tutorials/javascript-ajax/working-with-data-in-sails-js/)
 + [First screencast from March 2013](http://youtu.be/GK-tFvpIR7c)
   
   [![ScreenShot](http://balderdashy.github.com/sails/images/screenshot.png)](http://youtu.be/GK-tFvpIR7c)
++ [Documentation](http://github.com/balderdashy/sails-docs)
 
 
 ## Installation
