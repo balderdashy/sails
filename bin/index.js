@@ -98,7 +98,7 @@ util.interpretArguments( argv, {
 	/**
 	 * Build a www directory from the assets folder
 	 */
-	www: function () {},
+	www: require('./www'),
 
 	/**
 	 * Output the version of the currently running Sails
