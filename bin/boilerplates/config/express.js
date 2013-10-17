@@ -12,12 +12,11 @@ module.exports.express = {
 	//
 	// Defaults to `express.bodyParser`
 	//
-	// Example override:
-	// bodyParser: (function customBodyParser (req, res, next) {})(),
-	//
 	// Alternatively, if you're comfortable with the bleeding edge,
 	// check out: https://github.com/mikermcneil/stream-debug
-	bodyParser: express.bodyParser,
+	//
+	// Example override:
+	// bodyParser: (function customBodyParser (req, res, next) {})(),
 
 
 
@@ -27,8 +26,10 @@ module.exports.express = {
 	// (this allows JSON to be used as your request data without the need to 
 	// specify a 'Content-type: application/json' header)
 	//
-	// NOTE: If using the `file-parser` above, you'll want to explicitly disable this config.
-	retryBodyParserWithJSON: true,
+	// Defaults to `true`.
+	//
+	// NOTE: If using the `file-parser` above, you'll want to explicitly disable this:
+	// retryBodyParserWithJSON: false,
 
 
 
