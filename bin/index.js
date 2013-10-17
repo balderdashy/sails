@@ -12,13 +12,15 @@ var _			= require('lodash'),
 	Sails		= require('sails/lib/app');
 	util		= require('./util.js')();
 	_.str		= require('underscore.string'),
-	REPL		= require('repl');
+	REPL		= require('repl'),
+	Grunt__		= require('./gruntTask'),
+	path		= require('path');
 
 
 /**
  * Build Sails options using command-line arguments
  */
-var options = {
+var sailsOptions = {
 
 	// `--verbose` command-line argument
 	log: argv.verbose ? {level: 'verbose'} : undefined,
@@ -32,7 +34,7 @@ var options = {
 };
 
 // Build logger
-var log = new Logger(options.log);
+var log = new Logger(sailsOptions.log);
 
 
 
@@ -43,12 +45,26 @@ util.interpretArguments( argv, {
 	/**
 	 * Create a new project
 	 */
-	new: function () {},
+	new: function () {
+		sails.log.error('Sorry, `sails new` is currently out of commission.');
+		process.exit(1);
+	},
+
+
+
+
 
 	/**
 	 * Generate module(s)
 	 */
-	generate: function () {},
+	generate: function () {
+		sails.log.error('Sorry, `sails generate` is currently out of commission.');
+		process.exit(1);
+	},
+
+
+
+
 
 	/**
 	 * Start the REPL
@@ -59,9 +75,9 @@ util.interpretArguments( argv, {
 			hooks: false,
 			globals: false
 		}, function (err) {
-			if (err) return Err.fatal.failedToLoadSails();
+			if (err) return Err.fatal.failedToLoadSails(err);
 
-			var appID		= _.str.capitalize(require('path').basename(process.cwd())),
+			var appID		= _.str.capitalize(path.basename(process.cwd())),
 				appName		= _.str.capitalize(appID);
 
 			console.log();
@@ -70,9 +86,9 @@ util.interpretArguments( argv, {
 			log.verbose('Lifting `'+process.cwd()+'` in interactive mode...');
 
 			// Hide ship log to keep from dirtying up REPL
-			options.log = {noShip: true};
-			sails.lift(options, function (err) {
-				if (err) return Err.fatal.failedToLoadSails();
+			sailsOptions.log = {noShip: true};
+			sails.lift(sailsOptions, function (err) {
+				if (err) return Err.fatal.failedToLoadSails(err);
 
 				var repl = REPL.start('sails> ');
 				repl.on('exit', function (err) {
@@ -84,21 +100,67 @@ util.interpretArguments( argv, {
 				});
 				
 			});
-		});
-
-		
+		});	
 	},
+
+
+
 
 	/**
 	 * Issue a command/instruction
 	 */
-	run: function () {},
+	run: function () {
+		sails.log.error('Sorry, `sails run` is currently out of commission.');
+		process.exit(1);
+	},
+
+
+
 
 
 	/**
 	 * Build a www directory from the assets folder
 	 */
-	www: require('./www'),
+	www: function () {
+		var wwwPath = path.resolve( process.cwd(), './www' ),
+			wwwTaskName = 'build';
+
+		log.info('Compiling assets into standalone `www` directory with `grunt ' + wwwTaskName + '`...');
+
+		var sails = new Sails();
+		sails.load({
+			hooks: {
+				grunt: false
+			},
+			globals: false
+		}, function sailsReady (err) {
+			if (err) return Err.fatal.failedToLoadSails(err);
+
+			var Grunt = Grunt__(sails);
+			Grunt( wwwTaskName );
+
+			// Bind error event
+			sails.on('hook:grunt:error', function (err) {
+				log.error('Error occured starting `grunt ' + wwwTaskName + '`');
+				log.error('Please resolve any issues and try running `sails www` again.');
+				process.exit(1);
+			});
+
+			// Task is not actually complete yet-- it's just been started
+			// We'll bind an event listener so we know when it is
+			sails.on('hook:grunt:done', function () {
+				log.info();
+				log.info('Created `www` directory at:');
+				log.info(wwwPath);
+				process.exit(0);
+			});
+		});
+	},
+
+
+
+
+
 
 	/**
 	 * Output the version of the currently running Sails
@@ -109,19 +171,24 @@ util.interpretArguments( argv, {
 			hooks: false,
 			globals: false
 		}, function (err) {
-			if (err) return Err.fatal.failedToLoadSails();
+			if (err) return Err.fatal.failedToLoadSails(err);
 			log.info('v' + sails.version);
 		});
 	},
+
+
 
 
 	/**
 	 * Start up the app in the current directory.
 	 */
 	lift: function () {
-		require('./lift')(options);
+		require('./lift')(sailsOptions);
 	},
 	
+
+
+
 	
 	/**
 	 * Unknown command-- print out usage.
@@ -133,6 +200,9 @@ util.interpretArguments( argv, {
 		console.log('');
 	},
 
+
+
+
 	/**
 	 * sails` was run with no arguments-- print welcome message and usage info.
 	 */
@@ -142,7 +212,7 @@ util.interpretArguments( argv, {
 			hooks: false,
 			globals: false
 		}, function (err) {
-			if (err) return Err.fatal.failedToLoadSails();
+			if (err) return Err.fatal.failedToLoadSails(err);
 			console.log('');
 			log.info('Welcome to Sails! (v' + sails.version + ')');
 			log.info( util.getUsage() );
@@ -166,7 +236,7 @@ util.interpretArguments( argv, {
 // var sails	= new Sails();
 
 // // Load sails
-// sails.load(options, function sailsLoaded (err) {
+// sails.load(sailsOptions, function sailsLoaded (err) {
 // 	if (err) throw new Error(err);
 
 

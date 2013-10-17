@@ -11,8 +11,10 @@ module.exports = {
 
 	fatal: {
 
-		failedToLoadSails: function () {
+		failedToLoadSails: function (err) {
+			log.error(err);
 			log.error('Could not load Sails.');
+			log.error('Are you using the latest stable version?');
 			process.exit(1);
 		},
 
