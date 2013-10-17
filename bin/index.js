@@ -47,10 +47,7 @@ sails.load({
 		sails.log.warn('CoffeeScript not installed.  Run `npm install -g coffeescript` to get it.');
 	}
 
-	// Stringify args
-	// argv._ = _.map(argv._, function (arg) {
-	// 	return arg + '';
-	// });
+	
 
 	
 
@@ -65,6 +62,11 @@ sails.load({
 		}
 		return packageJson;
 	}
+
+	// Stringify args
+	argv._ = _.map(argv._, function (arg) {
+		return arg + '';
+	});
 
 
 
