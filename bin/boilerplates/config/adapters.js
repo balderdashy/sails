@@ -15,6 +15,10 @@
 module.exports.connections = {
 
   // Local disk storage for DEVELOPMENT ONLY
+  //
+  // Installed by default- 
+  // see `module.exports.model` below to change this.
+  //
   dev_db: {
     adapter: 'sails-disk'
   },
@@ -22,7 +26,8 @@ module.exports.connections = {
   // MySQL is the world's most popular relational database.
   // http://en.wikipedia.org/wiki/MySQL
   //
-  // (installed by default)
+  // Run:
+  // npm install sails-mysql
   //
   local_mysql_database: {
     adapter : 'sails-mysql',
@@ -67,6 +72,10 @@ module.exports.connections = {
 
 };
 
+
+
+
+
 /**
  * Default model definition
  *
@@ -79,4 +88,6 @@ module.exports.model = {
   // i.e. your app's primary database
   connections: [ 'dev_db' ]
 };
+
+
 
