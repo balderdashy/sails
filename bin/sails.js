@@ -26,7 +26,6 @@ sails.load({
   // Disable all the other hooks to make it load faster
   hooks: false
 }, function (err) {
-// require('../lib/configuration')(sails).load(function (err, config) {
   if (err) throw new Error(err);
 
 
