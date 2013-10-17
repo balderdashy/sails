@@ -39,7 +39,7 @@ module.exports = function liftSails( options ) {
 
 	// Package.json exists, but doesn't list Sails as a dependency
 	if ( !(app.dependencies.sails) ) {
-		Err.fata.notSailsApp();
+		Err.fatal.notSailsApp();
 		return;
 	}
 
@@ -55,7 +55,7 @@ module.exports = function liftSails( options ) {
 	}
 
 	// Read the package.json in the local installation of Sails
-	localSails.package = util.getPackage(localSails.path + '/package.json');
+	localSails.package = util.getPackage(localSails.path);
 
 	// Local Sails has corrupted package.json
 	if ( !localSails.package ) {
@@ -66,13 +66,13 @@ module.exports = function liftSails( options ) {
 	// Error out if it has the wrong version in its package.json
 	// TODO: use npm's native version comparator
 	var requiredSailsVersion = app.dependencies.sails;
-	if (requiredSailsVersion !== localSailsPackage.version) {
-		Err.warn.incompatibleLocalSails(requiredSailsVersion, localSailsPackage.version);
+	if (requiredSailsVersion !== localSails.package.version) {
+		Err.warn.incompatibleLocalSails(requiredSailsVersion, localSails.package.version);
 	}
 
 	// Load the local version of Sails
 	// Then run the app with it
-	localSails.lift = require( pathTo.localSails + '/lib' ).lift;
+	localSails.lift = require( localSails.path + '/lib' ).lift;
 	localSails.lift(options);
 
 };

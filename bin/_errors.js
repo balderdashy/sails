@@ -25,8 +25,8 @@ module.exports = {
 		},
 
 		notSailsApp: function () {
-			log.error('The package.json in the current directory (' + process.cwd() + ')',
-				'does not list Sails as a dependency...');
+			log.error('The package.json in the current directory (' + process.cwd() + ')');
+			log.error('does not list Sails as a dependency...');
 			log.error('Are you sure this is a Sails app?');
 			process.exit(1);
 		},
@@ -46,12 +46,12 @@ module.exports = {
 	warn: {
 
 		incompatibleLocalSails: function ( requiredVersion, localVersion ) {
-			log.warn('The package.json in the current directory (' + process.cwd() + ') indicates a dependency on Sails ' + requiredVersion + ',');
-			log.warn('but the locally installed Sails (`./node_modules/sails`) is ' + localVersion + '.');
-			log.warn();
+			log.warn('Trying to lift sails in',require('path').resolve(process.cwd(),'node_modules/sails') +'...');
+			log.warn('But the package.json in the current directory indicates a dependency on Sails ' + requiredVersion);
+			log.warn('and the locally installed Sails is ' + localVersion + '!');
 			log.warn('If you run into problems, you may consider reinstalling Sails locally:');
 			log.warn('> npm install sails@' + requiredVersion);
-
+			console.log();
 		}
 	}
 
