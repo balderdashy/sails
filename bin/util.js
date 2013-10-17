@@ -23,6 +23,108 @@ module.exports = function(sails) {
 
 
 		/**
+		 * Interpret arguments
+		 *
+		 * Calls one of:
+		 *		- handler.sails
+		 *		- handler.console
+		 *		- handler.lift
+		 *		- handler.generate
+		 *		- handler.new
+		 *		- handler.run
+		 *		- handler.version
+		 */
+		this.interpretArguments = function ( argv, handlers ) {
+
+			if ( !_.isObject(argv) ) return handlers.invalid();
+			if ( !_.isArray(argv._) ) return handlers.invalid();
+			if ( !argv._.length ) return handlers.sails();
+			
+			var first	= argv._[0] || '',
+				second	= argv._[1] || '',
+				third	= argv._[2] || '',
+				fourth	= argv._[3] || '',
+				fifth	= argv._[4] || '',
+				all		= _.map(argv._, function (arg) {return arg + '';});
+
+
+			var isLift		= _.contains(['lift', 'raise', 'start', 'server', 's', 'l'], first),
+				isConsole	= _.contains(['console'], first),
+				isGenerate	= _.contains(['generate'], first),
+				isNew		= _.contains(['new'], first),
+				isVersion	= _.contains(['version'], first),
+				isWWW		= _.contains(['www', 'build'], first),
+				isRun		= _.contains(['run','issue'], first);
+
+
+			if ( isLift ) return handlers.lift();
+			if ( isConsole ) return handlers.console();
+			if ( isGenerate ) return handlers.generate();
+			if ( isNew ) return handlers['new']();
+			if ( isVersion ) return handlers.version();
+			if ( isRun ) return handlers.run();
+			if ( isWWW ) return handlers.www();
+
+
+			// Unknown action
+			return handlers.invalid( first );
+		};
+
+
+
+
+		// Read package.json file in specified path
+		this.getPackage = function (path) {
+			path = require('underscore.string').rtrim(path, '/');
+			var packageJson = fs.readFileSync(path + '/package.json', 'utf-8');
+			try {
+				packageJson = JSON.parse(packageJson);
+			} catch (e) {
+				return false;
+			}
+			
+			// Ensure at least an empty object
+			packageJson.dependencies = packageJson.dependencies || {};
+
+			return packageJson;
+		};
+
+
+
+
+		/**
+		 * @returns usage information for the sails CLI
+		 */
+		this.getUsage = function () {
+			function leftColumn(str) {
+				var n = (33 - str.length);
+				return str + _.str.repeat(' ', n);
+			}
+
+			var usage = 'Usage: sails <command>\n\n';
+			usage += leftColumn('sails lift') + 'Run the Sails app in the current directory:\n';// (if node_modules/sails exists, it will be used instead of the global install)\n';
+			usage += leftColumn('  [--prod]') + '  - in production mode \n';
+			usage += leftColumn('  [--port 3000]') + '  - on port 3000 \n';
+			usage += leftColumn('  [--verbose]') + '  - with verbose logging enabled \n';
+			usage += '\n';
+			usage += leftColumn('sails new <appName>') + 'Create a new Sails project in a folder called <appName>:\n';
+			usage += leftColumn('  [--linker]') + '  - set up to auto-<link> assets w/ Grunt\n';
+			usage += '\n';
+			usage += leftColumn('sails generate model <foo>') + 'Generate a model (`api/models/Foo.js`)\n';
+			usage += leftColumn('sails generate controller <foo>') + 'Generate a controller (`api/controllers/FooController.js`)\n';
+			usage += leftColumn('sails generate <foo>') + 'Generate both.\n';
+			usage += '\n';
+			usage += leftColumn('sails console') + 'Run Sails in interactive mode (REPL)\n';
+			usage += leftColumn('sails version') + 'Get the current globally installed Sails version\n';
+			usage += leftColumn('sails run <command>') + 'Run a management command (exported by YOUR_APP/commands/index.js)';
+
+			return usage;
+		};
+
+
+
+
+		/**
 		 * Expose `fs-extra` monkey-patched to make sure existsSync()
 		 * doesn't crash on older versions of Node
 		 *
@@ -187,20 +289,20 @@ module.exports = function(sails) {
 
 			async.until(
 
-			function checkIfDone() {
-				canvas.tick();
-				return stopShowingProgressNotifications;
-			},
+				function checkIfDone() {
+					canvas.tick();
+					return stopShowingProgressNotifications;
+				},
 
-			function setAlarm(cb) {
-				setTimeout(cb, interval);
-			},
+				function setAlarm(cb) {
+					setTimeout(cb, interval);
+				},
 
-			function done(err) {
-				// If an error occurred, send it back
-				err = err || errorCopying;
-				return cb && cb(err);
-			});
+				function done(err) {
+					// If an error occurred, send it back
+					err = err || errorCopying;
+					return cb && cb(err);
+				});
 
 			async.each(['lib', 'package.json', 'node_modules'], function(fileOrDir, cb) {
 				fs.copy(__dirname + '/../' + fileOrDir, destination + '/' + fileOrDir, cb);
