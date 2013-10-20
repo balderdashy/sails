@@ -28,7 +28,7 @@ module.exports = function liftSails( options ) {
 
 	// Has no package.json file
 	if ( ! fs.existsSync( app.path + '/package.json') ) {
-		Err.fatal.noPackageJson();
+		Err.fatal.noPackageJSON();
 		return;
 	}
 
