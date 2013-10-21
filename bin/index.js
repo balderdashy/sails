@@ -46,7 +46,7 @@ util.interpretArguments( argv, {
 	 * Create a new project
 	 */
 	new: function () {
-		sails.log.error('Sorry, `sails new` is currently out of commission.');
+		log.error('Sorry, `sails new` is currently out of commission.');
 		process.exit(1);
 	},
 
@@ -58,7 +58,7 @@ util.interpretArguments( argv, {
 	 * Generate module(s)
 	 */
 	generate: function () {
-		sails.log.error('Sorry, `sails generate` is currently out of commission.');
+		log.error('Sorry, `sails generate` is currently out of commission.');
 		process.exit(1);
 	},
 
@@ -86,8 +86,8 @@ util.interpretArguments( argv, {
 			log.verbose('Lifting `'+process.cwd()+'` in interactive mode...');
 
 			// Hide ship log to keep from dirtying up REPL
-			sailsOptions.log = {noShip: true};
-			sails.lift(sailsOptions, function (err) {
+			sails = new Sails();
+			sails.lift(_.merge(sailsOptions,{noShip: true}), function (err) {
 				if (err) return Err.fatal.failedToLoadSails(err);
 
 				var repl = REPL.start('sails> ');
@@ -110,7 +110,7 @@ util.interpretArguments( argv, {
 	 * Issue a command/instruction
 	 */
 	run: function () {
-		sails.log.error('Sorry, `sails run` is currently out of commission.');
+		log.error('Sorry, `sails run` is currently out of commission.');
 		process.exit(1);
 	},
 
