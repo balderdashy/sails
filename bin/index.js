@@ -87,7 +87,7 @@ util.interpretArguments( argv, {
 
 			// Hide ship log to keep from dirtying up REPL
 			sails = new Sails();
-			sails.lift(_.merge(sailsOptions,{noShip: true}), function (err) {
+			sails.lift(_.merge(sailsOptions,{log:{noShip: true}}), function (err) {
 				if (err) return Err.fatal.failedToLoadSails(err);
 
 				var repl = REPL.start('sails> ');
