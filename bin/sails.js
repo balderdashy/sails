@@ -35,7 +35,12 @@ require('../lib/configuration')(sails).load(function (err, config) {
     require('coffee-script');
     sails.log.verbose('Enabling CoffeeScript...');
   } catch (e) {
-    sails.log.verbose('CoffeeScript not installed.');
+    if (argv.coffee) {
+        sails.log.verbose('ERROR: CoffeeScript no installed.');
+        return;
+    } else {
+        sails.log.verbose('CoffeeScript not installed.');
+    }
   }
 
   // Stringify args
