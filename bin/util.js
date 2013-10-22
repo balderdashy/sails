@@ -57,6 +57,34 @@ module.exports = function(sails) {
 				isRun		= _.contains(['run','issue'], first);
 
 
+			if ( isGenerate ) {
+				switch (second) {
+					case 'controller':
+						if ( !third ) {
+							return handlers.invalid(
+								'Please specify the name for the new controller '+
+								'as the third argument.');}
+						return handlers.generate({
+							controller	: third,
+							actions		: argv._.splice(3)
+						});
+
+					case 'model':
+					case 'view':
+					case 'policy':
+					case 'adapter':
+						return handlers.error(
+						'Sorry, `sails generate ' + 
+						second + '` is currently out of commission.');
+
+					default: 
+						return handlers.invalid(
+						'I don\'t know how to generate a "'+second+'"!'
+					);
+				}
+			}
+
+
 			if ( isLift ) return handlers.lift();
 			if ( isConsole ) return handlers.console();
 			if ( isGenerate ) return handlers.generate();
@@ -67,7 +95,7 @@ module.exports = function(sails) {
 
 
 			// Unknown action
-			return handlers.invalid( first );
+			return handlers.invalid( { firstArg: first } );
 		};
 
 

@@ -179,8 +179,11 @@ module.exports = function (sails) {
 
 
 		/**
-		 * Utility class to generate a file given the boilerplate and output paths,
+		 * Utility method to generate a file given the boilerplate and output paths,
 		 * as well as an optional ejs render override.
+		 *
+		 * @param options.entity
+		 * @param options.action
 		 *
 		 * @api private
 		 */

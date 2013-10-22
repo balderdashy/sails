@@ -58,7 +58,15 @@ util.interpretArguments( argv, {
 	 * Generate module(s)
 	 */
 	generate: function () {
-		log.error('Sorry, `sails generate` is currently out of commission.');
+
+
+		// Figure out actions based on args
+		var controllerOpts = _.clone(argv);
+		generate.generateController(argv._[2], {
+			actions: argv._.splice(3)
+		});
+
+		log.info('Generated controller!');
 		process.exit(1);
 	},
 
@@ -193,14 +201,27 @@ util.interpretArguments( argv, {
 	/**
 	 * Unknown command-- print out usage.
 	 */
-	invalid: function (cmd) {
-		var userInput = cmd ? '`sails ' + cmd + '`' : 'that';
-		log.error('Sorry, I don\'t understand what ',userInput,' means.');
+	invalid: function ( options ) {
+		if ( _.isString(options) ) {
+			var msg = options;
+			log.error(msg);
+		}
+		else {
+			options = options || {};
+			var userInput = options.firstArg ? '`sails ' + options.firstArg + '`' : 'that';
+			log.error('Sorry, I don\'t understand what ',userInput,' means.');
+		}
 		log.error( 'To get help using the Sails command-line tool, run `sails`.');
 		console.log('');
 	},
 
 
+
+	error: function ( err ) {
+		log.error( 'An error occurred.' );
+		log.error( err );
+		console.log('');
+	},
 
 
 	/**
@@ -331,13 +352,13 @@ util.interpretArguments( argv, {
 
 	// 	// Generate a controller
 	// 	else if (argv._[1] === 'controller') {
-	// 		verifyArg(2, 'Please specify the name for the new controller as the third argument.');
+			// verifyArg(2, 'Please specify the name for the new controller as the third argument.');
 
-	// 		// Figure out actions based on args
-	// 		var controllerOpts = _.clone(argv);
-	// 		controllerOpts.actions = argv._.splice(3);
-	// 		generate.generateController(argv._[2], controllerOpts);
-	// 		log.info('Generated controller for ' + argv._[2] + '!');
+			// // Figure out actions based on args
+			// var controllerOpts = _.clone(argv);
+			// controllerOpts.actions = argv._.splice(3);
+			// generate.generateController(argv._[2], controllerOpts);
+			// log.info('Generated controller for ' + argv._[2] + '!');
 	// 	}
 
 	// 	// Generate a view
