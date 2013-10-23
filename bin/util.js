@@ -58,15 +58,13 @@ module.exports = function(sails) {
 
 
 			if ( isGenerate ) {
-				switch (second) {
+				switch ( second ) {
 					case 'controller':
-						if ( !third ) {
-							return handlers.invalid(
-								'Please specify the name for the new controller '+
-								'as the third argument.');}
+						var controllerName = third;
+						var arrayOfActionNames = argv._.splice(3);
 						return handlers.generate({
-							controller	: third,
-							actions		: argv._.splice(3)
+							controller	: controllerName,
+							actions		: arrayOfActionNames
 						});
 
 					case 'model':

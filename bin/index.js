@@ -37,9 +37,9 @@ var sailsOptions = {
 var log = new Logger(sailsOptions.log);
 
 
-
-// Interpret arguments
-util.interpretArguments( argv, {
+// Handlers containing all of the logic & responses
+// to run/send back to the CLI
+var CLIController = {
 
 
 	/**
@@ -57,17 +57,20 @@ util.interpretArguments( argv, {
 	/**
 	 * Generate module(s)
 	 */
-	generate: function () {
 
+	generateController: function ( options ) {
+		if ( !options.controller ) {
+			log.error(
+			'Please specify the name for the new controller '+
+			'as the third argument.'
+			);
+			process.exit(1);
+		}
 
-		// Figure out actions based on args
-		var controllerOpts = _.clone(argv);
-		generate.generateController(argv._[2], {
-			actions: argv._.splice(3)
-		});
+		// TODO: generate controller
 
 		log.info('Generated controller!');
-		process.exit(1);
+		process.exit(0);
 	},
 
 
@@ -240,10 +243,12 @@ util.interpretArguments( argv, {
 			console.log('');
 		});
 	}
-});
+};
 
 
 
+// Interpret arguments, route to appropriate handler
+util.interpretArguments( argv, CLIController );
 
 
 
