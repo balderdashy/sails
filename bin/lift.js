@@ -6,8 +6,8 @@ var _			= require('lodash'),
 	fs			= require('fs-extra'),
 	Err			= require('./_errors'),
 	util		= require('./util')(),
-	Logger		= require('sails/lib/hooks/logger/captains'),
-	Sails		= require('sails/lib/app');
+	Logger		= require('../lib/hooks/logger/captains'),
+	Sails		= require('../lib/app');
 
 
 // Build logger using best-guess assumptions about log-level preferences
