@@ -5,6 +5,7 @@ var _			= require('lodash'),
 	fs			= require('fs-extra'),
 	Err			= require('./_errors'),
 	util		= require('./util')(),
+	logger		= new (require('sails/lib/logger')())(),
 	Sails		= require('sails/lib/app');
 
 
@@ -62,11 +63,23 @@ module.exports = function liftSails( options ) {
 		Err.fatal.badLocalDependency(localSails.path, app.dependencies.sails);
 	}
 
-	// Lookup version in package.json
-	// Error out if it has the wrong version in its package.json
-	// TODO: use npm's native version comparator
+	// Lookup sails dependency requirement in app's package.json
 	var requiredSailsVersion = app.dependencies.sails;
-	if (requiredSailsVersion !== localSails.package.version) {
+
+	// If you're using a `git://` sails dependency, you probably know
+	// what you're doing, but we'll let you know just in case.
+	var isUsingGit = requiredSailsVersion.match(/^git:\/\/.+/);
+	if ( isUsingGit ) {
+		console.log();
+		logger.debug('NOTE:');
+		logger.debug('This app depends on an unreleased version of Sails:');
+		logger.debug(requiredSailsVersion);
+		console.log();
+	}
+	
+	// Error out if it has the wrong version in its package.json
+	// TODO: use npm's native version comparator instead
+	if ( !isUsingGit && requiredSailsVersion !== localSails.package.version) {
 		Err.warn.incompatibleLocalSails(requiredSailsVersion, localSails.package.version);
 	}
 

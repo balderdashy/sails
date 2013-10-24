@@ -47,11 +47,11 @@ module.exports = {
 
 		incompatibleLocalSails: function ( requiredVersion, localVersion ) {
 			log.warn('Trying to lift sails in',require('path').resolve(process.cwd(),'node_modules/sails') +'...');
-			log.warn('But the package.json in the current directory indicates a dependency on Sails ' + requiredVersion);
-			log.warn('and the locally installed Sails is ' + localVersion + '!');
-			log.warn('If you run into problems, you may consider reinstalling Sails locally:');
-			log.warn('> npm install sails@' + requiredVersion);
+			log.warn('But the package.json in the current directory indicates a dependency');
+			log.warn('on Sails ' + requiredVersion + ' and the locally installed Sails is ' + localVersion + '!');
 			console.log();
+			log.warn('If you run into compatibility problems, you may consider reinstalling Sails locally:');
+			log.warn('> npm install sails@' + requiredVersion);
 		}
 	}
 

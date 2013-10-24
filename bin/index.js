@@ -23,7 +23,10 @@ var _			= require('lodash'),
 var sailsOptions = {
 
 	// `--verbose` command-line argument
-	log: argv.verbose ? {level: 'verbose'} : undefined,
+	// `--silly` command-line argument
+	log:	argv.verbose ? {level: 'verbose'} : 
+			argv.silly ? {level: 'silly'} :
+			undefined,
 
 	// `--port=?` command-line argument
 	port: argv.port || undefined,

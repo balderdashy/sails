@@ -11,3 +11,11 @@ If you are interested in extending functionality in one of these hooks, please d
 Thanks so much for your interest and contributions to Sails.
 
 -Mike
+
+
+
+
+### Being "ready"
+
+Hooks indicate that they are "ready" by setting their `ready` property to `true`.  By default, hooks are "ready".  Until all hooks are ready, Sails will not run your app's bootstrap function, expose any globals, or emit the `sails.on('ready')` event (which is what starts the HTTP/Websocket servers).
+
