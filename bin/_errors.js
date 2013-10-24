@@ -2,10 +2,15 @@
  * Module dependencies
  */
 var argv		= require('optimist').argv,
-	Logger = require('sails/lib/logger')();
+	Logger		= require('sails/lib/hooks/logger/captains');
 
-// Build logger
-var log = new Logger(argv.verbose ? {level: 'verbose'} : undefined);
+
+// Build logger using best-guess assumptions about log-level preferences
+var log = new Logger(
+	argv.verbose ?
+		{level: 'verbose'} :
+		{} );
+
 
 module.exports = {
 

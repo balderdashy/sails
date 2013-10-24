@@ -2,11 +2,19 @@
  * Module dependencies
  */
 var _			= require('lodash'),
+	argv		=require('optimist').argv,
 	fs			= require('fs-extra'),
 	Err			= require('./_errors'),
 	util		= require('./util')(),
-	logger		= new (require('sails/lib/logger')())(),
+	Logger		= require('sails/lib/hooks/logger/captains'),
 	Sails		= require('sails/lib/app');
+
+
+// Build logger using best-guess assumptions about log-level preferences
+var log = new Logger(
+	argv.verbose ?
+		{level: 'verbose'} :
+		{} );
 
 
 
@@ -71,9 +79,9 @@ module.exports = function liftSails( options ) {
 	var isUsingGit = requiredSailsVersion.match(/^git:\/\/.+/);
 	if ( isUsingGit ) {
 		console.log();
-		logger.debug('NOTE:');
-		logger.debug('This app depends on an unreleased version of Sails:');
-		logger.debug(requiredSailsVersion);
+		log.debug('NOTE:');
+		log.debug('This app depends on an unreleased version of Sails:');
+		log.debug(requiredSailsVersion);
 		console.log();
 	}
 	
