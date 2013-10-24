@@ -3,7 +3,7 @@ module.exports = function (sails) {
 	/**
 	 * Module dependencies
 	 */
-	var Grunt			= require('sails/lib/hooks/grunt')(sails);
+	var Grunt			= require('../lib/hooks/grunt')(sails);
 
 
 	/**
