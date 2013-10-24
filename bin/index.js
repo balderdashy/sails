@@ -13,7 +13,7 @@ var _			= require('lodash'),
 	util		= require('./util.js')();
 	_.str		= require('underscore.string'),
 	REPL		= require('repl'),
-	Grunt__		= require('./gruntTask'),
+	Grunt__		= require('./www'),
 	path		= require('path');
 
 

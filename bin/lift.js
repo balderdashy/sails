@@ -2,7 +2,7 @@
  * Module dependencies
  */
 var _			= require('lodash'),
-	argv		=require('optimist').argv,
+	argv		= require('optimist').argv,
 	fs			= require('fs-extra'),
 	Err			= require('./_errors'),
 	util		= require('./util')(),
@@ -12,11 +12,9 @@ var _			= require('lodash'),
 
 // Build logger using best-guess assumptions about log-level preferences
 var log = new Logger(
-	argv.verbose ?
-		{level: 'verbose'} :
-		{} );
-
-
+	argv.verbose ? { level: 'verbose' } :
+	argv.silly ? { level: 'silly' } :
+	{});
 
 /**
  * Expose method which lifts the given instance of Sails
