@@ -3,14 +3,12 @@ var _ = require('lodash'),
 _.str = require('underscore.string');
 
 
-// exports.isId = function(id) {
-//   return _.isFinite(id) || /^[0-9a-f]{24}$/.test(id);
-// };
 
 // Extend with node util methods
 _.extend(exports, nodeutil);
 
-// Extend util with underscore methods
+// Extend util with underscore/lodash
+// and underscore.string methods
 _.extend(exports, _);
 
 
@@ -83,25 +81,6 @@ exports.normalizeErrors = function normalizeErrors(errOrErrs) {
 
 
 
-/**
- * Recursively merge objects
- */
-
-exports.deepMerge = function deepMerge(target, source) {
-	for (var key in source) {
-		var original = target[key];
-		var next = source[key];
-    
-    // By checking the contructor name we can 
-		if (original && next && next.constructor && next.constructor.name === 'Object') {
-			deepMerge(original, next);
-		} else {
-			if (typeof next !== 'undefined') target[key] = next;
-		}
-	}
-	return target;
-};
-
 
 // Detect verb in an expression like: `get baz` or `get /foo/baz`
 exports.detectVerb = function (haystack) {
@@ -122,44 +101,6 @@ exports.detectVerb = function (haystack) {
 };
 
 
-/**
- * Parse a url to determine the entity and actionName
- */
-exports.parsePath = function(path) {
-	// Split url and determine controller/action
-	var pieces = path.split('/');
-	var parsedPath = {
-		controller: pieces.length > 1 && pieces[1],
-		action: pieces.length > 2 && pieces[2]
-	};
-	
-	// Only include id property if one was provided
-	if (pieces.length > 3) {
-		parsedPath.id = pieces[3];
-	}
-	
-	return parsedPath;
-};
-
-/**
- * Parse a string to determine a controller/action based on 
- * controller.action syntax  
- */
-exports.parseStringRoute = function(routeStr) {
-	// Split the url and find controller/action
-	var entities = routeStr.split('.');
-	
-	
-	var routeObj = {
-		controller: entities[0]
-	};
-	// If action exists put it inside the routeObj
-	if(entities[1]) {
-		routeObj = _.extend(routeObj, { action: entities[1] });
-	}
-
-	return routeObj;
-};
 
 /**
  * Run a method meant for a single object on a object OR array
@@ -231,7 +172,10 @@ exports.preface = function preface(fn, action, context) {
 };
 
 /**
- * Return whether the specified item is an object, but NOT an array
+ * Return whether the specified item is an object, but NOT an array or function
+ *
+ * TODO:	replace usages of this method with `instanceof` 
+ *			and `_.isPlainObject()`
  *
  * @api private
  */
@@ -396,3 +340,56 @@ _.extend(exports,{
 		return packageJson;
 	}
 });
+
+
+
+
+
+
+
+
+// DEPRECATED:
+// /**
+//  * Parse a url to determine the entity and actionName
+//  */
+// exports.parsePath = function(path) {
+// 	// Split url and determine controller/action
+// 	var pieces = path.split('/');
+// 	var parsedPath = {
+// 		controller: pieces.length > 1 && pieces[1],
+// 		action: pieces.length > 2 && pieces[2]
+// 	};
+	
+// 	// Only include id property if one was provided
+// 	if (pieces.length > 3) {
+// 		parsedPath.id = pieces[3];
+// 	}
+	
+// 	return parsedPath;
+// };
+
+// *
+//  * Parse a string to determine a controller/action based on 
+//  * controller.action syntax  
+ 
+// exports.parseStringRoute = function(routeStr) {
+// 	// Split the url and find controller/action
+// 	var entities = routeStr.split('.');
+	
+	
+// 	var routeObj = {
+// 		controller: entities[0]
+// 	};
+// 	// If action exists put it inside the routeObj
+// 	if(entities[1]) {
+// 		routeObj = _.extend(routeObj, { action: entities[1] });
+// 	}
+
+// 	return routeObj;
+// };
+
+
+
+// exports.isId = function(id) {
+//   return _.isFinite(id) || /^[0-9a-f]{24}$/.test(id);
+// };
