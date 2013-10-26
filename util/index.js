@@ -355,38 +355,56 @@ exports.getParamNames = function(func) {
 
 
 /**
- * Read package.json file in specified path
+ * getPackage
+ * 
+ * Read package.json file in the directory at the specified
+ * path.  If an error occurs, call cb(err), and dont throw!
  * 
  * @api private
  */
 
 exports.getPackage = function (path, cb) {
 
-	// Determine fs.readFile.*() function to use
-	var readFile;
-
+	// Read file from disk
 	path = _.str.rtrim(path, '/');
+	path += '/package.json';
 
-	var packageJSON;
 	if (!cb) throw new Error('Callback required for sails.util.getPackage()!');
 	if (cb === 'sync') {
-		return andThen( fs.readFileSync(path + '/package.json', 'utf-8') );
+		var jsonString;
+		try {
+			jsonString = fs.readFileSync(path, 'utf-8');
+		}
+		catch (e) {
+			return false;
+		}
+		return andThen(jsonString);
 	}
-	fs.readFile(path + '/package.json', 'utf-8', function (err, file) {
-		if (err) cb(err);
+	fs.readFile(path, 'utf-8', function (err, file) {
+		if (err) return cb(err);
 		andThen(file);
 	});
 
-	function andThen(packageJSON) {
+	// Attempt to parse JSON, then return
+	function andThen( packageJSON ) {
+		var err;
 		try {
 			packageJSON = JSON.parse(packageJSON);
 		} catch (e) {
-			return false;
+			err = e;
+			packageJSON = false;
 		}
-		
+
+		// Parse failed:
+		if (err) {
+			if (cb==='sync') return false;
+			else return cb(err);
+		}
+
+
+		// Success:
 		// Ensure dependencies are at least an empty object
 		packageJSON.dependencies = packageJSON.dependencies || {};
-
 		if ( cb === 'sync' ) return packageJSON;
 		return cb(null, packageJSON);
 	}
@@ -401,6 +419,7 @@ exports.getPackage = function (path, cb) {
  * getPackageSync
  *
  * Synchronous version of getPackage()
+ * Returns false if package.json cannot be read or parsed.
  * 
  * @api private
  */

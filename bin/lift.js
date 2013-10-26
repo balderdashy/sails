@@ -17,6 +17,9 @@ var log = new Logger(util.getCLIConfig(argv).log);
 /**
  * Expose method which lifts the given instance of Sails
  *
+ * TODO: move most of this into `app/load`
+ *	(since it should really happen when you call node app.js as well)
+ *
  * @param {Object} options - to pass to sails.lift()
  */
 
@@ -30,7 +33,7 @@ module.exports = function liftSails( options ) {
 	};
 
 	var localSails = {
-		path: process.cwd() + '/node_modules/sails'
+		path: app.path + '/node_modules/sails'
 	};
 
 
