@@ -68,7 +68,38 @@ module.exports = function(sails) {
 
 
 		/**
-		 * Interpret arguments
+		 * Convert command-line arguments into configuration
+		 * options for the Sails core
+		 *
+		 * @param argv
+		 */
+		this.getCLIConfig = function ( argv ) {
+
+			return {
+				
+				// `--silent` command-line argument
+				// `--verbose` command-line argument
+				// `--silly` command-line argument
+				log:	argv.verbose ? {level: 'verbose'} : 
+						argv.silly ? {level: 'silly'} :
+						argv.silent ? {level: 'silent'} :
+						undefined,
+
+				// `--port=?` command-line argument
+				port: argv.port || undefined,
+
+				// `--prod` command-line argument
+				environment: argv.prod ? 'production' : undefined
+
+			};
+		};
+
+
+
+
+		/**
+		 * Interpret command-line arguments
+		 * and take the appropriate action
 		 *
 		 * Calls one of:
 		 *		- handler.sails

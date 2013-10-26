@@ -5,12 +5,8 @@ var argv		= require('optimist').argv,
 	Logger		= require('../lib/hooks/logger/captains');
 
 
-// Build logger using best-guess assumptions about log-level preferences
-var log = new Logger(
-	argv.verbose ?
-		{level: 'verbose'} :
-		{} );
-
+// Build logger using command-line arguments
+var log = new Logger(util.getCLIConfig(argv).log);
 
 module.exports = {
 

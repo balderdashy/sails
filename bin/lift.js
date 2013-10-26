@@ -10,11 +10,9 @@ var _			= require('lodash'),
 	Sails		= require('../lib/app');
 
 
-// Build logger using best-guess assumptions about log-level preferences
-var log = new Logger(
-	argv.verbose ? { level: 'verbose' } :
-	argv.silly ? { level: 'silly' } :
-	{});
+// Build logger using command-line config
+var log = new Logger(util.getCLIConfig(argv).log);
+
 
 /**
  * Expose method which lifts the given instance of Sails

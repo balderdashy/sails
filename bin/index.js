@@ -15,26 +15,14 @@ var _			= require('lodash'),
 	REPL		= require('repl'),
 	Grunt__		= require('./www'),
 	path		= require('path');
-	_.str = require('underscore.string');
+	_.str		= require('underscore.string');
 
-/**
- * Build Sails options using command-line arguments
- */
-var sailsOptions = {
 
-	// `--verbose` command-line argument
-	// `--silly` command-line argument
-	log:	argv.verbose ? {level: 'verbose'} : 
-			argv.silly ? {level: 'silly'} :
-			undefined,
 
-	// `--port=?` command-line argument
-	port: argv.port || undefined,
+// Build Sails options using command-line arguments
+var sailsOptions = util.getCLIConfig(argv);
 
-	// `--prod` command-line argument
-	environment: argv.prod ? 'production' : undefined
 
-};
 
 // Build logger
 var log = new Logger(sailsOptions.log);
@@ -77,91 +65,83 @@ var CLIController = {
 
 		// TODO: Load up Sails in the working directory in case
 		// custom paths have been configured
-		// var sails = new Sails();
-		// sails.load({
-		// 	appPath: options.appPath = process.cwd(),
-		// 	hooks: {
-		// 		// TODO: * option for hook loading
-		// 		'*': false,
-		// 		'userconfig': true
-		// 	},
-		// 	globals: false
-		// }, function (err) {
-			// if (err) return Err.fatal.failedToLoadSails(err);
-			var path,
-				filename,
-				attributes,
-				arrayOfActions,
-				ext					= options.ext || 'js',
-				appPath				= options.appPath || process.cwd(),
-				module				= options.module,
-				id					= options.id,
-				globalID			= options.globalID || _.str.capitalize(options.id);
-			
-			switch ( module ) {
+		var path,
+			filename,
+			attributes,
+			arrayOfActions,
+			ext					= options.ext || 'js',
+			appPath				= options.appPath || process.cwd(),
+			module				= options.module,
+			id					= options.id,
+			globalID			= options.globalID || _.str.capitalize(options.id);
+		
 
-				case 'controller':
+		switch ( module ) {
 
-					path = options.path || appPath + '/api/controllers';
-					filename = globalID + 'Controller.' + ext;
+			case 'controller':
 
-					// TODO: generate controller
-					break;
+				path = options.path || appPath + '/api/controllers';
+				filename = globalID + 'Controller.' + ext;
+
+				// TODO: generate controller
+				break;
 
 
 
-				case 'model':
+			case 'model':
 
-					path = options.path || appPath + '/api/models';
-					attributes = options.attributes;
-					filename = globalID + '.' + ext;
+				path = options.path || appPath + '/api/models';
+				attributes = options.attributes;
+				filename = globalID + '.' + ext;
 
-					// Validate optional attribute arguments
-					var errors = [];
-					attributes = _.map(attributes, function (attribute, i) {
-						var parts = attribute.split(':');
+				// Validate optional attribute arguments
+				var errors = [];
+				attributes = _.map(attributes, function (attribute, i) {
+					var parts = attribute.split(':');
 
-						if ( parts[1] === undefined ) parts[1] = 'string';
+					if ( parts[1] === undefined ) parts[1] = 'string';
 
-						// Handle errors
-						if (!parts[1] || !parts[0]) {
-							errors.push(
-								'Invalid shorthand:   "' + attribute + '"');
-							return;
-						}
-						return {
-							name: parts[0],
-							type: parts[1]
-						};
-					});
-
-					// Handle invalid attribute arguments
-					// Send back errors
-					if (errors.length) {
-						return handlers.invalid.apply(handlers, errors);
+					// Handle errors
+					if (!parts[1] || !parts[0]) {
+						errors.push(
+							'Invalid shorthand:   "' + attribute + '"');
+						return;
 					}
-
-					// TODO: generate model
-					// generate.generateModel(module, modelOpts);
-					break;
-			}
-
-
-			// Finish
-			// Special cases
-			if (attributes) {
-				log.info('Generated a new model called ' + globalID + ' with attributes:');
-				_.each(attributes, function (attr) {
-					log.info('  ',attr.name,'    (' + attr.type + ')');
+					return {
+						name: parts[0],
+						type: parts[1]
+					};
 				});
-			}
 
-			// General case
-			else log.info('Generated ' + module + ' `' + globalID + '`!');
+				// Handle invalid attribute arguments
+				// Send back errors
+				if (errors.length) {
+					return handlers.invalid.apply(handlers, errors);
+				}
 
-			log.verbose('New file created: ' + path + '/' + filename);
-			process.exit(0);
-		// });
+				// TODO: generate model
+				// generate.generateModel(module, modelOpts);
+				break;
+		}
+
+
+
+		// Finish up with a success message
+
+		// If attributes were specified:
+		if (attributes) {
+			log.info('Generated a new model called ' + globalID + ' with attributes:');
+			_.each(attributes, function (attr) {
+				log.info('  ',attr.name,'    (' + attr.type + ')');
+			});
+		}
+
+		// General case
+		else log.info('Generated ' + module + ' `' + globalID + '`!');
+
+		// Finally,
+		log.verbose('New file created: ' + path + '/' + filename);
+		process.exit(0);
 	},
 
 
@@ -179,10 +159,10 @@ var CLIController = {
 
 	console: function () {
 		var sails = new Sails();
-		sails.load({
+		sails.load(_.merge(sailsOptions,{
 			hooks: false,
 			globals: false
-		}, function (err) {
+		}), function (err) {
 			if (err) return Err.fatal.failedToLoadSails(err);
 
 			var appID		= _.str.capitalize(path.basename(process.cwd())),
@@ -248,12 +228,12 @@ var CLIController = {
 		log.info('Compiling assets into standalone `www` directory with `grunt ' + wwwTaskName + '`...');
 
 		var sails = new Sails();
-		sails.load({
+		sails.load(_.merge(sailsOptions,{
 			hooks: {
 				grunt: false
 			},
 			globals: false
-		}, function sailsReady (err) {
+		}), function sailsReady (err) {
 			if (err) return Err.fatal.failedToLoadSails(err);
 
 			var Grunt = Grunt__(sails);
@@ -296,10 +276,10 @@ var CLIController = {
 
 	version: function () {
 		var sails = new Sails();
-		sails.load( {
+		sails.load( _.merge(sailsOptions,{
 			hooks: false,
 			globals: false
-		}, function (err) {
+		}), function (err) {
 			if (err) return Err.fatal.failedToLoadSails(err);
 			log.info('v' + sails.version);
 		});
@@ -384,10 +364,10 @@ var CLIController = {
 
 	sails: function () {
 		var sails = new Sails();
-		sails.load( {
+		sails.load( _.merge(sailsOptions, {
 			hooks: false,
 			globals: false
-		}, function (err) {
+		}), function (err) {
 			if (err) return Err.fatal.failedToLoadSails(err);
 			console.log('');
 			log.info('Welcome to Sails! (v' + sails.version + ')');
@@ -401,26 +381,6 @@ var CLIController = {
 
 // Interpret arguments, route to appropriate handler
 util.interpretArguments( argv, CLIController );
-
-
-
-
-
-// Disable all hooks to decrease load time
-// hooks: false
-
-
-// // 'New up' a Sails
-// var sails	= new Sails();
-
-// // Load sails
-// sails.load(sailsOptions, function sailsLoaded (err) {
-// 	if (err) throw new Error(err);
-
-
-// 	});
-// });
-
 
 
 
