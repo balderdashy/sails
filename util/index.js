@@ -1,5 +1,6 @@
 var _ = require('lodash'),
-	nodeutil = require('util');
+	nodeutil = require('util'),
+	safeStringify = require('json-stringify-safe');
 _.str = require('underscore.string');
 
 
@@ -12,9 +13,15 @@ _.extend(exports, nodeutil);
 _.extend(exports, _);
 
 
+
+
+
+
 /**
  * Accept things like `FooController` or `FoO`, then transform 
  * and lower-case them to things like `foo`
+ * 
+ * @api private
  */
 
 exports.normalizeControllerId = function normalizeControllerId (controllerId) {
@@ -26,11 +33,17 @@ exports.normalizeControllerId = function normalizeControllerId (controllerId) {
 	return controllerId;
 };
 
+
+
+
+
 /**
  * Accept things like `FooAdapter` or `FoO`, then transform 
  * and lower-case them to things like `foo`
  *
  * Works for adapters, controllers, and services
+ * 
+ * @api private
  */
 
 exports.normalizeId = function normalizeId (id) {
@@ -43,8 +56,19 @@ exports.normalizeId = function normalizeId (id) {
 };
 
 
-// Implement a deep version of `_.defaults`.
+
+/**
+ * defaultsDeep
+ *
+ * Implement a deep version of `_.defaults`.
+ *
+ * @api private
+ */
 exports.defaultsDeep = _.partialRight(_.merge, _.defaults);
+
+
+
+
 
 
 /**
@@ -52,6 +76,8 @@ exports.defaultsDeep = _.partialRight(_.merge, _.defaults);
  *
  * @param {String|Object|Error|Array} errOrErrs
  * @returns {Array[Error]}
+ * 
+ * @api private
  */
 
 exports.normalizeErrors = function normalizeErrors(errOrErrs) {
@@ -82,7 +108,15 @@ exports.normalizeErrors = function normalizeErrors(errOrErrs) {
 
 
 
-// Detect verb in an expression like: `get baz` or `get /foo/baz`
+
+
+/**
+ * Detect HTTP verb in an expression like:
+ * `get baz`    or     `get /foo/baz`
+ * 
+ * @api private
+ */
+
 exports.detectVerb = function (haystack) {
 	var verbExpr = /^(get|post|put|delete|trace|options|connect|patch|head)\s+/i;
 	var verbSpecified = _.last(haystack.match(verbExpr) || []) || '';
@@ -102,23 +136,36 @@ exports.detectVerb = function (haystack) {
 
 
 
+
+
+
+
 /**
- * Run a method meant for a single object on a object OR array
- * For an object, run the method and return the result.
+ * Run a method meant for a single object on a single instance OR array.
  * For a list, run the method on each item return the resulting array.
  * For anything else, return it silently.
+ * 
+ * @api private
  */
+
 exports.pluralize = function pluralize(collection, application) {
 	if(_.isArray(collection)) {
 		return _.map(collection, application);
-	} else if(_.isObject(collection)) {
-		return application(collection);
-	} else return collection;
+	}
+	return application(collection);
 };
 
+
+
+
+
+
 /**
- * Detect if a string is safe to eval()
+ * Detect if a string is "safe" to eval()
+ * 
+ * @api private
  */
+
 exports.safeToEval = function(someString) {
 	try {
 		!(/[^,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]/.test(someString.replace(/"(\\.|[^"\\])*"/g, ''))) && eval('(' + someString + ')');
@@ -127,49 +174,11 @@ exports.safeToEval = function(someString) {
 	}
 	return true;
 };
-/**
- * Detect if a string is JSON
- */
-exports.isJSON = function(someString) {
-	try {
-		JSON.parse(someString);
-	} catch(e) {
-		return false;
-	}
-	return true;
-};
-/**
- * Detect if a string is JSON (or is close enough)
- */
-exports.isJSONish = function(someString) {
-	// Check if string is safe to evaluate
-	return exports.safeToEval(someString);
-
-	// TODO: something more relevant
-};
 
 
-/**
- * Return a 2nary version of the function, with null as its first argument
- */
-exports.unprefix = function cbok(cb) {
-	return function(model) {
-		cb(null, model);
-	};
-};
 
-/**
- * Return the specified function without the first argument, but apply it in a closure
- */
-exports.preface = function preface(fn, action, context) {
-	return function(model, cb) {
-		if(context) {
-			fn.call(context, fn, action);
-		} else {
-			fn(action, model, cb);
-		}
-	};
-};
+
+
 
 /**
  * Return whether the specified item is an object, but NOT an array or function
@@ -178,15 +187,25 @@ exports.preface = function preface(fn, action, context) {
  *			and `_.isPlainObject()`
  *
  * @api private
+ * 
+ * @api private
  */
 exports.isDictionary = function isDictionary(thing) {
 	return _.isObject(thing) && !_.isArray(thing) && !_.isFunction(thing);
 };
 
 
+
+
+
+
+
+
 /**
+ * optional
+ * 
  * Wrap a callback function to make it optional
- *
+ * 
  * @api private
  */
 
@@ -198,84 +217,260 @@ exports.optional = function wrapOptionalCallback (cb) {
 	};
 };
 
+
+
+
+
+
+/**
+ * Get the domain out of the origin header--
+ * compare it to the host
+ * 
+ * @api private
+ */
+
 exports.isSameOrigin = function isSameOrigin (req) {
-	// Get the domain out of the origin header
 	var domain = req.headers.origin.match(/^https?:\/\/([^:]+)(:\d+)?$/)[1];
-	// Compare it to the host
 	return (req.host == domain);
 };
 
-// Mix in some commonly used underscore fns
+
+
+
+
+/**
+ * Return whether the given object is an instance of Error
+ * 
+ * @api private
+ */
+
+exports.isError = function (e) {
+	return e instanceof Error;
+};
+
+
+
+
+
+/**
+ * Extract the file extension suffix from a filename or path
+ * 
+ * @api private
+ */
+
+exports.fileExtension = function(str) {
+	if(str === null) return '';
+	var pieces = String(str).split('.');
+	return pieces.length > 1 ? _.last(pieces) : '';
+};
+
+
+
+
+/**
+ * Return the abbreviated ordinal string for a given integer
+ * 
+ * http://en.wikipedia.org/wiki/Ordinal_number_(linguistics)
+ * i.e. prettier rendering of things like: 1st, 2nd, 3rd, 4th
+ * 
+ * @api private
+ */
+
+exports.ordinal = function(integer) {
+	if(_.isFinite(+integer) && Math.floor(+integer) === +integer) {
+		var lastDigit = +integer % 10;
+		var lastTwoDigits = +integer % 100;
+		var response = integer + "";
+
+		// Handle n-teen case
+		if(lastTwoDigits >= 11 && lastTwoDigits <= 13) {
+			return response + "th";
+		}
+
+		// Handle general case
+		switch(lastDigit) {
+		case 1:
+			return response + "st";
+		case 2:
+			return response + "nd";
+		case 3:
+			return response + "rd";
+		default:
+			return response + "th";
+		}
+	}
+	throw new Error("sails.util.ordinal() only works on integers!");
+};
+
+
+
+
+
+/**
+ * Get the names of a function's arguments
+ *
+ * @param {Function} func
+ * @returns array of argument names, e.g. ['req', 'res']
+ * 
+ * @api private
+ */ 
+exports.getParamNames = function(func) {
+
+	var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+	var fnStr = func.toString().replace(STRIP_COMMENTS, '');
+	var result = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(/([^\s,]+)/g);
+	if (result === null)
+		result = [];
+	return result;
+};
+
+
+
+
+
+
+
+/**
+ * Read package.json file in specified path
+ * 
+ * @api private
+ */
+
+exports.getPackage = function (path, cb) {
+
+	// Determine fs.readFile.*() function to use
+	var readFile;
+
+	path = _.str.rtrim(path, '/');
+
+	var packageJSON;
+	if (!cb) throw new Error('Callback required for sails.util.getPackage()!');
+	if (cb === 'sync') {
+		return andThen( fs.readFileSync(path + '/package.json', 'utf-8') );
+	}
+	fs.readFile(path + '/package.json', 'utf-8', function (err, file) {
+		if (err) cb(err);
+		andThen(file);
+	});
+
+	function andThen(packageJSON) {
+		try {
+			packageJSON = JSON.parse(packageJSON);
+		} catch (e) {
+			return false;
+		}
+		
+		// Ensure dependencies are at least an empty object
+		packageJSON.dependencies = packageJSON.dependencies || {};
+
+		if ( cb === 'sync' ) return packageJSON;
+		return cb(null, packageJSON);
+	}
+};
+
+
+
+
+
+
+/**
+ * getPackageSync
+ *
+ * Synchronous version of getPackage()
+ * 
+ * @api private
+ */
+
+exports.getPackageSync = function (path) {
+	return exports.getPackage(path, 'sync');
+};
+
+
+
+
+
+
+/**
+ * tolerantParse
+ *
+ * Parse specified JSON, but if it fails, 
+ * return false instead of throwing.
+ * 
+ * @api private
+ */
+
+exports.tolerantParse = function ( json ) {
+	var args = Array.prototype.slice.call(arguments);
+	try {
+		return JSON.parse.apply(this, args);
+	} catch (e) {
+		return false;
+	}
+};
+
+
+
+
+
+/**
+ * Wrapper for @isaacs' `json-stringify-safe`
+ *
+ * Automatically handles circular references.
+ * See: https://github.com/isaacs/json-stringify-safe
+ *
+ * If stringification doesn't work, instead of throwing,
+ * return false.
+ * 
+ * @api private
+ */
+exports.stringify = function ( json, serializer, indent, decycler ) {
+	var args = Array.prototype.slice.call(arguments);
+	try {
+		return safeStringify.apply(this, args);
+	}
+	catch (e) {
+		return false;
+	}
+};
+
+
+
+
+
+
+
+// Underscore extensions for objects
 _.extend(exports,{
 
-	// Return whether the given object is an instance of Error
-	isError: function (e) {
-		return e instanceof Error;
-	},
 
-	// Really LOUD version of console.log.debug
-	shout: function() {
-		var args = _.values(arguments);
 
-		console.log("\n");
-		if(args.length == 1) {
-			console.log("*", args[0]);
-		} else {
-			console.log("*", args.shift());
-			console.log("------------------------------");
-			args.length > 0 && _.each(args, function(arg) {
-				console.log("   => ", arg, "   (" + (typeof arg) + ")");
-			});
-		}
-	},
+	/**
+	 * _.objMap
+	 *
+	 * _.map for objects, keeps key/value associations
+	 * 
+	 * @api private
+	 */ 
 
-	// Get the file extension
-	fileExtension: function(str) {
-		if(str === null) return '';
-		var pieces = String(str).split('.');
-		return pieces.length > 1 ? _.last(pieces) : '';
-	},
-
-	// Pretty rendering of things like: 1st, 2nd, 3rd, 4th
-	th: function(integer) {
-		if(_.isFinite(+integer) && Math.floor(+integer) === +integer) {
-			var lastDigit = +integer % 10;
-			var lastTwoDigits = +integer % 100;
-			var response = integer + "";
-
-			// Handle n-teen case
-			if(lastTwoDigits >= 11 && lastTwoDigits <= 13) {
-				return response + "th";
-			}
-
-			// Handle general case
-			switch(lastDigit) {
-			case 1:
-				return response + "st";
-			case 2:
-				return response + "nd";
-			case 3:
-				return response + "rd";
-			default:
-				return response + "th";
-			}
-		} else {
-			sails.log.debug("You specified: ", integer);
-			throw new Error("But _.th only works on integers!");
-		}
-	},
-
-	// ### _.objMap
-	// _.map for objects, keeps key/value associations
 	objMap: function(input, mapper, context) {
 		return _.reduce(input, function(obj, v, k) {
 			obj[k] = mapper.call(context, v, k, input);
 			return obj;
 		}, {}, context);
 	},
-	// ### _.objFilter
-	// _.filter for objects, keeps key/value associations
-	// but only includes the properties that pass test().
+
+
+
+
+	/**
+	 * _.objFilter
+	 *
+	 * _.filter for objects, keeps key/value associations
+	 * but only includes the properties that pass test().
+	 * 
+	 * @api private
+	 */
+
 	objFilter: function(input, test, context) {
 		return _.reduce(input, function(obj, v, k) {
 			if(test.call(context, v, k, input)) {
@@ -284,10 +479,19 @@ _.extend(exports,{
 			return obj;
 		}, {}, context);
 	},
-	// ### _.objReject
-	//
-	// _.reject for objects, keeps key/value associations
-	// but does not include the properties that pass test().
+
+
+
+
+	/** 
+	 * _.objReject
+	 *
+	 * _.reject for objects, keeps key/value associations
+	 * but does not include the properties that pass test().
+	 * 
+	 * @api private
+	 */
+
 	objReject: function(input, test, context) {
 		return _.reduce(input, function(obj, v, k) {
 			if(!test.call(context, v, k, input)) {
@@ -297,49 +501,35 @@ _.extend(exports,{
 		}, {}, context);
 	},
 
+
+
 	/**
+	 * _.objInvoke
+	 * 
 	 * Usage:
 	 *	obj -> the object
 	 *	arguments* -> other arguments can be specified to be invoked on each of the functions
+	 * 
+	 * @api private
 	 */
+
 	objInvoke: function(obj) {
 		var args = _.toArray(arguments).shift();
 		return exports.objMap(obj, function(fn) {
 			return fn(args);
 		});
-	},
-
-	/**
-	 * Get the names of a function's arguments
-	 *
-	 * @param {Function} func
-	 * @returns array of argument names, e.g. ['req', 'res']
-	 */ 
-	getParamNames: function(func) {
-		var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
-		var fnStr = func.toString().replace(STRIP_COMMENTS, '');
-		var result = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(/([^\s,]+)/g);
-		if (result === null)
-			result = [];
-		return result;
-	},
-
-	// Read package.json file in specified path
-	getPackage: function (path) {
-		path = require('underscore.string').rtrim(path, '/');
-		var packageJson = require('fs').readFileSync(path + '/package.json', 'utf-8');
-		try {
-			packageJson = JSON.parse(packageJson);
-		} catch (e) {
-			return false;
-		}
-		
-		// Ensure at least an empty object
-		packageJson.dependencies = packageJson.dependencies || {};
-
-		return packageJson;
 	}
+	
 });
+
+
+
+
+
+
+
+
+
 
 
 
@@ -351,7 +541,9 @@ _.extend(exports,{
 // DEPRECATED:
 // /**
 //  * Parse a url to determine the entity and actionName
-//  */
+ // * 
+ // */ @api private/ 
+ // */
 // exports.parsePath = function(path) {
 // 	// Split url and determine controller/action
 // 	var pieces = path.split('/');
