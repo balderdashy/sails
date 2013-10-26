@@ -5,7 +5,7 @@ var _			= require('lodash'),
 	argv		= require('optimist').argv,
 	fs			= require('fs-extra'),
 	Err			= require('./_errors'),
-	util		= require('./util'),
+	util		= require('../util'),
 	Logger		= require('../lib/hooks/logger/captains'),
 	Sails		= require('../lib/app');
 
@@ -41,7 +41,7 @@ module.exports = function liftSails( options ) {
 	}
 
 	// Load this app's package.json and dependencies
-	app.package = util.getPackage(app.path);
+	app.package = util.getPackageSync(app.path);
 	app.dependencies = app.package.dependencies;
 
 
@@ -63,7 +63,7 @@ module.exports = function liftSails( options ) {
 	}
 
 	// Read the package.json in the local installation of Sails
-	localSails.package = util.getPackage(localSails.path);
+	localSails.package = util.getPackageSync(localSails.path);
 
 	// Local Sails has corrupted package.json
 	if ( !localSails.package ) {
