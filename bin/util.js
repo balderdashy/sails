@@ -105,7 +105,7 @@ module.exports = function(sails) {
 			// Interpret/validate arguments to `sails generate`
 			if ( isGenerate ) {
 
-				// Second argument is the module to generate
+				// Second argument is the type of module to generate
 				var module = second;
 
 				// If it's invalid, or doesn't exist, we have a usage error
@@ -121,13 +121,22 @@ module.exports = function(sails) {
 					);
 				}
 
+				// Third argument is the id of the module we're creating
+				var id = third;
 
 				// If no third argument exists, this is a usage error
 				// TODO: support `sails generate` again
 				// 		 (for creating a model AND controller at the same time)
-				if ( !third ) {
+				if ( !id ) {
 					return handlers.invalid(
-						'Please specify the name for the new ' + second + '.'
+						'Please specify the name for the new ' + module + '.'
+					);
+				}
+				if ( !id.match(/^[a-z]+$/i) ) {
+					return handlers.invalid(
+						'Sorry, "' + id + '" is not a valid name for a ' + module + '.',
+						'Only letters and numbers are allowed.',
+						'(Sails ' + module + 's are case-insensitive.)'
 					);
 				}
 
@@ -136,7 +145,7 @@ module.exports = function(sails) {
 						var controllerName = third;
 						var arrayOfActionNames = argv._.splice(3);
 						return handlers.generate({
-							controller	: controllerName,
+							id			: controllerName,
 							module		: 'controller',
 							actions		: arrayOfActionNames
 						});
@@ -144,32 +153,8 @@ module.exports = function(sails) {
 					case 'model':
 						var modelName = third;
 						var arrayOfAttributes = argv._.splice(3);
-
-						// Validate optional attribute arguments
-						var errors = [];
-						_.map(arrayOfAttributes, function (attribute, i) {
-							var parts = attribute.split(':');
-
-							// Handle errors
-							if (!parts[1] || !parts[0]) {
-								errors.push(
-									'Invalid attribute:   "' + attribute + '"');
-								return;
-							}
-							return {
-								name: parts[0],
-								type: parts[1]
-							};
-						});
-
-						// Handle invalid attribute arguments
-						// Send back errors
-						if (errors.length) {
-							return handlers.invalid.apply(handlers, errors);
-						}
-
 						return handlers.generate({
-							model		: modelName,
+							id			: modelName,
 							module		: 'model',
 							attributes	: arrayOfAttributes
 						});

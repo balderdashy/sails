@@ -15,7 +15,7 @@ var _			= require('lodash'),
 	REPL		= require('repl'),
 	Grunt__		= require('./www'),
 	path		= require('path');
-
+	_.str = require('underscore.string');
 
 /**
  * Build Sails options using command-line arguments
@@ -71,28 +71,97 @@ var CLIController = {
 	 */
 
 	generate: function ( options ) {
-		
-		var path = options.path = process.cwd();
 
-		switch ( options.module ) {
+		// Change this line if this module gets pulled out separately
+		var handlers = CLIController;
 
-			case 'controller':
+		// TODO: Load up Sails in the working directory in case
+		// custom paths have been configured
+		// var sails = new Sails();
+		// sails.load({
+		// 	appPath: options.appPath = process.cwd(),
+		// 	hooks: {
+		// 		// TODO: * option for hook loading
+		// 		'*': false,
+		// 		'userconfig': true
+		// 	},
+		// 	globals: false
+		// }, function (err) {
+			// if (err) return Err.fatal.failedToLoadSails(err);
+			var path,
+				filename,
+				attributes,
+				arrayOfActions,
+				ext					= options.ext || 'js',
+				appPath				= options.appPath || process.cwd(),
+				module				= options.module,
+				id					= options.id,
+				globalID			= options.globalID || _.str.capitalize(options.id);
+			
+			switch ( module ) {
 
-				// TODO: generate controller
-				break;
+				case 'controller':
+
+					path = options.path || appPath + '/api/controllers';
+					filename = globalID + 'Controller.' + ext;
+
+					// TODO: generate controller
+					break;
 
 
 
-			case 'model':
+				case 'model':
 
-				// TODO: generate model
-				// generate.generateModel(module, modelOpts);
-				break;
-		}
+					path = options.path || appPath + '/api/models';
+					attributes = options.attributes;
+					filename = globalID + '.' + ext;
 
-		// Finish
-		log.info('Generated ' + options.module + ' at `' + options.path + '`!');
-		process.exit(0);
+					// Validate optional attribute arguments
+					var errors = [];
+					attributes = _.map(attributes, function (attribute, i) {
+						var parts = attribute.split(':');
+
+						if ( parts[1] === undefined ) parts[1] = 'string';
+
+						// Handle errors
+						if (!parts[1] || !parts[0]) {
+							errors.push(
+								'Invalid shorthand:   "' + attribute + '"');
+							return;
+						}
+						return {
+							name: parts[0],
+							type: parts[1]
+						};
+					});
+
+					// Handle invalid attribute arguments
+					// Send back errors
+					if (errors.length) {
+						return handlers.invalid.apply(handlers, errors);
+					}
+
+					// TODO: generate model
+					// generate.generateModel(module, modelOpts);
+					break;
+			}
+
+
+			// Finish
+			// Special cases
+			if (attributes) {
+				log.info('Generated a new model called ' + globalID + ' with attributes:');
+				_.each(attributes, function (attr) {
+					log.info('  ',attr.name,'    (' + attr.type + ')');
+				});
+			}
+
+			// General case
+			else log.info('Generated ' + module + ' `' + globalID + '`!');
+
+			log.verbose('New file created: ' + path + '/' + filename);
+			process.exit(0);
+		// });
 	},
 
 
