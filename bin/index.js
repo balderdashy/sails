@@ -45,8 +45,13 @@ var log = new Logger(sailsOptions.log);
 var CLIController = {
 
 
+
+
 	/**
-	 * Create a new project
+	 * `sails new`
+	 *
+	 * Create all the files/folders for a new app at the specified path.
+	 * Relative and/or absolute paths are ok!
 	 */
 	new: function () {
 		log.error('Sorry, `sails new` is currently out of commission.');
@@ -57,22 +62,36 @@ var CLIController = {
 
 
 
+
+
 	/**
-	 * Generate module(s)
+	 * `sails generate`
+	 *
+	 * Generate module(s) for the app in our working directory.
 	 */
 
-	generateController: function ( options ) {
-		if ( !options.controller ) {
-			log.error(
-			'Please specify the name for the new controller '+
-			'as the third argument.'
-			);
-			process.exit(1);
+	generate: function ( options ) {
+		
+		var path = options.path = process.cwd();
+
+		switch ( options.module ) {
+
+			case 'controller':
+
+				// TODO: generate controller
+				break;
+
+
+
+			case 'model':
+
+				// TODO: generate model
+				// generate.generateModel(module, modelOpts);
+				break;
 		}
 
-		// TODO: generate controller
-
-		log.info('Generated controller!');
+		// Finish
+		log.info('Generated ' + options.module + ' at `' + options.path + '`!');
 		process.exit(0);
 	},
 
@@ -80,9 +99,15 @@ var CLIController = {
 
 
 
+
+
 	/**
-	 * Start the REPL
+	 * `sails console`
+	 *
+	 * Enter the interactive console (aka REPL) for the app
+	 * in our working directory.
 	 */
+
 	console: function () {
 		var sails = new Sails();
 		sails.load({
@@ -120,9 +145,15 @@ var CLIController = {
 
 
 
+
+
+
 	/**
+	 * `sails run`
+	 *
 	 * Issue a command/instruction
 	 */
+
 	run: function () {
 		log.error('Sorry, `sails run` is currently out of commission.');
 		process.exit(1);
@@ -132,9 +163,15 @@ var CLIController = {
 
 
 
+
+
 	/**
-	 * Build a www directory from the assets folder
+	 * `sails www`
+	 *
+	 * Build a www directory from the assets folder.
+	 * Uses the Gruntfile.
 	 */
+
 	www: function () {
 		var wwwPath = path.resolve( process.cwd(), './www' ),
 			wwwTaskName = 'build';
@@ -176,9 +213,18 @@ var CLIController = {
 
 
 
+
 	/**
-	 * Output the version of the currently running Sails
+	 * `sails version`
+	 *
+	 * Output the version of the Sails in our working directory-
+	 * i.e. usually, the version we installed with `npm install sails`
+	 *
+	 * If no local installation of Sails exists, display the version
+	 * of the Sails currently running this CLI code- (that's me!)
+	 * i.e. usually, the version we installed with `sudo npm install -g sails`
 	 */
+
 	version: function () {
 		var sails = new Sails();
 		sails.load( {
@@ -193,8 +239,11 @@ var CLIController = {
 
 
 
+
 	/**
-	 * Start up the app in the current directory.
+	 * `sails lift`
+	 * 
+	 * Fire up the Sails app in our working directory.
 	 */
 	lift: function () {
 		require('./lift')(sailsOptions);
@@ -205,23 +254,47 @@ var CLIController = {
 
 	
 	/**
-	 * Unknown command-- print out usage.
+	 * User entered an unknown or invalid command.
+	 *
+	 * Print out usage and stuff.
 	 */
-	invalid: function ( options ) {
-		if ( _.isString(options) ) {
-			var msg = options;
+
+	invalid: function ( /* [msg1|options], [msg2], [msg3], [...] */ ) {
+		var args = Array.prototype.slice.call(arguments, 0),
+			options = _.isPlainObject(args[0]) ? args[0] : null,
+			messages = !_.isPlainObject(args[0]) ? args : args.splice(1);
+
+		// If options were specified, it should contain the arguments
+		// that were passed to the CLI.  Build the best error message
+		// we can based on what we know.
+		if ( options ) {
+			if ( !options.first ) {
+				messages.push('Sorry, I don\'t understand what that means.');
+			}
+			else messages.push('Sorry, I don\'t understand what `'+options.first+'` means.');
+		}
+
+		// Iterate through any other message arguments
+		// and output a console message for each
+		_.each(messages, function (msg) {
 			log.error(msg);
-		}
-		else {
-			options = options || {};
-			var userInput = options.firstArg ? '`sails ' + options.firstArg + '`' : 'that';
-			log.error('Sorry, I don\'t understand what ',userInput,' means.');
-		}
-		log.error( 'To get help using the Sails command-line tool, run `sails`.');
-		console.log('');
+		});
+
+		// Finish up with an explanation of how to get more docs/information
+		// on using the Sails CLI.
+		// console.log('');
+		log.info( 'To get help using the Sails command-line tool, run `sails`.');
 	},
 
 
+
+
+
+	/**
+	 * Sails CLI internal error occurred.
+	 *
+	 * Print error message.
+	 */
 
 	error: function ( err ) {
 		log.error( 'An error occurred.' );
@@ -230,9 +303,16 @@ var CLIController = {
 	},
 
 
+
+
+
+
 	/**
-	 * sails` was run with no arguments-- print welcome message and usage info.
+	 * The CLI was run with no arguments.
+	 *
+	 * Print welcome message and usage info.
 	 */
+
 	sails: function () {
 		var sails = new Sails();
 		sails.load( {
@@ -242,7 +322,7 @@ var CLIController = {
 			if (err) return Err.fatal.failedToLoadSails(err);
 			console.log('');
 			log.info('Welcome to Sails! (v' + sails.version + ')');
-			log.info( util.getUsage() );
+			log.info( util.usage.sails() );
 			console.log('');
 		});
 	}
@@ -336,21 +416,21 @@ util.interpretArguments( argv, CLIController );
 	// 		var entity = argv._[2];
 	// 		verifyArg(2, 'Please specify the name for the new model as the third argument.');
 
-	// 		// Figure out attributes based on args
-	// 		var modelOpts = _.extend({}, argv);
-	// 		var args = argv._.splice(3);
-	// 		modelOpts.attributes = [];
-	// 		_.each(args, function (attribute, i) {
-	// 			var parts = attribute.split(':');
-	// 			if (!parts[1]) {
-	// 				log.error('Please specify the type for attribute ' + (i + 1) + ' '' + parts[0] + ''.');
-	// 				process.exit(1);
-	// 			}
-	// 			modelOpts.attributes.push({
-	// 				name: parts[0],
-	// 				type: parts[1].toUpperCase()
-	// 			});
-	// 		});
+			// // Figure out attributes based on args
+			// var modelOpts = _.extend({}, argv);
+			// var args = argv._.splice(3);
+			// modelOpts.attributes = [];
+			// _.each(args, function (attribute, i) {
+			// 	var parts = attribute.split(':');
+			// 	if (!parts[1]) {
+			// 		log.error('Please specify the type for attribute ' + (i + 1) + ' '' + parts[0] + ''.');
+			// 		process.exit(1);
+			// 	}
+			// 	modelOpts.attributes.push({
+			// 		name: parts[0],
+			// 		type: parts[1].toUpperCase()
+			// 	});
+			// });
 
 	// 		log.warn('For the record :: to serve the blueprint API for this model,');
 	// 		log.warn('you\'ll also need to have an empty controller.');

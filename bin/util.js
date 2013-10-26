@@ -23,6 +23,51 @@ module.exports = function(sails) {
 
 
 		/**
+		 * Methods which return a string with usage information
+		 * for the Sails CLI
+		 */
+		this.usage = {
+
+			sails: function () {
+				var usage = 'Usage: sails <command>\n\n';
+				// (if node_modules/sails exists, it will be used instead of the global install)\n';
+				usage += _tab('sails lift') + 'Run the Sails app in the current directory:\n';
+				usage += _tab('  [--prod]') + '  - in production mode \n';
+				usage += _tab('  [--port 3000]') + '  - on port 3000 \n';
+				usage += _tab('  [--verbose]') + '  - with verbose logging enabled \n';
+				usage += '\n';
+				usage += _tab('sails new <appName>') + 'Create a new Sails project in a folder called <appName>:\n';
+				usage += _tab('  [--linker]') + '  - set up to auto-<link> assets w/ Grunt\n';
+				usage += '\n';
+				usage += _tab('sails generate model <foo>') + 'Generate a model (`api/models/Foo.js`)\n';
+				usage += _tab('sails generate controller <foo>') + 'Generate a controller (`api/controllers/FooController.js`)\n';
+				usage += _tab('sails generate <foo>') + 'Generate both.\n';
+				usage += '\n';
+				usage += _tab('sails console') + 'Run Sails in interactive mode (REPL)\n';
+				usage += _tab('sails version') + 'Get the current globally installed Sails version\n';
+				usage += _tab('sails run <command>') + 'Run a management command (exported by YOUR_APP/commands/index.js)';
+
+				return usage;
+			},
+
+
+			generate: {
+				model: function () {
+					var usage = 'Usage:\n';
+					usage += 'sails generate model <foo> [attribute0Name:type] [attribute1Name:attribute1Type] [...]' + '\n';
+					usage += '\n';
+					usage += 'E.g., to generate api/models/Cockatiel.js:' + '\n';
+					usage += 'sails generate model cockatiel' + '\n';
+					usage += '\n';
+					usage += 'With some attributes:' + '\n';
+					usage += 'sails generate model cockatiel name:string weight:float birthdate:date color:string';
+				}
+			}
+		};
+
+
+
+		/**
 		 * Interpret arguments
 		 *
 		 * Calls one of:
@@ -57,17 +102,78 @@ module.exports = function(sails) {
 				isRun		= _.contains(['run','issue'], first);
 
 
+			// Interpret/validate arguments to `sails generate`
 			if ( isGenerate ) {
+
+				// Second argument is the module to generate
+				var module = second;
+
+				// If it's invalid, or doesn't exist, we have a usage error
+				// on our hands.
+				if ( !second ) {
+					return handlers.invalid(
+						'What type of module would you like to generate?'
+					);
+				}
+				if ( !_.contains(['controller','model'], module) ) {
+					return handlers.invalid(
+						'Sorry, I don\'t know how to generate a `' + second + '`.'
+					);
+				}
+
+
+				// If no third argument exists, this is a usage error
+				// TODO: support `sails generate` again
+				// 		 (for creating a model AND controller at the same time)
+				if ( !third ) {
+					return handlers.invalid(
+						'Please specify the name for the new ' + second + '.'
+					);
+				}
+
 				switch ( second ) {
 					case 'controller':
 						var controllerName = third;
 						var arrayOfActionNames = argv._.splice(3);
 						return handlers.generate({
 							controller	: controllerName,
+							module		: 'controller',
 							actions		: arrayOfActionNames
 						});
 
 					case 'model':
+						var modelName = third;
+						var arrayOfAttributes = argv._.splice(3);
+
+						// Validate optional attribute arguments
+						var errors = [];
+						_.map(arrayOfAttributes, function (attribute, i) {
+							var parts = attribute.split(':');
+
+							// Handle errors
+							if (!parts[1] || !parts[0]) {
+								errors.push(
+									'Invalid attribute:   "' + attribute + '"');
+								return;
+							}
+							return {
+								name: parts[0],
+								type: parts[1]
+							};
+						});
+
+						// Handle invalid attribute arguments
+						// Send back errors
+						if (errors.length) {
+							return handlers.invalid.apply(handlers, errors);
+						}
+
+						return handlers.generate({
+							model		: modelName,
+							module		: 'model',
+							attributes	: arrayOfAttributes
+						});
+
 					case 'view':
 					case 'policy':
 					case 'adapter':
@@ -83,17 +189,16 @@ module.exports = function(sails) {
 			}
 
 
-			if ( isLift ) return handlers.lift();
-			if ( isConsole ) return handlers.console();
-			if ( isGenerate ) return handlers.generate();
-			if ( isNew ) return handlers['new']();
-			if ( isVersion ) return handlers.version();
-			if ( isRun ) return handlers.run();
-			if ( isWWW ) return handlers.www();
+			if ( isLift )		return handlers.lift();
+			if ( isConsole )	return handlers.console();
+			if ( isNew )		return handlers['new']();
+			if ( isVersion )	return handlers.version();
+			if ( isRun )		return handlers.run();
+			if ( isWWW )		return handlers.www();
 
 
 			// Unknown action
-			return handlers.invalid( { firstArg: first } );
+			return handlers.invalid( { first: first } );
 		};
 
 
@@ -115,37 +220,6 @@ module.exports = function(sails) {
 			return packageJson;
 		};
 
-
-
-
-		/**
-		 * @returns usage information for the sails CLI
-		 */
-		this.getUsage = function () {
-			function leftColumn(str) {
-				var n = (33 - str.length);
-				return str + _.str.repeat(' ', n);
-			}
-
-			var usage = 'Usage: sails <command>\n\n';
-			usage += leftColumn('sails lift') + 'Run the Sails app in the current directory:\n';// (if node_modules/sails exists, it will be used instead of the global install)\n';
-			usage += leftColumn('  [--prod]') + '  - in production mode \n';
-			usage += leftColumn('  [--port 3000]') + '  - on port 3000 \n';
-			usage += leftColumn('  [--verbose]') + '  - with verbose logging enabled \n';
-			usage += '\n';
-			usage += leftColumn('sails new <appName>') + 'Create a new Sails project in a folder called <appName>:\n';
-			usage += leftColumn('  [--linker]') + '  - set up to auto-<link> assets w/ Grunt\n';
-			usage += '\n';
-			usage += leftColumn('sails generate model <foo>') + 'Generate a model (`api/models/Foo.js`)\n';
-			usage += leftColumn('sails generate controller <foo>') + 'Generate a controller (`api/controllers/FooController.js`)\n';
-			usage += leftColumn('sails generate <foo>') + 'Generate both.\n';
-			usage += '\n';
-			usage += leftColumn('sails console') + 'Run Sails in interactive mode (REPL)\n';
-			usage += leftColumn('sails version') + 'Get the current globally installed Sails version\n';
-			usage += leftColumn('sails run <command>') + 'Run a management command (exported by YOUR_APP/commands/index.js)';
-
-			return usage;
-		};
 
 
 
@@ -417,7 +491,6 @@ module.exports = function(sails) {
 
 		/** 
 		 *
-		 *
 		 * @api private
 		 */
 
@@ -454,4 +527,17 @@ module.exports = function(sails) {
 
 	}
 
+
+
+	/**
+	 * Return a tabbed-over version of the string,
+	 * adjusting for spacing
+	 *
+	 * @api private
+	 */
+	function _tab (str) {
+		var n = (33 - str.length);
+		return str + _.str.repeat(' ', n);
+	}
 };
+
