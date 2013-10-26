@@ -202,6 +202,7 @@ function checkGeneratedFiles(appName, templateLang) {
 		'assets/js/socket.io.js',
 		'assets/styles/.gitkeep',
 		'config/400.js',
+		'config/401.js',
 		'config/403.js',
 		'config/404.js',
 		'config/500.js',
@@ -233,6 +234,7 @@ function checkGeneratedFiles(appName, templateLang) {
 
 		templateFiles = [
 			'views/404.ejs',
+			'views/401.ejs',
 			'views/403.ejs',
 			'views/500.ejs',
 			'views/home',
@@ -244,6 +246,7 @@ function checkGeneratedFiles(appName, templateLang) {
 
 		templateFiles = [
 			'views/404.jade',
+			'views/401.jade',
 			'views/403.jade',
 			'views/500.jade',
 			'views/home',
