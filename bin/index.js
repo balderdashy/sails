@@ -10,7 +10,7 @@ var _			= require('lodash'),
 	Errors		= require('./_errors'),
 	Logger		= require('../lib/hooks/logger/captains'),
 	Sails		= require('../lib/app');
-	util		= require('./util.js')();
+	util		= require('./util');
 	_.str		= require('underscore.string'),
 	REPL		= require('repl'),
 	Grunt__		= require('./www'),
@@ -21,8 +21,6 @@ var _			= require('lodash'),
 
 // Build Sails options using command-line arguments
 var sailsOptions = util.getCLIConfig(argv);
-
-
 
 // Build logger
 var log = new Logger(sailsOptions.log);
@@ -66,9 +64,10 @@ var CLIController = {
 		// TODO: Load up Sails in the working directory in case
 		// custom paths have been configured
 		var path,
+			errors,
 			filename,
 			attributes,
-			arrayOfActions,
+			actions,
 			ext					= options.ext || 'js',
 			appPath				= options.appPath || process.cwd(),
 			module				= options.module,
@@ -83,6 +82,27 @@ var CLIController = {
 				path = options.path || appPath + '/api/controllers';
 				filename = globalID + 'Controller.' + ext;
 
+				// Validate optional action arguments
+				errors = [];
+				actions = _.map(attributes, function (action, i) {
+					
+					// TODO: validate action names
+					var invalid = false;
+
+					// Handle errors
+					if (invalid) {
+						return errors.push(
+							'Invalid action notation:   "' + action + '"');
+					}
+					return action;
+				});
+
+				// Handle invalid action arguments
+				// Send back errors
+				if (errors.length) {
+					return handlers.invalid.apply(handlers, errors);
+				}
+
 				// TODO: generate controller
 				break;
 
@@ -95,7 +115,7 @@ var CLIController = {
 				filename = globalID + '.' + ext;
 
 				// Validate optional attribute arguments
-				var errors = [];
+				errors = [];
 				attributes = _.map(attributes, function (attribute, i) {
 					var parts = attribute.split(':');
 
@@ -104,7 +124,7 @@ var CLIController = {
 					// Handle errors
 					if (!parts[1] || !parts[0]) {
 						errors.push(
-							'Invalid shorthand:   "' + attribute + '"');
+							'Invalid attribute notation:   "' + attribute + '"');
 						return;
 					}
 					return {

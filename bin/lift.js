@@ -5,7 +5,7 @@ var _			= require('lodash'),
 	argv		= require('optimist').argv,
 	fs			= require('fs-extra'),
 	Err			= require('./_errors'),
-	util		= require('./util')(),
+	util		= require('./util'),
 	Logger		= require('../lib/hooks/logger/captains'),
 	Sails		= require('../lib/app');
 
