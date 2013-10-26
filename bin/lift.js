@@ -24,6 +24,9 @@ var log = new Logger(
 
 module.exports = function liftSails( options ) {
 
+	// Ensure options passed in are not mutated
+	options = _.clone(options);
+
 	var app = {
 		path	: process.cwd()
 	};
