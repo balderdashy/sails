@@ -73,8 +73,9 @@ var CLIController = {
 	 */
 
 	console: function () {
-		var sails = new Sails();
-		sails.load(_.merge(sailsOptions,{
+		// Load up sails just to get the version
+		var sails0 = new Sails();
+		sails0.load(_.merge({},sailsOptions,{
 			hooks: false,
 			globals: false
 		}), function (err) {
@@ -84,13 +85,20 @@ var CLIController = {
 				appName		= _.str.capitalize(appID);
 
 			console.log();
-			log('Welcome to the Sails console (v' + sails.version + ')');
+			log('Welcome to the Sails console (v' + sails0.version + ')');
 			log('( to exit, type <CTRL>+<C> )');
 			log.verbose('Lifting `'+process.cwd()+'` in interactive mode...');
 
-			// Hide ship log to keep from dirtying up REPL
-			sails = new Sails();
-			sails.lift(_.merge(sailsOptions,{log:{noShip: true}}), function (err) {
+			var sails = new Sails();
+			sails.lift(_.merge(
+				{},
+				sailsOptions, {
+
+				// Disable ASCII ship to keep from dirtying things up
+				log: {
+					noShip: true
+				}
+			}), function (err) {
 				if (err) return Err.fatal.failedToLoadSails(err);
 
 				var repl = REPL.start('sails> ');
@@ -143,7 +151,7 @@ var CLIController = {
 		log.info('Compiling assets into standalone `www` directory with `grunt ' + wwwTaskName + '`...');
 
 		var sails = new Sails();
-		sails.load(_.merge(sailsOptions,{
+		sails.load(_.merge({},sailsOptions,{
 			hooks: {
 				grunt: false
 			},
@@ -191,7 +199,7 @@ var CLIController = {
 
 	version: function () {
 		var sails = new Sails();
-		sails.load( _.merge(sailsOptions,{
+		sails.load( _.merge({},sailsOptions,{
 			hooks: false,
 			globals: false
 		}), function (err) {
@@ -279,7 +287,7 @@ var CLIController = {
 
 	sails: function () {
 		var sails = new Sails();
-		sails.load( _.merge(sailsOptions, {
+		sails.load( _.merge({},sailsOptions, {
 			hooks: false,
 			globals: false
 		}), function (err) {
