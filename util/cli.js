@@ -75,6 +75,7 @@ exports.usage = {
 		usage += _tab('sails generate model <foo>') + 'Generate a model (`api/models/Foo.js`)\n';
 		usage += _tab('sails generate controller <foo>') + 'Generate a controller (`api/controllers/FooController.js`)\n';
 		usage += _tab('sails generate <foo>') + 'Generate both.\n';
+		usage += _tab('  [--dry]') + 'Don\'t actually create the module file.\n';
 		usage += '\n';
 		usage += _tab('sails console') + 'Run Sails in interactive mode (REPL)\n';
 		usage += _tab('sails version') + 'Get the current globally installed Sails version\n';
@@ -184,7 +185,8 @@ exports.interpretArguments = function ( argv, handlers ) {
 				return handlers.generate({
 					id			: controllerName,
 					module		: 'controller',
-					actions		: arrayOfActionNames
+					actions		: arrayOfActionNames,
+					dry			: argv.dry
 				});
 
 			case 'model':
@@ -193,7 +195,8 @@ exports.interpretArguments = function ( argv, handlers ) {
 				return handlers.generate({
 					id			: modelName,
 					module		: 'model',
-					attributes	: arrayOfAttributes
+					attributes	: arrayOfAttributes,
+					dry			: argv.dry
 				});
 
 			case 'view':
