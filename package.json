@@ -29,7 +29,7 @@
   "dependencies": {
     "waterline": "git://github.com/balderdashy/waterline.git#associations",
     "sails-disk": "git://github.com/balderdashy/sails-disk.git#associations",
-    "express": "3.4.0",
+    "express": "3.4.3",
     "socket.io": "0.9.14",
     "connect-redis": "1.4.5",
     "connect-mongo": "0.3.2",
