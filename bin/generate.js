@@ -22,26 +22,31 @@ module.exports = function generate ( options, handlers ) {
 
 	// TODO: Load up Sails in the working directory in case
 	// custom paths have been configured
-	var path,
+	var appPath				= options.appPath || process.cwd(),
+		path = options.path || appPath,
 		errors,
-		filename,
-		attributes,
-		actions,
+		attributes			= options.attributes,
+		actions				= options.actions,
 		ext					= options.ext || 'js',
-		appPath				= options.appPath || process.cwd(),
 		module				= options.module,
 		id					= options.id,
-		globalID			= options.globalID || util.str.capitalize(options.id);
+		globalID			= options.globalID || util.str.capitalize(options.id),
+		filename;
+
+
+	// Trim peculiar characters from module id
+	id = util.str.trim(id, '/');
+	globalID = util.str.trim(globalID, '/');
 	
 
 	switch ( module ) {
 
 		case 'controller':
 
-			path = options.path || appPath + '/api/controllers';
-			actions = options.actions;
+			path += '/api/controllers';
 			globalID += 'Controller';
 			filename = globalID + '.' + ext;
+
 
 			// Validate optional action arguments
 			errors = [];
@@ -74,15 +79,18 @@ module.exports = function generate ( options, handlers ) {
 				break;
 			}
 
-			// TODO: generate controller
+			// Check that a file doesn't exist:
+
+			util.verifyDoesntExist( modulePath, 'A controller already exists at: ' + path );
+
+
 			break;
 
 
 
 		case 'model':
 
-			path = options.path || appPath + '/api/models';
-			attributes = options.attributes;
+			path += '/api/models';
 			filename = globalID + '.' + ext;
 
 			// Validate optional attribute arguments
@@ -208,8 +216,8 @@ module.exports = function generate ( options, handlers ) {
 // 			var newControllerPath = sails.config.paths.controllers + '/' + utils.capitalize(entity) + 'Controller.js';
 // 			var newFederatedControllerPath = sails.config.paths.controllers + '/' + entity;
 
-// 			utils.verifyDoesntExist(newControllerPath, 'A controller already exists at: ' + newControllerPath);
-// 			utils.verifyDoesntExist(newFederatedControllerPath, 'A controller already exists at: ' + newFederatedControllerPath);
+			// utils.verifyDoesntExist(newControllerPath, 'A controller already exists at: ' + newControllerPath);
+			// utils.verifyDoesntExist(newFederatedControllerPath, 'A controller already exists at: ' + newFederatedControllerPath);
 
 // 			// Federated controller
 // 			if (options && (options.f || options.federated)) {
