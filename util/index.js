@@ -6,17 +6,19 @@ var _ = require('lodash'),
 
 
 
-// Extend with node util methods
-_.extend(exports, nodeutil);
 
 // Extend util with underscore/lodash
 // and underscore.string methods
 _.extend(exports, _);
 
 
-// Merge in submodules
-_.merge(exports, require('./cli'));
+// Merge in util submodules
+var CLIUtil = require('./cli');
+_.extend(exports, CLIUtil);
 
+
+// Extend with node util methods
+_.extend(exports, nodeutil);
 
 
 /**

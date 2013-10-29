@@ -4,8 +4,7 @@
  */
 
 var _			= require('lodash'),
-	argv		= require('optimist').argv,
-	Logger		= require('../lib/hooks/logger/captains');
+	argv		= require('optimist').argv;
 
 
 
@@ -59,9 +58,6 @@ util.getCLIConfig = function ( argv ) {
 };
 
 
-
-// Build logger using command-line config
-var log = new Logger(util.getCLIConfig(argv).log);
 
 
 /**
