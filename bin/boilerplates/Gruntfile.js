@@ -257,7 +257,8 @@ module.exports = function (grunt) {
           startTag: '<!--SCRIPTS-->',
           endTag: '<!--SCRIPTS END-->',
           fileTmpl: '<script src="%s"></script>',
-          appRoot: '.tmp/public'
+          appRoot: '.tmp/public',
+          relative: true
         },
         files: {
           '.tmp/public/**/*.html': jsFilesToInject,
@@ -271,7 +272,8 @@ module.exports = function (grunt) {
           startTag: '<!--SCRIPTS-->',
           endTag: '<!--SCRIPTS END-->',
           fileTmpl: '<script src="%s"></script>',
-          appRoot: '.tmp/public'
+          appRoot: '.tmp/public',
+          relative: true
         },
         files: {
           '.tmp/public/**/*.html': ['.tmp/public/min/production.js'],
@@ -285,7 +287,8 @@ module.exports = function (grunt) {
           startTag: '<!--STYLES-->',
           endTag: '<!--STYLES END-->',
           fileTmpl: '<link rel="stylesheet" href="%s">',
-          appRoot: '.tmp/public'
+          appRoot: '.tmp/public',
+          relative: true
         },
 
         // cssFilesToInject defined up top
@@ -301,7 +304,8 @@ module.exports = function (grunt) {
           startTag: '<!--STYLES-->',
           endTag: '<!--STYLES END-->',
           fileTmpl: '<link rel="stylesheet" href="%s">',
-          appRoot: '.tmp/public'
+          appRoot: '.tmp/public',
+          relative: true
         },
         files: {
           '.tmp/public/index.html': ['.tmp/public/min/production.css'],
@@ -316,7 +320,8 @@ module.exports = function (grunt) {
           startTag: '<!--TEMPLATES-->',
           endTag: '<!--TEMPLATES END-->',
           fileTmpl: '<script type="text/javascript" src="%s"></script>',
-          appRoot: '.tmp/public'
+          appRoot: '.tmp/public',
+          relative: true
         },
         files: {
           '.tmp/public/index.html': ['.tmp/public/jst.js'],
@@ -335,7 +340,8 @@ module.exports = function (grunt) {
           startTag: '// SCRIPTS',
           endTag: '// SCRIPTS END',
           fileTmpl: 'script(type="text/javascript", src="%s")',
-          appRoot: '.tmp/public'
+          appRoot: '.tmp/public',
+          relative: true
         },
         files: {
           'views/**/*.jade': jsFilesToInject
@@ -347,7 +353,8 @@ module.exports = function (grunt) {
           startTag: '// SCRIPTS',
           endTag: '// SCRIPTS END',
           fileTmpl: 'script(type="text/javascript", src="%s")',
-          appRoot: '.tmp/public'
+          appRoot: '.tmp/public',
+          relative: true
         },
         files: {
           'views/**/*.jade': ['.tmp/public/min/production.js']
@@ -359,7 +366,8 @@ module.exports = function (grunt) {
           startTag: '// STYLES',
           endTag: '// STYLES END',
           fileTmpl: 'link(rel="stylesheet", href="%s")',
-          appRoot: '.tmp/public'
+          appRoot: '.tmp/public',
+          relative: true
         },
         files: {
           'views/**/*.jade': cssFilesToInject
@@ -371,7 +379,8 @@ module.exports = function (grunt) {
           startTag: '// STYLES',
           endTag: '// STYLES END',
           fileTmpl: 'link(rel="stylesheet", href="%s")',
-          appRoot: '.tmp/public'
+          appRoot: '.tmp/public',
+          relative: true
         },
         files: {
           'views/**/*.jade': ['.tmp/public/min/production.css']
@@ -384,7 +393,8 @@ module.exports = function (grunt) {
           startTag: '// TEMPLATES',
           endTag: '// TEMPLATES END',
           fileTmpl: 'script(type="text/javascript", src="%s")',
-          appRoot: '.tmp/public'
+          appRoot: '.tmp/public',
+          relative: true
         },
         files: {
           'views/**/*.jade': ['.tmp/public/jst.js']
