@@ -353,25 +353,17 @@ exports.getParamNames = function(func) {
 
 
 
-
-
-
 /**
- * getPackage
+ * parseJSONFile
  * 
- * Read package.json file in the directory at the specified
- * path.  If an error occurs, call cb(err), and dont throw!
+ * Read a json file at the specified path.
+ * If an error occurs, call cb(err), and dont throw!
  * 
  * @api private
  */
 
-exports.getPackage = function (path, cb) {
-
-	// Read file from disk
-	path = _.str.rtrim(path, '/');
-	path += '/package.json';
-
-	if (!cb) throw new Error('Callback required for sails.util.getPackage()!');
+exports.parseJSONFile = function ( path, cb ) {
+	if (!cb) throw new Error('Callback required!');
 	if (cb === 'sync') {
 		var jsonString;
 		try {
@@ -388,13 +380,13 @@ exports.getPackage = function (path, cb) {
 	});
 
 	// Attempt to parse JSON, then return
-	function andThen( packageJSON ) {
+	function andThen( json ) {
 		var err;
 		try {
-			packageJSON = JSON.parse(packageJSON);
+			json = JSON.parse(json);
 		} catch (e) {
 			err = e;
-			packageJSON = false;
+			json = false;
 		}
 
 		// Parse failed:
@@ -403,13 +395,50 @@ exports.getPackage = function (path, cb) {
 			else return cb(err);
 		}
 
+		// Success:
+		if ( cb === 'sync' ) return json;
+		return cb(null, json);
+	}
+};
+
+/**
+ * getJSONFileSync
+ *
+ * Synchronous version of getJSONFile()
+ * Returns false if json file cannot be read or parsed.
+ * 
+ * @api private
+ */
+
+exports.parseJSONFileSync = function ( path ) {
+	return exports.parseJSONFile(path, 'sync');
+};
+
+
+
+
+/**
+ * getPackage
+ * 
+ * Read package.json file in the directory at the specified
+ * path.  If an error occurs, call cb(err), and dont throw!
+ * 
+ * @api private
+ */
+
+exports.getPackage = function (path, cb) {
+	path = _.str.rtrim(path, '/');
+	path += '/package.json';
+
+	exports.parseJSONFile(path, function (err, json) {
+		if (err) return cb(err);
 
 		// Success:
 		// Ensure dependencies are at least an empty object
-		packageJSON.dependencies = packageJSON.dependencies || {};
-		if ( cb === 'sync' ) return packageJSON;
-		return cb(null, packageJSON);
-	}
+		json.dependencies = json.dependencies || {};
+		if ( cb === 'sync' ) return json;
+		return cb(null, json);
+	});
 };
 
 
@@ -427,9 +456,33 @@ exports.getPackage = function (path, cb) {
  */
 
 exports.getPackageSync = function (path) {
-	return exports.getPackage(path, 'sync');
+	path = _.str.rtrim(path, '/');
+	path += '/package.json';
+
+	// Success:
+	// Ensure dependencies are at least an empty object
+	var json = exports.parseJSONFileSync(path, 'sync');
+	if (!json) return json;
+	json.dependencies = json.dependencies || {};
+	return json;
 };
 
+
+
+
+/**
+ * Get path to the home directory in an OS-agnostic way
+ *
+ * @api private
+ */
+
+exports.homeDirectory = function () {
+	return process.env[
+		(process.platform == 'win32') ?
+		'USERPROFILE' :
+		'HOME'
+	];
+};
 
 
 
