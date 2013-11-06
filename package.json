@@ -18,7 +18,8 @@
   ],
   "main": "./lib/index",
   "bin": {
-    "sails": "./bin/index.js"
+    "sails": "./bin/index.js",
+    "sailsd": "./bin/sailsd.sh"
   },
   "scripts": {
     "test": "mocha"
