@@ -363,7 +363,6 @@ exports.getParamNames = function(func) {
  */
 
 exports.parseJSONFile = function ( path, cb ) {
-
 	if (!cb) throw new Error('Callback required!');
 	if (cb === 'sync') {
 		var jsonString;
@@ -384,7 +383,7 @@ exports.parseJSONFile = function ( path, cb ) {
 	function andThen( json ) {
 		var err;
 		try {
-			json = json.parse(json);
+			json = JSON.parse(json);
 		} catch (e) {
 			err = e;
 			json = false;
@@ -412,7 +411,7 @@ exports.parseJSONFile = function ( path, cb ) {
  */
 
 exports.parseJSONFileSync = function ( path ) {
-	exports.parseJSONFile(path, 'sync');
+	return exports.parseJSONFile(path, 'sync');
 };
 
 
@@ -428,8 +427,6 @@ exports.parseJSONFileSync = function ( path ) {
  */
 
 exports.getPackage = function (path, cb) {
-
-	// Read file from disk
 	path = _.str.rtrim(path, '/');
 	path += '/package.json';
 
@@ -459,7 +456,15 @@ exports.getPackage = function (path, cb) {
  */
 
 exports.getPackageSync = function (path) {
-	return exports.getPackage(path, 'sync');
+	path = _.str.rtrim(path, '/');
+	path += '/package.json';
+
+	// Success:
+	// Ensure dependencies are at least an empty object
+	var json = exports.parseJSONFileSync(path, 'sync');
+	if (!json) return json;
+	json.dependencies = json.dependencies || {};
+	return json;
 };
 
 
