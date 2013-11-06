@@ -353,6 +353,68 @@ exports.getParamNames = function(func) {
 
 
 
+/**
+ * parseJSONFile
+ * 
+ * Read a json file at the specified path.
+ * If an error occurs, call cb(err), and dont throw!
+ * 
+ * @api private
+ */
+
+exports.parseJSONFile = function ( path, cb ) {
+
+	if (!cb) throw new Error('Callback required!');
+	if (cb === 'sync') {
+		var jsonString;
+		try {
+			jsonString = fs.readFileSync(path, 'utf-8');
+		}
+		catch (e) {
+			return false;
+		}
+		return andThen(jsonString);
+	}
+	fs.readFile(path, 'utf-8', function (err, file) {
+		if (err) return cb(err);
+		andThen(file);
+	});
+
+	// Attempt to parse JSON, then return
+	function andThen( json ) {
+		var err;
+		try {
+			json = json.parse(json);
+		} catch (e) {
+			err = e;
+			json = false;
+		}
+
+		// Parse failed:
+		if (err) {
+			if (cb==='sync') return false;
+			else return cb(err);
+		}
+
+		// Success:
+		if ( cb === 'sync' ) return json;
+		return cb(null, json);
+	}
+};
+
+/**
+ * getJSONFileSync
+ *
+ * Synchronous version of getJSONFile()
+ * Returns false if json file cannot be read or parsed.
+ * 
+ * @api private
+ */
+
+exports.parseJSONFileSync = function ( path ) {
+	exports.parseJSONFile(path, 'sync');
+};
+
 
 
 
@@ -371,45 +433,15 @@ exports.getPackage = function (path, cb) {
 	path = _.str.rtrim(path, '/');
 	path += '/package.json';
 
-	if (!cb) throw new Error('Callback required for sails.util.getPackage()!');
-	if (cb === 'sync') {
-		var jsonString;
-		try {
-			jsonString = fs.readFileSync(path, 'utf-8');
-		}
-		catch (e) {
-			return false;
-		}
-		return andThen(jsonString);
-	}
-	fs.readFile(path, 'utf-8', function (err, file) {
+	exports.parseJSONFile(path, function (err, json) {
 		if (err) return cb(err);
-		andThen(file);
-	});
-
-	// Attempt to parse JSON, then return
-	function andThen( packageJSON ) {
-		var err;
-		try {
-			packageJSON = JSON.parse(packageJSON);
-		} catch (e) {
-			err = e;
-			packageJSON = false;
-		}
-
-		// Parse failed:
-		if (err) {
-			if (cb==='sync') return false;
-			else return cb(err);
-		}
-
 
 		// Success:
 		// Ensure dependencies are at least an empty object
-		packageJSON.dependencies = packageJSON.dependencies || {};
-		if ( cb === 'sync' ) return packageJSON;
-		return cb(null, packageJSON);
-	}
+		json.dependencies = json.dependencies || {};
+		if ( cb === 'sync' ) return json;
+		return cb(null, json);
+	});
 };
 
 
