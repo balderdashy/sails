@@ -470,6 +470,22 @@ exports.getPackageSync = function (path) {
 
 
 
+/**
+ * Get path to the home directory in an OS-agnostic way
+ *
+ * @api private
+ */
+
+exports.homeDirectory = function () {
+	return process.env[
+		(process.platform == 'win32') ?
+		'USERPROFILE' :
+		'HOME'
+	];
+};
+
+
+
 
 
 /**
