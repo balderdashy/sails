@@ -59,7 +59,8 @@
     "ejs": "0.8.4",
     "ejs-locals": "1.0.2",
     "connect-flash": "0.1.1",
-    "pluralize": "0.0.5"
+    "pluralize": "0.0.5",
+    "express3-handlebars": "~0.5.0"
   },
   "devDependencies": {
     "mocha": "*",
