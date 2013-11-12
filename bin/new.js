@@ -157,7 +157,10 @@ module.exports = function(sails) {
 
 		// Copy Gruntfile
 		sails.log.verbose('Generating Gruntfile...');
-		utils.generateFile('Gruntfile.js', outputPath + '/Gruntfile.js');
+		var flags = options.cssPreProcessor ? 
+			options.cssPreProcessor.split(',') : 
+			[ 'less' ];	// Less by default.
+		utils.generateFile('Gruntfile.js', outputPath + '/Gruntfile.js', flags);
 
 		// Generate README
 		sails.log.verbose('Generating README.md...');

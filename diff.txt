@@ -1,0 +1,235 @@
+diff --git a/bin/boilerplates/Gruntfile.js b/bin/boilerplates/Gruntfile.js
+index d38af4e..0bb6f98 100644
+--- a/bin/boilerplates/Gruntfile.js
++++ b/bin/boilerplates/Gruntfile.js
+@@ -131,7 +131,15 @@ module.exports = function (grunt) {
+   grunt.loadTasks(depsPath + '/grunt-contrib-watch/tasks');
+   grunt.loadTasks(depsPath + '/grunt-contrib-uglify/tasks');
+   grunt.loadTasks(depsPath + '/grunt-contrib-cssmin/tasks');
++///if less
+   grunt.loadTasks(depsPath + '/grunt-contrib-less/tasks');
++///endif
++///if stylus
++  grunt.loadTasks(depsPath + '/grunt-contrib-stylus/tasks');
++///endif
++///if sass
++  grunt.loadTasks(depsPath + '/grunt-contrib-sass/tasks');
++///endif
+   grunt.loadTasks(depsPath + '/grunt-contrib-coffee/tasks');
+ 
+   // Project configuration.
+@@ -182,6 +190,7 @@ module.exports = function (grunt) {
+       }
+     },
+ 
++///if less 
+     less: {
+       dev: {
+         files: [
+@@ -201,6 +210,51 @@ module.exports = function (grunt) {
+         ]
+       }
+     },
++///endif
++
++///if stylus
++    stylus: {
++      dev: {
++        files: [
++          {
++          expand: true,
++          cwd: 'assets/styles/',
++          src: ['*.styl'],
++          dest: '.tmp/public/styles/',
++          ext: '.css'
++        }, {
++          expand: true,
++          cwd: 'assets/linker/styles/',
++          src: ['*.styl'],
++          dest: '.tmp/public/linker/styles/',
++          ext: '.css'
++        }
++        ]
++      }
++    },
++///endif
++
++///if sass
++    sass: {
++      dev: {
++        files: [
++          {
++          expand: true,
++          cwd: 'assets/styles/',
++          src: ['*.scss'],
++          dest: '.tmp/public/styles/',
++          ext: '.css'
++        }, {
++          expand: true,
++          cwd: 'assets/linker/styles/',
++          src: ['*.scss'],
++          dest: '.tmp/public/linker/styles/',
++          ext: '.css'
++        }
++        ]
++      }
++    },
++///endif
+     
+     coffee: {
+       dev: {
+@@ -422,7 +476,15 @@ module.exports = function (grunt) {
+   grunt.registerTask('compileAssets', [
+     'clean:dev',
+     'jst:dev',
++///if less
+     'less:dev',
++///endif
++///if stylus
++    'stylus:dev',
++///endif
++///if sass
++    'sass:dev',
++///endif
+     'copy:dev',    
+     'coffee:dev'
+   ]);
+@@ -452,7 +514,15 @@ module.exports = function (grunt) {
+   grunt.registerTask('prod', [
+     'clean:dev',
+     'jst:dev',
++///if less
+     'less:dev',
++///endif
++///if stylus
++    'stylus:dev',
++///endif
++///if sass
++    'sass:dev',
++///endif
+     'copy:dev',
+     'coffee:dev',
+     'concat',
+diff --git a/bin/new.js b/bin/new.js
+index 8074d60..18df3c2 100644
+--- a/bin/new.js
++++ b/bin/new.js
+@@ -157,7 +157,10 @@ module.exports = function(sails) {
+ 
+ 		// Copy Gruntfile
+ 		sails.log.verbose('Generating Gruntfile...');
+-		utils.generateFile('Gruntfile.js', outputPath + '/Gruntfile.js');
++		var flags = options.cssPreProcessor ? 
++			options.cssPreProcessor.split(',') : 
++			[ 'less' ];	// Less by default.
++		utils.generateFile('Gruntfile.js', outputPath + '/Gruntfile.js', flags);
+ 
+ 		// Generate README
+ 		sails.log.verbose('Generating README.md...');
+diff --git a/bin/sails.js b/bin/sails.js
+index f1a0c89..afd043a 100755
+--- a/bin/sails.js
++++ b/bin/sails.js
+@@ -246,7 +246,10 @@ require('../lib/configuration')(sails).load(function (err, config) {
+ 
+       // Default to not using the script linker functionality, 
+       // but use it if --linker option is set
+-      useLinker: !!argv.linker
++      useLinker: !!argv.linker,
++
++      // CSS Preprocessor
++      cssPreProcessor: argv['css-preprocessor'] || argv['cpp']
+     });
+   }
+ 
+diff --git a/bin/utils.js b/bin/utils.js
+index 4f798b5..fd0985d 100644
+--- a/bin/utils.js
++++ b/bin/utils.js
+@@ -39,7 +39,7 @@ module.exports = function(sails) {
+ 		 * @api private
+ 		 */
+ 
+-		this.generateFile = function(boilerplatePath, newPath) {
++		this.generateFile = function(boilerplatePath, newPath, flags) {
+ 			var fullBpPath = __dirname + '/boilerplates/' + (boilerplatePath || '');
+ 			var file = fs.readFileSync(fullBpPath, 'utf8');
+ 			var newFilePath = (newPath || '');
+@@ -50,6 +50,10 @@ module.exports = function(sails) {
+ 				sails.log.error('Could not create file, ' + newFilePath + '!');
+ 				process.exit(1);
+ 			}
++
++			if (flags)
++				file = this.purgeOptionals(file, flags);
++
+ 			fs.writeFileSync(newFilePath, file);
+ 		};
+ 
+@@ -322,6 +326,51 @@ module.exports = function(sails) {
+ 		};
+ 
+ 
++
++		/**
++		 * Purge optionals from a string.
++		 *
++		 * @api private
++		 */
++		 this.purgeOptionals = function(data, flags) {
++
++		 	// Split data by lines.
++		 	var lines = data.split(/\r?\n|\r/);
++		 	var passing = true;
++		 	var buffer = [];
++		 	
++		 	// Regex
++		 	var optionalBegin = /^\/\/\/if/i;
++		 	var optionalEnd = /^\/\/\/endif/i;
++		 	var optionalFlag = /(\b(\S+)\b)+/gi;
++
++		 	_.each(lines, function(line) {
++
++		 		var flag = line.match(optionalBegin);
++		 		var end = line.match(optionalEnd);
++
++		 		if (flag) {
++		 			
++		 			var options = line.match(optionalFlag);
++
++		 			passing = false;
++		 			_.each(options, function(option) {
++			 			if(_.contains(flags, option)) passing = true;
++		 			});
++
++		 		}
++		 		else if (end)
++		 			passing = true;
++		 		else if (passing && !end && !flag)
++		 			buffer.push(line);
++
++		 	});
++
++		 	return buffer.join('\r\n');
++
++		 };
++
++
+ 		_.bindAll(this);
+ 
+ 	}
+diff --git a/package.json b/package.json
+index 6ded945..e69d6c8 100644
+--- a/package.json
++++ b/package.json
+@@ -59,7 +59,9 @@
+     "ejs": "0.8.4",
+     "ejs-locals": "1.0.2",
+     "connect-flash": "0.1.1",
+-    "pluralize": "0.0.5"
++    "pluralize": "0.0.5",
++    "grunt-contrib-stylus": "~0.10.0",
++    "grunt-contrib-sass": "~0.5.0"
+   },
+   "devDependencies": {
+     "mocha": "*",

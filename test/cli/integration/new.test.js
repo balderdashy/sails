@@ -166,6 +166,65 @@ describe('New app generator', function() {
 			});
 		});
 	});
+
+
+	describe('sails new <appname> with options --css-preprocessor less', function() {
+
+		it('should create a new app with less as an included css preprocessor', function(done) {
+
+			exec(sailsbin + ' new ' + appName + ' --css-preprocessor less', function(err) {
+				if (err) { done(new Error(err)); }
+
+				assert(checkGruntfile(appName, 'less'), 'generated Gruntfile is invalid.');
+				done();
+			});
+		});
+	});
+
+
+	describe('sails new <appname> with options --css-preprocessor stylus', function() {
+
+		it('should create a new app with less as an included css preprocessor', function(done) {
+
+			exec(sailsbin + ' new ' + appName + ' --css-preprocessor stylus', function(err) {
+				if (err) { done(new Error(err)); }
+
+				assert(checkGruntfile(appName, 'stylus'), 'generated Gruntfile is invalid.');
+				done();
+			});
+		});
+	});
+
+
+	describe('sails new <appname> with options --css-preprocessor sass', function() {
+
+		it('should create a new app with less as an included css preprocessor', function(done) {
+
+			exec(sailsbin + ' new ' + appName + ' --css-preprocessor sass', function(err) {
+				if (err) { done(new Error(err)); }
+
+				assert(checkGruntfile(appName, 'sass'), 'generated Gruntfile is invalid.');
+				done();
+			});
+		});
+	});
+
+	// Edge case, multiples
+	describe('sails new <appname> with options --css-preprocessor less,stylus,sass', function() {
+
+		it('should create a new app with less as an included css preprocessor', function(done) {
+
+			exec(sailsbin + ' new ' + appName + ' --css-preprocessor less,stylus,sass', function(err) {
+				if (err) { done(new Error(err)); }
+
+				assert(checkGruntfile(appName, 'less'), 'generated Gruntfile is invalid.');
+				assert(checkGruntfile(appName, 'stylus'), 'generated Gruntfile is invalid.');
+				assert(checkGruntfile(appName, 'sass'), 'generated Gruntfile is invalid.');
+				done();
+			});
+		});
+	});
+
 });
 
 function checkGeneratedFiles(appName, templateLang) {
@@ -291,6 +350,47 @@ function checkGeneratedFiles(appName, templateLang) {
 	}
 
 	// Everything's ok!
+	return true;
+
+}
+
+
+function checkGruntfile(appName, cssPreProcessor) {
+
+	var exts = {
+		'less': 'less',
+		'stylus': 'styl',
+		'sass': 'scss'
+	}
+
+	if (!exts[cssPreProcessor])
+		throw new Error(cssPreProcessor + ' is not a valid css preprocessor type.');
+
+	var expectedLines = [
+
+		'grunt.loadTasks(depsPath + \'/grunt-contrib-' + cssPreProcessor + '/tasks\');'
+
+	];
+
+	var unexpectedLines = [
+
+		'///if',
+		'///endif'
+
+	];
+
+	var file = fs.readFileSync(appName + '/Gruntfile.js', 'utf8');
+
+	_.each(expectedLines, function(line) {
+		if (!_.contains(file, line))
+			throw new Error('Missing task for ' + cssPreProcessor + ' in Gruntfile.js');
+	});
+
+	_.each(unexpectedLines, function(line) {
+		if (_.contains(file, line))
+			throw new Error('Gruntfile not parsed correctly.');
+	});
+
 	return true;
 
 }

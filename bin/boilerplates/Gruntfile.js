@@ -131,7 +131,15 @@ module.exports = function (grunt) {
   grunt.loadTasks(depsPath + '/grunt-contrib-watch/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-uglify/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-cssmin/tasks');
+///if less
   grunt.loadTasks(depsPath + '/grunt-contrib-less/tasks');
+///endif
+///if stylus
+  grunt.loadTasks(depsPath + '/grunt-contrib-stylus/tasks');
+///endif
+///if sass
+  grunt.loadTasks(depsPath + '/grunt-contrib-sass/tasks');
+///endif
   grunt.loadTasks(depsPath + '/grunt-contrib-coffee/tasks');
 
   // Project configuration.
@@ -182,6 +190,7 @@ module.exports = function (grunt) {
       }
     },
 
+///if less 
     less: {
       dev: {
         files: [
@@ -201,6 +210,51 @@ module.exports = function (grunt) {
         ]
       }
     },
+///endif
+
+///if stylus
+    stylus: {
+      dev: {
+        files: [
+          {
+          expand: true,
+          cwd: 'assets/styles/',
+          src: ['*.styl'],
+          dest: '.tmp/public/styles/',
+          ext: '.css'
+        }, {
+          expand: true,
+          cwd: 'assets/linker/styles/',
+          src: ['*.styl'],
+          dest: '.tmp/public/linker/styles/',
+          ext: '.css'
+        }
+        ]
+      }
+    },
+///endif
+
+///if sass
+    sass: {
+      dev: {
+        files: [
+          {
+          expand: true,
+          cwd: 'assets/styles/',
+          src: ['*.scss'],
+          dest: '.tmp/public/styles/',
+          ext: '.css'
+        }, {
+          expand: true,
+          cwd: 'assets/linker/styles/',
+          src: ['*.scss'],
+          dest: '.tmp/public/linker/styles/',
+          ext: '.css'
+        }
+        ]
+      }
+    },
+///endif
     
     coffee: {
       dev: {
@@ -422,7 +476,15 @@ module.exports = function (grunt) {
   grunt.registerTask('compileAssets', [
     'clean:dev',
     'jst:dev',
+///if less
     'less:dev',
+///endif
+///if stylus
+    'stylus:dev',
+///endif
+///if sass
+    'sass:dev',
+///endif
     'copy:dev',    
     'coffee:dev'
   ]);
@@ -452,7 +514,15 @@ module.exports = function (grunt) {
   grunt.registerTask('prod', [
     'clean:dev',
     'jst:dev',
+///if less
     'less:dev',
+///endif
+///if stylus
+    'stylus:dev',
+///endif
+///if sass
+    'sass:dev',
+///endif
     'copy:dev',
     'coffee:dev',
     'concat',
