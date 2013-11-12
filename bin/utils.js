@@ -39,7 +39,7 @@ module.exports = function(sails) {
 		 * @api private
 		 */
 
-		this.generateFile = function(boilerplatePath, newPath) {
+		this.generateFile = function(boilerplatePath, newPath, flags) {
 			var fullBpPath = __dirname + '/boilerplates/' + (boilerplatePath || '');
 			var file = fs.readFileSync(fullBpPath, 'utf8');
 			var newFilePath = (newPath || '');
@@ -50,6 +50,10 @@ module.exports = function(sails) {
 				sails.log.error('Could not create file, ' + newFilePath + '!');
 				process.exit(1);
 			}
+
+			if (flags)
+				file = this.purgeOptionals(file, flags);
+
 			fs.writeFileSync(newFilePath, file);
 		};
 
@@ -320,6 +324,54 @@ module.exports = function(sails) {
 		this.capitalize = function(str) {
 			return require('underscore.string').capitalize(str);
 		};
+
+
+
+		/**
+		 * Purge optionals from a string.
+		 *
+		 * @api private
+		 */
+		this.purgeOptionals = function(data, flags) {
+
+			// Split data by lines.
+			var lines = data.split(/\r?\n|\r/);
+			var passing = true;
+			var buffer = [];
+			
+			// Regex
+			var optionalBegin = /^\/\/\/if/i;
+			var optionalEnd = /^\/\/\/endif/i;
+			var optionalFlag = /(\b(\S+)\b)+/gi;
+
+			_.each(lines, function(line) {
+
+				var flag = line.match(optionalBegin);
+				var end = line.match(optionalEnd);
+
+				if (flag) {
+					
+					var options = line.match(optionalFlag);
+
+					passing = false;
+					if (flags) {			// If flags is defined, otherwise strip all options.
+						_.each(options, function(option) {
+							if(_.contains(flags, option)) passing = true;
+						});
+					}
+
+				}
+				else if (end)
+					passing = true;
+				else if (passing && !end && !flag)
+					buffer.push(line);
+
+			});
+
+			return buffer.join('\r\n');
+
+		};
+
 
 
 		_.bindAll(this);

@@ -246,7 +246,10 @@ require('../lib/configuration')(sails).load(function (err, config) {
 
       // Default to not using the script linker functionality, 
       // but use it if --linker option is set
-      useLinker: !!argv.linker
+      useLinker: !!argv.linker,
+
+      // CSS Preprocessor
+      cssPreProcessor: argv['css-preprocessor'] || argv['cpp']
     });
   }
 
@@ -320,6 +323,7 @@ require('../lib/configuration')(sails).load(function (err, config) {
     usage += leftColumn('sails console') + 'Run this Sails app (in the current dir & in interactive mode.)\n';
     usage += leftColumn('sails new <appName>') + 'Create a new Sails project in a folder called <appName>\n';
     usage += leftColumn('sails new <appName> --linker') + 'Create a new Sails project in a folder called <appName>, using automatic asset linking\n';
+    usage += leftColumn('sails new <appName> --css-preprocessor') + 'Create a new Sails project in a folder called <appName>, using the css preprocessors delimitted by commas.\n';
     usage += leftColumn('sails generate <foo>') + 'Generate api/models/Foo.js and api/controllers/FooController.js\n';
     usage += leftColumn('sails generate model <foo>') + 'Generate api/models/Foo.js\n';
     usage += leftColumn('sails generate controller <foo>') + 'Generate api/controllers/FooController.js\n';
