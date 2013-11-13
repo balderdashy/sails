@@ -2,6 +2,7 @@ var assert = require('assert');
 var fs = require('fs');
 var wrench = require('wrench');
 var exec = require('child_process').exec;
+var _ = require('lodash');
 
 // Make existsSync not crash on older versions of Node
 fs.existsSync = fs.existsSync || require('path').existsSync;
@@ -43,138 +44,150 @@ describe('API and adapter generators', function () {
 		done();
 	});
 
-	describe('sails generate model <modelname>', function () {
-		var modelName = 'user';
+	// Run generator tests for both js and coffee
+	languages = [
+		{language: 'Javascript', optionStr: '', suffix:'.js'},
+		{language: 'CoffeeScript', optionStr: '--coffee', suffix:'.coffee'}
+	];
 
-		it('should throw an error if no model name is specified', function(done) {
+	_.each(languages, function(lang) {
 
-			exec(sailsBin + ' generate model', function (err) {
-				assert.equal(err.code, 1);
-				done();
-			});
-		});
+		describe(lang.language + ' generators', function() {
 
-		it('should create a model file in models folder', function(done) {
+			describe('sails generate model <modelname> ' + lang.optionStr, function () {
+				var modelName = 'user';
 
-			exec(sailsBin + ' generate model ' + modelName , function (err) {
-				if (err) done(new Error(err));
+				it('should throw an error if no model name is specified', function(done) {
 
-				assert.doesNotThrow(function() {
-					fs.readFileSync('./api/models/' + capitalize(modelName) + '.js', 'utf8');
+					exec(sailsBin + ' generate model', function (err) {
+						assert.equal(err.code, 1);
+						done();
+					});
 				});
 
-				done();
-			});
-		});
+				it('should create a model file in models folder', function(done) {
 
-		it('should throw an error if a model with the same name exists', function(done) {
+					exec(sailsBin + ' generate model ' + modelName + ' ' + lang.optionStr, function (err) {
+						if (err) done(new Error(err));
 
-			exec(sailsBin + ' generate model ' + modelName , function (err) {
-				assert.equal(err.code, 1);
-				done();
-			});
-		});
-	});
+						assert.doesNotThrow(function() {
+							fs.readFileSync('./api/models/' + capitalize(modelName) + lang.suffix, 'utf8');
+						});
 
-	describe('sails generate controller <controllerName>', function () {
-		var controllerName = 'user';
-
-		it('should throw an error if no controller name is specified', function(done) {
-
-			exec(sailsBin + ' generate controller', function (err) {
-				assert.equal(err.code, 1);
-				done();
-			});
-		});
-
-		it('should create a controller file in controllers folder', function(done) {
-
-			exec(sailsBin + ' generate controller ' + controllerName , function (err) {
-				if (err) done(new Error(err));
-
-				assert.doesNotThrow(function() {
-					fs.readFileSync('./api/controllers/' + capitalize(controllerName) + 'Controller.js', 'utf8');
+						done();
+					});
 				});
 
-				done();
+				it('should throw an error if a model with the same name exists', function(done) {
+
+					exec(sailsBin + ' generate model ' + modelName  + ' ' + lang.optionStr, function (err) {
+						assert.equal(err.code, 1);
+						done();
+					});
+				});
 			});
-		});
 
-		it('should throw an error if a controller with the same name exists', function(done) {
+			describe('sails generate controller <controllerName> ' + lang.optionStr, function () {
+				var controllerName = 'user';
 
-			exec(sailsBin + ' generate controller ' + controllerName , function (err) {
-				assert.equal(err.code, 1);
-				done();
-			});
-		});
-	});
+				it('should throw an error if no controller name is specified', function(done) {
 
-	describe('sails generate adapter <modelname>', function () {
-		var adapterName = 'mongo';
-
-		it('should throw an error if no adapter name is specified', function(done) {
-
-			exec(sailsBin + ' generate adapter', function (err) {
-				assert.equal(err.code, 1);
-				done();
-			});
-		});
-
-		it('should create a adapter file in adapters folder', function(done) {
-
-			exec(sailsBin + ' generate adapter ' + adapterName , function (err) {
-				if (err) done(new Error(err));
-
-				assert.doesNotThrow(function() {
-					fs.readFileSync('./api/adapters/' + capitalize(adapterName) + 'Adapter.js', 'utf8');
+					exec(sailsBin + ' generate controller ' + lang.optionStr, function (err) {
+						assert.equal(err.code, 1);
+						done();
+					});
 				});
 
-				done();
-			});
-		});
+				it('should create a controller file in controllers folder', function(done) {
 
-		it('should throw an error if an adapter with the same name exists', function(done) {
+					exec(sailsBin + ' generate controller ' + controllerName + ' ' + lang.optionStr, function (err) {
+						if (err) done(new Error(err));
 
-			exec(sailsBin + ' generate adapter ' + adapterName , function (err) {
-				assert.equal(err.code, 1);
-				done();
-			});
-		});
-	});
+						assert.doesNotThrow(function() {
+							fs.readFileSync('./api/controllers/' + capitalize(controllerName) + 'Controller' + lang.suffix, 'utf8');
+						});
 
-	describe('sails generate <modelname>', function () {
-		var modelName = 'post';
-
-		it('should throw an error if no model name is specified', function(done) {
-
-			exec(sailsBin + ' generate', function (err) {
-				assert.equal(err.code, 1);
-				done();
-			});
-		});
-
-		it('should create a controller and a model file', function(done) {
-
-			exec(sailsBin + ' generate ' + modelName , function (err) {
-				if (err) done(new Error(err));
-
-				assert.doesNotThrow(function() {
-					fs.readFileSync('./api/models/' + capitalize(modelName) + '.js', 'utf8');
+						done();
+					});
 				});
 
-				assert.doesNotThrow(function() {
-					fs.readFileSync('./api/controllers/' + capitalize(modelName) + 'Controller.js', 'utf8');
+				it('should throw an error if a controller with the same name exists', function(done) {
+
+					exec(sailsBin + ' generate controller ' + controllerName  + ' ' + lang.optionStr , function (err) {
+						assert.equal(err.code, 1);
+						done();
+					});
+				});
+			});
+
+			describe('sails generate adapter <modelname> ' + lang.optionStr, function () {
+				var adapterName = 'mongo';
+
+				it('should throw an error if no adapter name is specified', function(done) {
+
+					exec(sailsBin + ' generate adapter ' + lang.optionStr, function (err) {
+						assert.equal(err.code, 1);
+						done();
+					});
 				});
 
-				done();
+				it('should create a adapter file in adapters folder', function(done) {
+
+					exec(sailsBin + ' generate adapter ' + adapterName + ' ' + lang.optionStr, function (err) {
+						if (err) done(new Error(err));
+
+						assert.doesNotThrow(function() {
+							fs.readFileSync('./api/adapters/' + capitalize(adapterName) + 'Adapter' + lang.suffix, 'utf8');
+						});
+
+						done();
+					});
+				});
+
+				it('should throw an error if an adapter with the same name exists', function(done) {
+
+					exec(sailsBin + ' generate adapter ' + adapterName  + ' ' + lang.optionStr, function (err) {
+						assert.equal(err.code, 1);
+						done();
+					});
+				});
 			});
-		});
 
-		it('should throw an error if a controller file and model file with the same name exists', function(done) {
+			describe('sails generate <modelname> ' + lang.optionStr, function () {
+				var modelName = 'post';
 
-			exec(sailsBin + ' generate ' + modelName , function (err) {
-				assert.equal(err.code, 1);
-				done();
+				it('should throw an error if no model name is specified', function(done) {
+
+					exec(sailsBin + ' generate ' + lang.optionStr, function (err) {
+						assert.equal(err.code, 1);
+						done();
+					});
+				});
+
+				it('should create a controller and a model file', function(done) {
+
+					exec(sailsBin + ' generate ' + modelName + ' ' + lang.optionStr, function (err) {
+						if (err) done(new Error(err));
+
+						assert.doesNotThrow(function() {
+							fs.readFileSync('./api/models/' + capitalize(modelName) + lang.suffix, 'utf8');
+						});
+
+						assert.doesNotThrow(function() {
+							fs.readFileSync('./api/controllers/' + capitalize(modelName) + 'Controller' + lang.suffix, 'utf8');
+						});
+
+						done();
+					});
+				});
+
+				it('should throw an error if a controller file and model file with the same name exists', function(done) {
+
+					exec(sailsBin + ' generate ' + modelName + ' ' + lang.optionStr, function (err) {
+						assert.equal(err.code, 1);
+						done();
+					});
+				});
 			});
 		});
 	});

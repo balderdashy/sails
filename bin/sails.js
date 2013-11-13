@@ -35,7 +35,12 @@ require('../lib/configuration')(sails).load(function (err, config) {
     require('coffee-script');
     sails.log.verbose('Enabling CoffeeScript...');
   } catch (e) {
-    sails.log.verbose('CoffeeScript not installed.');
+    if (argv.coffee) {
+        sails.log.verbose('ERROR: CoffeeScript no installed.');
+        return;
+    } else {
+        sails.log.verbose('CoffeeScript not installed.');
+    }
   }
 
   // Stringify args
@@ -313,16 +318,19 @@ require('../lib/configuration')(sails).load(function (err, config) {
 
     var usage = 'Usage: sails <command>\n\n';
     usage += leftColumn('sails lift') + 'Run the Sails app in the current dir (if node_modules/sails exists, it will be used instead of the global install)\n';
-    usage += leftColumn('  [--dev]') + 'in development environment \n';
-    usage += leftColumn('  [--prod]') + 'in production environment \n';
-    usage += leftColumn('  [--port 9000]') + 'on port 9000 \n';
-    usage += leftColumn('  [--verbose]') + 'with verbose logging enabled \n';
+    usage += leftColumn('  [--dev]') + ' - in development environment \n';
+    usage += leftColumn('  [--prod]') + ' - in production environment \n';
+    usage += leftColumn('  [--port 9000]') + ' - on port 9000 \n';
+    usage += leftColumn('  [--verbose]') + ' - with verbose logging enabled \n';
     usage += leftColumn('sails console') + 'Run this Sails app (in the current dir & in interactive mode.)\n';
     usage += leftColumn('sails new <appName>') + 'Create a new Sails project in a folder called <appName>\n';
     usage += leftColumn('sails new <appName> --linker') + 'Create a new Sails project in a folder called <appName>, using automatic asset linking\n';
     usage += leftColumn('sails generate <foo>') + 'Generate api/models/Foo.js and api/controllers/FooController.js\n';
+    usage += leftColumn('  [--coffee]') + ' - generate in coffeescript \n';
     usage += leftColumn('sails generate model <foo>') + 'Generate api/models/Foo.js\n';
+    usage += leftColumn('  [--coffee]') + ' - generate in coffeescript \n';
     usage += leftColumn('sails generate controller <foo>') + 'Generate api/controllers/FooController.js\n';
+    usage += leftColumn('  [--coffee]') + ' - generate in coffeescript \n';
     usage += leftColumn('sails version') + 'Get the current globally installed Sails version\n';
     usage += leftColumn('sails run <command>') + 'Run a management command (exported by YOUR_APP/commands/index.js)';
 

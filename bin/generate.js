@@ -8,7 +8,8 @@ module.exports = function (sails) {
 	var _			= require( 'lodash' ),
 		utils		= require( './utils' )(sails),
 		fs			= utils.fs,
-		pluralize	= require('pluralize');
+		pluralize	= require('pluralize'),
+		js2coffee	= require('js2coffee');
 
 
 	/**
@@ -28,7 +29,8 @@ module.exports = function (sails) {
 		 */
 
 		this.generateController = function (entity, options) {
-			var newControllerPath = sails.config.paths.controllers + '/' + utils.capitalize(entity) + 'Controller.js';
+			var suffix = options.coffee ? '.coffee' : '.js';
+			var newControllerPath = sails.config.paths.controllers + '/' + utils.capitalize(entity) + 'Controller' + suffix;
 			var newFederatedControllerPath = sails.config.paths.controllers + '/' + entity;
 
 			utils.verifyDoesntExist(newControllerPath, 'A controller already exists at: ' + newControllerPath);
@@ -52,7 +54,8 @@ module.exports = function (sails) {
 						viewEngine: sails.config.views.engine,
 						viewPath: require('underscore.string').rtrim(sails.config.paths.views, '/'),
 						baseurl: '/' + entity,
-						suffix: '.js'
+						suffix: suffix,
+						coffee: options.coffee
 					});
 				});
 			}
@@ -91,7 +94,8 @@ module.exports = function (sails) {
 					identity: entity.toLowerCase(),
 					pluralIdentity: pluralize(entity),
 					actions: actions,
-					suffix: 'Controller.js'
+					suffix: 'Controller' + suffix,
+					coffee: options.coffee
 				});
 			}
 		};
@@ -106,6 +110,7 @@ module.exports = function (sails) {
 
 		this.generateModel = function (entity, options) {
 			var attributes = '';
+			var suffix = options.coffee ? '.coffee' : '.js';
 
 			// Add each requested attribute
 			if (options && options.attributes) {
@@ -132,7 +137,8 @@ module.exports = function (sails) {
 				prefix: sails.config.paths.models,
 				entity: utils.capitalize(entity),
 				attributes: attributes,
-				suffix: '.js'
+				suffix: suffix,
+				coffee: options.coffee
 			});
 		};
 
@@ -144,11 +150,13 @@ module.exports = function (sails) {
 		 */
 
 		this.generateAdapter = function (entity, options) {
+			var suffix = options.coffee ? '.coffee' : '.js';
 			return generate({
 				boilerplate: 'adapter.ejs',
 				prefix: sails.config.paths.adapters,
 				entity: utils.capitalize(entity),
-				suffix: 'Adapter.js'
+				suffix: 'Adapter' + suffix,
+				coffee: options.coffee
 			});
 		};
 
@@ -172,7 +180,8 @@ module.exports = function (sails) {
 					prefix: viewPath,
 					entity: entity,
 					action: action,
-					suffix: '.' + sails.config.views.engine
+					suffix: '.' + sails.config.views.engine,
+					coffee: options.coffee
 				});
 			});
 		};
@@ -197,7 +206,9 @@ module.exports = function (sails) {
 			}
 
 			var file = utils.renderBoilerplateTemplate(options.boilerplate, options);
-
+			if (options.coffee) {
+				file = js2coffee.build(file);
+			}
 			var fileEntity = options.action || options.entity;
 			var newFilePath = options.prefix + fileEntity + options.suffix;
 			utils.verifyDoesntExist(newFilePath, 'A file or directory already exists at: ' + newFilePath);
