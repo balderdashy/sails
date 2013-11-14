@@ -246,20 +246,24 @@ exports.optional = function wrapOptionalCallback (cb) {
 
 
 
-
-
 /**
  * Get the domain out of the origin header--
  * compare it to the host
- * 
+ *
  * @api private
  */
 
-exports.isSameOrigin = function isSameOrigin (req) {
-	var domain = req.headers.origin.match(/^https?:\/\/([^:]+)(:\d+)?$/)[1];
+exports.isSameOrigin = function isSameOrigin(req) {
+	
+	// Get the domain out of the origin header
+	var matches = req.headers.origin.match(/^https?:\/\/([^:]+)(:\d+)?$/);
+	if (matches === null) {
+		return false;
+	}
+	var domain = matches[1];
+	// Compare it to the host
 	return (req.host == domain);
 };
-
 
 
 
