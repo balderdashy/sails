@@ -5,7 +5,7 @@
  * pubsub/socket server for complete customizability.
  *
  * For more information on using Sails with Sockets, check out:
- * http://sailsjs.org/#documentation
+ * http://sailsjs.org/#!documentation
  */
 
 module.exports.sockets = {

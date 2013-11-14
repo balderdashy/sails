@@ -9,7 +9,7 @@
  * will override these settings.
  *
  * For more information on adapter configuration, check out:
- * http://sailsjs.org/#documentation
+ * http://sailsjs.org/#!documentation
  */
 
 module.exports.adapters = {

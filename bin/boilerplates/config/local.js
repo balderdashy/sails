@@ -19,7 +19,7 @@
  *
  *
  * For more information, check out:
- * http://sailsjs.org/#documentation
+ * http://sailsjs.org/#!documentation
  */
 
 module.exports = {
