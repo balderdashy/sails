@@ -105,7 +105,7 @@ module.exports = function(sails) {
 
 		// Disable template layout for jade and haml
 		var templateLayout;
-		if (options.templateLang === 'jade' || options.templateLang === 'haml' || options.templateLang === 'nunjucks') {
+		if (options.templateLang === 'jade' || options.templateLang === 'haml' || options.templateLang === 'nunjucks' || options.templateLang === 'swig') {
 			templateLayout = false;
 		} else templateLayout = '\'layout\'';
 
