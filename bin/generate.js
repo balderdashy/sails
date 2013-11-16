@@ -144,12 +144,25 @@ module.exports = function (sails) {
 		 */
 
 		this.generateAdapter = function (entity, options) {
-			return generate({
-				boilerplate: 'adapter.ejs',
-				prefix: sails.config.paths.adapters,
-				entity: utils.capitalize(entity),
-				suffix: 'Adapter.js'
-			});
+
+      //coffeeScript
+			if (options && (options.c || options.coffee)) {
+        return generate({
+          boilerplate: 'coffee/adapter.ejs',
+          prefix: sails.config.paths.adapters,
+          entity: utils.capitalize(entity),
+          suffix: 'Adapter.coffee'
+        });
+      }
+      //javaScript
+      else{
+        return generate({
+          boilerplate: 'adapter.ejs',
+          prefix: sails.config.paths.adapters,
+          entity: utils.capitalize(entity),
+          suffix: 'Adapter.js'
+        });
+      }
 		};
 
 
