@@ -107,6 +107,38 @@ module.exports = function (sails) {
 		this.generateModel = function (entity, options) {
 			var attributes = '';
 
+      //coffeescript
+			if (options && (options.c || options.coffee)) {
+
+        // Add each requested attribute
+        if (options && options.attributes) {
+          _.each(options.attributes, function(attribute) {
+            attribute.name = utils.verifyValidEntity(attribute.name, 'Invalid attribute: ' + attribute.name);
+
+            var fnString = utils.renderBoilerplateTemplate('coffee/attribute.ejs', {
+              attribute: attribute,
+              entity: entity,
+              viewEngine: sails.config.views.engine,
+              viewPath: require('underscore.string').rtrim(sails.config.paths.views, '/'),
+              baseurl: '/' + entity
+            });
+
+            if (attributes !== '') {
+              fnString = '\n\n' + fnString;
+            }
+            attributes += fnString;
+          });
+        }
+        return generate({
+          boilerplate: 'coffee/model.ejs',
+          prefix: sails.config.paths.models,
+          entity: utils.capitalize(entity),
+          attributes: attributes,
+          suffix: '.coffee'
+        });
+      }
+      else {
+
 			// Add each requested attribute
 			if (options && options.attributes) {
 				_.each(options.attributes, function(attribute) {
@@ -134,6 +166,7 @@ module.exports = function (sails) {
 				attributes: attributes,
 				suffix: '.js'
 			});
+      }
 		};
 
 
