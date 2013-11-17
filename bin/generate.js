@@ -34,6 +34,10 @@ module.exports = function (sails) {
 			utils.verifyDoesntExist(newControllerPath, 'A controller already exists at: ' + newControllerPath);
 			utils.verifyDoesntExist(newFederatedControllerPath, 'A controller already exists at: ' + newFederatedControllerPath);
 
+      var generateCoffee = (options && (options.c || options.coffee)) ? true : false;
+      var extension = (generateCoffee) ? '.coffee' : '.js';
+      var pathPrefix = (generateCoffee) ? 'coffee/' : '';
+
 			// Federated controller
 			if (options && (options.f || options.federated)) {
 
@@ -43,7 +47,7 @@ module.exports = function (sails) {
 					action = utils.verifyValidEntity(action, 'Invalid action name: ' + action);
 
 					return generate({
-						boilerplate: 'federatedAction.ejs',
+						boilerplate: pathPrefix + 'federatedAction.ejs',
 						prefix: sails.config.paths.controllers + '/' + entity,
 						entity: entity,
 						identity: entity.toLowerCase(),
@@ -52,7 +56,7 @@ module.exports = function (sails) {
 						viewEngine: sails.config.views.engine,
 						viewPath: require('underscore.string').rtrim(sails.config.paths.views, '/'),
 						baseurl: '/' + entity,
-						suffix: '.js'
+						suffix: extension
 					});
 				});
 			}
@@ -64,7 +68,7 @@ module.exports = function (sails) {
 				if (options && options.actions) {
 					var i = 0;
 					_.each(options.actions, function(action) {
-						var fnString = utils.renderBoilerplateTemplate('action.ejs', {
+						var fnString = utils.renderBoilerplateTemplate(pathPrefix + 'action.ejs', {
 							action: action,
 							entity: entity,
 							viewEngine: sails.config.views.engine,
@@ -75,7 +79,8 @@ module.exports = function (sails) {
 						// Append a comma, unless this is the last
 						if (options.actions.length !== i) {
 							
-							fnString = fnString + ',\n\n';
+							if (generateCoffee) fnString = fnString + '\n';
+              else fnString = fnString + ',\n';
 
 							// Append the action to the code string
 							actions += fnString;
@@ -85,13 +90,13 @@ module.exports = function (sails) {
 					});
 				}
 				return generate({
-					boilerplate: 'controller.ejs',
+					boilerplate: pathPrefix + 'controller.ejs',
 					prefix: sails.config.paths.controllers,
 					entity: utils.capitalize(entity),
 					identity: entity.toLowerCase(),
 					pluralIdentity: pluralize(entity),
 					actions: actions,
-					suffix: 'Controller.js'
+					suffix: 'Controller' + extension
 				});
 			}
 		};
@@ -107,12 +112,16 @@ module.exports = function (sails) {
 		this.generateModel = function (entity, options) {
 			var attributes = '';
 
+      var generateCoffee = (options && (options.c || options.coffee)) ? true : false;
+      var extension = (generateCoffee) ? '.coffee' : '.js';
+      var pathPrefix = (generateCoffee) ? 'coffee/' : '';
+
 			// Add each requested attribute
 			if (options && options.attributes) {
 				_.each(options.attributes, function(attribute) {
 					attribute.name = utils.verifyValidEntity(attribute.name, 'Invalid attribute: ' + attribute.name);
 
-					var fnString = utils.renderBoilerplateTemplate('attribute.ejs', {
+					var fnString = '\n' + utils.renderBoilerplateTemplate(pathPrefix + 'attribute.ejs', {
 						attribute: attribute,
 						entity: entity,
 						viewEngine: sails.config.views.engine,
@@ -122,17 +131,18 @@ module.exports = function (sails) {
 
 					// If this is not the first attribute, add a comma
 					if (attributes !== '') {
-						fnString = ',\n\n' + fnString;
+						if (generateCoffee) fnString = '\n' + fnString;
+            else fnString = ',\n' + fnString;
 					}
 					attributes += fnString;
 				});
 			}
 			return generate({
-				boilerplate: 'model.ejs',
+				boilerplate: pathPrefix + 'model.ejs',
 				prefix: sails.config.paths.models,
 				entity: utils.capitalize(entity),
 				attributes: attributes,
-				suffix: '.js'
+				suffix: extension
 			});
 		};
 
@@ -144,11 +154,16 @@ module.exports = function (sails) {
 		 */
 
 		this.generateAdapter = function (entity, options) {
+
+      var generateCoffee = (options && (options.c || options.coffee)) ? true : false;
+      var extension = (generateCoffee) ? '.coffee' : '.js';
+      var pathPrefix = (generateCoffee) ? 'coffee/' : '';
+
 			return generate({
-				boilerplate: 'adapter.ejs',
+				boilerplate: pathPrefix + 'adapter.ejs',
 				prefix: sails.config.paths.adapters,
 				entity: utils.capitalize(entity),
-				suffix: 'Adapter.js'
+				suffix: 'Adapter' + extension
 			});
 		};
 
