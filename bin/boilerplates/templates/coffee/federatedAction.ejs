@@ -1,0 +1,9 @@
+
+ # <%= entity.toLowerCase() %>/<%= action %>
+
+module.exports =
+  <%= action %> = (req,res) ->
+
+    # This will render the view:
+    # <%- viewPath %>/<%-entity%>/<%- action %>.<%- viewEngine %>
+    res.view()
