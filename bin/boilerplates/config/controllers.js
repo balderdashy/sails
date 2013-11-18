@@ -19,6 +19,18 @@
 
 module.exports.controllers = {
 
+  /**
+   * `language`
+   *
+   * Setting this option will result in generating new controllers in specified language.
+   * For example, with language set to `coffee`,
+   * `sails generate controller User` would generate controller UserController.coffee
+   * written in CoffeeScript.
+   *
+   * Availiable options: js, coffee
+   *
+   * language: 'js'
+  */
 
   /**
    * NOTE:
