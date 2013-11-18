@@ -39,7 +39,8 @@ module.exports = function (sails) {
       }
       else if (sails.config.controllers.language){
         language = sails.config.controllers.language;
-      } else{
+      }
+      else{
         language = 'js';
       }
 
@@ -120,9 +121,11 @@ module.exports = function (sails) {
       if (options && (options.c || options.coffee)){
         language = 'coffee';
       }
-      else if (sails.config.models.language){
-        language = sails.config.models.language;
-      } else{
+      // There is no models.js config
+      // else if (sails.config.models.language){
+      //   language = sails.config.models.language;
+      // }
+      else{
         language = 'js';
       }
 
@@ -170,7 +173,8 @@ module.exports = function (sails) {
       }
       else if (sails.config.adapters.language){
         language = sails.config.adapters.language;
-      } else{
+      }
+      else{
         language = 'js';
       }
 
