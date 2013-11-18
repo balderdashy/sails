@@ -34,9 +34,14 @@ module.exports = function (sails) {
 			utils.verifyDoesntExist(newControllerPath, 'A controller already exists at: ' + newControllerPath);
 			utils.verifyDoesntExist(newFederatedControllerPath, 'A controller already exists at: ' + newFederatedControllerPath);
 
-      var generateCoffee = (options && (options.c || options.coffee)) ? true : false;
-      var extension = (generateCoffee) ? '.coffee' : '.js';
-      var pathPrefix = (generateCoffee) ? 'coffee/' : '';
+      if (options && (options.c || options.coffee)){
+        language = 'coffee';
+      }
+      else if (sails.config.controllers.language){
+        language = sails.config.controllers.language;
+      } else{
+        language = 'js';
+      }
 
 			// Federated controller
 			if (options && (options.f || options.federated)) {
@@ -47,7 +52,7 @@ module.exports = function (sails) {
 					action = utils.verifyValidEntity(action, 'Invalid action name: ' + action);
 
 					return generate({
-						boilerplate: pathPrefix + 'federatedAction.ejs',
+						boilerplate: language + '/federatedAction.ejs',
 						prefix: sails.config.paths.controllers + '/' + entity,
 						entity: entity,
 						identity: entity.toLowerCase(),
@@ -56,7 +61,7 @@ module.exports = function (sails) {
 						viewEngine: sails.config.views.engine,
 						viewPath: require('underscore.string').rtrim(sails.config.paths.views, '/'),
 						baseurl: '/' + entity,
-						suffix: extension
+						suffix: '.' + language
 					});
 				});
 			}
@@ -90,13 +95,13 @@ module.exports = function (sails) {
 					});
 				}
 				return generate({
-					boilerplate: pathPrefix + 'controller.ejs',
+					boilerplate: language + '/controller.ejs',
 					prefix: sails.config.paths.controllers,
 					entity: utils.capitalize(entity),
 					identity: entity.toLowerCase(),
 					pluralIdentity: pluralize(entity),
 					actions: actions,
-					suffix: 'Controller' + extension
+					suffix: 'Controller' + '.' + language
 				});
 			}
 		};
@@ -112,9 +117,14 @@ module.exports = function (sails) {
 		this.generateModel = function (entity, options) {
 			var attributes = '';
 
-      var generateCoffee = (options && (options.c || options.coffee)) ? true : false;
-      var extension = (generateCoffee) ? '.coffee' : '.js';
-      var pathPrefix = (generateCoffee) ? 'coffee/' : '';
+      if (options && (options.c || options.coffee)){
+        language = 'coffee';
+      }
+      else if (sails.config.models.language){
+        language = sails.config.models.language;
+      } else{
+        language = 'js';
+      }
 
 			// Add each requested attribute
 			if (options && options.attributes) {
@@ -138,11 +148,11 @@ module.exports = function (sails) {
 				});
 			}
 			return generate({
-				boilerplate: pathPrefix + 'model.ejs',
+				boilerplate: '.' + language + '/model.ejs',
 				prefix: sails.config.paths.models,
 				entity: utils.capitalize(entity),
 				attributes: attributes,
-				suffix: extension
+				suffix: '.' + language
 			});
 		};
 
@@ -155,15 +165,20 @@ module.exports = function (sails) {
 
 		this.generateAdapter = function (entity, options) {
 
-      var generateCoffee = (options && (options.c || options.coffee)) ? true : false;
-      var extension = (generateCoffee) ? '.coffee' : '.js';
-      var pathPrefix = (generateCoffee) ? 'coffee/' : '';
+      if (options && (options.c || options.coffee)){
+        language = 'coffee';
+      }
+      else if (sails.config.adapters.language){
+        language = sails.config.adapters.language;
+      } else{
+        language = 'js';
+      }
 
 			return generate({
-				boilerplate: pathPrefix + 'adapter.ejs',
+				boilerplate: language + '/adapter.ejs',
 				prefix: sails.config.paths.adapters,
 				entity: utils.capitalize(entity),
-				suffix: 'Adapter' + extension
+				suffix: 'Adapter.' + language
 			});
 		};
 
