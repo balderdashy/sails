@@ -151,7 +151,7 @@ module.exports = function (sails) {
 				});
 			}
 			return generate({
-				boilerplate: '.' + language + '/model.ejs',
+				boilerplate: language + '/model.ejs',
 				prefix: sails.config.paths.models,
 				entity: utils.capitalize(entity),
 				attributes: attributes,
