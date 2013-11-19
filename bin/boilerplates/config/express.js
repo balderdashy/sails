@@ -1,5 +1,5 @@
 /**
- * Configure the Express server inside of Sails.
+ * Configure advanced options for the Express server inside of Sails.
  *
  * For more information on configuration, check out:
  * http://sailsjs.org/#documentation
@@ -67,8 +67,12 @@ module.exports.express = {
 /**
  * HTTP Flat-File Cache
  * 
- * These settings are for Express' static middleware- your "public" folder.
- * In Sails, this is more or less your app's `assets directory.
+ * These settings are for Express' static middleware- stuff like your
+ * images, css, etc. 
+ *
+ * In Sails, this is probably your app's `assets directory.
+ * By default, Sails uses your project's Gruntfile to compile/copy those 
+ * assets to `.tmp/public`, where they're accessible to Express.
  *
  * The HTTP static cache is only active in a 'production' environment, 
  * since that's the only time Express will cache flat-files.
