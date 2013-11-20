@@ -321,17 +321,18 @@ util.fileExists = function(path) {
 
 
 /** 
- * Read a boilerplate and render the template
+ * Read an EJS template representing a Sails module,
+ * then send back the return string.
  *
  * @api private
  */
 
-util.renderBoilerplateTemplate = function(boilerplate, data) {
-	var boilerplatePath = __dirname + '/boilerplates/templates/' + boilerplate;
-	util.verifyExists(boilerplatePath, "Boilerplate (" + boilerplate + ") doesn't exist!");
-	var file = fs.readFileSync(boilerplatePath, 'utf8');
-	return ejs.render(file, data);
-};
+// util.renderBoilerplateTemplate = function(path, data) {
+// 	var boilerplatePath = __dirname + '/boilerplates/templates/' + boilerplate;
+// 	util.verifyExists(boilerplatePath, "Boilerplate (" + boilerplate + ") doesn't exist!");
+// 	var file = fs.readFileSync(boilerplatePath, 'utf8');
+// 	return ejs.render(file, data);
+// };
 
 
 

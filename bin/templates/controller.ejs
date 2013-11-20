@@ -2,6 +2,9 @@
 /**
  * Boilerplate controller
  *
+ * @key {String} controllerName
+ * @key [{actionName, fn}] actions
+ *
  * This is the template used when generating controllers via the CLI
  * e.g. `sails generate controller foo`
  * 
@@ -11,7 +14,7 @@
  * but it also works out of the box with messages from Socket.io.
  */
 %>/**
- * <%= entity %>Controller
+ * <%= controllerName %>Controller
  *
  * @module      :: Controller
  * @description	:: A set of functions called `actions`.
@@ -45,8 +48,8 @@ module.exports = {
 
 
   /**
-   * Overrides for the settings in `config/controllers.js`
-   * (specific to <%= entity %>Controller)
+   * Overrides for the global controller settings in `config/controllers.js`
+   * (these are specific to this <%= controllerName %>Controller)
    */
   _config: {}
 
