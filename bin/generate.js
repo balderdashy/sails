@@ -105,6 +105,7 @@ module.exports = function generate ( options, handlers ) {
 			// Create the controller code
 			var renderedCode = ejs.render(controllerTemplate, {
 				filename: filename,
+				controllerName: globalID,
 				actions: renderedActions
 			});
 
