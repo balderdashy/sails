@@ -89,6 +89,7 @@ var CLIController = {
 			log('( to exit, type <CTRL>+<C> )');
 			log.verbose('Lifting `'+process.cwd()+'` in interactive mode...');
 
+			// Now load up sails for real
 			var sails = new Sails();
 			sails.lift(_.merge(
 				{},
@@ -146,9 +147,9 @@ var CLIController = {
 
 	www: function () {
 		var wwwPath = path.resolve( process.cwd(), './www' ),
-			wwwTaskName = 'build';
+			GRUNT_TASK_NAME = 'build';
 
-		log.info('Compiling assets into standalone `www` directory with `grunt ' + wwwTaskName + '`...');
+		log.info('Compiling assets into standalone `www` directory with `grunt ' + GRUNT_TASK_NAME + '`...');
 
 		var sails = new Sails();
 		sails.load(_.merge({},sailsOptions,{
@@ -160,11 +161,11 @@ var CLIController = {
 			if (err) return Err.fatal.failedToLoadSails(err);
 
 			var Grunt = Grunt__(sails);
-			Grunt( wwwTaskName );
+			Grunt( GRUNT_TASK_NAME );
 
 			// Bind error event
 			sails.on('hook:grunt:error', function (err) {
-				log.error('Error occured starting `grunt ' + wwwTaskName + '`');
+				log.error('Error occured starting `grunt ' + GRUNT_TASK_NAME + '`');
 				log.error('Please resolve any issues and try running `sails www` again.');
 				process.exit(1);
 			});
@@ -254,7 +255,6 @@ var CLIController = {
 
 		// Finish up with an explanation of how to get more docs/information
 		// on using the Sails CLI.
-		// console.log('');
 		log.info( 'To get help using the Sails command-line tool, run `sails`.');
 	},
 
