@@ -104,13 +104,13 @@ module.exports = function generate ( options, handlers ) {
 
 			// Create the controller code
 			var renderedCode = ejs.render(controllerTemplate, {
-				controllerName: globalID,
+				filename: filename,
 				actions: renderedActions
 			});
 
 			// If it doesn't already exist, create a controller file
 			var modulePath = dirPath + '/' + filename;
-			if ( util.fileExists(modulePath) ) {
+			if ( fs.existsSync(modulePath) ) {
 				return handlers.error(globalID + ' already exists!');
 			}
 			fs.outputFileSync(modulePath, renderedCode);
@@ -164,12 +164,29 @@ module.exports = function generate ( options, handlers ) {
 				break;
 			}
 
-			// Check that a file doesn't exist:
-			util.verifyDoesntExist( modulePath, 'A model already exists at: ' + dirPath );
+			var pathToModelTemplate = path.resolve(__dirname,'./templates/model.ejs');
+			var modelTemplate = fs.readFileSync(pathToModelTemplate, 'utf8');
+			var pathToAttributeTemplate = path.resolve(__dirname,'./templates/attribute.ejs');
+			var attributeTemplate = fs.readFileSync(pathToAttributeTemplate, 'utf8');
 
-			// TODO: generate model
-			// generate.generateModel(module, modelOpts);
-			break;
+			// Create the attributes' code
+			var renderedAttributes = util.map(attributes, function (attr) {
+				return ejs.render(attributeTemplate, attr);
+			});
+
+			// Create the model code
+			var renderedModelCode = ejs.render(modelTemplate, {
+				filename: filename,
+				attributes: attributes
+			});
+
+			// If it doesn't already exist, create a file
+			var modelPath = dirPath + '/' + filename;
+			if ( fs.existsSync(modelPath) ) {
+				return handlers.error(globalID + ' already exists!');
+			}
+			fs.outputFileSync(modelPath, renderedModelCode);
+
 	}
 
 

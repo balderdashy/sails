@@ -7,21 +7,32 @@
  *
  */
 %>/**
- * <%= entity %>
+ * <%= filename %>
  *
- * @module      :: Model
- * @description :: A short summary of how this model works and what it represents.
+ * @description :: TODO: You might write a short summary of how this model works and what it represents here.
  * @docs		:: http://sailsjs.org/#!documentation/models
  */
 
 module.exports = {
 
-  attributes: {
-  	
-  	/* e.g.
-  	nickname: 'string'
-  	*/
-    <%- attributes %>
-  }
+	attributes: {
+	
+		<%
+		// Only show attribute example if none were generated...
+		if (!attributes.length) {
+		%>/* e.g.
+		nickname: {
+			type: 'string'
+		}
+		*/<% }
+
+		// Loop through specified attributes and write them out
+		for (var i=0;i<attributes.length;i++) {  
+		if (i) { %>,
+
+		<% }
+
+		var attribute = attributes[i]; %><%= attribute.name %>: { type: '<%= attribute.type %>' }<% } %>
+	}
 
 };
