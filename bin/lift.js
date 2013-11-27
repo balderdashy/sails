@@ -4,7 +4,7 @@
 var _			= require('lodash'),
 	argv		= require('optimist').argv,
 	fs			= require('fs-extra'),
-	Err			= require('./_errors'),
+	Err			= require('../errors'),
 	util		= require('../util'),
 	Logger		= require('../lib/hooks/logger/captains'),
 	Sails		= require('../lib/app');
@@ -15,10 +15,7 @@ var log = new Logger(util.getCLIConfig(argv).log);
 
 
 /**
- * Expose method which lifts the given instance of Sails
- *
- * TODO: move most of this into `app/load`
- *	(since it should really happen when you call node app.js as well)
+ * Expose method which lifts the appropriate instance of Sails
  *
  * @param {Object} options - to pass to sails.lift()
  */
@@ -28,53 +25,69 @@ module.exports = function liftSails( options ) {
 	// Ensure options passed in are not mutated
 	options = _.clone(options);
 
-	var app = {
-		path	: process.cwd()
-	};
+	// Use the app's local Sails in `node_modules` if one exists
+	var appPath = process.cwd();
+	var localSailsPath = appPath + '/node_modules/sails';
 
-	var localSails = {
-		path: app.path + '/node_modules/sails'
-	};
+	// But first make sure it'll work...
+	if ( isLocalSailsValid(localSailsPath, appPath) ) {
+		require( localSailsPath + '/lib' ).lift(options);
+		return;
+	}
 
+	// Otherwise, if no workable local Sails exists, run the app 
+	// using the currently running version of Sails.  This is 
+	// probably always the global install.
+	var globalSails = new Sails();
+	globalSails.lift(options);
+	return;
+};
+
+
+
+
+/**
+ * Check if the specified installation of Sails is valid for the specified project.
+ * (Also verifies that the project is valid.)
+ *
+ * @param sailsPath
+ * @param appPath
+ */
+function isLocalSailsValid ( sailsPath, appPath ) {
 
 	// Has no package.json file
-	if ( ! fs.existsSync( app.path + '/package.json') ) {
+	if ( ! fs.existsSync( appPath + '/package.json') ) {
 		Err.fatal.noPackageJSON();
 		return;
 	}
 
 	// Load this app's package.json and dependencies
-	app.package = util.getPackageSync(app.path);
-	app.dependencies = app.package.dependencies;
+	var appPackageJSON = util.getPackageSync(appPath);
+	var appDependencies = appPackageJSON.dependencies;
 
 
 	// Package.json exists, but doesn't list Sails as a dependency
-	if ( !(app.dependencies && app.dependencies.sails) ) {
+	if ( !(appDependencies && appDependencies.sails) ) {
 		Err.fatal.notSailsApp();
 		return;
 	}
 
-	// Check if local Sails (`node_modules/sails`) exists
-	// If no local Sails exists, run the app using the current version of Sails
-	// (this is probably always the global install, since this is the CLI)
-	if ( !fs.existsSync(localSails.path) ) {
-
-		// Run app using global Sails
-		var currentSails = new Sails();
-		currentSails.lift(options);
-		return;
+	// Ensure the target Sails exists
+	if ( !fs.existsSync(sailsPath) ) {
+		return false;
 	}
 
 	// Read the package.json in the local installation of Sails
-	localSails.package = util.getPackageSync(localSails.path);
+	sailsPackageJSON = util.getPackageSync(sailsPath);
 
-	// Local Sails has corrupted package.json
-	if ( !localSails.package ) {
-		Err.fatal.badLocalDependency(localSails.path, app.dependencies.sails);
+	// Local Sails has a corrupted package.json
+	if ( !sailsPackageJSON ) {
+		Err.fatal.badLocalDependency(sailsPath, appDependencies.sails);
+		return;
 	}
 
 	// Lookup sails dependency requirement in app's package.json
-	var requiredSailsVersion = app.dependencies.sails;
+	var requiredSailsVersion = appDependencies.sails;
 
 	// If you're using a `git://` sails dependency, you probably know
 	// what you're doing, but we'll let you know just in case.
@@ -89,13 +102,11 @@ module.exports = function liftSails( options ) {
 	
 	// Error out if it has the wrong version in its package.json
 	// TODO: use npm's native version comparator instead
-	if ( !isUsingGit && requiredSailsVersion !== localSails.package.version) {
-		Err.warn.incompatibleLocalSails(requiredSailsVersion, localSails.package.version);
+	if ( !isUsingGit && requiredSailsVersion !== sailsPackageJSON.version) {
+		Err.warn.incompatibleLocalSails(requiredSailsVersion, sailsPackageJSON.version);
 	}
 
-	// Load the local version of Sails
-	// Then run the app with it
-	localSails.lift = require( localSails.path + '/lib' ).lift;
-	localSails.lift(options);
+	// If we made it this far, the target Sails installation must be OK
+	return true;
+}
 
-};
