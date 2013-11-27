@@ -10,6 +10,7 @@ var _			= require('lodash'),
 	Errors		= require('./_errors'),
 	Logger		= require('../lib/hooks/logger/captains'),
 	Sails		= require('../lib/app');
+	_interpretArgs = require('./_arguments');
 	util		= require('../util');
 	_.str		= require('underscore.string'),
 	REPL		= require('repl'),
@@ -303,7 +304,7 @@ var CLIController = {
 
 
 // Interpret arguments, route to appropriate handler
-util.interpretArguments( argv, CLIController );
+_interpretArgs( argv, CLIController );
 
 
 
