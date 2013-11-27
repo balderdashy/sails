@@ -15,6 +15,7 @@ _.extend(exports, _);
 // Merge in util submodules
 var CLIUtil = require('./cli');
 _.extend(exports, CLIUtil);
+_.extend(exports, require('./version'));
 
 
 // Extend with node util methods

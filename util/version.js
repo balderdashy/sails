@@ -5,43 +5,13 @@ var _			= require('lodash'),
 	argv		= require('optimist').argv,
 	fs			= require('fs-extra'),
 	Err			= require('../errors'),
-	util		= require('../util'),
 	Logger		= require('../lib/hooks/logger/captains'),
 	Sails		= require('../lib/app');
 
 
 // Build logger using command-line config
-var log = new Logger(util.getCLIConfig(argv).log);
+var log = new Logger(require('./cli').getCLIConfig(argv).log);
 
-
-/**
- * Expose method which lifts the appropriate instance of Sails
- *
- * @param {Object} options - to pass to sails.lift()
- */
-
-module.exports = function liftSails( options ) {
-
-	// Ensure options passed in are not mutated
-	options = _.clone(options);
-
-	// Use the app's local Sails in `node_modules` if one exists
-	var appPath = process.cwd();
-	var localSailsPath = appPath + '/node_modules/sails';
-
-	// But first make sure it'll work...
-	if ( isLocalSailsValid(localSailsPath, appPath) ) {
-		require( localSailsPath + '/lib' ).lift(options);
-		return;
-	}
-
-	// Otherwise, if no workable local Sails exists, run the app 
-	// using the currently running version of Sails.  This is 
-	// probably always the global install.
-	var globalSails = new Sails();
-	globalSails.lift(options);
-	return;
-};
 
 
 
@@ -53,7 +23,7 @@ module.exports = function liftSails( options ) {
  * @param sailsPath
  * @param appPath
  */
-function isLocalSailsValid ( sailsPath, appPath ) {
+exports.isLocalSailsValid = function ( sailsPath, appPath ) {
 
 	// Has no package.json file
 	if ( ! fs.existsSync( appPath + '/package.json') ) {
@@ -62,7 +32,7 @@ function isLocalSailsValid ( sailsPath, appPath ) {
 	}
 
 	// Load this app's package.json and dependencies
-	var appPackageJSON = util.getPackageSync(appPath);
+	var appPackageJSON = require('./index').getPackageSync(appPath);
 	var appDependencies = appPackageJSON.dependencies;
 
 
@@ -78,7 +48,7 @@ function isLocalSailsValid ( sailsPath, appPath ) {
 	}
 
 	// Read the package.json in the local installation of Sails
-	sailsPackageJSON = util.getPackageSync(sailsPath);
+	sailsPackageJSON = require('./index').getPackageSync(sailsPath);
 
 	// Local Sails has a corrupted package.json
 	if ( !sailsPackageJSON ) {
