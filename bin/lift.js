@@ -49,7 +49,7 @@ module.exports = function liftSails( options ) {
 
 
 	// Package.json exists, but doesn't list Sails as a dependency
-	if ( !(app.dependencies.sails) ) {
+	if ( !(app.dependencies && app.dependencies.sails) ) {
 		Err.fatal.notSailsApp();
 		return;
 	}
