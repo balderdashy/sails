@@ -1,21 +1,52 @@
 # Changelog
 
-## 0.9.4  (latest stable)
+## 0.9.7  (latest stable)
+*October 10, 2013*
+
++ Complete improvement/refactoring of configuration loader (fixes bugs)
++ Complete improvement/refactoring of ORM loader (fixes bugs)
++ Continued improvements of tests
++ Include a modified version of consolidate to better support view engines
++ Blueprints are now configurable per-controller (thanks @xdissent, and everyone else who helped!)
+  + (waiting to expose this and deprecate the old behavior in the docs until the next minor release to avoid causing any breaking changes)
+  + New `prefix` option in global blueprint config, as well as per-controller.
+  + New `jsonp` option in global controller config, as well as per-controller.
+  + New `pluralize` option in global controller config, as well as per-controller.
++ Models can now easily use one or more custom named connections which use different adapters
+  + (waiting to expose this and deprecate the old behavior in the docs until the next minor release to avoid causing any breaking changes)
++ Adds configurable default behavior for 403/404/500/400 HTTP status code error cases.
+  + (waiting to expose this and deprecate the old behavior in the docs until the next minor release to avoid causing any breaking changes)
++ Properly namespace the `io` in bundled `sails.io.js` client in new projects (thanks @drosen0)
++ Better handle crash scenario, particularly in nodemon (thanks @edy)
+
+Thanks to everyone else I missed, and to everyone else who helped out with this release!
+
+
+## 0.9.4
 *September 5, 2013*
-+ Main: CORS support added as a configurable hook.
+
++ Improved CSRF prevention support (thanks to @sgress454)
++ Support for CORS (thanks to @sgress454)
++ CoffeeScript supported client-side by default in gruntfile thanks to @reecelewellen
++ Improves/fixes internationalization (thanks to @xdissent and @silvinci)
++ i18n upgraded to 0.4.1
++ All tests pass (thanks to @sgress454)
++ Improvements, fixes to built-in pubsub / socket behaviors (thanks to @xdissent and @irlnathan)
++ Removed vanilla HAML support and tests since it was incomplete (jade is still supported)
 + Config: Sails core is no longer automatically copied as a dependency during `sails new`.  This speeds up the process significantly and avoids occassional recursive copy death spirals.
 + Config: Added explicit `--port` option to `sails lift`.
-+ Assets: CoffeeScript can now be used in linked assets, and will automatically be compiled by Grunt.
-+ i18n: Upgraded to 0.4.1.
 + Sockets: Added query string parsing to requests.
-+ Sockets: Headers can now be specified in requests.
++ Sockets: Headers can now be specified in requests (** this has implications on full compatibility w/ most Express middleware! **)
 + Routing: Fixed issues with default 404 and 500 responses.
++ Other minor bug fixes/inconsistencies and documentation enhancements
 
+> And thanks a ton to anybody I left out!  Send me a message on twitter and I'll add you.
+
+<!--
 ## 0.9.3
-
 ## 0.9.2
-
 ## 0.9.1
+-->
 
 
 ## 0.9.0
@@ -35,7 +66,7 @@
 + Routing: Automatic 404 and 500 routing is replaced.
 + Assets: Asset bundling is now disabled by default, use `sails new foo --linker` to enable it
 + Config: Most configuration is now also explicit in new projects.  Defaults are still provided underneath.
-+ Sockets: Socket.IO can now be configured with the options detailed in config/io.js.
++ Sockets: Socket.IO can now be configured with the options detailed in config/sockets.js.
 + Sockets: Built-in support for Redis MQ-- allows you to scale realtime apps to a multi-instance deployment without necessitating sticky sessions at your load balancer.
 + Views: Express 3 killed support for layouts/view partials.  Sails has been extended to maintain support for them with ejs and jade, but otherwise you are limited to what is supported by the engine itself.
 + Views: Automatic routing to views is now disable-able.
@@ -66,17 +97,17 @@
 + Removed CRUD synonyms
 + Main: Compatibility with Node v0.10.0 (patches node-dirty)
 + Main: Fixed crash that happened when absolute path was given as appPath
-+ Assets: Added more logging features for less.
++ Assets: Added more logging features for LESS.
 + Assets: Reset.css now in mixins
-+ Assets: Less assets are deligated to _Rack.LessAsset_
-+ Assets: Less assets served from asset-rack will have their extensions changed to css
++ Assets: LESS assets are deligated to _Rack.LessAsset_
++ Assets: LESS assets served from asset-rack will have their extensions changed to css
 + Policies: Implemented the controller syntax for defining a policy.
 + Naming: _scaffolds_ is now known as _blueprints_
 + Naming: _blueprints_ is now known as _boilerplates_
 + Routing: Added _controller.action_ syntax
-+ Routing: Removed CRUD Synonyms-- now you must explicitly use find, findAll, create, destroy, update  (cant use `get`,`detail`, `delete`, `edit`, etc. to indicate the same thing.  Turns out this was actually annoying, not helpful)
++ Routing: Removed CRUD Synonyms-- now you must explicitly use find, findAll, create, destroy, update  (can't use `get`,`detail`, `delete`, `edit`, etc. to indicate the same thing.  Turns out this was actually annoying, not helpful)
 + Routing: Fix in API blueprint for regression around PUT/DELETE automatic RESTful routes
-+ Routing: Fix for resourceful routing.  /model/[id] didn't work with verbs.  Does now.
++ Routing: Fix for resourceful routing.  /model/[id] didn't work with verbs.  It now does.
 + Config: _ and async no longer have to be global (but they are by default) They are configurable with `sails.config.globals._` and `sails.config.globals.async` (thanks @particlebanana!)
 + New sails project can now be created in the current dir with `sails new .` (thanks @collinwren!)
 + More tests (thanks @collinwren and @benrudolph)
@@ -88,9 +119,9 @@
 + Collections: Type restrictions are cleaner
 + Adapters: Default was changed to memory due to an issue with node-dirty
 + Log: _sails.config.log.level_ is passed to socket.io
-+ Assets: Bug fixed: not calling next when compiling less with syntax (thanks vicapow)
-+ Assets: Typescript supported on front end (thanks Diullei)
-+ Assets: Meaningful less errors were added (thanks vicapow)
++ Assets: Bug fixed: not calling next when compiling LESS with syntax (thanks vicapow)
++ Assets: Typescript supported on front-end (thanks Diullei)
++ Assets: Meaningful LESS errors were added (thanks vicapow)
 
 ## 0.8.892
 + Front-end CoffeeScript support in AssetRack (thanks @techpines!)
@@ -99,7 +130,7 @@
 + Windows compat. fix (thanks @feroc1ty!)
 + Support for string IDs (thanks @tedkulp!)
 + Attribute scaffolding for model generation (thanks @Tidwell)
-+ Support for big int string conversion in id normalization (thanks @d4mn!)
++ Support for big int string conversion in ID normalization (thanks @d4mn!)
 
 ## 0.8.88
 + Adds coffeescript support on the front-end in dev and production environments via [asset-rack](https://github.com/techpines/asset-rack) (thanks @techpines!)
@@ -166,5 +197,6 @@ _Sunday, February 24, 2013_
 ## < 0.8.77
 + I wasn't keeping good notes, sorry :(
 + Check out https://github.com/balderdashy/sails/commits/master if you want to dive in.
+
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/8acf2fc2ca0aca8a3018e355ad776ed7 "githalytics.com")](http://githalytics.com/balderdashy/sails/changelog)
