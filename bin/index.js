@@ -232,7 +232,7 @@ var CLIController = {
 		var localSailsPath = appPath + '/node_modules/sails';
 
 		// But first make sure it'll work...
-		if ( util.isLocalSailsValid(localSailsPath, appPath) ) {
+		if ( Sails.isLocalSailsValid(localSailsPath, appPath) ) {
 			require( localSailsPath + '/lib' ).lift(options);
 			return;
 		}
