@@ -9,6 +9,11 @@ var argv		= require('optimist').argv,
 // Build logger using command-line arguments
 var log = new Logger(util.getCLIConfig(argv).log);
 
+
+/**
+ * Sails and app version, package.json, and compatibility errors
+ *
+ */
 module.exports = {
 
 	fatal: {
