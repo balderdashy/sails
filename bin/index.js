@@ -7,7 +7,7 @@
 var _			= require('lodash'),
 	fs			= require('fs-extra'),
 	argv		= require('optimist').argv,
-	Errors		= require('../errors'),
+	Err			= require('../errors'),
 	Logger		= require('../lib/hooks/logger/captains'),
 	Sails		= require('../lib/app');
 	_interpretArgs = require('./_arguments');
