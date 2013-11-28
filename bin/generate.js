@@ -92,9 +92,9 @@ module.exports = function generate ( options, handlers ) {
 				break;
 			}
 
-			var pathToControllerTemplate = path.resolve(__dirname,'./templates/controller.ejs');
+			var pathToControllerTemplate = path.resolve(__dirname,'./generators/controller.ejs');
 			var controllerTemplate = fs.readFileSync(pathToControllerTemplate, 'utf8');
-			var pathToActionTemplate = path.resolve(__dirname,'./templates/action.ejs');
+			var pathToActionTemplate = path.resolve(__dirname,'./generators/action.ejs');
 			var actionTemplate = fs.readFileSync(pathToActionTemplate, 'utf8');
 
 			// Create the actions' code
@@ -165,9 +165,9 @@ module.exports = function generate ( options, handlers ) {
 				break;
 			}
 
-			var pathToModelTemplate = path.resolve(__dirname,'./templates/model.ejs');
+			var pathToModelTemplate = path.resolve(__dirname,'./generators/model.ejs');
 			var modelTemplate = fs.readFileSync(pathToModelTemplate, 'utf8');
-			var pathToAttributeTemplate = path.resolve(__dirname,'./templates/attribute.ejs');
+			var pathToAttributeTemplate = path.resolve(__dirname,'./generators/attribute.ejs');
 			var attributeTemplate = fs.readFileSync(pathToAttributeTemplate, 'utf8');
 
 			// Create the attributes' code
