@@ -126,9 +126,33 @@ module.exports = function interpretArguments ( argv, handlers ) {
 	}
 
 
+
+
+	/**
+	 * `sails new <APPNAME>`
+	 *
+	 * Asset auto-"linker" is enabled by default
+	 */
+	if ( isNew ) {
+
+		var linkerExplicitlyDisabled = (argv['linker'] === false);
+
+		handlers['new']({
+			appName: second,
+			assetLinker: {
+				enabled: linkerExplicitlyDisabled ? false : true,
+				src: argv['linker-src'] || 'assets/linker/**/*'
+			}
+		});
+		return;
+	}
+
+
+
+
+
 	if ( isLift )		return handlers.lift();
 	if ( isConsole )	return handlers.console();
-	if ( isNew )		return handlers['new']();
 	if ( isVersion )	return handlers.version();
 	if ( isRun )		return handlers.run();
 	if ( isWWW )		return handlers.www();

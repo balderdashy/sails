@@ -39,8 +39,16 @@ var CLIController = {
 	 *
 	 * Create all the files/folders for a new app at the specified path.
 	 * Relative and/or absolute paths are ok!
+	 *
+	 * Asset auto-"linker" is enabled by default.
 	 */
-	new: function () {
+	new: function ( options ) {
+
+		// Evaluate options
+		var appName = options.appName;
+		var isLinkerEnabled = options.assetLinker.enabled;
+		var linkerSrc = options.assetLinker.src;
+		
 		log.error('Sorry, `sails new` is currently out of commission.');
 		process.exit(1);
 	},
@@ -57,7 +65,7 @@ var CLIController = {
 	 * Generate module(s) for the app in our working directory.
 	 */
 
-	generate: function (options) {
+	generate: function ( options ) {
 		require('./generate')( options, CLIController );
 	},
 
