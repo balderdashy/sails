@@ -13,15 +13,7 @@ module.exports = function(sails) {
 
 
 	// Output in directory where cmdline tool was run
-	var outputPath = '.';
-
-	// If coffeescript is not installed, fail silently
-	try {
-		require('coffee-script');
-		sails.log.verbose('Enabling CoffeeScript...');
-	} catch (e) {
-		sails.log.verbose('CoffeeScript not installed.');
-	}
+	var outputPath = '.'; 
 
 
 	/**
