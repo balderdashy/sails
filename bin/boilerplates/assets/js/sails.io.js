@@ -6,7 +6,7 @@
  *
  * It models its API after the $.ajax pattern from jQuery you might be familiar with.
  * 
- * So to switch from using AJAX to Socket.io, instead of:
+ * So if you're switching from using AJAX to sockets, instead of:
  *    `$.post( url, [data], [cb] )`
  *
  * You would use:
