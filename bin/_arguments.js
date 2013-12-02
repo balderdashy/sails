@@ -56,6 +56,7 @@ module.exports = function interpretArguments ( argv, handlers ) {
 		// 	);
 		// }
 
+
 		// Third argument is the id of the module we're creating
 		// (otherwise it's the second argument-- we'll generate a model AND controller)
 		var id = third || second;
@@ -97,17 +98,7 @@ module.exports = function interpretArguments ( argv, handlers ) {
 					dry			: argv.dry
 				});
 
-			case 'view':
-			case 'policy':
-			case 'adapter':
-				return handlers.error(
-				'Sorry, `sails generate ' + 
-				second + '` is currently out of commission.');
-
-
-			// A `generate` without a specified type is assumed to
-			// be the combination of `sails generate model` and `sails generate controller`
-			default: 
+			case 'api': 
 				handlers.generate({
 					id			: id,
 					module		: 'controller',
@@ -120,8 +111,23 @@ module.exports = function interpretArguments ( argv, handlers ) {
 					attributes	: argv._.splice(3),
 					dry			: argv.dry
 				});
-
 				return;
+
+			// TODO:
+			case 'view':
+			case 'policy':
+			case 'adapter':
+				return handlers.error(
+				'Sorry, `sails generate ' + 
+				second + '` is currently out of commission.');
+
+
+			// A `generate` without a specified type is assumed to
+			// be the combination of `sails generate model` and `sails generate controller`
+			default: 
+				return handlers.error(
+					'Sorry, I don\'t know how to generate a "' +
+					second + '".');
 		}
 	}
 
