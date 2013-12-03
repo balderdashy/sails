@@ -37,6 +37,7 @@ var log = new Logger(util.getCLIConfig(argv).log);
 
 module.exports = function generate ( options, handlers ) {
 
+
 	// TODO: Load up Sails in the working directory in case
 	// custom paths have been configured
 	var appPath				= options.appPath || process.cwd(),

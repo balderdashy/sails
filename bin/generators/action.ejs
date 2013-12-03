@@ -8,13 +8,12 @@
  *
  */
 %>
+
+
   /**
    * <%- actionName %>
-   *
-   * TODO: Describe what this action does.
    */
-   <%- actionName %>: function (req, res) {
-    <%
+  <%- actionName %>: function (req, res) {<%
     // Only display this notice in verbose mode
     if ( typeof verbose !== 'undefined') {
     %>
@@ -24,7 +23,6 @@
      * and support the same interface for properly structured Socket.io messages.
      */
     <% } %>
-
     return res.json({
       todo: 'Not implemented yet!'
     });

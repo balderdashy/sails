@@ -76,23 +76,25 @@ module.exports = function interpretArguments ( argv, handlers ) {
 				'(Sails ' + module + 's are case-insensitive.)'
 			);
 		}
+		// Allow cli user to specify `FooController` and really mean `foo`
+		// then recalculate globalID
+		id = id.replace(/Controller$/, '');
 
+		// Determine which generators to use
 		switch ( second ) {
 			case 'controller':
-				var controllerName = third;
 				var arrayOfActionNames = argv._.splice(3);
 				return handlers.generate({
-					id			: controllerName,
+					id			: id,
 					module		: 'controller',
 					actions		: arrayOfActionNames,
 					dry			: argv.dry
 				});
 
 			case 'model':
-				var modelName = third;
 				var arrayOfAttributes = argv._.splice(3);
 				return handlers.generate({
-					id			: modelName,
+					id			: id,
 					module		: 'model',
 					attributes	: arrayOfAttributes,
 					dry			: argv.dry
@@ -102,26 +104,19 @@ module.exports = function interpretArguments ( argv, handlers ) {
 
 				// Figure out whether subsequent cmdline args are
 				// supposed to be controller actions or model attributes.
-				var apiArgs = argv._.splice(3);
-				if ( apiArgs[0] && apiArgs[0].match(/^[^:]*$/) ) {
-					arrayOfActionNames = apiArgs;
-					arrayOfAttributes = [];
-				}
-				else {
-					arrayOfActionNames = [];
-					arrayOfAttributes = apiArgs;
-				}
+				var apiArgsLookLikeAttributes = ( apiArgs[0] && apiArgs[0].match(/:/) );
 
+				// Then generate a model AND controller.
 				handlers.generate({
 					id			: id,
 					module		: 'controller',
-					actions		: arrayOfActionNames,
+					actions		: !apiArgsLookLikeAttributes ? apiArgs : [],
 					dry			: argv.dry
 				});
 				handlers.generate({
 					id			: id,
 					module		: 'model',
-					attributes	: arrayOfAttributes,
+					attributes	: apiArgsLookLikeAttributes ? apiArgs : [],
 					dry			: argv.dry
 				});
 				return;
