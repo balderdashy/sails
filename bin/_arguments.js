@@ -104,19 +104,20 @@ module.exports = function interpretArguments ( argv, handlers ) {
 
 				// Figure out whether subsequent cmdline args are
 				// supposed to be controller actions or model attributes.
-				var apiArgsLookLikeAttributes = ( apiArgs[0] && apiArgs[0].match(/:/) );
+				var arrayOfArgs = argv._.splice(3);
+				var argsLookLikeAttributes = ( arrayOfArgs[0] && arrayOfArgs[0].match(/:/) );
 
 				// Then generate a model AND controller.
 				handlers.generate({
 					id			: id,
 					module		: 'controller',
-					actions		: !apiArgsLookLikeAttributes ? apiArgs : [],
+					actions		: !argsLookLikeAttributes ? arrayOfArgs : [],
 					dry			: argv.dry
 				});
 				handlers.generate({
 					id			: id,
 					module		: 'model',
-					attributes	: apiArgsLookLikeAttributes ? apiArgs : [],
+					attributes	: argsLookLikeAttributes ? arrayOfArgs : [],
 					dry			: argv.dry
 				});
 				return;
