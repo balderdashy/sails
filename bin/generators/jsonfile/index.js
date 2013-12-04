@@ -4,10 +4,11 @@
 var fs = require('fs-extra');
 
 /**
- * Generate a folder
+ * Generate a JSON file
  *
+ * @option {Object} data
  * @option {String} pathToParentDir
- * @option {String} filename - the filename for the new directory
+ * @option {String} filename - the filename for the new JSON file
  *
  * @handlers ok
  * @handlers error
@@ -17,7 +18,7 @@ module.exports = function ( options, handlers ) {
 	var absPath = path.resolve( process.cwd() , options.pathToParentDir );
 	absPath = path.resolve( absPath , options.filename );
 	
-	fs.mkdir(absPath, function (err) {
+	fs.writeJSON(absPath, options.data, function (err){
 		if (err) return handlers.error(err);
 		else handlers.ok();
 	});
