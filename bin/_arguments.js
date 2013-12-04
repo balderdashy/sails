@@ -50,12 +50,6 @@ module.exports = function interpretArguments ( argv, handlers ) {
 				'What type of module would you like to generate?'
 			);
 		}
-		// if ( !_.contains(['controller','model'], module) ) {
-		// 	return handlers.invalid(
-		// 		'Sorry, I don\'t know how to generate a `' + second + '`.'
-		// 	);
-		// }
-
 
 		// Third argument is the id of the module we're creating
 		// (otherwise it's the second argument-- we'll generate a model AND controller)
@@ -150,14 +144,15 @@ module.exports = function interpretArguments ( argv, handlers ) {
 	 */
 	if ( isNew ) {
 
-		var linkerExplicitlyDisabled = (argv['linker'] === false);
+		var linkerExplicitlyDisabled = (argv['linker'] === false) || (argv['linker'] === 'false');
 
 		handlers['new']({
 			appName: second,
 			assetLinker: {
 				enabled: linkerExplicitlyDisabled ? false : true,
 				src: argv['linker-src'] || 'assets/linker/**/*'
-			}
+			},
+			dry : argv.dry
 		});
 		return;
 	}

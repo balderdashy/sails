@@ -44,70 +44,20 @@ var CLIController = {
 	 */
 	new: function ( options ) {
 
-		// Evaluate options
-		var appName = options.appName;
-		var isLinkerEnabled = options.assetLinker.enabled;
-		var linkerSrc = options.assetLinker.src;
-		
-
-		// Recursively copy files
-		function copyTree (srcPath, destPath) {
-
-			var _source_, _destination_;
-
-			// Create read stream from source
-			try {
-				// TODO:  fs.statSync();
-				_source_ = fs.createReadStream(srcPath);
-			}
-			catch (e) {
-
-				if (e.code === 'EISDIR') {
-
-					// Make directory at destination path
-					fs.mkdirSync(destPath);
-
-					
-					// Recursive step
-					//
-					// ls `srcPath` and recursively call copyTree
-					// to clone all children to their destinations
-					var children = fs.readdirSync(srcPath);
-					_.each(children, function ( filename ) {
-						var newSrc = srcPath + '/' + filename;
-						var newDest = destPath + '/' + filename;
-						copyTree( newSrc , newDest );
-					});
-
-					return;
-				}
-			}
-
-
-			// Create write stream to destination
-			try {
-				_destination_ = fs.createWriteStream(destPath);
-			}
-			catch (e) {
-				log.error(
-					'New app could not be created because an error occurred' +
-					' writing to disk ::', e);
+		require('./new')( options, {
+			missingAppName: function () {
+				log.error('Please choose the name or destination path for your new app.');
 				return;
 			}
+		});
 
-			// Copy file
-			_source_.pipe(_destination_);
-		}
+		// Evaluate options
+		// var appName = options.appName;
+		// var isLinkerEnabled = options.assetLinker.enabled;
+		// var linkerSrc = options.assetLinker.src;
 
-		// Kick things off
-		// var initialSrc = path.resolve(__dirname, './boilerplates/layout.css');
-		// var initialSrc = path.resolve(process.cwd() + '/foo');
-		// var initialDest = path.resolve(process.cwd() + '/bar');
-
-		// copyTree(initialSrc, initialDest);
-
-		log.error('Sorry, `sails new` is currently out of commission.');
-		process.exit(1);
+		// log.error('Sorry, `sails new` is currently out of commission.');
+		// process.exit(1);
 	},
 
 
@@ -123,7 +73,10 @@ var CLIController = {
 	 */
 
 	generate: function ( options ) {
-		require('./generate')( options, CLIController );
+		require('./generate')( options, {
+			invalid: CLIController.invalid,
+			error: CLIController.error
+		});
 	},
 
 
