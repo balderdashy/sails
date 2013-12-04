@@ -29,9 +29,8 @@ module.exports = {
 	},
 
 	notSailsApp: function() {
-		log.error('The package.json in the current directory (' + process.cwd() + ')');
-		log.error('does not list Sails as a dependency...');
-		log.error('Are you sure this is a Sails app?');
+		log.error('The package.json in the current directory does not list Sails as a dependency...');
+		log.error('Are you sure `' + process.cwd() + '` is a Sails app?');
 		process.exit(1);
 	},
 

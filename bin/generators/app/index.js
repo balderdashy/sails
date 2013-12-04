@@ -7,10 +7,10 @@ var _ = require('lodash'),
 	path = require('path'),
 	ejs = require('ejs'),
 	argv = require('optimist').argv,
-	Err	= require('../../errors'),
-	util = require('../../util'),
-	Logger = require('../../lib/hooks/logger/captains'),
-	Sails = require('../../lib/app');
+	Err	= require('../../../errors'),
+	util = require('../../../util'),
+	Logger = require('../../../lib/hooks/logger/captains'),
+	Sails = require('../../../lib/app');
 	// Session = require('../lib/hooks/session')(sails);
 
 
