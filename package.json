@@ -61,7 +61,8 @@
     "ejs-locals": "1.0.2",
     "connect-flash": "0.1.1",
     "pluralize": "0.0.5",
-    "json-stringify-safe": "~5.0.0"
+    "json-stringify-safe": "~5.0.0",
+    "checksum": "~0.1.1"
   },
   "devDependencies": {
     "mocha": "*",

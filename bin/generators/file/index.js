@@ -1,7 +1,10 @@
 /**
  * Module dependencies
  */
-var fs = require('fs-extra');
+var fs = require('fs-extra'),
+	path = require('path'),
+	ejs = require('ejs'),
+	_ = require('lodash');
 
 /**
  * Generate a file using a template.
@@ -14,11 +17,25 @@ var fs = require('fs-extra');
  *
  * @handlers ok
  * @handlers error
+ * @handlers invalid
  */
 module.exports = function ( options, handlers ) {
-	options.pathToParentDir = options.pathToParentDir || '.';
-	options.data = options.data || {};
-	options.templateEncoding = options.templateEncoding || 'utf-8';
+	
+
+	// Provide defaults and validate required options
+	_.defaults(options, {
+		pathToParentDir: '.',
+		data: {},
+		templateEncoding: 'utf-8'
+	});
+	var missingOpts = options._require([
+		'pathToTemplate',
+		'filename'
+	]);
+	if ( missingOpts.length ) return handlers.invalid(missingOpts);
+
+
+
 
 	var absPathToNewFile = path.resolve( process.cwd() , options.pathToParentDir );
 	absPathToNewFile = path.resolve( absPathToNewFile , options.filename );
@@ -37,3 +54,4 @@ module.exports = function ( options, handlers ) {
 
 
 };
+
