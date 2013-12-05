@@ -71,9 +71,9 @@ module.exports = function(sails) {
 
 		// options.useLinker will determin the assets dir stucture for the new sails project 
 		if (options.useLinker) {
-			utils.copyBoilerplate('linkerAssets', outputPath + '/assets');
+			utils.copyBoilerplate('linkerAssets', outputPath + '/' + options.assetsDir);
 		} else {
-			utils.copyBoilerplate('assets', outputPath + '/assets');
+			utils.copyBoilerplate('assets', outputPath + '/' + options.assetsDir);
 		}
 
 		// Add these boilerplate dirs regardless
@@ -157,7 +157,8 @@ module.exports = function(sails) {
 
 		// Copy Gruntfile
 		sails.log.verbose('Generating Gruntfile...');
-		utils.generateFile('Gruntfile.js', outputPath + '/Gruntfile.js');
+		utils.generateFileFromTemplate('Gruntfile.js', outputPath + '/Gruntfile.js', 
+			{ assetsDir: options.assetsDir });
 
 		// Generate README
 		sails.log.verbose('Generating README.md...');

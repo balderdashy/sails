@@ -246,7 +246,10 @@ require('../lib/configuration')(sails).load(function (err, config) {
 
       // Default to not using the script linker functionality, 
       // but use it if --linker option is set
-      useLinker: !!argv.linker
+      useLinker: !!argv.linker,
+
+
+      assetsDir: argv['assets-location'] || argv['assets-loc'] || 'assets'
     });
   }
 

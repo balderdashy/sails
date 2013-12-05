@@ -54,6 +54,26 @@ module.exports = function(sails) {
 		};
 
 
+		/**
+		 * Generate a file from a template.
+		 *
+		 * @api private
+		 */
+
+		this.generateFileFromTemplate = function(boilerplatePath, newPath, data) {
+			var fullBpPath = __dirname + '/boilerplates/' + (boilerplatePath || '');
+			var file = fs.readFileSync(fullBpPath, 'utf8');
+			var newFilePath = (newPath || '');
+			this.verifyDoesntExist(newFilePath, 'A file/directory already exists at ' + newFilePath);
+
+			// Touch output file to make sure the path to it exists
+			if (fs.createFileSync(newFilePath)) {
+				sails.log.error('Could not create file, ' + newFilePath + '!');
+				process.exit(1);
+			}
+			fs.writeFileSync(newFilePath, _.template(file, data));
+		};
+
 
 		/**
 		 * Generate a directory
@@ -320,7 +340,7 @@ module.exports = function(sails) {
 		this.capitalize = function(str) {
 			return require('underscore.string').capitalize(str);
 		};
-
+		
 
 		_.bindAll(this);
 
