@@ -39,7 +39,8 @@ module.exports = function FileHeap () {
 
 
 	/**
-	 * Lookup file by filename
+	 * @param {String} filename
+	 * @returns contents of file
 	 */
 	this.read = function (filename, cb) {
 		if ( !this.contains(filename) ) {
@@ -47,15 +48,12 @@ module.exports = function FileHeap () {
 		}
 		fs.readFile(_outputPath + filename, cb);
 	};
-
-
-
-	this.readSync = function (filename) {
-		if ( !this.contains(filename) ) {
-			throw new Error('Unknown file ::', filename);
-		}
-		return fs.readFileSync(_outputPath + filename);
-	};
+	// this.readSync = function (filename) {
+	// 	if ( !this.contains(filename) ) {
+	// 		throw new Error('Unknown file ::', filename);
+	// 	}
+	// 	return fs.readFileSync(_outputPath + filename);
+	// };
 
 
 	this.contains = function (filename) {
