@@ -16,7 +16,7 @@
 
 module.exports = function (grunt) {
 
-
+  var assetsDir = '<%= assetsDir %>';
 
   /**
    * CSS files to inject in order
@@ -117,7 +117,7 @@ module.exports = function (grunt) {
   
   
   templateFilesToInject = templateFilesToInject.map(function (path) {
-    return 'assets/' + path;
+    return assetsDir + '/' + path;
   });
 
 
@@ -143,7 +143,7 @@ module.exports = function (grunt) {
         files: [
           {
           expand: true,
-          cwd: './assets',
+          cwd: './' + assetsDir,
           src: ['**/*.!(coffee)'],
           dest: '.tmp/public'
         }
@@ -187,13 +187,13 @@ module.exports = function (grunt) {
         files: [
           {
           expand: true,
-          cwd: 'assets/styles/',
+          cwd: assetsDir + '/styles/',
           src: ['*.less'],
           dest: '.tmp/public/styles/',
           ext: '.css'
         }, {
           expand: true,
-          cwd: 'assets/linker/styles/',
+          cwd: assetsDir + '/linker/styles/',
           src: ['*.less'],
           dest: '.tmp/public/linker/styles/',
           ext: '.css'
@@ -210,13 +210,13 @@ module.exports = function (grunt) {
         files: [
           {
             expand: true,
-            cwd: 'assets/js/',
+            cwd: assetsDir + '/js/',
             src: ['**/*.coffee'],
             dest: '.tmp/public/js/',
             ext: '.js'
           }, {
             expand: true,
-            cwd: 'assets/linker/js/',
+            cwd: assetsDir + '/linker/js/',
             src: ['**/*.coffee'],
             dest: '.tmp/public/linker/js/',
             ext: '.js'
@@ -404,7 +404,7 @@ module.exports = function (grunt) {
       assets: {
 
         // Assets to watch:
-        files: ['assets/**/*'],
+        files: [assetsDir + '/**/*'],
 
         // When assets are changed:
         tasks: ['compileAssets', 'linkAssets']
