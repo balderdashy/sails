@@ -35,12 +35,14 @@ describe('generators', function () {
 	});
 
 
+
+
+
+
 	describe('file', function () {
 		before(function () {
 			this.generate = GeneratorFactory('file');
 		});
-
-
 
 
 		describe('with no data', function () {
@@ -58,18 +60,8 @@ describe('generators', function () {
 				{ ok: cb });
 			});
 
-			it('should output the expected file', function (cb) {
-				this.files.read(this.filename, cb);
-			});
-
-			it('file should have the same checksum as the template', function (cb) {
-				var templateChecksum = this.templates.file.checksum;
-
-				this.files.read(this.filename, function (err, contents) {
-					if (err) return cb(err);
-					return cb(null, templateChecksum === checksum(contents));
-				});
-			});
+			it('should output the expected file', fileShouldExist);
+			it('file should have the same checksum as the template', fileShouldHaveSameChecksumAsTemplate);
 		});
 
 
@@ -84,28 +76,34 @@ describe('generators', function () {
 					filename: this.filename,
 					pathToTemplate: this.pathToTemplate,
 					data: {}
-				},
-
-				// Tested automatically:
-				// 'should fire `ok()` handler w/ no output'
-				{ ok: cb });
+				}, { ok: cb });
 			});
 
-			it('should output the expected file', function (cb) {
-				this.files.read(this.filename, cb);
-			});
-
-			it('file should have the same checksum as the template', function (cb) {
-				var templateChecksum = this.templates.file.checksum;
-
-				this.files.read(this.filename, function (err, contents) {
-					if (err) return cb(err);
-					return cb(null, templateChecksum === checksum(contents));
-				});
-			});
+			it('should output the expected file', fileShouldExist);
+			it('file should have the same checksum as the template', fileShouldHaveSameChecksumAsTemplate);
 		});
 
 
 	});
 
 });
+
+
+
+
+
+
+// Reusable tests
+
+function fileShouldHaveSameChecksumAsTemplate (cb) {
+	var templateChecksum = this.templates.file.checksum;
+
+	this.files.read(this.filename, function (err, contents) {
+		if (err) return cb(err);
+		return cb(null, templateChecksum === checksum(contents));
+	});
+}
+
+function fileShouldExist (cb) {
+	this.files.read(this.filename, cb);
+}
