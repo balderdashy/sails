@@ -26,6 +26,7 @@ module.exports = function ( options, handlers ) {
 	// Provide defaults and validate required options
 	_.defaults(options, {
 		data: {},
+		force: false,
 		templateEncoding: 'utf8'
 	});
 	var missingOpts = options._require([

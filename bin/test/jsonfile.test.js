@@ -7,29 +7,37 @@ var GeneratorFactory = require('../generators/factory');
 
 
 
-describe('file', function () {
+
+
+describe('jsonfile', function () {
 
 	before(function () {
-		this.fn = GeneratorFactory('file');
+		this.fn = GeneratorFactory('jsonfile');
 	});
 
 
 
-	describe('with no data', function () {
+	describe('with missing `data`', function () {
 
 		before(function () {
 			this.options = {
-				pathToNewFile: this.heap.alloc(),
-				pathToTemplate: this.templates.file.path
+				pathToNewFile: this.heap.alloc()
 			};
 		});
 
+		it('should trigger `invalid`',expect('invalid'));
+	});
 
 
-		it('should trigger `ok`',expect('ok'));
-		it('should create a file', assert.fileExists);
-		it('should create a file with the same checksum as the template', assert.fileChecksumMatchesTemplate);
+	describe('with missing `pathToNewFile', function () {
 
+		before(function () {
+			this.options = {
+				data: {foo: 'bar'}
+			};
+		});
+
+		it('should trigger `invalid`',expect('invalid'));
 	});
 
 
@@ -41,14 +49,12 @@ describe('file', function () {
 		before(function () {
 			this.options = {
 				pathToNewFile: this.heap.alloc(),
-				pathToTemplate: this.templates.file.path,
 				data: {}
 			};
 		});
 
 		it('should trigger `ok`', expect('ok'));
 		it('should create a file', assert.fileExists);
-		it('should create a file with the same checksum as the template', assert.fileChecksumMatchesTemplate);
 
 	});
 
@@ -61,7 +67,7 @@ describe('file', function () {
 		before(function (cb) {
 			this.options = {
 				pathToNewFile: this.heap.alloc(),
-				pathToTemplate: this.templates.file.path
+				data: { foo: 'bar' }
 			};
 			// Create an extra file beforehand to simulate a collision
 			this.heap.touch(this.options.pathToNewFile, cb);
@@ -80,7 +86,7 @@ describe('file', function () {
 		before(function(cb) {
 			this.options = {
 				pathToNewFile: this.heap.alloc(),
-				pathToTemplate: this.templates.file.path,
+				data: { foo: 'bar' },
 				force: true
 			};
 			// Create an extra file beforehand to simulate a collision
@@ -90,5 +96,7 @@ describe('file', function () {
 		it('should trigger `ok`', expect('ok'));
 
 	});
+
+
 });
 

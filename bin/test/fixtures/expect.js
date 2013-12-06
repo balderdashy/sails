@@ -2,7 +2,6 @@
  * Module dependencies
  */
 var _ = require('lodash');
-var GeneratorFactory = require('../../generators/factory');
 
 /**
  * @param {Object||String} expectations
@@ -36,9 +35,8 @@ module.exports = function expect ( expectations ) {
 			}
 		});
 		
-		// Trigger generator
-		var generator = GeneratorFactory('file');
-		generator(this.options, handlers);
+		// Trigger method
+		this.fn(this.options, handlers);
 	};
 };
 

@@ -1,7 +1,18 @@
 var _ = require('lodash');
 
 module.exports = function ( generatorName, errorHandler ) {
-	var fn = require('./' + generatorName);
+
+	var fn,
+		generatorPath = __dirname + '/' + generatorName;
+	try {
+		fn = require(generatorPath);
+	}
+	catch(e) {
+		throw new Error(
+			'Cannot require specified generator :: ' + 
+			generatorPath + ' (' + generatorName + ')'
+		);
+	}
 
 	// Default error handler
 	errorHandler = errorHandler || function defaultErrorHandler (err) {
