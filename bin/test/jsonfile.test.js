@@ -16,13 +16,10 @@ describe('jsonfile generator', function () {
 	});
 
 
-
 	describe('with missing `data`', function () {
 
 		before(function () {
-			this.options = {
-				pathToNew: this.heap.alloc()
-			};
+			this.options = { pathToNew: this.heap.alloc() };
 		});
 
 		it('should trigger `invalid`',expect('invalid'));
@@ -32,9 +29,7 @@ describe('jsonfile generator', function () {
 	describe('with missing `pathToNew', function () {
 
 		before(function () {
-			this.options = {
-				data: {foo: 'bar'}
-			};
+			this.options = { data: {foo: 'bar'} };
 		});
 
 		it('should trigger `invalid`',expect('invalid'));
@@ -69,6 +64,7 @@ describe('jsonfile generator', function () {
 				pathToNew: this.heap.alloc(),
 				data: { foo: 'bar' }
 			};
+
 			// Create an extra file beforehand to simulate a collision
 			this.heap.touch(this.options.pathToNew, cb);
 		});
@@ -89,6 +85,7 @@ describe('jsonfile generator', function () {
 				data: { foo: 'bar' },
 				force: true
 			};
+
 			// Create an extra file beforehand to simulate a collision
 			this.heap.touch(this.options.pathToNew, cb);
 		});

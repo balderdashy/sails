@@ -25,6 +25,7 @@ module.exports = function ( options, handlers ) {
 	_.defaults(options, {
 		force: false
 	});
+
 	var missingOpts = options._require([
 		'pathToNew',
 		'data'

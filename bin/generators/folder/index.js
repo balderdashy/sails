@@ -51,7 +51,7 @@ module.exports = function ( options, handlers ) {
 
 		function _newDirWritten_ (err) {
 			if (err) return handlers.error(err);
-			else handlers.ok();
+			return handlers.ok();
 		}
 
 	});
