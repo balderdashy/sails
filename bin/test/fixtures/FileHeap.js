@@ -13,55 +13,93 @@ module.exports = function FileHeap () {
 
 	var _aid = 0,
 		_suffix = '.test',
-		_outputPath = './',
+		_outputPath = './.tmp/',
 		_files = [];
 
 
+	this.errors = {
+		unknown: function (pathToNewFile) {
+			return new Error('Unknown file :: '+pathToNewFile);
+		}
+	};
+
+
 	/**
-	 * Get new filename and reserve it
+	 * Get new pathToNewFile and reserve it
 	 */
 	this.alloc = function () {
-		var filename = _aid + _suffix;
-		_files.push(_outputPath + filename);
-		_aid++;
-		return filename;
+
+		// Find a new file, checking if any existing files exist
+		// Increase incrementor exponentially to minimize alloc time
+		// TODO: optimize if necessary
+		var pathToNewFile,
+			exponentialIterator = 1;
+		do {
+			_aid += exponentialIterator;
+			exponentialIterator *= 2;
+			pathToNewFile = _outputPath + _aid + _suffix;
+		}
+		while ( fs.existsSync(pathToNewFile) );
+
+		_files.push(pathToNewFile);
+		return pathToNewFile;
 	};
+
+
+	/**
+	 * Write some dummy bytes to a new file with the specified path
+	 * @param {String} pathToNewFile
+	 * @param {Function} cb
+	 */
+	this.touch = function (pathToNewFile, cb) {
+		if ( !this.contains(pathToNewFile) ) {
+			return cb(this.errors.unknown(pathToNewFile));
+		}
+
+		fs.outputFile(pathToNewFile, 'blah blah', cb);
+	};
+
 
 
 	/**
 	 * Delete all generated files
+	 * @param {Function} cb
 	 */
 	this.cleanAll = function (cb) {
 		async.each(_files, function (path, cb) {
-			fs.delete(path, cb);
+			fs.remove(path, cb);
 		}, cb);
 	};
 
 
+
 	/**
-	 * @param {String} filename
-	 * @returns contents of file
+	 * @param {String} pathToNewFile
+	 * @param {Function} cb
+	 *		@param {Error} err
+	 *		@param {String} contents of file
 	 */
-	this.read = function (filename, cb) {
-		if ( !this.contains(filename) ) {
-			return cb('Unknown file ::', filename);
+	this.read = function (pathToNewFile, cb) {
+		if ( !this.contains(pathToNewFile) ) {
+			return cb(this.errors.unknown(pathToNewFile));
 		}
-		fs.readFile(_outputPath + filename, cb);
+		fs.readFile(pathToNewFile, cb);
 	};
-	// this.readSync = function (filename) {
-	// 	if ( !this.contains(filename) ) {
-	// 		throw new Error('Unknown file ::', filename);
-	// 	}
-	// 	return fs.readFileSync(_outputPath + filename);
-	// };
-
-
-	this.contains = function (filename) {
-		return _.contains(_files,_outputPath + filename);
+	this.readSync = function (pathToNewFile) {
+		if ( !this.contains(pathToNewFile) ) {
+			return cb(this.errors.unknown(pathToNewFile));
+		}
+		return fs.readFileSync(pathToNewFile);
 	};
 
-	this.getPath = function (filename) {
-		return _.find(_files, _outputPath + filename);
+
+
+	/**
+	 * @param {String} pathToNewFile
+	 * @returns whether the pathToNewFile has been allocated
+	 */
+	this.contains = function (pathToNewFile) {
+		return _.contains(_files,pathToNewFile);
 	};
 
 };
