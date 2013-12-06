@@ -15,9 +15,10 @@ var path = require('path');
  * @option {String} pathToNew
  * [@option {Boolean} force=false]
  *
- * @handlers ok
- * @handlers error
+ * @handlers [ok]
  * @handlers alreadyExists
+ * @handlers invalid
+ * @handlers error
  */
 module.exports = function ( options, handlers ) {
 
