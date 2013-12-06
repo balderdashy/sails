@@ -15,7 +15,7 @@ describe('file generator', function () {
 
 
 
-	describe('basic usage', function () {
+	describe('when used OUTSIDE of a sails app', function () {
 
 		before(function () {
 			this.options = {
@@ -24,10 +24,24 @@ describe('file generator', function () {
 		});
 
 
-		it('should trigger `notSailsApp`',expect('notSailsApp'));
+		it('should trigger `notSailsApp`', expect('notSailsApp'));
 
 	});
 
+
+	describe('when used OUTSIDE of a sails app with `force`', function () {
+
+		before(function () {
+			this.options = {
+				id: this.heap.alloc(),
+				force: true
+			};
+		});
+
+
+		it('should trigger `ok`', expect('ok'));
+
+	});
 
 
 
