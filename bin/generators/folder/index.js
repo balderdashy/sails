@@ -44,14 +44,16 @@ module.exports = function ( options, handlers ) {
 		if ( exists ) {
 			fs.remove(pathToNew, function deletedOldINode (err) {
 				if (err) return handlers.error(err);
-				fs.mkdir(pathToNew, _newDirWritten_);
+				_afterwards_();
 			});
 		}
-		else fs.mkdir(pathToNew, _newDirWritten_);
+		else _afterwards_();
 
-		function _newDirWritten_ (err) {
-			if (err) return handlers.error(err);
-			return handlers.ok();
+		function _afterwards_() {
+			fs.mkdir(pathToNew, function directoryWasWritten (err) {
+				if (err) return handlers.error(err);
+				return handlers.ok();
+			});
 		}
 
 	});

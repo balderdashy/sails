@@ -41,9 +41,19 @@ module.exports = function ( options, handlers ) {
 			return handlers.alreadyExists(pathToNew);
 		}
 
-		fs.writeJSON(pathToNew, options.data, function wroteFile (err) {
-			if (err) return handlers.error(err);
-			else handlers.ok();
-		});
+		if ( exists ) {
+			fs.remove(pathToNew, function deletedOldINode (err) {
+				if (err) return handlers.error(err);
+				_afterwards_();
+			});
+		}
+		else _afterwards_();
+
+		function _afterwards_ () {
+			fs.writeJSON(pathToNew, options.data, function (err){
+				if (err) return handlers.error(err);
+				else handlers.ok();
+			});
+		}
 	});
 };

@@ -41,21 +41,32 @@ module.exports = function ( options, handlers ) {
 	var pathToNew = path.resolve( process.cwd() , options.pathToNew );	
 	var pathToTemplate = path.resolve( process.cwd() , options.pathToTemplate );
 
-	// Only override an existing file if `options.force` is true
-	// console.log('would create '+pathToNew);
-	fs.exists(pathToNew, function (exists) {
-		if (exists && !options.force) {
-			return handlers.alreadyExists(pathToNew);
-		}
+	// Read template
+	fs.readFile(pathToTemplate, options.templateEncoding, function gotTemplate (err, templateStr) {
+		if (err) return handlers.error(err);
 
-		fs.readFile(pathToTemplate, options.templateEncoding, function gotTemplate (err, templateStr) {
-			if (err) return handlers.error(err);
+		var renderedTemplate = ejs.render(templateStr, options.data);
 
-			var renderedTemplate = ejs.render(templateStr, options.data);
-			fs.outputFile(pathToNew, renderedTemplate, function wroteFile (err) {
-				if (err) return handlers.error(err);
-				else handlers.ok();
-			});
+		// Only override an existing file if `options.force` is true
+		// console.log('would create '+pathToNew);
+		fs.exists(pathToNew, function (exists) {
+			if (exists && !options.force) {
+				return handlers.alreadyExists(pathToNew);
+			}
+			if ( exists ) {
+				fs.remove(pathToNew, function deletedOldINode (err) {
+					if (err) return handlers.error(err);
+					_afterwards_();
+				});
+			}
+			else _afterwards_();
+
+			function _afterwards_() {
+				fs.outputFile(pathToNew, renderedTemplate, function fileWasWritten (err) {
+					if (err) return handlers.error(err);
+					else handlers.ok();
+				});
+			}
 		});
 	});
 
