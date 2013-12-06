@@ -19,7 +19,7 @@ describe('file', function () {
 
 		before(function () {
 			this.options = {
-				pathToNewFile: this.heap.alloc(),
+				pathToNew: this.heap.alloc(),
 				pathToTemplate: this.templates.file.path
 			};
 		});
@@ -40,7 +40,7 @@ describe('file', function () {
 
 		before(function () {
 			this.options = {
-				pathToNewFile: this.heap.alloc(),
+				pathToNew: this.heap.alloc(),
 				pathToTemplate: this.templates.file.path,
 				data: {}
 			};
@@ -60,11 +60,11 @@ describe('file', function () {
 
 		before(function (cb) {
 			this.options = {
-				pathToNewFile: this.heap.alloc(),
+				pathToNew: this.heap.alloc(),
 				pathToTemplate: this.templates.file.path
 			};
 			// Create an extra file beforehand to simulate a collision
-			this.heap.touch(this.options.pathToNewFile, cb);
+			this.heap.touch(this.options.pathToNew, cb);
 		});
 
 		it(	'should trigger "alreadyExists" handler', expect({ alreadyExists: true, ok: 'Should not override existing file without `options.force`!' }));
@@ -79,12 +79,12 @@ describe('file', function () {
 
 		before(function(cb) {
 			this.options = {
-				pathToNewFile: this.heap.alloc(),
+				pathToNew: this.heap.alloc(),
 				pathToTemplate: this.templates.file.path,
 				force: true
 			};
 			// Create an extra file beforehand to simulate a collision
-			this.heap.touch(this.options.pathToNewFile, cb);
+			this.heap.touch(this.options.pathToNew, cb);
 		});
 
 		it('should trigger `ok`', expect('ok'));

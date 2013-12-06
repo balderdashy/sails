@@ -21,7 +21,7 @@ describe('jsonfile', function () {
 
 		before(function () {
 			this.options = {
-				pathToNewFile: this.heap.alloc()
+				pathToNew: this.heap.alloc()
 			};
 		});
 
@@ -29,7 +29,7 @@ describe('jsonfile', function () {
 	});
 
 
-	describe('with missing `pathToNewFile', function () {
+	describe('with missing `pathToNew', function () {
 
 		before(function () {
 			this.options = {
@@ -48,7 +48,7 @@ describe('jsonfile', function () {
 
 		before(function () {
 			this.options = {
-				pathToNewFile: this.heap.alloc(),
+				pathToNew: this.heap.alloc(),
 				data: {}
 			};
 		});
@@ -66,11 +66,11 @@ describe('jsonfile', function () {
 
 		before(function (cb) {
 			this.options = {
-				pathToNewFile: this.heap.alloc(),
+				pathToNew: this.heap.alloc(),
 				data: { foo: 'bar' }
 			};
 			// Create an extra file beforehand to simulate a collision
-			this.heap.touch(this.options.pathToNewFile, cb);
+			this.heap.touch(this.options.pathToNew, cb);
 		});
 
 		it(	'should trigger "alreadyExists" handler', expect({ alreadyExists: true, ok: 'Should not override existing file without `options.force`!' }));
@@ -85,12 +85,12 @@ describe('jsonfile', function () {
 
 		before(function(cb) {
 			this.options = {
-				pathToNewFile: this.heap.alloc(),
+				pathToNew: this.heap.alloc(),
 				data: { foo: 'bar' },
 				force: true
 			};
 			// Create an extra file beforehand to simulate a collision
-			this.heap.touch(this.options.pathToNewFile, cb);
+			this.heap.touch(this.options.pathToNew, cb);
 		});
 
 		it('should trigger `ok`', expect('ok'));

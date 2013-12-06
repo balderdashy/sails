@@ -5,10 +5,13 @@ var fs = require('fs-extra');
 var _ = require('lodash');
 var path = require('path');
 
+
+
+
 /**
  * Generate a JSON file
  *
- * @option {String} pathToNewFile
+ * @option {String} pathToNew
  * @option {Object} data
  * [@option {Boolean} force=false]
  *
@@ -23,21 +26,21 @@ module.exports = function ( options, handlers ) {
 		force: false
 	});
 	var missingOpts = options._require([
-		'pathToNewFile',
+		'pathToNew',
 		'data'
 	]);
 	if ( missingOpts.length ) return handlers.invalid(missingOpts);
 
 
-	var absPathToNewFile = path.resolve( process.cwd() , options.pathToNewFile );
+	var pathToNew = path.resolve( process.cwd() , options.pathToNew );
 
 	// Only override an existing file if `options.force` is true
-	fs.exists(absPathToNewFile, function (exists) {
+	fs.exists(pathToNew, function (exists) {
 		if (exists && !options.force) {
-			return handlers.alreadyExists(absPathToNewFile);
+			return handlers.alreadyExists(pathToNew);
 		}
 
-		fs.writeJSON(absPathToNewFile, options.data, function wroteFile (err) {
+		fs.writeJSON(pathToNew, options.data, function wroteFile (err) {
 			if (err) return handlers.error(err);
 			else handlers.ok();
 		});

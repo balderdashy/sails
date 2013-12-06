@@ -6,10 +6,13 @@ var fs = require('fs-extra'),
 	ejs = require('ejs'),
 	_ = require('lodash');
 
+
+
+
 /**
  * Generate a file using a template.
  *
- * @option {String} pathToNewFile
+ * @option {String} pathToNew
  * @option {String} pathToTemplate
  * [@option {String} templateEncoding='utf-8']
  * [@option {Object} data={}]
@@ -31,26 +34,25 @@ module.exports = function ( options, handlers ) {
 	});
 	var missingOpts = options._require([
 		'pathToTemplate',
-		'pathToNewFile'
+		'pathToNew'
 	]);
 	if ( missingOpts.length ) return handlers.invalid(missingOpts);
 
-
-	var absPathToNewFile = path.resolve( process.cwd() , options.pathToNewFile );	
-	var absPathToTemplate = path.resolve( process.cwd() , options.pathToTemplate );
+	var pathToNew = path.resolve( process.cwd() , options.pathToNew );	
+	var pathToTemplate = path.resolve( process.cwd() , options.pathToTemplate );
 
 	// Only override an existing file if `options.force` is true
-	// console.log('would create '+absPathToNewFile);
-	fs.exists(absPathToNewFile, function (exists) {
+	// console.log('would create '+pathToNew);
+	fs.exists(pathToNew, function (exists) {
 		if (exists && !options.force) {
-			return handlers.alreadyExists(absPathToNewFile);
+			return handlers.alreadyExists(pathToNew);
 		}
 
-		fs.readFile(absPathToTemplate, options.templateEncoding, function gotTemplate (err, templateStr) {
+		fs.readFile(pathToTemplate, options.templateEncoding, function gotTemplate (err, templateStr) {
 			if (err) return handlers.error(err);
 
 			var renderedTemplate = ejs.render(templateStr, options.data);
-			fs.outputFile(absPathToNewFile, renderedTemplate, function wroteFile (err) {
+			fs.outputFile(pathToNew, renderedTemplate, function wroteFile (err) {
 				if (err) return handlers.error(err);
 				else handlers.ok();
 			});
