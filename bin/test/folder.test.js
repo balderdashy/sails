@@ -9,32 +9,18 @@ var GeneratorFactory = require('../generators/factory');
 
 
 
-describe('jsonfile generator', function () {
+describe('folder generator', function () {
 
 	before(function () {
-		this.fn = GeneratorFactory('jsonfile');
+		this.fn = GeneratorFactory('folder');
 	});
 
-
-
-	describe('with missing `data`', function () {
-
-		before(function () {
-			this.options = {
-				pathToNew: this.heap.alloc()
-			};
-		});
-
-		it('should trigger `invalid`',expect('invalid'));
-	});
 
 
 	describe('with missing `pathToNew', function () {
 
 		before(function () {
-			this.options = {
-				data: {foo: 'bar'}
-			};
+			this.options = {};
 		});
 
 		it('should trigger `invalid`',expect('invalid'));
@@ -44,12 +30,11 @@ describe('jsonfile generator', function () {
 
 
 
-	describe('with empty data', function () {
+	describe('basic usage', function () {
 
 		before(function () {
 			this.options = {
-				pathToNew: this.heap.alloc(),
-				data: {}
+				pathToNew: this.heap.alloc()
 			};
 		});
 
@@ -62,12 +47,11 @@ describe('jsonfile generator', function () {
 
 
 
-	describe('if file already exists', function () {
+	describe('if file or folder already exists at `pathToNew`', function () {
 
 		before(function (cb) {
 			this.options = {
-				pathToNew: this.heap.alloc(),
-				data: { foo: 'bar' }
+				pathToNew: this.heap.alloc()
 			};
 			// Create an extra file beforehand to simulate a collision
 			this.heap.touch(this.options.pathToNew, cb);
@@ -86,7 +70,6 @@ describe('jsonfile generator', function () {
 		before(function(cb) {
 			this.options = {
 				pathToNew: this.heap.alloc(),
-				data: { foo: 'bar' },
 				force: true
 			};
 			// Create an extra file beforehand to simulate a collision

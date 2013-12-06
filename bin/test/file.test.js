@@ -7,7 +7,7 @@ var GeneratorFactory = require('../generators/factory');
 
 
 
-describe('file', function () {
+describe('file generator', function () {
 
 	before(function () {
 		this.fn = GeneratorFactory('file');
