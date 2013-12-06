@@ -48,6 +48,7 @@ module.exports = function FileHeap () {
 
 	/**
 	 * Write some dummy bytes to a new file with the specified path
+	 *
 	 * @param {String} pathToNewFile
 	 * @param {Function} cb
 	 */
@@ -59,10 +60,25 @@ module.exports = function FileHeap () {
 		fs.outputFile(pathToNewFile, 'blah blah', cb);
 	};
 
+	/**
+	 * Write a new folder
+	 *
+	 * @param {String} pathToNewDir
+	 * @param {Function} cb
+	 */
+	this.mkdirp = function (pathToNewDir, cb) {
+		if ( !this.contains(pathToNewDir) ) {
+			return cb(this.errors.unknown(pathToNewDir));
+		}
+
+		fs.mkdirp(pathToNewDir, cb);
+	};
+
 
 
 	/**
 	 * Delete all generated files
+	 *
 	 * @param {Function} cb
 	 */
 	this.cleanAll = function (cb) {

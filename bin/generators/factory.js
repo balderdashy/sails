@@ -1,4 +1,10 @@
+/**
+ * Module dependencies
+ */
 var _ = require('lodash');
+var util = require('util');
+
+
 
 module.exports = function ( generatorName, errorHandler ) {
 
@@ -16,7 +22,7 @@ module.exports = function ( generatorName, errorHandler ) {
 
 	// Default error handler
 	errorHandler = errorHandler || function defaultErrorHandler (err) {
-		throw new Error(err || 'No error handler provided.');
+		throw new Error('No error handler provided.\n' + util.inspect(err));
 	};
 
 	// Return closure which augments options + handlers

@@ -39,7 +39,7 @@ describe('folder generator', function () {
 		});
 
 		it('should trigger `ok`', expect('ok'));
-		it('should create a file', assert.fileExists);
+		it('should create a directory', assert.fileExists);
 
 	});
 
@@ -47,36 +47,55 @@ describe('folder generator', function () {
 
 
 
-	describe('if file or folder already exists at `pathToNew`', function () {
+	describe('if file/folder already exists at `pathToNew`', function () {
 
-		before(function (cb) {
-			this.options = {
-				pathToNew: this.heap.alloc()
-			};
+		describe('(file)', function () {
 			// Create an extra file beforehand to simulate a collision
-			this.heap.touch(this.options.pathToNew, cb);
+			before(function (cb) {
+				this.options.pathToNew = this.heap.alloc();
+				this.heap.touch(this.options.pathToNew, cb);
+			});
+			it(	'should trigger "alreadyExists" handler', expect({ alreadyExists: true, ok: 'Should not override existing file/directory without `options.force`!' }));
 		});
 
-		it(	'should trigger "alreadyExists" handler', expect({ alreadyExists: true, ok: 'Should not override existing file without `options.force`!' }));
+		describe('(directory)', function () {
+			// Create an extra folder beforehand to simulate a collision
+			before(function (cb) {
+				this.options.pathToNew = this.heap.alloc();
+				this.heap.mkdirp(this.options.pathToNew, cb);
+			});
+			it(	'should trigger "alreadyExists" handler', expect({ alreadyExists: true, ok: 'Should not override existing file/directory without `options.force`!' }));
+		});
 
 	});
 
 
-
-
-
-	describe('if file already exists and `force` option is true', function () {
-
-		before(function(cb) {
+	describe('if file/folder already exists and `force` option is true', function () {
+		before(function() {
 			this.options = {
-				pathToNew: this.heap.alloc(),
 				force: true
 			};
-			// Create an extra file beforehand to simulate a collision
-			this.heap.touch(this.options.pathToNew, cb);
 		});
 
-		it('should trigger `ok`', expect('ok'));
+		describe('(file)', function () {
+			// Create an extra file beforehand to simulate a collision
+			before(function(cb) {
+				this.options.pathToNew = this.heap.alloc();
+				this.heap.touch(this.options.pathToNew, cb);
+			});
+
+			it('should trigger `ok`', expect('ok'));
+		});
+
+		describe('(directory)', function () {
+			// Create an extra file beforehand to simulate a collision
+			before(function(cb) {
+				this.options.pathToNew = this.heap.alloc();
+				this.heap.mkdirp(this.options.pathToNew, cb);
+			});
+
+			it('should trigger `ok`', expect('ok'));
+		});
 
 	});
 

@@ -8,6 +8,12 @@ var FileHeap = require('./fixtures/FileHeap');
 
 
 before(function (cb) {
+
+	/*
+	 * Ensure options object exists
+	 */
+	this.options = {};
+
 	
 	/*
 	 * Use an allocator to make it easier to manage files

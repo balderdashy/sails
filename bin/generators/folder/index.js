@@ -35,18 +35,24 @@ module.exports = function ( options, handlers ) {
 
 	// Only override an existing folder if `options.force` is true
 	fs.lstat(pathToNew, function (err, inodeStatus) {
-		if (err && err.code !== 'ENOENT') {
-			return handlers.error(err);
-		}
-		var exists = !!err;
+		var exists = !(err && err.code === 'ENOENT');
+		if ( exists && err ) return handlers.error(err);
 
-		if (!options.force && exists) {
+		if ( exists && !options.force ) {
 			return handlers.alreadyExists(pathToNew);
 		}
+		if ( exists ) {
+			fs.remove(pathToNew, function deletedOldINode (err) {
+				if (err) return handlers.error(err);
+				fs.mkdir(pathToNew, _newDirWritten_);
+			});
+		}
+		else fs.mkdir(pathToNew, _newDirWritten_);
 
-		fs.mkdir(pathToNew, function wroteDir (err) {
+		function _newDirWritten_ (err) {
 			if (err) return handlers.error(err);
 			else handlers.ok();
-		});
+		}
+
 	});
 };
