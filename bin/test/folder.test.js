@@ -33,7 +33,7 @@ describe('folder generator', function () {
 		});
 
 		it('should trigger `ok`', expect('ok'));
-		it('should create a directory', assert.fileExists);
+		it('should create a directory', assert.dirExists);
 
 	});
 
