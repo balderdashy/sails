@@ -1,23 +1,26 @@
-
+/**
+ * Dependencies
+ */
 var TemplateManifest = require('./fixtures/TemplateManifest');
 var FileHeap = require('./fixtures/FileHeap');
 
 
 
-// Load template fixtures here so they're accessible below
-before(function (cb) {
-	var self = this;
 
-	/**
+before(function (cb) {
+	
+	/*
 	 * Use an allocator to make it easier to manage files
 	 * generated during testing
 	 */
 	this.heap = new FileHeap();
 
 
-	/**
-	 * Load all generator templates up front
+	/*
+	 * Load template fixtures up front so they're accessible 
+	 * throughout the generator tests.
 	 */
+	var self = this;
 	TemplateManifest.load(function (err) {
 		if (err) return err;
 		self.templates = TemplateManifest;
@@ -25,7 +28,13 @@ before(function (cb) {
 	});
 });
 
-// Clean up loose files afterwards
+
+
+
 after(function (cb) {
+
+	/*
+	 * Clean up loose files afterwards
+	 */
 	this.heap.cleanAll(cb);
 });
