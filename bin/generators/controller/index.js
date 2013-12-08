@@ -54,14 +54,17 @@ module.exports = function ( options, handlers ) {
 	
 	var sails = new Sails();
 	sails.load({
-		loadHooks: ['userconfig']
+		loadHooks: ['userconfig', 'moduleloader']
 	},function (err) {
 		if (err) throw new Error(err);
 		var defaults = gen.defaults(options, sails);
 		console.log('\nOLD',options, '\ndefaults:\n',defaults, '\nNEW\n', _.defaults({}, options, defaults));
+		return handlers.error('tbd');
 	});
+	
 
-	return handlers.error('tbd');
+	return;
+	////////////////////////////////////////////////////////////
 
 	// Provide defaults and validate required options
 	var missingOpts = options._require([
