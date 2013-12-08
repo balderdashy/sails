@@ -1,7 +1,7 @@
 /**
  * Module dependencies
  */
-var generateFile = require('../file');
+var generateFile = require('../factory')('file');
 var Sails = require('../../../lib/app');
 var path = require('path');
 var _ = require('lodash');

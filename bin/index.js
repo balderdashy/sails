@@ -87,215 +87,215 @@ var CLIController = {
 
 	generate: function ( options ) {
 
-		// TODO: Load up Sails in the working directory in case
-		// custom paths have been configured
-		var appPath				= options.appPath || process.cwd(),
-			dirPath				= options.path || appPath,
-			errors,
-			attributes			= options.attributes,
-			actions				= options.actions,
-			ext					= options.ext || 'js',
-			module				= options.module,
-			id					= options.id,
-			globalID			= options.globalID || util.str.capitalize(options.id),
-			filename;
+		// // TODO: Load up Sails in the working directory in case
+		// // custom paths have been configured
+		// var appPath				= options.appPath || process.cwd(),
+		// 	dirPath				= options.path || appPath,
+		// 	errors,
+		// 	attributes			= options.attributes,
+		// 	actions				= options.actions,
+		// 	ext					= options.ext || 'js',
+		// 	module				= options.module,
+		// 	id					= options.id,
+		// 	globalID			= options.globalID || util.str.capitalize(options.id),
+		// 	filename;
 
 
 
-		// Ensure this directory is a Sails app
-		// (override with --force)
-		if ( !Sails.isSailsApp( appPath ) && ! options.force ) {
-			Err.fatal.notSailsApp();
-			return;
-		}
+		// // Ensure this directory is a Sails app
+		// // (override with --force)
+		// if ( !Sails.isSailsApp( appPath ) && ! options.force ) {
+		// 	Err.fatal.notSailsApp();
+		// 	return;
+		// }
 
 
 
-		// Trim peculiar characters from module id
-		id = util.str.trim(id, '/');
-		globalID = util.str.trim(globalID, '/');
+		// // Trim peculiar characters from module id
+		// id = util.str.trim(id, '/');
+		// globalID = util.str.trim(globalID, '/');
 		
 
-		switch ( module ) {
+		// switch ( module ) {
 
-			case 'controller':
+		// 	case 'controller':
 
-				dirPath += '/api/controllers';
-				globalID += 'Controller';
-				filename = globalID + '.' + ext;
+		// 		dirPath += '/api/controllers';
+		// 		globalID += 'Controller';
+		// 		filename = globalID + '.' + ext;
 
 
-				// Validate optional action arguments
-				errors = [];
-				actions = util.map(actions, function (action, i) {
+		// 		// Validate optional action arguments
+		// 		errors = [];
+		// 		actions = util.map(actions, function (action, i) {
 					
-					// TODO: validate action names
-					var invalid = false;
+		// 			// TODO: validate action names
+		// 			var invalid = false;
 
-					// Handle errors
-					if (invalid) {
-						return errors.push(
-							'Invalid action notation:   "' + action + '"');
-					}
-					return action;
-				});
+		// 			// Handle errors
+		// 			if (invalid) {
+		// 				return errors.push(
+		// 					'Invalid action notation:   "' + action + '"');
+		// 			}
+		// 			return action;
+		// 		});
 
-				// Handle invalid action arguments
-				// Send back errors
-				if (errors.length) {
-					return CLIController.invalid.apply(handlers, errors);
-				}
+		// 		// Handle invalid action arguments
+		// 		// Send back errors
+		// 		if (errors.length) {
+		// 			return CLIController.invalid.apply(handlers, errors);
+		// 		}
 
-				// Make sure there aren't duplicates
-				if ((util.uniq(actions)).length !== actions.length) {
-					return CLIController.invalid('Duplicate actions not allowed!');
-				}
+		// 		// Make sure there aren't duplicates
+		// 		if ((util.uniq(actions)).length !== actions.length) {
+		// 			return CLIController.invalid('Duplicate actions not allowed!');
+		// 		}
 
-				// Dry run option
-				if ( options.dry ) {
-					break;
-				}
+		// 		// Dry run option
+		// 		if ( options.dry ) {
+		// 			break;
+		// 		}
 
-				var pathToControllerTemplate = path.resolve(__dirname,'./generators/controller.ejs');
-				var controllerTemplate = fs.readFileSync(pathToControllerTemplate, 'utf8');
-				var pathToActionTemplate = path.resolve(__dirname,'./generators/action.ejs');
-				var actionTemplate = fs.readFileSync(pathToActionTemplate, 'utf8');
+		// 		var pathToControllerTemplate = path.resolve(__dirname,'./generators/controller.ejs');
+		// 		var controllerTemplate = fs.readFileSync(pathToControllerTemplate, 'utf8');
+		// 		var pathToActionTemplate = path.resolve(__dirname,'./generators/action.ejs');
+		// 		var actionTemplate = fs.readFileSync(pathToActionTemplate, 'utf8');
 
-				// Create the actions' code
-				var renderedActions = util.map(actions, function (action) {
-					return ejs.render(actionTemplate, { actionName: action });
-				});
+		// 		// Create the actions' code
+		// 		var renderedActions = util.map(actions, function (action) {
+		// 			return ejs.render(actionTemplate, { actionName: action });
+		// 		});
 
-				// Create the controller code
-				var renderedCode = ejs.render(controllerTemplate, {
-					filename: filename,
-					controllerName: globalID,
-					actions: renderedActions
-				});
+		// 		// Create the controller code
+		// 		var renderedCode = ejs.render(controllerTemplate, {
+		// 			filename: filename,
+		// 			controllerName: globalID,
+		// 			actions: renderedActions
+		// 		});
 
-				// If it doesn't already exist, create a controller file
-				var modulePath = dirPath + '/' + filename;
-				if ( fs.existsSync(modulePath) ) {
-					return CLIController.error(globalID + ' already exists!');
-				}
-				fs.outputFileSync(modulePath, renderedCode);
-
-
-				break;
+		// 		// If it doesn't already exist, create a controller file
+		// 		var modulePath = dirPath + '/' + filename;
+		// 		if ( fs.existsSync(modulePath) ) {
+		// 			return CLIController.error(globalID + ' already exists!');
+		// 		}
+		// 		fs.outputFileSync(modulePath, renderedCode);
 
 
-
-			case 'model':
-
-				dirPath += '/api/models';
-				filename = globalID + '.' + ext;
-
-				// Validate optional attribute arguments
-				errors = [];
-				attributes = util.map(attributes, function (attribute, i) {
-					var parts = attribute.split(':');
-
-					if ( parts[1] === undefined ) parts[1] = 'string';
-
-					// Handle errors
-					if (!parts[1] || !parts[0]) {
-						errors.push(
-							'Invalid attribute notation:   "' + attribute + '"');
-						return;
-					}
-					return {
-						name: parts[0],
-						type: parts[1]
-					};
-				});
+		// 		break;
 
 
 
-				// Handle invalid attribute arguments
-				// Send back errors
-				if (errors.length) {
-					return CLIController.invalid.apply(handlers, errors);
-				}
+		// 	case 'model':
 
+		// 		dirPath += '/api/models';
+		// 		filename = globalID + '.' + ext;
 
-				// Make sure there aren't duplicates
-				var attrNames = util.pluck(attributes, 'name');
-				if ((util.uniq(attrNames)).length !== attrNames.length) {
-					return CLIController.invalid('Duplicate attributes not allowed!');
-				}
+		// 		// Validate optional attribute arguments
+		// 		errors = [];
+		// 		attributes = util.map(attributes, function (attribute, i) {
+		// 			var parts = attribute.split(':');
 
-				// Dry run option
-				if ( options.dry ) {
-					break;
-				}
+		// 			if ( parts[1] === undefined ) parts[1] = 'string';
 
-				var pathToModelTemplate = path.resolve(__dirname,'./generators/model.ejs');
-				var modelTemplate = fs.readFileSync(pathToModelTemplate, 'utf8');
-				var pathToAttributeTemplate = path.resolve(__dirname,'./generators/attribute.ejs');
-				var attributeTemplate = fs.readFileSync(pathToAttributeTemplate, 'utf8');
-
-				// Create the attributes' code
-				var renderedAttributes = util.map(attributes, function (attr) {
-					return ejs.render(attributeTemplate, attr);
-				});
-
-				// Create the model code
-				var renderedModelCode = ejs.render(modelTemplate, {
-					filename: filename,
-					attributes: attributes
-				});
-
-				// If it doesn't already exist, create a file
-				var modelPath = dirPath + '/' + filename;
-				if ( fs.existsSync(modelPath) ) {
-					return CLIController.error(globalID + ' already exists!');
-				}
-				fs.outputFileSync(modelPath, renderedModelCode);
-
-		}
+		// 			// Handle errors
+		// 			if (!parts[1] || !parts[0]) {
+		// 				errors.push(
+		// 					'Invalid attribute notation:   "' + attribute + '"');
+		// 				return;
+		// 			}
+		// 			return {
+		// 				name: parts[0],
+		// 				type: parts[1]
+		// 			};
+		// 		});
 
 
 
-		// Finish up with a success message
-
-		// Change verbiage/style if this was a dry run
-		if (options.dry) {
-			log.debug('DRY RUN:');
-		}
-		var logFn = options.dry ?
-			log.debug :
-			log.info;
-		var actionTaken = options.dry ?
-			'Would have generated' :
-			'Generated';
+		// 		// Handle invalid attribute arguments
+		// 		// Send back errors
+		// 		if (errors.length) {
+		// 			return CLIController.invalid.apply(handlers, errors);
+		// 		}
 
 
-		// If attributes were specified:
-		if (attributes && attributes.length) {
-			logFn( actionTaken + ' a new model called ' + globalID + ' with attributes:');
-			util.each(attributes, function (attr) {
-				logFn('  ',attr.name,'    (' + attr.type + ')');
-			});
-		}
+		// 		// Make sure there aren't duplicates
+		// 		var attrNames = util.pluck(attributes, 'name');
+		// 		if ((util.uniq(attrNames)).length !== attrNames.length) {
+		// 			return CLIController.invalid('Duplicate attributes not allowed!');
+		// 		}
 
-		// If actions were specified:
-		else if (actions && actions.length) {
-			logFn(actionTaken + ' a new controller called ' + globalID + ' with actions:');
-			util.each(actions, function (action) {
-				logFn('  ',globalID + '.' + action + '()');
-			});
-		}
+		// 		// Dry run option
+		// 		if ( options.dry ) {
+		// 			break;
+		// 		}
 
-		// General case
-		else logFn(actionTaken + ' ' + module + ' `' + globalID + '`!');
+		// 		var pathToModelTemplate = path.resolve(__dirname,'./generators/model.ejs');
+		// 		var modelTemplate = fs.readFileSync(pathToModelTemplate, 'utf8');
+		// 		var pathToAttributeTemplate = path.resolve(__dirname,'./generators/attribute.ejs');
+		// 		var attributeTemplate = fs.readFileSync(pathToAttributeTemplate, 'utf8');
 
-		// Finally,
-		if (options.dry) {
-			log.verbose('New file would have been created: ' + dirPath + '/' + filename);
-		}
-		else log.verbose('New file created: ' + dirPath + '/' + filename);
+		// 		// Create the attributes' code
+		// 		var renderedAttributes = util.map(attributes, function (attr) {
+		// 			return ejs.render(attributeTemplate, attr);
+		// 		});
 
-		return;
+		// 		// Create the model code
+		// 		var renderedModelCode = ejs.render(modelTemplate, {
+		// 			filename: filename,
+		// 			attributes: attributes
+		// 		});
+
+		// 		// If it doesn't already exist, create a file
+		// 		var modelPath = dirPath + '/' + filename;
+		// 		if ( fs.existsSync(modelPath) ) {
+		// 			return CLIController.error(globalID + ' already exists!');
+		// 		}
+		// 		fs.outputFileSync(modelPath, renderedModelCode);
+
+		// }
+
+
+
+		// // Finish up with a success message
+
+		// // Change verbiage/style if this was a dry run
+		// if (options.dry) {
+		// 	log.debug('DRY RUN:');
+		// }
+		// var logFn = options.dry ?
+		// 	log.debug :
+		// 	log.info;
+		// var actionTaken = options.dry ?
+		// 	'Would have generated' :
+		// 	'Generated';
+
+
+		// // If attributes were specified:
+		// if (attributes && attributes.length) {
+		// 	logFn( actionTaken + ' a new model called ' + globalID + ' with attributes:');
+		// 	util.each(attributes, function (attr) {
+		// 		logFn('  ',attr.name,'    (' + attr.type + ')');
+		// 	});
+		// }
+
+		// // If actions were specified:
+		// else if (actions && actions.length) {
+		// 	logFn(actionTaken + ' a new controller called ' + globalID + ' with actions:');
+		// 	util.each(actions, function (action) {
+		// 		logFn('  ',globalID + '.' + action + '()');
+		// 	});
+		// }
+
+		// // General case
+		// else logFn(actionTaken + ' ' + module + ' `' + globalID + '`!');
+
+		// // Finally,
+		// if (options.dry) {
+		// 	log.verbose('New file would have been created: ' + dirPath + '/' + filename);
+		// }
+		// else log.verbose('New file created: ' + dirPath + '/' + filename);
+
+		// return;
 	},
 
 

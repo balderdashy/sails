@@ -14,16 +14,24 @@ var util = require('util');
  */
 module.exports = function ( generatorName, errorHandler ) {
 
-	var fn,
-		generatorPath = __dirname + '/' + generatorName;
+	var fn;
+
+	// Try `generators`
 	try {
-		fn = require(generatorPath);
+		fn = require( __dirname + '/' + generatorName );
 	}
-	catch(e) {
-		throw new Error(
-			'Cannot require specified generator :: ' + 
-			generatorPath + ' (' + generatorName + ')'
-		);
+	catch(e0) {
+
+		// Try `_helpers`
+		try {
+			fn = require( __dirname + '/_helpers/' + generatorName );
+		}
+		catch (e1) {
+			throw new Error(
+				'Cannot require specified generator ' + 
+				' (' + generatorName + ')'
+			);
+		}
 	}
 
 	// Default missing handler handler
