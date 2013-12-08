@@ -32,10 +32,10 @@ module.exports = function ( options, handlers ) {
 		force: false,
 		templateEncoding: 'utf8'
 	});
-	var missingOpts = options._require([
+	var missingOpts = _.difference([
 		'pathToTemplate',
 		'pathToNew'
-	]);
+	], Object.keys(options));
 	if ( missingOpts.length ) return handlers.invalid(missingOpts);
 
 	var pathToNew = path.resolve( process.cwd() , options.pathToNew );	

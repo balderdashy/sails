@@ -26,10 +26,10 @@ module.exports = function ( options, handlers ) {
 		force: false
 	});
 
-	var missingOpts = options._require([
+	var missingOpts = _.difference([
 		'pathToNew',
 		'data'
-	]);
+	], Object.keys(options));
 	if ( missingOpts.length ) return handlers.invalid(missingOpts);
 
 

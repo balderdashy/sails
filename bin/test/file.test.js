@@ -3,14 +3,13 @@
  */
 var expect = require('./fixtures/expect');
 var assert = require('./fixtures/assertions');
-var GeneratorFactory = require('../generators/factory');
 
 
 
 describe('file generator', function () {
 
 	before(function () {
-		this.fn = GeneratorFactory('file');
+		this.fn = require('../generators/_helpers/file');
 	});
 
 

@@ -3,7 +3,6 @@
  */
 var expect = require('./fixtures/expect');
 var assert = require('./fixtures/assertions');
-var GeneratorFactory = require('../generators/factory');
 
 
 
@@ -12,7 +11,7 @@ var GeneratorFactory = require('../generators/factory');
 describe('folder generator', function () {
 
 	before(function () {
-		this.fn = GeneratorFactory('folder');
+		this.fn = require('../generators/_helpers/folder');
 		this.options = {};
 	});
 

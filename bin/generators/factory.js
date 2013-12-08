@@ -22,16 +22,16 @@ module.exports = function ( generatorName, errorHandler ) {
 	}
 	catch(e0) {
 
-		// Try `_helpers`
-		try {
-			fn = require( __dirname + '/_helpers/' + generatorName );
-		}
-		catch (e1) {
+		// // Try npm
+		// try {
+		// 	fn = require( __dirname + '/_helpers/' + generatorName );
+		// }
+		// catch (e1) {
 			throw new Error(
 				'Cannot require specified generator ' + 
 				' (' + generatorName + ')'
 			);
-		}
+		// }
 	}
 
 	// Default missing handler handler
@@ -52,7 +52,7 @@ module.exports = function ( generatorName, errorHandler ) {
 		// Ensure `ok`, `error`, and `invalid` always exist
 		// Defaults for when the following handlers are missing:
 		_.defaults(_handlers, {
-			ok: _handlers.success || missingHandlerHandler('ok'),
+			ok: _handlers.ok || missingHandlerHandler('ok'),
 			error: errorHandler || missingHandlerHandler('error'),
 			invalid: missingHandlerHandler('invalid')
 		});
@@ -61,9 +61,7 @@ module.exports = function ( generatorName, errorHandler ) {
 		if (typeof options !== 'object') {
 			return _handlers.error('Invalid options :: '+util.inspect(options));
 		}
-		options._require = function ( requiredOptions ) {
-			return _.difference(requiredOptions, Object.keys(this));
-		};
+
 
 		fn(options, _handlers);
 	};

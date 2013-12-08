@@ -26,9 +26,9 @@ module.exports = function ( options, handlers ) {
 	_.defaults(options, {
 		force: false
 	});
-	var missingOpts = options._require([
+	var missingOpts = _.difference([
 		'pathToNew'
-	]);
+	], Object.keys(options));
 	if ( missingOpts.length ) return handlers.invalid(missingOpts);
 
 

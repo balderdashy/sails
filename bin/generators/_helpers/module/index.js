@@ -10,12 +10,14 @@ var fs = require('fs-extra');
 _.str = require('underscore.string');
 
 
+
 /**
  * Generate a Sails module
  *
  * @option {Boolean} id - the base identity for the new module
  * [@option {Boolean} force]
  * [@option {Boolean} dirPath]
+ * [@option {Boolean} appPath]
  * [@option {Boolean} ext]
  * [@option {Boolean} actions]
  * [@option {Boolean} globalID]
@@ -26,10 +28,25 @@ _.str = require('underscore.string');
  */
 module.exports = function ( options, handlers ) {
 	
-	// Provide defaults and validate required options
-	var missingOpts = options._require([
+	// Validate required options
+	var missingOpts = _.difference([
 		'id'
-	]);
+	], Object.keys(options));
+
+	var sails = new Sails();
+	sails.load({
+		appPath: options.appPath || process.cwd(),
+		loadHooks: ['userconfig', 'moduleloader']
+	},function (err) {
+		if (err) return handlers.error(err);
+		options = generator.configure(options, sails);
+
+		return handlers.ok();
+	});
+	
+	return;
+	////////////////////////////////////////////////////////////
+
 
 	// Trim peculiar characters from module id
 	options.id = _.str.trim(options.id, '/');

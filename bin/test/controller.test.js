@@ -7,7 +7,7 @@ var GeneratorFactory = require('../generators/factory');
 
 
 
-describe('file generator', function () {
+describe('controller generator', function () {
 
 	before(function () {
 		this.fn = GeneratorFactory('controller');
