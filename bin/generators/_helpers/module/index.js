@@ -1,49 +1,23 @@
 /**
  * Module dependencies
  */
-var generateFile = require('../_helpers/file');
+var generateFile = require('./_helpers/file');
 var Sails = require('../../../lib/app');
 var path = require('path');
 var _ = require('lodash');
+var ejs = require('ejs');
+var fs = require('fs-extra');
 _.str = require('underscore.string');
 
 
-var gen = {
-
-	defaults: function (options, sails) {
-		var defaults = _.defaults({}, options, {
-			dirPath: sails.config.paths.controllers,
-			globalID: _.str.capitalize(options.id),
-			force: false,
-			actions: [],
-			ext: 'js'
-		});
-
-		_.extend(defaults, {
-			filename: defaults.globalID + 'Controller.' + defaults.ext,
-		});
-
-		return defaults;
-	}
-};
-
 /**
- * Generator properties
+ * Generate a Sails module
  *
- * @property {Boolean} force - whether to overwrite existing files
- * @property {Function} dirPath - getter fn that returns the parent directory
- * @property {Function} filename - getter fn that returns the name for the file itself, including the extension
- */
-
-
-
-
-
-/**
- * Generate a Sails controller
- *
- * @option {Boolean} id - the name for the new controller
- * @option {Array} actions - names of the actions
+ * @option {Boolean} id - the base identity for the new module
+ * [@option {Boolean} force]
+ * [@option {Boolean} dirPath]
+ * [@option {Boolean} ext]
+ * [@option {Boolean} actions]
  * [@option {Boolean} globalID]
  *
  * @handlers ok
@@ -52,17 +26,6 @@ var gen = {
  */
 module.exports = function ( options, handlers ) {
 	
-	var sails = new Sails();
-	sails.load({
-		loadHooks: ['userconfig']
-	},function (err) {
-		if (err) throw new Error(err);
-		var defaults = gen.defaults(options, sails);
-		console.log('\nOLD',options, '\ndefaults:\n',defaults, '\nNEW\n', _.defaults({}, options, defaults));
-	});
-
-	return handlers.error('tbd');
-
 	// Provide defaults and validate required options
 	var missingOpts = options._require([
 		'id'
