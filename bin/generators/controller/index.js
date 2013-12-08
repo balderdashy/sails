@@ -14,15 +14,28 @@ _.str = require('underscore.string');
  *
  * @property {Array} requiredOptions
  * @property {Function} configure(options, sails)
+ * @property {Function} render(options, cb)
+ *
+ * @option {Boolean} id - the name for the new controller
+ * @option {Array} actions - names of the actions
  */
 module.exports = {
 
+	/**
+	 * If a required option is not specified, the generator will refuse to
+	 * proceed until the error is corrected.
+	 */
 	requiredOptions: ['id'],
 
+
+
 	/**
-	 * @option {Boolean} id - the name for the new controller
-	 * @option {Array} actions - names of the actions
-	 * [@option {Boolean} globalID]
+	 * Customize & provide defaults for this generator's options.
+	 *
+	 * @param {Object} options
+	 * @param {SailsApp} sails
+	 *
+	 * @return options
 	 */
 	configure: function (options, sails) {
 
@@ -39,7 +52,21 @@ module.exports = {
 		});
 
 		return options;
+	},
+
+
+
+	/**
+	 * Render the string contents to write to disk for this module.
+	 * e.g. read a template file
+	 *
+	 * @param {Object} options
+	 * @param {Function} cb (err, stringToWrite)
+	 */
+	render: function (options, cb) {
+		return cb(null, 'TODO');
 	}
+	
 };
 
 
