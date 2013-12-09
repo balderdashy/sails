@@ -17,6 +17,7 @@ var switcher = require('../../../../util/switcher');
  * @option {String} pathToNew
  * @option {String} contents - the string contents to write to disk
  * [@option {Boolean} force=false]
+ * [@option {Boolean} dry=false]
  *
  * @handlers ok
  * @handlers error
@@ -45,6 +46,9 @@ module.exports = function ( options, handlers ) {
 		if (exists && !options.force) {
 			return handlers.alreadyExists(pathToNew);
 		}
+
+		// Don't actually write the file if this is a dry run.
+		if (options.dry) return handlers.ok();
 
 		async.series([
 			function deleteExistingFileIfNecessary (cb) {

@@ -236,38 +236,4 @@ module.exports = {
 	// Finish up with a success message
 	// function _afterwards_() {
 
-	// 	// Send back a return value (for use in logs)
-	// 	var returnStr = {
-	// 		debug: '',
-	// 		verbose: ''
-	// 	};
-
-	// 	// Change verbiage/style if this was a dry run
-	// 	if (options.dry) {
-	// 		returnStr.debug += 'DRY RUN:';
-	// 	}
-		
-	// 	var actionTaken = options.dry ?
-	// 		'Would have generated' :
-	// 		'Generated';
-
-
-	// 	// If actions were specified:
-	// 	if (options.actions && options.actions.length) {
-	// 		returnStr.debug += actionTaken + ' a new controller called ' + options.globalID + ' with actions:';
-	// 		_.each(options.actions, function (action) {
-	// 			returnStr.debug += '  ',options.globalID + '.' + action + '()';
-	// 		});
-	// 	}
-
-	// 	// General case
-	// 	else returnStr.debug += actionTaken + ' ' + module + ' `' + options.globalID + '`!';
-
-	// 	// Finally,
-	// 	if (options.dry) {
-	// 		returnStr.verbose += 'New file would have been created: ' + options.dirPath + '/' + options.filename;
-	// 	}
-	// 	else returnStr.verbose += 'New file created: ' + options.dirPath + '/' + options.filename;
-
-	// 	return handlers.ok(returnStr);
-	// }
+	

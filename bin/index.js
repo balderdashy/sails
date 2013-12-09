@@ -87,7 +87,45 @@ var CLIController = {
 
 	generate: function ( options ) {
 
-		var Generator = require('./generators/controller');
+		var GeneratorFactory = require('./generators/factory');
+		var generate = GeneratorFactory( options.module );
+
+		generate (options, {
+			error: function (err) {
+				log.error('Unexpected error occurred.');
+				log.error(err);
+			},
+			notSailsApp: function () {
+				Err.fatal.notSailsApp();
+			},
+			alreadyExists: function () {
+				CLIController.error(options.globalID + ' already exists!');
+			},
+			ok: function () {
+
+				var hasActions = options.actions && options.actions.length;
+				
+				// Build a status message
+				var statusMessage = '';
+				statusMessage += options.dry ? 'That would have generated' : 'Generated';
+				statusMessage += ' a new ' + options.module + ' called `' + options.globalID + '`';
+				statusMessage += hasActions ? ' with ' + options.actions.length + ' actions:' : '.';
+
+				// Log the status message to indicate success
+				if (options.dry) { log.info('(dry run)'); }
+				log.debug(statusMessage);
+
+				// Log actions
+				_.each(options.actions || [], function (action) {
+					log.debug('  ' + options.globalID + '.' + action + '()');
+				});
+
+				if (options.dry) {
+					log.verbose += 'New file would have been created: ' + options.dirPath + '/' + options.filename;
+				}
+				else log.verbose += 'New file created: ' + options.dirPath + '/' + options.filename;
+			}
+		});
 
 		// // TODO: Load up Sails in the working directory in case
 		// // custom paths have been configured
@@ -255,49 +293,6 @@ var CLIController = {
 		// 		fs.outputFileSync(modelPath, renderedModelCode);
 
 		// }
-
-
-
-		// // Finish up with a success message
-
-		// // Change verbiage/style if this was a dry run
-		// if (options.dry) {
-		// 	log.debug('DRY RUN:');
-		// }
-		// var logFn = options.dry ?
-		// 	log.debug :
-		// 	log.info;
-		// var actionTaken = options.dry ?
-		// 	'Would have generated' :
-		// 	'Generated';
-
-
-		// // If attributes were specified:
-		// if (attributes && attributes.length) {
-		// 	logFn( actionTaken + ' a new model called ' + globalID + ' with attributes:');
-		// 	util.each(attributes, function (attr) {
-		// 		logFn('  ',attr.name,'    (' + attr.type + ')');
-		// 	});
-		// }
-
-		// // If actions were specified:
-		// else if (actions && actions.length) {
-		// 	logFn(actionTaken + ' a new controller called ' + globalID + ' with actions:');
-		// 	util.each(actions, function (action) {
-		// 		logFn('  ',globalID + '.' + action + '()');
-		// 	});
-		// }
-
-		// // General case
-		// else logFn(actionTaken + ' ' + module + ' `' + globalID + '`!');
-
-		// // Finally,
-		// if (options.dry) {
-		// 	log.verbose('New file would have been created: ' + dirPath + '/' + filename);
-		// }
-		// else log.verbose('New file created: ' + dirPath + '/' + filename);
-
-		// return;
 	},
 
 
