@@ -16,7 +16,7 @@ describe('module generator', function () {
 
 		before(function () {
 			this.options = {
-				id: this.sailsHeap.getFilename( this.sailsHeap.alloc() )
+				pathToNew: this.sailsHeap.alloc()
 			};
 		});
 
@@ -58,6 +58,7 @@ describe('module generator', function () {
 		before(function () {
 			this.options = {
 				generator: {},
+				appPath: this.sailsHeap.dirpath,
 				pathToNew: this.sailsHeap.alloc()
 			};
 		});
@@ -72,6 +73,7 @@ describe('module generator', function () {
 	describe('using a `generator` with a simple render function', function () {
 		before(function () {
 			this.options = {
+				appPath: this.sailsHeap.dirpath,
 				generator: {
 					render: function (options, cb){
 						cb(null, 'some stuff');
@@ -92,6 +94,7 @@ describe('module generator', function () {
 	describe('using a `generator` with a `contents` override', function () {
 		before(function () {
 			this.options = {
+				appPath: this.sailsHeap.dirpath,
 				generator: {
 					render: function (options, cb){
 						cb(null, 'some stuff');
@@ -114,6 +117,7 @@ describe('module generator', function () {
 
 		before(function() {
 			this.options = {
+				appPath: this.sailsHeap.dirpath,
 				generator: {
 					render: function (options, cb){
 						cb(null, 'Ατ σανστυς λαβορες ιντελλεγεβαθ σεα. Κυι νο φυγιθ κυανδο, περ φασερ φιδερερ διγνισιμ θε, ιυς εξ νοβις νομινατι. Εως γραεσε φοσιβυς συ, συ μαγνα λαβωρε ευμ. Φιμ λυδυς υρβανιθας εα, ει ηας γραεσε φιδερερ αβχορρεανθ. Αυτεμ φυγιθ ευ μει. Ιυς κυας δεσωρε απεριρι υθ, νε λεγιμυς ερροριβυς σπλενδιδε συμ, φιμ ατ σολεατ σαπερεθ.');
@@ -146,6 +150,7 @@ describe('module generator', function () {
 	describe('if file/folder already exists and `force` option is true', function () {
 		before(function() {
 			this.options = {
+				appPath: this.sailsHeap.dirpath,
 				force: true,
 				generator: {
 					render: function (options, cb){

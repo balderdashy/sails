@@ -24,6 +24,14 @@ module.exports = function FileHeap () {
 		}
 	};
 
+	/**
+	 * Directory where files are kept
+	 */
+	this.dirpath = _outputPath;
+
+
+
+	
 
 	/**
 	 * Get new pathToNewFile and reserve it
