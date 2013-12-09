@@ -73,16 +73,17 @@ module.exports = function ( options, handlers ) {
 					options.contents = options.contents || _contents || '';
 					return cb();
 				});
-			},
-
-			// Now write the contents to disk
-			function generateFile (cb) {
-				GenerateFileHelper(options, cb);
 			}
 
 		], function (err) {
-			// Omit extra args
-			return handlers.ok(err);
+			if (err) return handlers.error(err);
+
+			// Now write the contents to disk
+			GenerateFileHelper(options, {
+				ok: handlers.ok,
+				error: handlers.error,
+				alreadyExists: handlers.alreadyExists
+			});
 		});
 
 	});

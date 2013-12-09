@@ -34,6 +34,38 @@ module.exports = {
 	/**
 	 * @param {Function} cb
 	 *
+	 * @this {Object} options
+	 */
+	fileIsExactly: function (compareStr) {
+		return function (cb) {
+			fs.readFile(this.options.pathToNew, function (err, contents) {
+				if (err) return cb(err);
+				return cb(null, checksum(compareStr) === checksum(contents));
+			});
+		};
+	},
+
+
+
+	/**
+	 * @param {Function} cb
+	 *
+	 * @this {Object} options
+	 */
+	fileIsNot: function (compareStr) {
+		return function (cb) {
+			fs.readFile(this.options.pathToNew, function (err, contents) {
+				if (err) return cb(err);
+				return cb(null, checksum(compareStr) !== checksum(contents));
+			});
+		};
+	},
+
+
+
+	/**
+	 * @param {Function} cb
+	 *
 	 * @this {Object} templates
 	 * @this {Object} options
 	 */
