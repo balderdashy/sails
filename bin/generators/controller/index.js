@@ -52,21 +52,23 @@ module.exports = {
 			ext: 'js'
 		});
 
+
 		_.defaults(options, {
 			filename: options.globalID + 'Controller.' + options.ext
 		});
 
-		// Determine `pathToNew`
-		options.pathToNew = options.dirPath + '/' + options.filename;
 
-		// Determine template paths
+		// Determine template paths to pull data from
 		options.pathToControllerTemplate = path.resolve(
 			process.cwd(),
 			options.pathToControllerTemplate || (__dirname+'/controller.ejs') );
-
 		options.pathToActionTemplate = path.resolve(
 			process.cwd(),
 			options.pathToActionTemplate || (__dirname+'/action.ejs'));
+
+
+		// Determine `pathToNew`, the destination for the new file
+		options.pathToNew = options.dirPath + '/' + options.filename;
 
 		return options;
 	},
