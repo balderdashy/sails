@@ -19,7 +19,7 @@ describe('file generator', function () {
 		before(function () {
 			this.options = {
 				pathToNew: this.heap.alloc(),
-				pathToTemplate: this.templates.file.path
+				contents: 'foo'
 			};
 		});
 
@@ -27,7 +27,7 @@ describe('file generator', function () {
 
 		it('should trigger `ok`',expect('ok'));
 		it('should create a file', assert.fileExists);
-		it('should create a file with the same checksum as the template', assert.fileChecksumMatchesTemplate);
+		// it('should create a file with the same checksum as the template', assert.fileChecksumMatchesTemplate);
 
 	});
 
@@ -35,21 +35,21 @@ describe('file generator', function () {
 
 
 
-	describe('with empty data', function () {
+	// describe('with empty data', function () {
 
-		before(function () {
-			this.options = {
-				pathToNew: this.heap.alloc(),
-				pathToTemplate: this.templates.file.path,
-				data: {}
-			};
-		});
+	// 	before(function () {
+	// 		this.options = {
+	// 			pathToNew: this.heap.alloc(),
+	// 			pathToTemplate: this.templates.file.path,
+	// 			data: {}
+	// 		};
+	// 	});
 
-		it('should trigger `ok`', expect('ok'));
-		it('should create a file', assert.fileExists);
-		it('should create a file with the same checksum as the template', assert.fileChecksumMatchesTemplate);
+	// 	it('should trigger `ok`', expect('ok'));
+	// 	it('should create a file', assert.fileExists);
+	// 	it('should create a file with the same checksum as the template', assert.fileChecksumMatchesTemplate);
 
-	});
+	// });
 
 
 
@@ -57,7 +57,7 @@ describe('file generator', function () {
 	describe('if file/folder already exists at `pathToNew`', function () {
 		before(function (){
 			this.options = {
-				pathToTemplate: this.templates.file.path
+				contents: 'blah blah blah'
 			};
 		});
 
@@ -86,7 +86,7 @@ describe('file generator', function () {
 		before(function() {
 			this.options = {
 				force: true,
-				pathToTemplate: this.templates.file.path
+				contents: 'blahhhh blahhhh blahhhh'
 			};
 		});
 

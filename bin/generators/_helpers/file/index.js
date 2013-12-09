@@ -5,7 +5,8 @@ var fs = require('fs-extra'),
 	path = require('path'),
 	ejs = require('ejs'),
 	async = require('async'),
-	_ = require('lodash');
+	_ = require('lodash'),
+	switcher = require('../switcher');
 
 
 
@@ -15,8 +16,6 @@ var fs = require('fs-extra'),
  *
  * @option {String} pathToNew
  * @option {String} contents - the string contents to write to disk
- * [@option {String} templateEncoding='utf-8']
- * [@option {Object} data={}]
  * [@option {Boolean} force=false]
  *
  * @handlers ok
@@ -25,7 +24,9 @@ var fs = require('fs-extra'),
  * @handlers alreadyExists
  */
 module.exports = function ( options, handlers ) {
-	
+
+	// Provide default values for handlers
+	handlers = switcher(handlers, handlers.error);
 
 	// Provide defaults and validate required options
 	_.defaults(options, {

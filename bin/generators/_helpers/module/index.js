@@ -8,7 +8,7 @@ var _ = require('lodash');
 var ejs = require('ejs');
 var fs = require('fs-extra');
 _.str = require('underscore.string');
-
+var switcher = require('../switcher');
 
 
 /**
@@ -21,6 +21,9 @@ _.str = require('underscore.string');
  * @handlers error
  */
 module.exports = function ( options, handlers ) {
+
+	// Provide default values for handlers
+	handlers = switcher(handlers, handlers.error);
 	
 	// Validate required options
 	var missingOpts = _.difference([
@@ -59,15 +62,16 @@ module.exports = function ( options, handlers ) {
 		// It will respond with a string that we can write to disk.
 		var moduleContents = '';
 		if ( generator.render ) {
+			moduleContents = generator.render(options, {
+				ok: function () {
 
+					console.log('::', arguments);
+					// Write our module to disk
+					return handlers.ok();
+				}
+			});
 		}
 
-		// Write our module to disk
-
-		
-
-
-		return handlers.ok();
 	});
 	
 	return;

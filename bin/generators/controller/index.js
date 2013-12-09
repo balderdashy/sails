@@ -7,6 +7,7 @@ var path = require('path');
 var _ = require('lodash');
 _.str = require('underscore.string');
 
+var switcher = require('../switcher');
 
 
 /**
@@ -62,8 +63,14 @@ module.exports = {
 	 *
 	 * @param {Object} options
 	 * @param {Function} cb (err, stringToWrite)
+	 *
+	 * @option {String} templateEncoding [='utf-8']
+	 * @option {Object} data [={}]
+	 *
+	 * @callback ok
 	 */
-	render: function (options, cb) {
+	render: function ( options, callback ) {
+
 		return cb(null, 'TODO');
 	}
 

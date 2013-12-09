@@ -4,7 +4,7 @@
 var fs = require('fs-extra');
 var _ = require('lodash');
 var path = require('path');
-
+var switcher = require('../switcher');
 
 
 
@@ -21,6 +21,9 @@ var path = require('path');
  * @handlers error
  */
 module.exports = function ( options, handlers ) {
+
+	// Provide default values for handlers
+	handlers = switcher(handlers, handlers.error);
 
 	// Provide defaults and validate required options
 	_.defaults(options, {
