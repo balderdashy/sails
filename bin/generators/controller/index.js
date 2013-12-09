@@ -59,6 +59,15 @@ module.exports = {
 		// Determine `pathToNew`
 		options.pathToNew = options.dirPath + '/' + options.filename;
 
+		// Determine template paths
+		options.pathToControllerTemplate = path.resolve(
+			process.cwd(),
+			options.pathToControllerTemplate || (__dirname+'/controller.ejs') );
+
+		options.pathToActionTemplate = path.resolve(
+			process.cwd(),
+			options.pathToActionTemplate || (__dirname+'/action.ejs'));
+
 		return options;
 	},
 
@@ -69,6 +78,9 @@ module.exports = {
 	 * e.g. read a template file
 	 *
 	 * @param {Object} options
+	 *		@option {String} id
+	 *		@option {String} pathToControllerTemplate
+	 *		@option {String} pathToActionTemplate
 	 *		@option {String} templateEncoding [='utf-8']
 	 *
 	 * @param {Function|Object} callback
@@ -77,20 +89,27 @@ module.exports = {
 	 */
 	render: function ( options, cb ) {
 
-		var pathToTemplate = path.resolve(
-			process.cwd() ,
-			options.pathToTemplate || (__dirname+'/controller.ejs') );
-
 		// Read controller template from disk
-		fs.readFile(pathToTemplate, options.templateEncoding, function gotTemplate (err, templateStr) {
+		fs.readFile(options.pathToControllerTemplate, options.templateEncoding, function gotTemplate (err, controllerTemplate) {
 			if (err) return handlers.error(err);
 
-			// Render data into template
-			var renderedTemplate = ejs.render(templateStr, {
-				filename: options.filename,
-				actions: ''
+			fs.readFile(options.pathToActionTemplate, options.templateEncoding, function gotTemplate (err, actionTemplate) {
+				if (err) return handlers.error(err);
+
+				// Create the actions' code
+				var renderedActions = _.map(options.actions, function (action) {
+					return ejs.render(actionTemplate, { actionName: action });
+				});
+
+				// Create the controller code
+				var renderedController = ejs.render(controllerTemplate, {
+					filename: options.filename,
+					controllerName: options.globalID,
+					actions: renderedActions
+				});
+
+				cb(null, renderedController);
 			});
-			cb(null, renderedTemplate);
 		});
 	}
 
