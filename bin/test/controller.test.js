@@ -1,10 +1,9 @@
 /**
  * Module dependencies
  */
-var _ = require('lodash');
 var expect = require('./fixtures/expect');
 var assert = require('./fixtures/assertions');
-var GenerateModuleHelper = require('../generators/_helpers/module');
+var Generator = require('../generators/factory')('controller');
 
 
 describe('controller generator', function () {
@@ -13,11 +12,7 @@ describe('controller generator', function () {
 
 		// Access fn for module helper which always injects
 		// the proper `generator` option
-		this.fn = function (options, handlers) {
-			return GenerateModuleHelper(_.extend(options,{
-				generator: require('../generators/controller')
-			}), handlers);
-		};
+		this.fn = Generator;
 	});
 
 	describe('basic usage', function () {

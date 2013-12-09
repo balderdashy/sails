@@ -87,6 +87,8 @@ var CLIController = {
 
 	generate: function ( options ) {
 
+		var Generator = require('./generators/controller');
+
 		// // TODO: Load up Sails in the working directory in case
 		// // custom paths have been configured
 		// var appPath				= options.appPath || process.cwd(),
