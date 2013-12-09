@@ -3,6 +3,8 @@
  */
 var TemplateManifest = require('./fixtures/TemplateManifest');
 var FileHeap = require('./fixtures/FileHeap');
+var GenerateJSONFileHelper = require('../generators/_helpers/jsonfile');
+
 
 
 before(function (cb) {
@@ -20,15 +22,14 @@ before(function (cb) {
 	 * and outside of a Sails project directory.
 	 */
 	self.sailsHeap = new FileHeap();
-	self.sailsHeap.outputJSON(
-		self.sailsHeap.alloc('package.json'),
-		{
+	GenerateJSONFileHelper({
+		pathToNew: self.sailsHeap.alloc('package.json'),
+		data: {
 			dependencies: {
 				sails: '~5.0.0'
 			}
-		},
-		cb
-	);
+		}
+	}, { ok: cb });
 
 
 	/*
