@@ -208,6 +208,8 @@ function checkGeneratedFiles(appName, templateLang) {
 		'config/adapters.js',
 		'config/bootstrap.js',
 		'config/controllers.js',
+    'config/database.js',
+    'config/model.js',
 		'config/cors.js',
 		'config/csrf.js',
 		'config/i18n.js',
