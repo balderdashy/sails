@@ -8,9 +8,10 @@ var fs = require('fs-extra');
 var Sails = require('../../../../lib/app');
 var _ = require('lodash');
 _.str = require('underscore.string');
-var generateFile = require('../file');
 var async = require('async');
 var switcher = require('../../../../util/switcher');
+
+var GenerateFileHelper = require('../file');
 
 
 /**
@@ -59,7 +60,8 @@ module.exports = function ( options, handlers ) {
 			}
 		}
 
-		var contents = '';
+		// Use contents override if specified
+		options.contents = options.contents || '';
 		async.series([
 
 			// Call out to our `generator` to render our module.
@@ -68,14 +70,14 @@ module.exports = function ( options, handlers ) {
 				if ( !generator.render ) return cb();
 				else generator.render(options, function (err, _contents) {
 					if (err) return cb(err);
-					contents = _contents;
+					options.contents = options.contents || _contents || '';
 					return cb();
 				});
 			},
 
 			// Now write the contents to disk
 			function generateFile (cb) {
-				generateFile(options, cb);
+				GenerateFileHelper(options, cb);
 			}
 
 		], function (err) {

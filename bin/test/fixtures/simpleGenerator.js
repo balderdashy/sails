@@ -2,6 +2,7 @@
  * Module dependencies
  */
 var switcher = require('../../../util/switcher');
+var _ = require('lodash');
 
 
 /**
@@ -13,7 +14,6 @@ module.exports = {
 
 	render: function ( options, cb ) {
 		cb = switcher(cb);
-
-		cb(null, 'some text');
+		cb();
 	}
 };

@@ -30,11 +30,13 @@ describe('module generator', function () {
 
 		before(function () {
 			this.options = {
-				generator: {}
+				generator: {},
+				pathToNew: this.heap.alloc()
 			};
 		});
 
 		it('should trigger `ok`', expect('ok'));
+		it('should create an empty file', assert.fileExists);
 
 	});
 
@@ -42,11 +44,14 @@ describe('module generator', function () {
 	describe('using a `generator` with a simple render function', function () {
 		before(function () {
 			this.options = {
-				generator: simpleGenerator
+				generator: simpleGenerator,
+				contents: 'foo',
+				pathToNew: this.heap.alloc()
 			};
 		});
 
 		it('should trigger `ok`', expect('ok'));
+		it('should create a file', assert.fileExists);
 	});
 
 		// describe('when used OUTSIDE of a sails app', function () {
