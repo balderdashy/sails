@@ -11,8 +11,9 @@ var switcher = require('../../../util/switcher');
  */
 module.exports = {
 
-	render: function ( options, callback ) {
-		var handlers = switcher(callback);
-		handlers('test');
+	render: function ( options, cb ) {
+		cb = switcher(cb);
+
+		cb(null, 'some text');
 	}
 };

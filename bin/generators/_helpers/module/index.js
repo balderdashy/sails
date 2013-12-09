@@ -60,15 +60,22 @@ module.exports = function ( options, handlers ) {
 
 		// Call out to `generator` to render our module.
 		// It will respond with a string that we can write to disk.
+		var contents = '';
 		async.series([
 			function renderContents (cb) {
 				if ( !generator.render ) return cb();
-				else generator.render(options, cb);
+				else generator.render(options, function (err, _contents) {
+					if (err) return cb(err);
+					contents = _contents;
+					return cb();
+				});
 			},
-			function generateFile (cb) {
+			function generateFile (cb, async_data) {
+				
 				cb();
 			}
 		], function (err) {
+			// Omit extra args
 			return handlers(err);
 		});
 
