@@ -40,7 +40,6 @@ module.exports = function ( options, handlers ) {
 
 	var pathToNew = path.resolve( process.cwd() , options.pathToNew );	
 
-
 	// Only override an existing file if `options.force` is true
 	fs.exists(pathToNew, function (exists) {
 		if (exists && !options.force) {
