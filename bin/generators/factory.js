@@ -14,17 +14,17 @@ var util = require('util');
  */
 module.exports = function ( generatorName, errorHandler ) {
 
-	var fn;
+	var generator;
 
 	// Try `generators`
 	try {
-		fn = require( __dirname + '/' + generatorName );
+		generator = require( __dirname + '/' + generatorName );
 	}
 	catch(e0) {
 
 		// // Try npm
 		// try {
-		// 	fn = require( __dirname + '/_helpers/' + generatorName );
+		// 	generator = require( __dirname + '/_helpers/' + generatorName );
 		// }
 		// catch (e1) {
 			throw new Error(
@@ -34,7 +34,16 @@ module.exports = function ( generatorName, errorHandler ) {
 		// }
 	}
 
-	// Default missing handler handler
+	// Load module generator helper
+	
+
+	// Check that generator is valid
+	if (typeof fn !== 'function') {
+		return _handlers.error('Invalid generator fn :: '+util.inspect(fn));
+	}
+
+
+	// Default "missing handler" callback
 	var missingHandlerHandler = function (handlerName) {
 		var msg = '`' + handlerName + '` triggered, but no handler was provided.';
 		return function (err) {
@@ -57,12 +66,12 @@ module.exports = function ( generatorName, errorHandler ) {
 			invalid: missingHandlerHandler('invalid')
 		});
 
-		// Mix-in validator to options
+		// Check that options look valid
 		if (typeof options !== 'object') {
 			return _handlers.error('Invalid options :: '+util.inspect(options));
 		}
 
-
+		// Trigger generator
 		fn(options, _handlers);
 	};
 };

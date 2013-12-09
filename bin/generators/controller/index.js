@@ -48,7 +48,7 @@ module.exports = {
 		});
 
 		_.defaults(options, {
-			filename: options.globalID + 'Controller.' + options.ext,
+			filename: options.globalID + 'Controller.' + options.ext
 		});
 
 		return options;
@@ -66,7 +66,7 @@ module.exports = {
 	render: function (options, cb) {
 		return cb(null, 'TODO');
 	}
-	
+
 };
 
 

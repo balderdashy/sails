@@ -3,6 +3,7 @@
  */
 var fs = require('fs-extra'),
 	async = require('async'),
+	path = require('path'),
 	_ = require('lodash');
 
 
@@ -90,22 +91,33 @@ module.exports = function FileHeap () {
 
 
 	/**
-	 * @param {String} pathToNewFile
+	 * @param {String} pathToFile
 	 * @param {Function} cb
 	 *		@param {Error} err
 	 *		@param {String} contents of file
 	 */
-	this.read = function (pathToNewFile, cb) {
-		if ( !this.contains(pathToNewFile) ) {
-			return cb(this.errors.unknown(pathToNewFile));
+	this.read = function (pathToFile, cb) {
+		if ( !this.contains(pathToFile) ) {
+			return cb(this.errors.unknown(pathToFile));
 		}
-		fs.readFile(pathToNewFile, cb);
+		fs.readFile(pathToFile, cb);
 	};
-	this.readSync = function (pathToNewFile) {
-		if ( !this.contains(pathToNewFile) ) {
-			return cb(this.errors.unknown(pathToNewFile));
+	this.readSync = function (pathToFile) {
+		if ( !this.contains(pathToFile) ) {
+			return cb(this.errors.unknown(pathToFile));
 		}
-		return fs.readFileSync(pathToNewFile);
+		return fs.readFileSync(pathToFile);
+	};
+
+
+	/**
+	 * Grab filename from path, with no extension
+	 */
+	this.getFilename = function (pathToFile) {
+		if ( !this.contains(pathToFile) ) {
+			return cb(this.errors.unknown(pathToFile));
+		}
+		return path.basename(pathToFile, _suffix);
 	};
 
 

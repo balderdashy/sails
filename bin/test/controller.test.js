@@ -9,39 +9,39 @@ var GeneratorFactory = require('../generators/factory');
 
 describe('controller generator', function () {
 
-	before(function () {
-		this.fn = GeneratorFactory('controller');
-	});
+	// before(function () {
+	// 	this.fn = GeneratorFactory('controller');
+	// });
 
 
 
-	describe('when used OUTSIDE of a sails app', function () {
+	// describe('when used OUTSIDE of a sails app', function () {
 
-		before(function () {
-			this.options = {
-				id: this.heap.alloc()
-			};
-		});
-
-
-		it('should trigger `notSailsApp`', expect('notSailsApp'));
-
-	});
+	// 	before(function () {
+	// 		this.options = {
+	// 			id: this.heap.getFilename( this.heap.alloc() )
+	// 		};
+	// 	});
 
 
-	describe('when used OUTSIDE of a sails app with `force`', function () {
+	// 	it('should trigger `notSailsApp`', expect('notSailsApp'));
 
-		before(function () {
-			this.options = {
-				id: this.heap.alloc(),
-				force: true
-			};
-		});
+	// });
 
 
-		it('should trigger `ok`', expect('ok'));
+	// describe('when used OUTSIDE of a sails app with `force`', function () {
 
-	});
+	// 	before(function () {
+	// 		this.options = {
+	// 			id: this.heap.getFilename (this.heap.alloc()),
+	// 			force: true
+	// 		};
+	// 	});
+
+
+	// 	it('should trigger `ok`', expect('ok'));
+
+	// });
 
 
 
