@@ -51,70 +51,9 @@ module.exports = function interpretArguments ( argv, handlers ) {
 			);
 		}
 
-		// Third argument is the id of the module we're creating
-		// (otherwise it's the second argument-- we'll generate a model AND controller)
-		var id = third || second;
-
-		// If no third argument exists, this is a usage error
-		// TODO: support `sails generate` again
-		// 		 (for creating a model AND controller at the same time)
-		if ( !id ) {
-			return handlers.invalid(
-				'Please specify the name for the new ' + module + '.'
-			);
-		}
-		if ( !id.match(/^[a-z]+$/i) ) {
-			return handlers.invalid(
-				'Sorry, "' + id + '" is not a valid name for a ' + module + '.',
-				'Only letters and numbers are allowed.',
-				'(Sails ' + module + 's are case-insensitive.)'
-			);
-		}
-		// Allow cli user to specify `FooController` and really mean `foo`
-		// then recalculate globalID
-		id = id.replace(/Controller$/, '');
-
-		// Determine which generators to use
 		switch ( second ) {
-			case 'controller':
-				var arrayOfActionNames = argv._.splice(3);
-				return handlers.generate({
-					id			: id,
-					module		: 'controller',
-					actions		: arrayOfActionNames,
-					dry			: argv.dry
-				});
-
-			case 'model':
-				var arrayOfAttributes = argv._.splice(3);
-				return handlers.generate({
-					id			: id,
-					module		: 'model',
-					attributes	: arrayOfAttributes,
-					dry			: argv.dry
-				});
-
-			case 'api': 
-
-				// Figure out whether subsequent cmdline args are
-				// supposed to be controller actions or model attributes.
-				var arrayOfArgs = argv._.splice(3);
-				var argsLookLikeAttributes = ( arrayOfArgs[0] && arrayOfArgs[0].match(/:/) );
-
-				// Then generate a model AND controller.
-				handlers.generate({
-					id			: id,
-					module		: 'controller',
-					actions		: !argsLookLikeAttributes ? arrayOfArgs : [],
-					dry			: argv.dry
-				});
-				handlers.generate({
-					id			: id,
-					module		: 'model',
-					attributes	: argsLookLikeAttributes ? arrayOfArgs : [],
-					dry			: argv.dry
-				});
-				return;
+			case 'controller': break;
+			case 'model': break;
 
 			// TODO:
 			case 'view':
@@ -132,6 +71,83 @@ module.exports = function interpretArguments ( argv, handlers ) {
 					'Sorry, I don\'t know how to generate a "' +
 					second + '".');
 		}
+
+
+		// Third argument is the id of the module we're creating
+		// (otherwise it's the second argument-- we'll generate a model AND controller)
+		var id = third || second;
+
+		// If no third argument exists, this is a usage error
+		// TODO: support `sails generate` again
+		// 		 (for creating a model AND controller at the same time)
+		if ( !id ) {
+			return handlers.invalid(
+				'Please specify the name for the new ' + module + '.'
+			);
+		}
+		if ( !id.match(/^[a-z]([a-z]|[0-9])+$/i) ) {
+			return handlers.invalid(
+				'Sorry, "' + id + '" is not a valid name for a ' + module + '.',
+				'Only letters and numbers are allowed, and it must start with a letter.',
+				'(Sails ' + module + 's are case-insensitive.)'
+			);
+		}
+		// Allow cli user to specify `FooController` and really mean `foo`
+		id = id.replace(/Controller$/, '');
+
+
+		// Figure out whether subsequent cmdline args are
+		// supposed to be controller actions or model attributes.
+		var arrayOfArgs = argv._.splice(3);
+		var argsLookLikeAttributes = ( arrayOfArgs[0] && arrayOfArgs[0].match(/:/) );
+
+		var actions = argsLookLikeAttributes ? [] : arrayOfArgs;
+		var attributes = argsLookLikeAttributes ? arrayOfArgs : [];
+
+
+		// Build options
+		var options = _.extend({}, argv, {
+			id: id,
+			module: second,
+			actions:  actions,
+			attributes: attributes
+		});
+
+		handlers.generate(options);
+		return;
+
+		// // Determine which generators to use
+		// switch ( second ) {
+		// 	case 'controller':
+		// 		return handlers.generate(_.extend(options, {
+		// 			actions		: argv._.splice(3)
+		// 		}));
+
+		// 	case 'model':
+		// 		return handlers.generate(_.extend(options, {
+		// 			attributes	: argv._.splice(3)
+		// 		}));
+
+		// 	// case 'api': 
+
+				
+
+		// 		// // Then generate a model AND controller.
+		// 		// handlers.generate(_{
+		// 		// 	id			: id,
+		// 		// 	module		: 'controller',
+		// 		// 	actions		: !argsLookLikeAttributes ? arrayOfArgs : [],
+		// 		// 	dry			: argv.dry
+		// 		// });
+		// 		// handlers.generate({
+		// 		// 	id			: id,
+		// 		// 	module		: 'model',
+		// 		// 	attributes	: argsLookLikeAttributes ? arrayOfArgs : [],
+		// 		// 	dry			: argv.dry
+		// 		// });
+		// 		// return;
+
+
 	}
 
 
