@@ -51,7 +51,7 @@ describe('controller generator', function () {
 		describe('with `force` option enabled', function () {
 			before(function () {
 				this.options.force = true;
-				this.options.pathToNew = this.sailsHeap.alloc();
+				this.options.appPath = this.heap.dirpath;
 			});
 
 			it('should trigger `ok`', expect('ok'));

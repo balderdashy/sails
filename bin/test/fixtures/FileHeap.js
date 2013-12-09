@@ -125,14 +125,7 @@ module.exports = function FileHeap () {
 	 * @param {Function} cb
 	 */
 	this.cleanAll = function (cb) {
-
-		// New way:
 		fs.remove(_outputPath, cb);
-
-		// Old way:
-		// async.each(_files, function (path, cb) {
-		// 	fs.remove(path, cb);
-		// }, cb);
 	};
 
 
