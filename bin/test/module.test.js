@@ -3,13 +3,13 @@
  */
 var expect = require('./fixtures/expect');
 var assert = require('./fixtures/assertions');
-
+var GenerateModuleHelper = require('../generators/_helpers/module');
 
 
 describe('module generator', function () {
 
 	before(function () {
-		this.fn = require('../generators/_helpers/module');
+		this.fn = GenerateModuleHelper;
 	});
 
 	describe('when used WITHOUT a `generator` option', function () {

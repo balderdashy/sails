@@ -1,21 +1,56 @@
 /**
  * Module dependencies
  */
+var _ = require('lodash');
 var expect = require('./fixtures/expect');
 var assert = require('./fixtures/assertions');
-var Generator = require('../generators/controller');
-
+var GenerateModuleHelper = require('../generators/_helpers/module');
 
 
 describe('controller generator', function () {
 
-	// before(function () {
-	// 	this.fn = Generator;
-	// });
+	before(function () {
 
-	// describe('basic usage', function () {
-	// 	it('should work', function () {return true;});
-	// });
+		// Access fn for module helper which always injects
+		// the proper `generator` option
+		this.fn = function (options, handlers) {
+			return GenerateModuleHelper(_.extend(options,{
+				generator: require('../generators/controller')
+			}), handlers);
+		};
+	});
+
+	describe('basic usage', function () {
+		it('should work', function () {return true;});
+	});
+
+
+
+	// Make the heap destination look like a Sails app
+	// to test both scenarios
+	describe('when used OUTSIDE of a sails app', function () {
+
+		before(function () {
+			this.options = {};
+		});
+
+		it('should trigger `notSailsApp`', expect({
+			notSailsApp: true,
+			ok: 'Should trigger the `notSailsApp` handler, not `ok`!'
+		}));
+
+
+		describe('with `force` option enabled', function () {
+			before(function () {
+				this.options.force = true;
+				this.options.pathToNew = this.sailsHeap.alloc();
+			});
+
+			it('should trigger `ok`', expect('ok'));
+		});
+	});
+
+
 
 	// describe('when used OUTSIDE of a sails app', function () {
 
