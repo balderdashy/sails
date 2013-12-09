@@ -28,8 +28,8 @@ module.exports = function ( generatorName, errorHandler ) {
 		// }
 		// catch (e1) {
 			throw new Error(
-				'Cannot require specified generator ' + 
-				' (' + generatorName + ')'
+				'Cannot require specified generator, `'+ generatorName +'` ' + 
+				' ( @ ' + __dirname + '/' + generatorName + ')'
 			);
 		// }
 	}

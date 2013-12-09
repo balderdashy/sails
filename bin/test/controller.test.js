@@ -3,17 +3,19 @@
  */
 var expect = require('./fixtures/expect');
 var assert = require('./fixtures/assertions');
-var GeneratorFactory = require('../generators/factory');
+var Generator = require('../generators/controller');
 
 
 
 describe('controller generator', function () {
 
 	// before(function () {
-	// 	this.fn = GeneratorFactory('controller');
+	// 	this.fn = Generator;
 	// });
 
-
+	// describe('basic usage', function () {
+	// 	it('should work', function () {return true;});
+	// });
 
 	// describe('when used OUTSIDE of a sails app', function () {
 

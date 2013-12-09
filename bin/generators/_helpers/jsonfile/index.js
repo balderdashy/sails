@@ -53,7 +53,7 @@ module.exports = function ( options, handlers ) {
 		else _afterwards_();
 
 		function _afterwards_ () {
-			fs.writeJSON(pathToNew, options.data, function (err){
+			fs.outputJSON(pathToNew, options.data, function (err){
 				if (err) return handlers.error(err);
 				else handlers.ok();
 			});

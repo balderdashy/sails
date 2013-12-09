@@ -26,7 +26,7 @@ before(function (cb) {
 		pathToNew: self.sailsHeap.alloc('package.json'),
 		data: {
 			dependencies: {
-				sails: '~5.0.0'
+				sails: '~99.9.99'
 			}
 		}
 	}, { ok: cb });
