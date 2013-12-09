@@ -56,6 +56,9 @@ module.exports = {
 			filename: options.globalID + 'Controller.' + options.ext
 		});
 
+		// Determine `pathToNew`
+		options.pathToNew = options.dirPath + '/' + options.filename;
+
 		return options;
 	},
 

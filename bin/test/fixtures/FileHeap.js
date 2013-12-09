@@ -125,9 +125,14 @@ module.exports = function FileHeap () {
 	 * @param {Function} cb
 	 */
 	this.cleanAll = function (cb) {
-		async.each(_files, function (path, cb) {
-			fs.remove(path, cb);
-		}, cb);
+
+		// New way:
+		fs.remove(_outputPath, cb);
+
+		// Old way:
+		// async.each(_files, function (path, cb) {
+		// 	fs.remove(path, cb);
+		// }, cb);
 	};
 
 
@@ -157,7 +162,7 @@ module.exports = function FileHeap () {
 	 */
 	this.getFilename = function (pathToFile) {
 		if ( !this.contains(pathToFile) ) {
-			return cb(this.errors.unknown(pathToFile));
+			throw this.errors.unknown(pathToFile);
 		}
 		return path.basename(pathToFile, _suffix);
 	};

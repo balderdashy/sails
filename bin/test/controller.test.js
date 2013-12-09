@@ -21,7 +21,15 @@ describe('controller generator', function () {
 	});
 
 	describe('basic usage', function () {
-		it('should work', function () {return true;});
+
+		before(function () {
+			this.options = {
+				appPath: this.sailsHeap.dirpath,
+				id: this.sailsHeap.getFilename( this.sailsHeap.alloc() )
+			};
+		});
+
+		it('should work', expect('ok'));
 	});
 
 
