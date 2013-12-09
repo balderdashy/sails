@@ -9,9 +9,6 @@ var Generator = require('../generators/factory')('controller');
 describe('controller generator', function () {
 
 	before(function () {
-
-		// Access fn for module helper which always injects
-		// the proper `generator` option
 		this.fn = Generator;
 	});
 
@@ -24,17 +21,31 @@ describe('controller generator', function () {
 			};
 		});
 
-		it('should work', expect('ok'));
+		it('should work', expect('ok'));		
 	});
 
+	describe('invalid usage', function () {
+		before(function () {
+			this.options = {
+				appPath: this.sailsHeap.dirpath
+			};
+		});
 
+		it('requires `id` option', expect({
+			invalid: true,
+			ok: 'Should not hit `ok` handler since required `id` parameter was not specified!'
+		}));
+	});
 
 	// Make the heap destination look like a Sails app
 	// to test both scenarios
 	describe('when used OUTSIDE of a sails app', function () {
 
 		before(function () {
-			this.options = {};
+			this.options = {
+				appPath: this.heap.appPath,
+				id: this.sailsHeap.getFilename( this.sailsHeap.alloc() )
+			};
 		});
 
 		it('should trigger `notSailsApp`', expect({
@@ -52,6 +63,8 @@ describe('controller generator', function () {
 			it('should trigger `ok`', expect('ok'));
 		});
 	});
+
+
 
 
 

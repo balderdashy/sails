@@ -59,8 +59,8 @@ module.exports = function ( options, handlers ) {
 		}
 
 		// Ensure required options specified by the configured `generator` actually exist
-		if (generator.requiredOpts) {
-			var missingOpts = _.difference(generator.requiredOpts, Object.keys(options)).length;
+		if (generator.requiredOptions) {
+			var missingOpts = _.difference(generator.requiredOptions, Object.keys(options));
 			if ( missingOpts.length ){
 				return handlers.invalid('Missing required options for this generator ::', missingOpts);
 			}
