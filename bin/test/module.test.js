@@ -16,11 +16,39 @@ describe('module generator', function () {
 
 		before(function () {
 			this.options = {
-				id: this.heap.getFilename( this.heap.alloc() )
+				id: this.sailsHeap.getFilename( this.sailsHeap.alloc() )
 			};
 		});
 
 		it('should trigger `invalid`', expect('invalid'));
+	});
+
+
+	// Make the heap destination look like a Sails app
+	// to test both scenarios
+	describe('when used OUTSIDE of a sails app', function () {
+
+		before(function () {
+			this.options = {
+				generator: {}
+			};
+			this.options.pathToNew = this.sailsHeap.alloc();
+		});
+
+		it('should trigger `notSailsApp`', expect({
+			notSailsApp: true,
+			ok: 'Should trigger the `notSailsApp` handler, not `ok`!'
+		}));
+
+
+		describe('with `force` option enabled', function () {
+			before(function () {
+				this.options.force = true;
+				this.options.pathToNew = this.sailsHeap.alloc();
+			});
+
+			it('should trigger `ok`', expect('ok'));
+		});
 	});
 
 
@@ -30,7 +58,7 @@ describe('module generator', function () {
 		before(function () {
 			this.options = {
 				generator: {},
-				pathToNew: this.heap.alloc()
+				pathToNew: this.sailsHeap.alloc()
 			};
 		});
 
@@ -49,7 +77,7 @@ describe('module generator', function () {
 						cb(null, 'some stuff');
 					}
 				},
-				pathToNew: this.heap.alloc()
+				pathToNew: this.sailsHeap.alloc()
 			};
 		});
 
@@ -70,7 +98,7 @@ describe('module generator', function () {
 					}
 				},
 				contents: 'foo',
-				pathToNew: this.heap.alloc()
+				pathToNew: this.sailsHeap.alloc()
 			};
 		});
 
@@ -97,8 +125,8 @@ describe('module generator', function () {
 		describe('(file)', function () {
 			// Create an extra file beforehand to simulate a collision
 			before(function (cb) {
-				this.options.pathToNew = this.heap.alloc();
-				this.heap.touch(this.options.pathToNew, cb);
+				this.options.pathToNew = this.sailsHeap.alloc();
+				this.sailsHeap.touch(this.options.pathToNew, cb);
 			});
 			it(	'should trigger "alreadyExists" handler', expect({ alreadyExists: true, ok: 'Should not override existing file without `options.force`!' }));
 		});
@@ -106,8 +134,8 @@ describe('module generator', function () {
 		describe('(directory)', function () {
 			// Create an extra folder beforehand to simulate a collision
 			before(function (cb) {
-				this.options.pathToNew = this.heap.alloc();
-				this.heap.mkdirp(this.options.pathToNew, cb);
+				this.options.pathToNew = this.sailsHeap.alloc();
+				this.sailsHeap.mkdirp(this.options.pathToNew, cb);
 			});
 			it(	'should trigger "alreadyExists" handler', expect({ alreadyExists: true, ok: 'Should not override existing directory without `options.force`!' }));
 		});
@@ -121,7 +149,7 @@ describe('module generator', function () {
 				force: true,
 				generator: {
 					render: function (options, cb){
-						cb(null, 'some stuff');
+						cb(null, 'You’re not your job. You’re not how much money you have in the bank. You’re not the car you drive. You’re not the contents of your wallet. You’re not your f***ing khakis. You’re the all-singing, all-dancing crap of the world. What do you want? Wanna go back to the s*** job, f***in’ condo world, watching sitcoms? F*** you, I won’t do it. Fifth rule: one fight at a time, fellas. Warning: If you are reading this then this warning is for you. Every word you read of this useless fine print is another second off your life. Don’t you have other things to do? Is your life so empty that you honestly can’t think of a better way to spend these moments? Or are you so impressed with authority that you give respect and credence to all that claim it?');
 					}
 				}
 			};
@@ -129,10 +157,10 @@ describe('module generator', function () {
 
 		describe('(file)', function () {
 			before(function(cb) {
-				this.options.pathToNew = this.heap.alloc();
+				this.options.pathToNew = this.sailsHeap.alloc();
 
 				// Create an extra file beforehand to simulate a collision
-				this.heap.touch(this.options.pathToNew, cb);
+				this.sailsHeap.touch(this.options.pathToNew, cb);
 			});
 
 			it('should trigger `ok`', expect('ok'));
@@ -140,46 +168,16 @@ describe('module generator', function () {
 
 		describe('(directory)', function () {
 			before(function(cb) {
-				this.options.pathToNew = this.heap.alloc();
+				this.options.pathToNew = this.sailsHeap.alloc();
 				
 				// Create an extra dir beforehand to simulate a collision
-				this.heap.mkdirp(this.options.pathToNew, cb);
+				this.sailsHeap.mkdirp(this.options.pathToNew, cb);
 			});
 
 			it('should trigger `ok`', expect('ok'));
 		});
 
 	});
-
-
-
-	// describe('when used OUTSIDE of a sails app', function () {
-
-	// 	before(function () {
-	// 		this.options = {
-	// 			id: this.heap.getFilename( this.heap.alloc() )
-	// 		};
-	// 	});
-
-
-	// 	it('should trigger `notSailsApp`', expect('notSailsApp'));
-
-	// });
-
-
-	// describe('when used OUTSIDE of a sails app with `force`', function () {
-
-	// 	before(function () {
-	// 		this.options = {
-	// 			id: this.heap.getFilename (this.heap.alloc()),
-	// 			force: true
-	// 		};
-	// 	});
-
-
-	// 	it('should trigger `ok`', expect('ok'));
-
-	// });
 
 
 });

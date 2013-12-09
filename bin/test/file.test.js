@@ -27,30 +27,8 @@ describe('file generator', function () {
 
 		it('should trigger `ok`',expect('ok'));
 		it('should create a file', assert.fileExists);
-		// it('should create a file with the same checksum as the template', assert.fileChecksumMatchesTemplate);
 
 	});
-
-
-
-
-
-	// describe('with empty data', function () {
-
-	// 	before(function () {
-	// 		this.options = {
-	// 			pathToNew: this.heap.alloc(),
-	// 			pathToTemplate: this.templates.file.path,
-	// 			data: {}
-	// 		};
-	// 	});
-
-	// 	it('should trigger `ok`', expect('ok'));
-	// 	it('should create a file', assert.fileExists);
-	// 	it('should create a file with the same checksum as the template', assert.fileChecksumMatchesTemplate);
-
-	// });
-
 
 
 

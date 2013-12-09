@@ -38,7 +38,7 @@
     "winston": "0.7.1",
     "i18n": "0.4.1",
     "optimist": "0.3.4",
-    "fs-extra": "0.5.0",
+    "fs-extra": "~0.8.1",
     "lodash": "1.2.1",
     "glob": "3.1.14",
     "underscore.string": "2.3.0",

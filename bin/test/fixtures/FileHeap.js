@@ -27,14 +27,32 @@ module.exports = function FileHeap () {
 
 	/**
 	 * Get new pathToNewFile and reserve it
+	 *
+	 * @param {String} [basename] -
+	 *		-- optional--
+	 *		This lets you register a particular filename AND
+	 *		ITS SUFFIX (e.g. `package.json`) with the heap
+	 *		for automatic garbage-collection.
 	 */
-	this.alloc = function () {
+	this.alloc = function ( basename ) {
+
+		var pathToNewFile;
+
+		// Take care of optional basename param
+		if (basename) {
+			pathToNewFile = _outputPath + basename;
+			if ( fs.existsSync(pathToNewFile)) {
+				fs.removeSync(pathToNewFile);
+				throw new Error('Cannot allocate ' + basename + ':: File already exists.');
+			}
+			_files.push(pathToNewFile);
+			return pathToNewFile;
+		}
 
 		// Find a new file, checking if any existing files exist
 		// Increase incrementor exponentially to minimize alloc time
 		// TODO: optimize if necessary
-		var pathToNewFile,
-			exponentialIterator = 1;
+		var exponentialIterator = 1;
 		do {
 			_aid += exponentialIterator;
 			exponentialIterator *= 2;
@@ -60,6 +78,22 @@ module.exports = function FileHeap () {
 
 		fs.outputFile(pathToNewFile, 'blah blah', cb);
 	};
+
+
+	/**
+	 * Write a new JSON file.
+	 *
+	 * @param {String} pathToNewFile
+	 * @param {}
+	 * @param {Function} cb
+	 */
+	this.outputJSON = function (pathToNewFile, data, cb) {
+		if ( !this.contains(pathToNewFile) ) {
+			return cb(this.errors.unknown(pathToNewFile));
+		}
+		fs.outputJSON(pathToNewFile, data, cb);
+	};
+
 
 	/**
 	 * Write a new folder

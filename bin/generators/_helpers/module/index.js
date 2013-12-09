@@ -21,6 +21,7 @@ var GenerateFileHelper = require('../file');
  *
  * @handlers ok
  * @handlers notSailsApp
+ * @handlers alreadyExists
  * @handlers invalid
  * @handlers error
  */
@@ -33,12 +34,20 @@ module.exports = function ( options, handlers ) {
 	], Object.keys(options));
 	if ( missingOpts.length ) return handlers.invalid(missingOpts);
 
+	// Default appPath
+	options.appPath = options.appPath || process.cwd();
+
 	// Save reference to generator so it won't be inadvertently overridden in `options`
 	var generator = options.generator;
 
+	// Ensure this directory is a Sails app  (override with `force` option)
+	if ( !Sails.isSailsApp( options.appPath ) && !options.force ) {
+		return handlers.notSailsApp();
+	}
+
 	var sails = new Sails();
 	sails.load({
-		appPath: options.appPath || process.cwd(),
+		appPath: options.appPath,
 		loadHooks: ['userconfig', 'moduleloader']
 	}, function loadedSailsConfig (err) {
 		if (err) {
