@@ -225,6 +225,12 @@ module.exports = function (grunt) {
       }
     },
 
+
+
+
+    /**
+     * Production JS and CSS minification
+     */
     concat: {
       js: {
         src: jsFilesToInject,
@@ -250,6 +256,11 @@ module.exports = function (grunt) {
       }
     },
 
+
+
+    /**
+     * Automatically injects <link> and <script> tags
+     */
     'sails-linker': {
 
       devJs: {
@@ -335,71 +346,71 @@ module.exports = function (grunt) {
        * Jade linkers (TODO: clean this up)
        *******************************************/
 
-      devJsJADE: {
-        options: {
-          startTag: '// SCRIPTS',
-          endTag: '// SCRIPTS END',
-          fileTmpl: 'script(type="text/javascript", src="%s")',
-          appRoot: '.tmp/public',
-          relative: true
-        },
-        files: {
-          'views/**/*.jade': jsFilesToInject
-        }
-      },
+      // devJsJADE: {
+      //   options: {
+      //     startTag: '// SCRIPTS',
+      //     endTag: '// SCRIPTS END',
+      //     fileTmpl: 'script(type="text/javascript", src="%s")',
+      //     appRoot: '.tmp/public',
+      //     relative: true
+      //   },
+      //   files: {
+      //     'views/**/*.jade': jsFilesToInject
+      //   }
+      // },
 
-      prodJsJADE: {
-        options: {
-          startTag: '// SCRIPTS',
-          endTag: '// SCRIPTS END',
-          fileTmpl: 'script(type="text/javascript", src="%s")',
-          appRoot: '.tmp/public',
-          relative: true
-        },
-        files: {
-          'views/**/*.jade': ['.tmp/public/min/production.js']
-        }
-      },
+      // prodJsJADE: {
+      //   options: {
+      //     startTag: '// SCRIPTS',
+      //     endTag: '// SCRIPTS END',
+      //     fileTmpl: 'script(type="text/javascript", src="%s")',
+      //     appRoot: '.tmp/public',
+      //     relative: true
+      //   },
+      //   files: {
+      //     'views/**/*.jade': ['.tmp/public/min/production.js']
+      //   }
+      // },
 
-      devStylesJADE: {
-        options: {
-          startTag: '// STYLES',
-          endTag: '// STYLES END',
-          fileTmpl: 'link(rel="stylesheet", href="%s")',
-          appRoot: '.tmp/public',
-          relative: true
-        },
-        files: {
-          'views/**/*.jade': cssFilesToInject
-        }
-      },
+      // devStylesJADE: {
+      //   options: {
+      //     startTag: '// STYLES',
+      //     endTag: '// STYLES END',
+      //     fileTmpl: 'link(rel="stylesheet", href="%s")',
+      //     appRoot: '.tmp/public',
+      //     relative: true
+      //   },
+      //   files: {
+      //     'views/**/*.jade': cssFilesToInject
+      //   }
+      // },
 
-      prodStylesJADE: {
-        options: {
-          startTag: '// STYLES',
-          endTag: '// STYLES END',
-          fileTmpl: 'link(rel="stylesheet", href="%s")',
-          appRoot: '.tmp/public',
-          relative: true
-        },
-        files: {
-          'views/**/*.jade': ['.tmp/public/min/production.css']
-        }
-      },
+      // prodStylesJADE: {
+      //   options: {
+      //     startTag: '// STYLES',
+      //     endTag: '// STYLES END',
+      //     fileTmpl: 'link(rel="stylesheet", href="%s")',
+      //     appRoot: '.tmp/public',
+      //     relative: true
+      //   },
+      //   files: {
+      //     'views/**/*.jade': ['.tmp/public/min/production.css']
+      //   }
+      // },
 
-      // Bring in JST template object
-      devTplJADE: {
-        options: {
-          startTag: '// TEMPLATES',
-          endTag: '// TEMPLATES END',
-          fileTmpl: 'script(type="text/javascript", src="%s")',
-          appRoot: '.tmp/public',
-          relative: true
-        },
-        files: {
-          'views/**/*.jade': ['.tmp/public/jst.js']
-        }
-      }
+      // // Bring in JST template object
+      // devTplJADE: {
+      //   options: {
+      //     startTag: '// TEMPLATES',
+      //     endTag: '// TEMPLATES END',
+      //     fileTmpl: 'script(type="text/javascript", src="%s")',
+      //     appRoot: '.tmp/public',
+      //     relative: true
+      //   },
+      //   files: {
+      //     'views/**/*.jade': ['.tmp/public/jst.js']
+      //   }
+      // }
       /************************************
        * Jade linker end
        ************************************/
