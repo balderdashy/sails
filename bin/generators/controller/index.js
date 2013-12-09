@@ -62,16 +62,47 @@ module.exports = {
 	 * e.g. read a template file
 	 *
 	 * @param {Object} options
-	 * @param {Function} cb (err, stringToWrite)
+	 *		@option {String} templateEncoding [='utf-8']
+	 *		@option {Object} data [={}]
 	 *
-	 * @option {String} templateEncoding [='utf-8']
-	 * @option {Object} data [={}]
-	 *
-	 * @callback ok
+	 * @param {Function|Object} callback
+	 *			-> `fn(err, stringToWrite)` or `{ ok: ..., error: ..., etc. }`
+	 *		@case {Function|Object} ok
 	 */
 	render: function ( options, callback ) {
-
+		console.log('Render...');
 		return cb(null, 'TODO');
+
+		// var pathToTemplate = path.resolve( process.cwd() , options.pathToTemplate );
+
+		// Read template
+		// fs.readFile(pathToTemplate, options.templateEncoding, function gotTemplate (err, templateStr) {
+		// 	if (err) return handlers.error(err);
+
+		// 	var renderedTemplate = ejs.render(templateStr, options.data);
+
+		// 	// Only override an existing file if `options.force` is true
+		// 	// console.log('would create '+pathToNew);
+		// 	fs.exists(pathToNew, function (exists) {
+		// 		if (exists && !options.force) {
+		// 			return handlers.alreadyExists(pathToNew);
+		// 		}
+		// 		if ( exists ) {
+		// 			fs.remove(pathToNew, function deletedOldINode (err) {
+		// 				if (err) return handlers.error(err);
+		// 				_afterwards_();
+		// 			});
+		// 		}
+		// 		else _afterwards_();
+
+		// 		function _afterwards_() {
+		// 			fs.outputFile(pathToNew, renderedTemplate, function fileWasWritten (err) {
+		// 				if (err) return handlers.error(err);
+		// 				else handlers.ok();
+		// 			});
+		// 		}
+		// 	});
+		// });
 	}
 
 };

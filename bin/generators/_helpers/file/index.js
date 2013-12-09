@@ -5,8 +5,8 @@ var fs = require('fs-extra'),
 	path = require('path'),
 	ejs = require('ejs'),
 	async = require('async'),
-	_ = require('lodash'),
-	switcher = require('../switcher');
+	_ = require('lodash');
+var switcher = require('../../../../util/switcher');
 
 
 
@@ -26,13 +26,11 @@ var fs = require('fs-extra'),
 module.exports = function ( options, handlers ) {
 
 	// Provide default values for handlers
-	handlers = switcher(handlers, handlers.error);
+	handlers = switcher(handlers);
 
 	// Provide defaults and validate required options
 	_.defaults(options, {
-		data: {},
-		force: false,
-		templateEncoding: 'utf8'
+		force: false
 	});
 	var missingOpts = _.difference([
 		'contents',
@@ -63,36 +61,5 @@ module.exports = function ( options, handlers ) {
 		});
 
 	});
-
-	// var pathToTemplate = path.resolve( process.cwd() , options.pathToTemplate );
-
-	// Read template
-	// fs.readFile(pathToTemplate, options.templateEncoding, function gotTemplate (err, templateStr) {
-	// 	if (err) return handlers.error(err);
-
-	// 	var renderedTemplate = ejs.render(templateStr, options.data);
-
-	// 	// Only override an existing file if `options.force` is true
-	// 	// console.log('would create '+pathToNew);
-	// 	fs.exists(pathToNew, function (exists) {
-	// 		if (exists && !options.force) {
-	// 			return handlers.alreadyExists(pathToNew);
-	// 		}
-	// 		if ( exists ) {
-	// 			fs.remove(pathToNew, function deletedOldINode (err) {
-	// 				if (err) return handlers.error(err);
-	// 				_afterwards_();
-	// 			});
-	// 		}
-	// 		else _afterwards_();
-
-	// 		function _afterwards_() {
-	// 			fs.outputFile(pathToNew, renderedTemplate, function fileWasWritten (err) {
-	// 				if (err) return handlers.error(err);
-	// 				else handlers.ok();
-	// 			});
-	// 		}
-	// 	});
-	// });
 
 };

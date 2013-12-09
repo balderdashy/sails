@@ -1,14 +1,16 @@
 /**
  * Module dependencies
  */
-var generateFile = require('../file');
-var Sails = require('../../../../lib/app');
 var path = require('path');
-var _ = require('lodash');
 var ejs = require('ejs');
 var fs = require('fs-extra');
+
+var Sails = require('../../../../lib/app');
+var _ = require('lodash');
 _.str = require('underscore.string');
-var switcher = require('../switcher');
+var generateFile = require('../file');
+var async = require('async');
+var switcher = require('../../../../util/switcher');
 
 
 /**
@@ -21,9 +23,7 @@ var switcher = require('../switcher');
  * @handlers error
  */
 module.exports = function ( options, handlers ) {
-
-	// Provide default values for handlers
-	handlers = switcher(handlers, handlers.error);
+	handlers = switcher(handlers);
 	
 	// Validate required options
 	var missingOpts = _.difference([
@@ -38,7 +38,7 @@ module.exports = function ( options, handlers ) {
 	sails.load({
 		appPath: options.appPath || process.cwd(),
 		loadHooks: ['userconfig', 'moduleloader']
-	},function loadedSailsConfig (err) {
+	}, function loadedSailsConfig (err) {
 		if (err) {
 			// TODO: negotiate error type
 			return handlers.error(err);
@@ -60,17 +60,17 @@ module.exports = function ( options, handlers ) {
 
 		// Call out to `generator` to render our module.
 		// It will respond with a string that we can write to disk.
-		var moduleContents = '';
-		if ( generator.render ) {
-			moduleContents = generator.render(options, {
-				ok: function () {
-
-					console.log('::', arguments);
-					// Write our module to disk
-					return handlers.ok();
-				}
-			});
-		}
+		async.series([
+			function renderContents (cb) {
+				if ( !generator.render ) return cb();
+				else generator.render(options, cb);
+			},
+			function generateFile (cb) {
+				cb();
+			}
+		], function (err) {
+			return handlers(err);
+		});
 
 	});
 	

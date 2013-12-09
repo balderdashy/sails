@@ -4,7 +4,7 @@
 var fs = require('fs-extra');
 var _ = require('lodash');
 var path = require('path');
-var switcher = require('../switcher');
+var switcher = require('../../../../util/switcher');
 
 
 

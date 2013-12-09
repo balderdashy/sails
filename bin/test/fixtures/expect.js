@@ -16,7 +16,7 @@ module.exports = function expect ( expectations ) {
 		handlers[expectations] = true;
 	}
 	else if ( typeof expectations === 'object' ) {
-		handlers = expectations;
+		handlers = _.clone(expectations);
 	}
 	else throw new Error('Invalid usage of `expect()` fixture in tests.');
 
@@ -28,9 +28,15 @@ module.exports = function expect ( expectations ) {
 				handlers[handlerName] = function ignoreHandlerArguments_itsAlwaysGood () { cb(); };
 			}
 			else {
-				handlers[handlerName] = function incorrectHandlerFired (msg) {
-					if ( msg instanceof Error ) return msg;
-					else return new Error(msg);
+				handlers[handlerName] = function incorrectHandlerFired (err) {
+					var testMessage = 'Unexpected callback (' + handlerName + ') fired :: `' + expectations[handlerName] + '`';
+
+					if ( err instanceof Error ) {
+						err.message = testMessage + (err.message ? ' :: '+err.message : '');
+					}
+					else err = new Error( testMessage + (err ? ' :: '+err : '') );
+
+					return cb(err);
 				};
 			}
 		});

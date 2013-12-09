@@ -3,6 +3,7 @@
  */
 var expect = require('./fixtures/expect');
 var assert = require('./fixtures/assertions');
+var simpleGenerator = require('./fixtures/simpleGenerator');
 
 
 
@@ -25,7 +26,7 @@ describe('module generator', function () {
 
 
 
-	describe('with a valid `generator` option', function () {
+	describe('with an empty `generator`', function () {
 
 		before(function () {
 			this.options = {
@@ -35,6 +36,18 @@ describe('module generator', function () {
 
 		it('should trigger `ok`', expect('ok'));
 
+	});
+
+
+	describe('using a `generator` with a simple render function', function () {
+		before(function () {
+			this.options = {
+				generator: simpleGenerator
+			};
+		});
+
+		it('should trigger `ok`', expect('ok'));
+	});
 
 		// describe('when used OUTSIDE of a sails app', function () {
 
@@ -63,7 +76,6 @@ describe('module generator', function () {
 		// 	it('should trigger `ok`', expect('ok'));
 
 		// });
-	});
 
 
 
