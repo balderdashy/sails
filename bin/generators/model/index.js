@@ -12,14 +12,14 @@ _.str = require('underscore.string');
 
 
 /**
- * Generate a Sails controller
+ * Generate a Sails model
  *
  * @property {Array} requiredOptions
  * @property {Function} configure(options, sails)
  * @property {Function} render(options, cb)
  *
- * @option {Boolean} id - the name for the new controller
- * @option {Array} actions - names of the actions
+ * @option {Boolean} id - the name for the new model
+ * @option {Array} attributes - names:types of the attributes
  */
 module.exports = {
 

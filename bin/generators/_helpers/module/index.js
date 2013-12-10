@@ -102,12 +102,18 @@ module.exports = function ( options, handlers ) {
 			], function (err) {
 				if (err) return handlers.error(err);
 
-				// Now write the contents to disk
+				// Now write the contents to disk using our `generate` function:
+				if ( generator.generate ) {
+					return generator.generate(options, handlers);
+				}
+				
+				// If no `generate` function exists, default to:
 				GenerateFileHelper(options, {
 					ok: handlers.ok,
 					error: handlers.error,
 					alreadyExists: handlers.alreadyExists
 				});
+				return;
 			});
 		}
 
