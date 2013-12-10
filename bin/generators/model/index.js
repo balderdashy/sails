@@ -113,7 +113,6 @@ module.exports = {
 
 				// Render the attributes' code
 				var renderedAttrs = _.map(options.attributes, function (attr) {
-					console.log('rending attr::',attr);
 					return ejs.render(attrTemplate, attr);
 				});
 
