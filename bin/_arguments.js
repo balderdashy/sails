@@ -43,41 +43,47 @@ module.exports = function interpretArguments ( argv, handlers ) {
 		// Second argument is the type of module to generate
 		var module = second;
 
-		// If it's invalid, or doesn't exist, we have a usage error
-		// on our hands.
-		if ( !second ) {
+		// Third argument is the id of the module we're creating
+		var id = third;
+
+
+		// If the module or id is invalid, or doesn't exist,
+		// we have a usage error on our hands.
+		if ( !module ) {
 			return handlers.invalid(
 				'What type of module would you like to generate?'
 			);
 		}
 
-		switch ( second ) {
-			case 'controller': break;
-			case 'model': break;
+		var knownGenerators = [
+			'controller',
+			'model',
+			'view',
+			'adapter',
+			'policy'
+		];
 
-			// TODO:
+		// Check for unknown generators
+		// (this will be removed eventually)
+		if ( !_.contains(knownGenerators, module) ) {
+			return handlers.error(
+				'Sorry, I don\'t have a "' + second + '" generator.  ' + 
+				'Did you mean: `sails generate api '+second+'`?'
+			);
+		}
+
+		// Check for todo/not-yet-supported generators
+		switch ( module ) {
 			case 'view':
 			case 'policy':
 			case 'adapter':
 				return handlers.error(
-				'Sorry, `sails generate ' + 
-				second + '` is currently out of commission.');
-
-
-			// A `generate` without a specified type is assumed to
-			// be the combination of `sails generate model` and `sails generate controller`
-			default: 
-				return handlers.error(
-					'Sorry, I don\'t know how to generate a "' +
-					second + '".');
+				'Sorry, `sails generate ' + second + '` ' +
+				'is currently out of commission.');
 		}
 
 
-		// Third argument is the id of the module we're creating
-		// (otherwise it's the second argument-- we'll generate a model AND controller)
-		var id = third || second;
-
-		// If no third argument exists, this is a usage error
+		// If no id argument exists, this is a usage error
 		// TODO: support `sails generate` again
 		// 		 (for creating a model AND controller at the same time)
 		if ( !id ) {
@@ -85,14 +91,14 @@ module.exports = function interpretArguments ( argv, handlers ) {
 				'Please specify the name for the new ' + module + '.'
 			);
 		}
-		if ( !id.match(/^[a-z]([a-z]|[0-9])+$/i) ) {
+		if ( !id.match(/^[a-z]([a-z]|[0-9])*$/i) ) {
 			return handlers.invalid(
 				'Sorry, "' + id + '" is not a valid name for a ' + module + '.',
 				'Only letters and numbers are allowed, and it must start with a letter.',
 				'(Sails ' + module + 's are case-insensitive.)'
 			);
 		}
-		
+
 		// Allow cli user to specify `FooController` and really mean `foo`
 		id = id.replace(/Controller$/, '');
 

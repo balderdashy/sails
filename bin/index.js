@@ -359,7 +359,7 @@ var CLIController = {
 	 */
 
 	error: function ( err ) {
-		log.error( 'An error occurred.' );
+		// log.error( 'An error occurred.' );
 		log.error( err );
 		console.log('');
 	},
