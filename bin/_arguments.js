@@ -92,6 +92,7 @@ module.exports = function interpretArguments ( argv, handlers ) {
 				'(Sails ' + module + 's are case-insensitive.)'
 			);
 		}
+		
 		// Allow cli user to specify `FooController` and really mean `foo`
 		id = id.replace(/Controller$/, '');
 
@@ -115,39 +116,6 @@ module.exports = function interpretArguments ( argv, handlers ) {
 
 		handlers.generate(options);
 		return;
-
-		// // Determine which generators to use
-		// switch ( second ) {
-		// 	case 'controller':
-		// 		return handlers.generate(_.extend(options, {
-		// 			actions		: argv._.splice(3)
-		// 		}));
-
-		// 	case 'model':
-		// 		return handlers.generate(_.extend(options, {
-		// 			attributes	: argv._.splice(3)
-		// 		}));
-
-		// 	// case 'api': 
-
-				
-
-		// 		// // Then generate a model AND controller.
-		// 		// handlers.generate(_{
-		// 		// 	id			: id,
-		// 		// 	module		: 'controller',
-		// 		// 	actions		: !argsLookLikeAttributes ? arrayOfArgs : [],
-		// 		// 	dry			: argv.dry
-		// 		// });
-		// 		// handlers.generate({
-		// 		// 	id			: id,
-		// 		// 	module		: 'model',
-		// 		// 	attributes	: argsLookLikeAttributes ? arrayOfArgs : [],
-		// 		// 	dry			: argv.dry
-		// 		// });
-		// 		// return;
-
-
 	}
 
 

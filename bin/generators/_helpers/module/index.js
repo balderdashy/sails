@@ -24,6 +24,7 @@ var GenerateFileHelper = require('../file');
  */
 module.exports = function ( options, handlers ) {
 	handlers = switcher(handlers);
+
 	
 	// Validate required options
 	var missingOpts = _.difference([
@@ -31,8 +32,14 @@ module.exports = function ( options, handlers ) {
 	], Object.keys(options));
 	if ( missingOpts.length ) return handlers.invalid(missingOpts);
 
-	// Default appPath
-	options.appPath = options.appPath || process.cwd();
+	// Defaults
+	// NOTE: Some of these options aren't actually used by this helper.
+	// They are simply sane defaults for the generator to use.
+	options = _.defaults(options, {
+		templateEncoding: 'utf8',
+		ext: 'js',
+		appPath: process.cwd()
+	});
 
 	// Save reference to generator so it won't be inadvertently overridden in `options`
 	var generator = options.generator;
@@ -55,42 +62,54 @@ module.exports = function ( options, handlers ) {
 		// Run `configure` method of configured `generator` if it exists
 		// This marshals and provides defaults for our options.
 		if (generator.configure) {
-			options = generator.configure(options, sails);
-		}
-
-		// Ensure required options specified by the configured `generator` actually exist
-		if (generator.requiredOptions) {
-			var missingOpts = _.difference(generator.requiredOptions, Object.keys(options));
-			if ( missingOpts.length ){
-				return handlers.invalid('Missing required options for this generator ::', missingOpts);
-			}
-		}
-
-		// Use contents override if specified
-		options.contents = options.contents || '';
-		async.series([
-
-			// Call out to our `generator` to render our module.
-			// It will respond with a string that we can write to disk.
-			function renderContents (cb) {
-				if ( !generator.render ) return cb();
-				else generator.render(options, function (err, _contents) {
-					if (err) return cb(err);
-					options.contents = options.contents || _contents || '';
-					return cb();
-				});
-			}
-
-		], function (err) {
-			if (err) return handlers.error(err);
-
-			// Now write the contents to disk
-			GenerateFileHelper(options, {
-				ok: handlers.ok,
-				error: handlers.error,
-				alreadyExists: handlers.alreadyExists
+			generator.configure(options, sails, {
+				invalid: function (errors) {
+					handlers.invalid(errors);
+				},
+				ok: _continue_
 			});
-		});
+		}
+		else _continue_(options);
+
+
+
+		// After asynchronous if...
+		function _continue_ (options) {
+
+			// Ensure required options specified by the configured `generator` actually exist
+			if (generator.requiredOptions) {
+				var missingOpts = _.difference(generator.requiredOptions, Object.keys(options));
+				if ( missingOpts.length ){
+					return handlers.invalid('Missing required options for this generator ::', missingOpts);
+				}
+			}
+
+			// Use contents override if specified
+			options.contents = options.contents || '';
+			async.series([
+
+				// Call out to our `generator` to render our module.
+				// It will respond with a string that we can write to disk.
+				function renderContents (cb) {
+					if ( !generator.render ) return cb();
+					else generator.render(options, function (err, _contents) {
+						if (err) return cb(err);
+						options.contents = options.contents || _contents || '';
+						return cb();
+					});
+				}
+
+			], function (err) {
+				if (err) return handlers.error(err);
+
+				// Now write the contents to disk
+				GenerateFileHelper(options, {
+					ok: handlers.ok,
+					error: handlers.error,
+					alreadyExists: handlers.alreadyExists
+				});
+			});
+		}
 
 	});
 };
