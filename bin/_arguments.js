@@ -59,6 +59,7 @@ module.exports = function interpretArguments ( argv, handlers ) {
 			'controller',
 			'model',
 			'view',
+			'api',
 			'adapter',
 			'policy'
 		];
@@ -100,13 +101,18 @@ module.exports = function interpretArguments ( argv, handlers ) {
 		}
 
 		// Allow cli user to specify `FooController` and really mean `foo`
-		id = id.replace(/Controller$/, '');
+		if (module === 'controller') {
+			id = id.replace(/Controller$/, '');
+		}
 
 
 		// Figure out whether subsequent cmdline args are
 		// supposed to be controller actions or model attributes.
 		var arrayOfArgs = argv._.splice(3);
 		var argsLookLikeAttributes = ( arrayOfArgs[0] && arrayOfArgs[0].match(/:/) );
+
+		// If module === 'model', args ALWAYS "lookLikeAttributes"
+		if ( module==='model' ) { argsLookLikeAttributes = true; }
 
 		var actions = argsLookLikeAttributes ? [] : arrayOfArgs;
 		var attributes = argsLookLikeAttributes ? arrayOfArgs : [];

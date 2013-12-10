@@ -104,20 +104,28 @@ var CLIController = {
 			ok: function () {
 
 				var hasActions = options.actions && options.actions.length;
+				var hasAttributes = options.attributes && options.attributes.length;
 				
 				// Build a status message
 				var statusMessage = '';
 				statusMessage += options.dry ? 'That would have generated' : 'Generated';
 				statusMessage += ' a new ' + options.module + ' called `' + options.globalID + '`';
 				statusMessage += hasActions ? ' with ' + options.actions.length + ' actions:' : '.';
+				statusMessage += hasAttributes ? ' with ' + options.attributes.length + ' attributes:' : '.';
 
 				// Log the status message to indicate success
 				if (options.dry) { log.info('(dry run)'); }
 				log.debug(statusMessage);
 
+				// TODO: pull out generator-specific logging into a customizable generator fn
+
 				// Log actions
 				_.each(options.actions || [], function (action) {
 					log.debug('  ' + options.globalID + '.' + action + '()');
+				});
+				// Log attributes
+				_.each(options.attributes || [], function (attribute) {
+					log.debug('  ' + attribute.name + ' : { type: "' + attribute.type + '" }');
 				});
 
 				if (options.dry) {

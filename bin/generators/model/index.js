@@ -47,9 +47,8 @@ module.exports = {
 		});
 
 		// Validate optional attribute arguments
-		var attributes = options.attributes;
 		var invalidAttributes = [];
-		attributes = _.map(attributes, function (attribute, i) {
+		options.attributes = _.map(options.attributes, function (attribute, i) {
 			var parts = attribute.split(':');
 
 			if ( parts[1] === undefined ) parts[1] = 'string';
@@ -114,6 +113,7 @@ module.exports = {
 
 				// Render the attributes' code
 				var renderedAttrs = _.map(options.attributes, function (attr) {
+					console.log('rending attr::',attr);
 					return ejs.render(attrTemplate, attr);
 				});
 
