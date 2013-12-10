@@ -47,6 +47,7 @@ module.exports = {
 		});
 
 		// Validate optional attribute arguments
+		var attributes = options.attributes;
 		var invalidAttributes = [];
 		attributes = _.map(attributes, function (attribute, i) {
 			var parts = attribute.split(':');
@@ -73,13 +74,14 @@ module.exports = {
 
 
 		// Make sure there aren't duplicates
-		var attrNames = util.pluck(options.attributes, 'name');
+		var attrNames = _.pluck(options.attributes, 'name');
 		if ((_.uniq(attrNames)).length !== attrNames.length) {
 			return handlers.invalid('Duplicate attributes not allowed!');
 		}
 
 
 		// Determine template paths to pull data from
+		options.templates = {};
 		options.templates = {
 			model: path.resolve(
 				process.cwd(),
@@ -121,7 +123,7 @@ module.exports = {
 					attributes: renderedAttrs
 				});
 
-				cb(null, renderedController);
+				cb(null, renderedModule);
 			});
 		});
 	}

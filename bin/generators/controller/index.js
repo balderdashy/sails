@@ -83,12 +83,16 @@ module.exports = {
 
 
 		// Determine template paths to pull data from
-		options.pathToControllerTemplate = path.resolve(
-			process.cwd(),
-			options.pathToControllerTemplate || (__dirname+'/controller.ejs') );
-		options.templates.action = path.resolve(
-			process.cwd(),
-			options.templates.action || (__dirname+'/action.ejs'));
+		options.templates = {};
+		options.templates.controller =
+			path.resolve( process.cwd(),
+				options.templates.controller || (__dirname+'/controller.ejs')
+			);
+		options.templates.action = 
+			path.resolve(
+				process.cwd(),
+				options.templates.action || (__dirname+'/action.ejs')
+			);
 
 
 		// Determine `pathToNew`, the destination for the new file
@@ -124,8 +128,8 @@ module.exports = {
 			fs.readFile(options.templates.action, options.templateEncoding, function gotTemplate (err, actionTemplate) {
 				if (err) return handlers.error(err);
 
-				// Create the attribute' code
-				var renderedAttrs = _.map(options.attributes, function (attr) {
+				// Create the actions' code
+				var renderedActions = _.map(options.actions, function (attr) {
 					return ejs.render(actionTemplate, attr);
 				});
 
@@ -133,7 +137,7 @@ module.exports = {
 				var renderedController = ejs.render(controllerTemplate, {
 					filename: options.filename,
 					controllerName: options.globalID,
-					attributes: renderedAttrs
+					actions: renderedActions
 				});
 
 				cb(null, renderedController);
