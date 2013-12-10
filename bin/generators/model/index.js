@@ -93,7 +93,7 @@ module.exports = {
 		// Determine `pathToNew`, the destination for the new file
 		options.pathToNew = options.dirPath + '/' + options.filename;
 
-		// Send back options
+		
 		handlers.ok(options);
 	},
 

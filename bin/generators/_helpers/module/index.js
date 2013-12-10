@@ -52,6 +52,7 @@ module.exports = function ( options, handlers ) {
 	var sails = new Sails();
 	sails.load({
 		appPath: options.appPath,
+		globals: false,
 		loadHooks: ['userconfig', 'moduleloader']
 	}, function loadedSailsConfig (err) {
 		if (err) {
@@ -80,7 +81,7 @@ module.exports = function ( options, handlers ) {
 			if (generator.requiredOptions) {
 				var missingOpts = _.difference(generator.requiredOptions, Object.keys(options));
 				if ( missingOpts.length ){
-					return handlers.invalid('Missing required options for this generator ::', missingOpts);
+					return handlers.invalid('Missing required options for this generator :: '+missingOpts);
 				}
 			}
 
@@ -101,17 +102,14 @@ module.exports = function ( options, handlers ) {
 
 			], function (err) {
 				if (err) return handlers.error(err);
-
-				// Now write the contents to disk using our `generate` function:
-				if ( generator.generate ) {
-					return generator.generate(options, handlers);
-				}
 				
-				// If no `generate` function exists, default to:
 				GenerateFileHelper(options, {
-					ok: handlers.ok,
+					ok: function () {
+						// Pass along options to that sub-generators can access them
+						handlers.ok(options);
+					},
 					error: handlers.error,
-					alreadyExists: handlers.alreadyExists
+					alreadyExists: handlers.alreadyExists || handlers.error
 				});
 				return;
 			});

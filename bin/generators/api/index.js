@@ -2,8 +2,11 @@
  * Module dependencies
  */
 var GeneratorFactory = require('../factory');
+var generateController = GeneratorFactory( 'controller' );
+var generateModel = GeneratorFactory( 'model' );
+var async = require('async');
 
-
+var switcher = require('../../../util/switcher');
 
 
 /**
@@ -31,10 +34,28 @@ module.exports = {
 	 * Override generation logic
 	 */
 	generate: function (options, cb) {
+		cb = switcher(cb);
+
+		console.log('generate api...', options);
 		async.auto({
-			controller	: GeneratorFactory( 'controller' )(options),
-			model		: GeneratorFactory( 'model' )(options)
-		}, cb);
+			controller	: function (cb) { generateController(options, cb); },
+			model		: ['controller', function (cb) { generateModel(options, cb); }]
+		}, function (err, async_data) {
+			if (err) return cb(err);
+
+			console.log('-->',options.generator);
+			// Pass back self to allow logStatusOverride to be used
+			return cb(null, options.generator);
+		});
+	},
+
+	logStatusOverride: function (options, log) {
+		var controllerGlobalID = options.id;
+		var modelGlobalID = options.id;
+
+		log('Created ' + controllerGlobalID + ' and ' + modelGlobalID + '.');
+		log('REST API will be available next time you lift the server.');
+		log('(@ `/' + options.id + '` with default settings)');
 	}
 
 };

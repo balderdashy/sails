@@ -10,28 +10,29 @@ var GenerateModuleHelper = require('../generators/_helpers/module');
 module.exports = function (generatorName) {
 
 	var generator;
+	var generatorPath = __dirname + '/' + generatorName;
 
 	// Try `generators`
 	try {
-		generator = require( __dirname + '/' + generatorName );
+		generator = require( generatorPath );
 	}
 	catch(e0) {
-
-		// // Try npm
-		// try {
-		// 	generator = require( __dirname + '/_helpers/' + generatorName );
-		// }
-		// catch (e1) {
-			throw new Error(
-				'Cannot require specified generator, `'+ generatorName +'` ' + 
-				' ( @ ' + __dirname + '/' + generatorName + ')'
-			);
-		// }
+		throw new Error(
+			'Cannot require specified generator, `'+ generatorName +'` ' + 
+			' ( @ ' + generatorPath + ')'
+		);
 	}
 
 	
 	// Return a working generator
 	return function (options, handlers) {
+
+		// If generate function explicitly defined, return it.
+		if (generator.generate) {
+			return generator.generate;
+		}
+
+		// Otherwise, by default, use module helper
 		return GenerateModuleHelper(_.extend(options,{
 			generator: generator
 		}), handlers);

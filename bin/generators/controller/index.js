@@ -11,6 +11,7 @@ var generateFile = require('../_helpers/file');
 _.str = require('underscore.string');
 
 
+
 /**
  * Generate a Sails controller
  *

@@ -101,7 +101,12 @@ var CLIController = {
 			alreadyExists: function () {
 				CLIController.error(options.globalID + ' already exists!');
 			},
-			ok: function () {
+			ok: function () {	
+
+				// Log custom message if override is defined
+				if (options.generator && options.generator.logStatusOverride) {
+					return options.generator.logStatusOverride(options, log);
+				}
 
 				var hasActions = options.actions && options.actions.length;
 				var hasAttributes = options.attributes && options.attributes.length;
