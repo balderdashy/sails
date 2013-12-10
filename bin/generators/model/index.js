@@ -33,12 +33,6 @@ module.exports = {
 
 	/**
 	 * Provide custom validations & defaults for this generator's options.
-	 *
-	 * @param {Object} options
-	 * @param {SailsApp} sails
-	 * @param {Object{Functions}} handlers
-	 *
-	 * @return options
 	 */
 	configure: function (options, sails, handlers) {
 
@@ -54,7 +48,7 @@ module.exports = {
 
 		// Validate optional attribute arguments
 		var invalidAttributes = [];
-		attributes = util.map(attributes, function (attribute, i) {
+		attributes = _.map(attributes, function (attribute, i) {
 			var parts = attribute.split(':');
 
 			if ( parts[1] === undefined ) parts[1] = 'string';
@@ -78,13 +72,21 @@ module.exports = {
 		}
 
 
+		// Make sure there aren't duplicates
+		var attrNames = util.pluck(options.attributes, 'name');
+		if ((_.uniq(attrNames)).length !== attrNames.length) {
+			return handlers.invalid('Duplicate attributes not allowed!');
+		}
+
+
 		// Determine template paths to pull data from
-		options.pathToControllerTemplate = path.resolve(
-			process.cwd(),
-			options.pathToControllerTemplate || (__dirname+'/controller.ejs') );
-		options.pathToActionTemplate = path.resolve(
-			process.cwd(),
-			options.pathToActionTemplate || (__dirname+'/action.ejs'));
+		options.templates = {
+			model: path.resolve(
+				process.cwd(),
+				options.templates.model || (__dirname+'/model.ejs') ),
+			attribute: path.resolve(process.cwd(),
+				options.templates.attribute || (__dirname+'/attribute.ejs'))
+		};
 
 
 		// Determine `pathToNew`, the destination for the new file
@@ -98,37 +100,25 @@ module.exports = {
 
 	/**
 	 * Render the string contents to write to disk for this module.
-	 * e.g. read a template file
-	 *
-	 * @param {Object} options
-	 *		@option {String} id
-	 *		@option {String} pathToControllerTemplate
-	 *		@option {String} pathToActionTemplate
-	 *		@option {String} templateEncoding [='utf-8']
-	 *
-	 * @param {Function|Object} callback
-	 *			-> `fn(err, stringToWrite)` or `{ ok: ..., error: ..., etc. }`
-	 *		@case {Function|Object} ok
 	 */
 	render: function ( options, cb ) {
 
 		// Read controller template from disk
-		fs.readFile(options.pathToControllerTemplate, options.templateEncoding, function gotTemplate (err, controllerTemplate) {
+		fs.readFile(options.templates.model, options.templateEncoding, function gotTemplate (err, modelTemplate) {
 			if (err) return handlers.error(err);
 
-			fs.readFile(options.pathToActionTemplate, options.templateEncoding, function gotTemplate (err, actionTemplate) {
+			fs.readFile(options.templates.attribute, options.templateEncoding, function gotTemplate (err, attrTemplate) {
 				if (err) return handlers.error(err);
 
-				// Create the actions' code
-				var renderedActions = _.map(options.actions, function (action) {
-					return ejs.render(actionTemplate, { actionName: action });
+				// Render the attributes' code
+				var renderedAttrs = _.map(options.attributes, function (attr) {
+					return ejs.render(attrTemplate, attr);
 				});
 
-				// Create the controller code
-				var renderedController = ejs.render(controllerTemplate, {
+				// Render the code for the module as a string
+				var renderedModule = ejs.render(modelTemplate, {
 					filename: options.filename,
-					controllerName: options.globalID,
-					actions: renderedActions
+					attributes: renderedAttrs
 				});
 
 				cb(null, renderedController);

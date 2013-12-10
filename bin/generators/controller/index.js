@@ -86,9 +86,9 @@ module.exports = {
 		options.pathToControllerTemplate = path.resolve(
 			process.cwd(),
 			options.pathToControllerTemplate || (__dirname+'/controller.ejs') );
-		options.pathToActionTemplate = path.resolve(
+		options.templates.action = path.resolve(
 			process.cwd(),
-			options.pathToActionTemplate || (__dirname+'/action.ejs'));
+			options.templates.action || (__dirname+'/action.ejs'));
 
 
 		// Determine `pathToNew`, the destination for the new file
@@ -105,33 +105,35 @@ module.exports = {
 	 *
 	 * @param {Object} options
 	 *		@option {String} id
-	 *		@option {String} pathToControllerTemplate
-	 *		@option {String} pathToActionTemplate
+	 *		@option {String} templates
+	 *						: controller
+	 *						: action
 	 *		@option {String} templateEncoding [='utf-8']
 	 *
 	 * @param {Function|Object} callback
 	 *			-> `fn(err, stringToWrite)` or `{ ok: ..., error: ..., etc. }`
-	 *		@case {Function|Object} ok
+	 *		@handler {Function} ok
+	 *		@handler {Function} invalid
 	 */
 	render: function ( options, cb ) {
 
 		// Read controller template from disk
-		fs.readFile(options.pathToControllerTemplate, options.templateEncoding, function gotTemplate (err, controllerTemplate) {
+		fs.readFile(options.templates.controller, options.templateEncoding, function gotTemplate (err, controllerTemplate) {
 			if (err) return handlers.error(err);
 
-			fs.readFile(options.pathToActionTemplate, options.templateEncoding, function gotTemplate (err, actionTemplate) {
+			fs.readFile(options.templates.action, options.templateEncoding, function gotTemplate (err, actionTemplate) {
 				if (err) return handlers.error(err);
 
-				// Create the actions' code
-				var renderedActions = _.map(options.actions, function (action) {
-					return ejs.render(actionTemplate, { actionName: action });
+				// Create the attribute' code
+				var renderedAttrs = _.map(options.attributes, function (attr) {
+					return ejs.render(actionTemplate, attr);
 				});
 
 				// Create the controller code
 				var renderedController = ejs.render(controllerTemplate, {
 					filename: options.filename,
 					controllerName: options.globalID,
-					actions: renderedActions
+					attributes: renderedAttrs
 				});
 
 				cb(null, renderedController);
