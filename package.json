@@ -50,7 +50,7 @@
     "grunt-contrib-copy": "0.4.1",
     "grunt-contrib-clean": "0.4.1",
     "grunt-contrib-concat": "0.3.0",
-    "grunt-sails-linker": "git://github.com/Zolmeister/grunt-sails-linker.git",
+    "grunt-sails-linker": "~0.9.5",
     "grunt-contrib-jst": "0.5.0",
     "grunt-contrib-watch": "0.4.4",
     "grunt-contrib-uglify": "0.2.2",
@@ -62,7 +62,8 @@
     "connect-flash": "0.1.1",
     "pluralize": "0.0.5",
     "json-stringify-safe": "~5.0.0",
-    "checksum": "~0.1.1"
+    "checksum": "~0.1.1",
+    "sails-util": "git://github.com/balderdashy/sails-util.git"
   },
   "devDependencies": {
     "mocha": "*",
