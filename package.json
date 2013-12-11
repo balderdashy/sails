@@ -62,10 +62,10 @@
     "connect-flash": "0.1.1",
     "pluralize": "0.0.5",
     "json-stringify-safe": "~5.0.0",
-    "checksum": "~0.1.1",
     "sails-util": "git://github.com/balderdashy/sails-util.git"
   },
   "devDependencies": {
+    "checksum": "~0.1.1",
     "mocha": "*",
     "request": "*",
     "wrench": "~1.5.1"
