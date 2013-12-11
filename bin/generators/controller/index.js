@@ -99,7 +99,7 @@ module.exports = {
 		// Determine `pathToNew`, the destination for the new file
 		options.pathToNew = options.dirPath + '/' + options.filename;
 
-		return handlers.ok(options);
+		return handlers.success(options);
 	},
 
 
@@ -116,8 +116,8 @@ module.exports = {
 	 *		@option {String} templateEncoding [='utf-8']
 	 *
 	 * @param {Function|Object} callback
-	 *			-> `fn(err, stringToWrite)` or `{ ok: ..., error: ..., etc. }`
-	 *		@handler {Function} ok
+	 *			-> `fn(err, stringToWrite)` or `{ success: ..., error: ..., etc. }`
+	 *		@handler {Function} success
 	 *		@handler {Function} invalid
 	 */
 	render: function ( options, cb ) {

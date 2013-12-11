@@ -10,7 +10,6 @@ module.exports = function (sails) {
 	 * `sails www`
 	 *
 	 * Run the `grunt build` task
-	 *
 	 */
 
 	return function (taskName, cb) {

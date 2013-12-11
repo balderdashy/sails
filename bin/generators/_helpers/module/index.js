@@ -16,7 +16,7 @@ var GenerateFileHelper = require('../file');
  *
  * @option {Object} generator
  *
- * @handlers ok
+ * @handlers success
  * @handlers notSailsApp
  * @handlers alreadyExists
  * @handlers invalid
@@ -67,7 +67,7 @@ module.exports = function ( options, handlers ) {
 				invalid: function (errors) {
 					handlers.invalid(errors);
 				},
-				ok: _continue_
+				success: _continue_
 			});
 		}
 		else _continue_(options);
@@ -104,9 +104,9 @@ module.exports = function ( options, handlers ) {
 				if (err) return handlers.error(err);
 				
 				GenerateFileHelper(options, {
-					ok: function () {
+					success: function () {
 						// Pass along options to that sub-generators can access them
-						handlers.ok(options);
+						handlers.success(options);
 					},
 					error: handlers.error,
 					alreadyExists: handlers.alreadyExists || handlers.error

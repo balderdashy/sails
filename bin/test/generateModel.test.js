@@ -21,7 +21,7 @@ describe('model generator', function () {
 			};
 		});
 
-		it('should work', expect('ok'));		
+		it('should work', expect('success'));		
 	});
 
 	describe('invalid usage', function () {
@@ -33,7 +33,7 @@ describe('model generator', function () {
 
 		it('requires `id` option', expect({
 			invalid: true,
-			ok: 'Should not hit `ok` handler since required `id` parameter was not specified!'
+			success: 'Should not hit `success` handler since required `id` parameter was not specified!'
 		}));
 	});
 
@@ -50,7 +50,7 @@ describe('model generator', function () {
 
 		it('should trigger `notSailsApp`', expect({
 			notSailsApp: true,
-			ok: 'Should trigger the `notSailsApp` handler, not `ok`!'
+			success: 'Should trigger the `notSailsApp` handler, not `success`!'
 		}));
 
 
@@ -60,7 +60,7 @@ describe('model generator', function () {
 				this.options.appPath = this.heap.dirpath;
 			});
 
-			it('should trigger `ok`', expect('ok'));
+			it('should trigger `success`', expect('success'));
 		});
 	});
 });

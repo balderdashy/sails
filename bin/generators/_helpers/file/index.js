@@ -19,7 +19,7 @@ var switcher = require('sails-util/switcher');
  * [@option {Boolean} force=false]
  * [@option {Boolean} dry=false]
  *
- * @handlers ok
+ * @handlers success
  * @handlers error
  * @handlers invalid
  * @handlers alreadyExists
@@ -48,7 +48,7 @@ module.exports = function ( options, handlers ) {
 		}
 
 		// Don't actually write the file if this is a dry run.
-		if (options.dry) return handlers.ok();
+		if (options.dry) return handlers.success();
 
 		async.series([
 			function deleteExistingFileIfNecessary (cb) {
@@ -60,7 +60,7 @@ module.exports = function ( options, handlers ) {
 			}
 		], function (err) {
 			if (err) return handlers.error(err);
-			else handlers.ok();
+			else handlers.success();
 		});
 
 	});

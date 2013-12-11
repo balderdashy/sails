@@ -11,7 +11,7 @@ var _			= require('lodash'),
 	Logger		= require('../lib/hooks/logger/captains'),
 	Sails		= require('../lib/app');
 	_interpretArgs = require('./_arguments');
-	util		= require('../util');
+	cliutil		= require('sails-util/cli');
 	_.str		= require('underscore.string'),
 	REPL		= require('repl'),
 	Grunt__		= require('./www'),
@@ -21,7 +21,7 @@ var _			= require('lodash'),
 
 
 // Build Sails options using command-line arguments
-var sailsOptions = util.getCLIConfig(argv);
+var sailsOptions = cliutil.getCLIConfig(argv);
 
 // Build logger
 var log = new Logger(sailsOptions.log);
@@ -101,7 +101,7 @@ var CLIController = {
 			alreadyExists: function () {
 				CLIController.error(options.globalID + ' already exists!');
 			},
-			ok: function () {	
+			success: function () {	
 
 				// Log custom message if override is defined
 				if (options.generator && options.generator.logStatusOverride) {
@@ -397,7 +397,7 @@ var CLIController = {
 			if (err) return Err.fatal.failedToLoadSails(err);
 			console.log('');
 			log.info('Welcome to Sails! (v' + sails.version + ')');
-			log.info( util.usage.sails() );
+			log.info( cliutil.usage.sails() );
 			console.log('');
 		});
 	}

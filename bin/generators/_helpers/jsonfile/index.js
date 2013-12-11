@@ -15,7 +15,7 @@ var switcher = require('sails-util/switcher');
  * @option {Object} data
  * [@option {Boolean} force=false]
  *
- * @handlers ok
+ * @handlers success
  * @handlers error
  * @handlers alreadyExists
  */
@@ -55,7 +55,7 @@ module.exports = function ( options, handlers ) {
 		function _afterwards_ () {
 			fs.outputJSON(pathToNew, options.data, function (err){
 				if (err) return handlers.error(err);
-				else handlers.ok();
+				else handlers.success();
 			});
 		}
 	});

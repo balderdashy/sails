@@ -47,7 +47,7 @@ describe('jsonfile generator', function () {
 			};
 		});
 
-		it('should trigger `ok`', expect('ok'));
+		it('should trigger `success`', expect('success'));
 		it('should create a file', assert.fileExists);
 
 	});
@@ -68,7 +68,7 @@ describe('jsonfile generator', function () {
 			this.heap.touch(this.options.pathToNew, cb);
 		});
 
-		it(	'should trigger "alreadyExists" handler', expect({ alreadyExists: true, ok: 'Should not override existing file without `options.force`!' }));
+		it(	'should trigger "alreadyExists" handler', expect({ alreadyExists: true, success: 'Should not override existing file without `options.force`!' }));
 
 	});
 
@@ -89,7 +89,7 @@ describe('jsonfile generator', function () {
 			this.heap.touch(this.options.pathToNew, cb);
 		});
 
-		it('should trigger `ok`', expect('ok'));
+		it('should trigger `success`', expect('success'));
 
 	});
 

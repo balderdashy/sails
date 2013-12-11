@@ -37,7 +37,7 @@ describe('module generator', function () {
 
 		it('should trigger `notSailsApp`', expect({
 			notSailsApp: true,
-			ok: 'Should trigger the `notSailsApp` handler, not `ok`!'
+			success: 'Should trigger the `notSailsApp` handler, not `success`!'
 		}));
 
 
@@ -47,7 +47,7 @@ describe('module generator', function () {
 				this.options.pathToNew = this.sailsHeap.alloc();
 			});
 
-			it('should trigger `ok`', expect('ok'));
+			it('should trigger `success`', expect('success'));
 		});
 	});
 
@@ -63,7 +63,7 @@ describe('module generator', function () {
 			};
 		});
 
-		it('should trigger `ok`', expect('ok'));
+		it('should trigger `success`', expect('success'));
 		it('should create an empty file', assert.fileExists);
 
 	});
@@ -83,7 +83,7 @@ describe('module generator', function () {
 			};
 		});
 
-		it('should trigger `ok`', expect('ok'));
+		it('should trigger `success`', expect('success'));
 		it('should create a file', assert.fileExists);
 		it('file contents match the generator\'s `render` method', assert.fileIsExactly('some stuff'));
 		it('file contents match the generator\'s `render` method', assert.fileIsNot('A$(GJDALDG'));
@@ -105,7 +105,7 @@ describe('module generator', function () {
 			};
 		});
 
-		it('should trigger `ok`', expect('ok'));
+		it('should trigger `success`', expect('success'));
 		it('should create a file', assert.fileExists);
 		it('file contents match the `contents` override', assert.fileIsExactly('foo'));
 		it('file contents match the `contents` override', assert.fileIsNot('fo3j2jggjo'));
@@ -132,7 +132,7 @@ describe('module generator', function () {
 				this.options.pathToNew = this.sailsHeap.alloc();
 				this.sailsHeap.touch(this.options.pathToNew, cb);
 			});
-			it(	'should trigger "alreadyExists" handler', expect({ alreadyExists: true, ok: 'Should not override existing file without `options.force`!' }));
+			it(	'should trigger "alreadyExists" handler', expect({ alreadyExists: true, success: 'Should not override existing file without `options.force`!' }));
 		});
 
 		describe('(directory)', function () {
@@ -141,7 +141,7 @@ describe('module generator', function () {
 				this.options.pathToNew = this.sailsHeap.alloc();
 				this.sailsHeap.mkdirp(this.options.pathToNew, cb);
 			});
-			it(	'should trigger "alreadyExists" handler', expect({ alreadyExists: true, ok: 'Should not override existing directory without `options.force`!' }));
+			it(	'should trigger "alreadyExists" handler', expect({ alreadyExists: true, success: 'Should not override existing directory without `options.force`!' }));
 		});
 
 	});
@@ -168,7 +168,7 @@ describe('module generator', function () {
 				this.sailsHeap.touch(this.options.pathToNew, cb);
 			});
 
-			it('should trigger `ok`', expect('ok'));
+			it('should trigger `success`', expect('success'));
 		});
 
 		describe('(directory)', function () {
@@ -179,7 +179,7 @@ describe('module generator', function () {
 				this.sailsHeap.mkdirp(this.options.pathToNew, cb);
 			});
 
-			it('should trigger `ok`', expect('ok'));
+			it('should trigger `success`', expect('success'));
 		});
 
 	});

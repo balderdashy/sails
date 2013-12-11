@@ -94,7 +94,7 @@ module.exports = {
 		options.pathToNew = options.dirPath + '/' + options.filename;
 
 		
-		handlers.ok(options);
+		handlers.success(options);
 	},
 
 

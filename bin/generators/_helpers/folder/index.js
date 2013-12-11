@@ -15,7 +15,7 @@ var switcher = require('sails-util/switcher');
  * @option {String} pathToNew
  * [@option {Boolean} force=false]
  *
- * @handlers [ok]
+ * @handlers [success]
  * @handlers alreadyExists
  * @handlers invalid
  * @handlers error
@@ -56,7 +56,7 @@ module.exports = function ( options, handlers ) {
 		function _afterwards_() {
 			fs.mkdir(pathToNew, function directoryWasWritten (err) {
 				if (err) return handlers.error(err);
-				return handlers.ok();
+				return handlers.success();
 			});
 		}
 

@@ -21,7 +21,7 @@ describe('controller generator', function () {
 			};
 		});
 
-		it('should work', expect('ok'));		
+		it('should work', expect('success'));		
 	});
 
 	describe('invalid usage', function () {
@@ -33,7 +33,7 @@ describe('controller generator', function () {
 
 		it('requires `id` option', expect({
 			invalid: true,
-			ok: 'Should not hit `ok` handler since required `id` parameter was not specified!'
+			success: 'Should not hit `success` handler since required `id` parameter was not specified!'
 		}));
 	});
 
@@ -50,7 +50,7 @@ describe('controller generator', function () {
 
 		it('should trigger `notSailsApp`', expect({
 			notSailsApp: true,
-			ok: 'Should trigger the `notSailsApp` handler, not `ok`!'
+			success: 'Should trigger the `notSailsApp` handler, not `success`!'
 		}));
 
 
@@ -60,7 +60,7 @@ describe('controller generator', function () {
 				this.options.appPath = this.heap.dirpath;
 			});
 
-			it('should trigger `ok`', expect('ok'));
+			it('should trigger `success`', expect('success'));
 		});
 	});
 
@@ -92,7 +92,7 @@ describe('controller generator', function () {
 	// 	});
 
 
-	// 	it('should trigger `ok`', expect('ok'));
+	// 	it('should trigger `success`', expect('success'));
 
 	// });
 
@@ -109,7 +109,7 @@ describe('controller generator', function () {
 	// 		};
 	// 	});
 
-	// 	it('should trigger `ok`', expect('ok'));
+	// 	it('should trigger `success`', expect('success'));
 	// 	it('should create a file', assert.fileExists);
 	// 	it('should create a file with the same checksum as the template', assert.fileChecksumMatchesTemplate);
 
@@ -131,7 +131,7 @@ describe('controller generator', function () {
 	// 			this.options.pathToNew = this.heap.alloc();
 	// 			this.heap.touch(this.options.pathToNew, cb);
 	// 		});
-	// 		it(	'should trigger "alreadyExists" handler', expect({ alreadyExists: true, ok: 'Should not override existing file without `options.force`!' }));
+	// 		it(	'should trigger "alreadyExists" handler', expect({ alreadyExists: true, success: 'Should not override existing file without `options.force`!' }));
 	// 	});
 
 	// 	describe('(directory)', function () {
@@ -140,7 +140,7 @@ describe('controller generator', function () {
 	// 			this.options.pathToNew = this.heap.alloc();
 	// 			this.heap.mkdirp(this.options.pathToNew, cb);
 	// 		});
-	// 		it(	'should trigger "alreadyExists" handler', expect({ alreadyExists: true, ok: 'Should not override existing directory without `options.force`!' }));
+	// 		it(	'should trigger "alreadyExists" handler', expect({ alreadyExists: true, success: 'Should not override existing directory without `options.force`!' }));
 	// 	});
 
 	// });
@@ -162,7 +162,7 @@ describe('controller generator', function () {
 	// 			this.heap.touch(this.options.pathToNew, cb);
 	// 		});
 
-	// 		it('should trigger `ok`', expect('ok'));
+	// 		it('should trigger `success`', expect('success'));
 	// 	});
 
 	// 	describe('(directory)', function () {
@@ -173,7 +173,7 @@ describe('controller generator', function () {
 	// 			this.heap.mkdirp(this.options.pathToNew, cb);
 	// 		});
 
-	// 		it('should trigger `ok`', expect('ok'));
+	// 		it('should trigger `success`', expect('success'));
 	// 	});
 
 	// });

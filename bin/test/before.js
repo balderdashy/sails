@@ -29,7 +29,7 @@ before(function (cb) {
 				sails: '~99.9.99'
 			}
 		}
-	}, { ok: cb });
+	}, { success: cb });
 
 
 	/*
