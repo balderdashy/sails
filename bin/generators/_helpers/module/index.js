@@ -6,7 +6,7 @@ var Sails = require('../../../../lib/app');
 var _ = require('lodash');
 _.str = require('underscore.string');
 var async = require('async');
-var switcher = require('../../../../util/switcher');
+var switcher = require('sails-util/switcher');
 
 var GenerateFileHelper = require('../file');
 

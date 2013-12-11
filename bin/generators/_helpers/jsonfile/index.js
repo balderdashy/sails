@@ -4,7 +4,7 @@
 var fs = require('fs-extra');
 var _ = require('lodash');
 var path = require('path');
-var switcher = require('../../../../util/switcher');
+var switcher = require('sails-util/switcher');
 
 
 

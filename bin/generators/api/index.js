@@ -5,8 +5,7 @@ var GeneratorFactory = require('../factory');
 var generateController = GeneratorFactory( 'controller' );
 var generateModel = GeneratorFactory( 'model' );
 var async = require('async');
-
-var switcher = require('../../../util/switcher');
+var switcher = require('sails-util/switcher');
 
 
 /**

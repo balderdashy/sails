@@ -6,7 +6,7 @@ var fs = require('fs-extra'),
 	ejs = require('ejs'),
 	async = require('async'),
 	_ = require('lodash');
-var switcher = require('../../../../util/switcher');
+var switcher = require('sails-util/switcher');
 
 
 
