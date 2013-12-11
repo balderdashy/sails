@@ -45,7 +45,7 @@ module.exports = function ( options, handlers ) {
 	var generator = options.generator;
 
 	// Ensure this directory is a Sails app  (override with `force` option)
-	if ( !Sails.isSailsApp( options.appPath ) && !options.force ) {
+	if ( !Sails.isSailsAppSync( options.appPath ) && !options.force ) {
 		return handlers.notSailsApp();
 	}
 
