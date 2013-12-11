@@ -2,7 +2,7 @@
  * Module dependencies
  */
 var argv = require('optimist').argv,
-	util = require('../util'),
+	util = require('sails-util'),
 	Logger = require('../lib/hooks/logger/captains'),
 	path = require('path');
 
