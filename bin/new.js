@@ -78,6 +78,7 @@ module.exports = function(sails) {
 
 		// Add these boilerplate dirs regardless
 		utils.copyBoilerplate('api', outputPath + '/api');
+    utils.copyBoilerplate('lib', outputPath + '/lib');
 
 		utils.copyBoilerplate('config', outputPath + '/config', function() {
 
