@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!-- 
+                                                       
+                                                       
+       444444444       000000000            444444444  
+      4::::::::4     00:::::::::00         4::::::::4  
+     4:::::::::4   00:::::::::::::00      4:::::::::4  
+    4::::44::::4  0:::::::000:::::::0    4::::44::::4  
+   4::::4 4::::4  0::::::0   0::::::0   4::::4 4::::4  
+  4::::4  4::::4  0:::::0     0:::::0  4::::4  4::::4  
+ 4::::4   4::::4  0:::::0     0:::::0 4::::4   4::::4  
+4::::444444::::4440:::::0 000 0:::::04::::444444::::444
+4::::::::::::::::40:::::0 000 0:::::04::::::::::::::::4
+4444444444:::::4440:::::0     0:::::04444444444:::::444
+          4::::4  0:::::0     0:::::0          4::::4  
+          4::::4  0::::::0   0::::::0          4::::4  
+          4::::4  0:::::::000:::::::0          4::::4  
+        44::::::44 00:::::::::::::00         44::::::44
+        4::::::::4   00:::::::::00           4::::::::4
+        4444444444     000000000             4444444444
+                                                       
+
+
+  This is the default "404: Not Found" page.  
+  User agents that don't "Accept" HTML will see a JSON version instead.
+  You can customize the control logic for your needs in `config/404.js`
+
+  Sails considers a request to be in a "404: Not Found" state when a user
+  requests a URL which doesn't match any of your app's routes or blueprints.
+
+  You can also trigger this response from one of your controllers or policies with:
+  `return res.notFound();`
+
+
+-->
+<html>
+  <head>
+    <title>Page Not Found</title>
+    <link href='http://sailsjs.org/styles/fonts.css' rel='stylesheet'/>
+    <style>
+      /* Styles included inline since you'll probably be deleting this page anyway */
+      html,body{text-align:left;font-size:1em}html,body,img,form,textarea,input,fieldset,div,p,div,ul,li,ol,dl,dt,dd,h1,h2,h3,h4,h5,h6,pre,code{margin:0;padding:0}ul,li{list-style:none}img{display:block}a img{border:0}a{text-decoration:none;font-weight:normal;font-family:inherit}*:active,*:focus{outline:0;-moz-outline-style:none}h1,h2,h3,h4,h5,h6,h7{font-weight:normal;font-size:1em}.clearfix:after{clear:both;content:".";display:block;font-size:0;height:0;line-height:0;visibility:hidden}.fourohfour .ocean{background:url('http://sailsjs.com/images/waves.png') #0c8da0 no-repeat center 0;height:315px}.fourohfour .ocean img{margin-right:auto;margin-left:auto}.fourohfour .waves{display:block;padding-top:25px;margin-right:auto;margin-left:auto}.fourohfour .main{display:block;margin-top:90px}.fourohfour .logo{width:150px;margin-top:3.5em;margin-left:auto;margin-right:auto}.fourohfour .fishy{display:block;padding-top:27px}.fourohfour .help{padding-top:2em}.fourohfour h1{font-family:"Open Sans","Myriad Pro",Arial,sans-serif;font-weight:bold;font-size:1.7em;color:#001c20;text-align:center}.fourohfour h2{font-family:"Open Sans","Myriad Pro",Arial,sans-serif;font-weight:300;font-size:1.5em;color:#001c20;text-align:center}.fourohfour p{font-family:"Open Sans","Myriad Pro",Arial,sans-serif;font-size:1.25em;color:#001c20;text-align:center}.fourohfour a{color:#118798}.fourohfour a:hover{color:#b1eef7}
+    </style>
+  </head>
+  <body>
+
+    <div class="fourohfour">
+      <div class="ocean">
+        <img class="fishy" src="http://sailsjs.org/images/fishy4.png">
+      </div>
+
+      <div class="main">
+        <h1>
+          Something's fishy here.
+        </h1>
+        <h2> 
+          The page you were trying to reach doesn't exist.
+        </h2>
+        <p class="help">
+          <a href="http://en.wikipedia.org/wiki/HTTP_404">Why</a> might this be happening?
+        </p>
+      </div>
+        
+      <div class="logo">
+        <a href="http://sailsjs.org">
+          <img src="http://sailsjs.org/images/logo.png">
+        </a>
+      </div>
+    </div>
+
+  </body>
+</html>

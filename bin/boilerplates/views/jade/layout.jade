@@ -1,0 +1,23 @@
+!!!
+html
+  head
+    title= title
+
+    // Viewport mobile tag for sensible mobile support
+    meta(name="viewport",content="width=device-width, initial-scale=1, maximum-scale=1")
+
+    block styles
+
+  body
+    block body
+
+    // A few key dependencies, linked in order
+
+    // Bring in the socket.io client
+    script(type="text/javascript", src="/js/socket.io.js")
+
+    // then beef it up with some convenience logic for talking to Sails.js'
+    script(type="text/javascript", src="/js/sails.io.js")
+
+    // listen on socket.io for incoming messages
+    script(type="text/javascript", src="/js/app.js")
