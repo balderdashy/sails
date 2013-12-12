@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "waterline": "git://github.com/balderdashy/waterline.git#multiAssociations",
+    "sails-util": "~0.10.0",
     "sails-disk": "git://github.com/balderdashy/sails-disk.git#associations",
     "express": "3.4.3",
     "socket.io": "0.9.14",
@@ -61,8 +62,7 @@
     "ejs-locals": "1.0.2",
     "connect-flash": "0.1.1",
     "pluralize": "0.0.5",
-    "json-stringify-safe": "5.0.0",
-    "sails-util": "git://github.com/balderdashy/sails-util.git"
+    "json-stringify-safe": "5.0.0"
   },
   "devDependencies": {
     "checksum": "~0.1.1",
