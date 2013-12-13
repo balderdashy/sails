@@ -98,7 +98,6 @@ module.exports = {
 	},
 
 
-
 	/**
 	 * Render the string contents to write to disk for this module.
 	 */
