@@ -104,8 +104,8 @@ var CLIController = {
 			success: function () {	
 
 				// Log custom message if override is defined
-				if (options.generator && options.generator.logStatusOverride) {
-					return options.generator.logStatusOverride(options, log);
+				if (options.logStatusOverride) {
+					return options.logStatusOverride(options, log);
 				}
 
 				var hasActions = options.actions && options.actions.length;
