@@ -74,7 +74,7 @@ require('../lib/configuration')(sails).load(function (err, config) {
 
 
   // Check if console was requested, if so, launch console
-  else if (_.contains(['console'], argv._[0])) {
+  else if (_.contains(['console', 'c'], argv._[0])) {
     console.log();
     sails.log('Welcome to the Sails console (v' + sails.version + ')');
     sails.log('( to exit, type <CTRL>+<C> )');
