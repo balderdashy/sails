@@ -133,6 +133,7 @@ module.exports = function (grunt) {
   grunt.loadTasks(depsPath + '/grunt-contrib-cssmin/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-less/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-coffee/tasks');
+  grunt.loadTasks(depsPath + '/grunt-sync/tasks');
 
   // Project configuration.
   grunt.initConfig({
@@ -158,6 +159,16 @@ module.exports = function (grunt) {
           dest: 'www'
         }
         ]
+      }
+    },
+
+    sync: {
+      dev: {
+        files: [{
+          cwd: './assets',
+          src: ['**/*.!(coffee)'],
+          dest: '.tmp/public'
+        }]
       }
     },
 
@@ -407,7 +418,7 @@ module.exports = function (grunt) {
         files: ['assets/**/*'],
 
         // When assets are changed:
-        tasks: ['compileAssets', 'linkAssets']
+        tasks: ['syncAssets', 'linkAssets']
       }
     }
   });
@@ -424,6 +435,13 @@ module.exports = function (grunt) {
     'jst:dev',
     'less:dev',
     'copy:dev',    
+    'coffee:dev'
+  ]);
+
+  grunt.registerTask('syncAssets', [
+    'jst:dev',
+    'less:dev',
+    'sync:dev',
     'coffee:dev'
   ]);
 
