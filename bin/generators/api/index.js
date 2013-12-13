@@ -6,6 +6,7 @@ var generateController = GeneratorFactory( 'controller' );
 var generateModel = GeneratorFactory( 'model' );
 var async = require('async');
 var switcher = require('sails-util/switcher');
+var util = require('sails-util');
 
 
 /**
@@ -35,24 +36,27 @@ module.exports = {
 	generate: function (options, cb) {
 		cb = switcher(cb);
 
-		console.log('generate api...', options);
+		// Create two copies of the options, since they will be modified by the
+		// controller and model generator functions
+		_options = util.cloneDeep(options);
+		options.controller = util.cloneDeep(_options);
+		options.model = util.cloneDeep(_options);
+
 		async.auto({
-			controller	: function (cb) { generateController(options, cb); },
-			model		: ['controller', function (cb) { generateModel(options, cb); }]
+			controller	: function (cb) { generateController(options.controller, cb); },
+			model		: function (cb) { generateModel(options.model, cb); }
 		}, function (err, async_data) {
 			if (err) return cb(err);
 
-			console.log('-->',options.generator);
-			// Pass back self to allow logStatusOverride to be used
-			return cb(null, options.generator);
+			return cb();
 		});
 	},
 
 	logStatusOverride: function (options, log) {
-		var controllerGlobalID = options.id;
-		var modelGlobalID = options.id;
+		var controllerGlobalID = options.controller.globalID;
+		var modelGlobalID = options.model.globalID;
 
-		log('Created ' + controllerGlobalID + ' and ' + modelGlobalID + '.');
+		log('Created ' + controllerGlobalID + '.js and ' + modelGlobalID + '.js.');
 		log('REST API will be available next time you lift the server.');
 		log('(@ `/' + options.id + '` with default settings)');
 	}
