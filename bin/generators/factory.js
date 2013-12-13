@@ -29,7 +29,8 @@ module.exports = function (generatorName) {
 
 		// If generate function explicitly defined, return it.
 		if (generator.generate) {
-			return generator.generate;
+			options.logStatusOverride = generator.logStatusOverride;
+			return generator.generate(options, handlers);
 		}
 
 		// Otherwise, by default, use module helper
