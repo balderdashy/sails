@@ -6,7 +6,7 @@
  * templating language/framework of choice and configure Sails' layout support.
  *
  * For more information on views and layouts, check out:
- * http://sailsjs.org/#documentation
+ * http://sailsjs.org/#!documentation
  */
 
 module.exports.views = {

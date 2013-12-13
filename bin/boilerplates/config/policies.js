@@ -8,7 +8,7 @@
  * at which point it can be accessed below by its filename, minus the extension, (e.g. `authenticated`)
  *
  * For more information on policies, check out:
- * http://sailsjs.org/#documentation
+ * http://sailsjs.org/#!documentation
  */
 
 

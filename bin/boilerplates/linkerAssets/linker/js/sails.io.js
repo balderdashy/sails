@@ -14,7 +14,7 @@
  *    `socket.post( url, [data], [cb] )`
  *
  * For more information, visit:
- * http://sailsjs.org/#documentation
+ * http://sailsjs.org/#!documentation
  */
 
 (function (io) {
