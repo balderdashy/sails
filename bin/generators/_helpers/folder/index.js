@@ -4,6 +4,7 @@
 var fs = require('fs-extra');
 var _ = require('lodash');
 var path = require('path');
+var async = require('async');
 var switcher = require('sails-util/switcher');
 
 
@@ -37,28 +38,37 @@ module.exports = function ( options, handlers ) {
 
 	var pathToNew = path.resolve( process.cwd() , options.pathToNew );
 
-	// Only override an existing folder if `options.force` is true
-	fs.lstat(pathToNew, function (err, inodeStatus) {
-		var exists = !(err && err.code === 'ENOENT');
-		if ( exists && err ) return handlers.error(err);
+	var pathParts = pathToNew.split('/');
+	var pathBuilt = '';
 
-		if ( exists && !options.force ) {
-			return handlers.alreadyExists(pathToNew);
-		}
-		if ( exists ) {
-			fs.remove(pathToNew, function deletedOldINode (err) {
-				if (err) return handlers.error(err);
-				_afterwards_();
+	async.whilst(
+		function () {return pathParts.length;},
+		function (cb) {
+			var nextPart = pathParts.shift();
+			pathBuilt += nextPart + '/';
+			fs.lstat(pathBuilt, function (err, inodeStatus) {
+
+				// If the dir already exists, skip it.  Could just check for this
+				// in the mkdir call below, but something about attempting to 
+				// create the root directory seems...unwise.
+				var exists = !(err && err.code === 'ENOENT');
+				if ( exists ) {
+					return cb();
+				}
+
+				// Make the directory, ignoring "already exists" errors as other
+				// generators may have created the directory at the same time as us.
+				fs.mkdir(pathBuilt, function(err) {
+					if (err && err.code !== 'EEXIST') {return cb(err);} 
+					else {return cb();}
+				});
+
 			});
-		}
-		else _afterwards_();
 
-		function _afterwards_() {
-			fs.mkdir(pathToNew, function directoryWasWritten (err) {
-				if (err) return handlers.error(err);
-				return handlers.success();
-			});
+		},
+		function (err) {
+			if (err) {return handlers.error(err);}
+			return handlers.success();
 		}
-
-	});
+	);
 };
