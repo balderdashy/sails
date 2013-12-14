@@ -54,7 +54,7 @@ module.exports = function createNewApp( options, handlers ) {
 	var templateFiles = [
 		require('sails-generate-gruntfile'),
 		require('./generators/gitignore'),
-		// 'README.md',
+		require('./generators/README.md'),
 		'assets/js/sails.io.js',
 		'assets/js/socket.io.js',
 		'assets/js/socketio_example.js'
