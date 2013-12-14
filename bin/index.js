@@ -45,6 +45,13 @@ var CLIController = {
 	new: function ( options ) {
 
 		require('./generators/app')( options, {
+			error: function(err) {
+				log.error(err);
+				return;
+			},
+			success: function(msg) {
+				log.info(msg);
+			},
 			missingAppName: function () {
 				log.error('Please choose the name or destination path for your new app.');
 				return;
