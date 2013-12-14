@@ -130,8 +130,10 @@ module.exports = {
 				if (err) return handlers.error(err);
 
 				// Create the actions' code
-				var renderedActions = _.map(options.actions, function (attr) {
-					return ejs.render(actionTemplate, attr);
+				var renderedActions = _.map(options.actions, function (action) {
+					return ejs.render(actionTemplate, {
+						actionName: action
+					});
 				});
 
 				// Create the controller code
