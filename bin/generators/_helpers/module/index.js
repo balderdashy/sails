@@ -7,7 +7,7 @@ var _ = require('lodash');
 _.str = require('underscore.string');
 var async = require('async');
 var switcher = require('sails-util/switcher');
-
+var fs = require('fs');
 var GenerateFileHelper = require('../file');
 
 
@@ -92,7 +92,17 @@ module.exports = function ( options, handlers ) {
 				// Call out to our `generator` to render our module.
 				// It will respond with a string that we can write to disk.
 				function renderContents (cb) {
-					if ( !generator.render ) return cb();
+					if ( !generator.render ) {
+						if (options.templateFilePath) {
+							fs.readFile(options.templateFilePath, 'utf8', function(err, contents) {
+								if (err) {return cb(err);}
+								options.contents = contents;
+								cb();
+							});
+						} else {
+							return cb();
+						}
+					}
 					else generator.render(options, function (err, _contents) {
 						if (err) return cb(err);
 						options.contents = options.contents || _contents || '';
