@@ -9,7 +9,11 @@ var _ = require('lodash'),
 	argv = require('optimist').argv,
 	Err	= require('../../../errors'),
 	Logger = require('../../../lib/hooks/logger/captains'),
-	Sails = require('../../../lib/app');
+	Sails = require('../../../lib/app'),
+	switcher = require('sails-util/switcher'),
+	async = require('async'),
+	GenerateModuleHelper = require('../_helpers/module'),
+	GenerateFolderHelper = require('../_helpers/folder');
 	// Session = require('../lib/hooks/session')(sails);
 
 
@@ -30,7 +34,7 @@ module.exports = function createNewApp( options, handlers ) {
 	// Resolve absolute appPath
 	var appPath = path.resolve( process.cwd(), options.appName );
 
-
+	options.appPath = appPath;
 
 	var folders = [
 		'api',
@@ -48,12 +52,12 @@ module.exports = function createNewApp( options, handlers ) {
 	];
 
 	var templateFiles = [
-		'Gruntfile.js',
-		'.gitignore',
-		'README.md',
+		require('sails-generate-gruntfile'),
+		require('./generators/gitignore'),
+		// 'README.md',
 		'assets/js/sails.io.js',
 		'assets/js/socket.io.js',
-		'assets/js/socket_example.js'
+		'assets/js/socketio_example.js'
 	];
 
 	var jsonFiles = ['package.json'];
@@ -61,10 +65,44 @@ module.exports = function createNewApp( options, handlers ) {
 	// Finish up with a success message
 	if (options.dry) {
 		log.debug( 'DRY RUN');
-		log.debug('Would have created a new app `' + options.appName + '` at ' + appPath + '.');
+		handlers.success('Would have created a new app `' + options.appName + '` at ' + appPath + '.');
 	}
 	else {
-		log.info( 'Created a new app `' + options.appName + '` at ' + appPath + '.');
+
+		async.auto({
+
+			folders: function(cb) {
+				async.each(folders, function(folder, cb) {
+					cb = switcher(cb);
+					GenerateFolderHelper({pathToNew: appPath + '/' + folder}, cb);
+				}, cb);
+			},
+
+			files: ['folders', function(cb) {
+				async.each(templateFiles, function(fileOrGenerator, cb) {
+					cb = switcher(cb);
+					var opts;
+					if (typeof fileOrGenerator === "string") {
+						opts = _.extend({force: true}, options,{
+							generator: {},
+							templateFilePath: __dirname + '/templates/' + fileOrGenerator,
+							pathToNew: appPath + '/' + fileOrGenerator
+						});
+					} else {
+						opts = _.extend({force: true}, options,{
+							generator: fileOrGenerator
+						});
+					}
+					GenerateModuleHelper(opts, cb);
+				}, cb);
+			}]
+
+		}, function(err) {
+			if (err) {handlers.error(err);}	
+			handlers.success('Created a new app `' + options.appName + '` at ' + appPath + '.');
+		});
+
+		
 	}
 
 	return;
