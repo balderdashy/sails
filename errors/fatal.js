@@ -3,7 +3,7 @@
  */
 var argv = require('optimist').argv,
 	cliutil = require('sails-util/cli'),
-	Logger = require('../lib/hooks/logger/captains');
+	Logger = require('captains-log');
 
 
 // Build logger using command-line arguments

@@ -3,7 +3,7 @@
  */
 var argv = require('optimist').argv,
 	util = require('sails-util'),
-	Logger = require('../lib/hooks/logger/captains'),
+	Logger = require('captains-log'),
 	path = require('path');
 
 
