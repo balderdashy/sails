@@ -37,7 +37,6 @@
     "connect-redis": "1.4.5",
     "connect-mongo": "0.3.2",
     "async": "0.2.9",
-    "winston": "0.7.1",
     "i18n": "0.4.1",
     "optimist": "0.3.4",
     "fs-extra": "0.8.1",
@@ -63,7 +62,8 @@
     "ejs-locals": "1.0.2",
     "connect-flash": "0.1.1",
     "pluralize": "0.0.5",
-    "json-stringify-safe": "5.0.0"
+    "json-stringify-safe": "5.0.0",
+    "captains-log": "~0.10.0"
   },
   "devDependencies": {
     "checksum": "~0.1.1",
