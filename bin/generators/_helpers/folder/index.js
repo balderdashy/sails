@@ -68,7 +68,11 @@ module.exports = function ( options, handlers ) {
 		},
 		function (err) {
 			if (err) {return handlers.error(err);}
-			return handlers.success();
+			if (options.gitKeep) {
+				fs.outputFile(pathToNew + '/.gitkeep', '', handlers.success);
+			} else {
+				return handlers.success();
+			}
 		}
 	);
 };

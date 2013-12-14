@@ -74,7 +74,7 @@ module.exports = function createNewApp( options, handlers ) {
 			folders: function(cb) {
 				async.each(folders, function(folder, cb) {
 					cb = switcher(cb);
-					GenerateFolderHelper({pathToNew: appPath + '/' + folder}, cb);
+					GenerateFolderHelper({pathToNew: appPath + '/' + folder, gitKeep: true}, cb);
 				}, cb);
 			},
 
