@@ -61,13 +61,21 @@ module.exports = {
 
 
 
-	logStatusOverride: function (options, log) {
-		var controllerGlobalID = options.controller.globalID;
-		var modelGlobalID = options.model.globalID;
+	logStatusOverrides: {
+		success: function (options, log) {
+			var controllerGlobalID = options.controller.globalID;
+			var modelGlobalID = options.model.globalID;
 
-		log('Created ' + controllerGlobalID + '.js and ' + modelGlobalID + '.js.');
-		log('REST API will be available next time you lift the server.');
-		log('(@ `/' + options.id + '` with default settings)');
+			log('Created ' + controllerGlobalID + '.js and ' + modelGlobalID + '.js.');
+			log('REST API will be available next time you lift the server.');
+			log('(@ `/' + options.id + '` with default settings)');
+		},
+		alreadyExists: function (options, log) {
+			var controllerGlobalID = options.controller.globalID;
+			var modelGlobalID = options.model.globalID;
+
+			log.error('Could not generate API-- model or controller already exists!');
+		}
 	}
 
 };

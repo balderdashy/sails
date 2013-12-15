@@ -24,88 +24,102 @@ var _ = require('lodash'),
  * @param {Object} [handlers]
  */
 
-module.exports = function createNewApp( options, handlers ) {
+module.exports = {
 
-	if ( !options.appName ) return handlers.missingAppName();
 
-	// Build logger
-	var log = new Logger(options.log);
+	/**
+	 * Generate new Sails app.
+	 * 
+	 * @param  {[type]} options  [description]
+	 * @param  {[type]} handlers [description]
+	 * @return {[type]}          [description]
+	 */
+	generate: function createNewApp( options, handlers ) {
 
-	// Resolve absolute appPath
-	var appPath = path.resolve( process.cwd(), options.appName );
+		if ( !options.appName ) return handlers.missingAppName();
 
-	options.appPath = appPath;
+		// Build logger
+		var log = new Logger(options.log);
 
-	var folders = [
-		'api',
-			'api/controllers',
-			'api/models',
-			'api/adapters',
-			'api/policies',
-			'api/services',
-		'config',
-		'views',
-		'assets',
-			'assets/js',
-			'assets/styles',
-			'assets/templates',
-	];
+		// Resolve absolute appPath
+		var appPath = path.resolve( process.cwd(), options.appName );
 
-	var templateFiles = [
-		require('sails-generate-gruntfile'),
-		require('./generators/gitignore'),
-		require('./generators/README.md'),
-		'assets/js/sails.io.js',
-		'assets/js/socket.io.js',
-		'assets/js/socketio_example.js'
-	];
+		options.appPath = appPath;
 
-	var jsonFiles = ['package.json'];
+		var folders = [
+			'api',
+				'api/controllers',
+				'api/models',
+				'api/adapters',
+				'api/policies',
+				'api/services',
+			'config',
+			'views',
+			'assets',
+				'assets/js',
+				'assets/styles',
+				'assets/templates',
+		];
 
-	// Finish up with a success message
-	if (options.dry) {
-		log.debug( 'DRY RUN');
-		handlers.success('Would have created a new app `' + options.appName + '` at ' + appPath + '.');
+		var templateFiles = [
+			require('sails-generate-gruntfile'),
+			require('./generators/gitignore'),
+			require('./generators/README.md'),
+			'assets/js/sails.io.js',
+			'assets/js/socket.io.js',
+			'assets/js/socketio_example.js'
+		];
+
+		var jsonFiles = ['package.json'];
+
+		// Finish up with a success message
+		if (options.dry) {
+			log.debug( 'DRY RUN');
+			handlers.success('Would have created a new app `' + options.appName + '` at ' + appPath + '.');
+		}
+		else {
+
+			async.auto({
+
+				folders: function(cb) {
+					async.each(folders, function(folder, cb) {
+						cb = switcher(cb);
+						GenerateFolderHelper({pathToNew: appPath + '/' + folder, gitkeep: true}, cb);
+					}, cb);
+				},
+
+				files: ['folders', function(cb) {
+					async.each(templateFiles, function(fileOrGenerator, cb) {
+						cb = switcher(cb);
+						var opts;
+						if (typeof fileOrGenerator === "string") {
+							opts = _.extend({force: true}, options,{
+								generator: {},
+								templateFilePath: __dirname + '/templates/' + fileOrGenerator,
+								pathToNew: appPath + '/' + fileOrGenerator
+							});
+						} else {
+							opts = _.extend({force: true}, options,{
+								generator: fileOrGenerator
+							});
+						}
+						GenerateModuleHelper(opts, cb);
+					}, cb);
+				}]
+
+			}, function(err) {
+				if (err) {handlers.error(err);}	
+				handlers.success('Created a new app `' + options.appName + '` at ' + appPath + '.');
+			});
+
+			
+		}
+
+		return;
 	}
-	else {
 
-		async.auto({
 
-			folders: function(cb) {
-				async.each(folders, function(folder, cb) {
-					cb = switcher(cb);
-					GenerateFolderHelper({pathToNew: appPath + '/' + folder, gitkeep: true}, cb);
-				}, cb);
-			},
-
-			files: ['folders', function(cb) {
-				async.each(templateFiles, function(fileOrGenerator, cb) {
-					cb = switcher(cb);
-					var opts;
-					if (typeof fileOrGenerator === "string") {
-						opts = _.extend({force: true}, options,{
-							generator: {},
-							templateFilePath: __dirname + '/templates/' + fileOrGenerator,
-							pathToNew: appPath + '/' + fileOrGenerator
-						});
-					} else {
-						opts = _.extend({force: true}, options,{
-							generator: fileOrGenerator
-						});
-					}
-					GenerateModuleHelper(opts, cb);
-				}, cb);
-			}]
-
-		}, function(err) {
-			if (err) {handlers.error(err);}	
-			handlers.success('Created a new app `' + options.appName + '` at ' + appPath + '.');
-		});
-
-		
-	}
-
-	return;
+};
 
 
 
@@ -272,4 +286,4 @@ module.exports = function createNewApp( options, handlers ) {
 	// 	log.info('New app created!');
 	// 	return cb(err);
 	// }
-};
+// };

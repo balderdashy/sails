@@ -44,7 +44,10 @@ var CLIController = {
 	 */
 	new: function ( options ) {
 
-		require('./generators/app')( options, {
+		var GeneratorFactory = require('./generators/factory');
+		var generate = GeneratorFactory( 'app' );
+
+		generate( options, {
 			error: function(err) {
 				log.error(err);
 				return;
@@ -106,13 +109,19 @@ var CLIController = {
 				Err.fatal.notSailsApp();
 			},
 			alreadyExists: function () {
+
+				// Log custom message if override is defined
+				if (options.logStatusOverrides && options.logStatusOverrides.alreadyExists) {
+					return options.logStatusOverrides.alreadyExists(options, log);
+				}
+
 				CLIController.error(options.globalID + ' already exists!');
 			},
 			success: function () {	
 
 				// Log custom message if override is defined
-				if (options.logStatusOverride) {
-					return options.logStatusOverride(options, log);
+				if (options.logStatusOverrides && options.logStatusOverrides.success) {
+					return options.logStatusOverrides.success(options, log);
 				}
 
 				var hasActions = options.actions && options.actions.length;
