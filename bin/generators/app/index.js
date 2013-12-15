@@ -5,6 +5,7 @@
 var _ = require('lodash'),
 	fs = require('fs-extra'),
 	path = require('path'),
+	path = require('path'),
 	ejs = require('ejs'),
 	argv = require('optimist').argv,
 	Err	= require('../../../errors'),
@@ -14,6 +15,7 @@ var _ = require('lodash'),
 	async = require('async'),
 	GenerateModuleHelper = require('../_helpers/module'),
 	GenerateFolderHelper = require('../_helpers/folder');
+	GenerateJSONHelper = require('../_helpers/jsonfile');
 	// Session = require('../lib/hooks/session')(sails);
 
 
@@ -72,69 +74,110 @@ module.exports = {
 			'assets/js/socketio_example.js'
 		];
 
-		var jsonFiles = ['package.json'];
+		
 
-		// Finish up with a success message
 		if (options.dry) {
 			log.debug( 'DRY RUN');
 			return handlers.success('Would have created a new app `' + options.appName + '` at ' + appPath + '.');
 		}
-		else {
+		
 
-			async.auto({
+		async.auto({
 
-				folders: function(cb) {
-					async.each(folders, function(folder, cb) {
-						cb = switcher(cb);
+			folders: function(cb) {
+				async.each(folders, function(folder, cb) {
+					cb = switcher(cb);
 
-						// Build folders
-						GenerateFolderHelper({
-							pathToNew: appPath + '/' + folder,
-							gitkeep: true
-						}, {
-							alreadyExists: function (path) {
-								return cb('A file or folder already exists at the destination path :: ' + path);
-							},
-							error: cb,
-							success: cb.success
+					// Build folders
+					GenerateFolderHelper({
+						pathToNew: path.resolve(appPath,folder),
+						gitkeep: true
+					}, {
+						alreadyExists: function (path) {
+							return cb('A file or folder already exists at the destination path :: ' + path);
+						},
+						error: cb,
+						success: cb.success
+					});
+				}, cb);
+			},
+
+			templates: ['folders', function(cb) {
+				async.each(templateFiles, function(fileOrGenerator, cb) {
+					cb = switcher(cb);
+
+					// Build new options set
+					var opts;
+					if (typeof fileOrGenerator === "string") {
+
+						// No custom generator exists: just copy file from templates
+						opts = _.extend({force: true}, options,{
+							generator: {},
+							templateFilePath: path.resolve(__dirname,'./templates/' + fileOrGenerator),
+							pathToNew: path.resolve(appPath, fileOrGenerator)
 						});
-					}, cb);
-				},
+					}
+					else {
 
-				files: ['folders', function(cb) {
-					async.each(templateFiles, function(fileOrGenerator, cb) {
-						cb = switcher(cb);
+						// Use custom generator
+						opts = _.extend({force: true}, options,{
+							generator: fileOrGenerator
+						});
+					}
 
-						// Build new options set
-						var opts;
-						if (typeof fileOrGenerator === "string") {
+					// Generate module
+					GenerateModuleHelper(opts, cb);
+				}, cb);
+			}],
 
-							// No custom generator exists: just copy file from templates
-							opts = _.extend({force: true}, options,{
-								generator: {},
-								templateFilePath: __dirname + '/templates/' + fileOrGenerator,
-								pathToNew: appPath + '/' + fileOrGenerator
-							});
+			'package.json': ['folders', function (cb) {
+				cb = switcher(cb);
+
+				// Bootstrap sails to get the version
+				var sails = new Sails();
+				sails.load({
+					appPath: options.appPath,
+					globals: false,
+					loadHooks: ['userconfig', 'moduleloader']
+				}, function loadedSails (err) {
+					if (err) return cb(err);
+
+					// Generate package.json options
+					var opts = {
+						pathToNew: path.resolve(appPath, 'package.json'),
+						data: {
+							name: options.appName,
+							'private': true,
+							version: '0.0.0',
+							description: 'a Sails application',
+							dependencies: {
+								sails			: sails.version,
+								grunt			: '0.4.1',
+								'sails-disk'	: '~0.9.0',
+								ejs				: '0.8.4',
+								optimist		: '0.3.4' // TODO: remove this and handle it differently (maybe)
+							},
+							scripts: {
+								// Include this later when we have "sails test" ready.
+								// test: './node_modules/mocha/bin/mocha -b',
+								start: 'node app.js',
+								debug: 'node debug app.js'
+							},
+							main: 'app.js',
+							repository: '',
+							author: '',
+							license: ''
 						}
-						else {
+					};
 
-							// Use custom generator
-							opts = _.extend({force: true}, options,{
-								generator: fileOrGenerator
-							});
-						}
+					// Generate json file
+					GenerateJSONHelper(opts, cb);
+				});
 
-						// Generate module
-						GenerateModuleHelper(opts, cb);
-					}, cb);
-				}]
 
-			}, handlers);
+			}]
 
-			
-		}
-
-		return;
+		}, handlers);
 	}
 
 
