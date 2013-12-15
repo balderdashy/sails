@@ -9,6 +9,13 @@ var fs = require('fs-extra');
 
 module.exports = {
 
+	//
+	// TODO: use lstat instead of readdir and readFile for these existence checks.
+	// (low priority)
+	// 
+
+
+
 	/**
 	 * @param {Function} cb
 	 *
@@ -16,6 +23,21 @@ module.exports = {
 	 */
 	fileExists: function (cb) {
 		fs.readFile(this.options.pathToNew, cb);
+	},
+
+	/**
+	 * @param {Function} cb
+	 *
+	 * @this {Object} options
+	 */
+	fileDoesntExist: function (cb) {
+		fs.readFile(this.options.pathToNew, function (err) {
+			if (err && err.code === 'ENOENT') {
+				return cb();
+			}
+			else if (err) return cb(err);
+			else return cb(new Error('File should not exist.'));
+		});
 	},
 
 
@@ -27,6 +49,22 @@ module.exports = {
 	 */
 	dirExists: function (cb) {
 		fs.readdir(this.options.pathToNew, cb);
+	},
+
+
+	/**
+	 * @param {Function} cb
+	 *
+	 * @this {Object} options
+	 */
+	dirDoesntExist: function (cb) {
+		fs.readdir(this.options.pathToNew, function (err) {
+			if (err && err.code === 'ENOENT') {
+				return cb();
+			}
+			else if (err) return cb(err);
+			else return cb(new Error('Directory should not exist.'));
+		});
 	},
 
 

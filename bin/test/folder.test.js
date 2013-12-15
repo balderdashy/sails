@@ -40,7 +40,18 @@ describe('folder generator', function () {
 	});
 
 
-
+	describe('with dry run enabled', function () {
+		before(function () {
+			this.options = {
+				pathToNew: this.heap.alloc(),
+				contents: 'foo',
+				dry: true
+			};
+		});
+		
+		it('should trigger `success`',expect('success'));
+		it('should not actually create a directory', assert.dirDoesntExist);
+	});
 
 
 	describe('if file/folder already exists at `pathToNew`', function () {
