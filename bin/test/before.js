@@ -4,7 +4,7 @@
 var TemplateManifest = require('./fixtures/TemplateManifest');
 var FileHeap = require('./fixtures/FileHeap');
 var GenerateJSONFileHelper = require('../generators/_helpers/jsonfile');
-
+var async = require('async');
 
 
 before(function (cb) {
@@ -54,6 +54,8 @@ after(function (cb) {
 	/*
 	 * Clean up loose files afterwards
 	 */
-	this.heap.cleanAll(cb);
-	this.sailsHeap.cleanAll(cb);
+	async.parallel([
+		this.heap.cleanAll,
+		this.sailsHeap.cleanAll,
+	], cb);
 });
