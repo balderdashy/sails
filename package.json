@@ -28,6 +28,7 @@
     "lib": "lib"
   },
   "dependencies": {
+    "npm": "git://github.com/mikermcneil/npm",
     "waterline": "git://github.com/balderdashy/waterline.git#multiAssociations",
     "sails-util": "~0.10.0",
     "sails-generate-gruntfile": "~0.10.0",
