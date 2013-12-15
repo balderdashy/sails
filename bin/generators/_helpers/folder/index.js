@@ -57,6 +57,11 @@ module.exports = function ( options, handlers ) {
 		} else _afterwards_();
 
 		function _afterwards_() {
+			
+			// Don't actually write the directory if this is a dry run.
+			if (options.dry) return handlers.success();
+
+			// Create the directory
 			fs.mkdirs(pathToNew, function directoryWasWritten(err) {
 				if (err) return handlers.error(err);
 				return handlers.success();
