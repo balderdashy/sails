@@ -36,6 +36,8 @@ module.exports = {
 	 */
 	generate: function createNewApp( options, handlers ) {
 
+		handlers = switcher(handlers);
+
 		if ( !options.appName ) return handlers.missingAppName();
 
 		// Build logger
@@ -75,7 +77,7 @@ module.exports = {
 		// Finish up with a success message
 		if (options.dry) {
 			log.debug( 'DRY RUN');
-			handlers.success('Would have created a new app `' + options.appName + '` at ' + appPath + '.');
+			return handlers.success('Would have created a new app `' + options.appName + '` at ' + appPath + '.');
 		}
 		else {
 
@@ -84,33 +86,50 @@ module.exports = {
 				folders: function(cb) {
 					async.each(folders, function(folder, cb) {
 						cb = switcher(cb);
-						GenerateFolderHelper({pathToNew: appPath + '/' + folder, gitkeep: true}, cb);
+
+						// Build folders
+						GenerateFolderHelper({
+							pathToNew: appPath + '/' + folder,
+							gitkeep: true
+						}, {
+							alreadyExists: function (path) {
+								return cb('A file or folder already exists at the destination path :: ' + path);
+							},
+							error: cb,
+							success: cb.success
+						});
 					}, cb);
 				},
 
 				files: ['folders', function(cb) {
 					async.each(templateFiles, function(fileOrGenerator, cb) {
 						cb = switcher(cb);
+
+						// Build new options set
 						var opts;
 						if (typeof fileOrGenerator === "string") {
+
+							// No custom generator exists: just copy file from templates
 							opts = _.extend({force: true}, options,{
 								generator: {},
 								templateFilePath: __dirname + '/templates/' + fileOrGenerator,
 								pathToNew: appPath + '/' + fileOrGenerator
 							});
-						} else {
+						}
+						else {
+
+							// Use custom generator
 							opts = _.extend({force: true}, options,{
 								generator: fileOrGenerator
 							});
 						}
+
+						// Generate module
 						GenerateModuleHelper(opts, cb);
 					}, cb);
 				}]
 
-			}, function(err) {
-				if (err) {handlers.error(err);}	
-				handlers.success('Created a new app `' + options.appName + '` at ' + appPath + '.');
-			});
+			}, handlers);
 
 			
 		}
@@ -120,6 +139,8 @@ module.exports = {
 
 
 };
+
+
 
 
 
@@ -287,3 +308,18 @@ module.exports = {
 	// 	return cb(err);
 	// }
 // };
+
+
+
+
+
+
+
+
+		// Evaluate options
+		// var appName = options.appName;
+		// var isLinkerEnabled = options.assetLinker.enabled;
+		// var linkerSrc = options.assetLinker.src;
+
+		// log.error('Sorry, `sails new` is currently out of commission.');
+		// process.exit(1);

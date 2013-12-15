@@ -52,22 +52,14 @@ var CLIController = {
 				log.error(err);
 				return;
 			},
-			success: function(msg) {
-				log.info(msg);
+			success: function() {
+				log('Created a new app `' + options.appName + '` at ' + options.appPath + '.');
 			},
 			missingAppName: function () {
 				log.error('Please choose the name or destination path for your new app.');
 				return;
 			}
 		});
-
-		// Evaluate options
-		// var appName = options.appName;
-		// var isLinkerEnabled = options.assetLinker.enabled;
-		// var linkerSrc = options.assetLinker.src;
-
-		// log.error('Sorry, `sails new` is currently out of commission.');
-		// process.exit(1);
 	},
 
 
