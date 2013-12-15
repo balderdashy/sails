@@ -11,13 +11,16 @@ var _ = require('lodash'),
 	Err	= require('../../../errors'),
 	Logger = require('captains-log'),
 	Sails = require('../../../lib/app'),
+	util = require('sails-util/cli'),
 	switcher = require('sails-util/switcher'),
 	async = require('async'),
 	GenerateModuleHelper = require('../_helpers/module'),
 	GenerateFolderHelper = require('../_helpers/folder');
 	GenerateJSONHelper = require('../_helpers/jsonfile');
-	// Session = require('../lib/hooks/session')(sails);
 
+
+// TODO: generate unique session secret
+// Session = require('../lib/hooks/session')(sails);
 
 /**
  * Expose `sails new` functionality
@@ -63,6 +66,7 @@ module.exports = {
 				'assets/js',
 				'assets/styles',
 				'assets/templates',
+			'node_modules',
 		];
 
 		var templateFiles = [
@@ -151,14 +155,14 @@ module.exports = {
 							version: '0.0.0',
 							description: 'a Sails application',
 							dependencies: {
-								sails			: sails.version,
-								grunt			: '0.4.1',
-								'sails-disk'	: '~0.9.0',
-								ejs				: '0.8.4',
-								optimist		: '0.3.4' // TODO: remove this and handle it differently (maybe)
+								'sails'			: '~' + sails.version,
+								'sails-disk'	: sails.dependencies['sails-disk'],
+								'grunt'			: sails.dependencies['grunt'],
+								'ejs'			: sails.dependencies['ejs'],
+								'optimist'		: sails.dependencies['optimist']
 							},
 							scripts: {
-								// Include this later when we have "sails test" ready.
+								// TODO: Include this later when we have "sails test" ready.
 								// test: './node_modules/mocha/bin/mocha -b',
 								start: 'node app.js',
 								debug: 'node debug app.js'
@@ -175,6 +179,26 @@ module.exports = {
 				});
 
 
+			}],
+
+
+			// Copy required app-level dependencies
+			// (to avoid having to do a local npm install in new projects)
+			copyAppDependencies: ['folders', function (cb) {
+
+				// TODO: refactor this util method to work now that sails-util is pulled out of core...
+				// skip for now:
+				return cb();
+				
+				// var pathToNodeModules = path.resolve(options.appPath, '/node_modules');
+				// util.copySailsDependency('optimist', pathToNodeModules);
+				// util.copySailsDependency('sails-disk', pathToNodeModules);
+				// util.copySailsDependency('ejs', pathToNodeModules);
+
+				// // Other grunt dependencies are automatically pulled from sails core deps.
+				// util.copySailsDependency('grunt', pathToNodeModules);
+
+				// cb();
 			}]
 
 		}, handlers);

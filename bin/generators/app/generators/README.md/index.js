@@ -9,9 +9,11 @@ module.exports = {
 	},
 
 	render: function ( options, cb ) {
-
-		return cb(null, '# ' + options.appName + '\n### a Sails application');
-
+		return cb(null,
+			'# ' + options.appName + '\n' +
+			' ' + '\n' +
+			'a [Sails](http://sailsjs.org) application' + '\n'
+		);
 	}
 
 };
