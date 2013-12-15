@@ -18,10 +18,6 @@ var _ = require('lodash'),
 	GenerateFolderHelper = require('../_helpers/folder');
 	GenerateJSONHelper = require('../_helpers/jsonfile');
 
-
-// TODO: generate unique session secret
-// Session = require('../lib/hooks/session')(sails);
-
 /**
  * Expose `sails new` functionality
  *
@@ -182,7 +178,7 @@ module.exports = {
 			}],
 
 
-			// Copy required app-level dependencies
+			// TODO: Copy required app-level dependencies
 			// (to avoid having to do a local npm install in new projects)
 			copyAppDependencies: ['folders', function (cb) {
 
@@ -201,6 +197,20 @@ module.exports = {
 				// cb();
 			}]
 
+
+
+			// TODO: generate unique session secret (custom generator for `config/session.js`)
+			// 
+			// Session = require('../lib/hooks/session')(sails);
+			// 	// Generate session secret
+			// 	var sessionBoilerplatePath = __dirname + '/boilerplates/config/session.js';
+			// 	var newSessionConfig = ejs.render(fs.readFileSync(sessionBoilerplatePath, 'utf8'), {
+			// 		secret: Session.generateSecret()
+			// 	});
+			// 	fs.writeFileSync(outputPath + '/config/session.js', newSessionConfig, 'utf8');
+
+
+
 		}, handlers);
 	}
 
@@ -208,6 +218,19 @@ module.exports = {
 };
 
 
+
+
+
+
+
+	///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+	/////   The =old= `sails new`   ///////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+	/////\////\/////\/////\/////\///////// ( for reference) ///////////////
+	///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////
 
 
 
@@ -264,12 +287,7 @@ module.exports = {
 
 	// utils.copyBoilerplate('config', outputPath + '/config', function() {
 
-	// 	// Generate session secret
-	// 	var sessionBoilerplatePath = __dirname + '/boilerplates/config/session.js';
-	// 	var newSessionConfig = ejs.render(fs.readFileSync(sessionBoilerplatePath, 'utf8'), {
-	// 		secret: Session.generateSecret()
-	// 	});
-	// 	fs.writeFileSync(outputPath + '/config/session.js', newSessionConfig, 'utf8');
+	
 
 	// 	// Insert view engine and template layout in views config
 
