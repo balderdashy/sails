@@ -6,6 +6,7 @@ var generateController = GeneratorFactory( 'controller' );
 var generateModel = GeneratorFactory( 'model' );
 var async = require('async');
 var switcher = require('sails-util/switcher');
+
 var util = require('sails-util');
 
 
@@ -34,7 +35,7 @@ module.exports = {
 	 * Override generation logic
 	 */
 	generate: function (options, cb) {
-		cb = switcher(cb);
+		var handlers = switcher(cb);
 
 		// Create two copies of the options, since they will be modified by the
 		// controller and model generator functions
@@ -43,14 +44,22 @@ module.exports = {
 		options.model = util.cloneDeep(_options);
 
 		async.auto({
-			controller	: function (cb) { generateController(options.controller, cb); },
-			model		: function (cb) { generateModel(options.model, cb); }
-		}, function (err, async_data) {
-			if (err) return cb(err);
-
-			return cb();
-		});
+			controller : function (cb) {
+				generateController(
+					options.controller,
+					asyncify(cb, ['alreadyExists'])
+				);
+			},
+			model : function (cb) {
+				generateModel(
+					options.model,
+					asyncify(cb, ['alreadyExists'])
+				);
+			}
+		}, unasyncify(handlers));
 	},
+
+
 
 	logStatusOverride: function (options, log) {
 		var controllerGlobalID = options.controller.globalID;
@@ -63,4 +72,79 @@ module.exports = {
 
 };
 
+
+
+
+
+
+/**
+ * Module dependencies
+ */
+var _ = require('lodash');
+
+
+
+/**
+ * Generates an `async.auto` callback which smuggles a hidden property 
+ * indicating the origin handler.  Always "breaks" the async.auto block,
+ * since it will be seen as an error.
+ * 
+ * @param  {Function} cb [an async.auto callback]
+ */
+function _packCb (handlerName, cb) {
+	return function _originalHandler () {
+		var args = Array.prototype.slice.call(arguments);
+		var originalFirstArgument = args[0];
+		args[0] = {
+			originalFirstArgument: originalFirstArgument,
+			_$_handlerName: handlerName
+		};
+		return cb.apply(cb, args);
+	};
+}
+
+
+/**
+ * The function returned by unasyncify, the "_negotiator", 
+ * requires that `asyncify` was used in the async callback which 
+ * triggered it (in order for the extra argument to be prepended).
+ * 
+ * @returns {Function} `asyncify/async.auto`-compatible "final callback"
+ */
+function unasyncify (handlers) {
+	return function _negotiator (packedErr, async_data) {
+		if (!packedErr) {
+			if (!handlers.success) return handlers('unasyncify() could not unpack async.auto object!  (no success handler defined)');
+			return handlers.success(async_data);
+		}
+		if (!packedErr._$_handlerName) return handlers('unasyncify() could not unpack async.auto object!  (missing handlerName)');
+
+		var handler = handlers[packedErr._$_handlerName] || handlers.error;
+		return handler(packedErr.originalFirstArgument, async_data);
+	};
+}
+
+/**
+ * Transforms a handlers object into an `async.auto`-compatible callback.
+ *
+ * Supports `success`, `error`, and `invalid` by default.  Additional
+ * handlers can be added by specifying them as an array (second argument).
+ *
+ * @returns switcher-compatible `handlers` object
+ */
+function asyncify (async_cb, additionalHandlerNames) {
+	
+	// Default handlers
+	var handlers = ['success', 'error', 'invalid'];
+
+	// Mix-in additional handlers (default to `error` handler)
+	handlers = handlers.concat(additionalHandlerNames || []);
+	
+	// Build handlers object
+	return _.reduce(handlers, function buildHandler ( memo, nextHandlerName ) {
+		if (nextHandlerName === 'success') memo.success = function (result) {return async_cb(null, result);};
+		else memo[nextHandlerName] = _packCb(nextHandlerName, async_cb);
+		return memo;
+	}, {});
+}
 
