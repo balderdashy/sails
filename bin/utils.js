@@ -92,7 +92,7 @@ module.exports = function(sails) {
 
 
 
-		/** 
+		/**
 		 * Check if a file or directory exists
 		 *
 		 * @api private
@@ -116,7 +116,7 @@ module.exports = function(sails) {
 
 
 
-		/** 
+		/**
 		 * Read a boilerplate and render the template
 		 *
 		 * @api private
@@ -131,7 +131,7 @@ module.exports = function(sails) {
 
 
 
-		/** 
+		/**
 		 *
 		 *
 		 * @api private
@@ -146,7 +146,7 @@ module.exports = function(sails) {
 
 
 
-		/** 
+		/**
 		 * Copy a boilerplate directory or file
 		 *
 		 * @api private
@@ -161,7 +161,7 @@ module.exports = function(sails) {
 
 
 
-		/** 
+		/**
 		 * Copy global sails module into current project as a local dependency
 		 *
 		 * @api private
@@ -217,7 +217,7 @@ module.exports = function(sails) {
 
 
 
-		/** 
+		/**
 		 * Copy a core Sails dependency to the top-level node_modules directory
 		 * of the current application---- in a smart way
 		 *
@@ -270,7 +270,7 @@ module.exports = function(sails) {
 		};
 
 
-		/** 
+		/**
 		 *
 		 *
 		 * @api private
@@ -287,7 +287,7 @@ module.exports = function(sails) {
 
 
 
-		/** 
+		/**
 		 *
 		 *
 		 * @api private
@@ -299,7 +299,7 @@ module.exports = function(sails) {
 
 
 
-		/** 
+		/**
 		 *
 		 *
 		 * @api private
@@ -311,7 +311,7 @@ module.exports = function(sails) {
 
 
 
-		/** 
+		/**
 		 *
 		 *
 		 * @api private

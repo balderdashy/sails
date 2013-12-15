@@ -32,7 +32,7 @@ module.exports = {
 			return callback(err);
 		});
 
-		// Catch stderr messages 
+		// Catch stderr messages
 		sailsprocess.stderr.on('data', function (data) {
 			// Change buffer to string, then error
 			var dataString = (data + '');

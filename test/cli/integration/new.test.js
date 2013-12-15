@@ -15,7 +15,7 @@ var assert	= require('assert'),
  */
 var Err = {
 	UnexpectedGeneratedFiles: function (diff) {
-		return new Error('Generated files don\'t match expected files.\n' + 
+		return new Error('Generated files don\'t match expected files.\n' +
 			'Diff ::\n' +
 			util.inspect(diff)
 		);
@@ -169,7 +169,7 @@ describe('New app generator', function() {
 });
 
 function checkGeneratedFiles(appName, templateLang) {
-	
+
 	var expectedFiles = [
 		'.gitignore',
 		'api',
@@ -272,7 +272,7 @@ function checkGeneratedFiles(appName, templateLang) {
 	// Disregard stupid files
 	// (fs-specific, OS-specific, editor-specific, yada yada)
 	files = _.reject(files, function(f) {
-		return f.match(/^node_modules/) || f.match(/.DS_Store/gi) || f.match(/\*~$/); 
+		return f.match(/^node_modules/) || f.match(/.DS_Store/gi) || f.match(/\*~$/);
 	});
 
 	// Generate diff
