@@ -10,11 +10,12 @@ var fs = require('fs-extra'),
 /**
  * Helper to manage/cleanup files created during test runs
  */
-module.exports = function FileHeap () {
+module.exports = function FileHeap ( options ) {
+	options = options || {};
 
 	var _aid = 0,
 		_suffix = '.test',
-		_outputPath = './.tmp/',
+		_outputPath = path.resolve(options.path || './.tmp/notASailsApp'),
 		_files = [];
 
 
@@ -48,7 +49,7 @@ module.exports = function FileHeap () {
 
 		// Take care of optional basename param
 		if (basename) {
-			pathToNewFile = _outputPath + basename;
+			pathToNewFile = path.resolve(_outputPath, basename);
 			if ( fs.existsSync(pathToNewFile)) {
 				fs.removeSync(pathToNewFile);
 				throw new Error('Cannot allocate ' + basename + ':: File already exists.');
@@ -64,9 +65,9 @@ module.exports = function FileHeap () {
 		do {
 			_aid += exponentialIterator;
 			exponentialIterator *= 2;
-			pathToNewFile = _outputPath + _aid + _suffix;
+			pathToNewFile = path.resolve(_outputPath, _aid + _suffix);
 		}
-		while ( fs.existsSync(pathToNewFile) );
+		while ( fs.existsSync(pathToNewFile) || this.contains(pathToNewFile) );
 
 		_files.push(pathToNewFile);
 		return pathToNewFile;

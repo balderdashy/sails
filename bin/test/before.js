@@ -21,7 +21,9 @@ before(function (cb) {
 	 * to test behavior with and without `--force`, inside
 	 * and outside of a Sails project directory.
 	 */
-	self.sailsHeap = new FileHeap();
+	self.sailsHeap = new FileHeap({
+		path: '.tmp/someSailsApp/'
+	});
 	GenerateJSONFileHelper({
 		pathToNew: self.sailsHeap.alloc('package.json'),
 		data: {

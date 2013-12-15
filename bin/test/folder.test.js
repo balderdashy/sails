@@ -31,7 +31,10 @@ describe('folder generator', function () {
 			};
 		});
 
-		it('should trigger `success`', expect('success'));
+		it('should trigger `success`', expect({
+			success: true,
+			alreadyExists: 'Folder already exists..?'
+		}));
 		it('should create a directory', assert.dirExists);
 
 	});
