@@ -14,6 +14,7 @@ var switcher = require('sails-util/switcher');
  * Generate a folder
  *
  * @option {String} pathToNew
+ * @option {String} gitkeep
  * [@option {Boolean} force=false]
  *
  * @handlers [success]
@@ -42,8 +43,8 @@ module.exports = function ( options, handlers ) {
 	var pathBuilt = '';
 
 	async.whilst(
-		function () {return pathParts.length;},
-		function (cb) {
+		function _while () {return pathParts.length;},
+		function _do (cb) {
 			var nextPart = pathParts.shift();
 			pathBuilt += nextPart + '/';
 			fs.lstat(pathBuilt, function (err, inodeStatus) {
@@ -59,16 +60,19 @@ module.exports = function ( options, handlers ) {
 				// Make the directory, ignoring "already exists" errors as other
 				// generators may have created the directory at the same time as us.
 				fs.mkdir(pathBuilt, function(err) {
-					if (err && err.code !== 'EEXIST') {return cb(err);} 
+					if (err) {return cb(err);} 
 					else {return cb();}
 				});
 
 			});
 
 		},
-		function (err) {
-			if (err) {return handlers.error(err);}
-			if (options.gitKeep) {
+		function _eventually (err) {
+			if (err && err.code === 'ENOENT') {return handlers.alreadyExists();} 
+			else if (err && err.code === 'EEXIST') {return handlers.alreadyExists();} 
+			else if (err) {return handlers.error(err);}
+
+			if (options.gitkeep) {
 				fs.outputFile(pathToNew + '/.gitkeep', '', handlers.success);
 			} else {
 				return handlers.success();
