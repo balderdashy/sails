@@ -20,7 +20,8 @@ var _			= require('lodash'),
 
 
 
-// Build Sails options using command-line arguments
+// Build Sails options using ONLY command-line arguments
+// (the only configuration we have available at this point)
 var sailsOptions = cliutil.getCLIConfig(argv);
 
 // Build logger

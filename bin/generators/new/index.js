@@ -150,9 +150,8 @@ module.exports = {
 						dependencies: {
 							'sails'			: '~' + sails.version,
 							'sails-disk'	: sails.dependencies['sails-disk'],
-							'grunt'			: sails.dependencies['grunt'],
 							'ejs'			: sails.dependencies['ejs'],
-							'optimist'		: sails.dependencies['optimist']
+							'grunt'			: sails.dependencies['grunt']
 						},
 						scripts: {
 							// TODO: Include this later when we have "sails test" ready.
@@ -184,8 +183,7 @@ module.exports = {
 				var dependenciesToCopy = [
 					'sails-disk@'+sails.dependencies['sails-disk'],
 					'ejs@'+sails.dependencies['ejs'],
-					'grunt@'+sails.dependencies['grunt'],
-					'optimist@'+sails.dependencies['optimist']
+					'grunt@'+sails.dependencies['grunt']
 				];
 
 				// `cd` into the newly created app and load up npm
