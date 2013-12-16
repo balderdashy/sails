@@ -189,27 +189,14 @@ module.exports = {
 				// `cd` into the newly created app and load up npm
 				process.chdir(appPath);
 				npm.load({
-					
-					loglevel: 'silent'
+					'cache-min': 999999999,	// see: https://github.com/isaacs/npm/issues/2568#issuecomment-30626394
+					loglevel: 'silent'		// see: https://github.com/isaacs/npm/pull/4320
 				}, function(err) {
 					if (err) return cb(err);
 
-					// Copy down dependencies
+					// Install dependencies from npm cache
 					npm.commands.install(dependenciesToCopy, cb);
 				});
-
-				// TODO: refactor this util method to work now that sails-util is pulled out of core...
-				// skip for now:
-				
-				// var pathToNodeModules = path.resolve(options.appPath, '/node_modules');
-				// util.copySailsDependency('optimist', pathToNodeModules);
-				// util.copySailsDependency('sails-disk', pathToNodeModules);
-				// util.copySailsDependency('ejs', pathToNodeModules);
-
-				// // Other grunt dependencies are automatically pulled from sails core deps.
-				// util.copySailsDependency('grunt', pathToNodeModules);
-
-				// cb();
 			}]
 
 

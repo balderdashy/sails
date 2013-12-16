@@ -45,7 +45,7 @@ var CLIController = {
 	new: function ( options ) {
 
 		var GeneratorFactory = require('./generators/factory');
-		var generate = GeneratorFactory( 'app' );
+		var generate = GeneratorFactory( 'new' );
 
 		generate( options, {
 			error: function(err) {
