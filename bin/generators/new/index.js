@@ -69,10 +69,10 @@ module.exports = {
 		var templateFiles = [
 
 			// api/blueprints/*
-			// 'api/blueprints/serverError.js',
-			// 'api/blueprints/badRequest.js',
-			// 'api/blueprints/notFound.js',
-			// 'api/blueprints/forbidden.js',
+			'api/blueprints/serverError.js',
+			'api/blueprints/badRequest.js',
+			'api/blueprints/notFound.js',
+			'api/blueprints/forbidden.js',
 			// 'api/blueprints/find.js',
 			// 'api/blueprints/create.js',
 			// 'api/blueprints/update.js',
