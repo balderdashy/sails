@@ -63,7 +63,8 @@
     "connect-flash": "0.1.1",
     "pluralize": "0.0.5",
     "json-stringify-safe": "5.0.0",
-    "captains-log": "~0.10.5"
+    "captains-log": "~0.10.5",
+    "grunt-sync": "0.0.4"
   },
   "devDependencies": {
     "checksum": "~0.1.1",
