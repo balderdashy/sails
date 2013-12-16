@@ -1,39 +1,9 @@
-var _ = require('lodash');
-require('colors');
 
 describe('benchmarks', function () {
 
 	describe('sails.load()', function() {
-		before(function () {
-			this.microtime = require('microtime');
-			this.results = [];
-		});
-		after(function () {
-			console.log('\n\n');
-			console.log('Benchmarks::');
-			var benchmarks = _.reduce(this.results, function (memo, result) {
-
-				// Convert to ms- round to 0 decimal places
-				var ms = (result.duration / 1000.0);
-				ms = Math.round(ms * 1) / 1;
-
-
-				var expected = this.expected || 1000;
-				var color =
-					(ms < expected/10) ? 'blue' :
-					(ms < expected/5) ? 'cyan' :
-					(ms < expected/3) ? 'yellow' :
-					(ms < expected/2) ? 'orange' : 
-					'red';
-
-				ms += 'ms';
-				ms = ms[color];
-
-				return memo + '\n ' + 
-					(result.benchmark+'').grey + ' :: ' + ms;
-			},'');
-			console.log(benchmarks);
-		});
+		before(setupBenchmarks);
+		after(reportBenchmarks);
 
 		benchmark('require("sails")', function(cb) {
 			var sails = require('sails');
@@ -90,8 +60,56 @@ function benchmark (description, fn) {
 			// console.timeEnd(description);
 			var finishedAt = self.microtime.now();
 			var duration = finishedAt - startedAt;
-			self.results.push({duration: duration, benchmark: description});
+			self.benchmarks.push({duration: duration, benchmark: description});
 			cb.apply(Array.prototype.slice.call(arguments));
 		});
 	});
+}
+
+
+/**
+ * Use in mocha's `before`
+ * 
+ * @this {Array} benchmarks
+ * @this {Object} microtime
+ */
+function setupBenchmarks() {
+	this.microtime = require('microtime');
+	this.benchmarks = [];
+}
+
+
+/**
+ * Use in mocha's `after`
+ * 
+ * @this {Array} benchmarks
+ * @this {Object} microtime
+ */
+function reportBenchmarks () {
+	var _ = require('lodash');
+	require('colors');
+	console.log('\n\n');
+	console.log('Benchmarks::');
+	var benchmarks = _.reduce(this.benchmarks, function (memo, result) {
+
+		// Convert to ms- round to 0 decimal places
+		var ms = (result.duration / 1000.0);
+		ms = Math.round(ms * 1) / 1;
+
+
+		var expected = this.expected || 1000;
+		var color =
+			(ms < expected/10) ? 'blue' :
+			(ms < expected/5) ? 'cyan' :
+			(ms < expected/3) ? 'yellow' :
+			(ms < expected/2) ? 'orange' : 
+			'red';
+
+		ms += 'ms';
+		ms = ms[color];
+
+		return memo + '\n ' + 
+			(result.benchmark+'').grey + ' :: ' + ms;
+	},'');
+	console.log(benchmarks);
 }
