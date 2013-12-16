@@ -30,6 +30,24 @@ module.exports = function (sails) {
 		this.generateController = function (entity, options) {
 			var newControllerPath = sails.config.paths.controllers + '/' + utils.capitalize(entity) + 'Controller.js';
 			var newFederatedControllerPath = sails.config.paths.controllers + '/' + entity;
+      var prefix = sails.config.paths.controllers;
+
+      if(options.module) {
+        if(sails.config.modules) {
+          if(sails.config.modules.path) {
+            newControllerPath = sails.config.modules.path + '/' + options.module + '/controllers/' + utils.capitalize(entity) + 'Controller.js';
+            newFederatedControllerPath = sails.config.modules.path + '/' + options.module + '/controllers/' + entity;
+            prefix = sails.config.modules.path + '/' + options.module + '/controllers';
+          }
+          else {
+            throw new Error('Modules path not set!!!');
+          }
+        }
+        else
+        {
+          throw new Error('Modules not activated!!!');
+        }
+      }
 
 			utils.verifyDoesntExist(newControllerPath, 'A controller already exists at: ' + newControllerPath);
 			utils.verifyDoesntExist(newFederatedControllerPath, 'A controller already exists at: ' + newFederatedControllerPath);
@@ -44,7 +62,7 @@ module.exports = function (sails) {
 
 					return generate({
 						boilerplate: 'federatedAction.ejs',
-						prefix: sails.config.paths.controllers + '/' + entity,
+						prefix: prefix + '/' + entity,
 						entity: entity,
 						identity: entity.toLowerCase(),
 						pluralIdentity: pluralize(entity),
@@ -86,7 +104,7 @@ module.exports = function (sails) {
 				}
 				return generate({
 					boilerplate: 'controller.ejs',
-					prefix: sails.config.paths.controllers,
+					prefix: prefix,
 					entity: utils.capitalize(entity),
 					identity: entity.toLowerCase(),
 					pluralIdentity: pluralize(entity),
@@ -127,9 +145,25 @@ module.exports = function (sails) {
 					attributes += fnString;
 				});
 			}
+      var path = sails.config.paths.models;
+      if(options.module) {
+        if(sails.config.modules) {
+          if(sails.config.modules.path) {
+            path = sails.config.modules.path + '/' + options.module + '/models';
+          }
+          else {
+            throw new Error('Modules path not set!!!');
+          }
+        }
+        else
+        {
+          throw new Error('Modules not activated!!!');
+        }
+      }
+
 			return generate({
 				boilerplate: 'model.ejs',
-				prefix: sails.config.paths.models,
+				prefix: path,
 				entity: utils.capitalize(entity),
 				attributes: attributes,
 				suffix: '.js'

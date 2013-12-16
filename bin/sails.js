@@ -323,6 +323,7 @@ require('../lib/configuration')(sails).load(function (err, config) {
     usage += leftColumn('sails generate <foo>') + 'Generate api/models/Foo.js and api/controllers/FooController.js\n';
     usage += leftColumn('sails generate model <foo>') + 'Generate api/models/Foo.js\n';
     usage += leftColumn('sails generate controller <foo>') + 'Generate api/controllers/FooController.js\n';
+    usage += leftColumn('  [--module name]') + 'in module (model and controller) \n';
     usage += leftColumn('sails version') + 'Get the current globally installed Sails version\n';
     usage += leftColumn('sails run <command>') + 'Run a management command (exported by YOUR_APP/commands/index.js)';
 
