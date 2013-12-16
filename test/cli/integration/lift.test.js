@@ -68,7 +68,7 @@ describe('Starting sails server with lift', function() {
 
 				sailsServer = spawn(sailsBin, ['lift']);
 
-				sailsServer.stdout.on('data', function(data) {					
+				sailsServer.stdout.on('data', function(data) {
 					var dataString = data + '';
 					assert(dataString.indexOf('error') === -1);
 					sailsServer.stdout.removeAllListeners('data');

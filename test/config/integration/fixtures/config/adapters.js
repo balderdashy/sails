@@ -1,23 +1,23 @@
 // Configure installed adapters
-// If you define an attribute in your model definition, 
+// If you define an attribute in your model definition,
 // it will override anything from this global config.
 module.exports.adapters = {
 
   // TEST CONFIGS //
   'default': 'custom',
-  
+
   custom: {
     module: 'sails-disk'
   },
-  
+
   sqlite: {
     module: 'sails-sqlite',
     host: 'sqliteHOST',
     user: 'sqliteUSER'
   },
-  
+
   // TESTS END //
-  
+
   memory: {
     module: 'sails-memory'
   },
