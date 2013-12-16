@@ -2,7 +2,8 @@
  * Module dependencies.
  */
 
-var _ = require('lodash'),
+var npm = require('npm'),
+	_ = require('lodash'),
 	fs = require('fs-extra'),
 	path = require('path'),
 	path = require('path'),
@@ -181,10 +182,24 @@ module.exports = {
 			// TODO: Copy required app-level dependencies
 			// (to avoid having to do a local npm install in new projects)
 			copyAppDependencies: ['folders', function (cb) {
+				
+				// The dependencies we should copy over:
+				var dependenciesToCopy = ['ejs'];
+
+				// `cd` into the newly created app and load up npm
+				process.chdir(appPath);
+				npm.load({
+					
+					loglevel: 'silent'
+				}, function(err) {
+					if (err) return cb(err);
+
+					// Copy down dependencies
+					npm.commands.install(dependenciesToCopy, cb);
+				});
 
 				// TODO: refactor this util method to work now that sails-util is pulled out of core...
 				// skip for now:
-				return cb();
 				
 				// var pathToNodeModules = path.resolve(options.appPath, '/node_modules');
 				// util.copySailsDependency('optimist', pathToNodeModules);
