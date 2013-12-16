@@ -1,6 +1,20 @@
 # Changelog
 
-## 0.9.7  (latest stable)
+## 0.9.8 (latest stable)
+*December 16, 2013*
+
++ sgress454	Hotfix for CORS issue when no Origin header is present. …	  f42da3c
++ mikermcneil	Update README.md	 1bf1d15
++ bicherele	Update es.json …	 ddb9a07
++ andyzhau	Fix the join room variable reference error.	 57783a3
++ mikermcneil	Use npm version of linker	 5459119
++ mikermcneil	Update CHANGELOG.md	 aae737f
++ devel-pa	lodash library updated to last version available (2.4.1)	 c71ce81
++ mikermcneil	Hot fix to protect connect cookie parsing.	 e181656
++ mikermcneil	Rebased from #1012 as hotfix for windows view issue.	 031ebe1
+
+
+## 0.9.7  
 *October 10, 2013*
 
 + Complete improvement/refactoring of configuration loader (fixes bugs)
