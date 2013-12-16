@@ -73,10 +73,10 @@ module.exports = {
 			'api/blueprints/badRequest.js',
 			'api/blueprints/notFound.js',
 			'api/blueprints/forbidden.js',
-			// 'api/blueprints/find.js',
-			// 'api/blueprints/create.js',
-			// 'api/blueprints/update.js',
-			// 'api/blueprints/destroy.js',
+			'api/blueprints/find.js',
+			'api/blueprints/create.js',
+			'api/blueprints/update.js',
+			'api/blueprints/destroy.js',
 
 			// api/policies/*
 			'api/policies/sessionAuth.js',
