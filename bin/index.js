@@ -10,7 +10,7 @@ var _			= require('lodash'),
 	Err			= require('../errors'),
 	Logger		= require('captains-log'),
 	Sails		= require('../lib/app');
-	_interpretArgs = require('./_arguments');
+	_interpretArgs = require('./arguments');
 	cliutil		= require('sails-util/cli');
 	_.str		= require('underscore.string'),
 	REPL		= require('repl'),
@@ -30,7 +30,6 @@ var log = new Logger(sailsOptions.log);
 // Handlers containing all of the logic & responses
 // to run/send back to the CLI
 var CLIController = {
-
 
 
 
@@ -54,6 +53,7 @@ var CLIController = {
 			},
 			success: function() {
 				log('Created a new app `' + options.appName + '` at ' + options.appPath + '.');
+				return;
 			},
 			missingAppName: function () {
 				log.error('Please choose the name or destination path for your new app.');
