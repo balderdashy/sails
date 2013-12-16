@@ -18,6 +18,8 @@ function expect () {}
  * Ensure that the specified variable exists (is not undefined)
  * in the test context. (i.e. `expect.exists("foo")` checks `this.foo`)
  *
+ * @param {String} keyPath		[the key(s) to dereference]
+ * 
  * @return {Function}		[bdd test]
  * @api public
  */
@@ -26,7 +28,31 @@ expect.exists = function (keypath) {
 		assert( typeof _deepValue(this, keypath) !== 'undefined' );
 	};
 };
+expect.notExists = function (keypath) {
+	return function () {
+		assert( typeof _deepValue(this, keypath) === 'undefined' );
+	};
+};
 
+
+/**
+ * expect.equal()
+ * 
+ * Ensure that the specified variable in the test context is equal
+ * to the specified compareToValue.
+ * (i.e. `expect.equal("request.status")` checks `this.request.status`)
+ *
+ * @param {String} keyPath		[the key(s) to dereference]
+ * @param {*} compareToValue	[the value to check]
+ * 
+ * @return {Function}		[bdd test]
+ * @api public
+ */
+expect.equal = function (keypath, compareToValue ) {
+	return function () {
+		assert.equal( _deepValue(this, keypath), compareToValue );
+	};
+};
 
 
 
