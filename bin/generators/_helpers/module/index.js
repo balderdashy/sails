@@ -93,16 +93,18 @@ module.exports = function ( options, handlers ) {
 				// It will respond with a string that we can write to disk.
 				function renderContents (cb) {
 					if ( !generator.render ) {
+						// Default render behavior
 						if (options.templateFilePath) {
 							fs.readFile(options.templateFilePath, 'utf8', function(err, contents) {
 								if (err) {return cb(err);}
-								options.contents = contents;
+								options.contents = options.contents || contents;
 								cb();
 							});
-						} else {
-							return cb();
 						}
+						// If templateFilePath is unknown, we can't do anything.
+						else return cb();
 					}
+					// Custom render method
 					else generator.render(options, function (err, _contents) {
 						if (err) return cb(err);
 						options.contents = options.contents || _contents || '';

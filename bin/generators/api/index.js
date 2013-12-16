@@ -39,7 +39,7 @@ module.exports = {
 
 		// Create two copies of the options, since they will be modified by the
 		// controller and model generator functions
-		_options = util.cloneDeep(options);
+		var _options = util.cloneDeep(options);
 		options.controller = util.cloneDeep(_options);
 		options.model = util.cloneDeep(_options);
 

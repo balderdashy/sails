@@ -86,9 +86,6 @@ module.exports = {
 			'assets/js/socket.io.js',
 			'assets/js/socketio_example.js',
 
-			// views/*
-			require('./generators/homepage'),
-
 			// config/*
 			require('./generators/config.session'),
 			require('./generators/config.views'),
@@ -116,7 +113,47 @@ module.exports = {
 			// top-level files
 			require('sails-generate-gruntfile'),
 			require('./generators/gitignore'),
-			require('./generators/README.md')
+			require('./generators/README.md'),
+			'app.js',
+
+
+			// views/*
+			{
+				configure: function (options, sails, handlers) {
+					var id = 'homepage';
+					handlers.success({
+						pathToNew: path.resolve(sails.config.paths.views, id + '.' + options.viewEngine),
+						templateFilePath: path.resolve(__dirname, './generators/view', options.viewEngine, id + '.' + options.viewEngine)
+					});
+				}
+			},
+			{
+				configure: function (options, sails, handlers) {
+					var id = '404';
+					handlers.success({
+						pathToNew: path.resolve(sails.config.paths.views, id + '.' + options.viewEngine),
+						templateFilePath: path.resolve(__dirname, './generators/view', options.viewEngine, id + '.' + options.viewEngine)
+					});
+				}
+			},
+			{
+				configure: function (options, sails, handlers) {
+					var id = '500';
+					handlers.success({
+						pathToNew: path.resolve(sails.config.paths.views, id + '.' + options.viewEngine),
+						templateFilePath: path.resolve(__dirname, './generators/view', options.viewEngine, id + '.' + options.viewEngine)
+					});
+				}
+			},
+			{
+				configure: function (options, sails, handlers) {
+					var id = 'layout';
+					handlers.success({
+						pathToNew: path.resolve(sails.config.paths.views, id + '.' + options.viewEngine),
+						templateFilePath: path.resolve(__dirname, './generators/view', options.viewEngine, id + '.' + options.viewEngine)
+					});
+				}
+			}
 
 		];
 
@@ -129,52 +166,6 @@ module.exports = {
 		
 
 		async.auto({
-
-			folders: function(cb) {
-				async.each(folders, function(folder, cb) {
-					cb = switcher(cb);
-
-					// Build folders
-					GenerateFolderHelper({
-						pathToNew: path.resolve(appPath,folder),
-						gitkeep: true
-					}, {
-						alreadyExists: function (path) {
-							return cb('A file or folder already exists at the destination path :: ' + path);
-						},
-						error: cb,
-						success: cb.success
-					});
-				}, cb);
-			},
-
-			templates: ['folders', function(cb) {
-				async.each(templateFiles, function(fileOrGenerator, cb) {
-					cb = switcher(cb);
-
-					// Build new options set
-					var opts;
-					if (typeof fileOrGenerator === "string") {
-
-						// No custom generator exists: just copy file from templates
-						opts = _.extend({force: true}, options,{
-							generator: {},
-							templateFilePath: path.resolve(__dirname,'./templates/' + fileOrGenerator),
-							pathToNew: path.resolve(appPath, fileOrGenerator)
-						});
-					}
-					else {
-
-						// Use custom generator
-						opts = _.extend({force: true}, options,{
-							generator: fileOrGenerator
-						});
-					}
-
-					// Generate module
-					GenerateModuleHelper(opts, cb);
-				}, cb);
-			}],
 
 			'sails': function (cb) {
 				// Bootstrap sails to get the version
@@ -189,7 +180,7 @@ module.exports = {
 				});
 			},
 
-			'package.json': ['folders','sails', function (cb, async_data) {
+			'package.json': ['sails', function (cb, async_data) {
 				cb = switcher(cb);
 
 				var sails = async_data.sails;
@@ -219,8 +210,59 @@ module.exports = {
 						author: '',
 						license: ''
 					}
-				}, cb);
+				}, {
+					alreadyExists: function () {
+						return cb('A file or folder already exists at the destination path :: ' + path);
+					},
+					error: cb,
+					success: cb.success
+				});
+			}],
 
+			folders: function(cb) {
+				async.each(folders, function(folder, cb) {
+					cb = switcher(cb);
+
+					// Build folders
+					GenerateFolderHelper({
+						pathToNew: path.resolve(appPath,folder),
+						gitkeep: true
+					}, {
+						alreadyExists: function (path) {
+							return cb('A file or folder already exists at the destination path :: ' + path);
+						},
+						error: cb,
+						success: cb.success
+					});
+				}, cb);
+			},
+
+			templates: ['folders', 'package.json', function(cb) {
+				async.each(templateFiles, function(fileOrGenerator, cb) {
+					cb = switcher(cb);
+
+					// Build new options set
+					var opts;
+					if (typeof fileOrGenerator === "string") {
+
+						// No custom generator exists: just copy file from templates
+						opts = _.extend({}/*{force: true}*/, options,{
+							generator: {},
+							templateFilePath: path.resolve(__dirname,'./templates/' + fileOrGenerator),
+							pathToNew: path.resolve(appPath, fileOrGenerator)
+						});
+					}
+					else {
+
+						// Use custom generator
+						opts = _.extend({},/*{force: true}*/options,{
+							generator: fileOrGenerator
+						});
+					}
+
+					// Generate module
+					GenerateModuleHelper(opts, cb);
+				}, cb);
 			}],
 
 
