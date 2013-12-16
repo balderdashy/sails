@@ -37,6 +37,7 @@ var helper = {
 		};
 	},
 
+
 	/**
 	 * Send a mock request to the instance of Sails
 	 * in the test context.
@@ -46,12 +47,14 @@ var helper = {
 	 */
 	request: function ( url, options ) {
 		return function (done) {
-			this.sails.emit('router:request', _req(), _res(), function (err, response) {
-				console.log('YAAAAAAAOW CALLBACK');
+
+			var _fakeClient = function (err, response) {
 				if (err) return done(err);
 				this.response = response;
 				done();
-			});
+			};
+
+			this.sails.emit('router:request', _req(), _res(), _fakeClient);
 		};
 	}
 };
@@ -81,16 +84,20 @@ function _req ( req ) {
 
 
 /**
- * Ensure that response object has a minimum set of reasonable defaults
- * Used primarily as a test fixture.
+ * Test fixture to send requests and receive responses from Sails.
  *
  * @api private
  */
 
 function _res (res) {
-	return util.defaults(res || {}, {
+
+	var _enhancedRes = util.defaults(res || {}, {
 		send: function(body, statusCode) {
-			res._cb(null, body, statusCode);
+			_enhancedRes._cb(null, {
+				body: body,
+				headers: {},
+				status: statusCode || 200
+			});
 		},
 		json: function(body, statusCode) {
 			
@@ -100,12 +107,14 @@ function _res (res) {
 				var failedStringify = new Error(
 					'Failed to stringify specified JSON response body :: ' + body
 				);
-				return res.send(failedStringify.stack, 500);
+				return _enhancedRes.send(failedStringify.stack, 500);
 			}
 
-			return res.send(json,statusCode);
+			return _enhancedRes.send(json,statusCode);
 		}
 	});
+
+	return _enhancedRes;
 }
 
 
