@@ -60,6 +60,7 @@ module.exports = {
 			require('sails-generate-gruntfile'),
 			require('./generators/gitignore'),
 			require('./generators/README.md'),
+			require('./generators/config.session'),
 			'assets/js/sails.io.js',
 			'assets/js/socket.io.js',
 			'assets/js/socketio_example.js'
@@ -203,20 +204,6 @@ module.exports = {
 					// cb();
 				// });
 			}]
-
-
-
-			// TODO: generate unique session secret (custom generator for `config/session.js`)
-			// 
-			// Session = require('../lib/hooks/session')(sails);
-			// 	// Generate session secret
-			// 	var sessionBoilerplatePath = __dirname + '/boilerplates/config/session.js';
-			// 	var newSessionConfig = ejs.render(fs.readFileSync(sessionBoilerplatePath, 'utf8'), {
-			// 		secret: Session.generateSecret()
-			// 	});
-			// 	fs.writeFileSync(outputPath + '/config/session.js', newSessionConfig, 'utf8');
-
-
 
 		}, handlers);
 	}
