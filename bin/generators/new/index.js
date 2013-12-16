@@ -35,9 +35,6 @@ module.exports = {
 
 		if ( !options.appName ) return handlers.missingAppName();
 
-		// Build logger
-		var log = new Logger(options.log);
-
 		// Resolve absolute appPath
 		var appPath = path.resolve( process.cwd(), options.appName );
 
