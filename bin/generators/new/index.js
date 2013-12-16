@@ -50,9 +50,9 @@ module.exports = {
 			'api',
 				'api/adapters',
 				'api/blueprints',
+				'api/blueprints/errors',
 				'api/controllers',
 				'api/models',
-				'api/adapters',
 				'api/policies',
 				'api/services',
 			'config',
@@ -69,14 +69,14 @@ module.exports = {
 		var templateFiles = [
 
 			// api/blueprints/*
-			'api/blueprints/serverError.js',
-			'api/blueprints/badRequest.js',
-			'api/blueprints/notFound.js',
-			'api/blueprints/forbidden.js',
-			'api/blueprints/find.js',
-			'api/blueprints/create.js',
-			'api/blueprints/update.js',
-			'api/blueprints/destroy.js',
+			// 'api/blueprints/errors/serverError.js',		// needs some adjustments in core before they're all usable
+			// 'api/blueprints/errors/badRequest.js',
+			// 'api/blueprints/errors/notFound.js',
+			// 'api/blueprints/errors/forbidden.js',
+			// 'api/blueprints/find.js',
+			// 'api/blueprints/create.js',
+			// 'api/blueprints/update.js',
+			// 'api/blueprints/destroy.js',
 
 			// api/policies/*
 			'api/policies/sessionAuth.js',
