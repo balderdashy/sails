@@ -28,9 +28,9 @@
     "lib": "lib"
   },
   "dependencies": {
-    "npm": "git://github.com/mikermcneil/npm",
     "waterline": "git://github.com/balderdashy/waterline.git#multiAssociations",
     "sails-util": "~0.10.0",
+    "enpeem": "~0.1.0",
     "sails-generate-gruntfile": "~0.10.0",
     "sails-disk": "git://github.com/balderdashy/sails-disk.git#associations",
     "express": "3.4.3",

@@ -2,12 +2,12 @@
  * Module dependencies.
  */
 
-var npm = require('npm'),
-	_ = require('lodash'),
+var _ = require('lodash'),
+	npm = require('enpeem'),
 	path = require('path'),
+	async = require('async'),
 	Sails = require('../../../lib/app'),
 	switcher = require('sails-util/switcher'),
-	async = require('async'),
 	GenerateModuleHelper = require('../_helpers/module'),
 	GenerateFolderHelper = require('../_helpers/folder');
 	GenerateJSONHelper = require('../_helpers/jsonfile');
@@ -121,9 +121,7 @@ module.exports = {
 				}, cb);
 			}],
 
-			'package.json': ['folders', function (cb) {
-				cb = switcher(cb);
-
+			'sails': function (cb) {
 				// Bootstrap sails to get the version
 				var sails = new Sails();
 				sails.load({
@@ -132,61 +130,83 @@ module.exports = {
 					loadHooks: ['userconfig', 'moduleloader']
 				}, function loadedSails (err) {
 					if (err) return cb(err);
-
-					// Generate package.json options
-					var opts = {
-						pathToNew: path.resolve(appPath, 'package.json'),
-						data: {
-							name: options.appName,
-							'private': true,
-							version: '0.0.0',
-							description: 'a Sails application',
-							dependencies: {
-								'sails'			: '~' + sails.version,
-								'sails-disk'	: sails.dependencies['sails-disk'],
-								'grunt'			: sails.dependencies['grunt'],
-								'ejs'			: sails.dependencies['ejs'],
-								'optimist'		: sails.dependencies['optimist']
-							},
-							scripts: {
-								// TODO: Include this later when we have "sails test" ready.
-								// test: './node_modules/mocha/bin/mocha -b',
-								start: 'node app.js',
-								debug: 'node debug app.js'
-							},
-							main: 'app.js',
-							repository: '',
-							author: '',
-							license: ''
-						}
-					};
-
-					// Generate json file
-					GenerateJSONHelper(opts, cb);
+					cb(null,sails);
 				});
+			},
 
+			'package.json': ['folders','sails', function (cb, async_data) {
+				cb = switcher(cb);
+
+				var sails = async_data.sails;
+
+				// Generate package.json options
+				var opts = {
+					pathToNew: path.resolve(appPath, 'package.json'),
+					data: {
+						name: options.appName,
+						'private': true,
+						version: '0.0.0',
+						description: 'a Sails application',
+						dependencies: {
+							'sails'			: '~' + sails.version,
+							'sails-disk'	: sails.dependencies['sails-disk'],
+							'grunt'			: sails.dependencies['grunt'],
+							'ejs'			: sails.dependencies['ejs'],
+							'optimist'		: sails.dependencies['optimist']
+						},
+						scripts: {
+							// TODO: Include this later when we have "sails test" ready.
+							// test: './node_modules/mocha/bin/mocha -b',
+							start: 'node app.js',
+							debug: 'node debug app.js'
+						},
+						main: 'app.js',
+						repository: '',
+						author: '',
+						license: ''
+					}
+				};
+
+				// Generate json file
+				GenerateJSONHelper(opts, cb);
 
 			}],
 
 
 			// TODO: Copy required app-level dependencies
 			// (to avoid having to do a local npm install in new projects)
-			copyAppDependencies: ['folders', function (cb) {
+			copyAppDependencies: ['folders','sails', function (cb, async_data) {
 				
+				var sails = async_data.sails;
+
+				// Build dependency strings
 				// The dependencies we should copy over:
-				var dependenciesToCopy = ['ejs'];
+				var dependenciesToCopy = [
+					'sails-disk@'+sails.dependencies['sails-disk'],
+					'ejs@'+sails.dependencies['ejs'],
+					'grunt@'+sails.dependencies['grunt'],
+					'optimist@'+sails.dependencies['optimist']
+				];
 
 				// `cd` into the newly created app and load up npm
 				process.chdir(appPath);
-				npm.load({
-					'cache-min': 999999999,	// see: https://github.com/isaacs/npm/issues/2568#issuecomment-30626394
-					loglevel: 'silent'		// see: https://github.com/isaacs/npm/pull/4320
-				}, function(err) {
-					if (err) return cb(err);
 
-					// Install dependencies from npm cache
-					npm.commands.install(dependenciesToCopy, cb);
-				});
+				// Just for diagnostics
+				// var cmd = 'npm install ' + dependenciesToCopy.join(' ');
+				// console.time(cmd);
+
+				// Install dependencies from npm cache
+				npm.install( dependenciesToCopy, {
+					// see: https://github.com/isaacs/npm/issues/2568#issuecomment-30626394
+					'cache-min': 999999999,
+					// see: https://github.com/isaacs/npm/pull/4320
+					loglevel: 'silent'
+				}, cb);
+				// }, function (err) {
+					// if (err) return cb(err);
+					// console.timeEnd(cmd);
+					// cb();
+				// });
 			}]
 
 
@@ -208,6 +228,10 @@ module.exports = {
 
 
 };
+
+
+
+
 
 
 

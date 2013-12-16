@@ -18,8 +18,8 @@ module.exports = function (generatorName) {
 	}
 	catch(e0) {
 		throw new Error(
-			'Cannot require specified generator, `'+ generatorName +'` ' + 
-			' ( @ ' + generatorPath + ')'
+			'Generator, `'+ generatorName +'` failed to load' + 
+			' ( @ ' + generatorPath + ')'+'\n'+e0
 		);
 	}
 
