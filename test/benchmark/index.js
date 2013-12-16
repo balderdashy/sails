@@ -107,9 +107,14 @@ function reportBenchmarks () {
 	console.log('Benchmarks::');
 	var benchmarks = _.reduce(this.benchmarks, function (memo, result) {
 
-		// Convert to ms- round to 0 decimal places
+		// Convert to ms-
 		var ms = (result.duration / 1000.0);
-		ms = Math.round(ms * 1) / 1;
+
+		// round to 0 decimal places
+		function _roundDecimalTo (num, numPlaces) {
+			return +(Math.round(num + ('e+'+numPlaces))  + ('e-'+numPlaces));
+		}
+		ms = _roundDecimalTo(ms, 2);
 
 
 		var expected = result.expected || 1000;
