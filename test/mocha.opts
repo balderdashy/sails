@@ -1,4 +1,5 @@
 --timeout 60000
 --reporter dot
 --ui bdd
+-w
 test/**/*.test.js
