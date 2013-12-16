@@ -20,6 +20,9 @@ describe('benchmarks', function () {
 		});
 
 		benchmark('again, no hooks', function(cb) {
+			this.expected = 25;
+			this.comment = 'should be faster b/c of require cache';
+
 			var sails = require('sails');
 			sails.load({
 				log: { level: 'error' },
@@ -29,6 +32,9 @@ describe('benchmarks', function () {
 		});
 
 		benchmark('with moduleloader hook', function(cb) {
+			this.expected = 25;
+			this.comment = 'should be faster b/c of require cache';
+
 			var sails = require('sails');
 			sails.load({
 				log: { level: 'error' },
@@ -56,13 +62,22 @@ function benchmark (description, fn) {
 
 		var startedAt = self.microtime.now();
 		// console.time(description);
-		fn(function _callback () {
-			// console.timeEnd(description);
+		fn.apply(this, [function _callback () {
+			
+			var _result = {};
+
+			// If a `comment` or `expected` was provided, harvest it
+			_result.expected = self.expected;
+			self.expected = null;
+			_result.comment = self.comment;
+			self.comment = null;
 			var finishedAt = self.microtime.now();
-			var duration = finishedAt - startedAt;
-			self.benchmarks.push({duration: duration, benchmark: description});
+			_result.duration = finishedAt - startedAt;
+			_result.benchmark = description;
+
+			self.benchmarks.push(_result);
 			cb.apply(Array.prototype.slice.call(arguments));
-		});
+		}]);
 	});
 }
 
@@ -97,19 +112,32 @@ function reportBenchmarks () {
 		ms = Math.round(ms * 1) / 1;
 
 
-		var expected = this.expected || 1000;
+		var expected = result.expected || 1000;
+
+		// threshold: the "failure" threshold
+		var threshold = result.expected;
+
 		var color =
-			(ms < expected/10) ? 'blue' :
-			(ms < expected/5) ? 'cyan' :
-			(ms < expected/3) ? 'yellow' :
-			(ms < expected/2) ? 'orange' : 
+			(ms < 1*expected/10) ? 'blue' :
+			(ms < 3*expected/10) ? 'cyan' :
+			(ms < 6*expected/10) ? 'yellow' :
+			(ms < threshold) ? 'orange' : 
 			'red';
 
 		ms += 'ms';
 		ms = ms[color];
 
 		return memo + '\n ' + 
-			(result.benchmark+'').grey + ' :: ' + ms;
+			(result.benchmark+'').grey + ' :: ' + ms +
+
+			// Expected ms provided, and the test took quite a while
+			(result.expected && ms >= threshold ? '\t\t\t(expected '+expected+'ms' +
+				(result.comment ? ' --' + result.comment : '') +
+			')' :
+
+			// Comment provided - but no expected ms
+			(result.comment ? '\t\t\t(' + result.comment +')' : '')
+			).grey;
 	},'');
 	console.log(benchmarks);
 }
