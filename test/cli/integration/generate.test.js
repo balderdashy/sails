@@ -1,16 +1,16 @@
-var assert = require('assert');
-var fs = require('fs');
-var wrench = require('wrench');
-var exec = require('child_process').exec;
-
-// Make existsSync not crash on older versions of Node
-fs.existsSync = fs.existsSync || require('path').existsSync;
-
-function capitalize(string) {
-	return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 describe('API and adapter generators', function () {
+	
+	var assert = require('assert');
+	var fs = require('fs');
+	var wrench = require('wrench');
+	var exec = require('child_process').exec;
+
+	// Make existsSync not crash on older versions of Node
+	fs.existsSync = fs.existsSync || require('path').existsSync;
+
+	function capitalize(string) {
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	}
 	var sailsBin = './bin/sails.js';
 	var appName = 'testApp';
 
