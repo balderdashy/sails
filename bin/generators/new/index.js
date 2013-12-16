@@ -139,8 +139,8 @@ module.exports = {
 
 				var sails = async_data.sails;
 
-				// Generate package.json options
-				var opts = {
+				// Generate package.json file
+				GenerateJSONHelper({
 					pathToNew: path.resolve(appPath, 'package.json'),
 					data: {
 						name: options.appName,
@@ -164,10 +164,7 @@ module.exports = {
 						author: '',
 						license: ''
 					}
-				};
-
-				// Generate json file
-				GenerateJSONHelper(opts, cb);
+				}, cb);
 
 			}],
 
