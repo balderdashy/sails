@@ -6,22 +6,23 @@ var expect = require('../../_assertions');
 var SailsHelper = require('../../_helpers/sails');
 
 
-describe('router', function() {
+describe('load sails with all hooks disabled', function () {
 
-	describe('(when sails loaded with no hooks enabled)', function () {
-		SailsHelper.bdd({
-			loadHooks: [],
-			log: { level:'error' }
-		});
-
-
-		describe('sanity check', function () {
-			it('double-check that `this.sails` is available', expect.exists('sails') );
-			it('`sails.router` should exist', expect.exists('sails.router') );
-		});
-		
-
+	SailsHelper.bindLifecycle({
+		loadHooks: [],
+		log: { level:'error' }
 	});
 
+	describe('this.sails', function () {
+		it('should exist', expect.exists('sails') );
+	});
+	describe('this.sails.router', function (){
+		it('should exist', expect.exists('sails.router') );
+	});
+
+	describe('router', function() {
+		it('should not throw when handling `router:request` event', SailsHelper.request('/'));
+	});
 });
+
 

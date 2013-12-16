@@ -16,10 +16,10 @@ function expect () {}
  * expect.exists()
  * 
  * Ensure that the specified variable exists (is not undefined)
- * in the test context.
- * (i.e. `expect.exists("foo")` checks `this.foo`)
+ * in the test context. (i.e. `expect.exists("foo")` checks `this.foo`)
  *
- * @return {Function}
+ * @return {Function}		[bdd test]
+ * @api public
  */
 expect.exists = function (keypath) {
 	return function () {
@@ -29,22 +29,15 @@ expect.exists = function (keypath) {
 
 
 
-/**
- * expect.noError()
- * 
- * Ensure that no error exists.
- */
-expect.noError = function () {
-	return function (err) {
-		assert(!err);
-	};
-};
-
-
 
 
 module.exports = expect;
 
+
+
+
+
+// Private methods
 
 
 /**
@@ -54,6 +47,8 @@ module.exports = expect;
  * @param  {String} path	[key, or 'key.subkey.subsubkey...']
  * 
  * @return {*}				[if the key(s) don't exist, return undefined, otherwise the value]
+ *
+ * @api private
  */
 function _deepValue (object, path) {
 	if ('undefined' === typeof object || object === null) {
