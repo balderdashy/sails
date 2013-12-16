@@ -17,11 +17,11 @@ ___Do not try to reopen closed issues, open a new one instead.___
 
 
 ## Submitting Pull Requests
-0. If you don't know how to fork and PR, [follow our instructions on contributing](https://github.com/balderdashy/sails/wiki/Contributing-to-Sails).
+0. If you don't know how to fork and PR, [follow our instructions on contributing](https://github.com/balderdashy/sails-docs/blob/0.9/Contributing-to-Sails.md).
 1. Fork the repo.
 2. Add a test for your change. Only refactoring and documentation changes require no new tests. If you are adding functionality or fixing a bug, we need a test!
 4. Make the tests pass and make sure you follow [our syntax guidelines](https://github.com/balderdashy/sails/blob/master/.jshintrc).
-5. Push to your fork and submit a pull request to our [dev branch](https://github.com/balderdashy/sails/tree/development).
+5. Push to your fork and submit a pull request to our [the v0.10 branch](https://github.com/balderdashy/sails/tree/v0.10).
 
 From this point on it's up to us to accept the PR or else suggest improvements or alternatives. We'll typically get back to you within three business days.
 
