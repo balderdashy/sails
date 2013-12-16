@@ -30,26 +30,36 @@ module.exports = {
 	 * @return {[type]}          [description]
 	 */
 	generate: function createNewApp( options, handlers ) {
-
 		handlers = switcher(handlers);
 
 		if ( !options.appName ) return handlers.missingAppName();
 
+		// Defaults
+		_.defaults(options, {
+			viewEngine: 'ejs'
+		});
+
+
 		// Resolve absolute appPath
 		var appPath = path.resolve( process.cwd(), options.appName );
-
-		options.appPath = appPath;
+		_.defaults(options, {
+			appPath: appPath
+		});
 
 		var folders = [
 			'api',
+				'api/adapters',
+				'api/blueprints',
 				'api/controllers',
 				'api/models',
 				'api/adapters',
 				'api/policies',
 				'api/services',
 			'config',
+			'config/locales',
 			'views',
 			'assets',
+				'assets/images',
 				'assets/js',
 				'assets/styles',
 				'assets/templates',
@@ -57,13 +67,57 @@ module.exports = {
 		];
 
 		var templateFiles = [
-			require('sails-generate-gruntfile'),
-			require('./generators/gitignore'),
-			require('./generators/README.md'),
-			require('./generators/config.session'),
+
+			// api/blueprints/*
+			// 'api/blueprints/serverError.js',
+			// 'api/blueprints/badRequest.js',
+			// 'api/blueprints/notFound.js',
+			// 'api/blueprints/forbidden.js',
+			// 'api/blueprints/find.js',
+			// 'api/blueprints/create.js',
+			// 'api/blueprints/update.js',
+			// 'api/blueprints/destroy.js',
+
+			// api/policies/*
+			'api/policies/sessionAuth.js',
+			
+			// assets/*
 			'assets/js/sails.io.js',
 			'assets/js/socket.io.js',
-			'assets/js/socketio_example.js'
+			'assets/js/socketio_example.js',
+
+			// views/*
+			require('./generators/homepage'),
+
+			// config/*
+			require('./generators/config.session'),
+			require('./generators/config.views'),
+			'config/routes.js',
+			'config/policies.js',
+			'config/cors.js',
+			'config/csrf.js',
+			'config/log.js',
+			'config/local.js',
+			'config/i18n.js',
+			'config/globals.js',
+			'config/express.js',
+			'config/sockets.js',
+			'config/adapters.js',
+			'config/bootstrap.js',
+			'config/blueprints.js',
+
+			// config/locales/*
+			'config/locales/_README.md',
+			'config/locales/en.json',
+			'config/locales/es.json',
+			'config/locales/de.json',
+			'config/locales/fr.json',
+
+			// top-level files
+			require('sails-generate-gruntfile'),
+			require('./generators/gitignore'),
+			require('./generators/README.md')
+
 		];
 
 		

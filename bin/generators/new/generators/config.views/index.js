@@ -1,37 +1,37 @@
 /**
  * Module dependencies
  */
-var generateSecret = require('../../../../../lib/hooks/session/generateSecret'),
-	fs = require('fs-extra'),
+var fs = require('fs-extra'),
+	_ = require('lodash'),
 	path = require('path'),
 	ejs = require('ejs');
 
 
 /**
- * Generate unique session secret (to write `config/session.js`)
+ * Generate config/views.js file
+ * (depends on configured view engine)
  */
 module.exports = {
 
 	configure: function(options, sails, handlers) {
-		options.pathToNew = path.resolve(options.appPath, 'config/session.js');
+		options.pathToNew = path.resolve(options.appPath, 'config/views.js');
 		options.template = path.resolve(__dirname, 'template');
+
+		// Layout config is only supported when using `ejs`.
+		if (options.viewEngine === 'ejs') {
+			options.layout = 'layout';
+		}
+
 		handlers.success(options);
 	},
 
 
 	render: function (options, cb) {
-		// Read template from disk
 		fs.readFile(options.template, options.templateEncoding, function gotTemplate (err, template) {
 			if (err) return cb(err);
-
-			// Create the code (generate session secret) and save it as `options.contents`.
-			options.contents = ejs.render(template, {
-				secret: generateSecret()
-			});
-
+			options.contents = ejs.render(template, options);
 			cb(null, options);
 		});
-
 	}
 
 };

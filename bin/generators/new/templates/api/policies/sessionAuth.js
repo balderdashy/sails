@@ -1,5 +1,5 @@
 /**
- * isAuthenticated
+ * sessionAuth
  *
  * @module      :: Policy
  * @description :: Simple policy to allow any authenticated user

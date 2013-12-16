@@ -22,12 +22,10 @@
 module.exports.routes = {
 
 
-  // Make the view located at `views/home/index.ejs` your home page.
+  // Make the view located at `views/homepage.ejs` your home page.
   // (Alternatively, remove this and add an `index.html` file in your `assets` directory)
-  // 
-  // (This would also work if you had a file at: `/views/home.ejs`)
   '/': {
-    view: 'home/index'
+    view: 'homepage'
   }
 
 
