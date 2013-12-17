@@ -35,7 +35,7 @@ describe('`sails.router`', function() {
 	});
 
 	to('a simple fn which calls res.send()', function () {		
-		var route = '/simple';
+		var route = 'get /simple';
 		var fn = function (req, res) { res.send('ok!'); };
 		var expectedResponse = { status: 200 };
 
@@ -43,11 +43,13 @@ describe('`sails.router`', function() {
 		__it('should now exist in the slave router');
 		__it('receives a request to the route',RouterHelper.request(route));
 		__it('should have called the proper fn');
-		__it('should have sent the proper response', expect.equal('response', expectedResponse));
+		__it('should have sent the expected status code in the response', expect.equal('response.status', expectedResponse.status));
+		__it('should have sent the expected response body', expect.equal('response.body', expectedResponse.body));
+		__it('should have sent the expected response headers', expect.equal('response.headers', expectedResponse.headers));
 	});
 
 	to('a simple fn which throws', function () {
-		var route = '/throws';
+		var route = 'get /throws';
 		var fn = function (req, res) { throw new Error('heh heh'); };
 		var expectedResponse = { status: 500 };
 
