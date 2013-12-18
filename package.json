@@ -74,7 +74,9 @@
     "benchmark": "~1.0.0",
     "microtime": "~0.5.1",
     "colors": "~0.6.2",
-    "expect.js": "~0.2.0"
+    "expect.js": "~0.2.0",
+    "should": "~2.1.1",
+    "supertest": "~0.8.2"
   },
   "optionalDependencies": {
     "coffee-script": "1.6.2"

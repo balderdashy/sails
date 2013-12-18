@@ -5,10 +5,7 @@ var _ = require('lodash');
 
 // http://nodejs.org/api/assert.html
 var assert = require('assert');
-
-
-// https://github.com/LearnBoost/expect.js/
-var expectjs = require('expect.js');
+var should = require('should');
 
 
 
@@ -30,12 +27,12 @@ function expect () {}
  */
 expect.exists = function (keypath) {
 	return function () {
-		assert( typeof _deepValue(this, keypath) !== 'undefined' );
+		should(_deepValue(this, keypath)).be.ok;
 	};
 };
 expect.notExists = function (keypath) {
 	return function () {
-		assert( typeof _deepValue(this, keypath) === 'undefined' );
+		should(_deepValue(this, keypath)).not.be.ok;
 	};
 };
 
@@ -56,12 +53,6 @@ expect.notExists = function (keypath) {
 expect.equal = function (keypath, compareToValue ) {
 	return function () {
 		assert.equal( _deepValue(this, keypath), compareToValue );
-	};
-};
-
-expect.type = function (keypath, expectedType) {
-	return function () {
-		expectjs(_deepValue(this, keypath)).to.be.a(compareToValue);
 	};
 };
 
