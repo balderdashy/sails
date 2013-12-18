@@ -12,7 +12,6 @@ var supertest = require('supertest');
 var RESPOND = {
 	HELLO: function (req, res) { res.send('hello world!'); },
 	HELLO_500: function (req, res) { res.send(500, 'hello world!'); },
-
 	JSON_HELLO: function (req, res) { res.json({ hello: 'world' }); },
 };
 

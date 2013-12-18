@@ -1,9 +1,9 @@
+/**
+ * Module dependencies
+ */
 var assert = require('assert');
 var expect = require('../../_assertions');
-
-// https://github.com/LearnBoost/expect.js/
-// https://github.com/visionmedia/should.js/
-var should = require('should');
+var should = require('should');		// https://github.com/visionmedia/should.js/
 
 
 /**
