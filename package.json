@@ -73,7 +73,8 @@
     "wrench": "~1.5.1",
     "benchmark": "~1.0.0",
     "microtime": "~0.5.1",
-    "colors": "~0.6.2"
+    "colors": "~0.6.2",
+    "expect.js": "~0.2.0"
   },
   "optionalDependencies": {
     "coffee-script": "1.6.2"

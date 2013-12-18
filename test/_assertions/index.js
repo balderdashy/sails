@@ -2,6 +2,8 @@
  * Module dependencies
  */
 var _ = require('lodash');
+
+// http://nodejs.org/api/assert.html
 var assert = require('assert');
 
 
@@ -10,7 +12,6 @@ var assert = require('assert');
  * `expect`
  */
 function expect () {}
-
 
 /**
  * expect.exists()
@@ -35,8 +36,6 @@ expect.notExists = function (keypath) {
 };
 
 
-
-
 /**
  * expect.equal()
  * 
@@ -55,6 +54,9 @@ expect.equal = function (keypath, compareToValue ) {
 		assert.equal( _deepValue(this, keypath), compareToValue );
 	};
 };
+
+
+
 
 
 

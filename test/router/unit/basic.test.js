@@ -9,7 +9,6 @@ var RouterHelper = require('../../_helpers/router');
 
 
 describe('(load sails with all hooks disabled)\n', function () {
-
 	SailsHelper.bindLifecycle({
 		loadHooks: [],
 		log: { level:'error' }
@@ -24,16 +23,14 @@ describe('`sails.router`', function() {
 		log: { level:'error' }
 	});
 	it('should exist', expect.exists('sails.router') );
+});
 
 
-	describe('mock req object', function (){
-		it('should exist', function (cb) {
-			var r = require('../../../lib/router/req');
-			var req = r( this.sails );
-			console.log(req);
-			cb();
-		});
-	});
+// var supertest = require('supertest');
+
+
+
+
 
 	// describe('receives a request', function() {
 	// 	to('home route (/)', function() {
@@ -69,7 +66,7 @@ describe('`sails.router`', function() {
 	// 	__it('should have called the proper fn');
 	// 	__it('should have sent the proper response', expect.equal('response', expectedResponse));
 	// });
-});
+// });
 
 
 
