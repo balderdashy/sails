@@ -7,6 +7,10 @@ var _ = require('lodash');
 var assert = require('assert');
 
 
+// https://github.com/LearnBoost/expect.js/
+var expectjs = require('expect.js');
+
+
 
 /**
  * `expect`
@@ -55,7 +59,11 @@ expect.equal = function (keypath, compareToValue ) {
 	};
 };
 
-
+expect.type = function (keypath, expectedType) {
+	return function () {
+		expectjs(_deepValue(this, keypath)).to.be.a(compareToValue);
+	};
+};
 
 
 

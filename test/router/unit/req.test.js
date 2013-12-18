@@ -15,7 +15,6 @@ describe('Base Request (`req`)', function (){
 	before(function (){
 		this.req = require('../../../lib/router/req');
 	});
-
 	it('req', expect.exists('req'));
 	it('req.params', expect.exists('req.params'));
 	it('req.query', expect.exists('req.query'));
