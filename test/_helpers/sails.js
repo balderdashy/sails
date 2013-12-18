@@ -10,18 +10,40 @@ var util = require('sails-util');
  * 
  * @type {Object}
  */
-var helper = function () {
-	_with('default settings', {}, 750);
+var helper = {
+
+
+	/**
+	 * Can call:
+	 *	-> helper.load()
+	 *	-> helper.load.withAllHooksDisabled()
+	 */
+	load: (function () {
+
+		var _load = function () {
+			_with('default settings', {}, 750);
+		};
+
+		_load.withAllHooksDisabled = function () {
+			_with('all hooks disabled', {
+				log: {level: 'error'},
+				globals: false,
+				loadHooks: []
+			}, 500);
+		};
+
+		return _load;
+
+	})()
 };
 
 
-helper.allHooksDisabled = function () {
-	_with('all hooks disabled', {
-		log: {level: 'error'},
-		globals: false,
-		loadHooks: []
-	}, 500);
-};
+
+module.exports = helper;
+
+
+
+
 
 
 /**
@@ -30,7 +52,8 @@ helper.allHooksDisabled = function () {
  * @param  {[type]} description [description]
  * @param  {[type]} sailsOpts   [description]
  * @param  {[type]} msThreshold [description]
- * @return {[type]}             [description]
+ * 
+ * @api private
  */
 function _with (description, sailsOpts, msThreshold) {
 
@@ -50,5 +73,3 @@ function _with (description, sailsOpts, msThreshold) {
 	});
 
 }
-
-module.exports = helper;

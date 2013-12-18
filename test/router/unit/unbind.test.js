@@ -3,14 +3,12 @@
  */
 var $Sails = require('../../_helpers/sails');
 var $Router = require('../../_helpers/router');
-var should = require('should');
-var _ = require('lodash');
 
 
 
 describe('sails.router.unbind', function (){
 
-	$Sails.allHooksDisabled();
+	$Sails.load.withAllHooksDisabled();
 
 
 	$Router.unbind('get /foo')

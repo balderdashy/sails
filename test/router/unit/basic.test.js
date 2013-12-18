@@ -6,7 +6,10 @@ var should = require('should');
 
 
 describe('`sails.router`', function() {
-	$Sails.allHooksDisabled();
+	
+	$Sails.load.withAllHooksDisabled();
+
+
 
 	it('should be exposed on the `sails` global', function () {
 		this.sails

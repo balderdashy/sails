@@ -3,21 +3,14 @@
  */
 var $Sails = require('../../_helpers/sails');
 var $Router = require('../../_helpers/router');
-var should = require('should');
-var _ = require('lodash');
-var supertest = require('supertest');
 
-
-// Fixtures
-var RESPOND = {
-	HELLO: function (req, res) { res.send('hello world!'); },
-	HELLO_500: function (req, res) { res.send(500, 'hello world!'); },
-	JSON_HELLO: function (req, res) { res.json({ hello: 'world' }); },
-};
+// Middleware fixtures
+var RESPOND = require('../../_fixtures/middleware');
 
 
 describe('Router.bind', function (){
-	$Sails.allHooksDisabled();
+
+	$Sails.load.withAllHooksDisabled();
 
 
 
