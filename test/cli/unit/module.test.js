@@ -3,7 +3,8 @@
  */
 var expect = require('./helpers/expect');
 var assert = require('./helpers/assertions');
-var GenerateModuleHelper = require('../generators/_helpers/module');
+var __bin = '../../../bin';
+var GenerateModuleHelper = require(__bin+'/generators/_helpers/module');
 
 
 describe('module generator', function () {

@@ -4,28 +4,39 @@
 var expect = require('./helpers/expect');
 var assert = require('./helpers/assertions');
 
+var __bin = '../../../bin';
+var Generator = require(__bin+'/generators/_helpers/folder');
 
 
-describe('file generator', function () {
+
+describe('folder generator', function () {
 
 	before(function () {
-		this.fn = require('../generators/_helpers/file');
+		this.fn = Generator;
+		this.options = {};
 	});
 
 
 
-	describe('with no data', function () {
+	describe('with missing `pathToNew`', function () {
+		it('should trigger `invalid`',expect('invalid'));
+	});
+
+
+
+	describe('basic usage', function () {
 
 		before(function () {
 			this.options = {
-				pathToNew: this.heap.alloc(),
-				contents: 'foo'
+				pathToNew: this.heap.alloc()
 			};
 		});
 
-
-
-		it('should trigger `success`',expect('success'));
+		it('should trigger `success`', expect({
+			success: true,
+			alreadyExists: 'Folder already exists..?'
+		}));
+		it('should create a directory', assert.dirExists);
 
 	});
 
@@ -40,15 +51,13 @@ describe('file generator', function () {
 		});
 		
 		it('should trigger `success`',expect('success'));
-		it('should not actually create a file', assert.fileDoesntExist);
+		it('should not actually create a directory', assert.dirDoesntExist);
 	});
 
 
 	describe('if file/folder already exists at `pathToNew`', function () {
 		before(function (){
-			this.options = {
-				contents: 'blah blah blah'
-			};
+			this.options = {};
 		});
 
 		describe('(file)', function () {
@@ -57,7 +66,7 @@ describe('file generator', function () {
 				this.options.pathToNew = this.heap.alloc();
 				this.heap.touch(this.options.pathToNew, cb);
 			});
-			it(	'should trigger "alreadyExists" handler', expect({ alreadyExists: true, success: 'Should not override existing file without `options.force`!' }));
+			it(	'should trigger "alreadyExists" handler', expect({ alreadyExists: true, success: 'Should not override existing file/directory without `options.force`!' }));
 		});
 
 		describe('(directory)', function () {
@@ -66,7 +75,7 @@ describe('file generator', function () {
 				this.options.pathToNew = this.heap.alloc();
 				this.heap.mkdirp(this.options.pathToNew, cb);
 			});
-			it(	'should trigger "alreadyExists" handler', expect({ alreadyExists: true, success: 'Should not override existing directory without `options.force`!' }));
+			it(	'should trigger "alreadyExists" handler', expect({ alreadyExists: true, success: 'Should not override existing file/directory without `options.force`!' }));
 		});
 
 	});
@@ -74,10 +83,7 @@ describe('file generator', function () {
 
 	describe('if file/folder already exists and `force` option is true', function () {
 		before(function() {
-			this.options = {
-				force: true,
-				contents: 'blahhhh blahhhh blahhhh'
-			};
+			this.options = { force: true };
 		});
 
 		describe('(file)', function () {
