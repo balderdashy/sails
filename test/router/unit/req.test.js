@@ -2,7 +2,6 @@
  * Module dependencies
  */
 var assert = require('assert');
-var expect = require('../../_assertions');
 var should = require('should');		// https://github.com/visionmedia/should.js/
 var supertest = require('supertest');
 

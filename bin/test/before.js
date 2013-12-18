@@ -1,8 +1,8 @@
 /**
  * Dependencies
  */
-var TemplateManifest = require('./fixtures/TemplateManifest');
-var FileHeap = require('./fixtures/FileHeap');
+var TemplateManifest = require('./helpers/TemplateManifest');
+var FileHeap = require('./helpers/FileHeap');
 var GenerateJSONFileHelper = require('../generators/_helpers/jsonfile');
 var async = require('async');
 

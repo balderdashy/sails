@@ -10,7 +10,7 @@ var TemplateManifest = function (){};
 
 var _templates = {
 	file: {
-		path: 'test/fixtures/file.template'
+		path: 'test/helpers/file.template'
 	}
 };
 

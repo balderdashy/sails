@@ -1,8 +1,8 @@
 /**
  * Module dependencies
  */
-var expect = require('./fixtures/expect');
-var assert = require('./fixtures/assertions');
+var expect = require('./helpers/expect');
+var assert = require('./helpers/assertions');
 var Generator = require('../generators/factory')('controller');
 
 
