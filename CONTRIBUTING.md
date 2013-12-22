@@ -10,10 +10,8 @@ The community is what makes Sails great, without you we wouldn't have come so fa
 6. If there is no issue, open a new issue and specify the following:
   - A short description of your issue in the title
   - The sails version (find this with ````sails -v````).
-  - Exactly when the issue manifests.
-  - How long you've experienced this issue.
+  - Detailed explanation of how to recreate the issue
 
-___Do not try to reopen closed issues, open a new one instead.___
 
 
 ## Submitting Pull Requests
@@ -22,8 +20,6 @@ ___Do not try to reopen closed issues, open a new one instead.___
 2. Add a test for your change. Only refactoring and documentation changes require no new tests. If you are adding functionality or fixing a bug, we need a test!
 4. Make the tests pass and make sure you follow [our syntax guidelines](https://github.com/balderdashy/sails/blob/master/.jshintrc).
 5. Push to your fork and submit a pull request to our [the v0.10 branch](https://github.com/balderdashy/sails/tree/v0.10).
-
-From this point on it's up to us to accept the PR or else suggest improvements or alternatives. We'll typically get back to you within three business days.
 
 
 ## Additional Resources
