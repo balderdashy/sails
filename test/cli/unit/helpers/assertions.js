@@ -10,8 +10,9 @@ var fs = require('fs-extra');
 module.exports = {
 
 	//
-	// TODO: use lstat instead of readdir and readFile for these existence checks.
-	// (low priority)
+	// TODO: use lstat instead of readdir and readFile 
+	// for these existence checks.
+	// (low priority- just makes tests run faster)
 	// 
 
 

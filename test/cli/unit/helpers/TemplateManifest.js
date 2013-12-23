@@ -6,6 +6,10 @@ var _ = require('lodash');
 var checksum = require('checksum');
 
 
+// NOTE: this helper is currently unused
+// (since the way generators work has changed)
+
+
 var TemplateManifest = function (){};
 
 var _templates = {

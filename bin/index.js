@@ -8,7 +8,7 @@ var _			= require('lodash'),
 	fs			= require('fs-extra'),
 	argv		= require('optimist').argv,
 	Err			= require('../errors'),
-	Logger		= require('captains-log'),
+	CaptainsLog	= require('captains-log'),
 	Sails		= require('../lib/app');
 	_interpretArgs = require('./arguments');
 	cliutil		= require('sails-util/cli');
@@ -25,7 +25,7 @@ var _			= require('lodash'),
 var sailsOptions = cliutil.getCLIConfig(argv);
 
 // Build logger
-var log = new Logger(sailsOptions.log);
+var log = new CaptainsLog(sailsOptions.log);
 
 
 // Handlers containing all of the logic & responses
@@ -314,7 +314,7 @@ var CLIController = {
 	lift: function ( ) {
 
 		// Ensure options passed in are not mutated
-		var options = _.clone(sailsOptions);
+		var options = _.cloneDeep(sailsOptions);
 
 		// Use the app's local Sails in `node_modules` if one exists
 		var appPath = process.cwd();
