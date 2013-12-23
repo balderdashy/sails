@@ -3,14 +3,15 @@ The community is what makes Sails great, without you we wouldn't have come so fa
 
 
 ## Opening issues
-1. If you have a question about setting up Sails, please check out the [Sails docs](http://sailsjs.org/#!documentation).
-2. Search for issues similar to yours in [GitHub search](https://github.com/balderdashy/sails/search?) and [Google](https://www.google.nl/search?q=sails+js).
+1. If you have a question about setting up/using Sails, please check out the [Sails docs](http://sailsjs.org/#!documentation) or try searching  [StackOverflow](http://stackoverflow.com/questions/tagged/sails.js).
+2. Search for issues similar to yours in [GitHub search](https://github.com/balderdashy/sails/search?) and [Google](https://www.google.nl/search?q=sails+js). 
 3. If there's an open issue, please contribute to that issue.
 4. If there's a closed issue, open a new issue and link the url of the already closed issue(s).
 6. If there is no issue, open a new issue and specify the following:
   - A short description of your issue in the title
   - The sails version (find this with ````sails -v````).
   - Detailed explanation of how to recreate the issue
+7. If you are experiencing more than one problem, create a separate issue for each one. If you think they might be related, please reference the other issues you've created.
 
 
 
