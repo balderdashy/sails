@@ -185,6 +185,10 @@ module.exports = {
 
 				var sails = async_data.sails;
 
+				// Override sails version temporarily
+				var sailsVersion = sails.version;
+				sailsVersion = 'git://github.com/balderdashy/sails-disk.git#associations';
+
 				// Generate package.json file
 				GenerateJSONHelper({
 					pathToNew: path.resolve(appPath, 'package.json'),
@@ -194,7 +198,7 @@ module.exports = {
 						version: '0.0.0',
 						description: 'a Sails application',
 						dependencies: {
-							'sails'			: '~' + sails.version,
+							'sails'			: '~' + sailsVersion,
 							'sails-disk'	: sails.dependencies['sails-disk'],
 							'ejs'			: sails.dependencies['ejs'],
 							'grunt'			: sails.dependencies['grunt']
