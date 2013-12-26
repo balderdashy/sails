@@ -25,7 +25,7 @@ var Err = {
 
 
 
-describe('New app generator', function() {
+describe.skip('New app generator', function() {
 	var sailsbin = './bin/sails.js';
 	var appName = 'testApp';
 	var defaultTemplateLang = 'ejs';

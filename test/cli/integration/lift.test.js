@@ -8,7 +8,7 @@ var spawn = require('child_process').spawn;
 // Make existsSync not crash on older versions of Node
 fs.existsSync = fs.existsSync || require('path').existsSync;
 
-describe('Starting sails server with lift', function() {
+describe.skip('Starting sails server with lift', function() {
 	var sailsBin = './bin/sails.js';
 	var appName = 'testApp';
 	var sailsServer;

@@ -4,7 +4,7 @@ var appHelper = require('./helpers/appHelper');
 var path = require('path');
 var fs = require('fs');
 
-describe('router :: ', function() {
+describe.skip('router :: ', function() {
 
 	describe('Policies', function() {
 		var appName = 'testApp';

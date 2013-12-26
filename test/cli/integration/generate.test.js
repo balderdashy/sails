@@ -1,4 +1,4 @@
-describe('API and adapter generators', function () {
+describe.skip('API and adapter generators', function () {
 	
 	var assert = require('assert');
 	var fs = require('fs');

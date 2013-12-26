@@ -3,7 +3,7 @@ var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
 
 
-describe('router :: ', function() {
+describe.skip('router :: ', function() {
 	describe('Default controller routing', function() {
 		var appName = 'testApp';
 

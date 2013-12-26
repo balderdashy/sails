@@ -2,7 +2,7 @@ var assert = require('assert');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
 
-describe('router :: ', function() {
+describe.skip('router :: ', function() {
 	describe('View routes', function() {
 		var appName = 'testApp';
 

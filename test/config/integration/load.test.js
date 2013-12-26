@@ -3,7 +3,7 @@ var appHelper = require('./helpers/appHelper');
 var path = require('path');
 var fs = require('fs');
 
-describe('Configs', function() {
+describe.skip('Configs', function() {
 	this.timeout(30000);
 
 	var appName = 'testApp';

@@ -1,5 +1,5 @@
 
-describe('benchmarks', function () {
+describe.skip('benchmarks', function () {
 
 	describe('sails.load()', function() {
 		before(setupBenchmarks);

@@ -1,4 +1,0 @@
---timeout 60000
---reporter dot
---ui bdd
-test/**/*.test.js
