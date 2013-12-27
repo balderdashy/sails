@@ -1,9 +1,17 @@
 module.exports = function (sails) {
 
 	/**
-	 * CRUD find() blueprint
+	 * Find Records
+	 * 
+	 * An API call to find and return model instances from the data adapter
+	 * using the specified criteria.  If an id was specified, just the instance
+	 * with that unique id will be returned.
 	 *
-	 * @api private
+	 * @param {Integer|String} id  - the unique id of the particular instance you'd like to look up
+	 * @param {Object} where       - the find criteria (passed directly to the ORM)
+	 * @param {Integer} limit      - the maximum number of records to send back (useful for pagination)
+	 * @param {Integer} skip       - the number of records to skip (useful for pagination)
+	 * @param {String} sort        - the order of returned records, e.g. `name ASC` or `age DESC`
 	 */
 
 	return function find (req, res, next) {
