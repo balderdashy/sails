@@ -14,8 +14,6 @@
 
 module.exports = function find (req, res) {
 
-	console.log('hit find blueprint!');
-
 	// Get access to sails (globals might be disabled)
 	var sails = req._sails;
 	
@@ -36,8 +34,8 @@ module.exports = function find (req, res) {
 	/**
 	 * If a valid id was specified, find the particular instance with that id.
 	 */
-	if (id) {			
-		Model.findOne(id).exec(function found(err, matchingRecord) {
+	if (req.param('id')) {
+		Model.findOne(req.param('id')).exec(function found(err, matchingRecord) {
 
 			// TODO: differentiate between waterline-originated validation errors
 			//			and serious underlying issues
@@ -91,14 +89,12 @@ module.exports = function find (req, res) {
 			// toJSON() all of the model instances
 			matchingRecords = sails.util.invoke(matchingRecords, 'toJSON');
 
-			console.log('Found em..!', matchingRecords);
-
 			// Otherwise serve a JSON(P) API
 			if ( isJSONPCompatible ) {
-				return res.jsonp(modelValues);
+				return res.jsonp(matchingRecords);
 			}
 			else {
-				return res.json(modelValues);
+				return res.json(matchingRecords);
 			}
 		});
 	}
@@ -135,6 +131,8 @@ module.exports = function find (req, res) {
 	 */
 	function parseWhereParam( allParams ) {
 
+		var where = sails.util.cloneDeep(allParams);
+
 		// If `where` parameter is a string, try to interpret it as JSON
 		if (sails.util.isString(where)) {
 			where = tryToParseJSON(where);
@@ -148,6 +146,8 @@ module.exports = function find (req, res) {
 			where = sails.util.omit(allParams, ['limit', 'skip', 'sort']);
 			if (isJSONPCompatible) { sails.util.omit(where, JSONP_CALLBACK_PARAM); }
 		}
+
+		return where;
 	}
 
 };
