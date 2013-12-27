@@ -131,7 +131,7 @@ module.exports = function find (req, res) {
 	 */
 	function parseWhereParam( allParams ) {
 
-		var where = sails.util.cloneDeep(allParams);
+		var where = req.param('where');
 
 		// If `where` parameter is a string, try to interpret it as JSON
 		if (sails.util.isString(where)) {
@@ -144,7 +144,8 @@ module.exports = function find (req, res) {
 			// Prune params which aren't fit to be used as `where` criteria
 			// to build a proper where query
 			where = sails.util.omit(allParams, ['limit', 'skip', 'sort']);
-			if (isJSONPCompatible) { sails.util.omit(where, JSONP_CALLBACK_PARAM); }
+			where = sails.util.omit(allParams, function (p){ if (sails.util.isUndefined(p)) return true; });
+			if (isJSONPCompatible) { where = sails.util.omit(where, JSONP_CALLBACK_PARAM); }
 		}
 
 		return where;
