@@ -1,75 +1,60 @@
-module.exports = function (sails) {
+/**
+ * Create
+ * (blueprint action)
+ * 
+ */
+module.exports = function genericCreate (req, res) {
 
-	/**
-	 * Module dependencies.
-	 */
+	// Get access to sails (globals might be disabled)
+	var sails = req._sails;
 
-	var idHelper = require('./helpers/id')(sails),
-		util = require('sails-util');
+	// The name of the parameter to use for JSONP callbacks
+	var JSONP_CALLBACK_PARAM = 'callback';
+
+	// if req.transport is falsy or doesn't contain the phrase "socket"
+	// and JSONP is enabled for this action, we'll say we're "isJSONPCompatible"
+	var isJSONPCompatible = req.options.jsonp && ! ( req.transport && req.transport.match(/socket/i) );
+	
+
+	// Create data object (monolithic combination of all parameters)
+	// Omit the JSONP callback parameter (if this is isJSONPCompatible)
+	// and params whose values are `undefined`
+	var data = req.params.all();
+	if (isJSONPCompatible) { data = sails.util.omit(data, JSONP_CALLBACK_PARAM); }
+
+	// Look up the model....
+	var Model = sails.models[req.options.model];
 
 
-	/**
-	 * CRUD find() blueprint
-	 *
-	 * @api private
-	 */
 
-	return function create (req, res, next) {
 
-		// Grab model class based on the controller this blueprint comes from
-		// If no model exists, pretend this blueprint doesn't exist and call next middleware
-		var Model = sails.config.hooks.orm && sails.models[req.target.controller];
-		if (!Model) {
-			return next();
+
+
+	// Create new instance of model using data from params
+	Model.create(data).exec(function created (err, newInstance) {
+		
+		// TODO: differentiate between waterline-originated validation errors
+		//			and serious underlying issues
+		// TODO: Respond with badRequest if an error is encountered, w/ validation info
+		if (err) return res.serverError(err);
+
+		// // If 'silent' is set, don't use the built-in pubsub
+		// if (!req.options.silent) {
+		// 	// TODO: enable pubsub in blueprints again when new syntax if fully fleshed out
+		// 	sails.publish(newInstance, { method: 'create', data: newInstance.toJSON });
+		// }
+
+		// Set status code (HTTP 201: Created)
+		res.status(201);
+		
+		// Send JSONP-friendly response if it's supported
+		if ( req.options.jsonp ) {
+			return res.jsonp(newInstance.toJSON());
 		}
-		
-		// Create monolithic parameter object
-		var params = req.params.all();
-		
-		// Don't include JSONP callback parameter as data
-		params = util.objReject(params, function (param, key) {
 
-			// if req.transport is falsy or doesn't contain the phrase "socket"
-			// we'll call it "jsonpCompatible"
-			var jsonpCompatible = ! ( req.transport && req.transport.match(/socket/i) );
-
-			// undefined params
-			return util.isUndefined(param) ||
-
-				// and JSONP callback (if this is jsonpCompatible)
-				(key === 'callback' && jsonpCompatible);
-		});
-
-		// Create model using params
-		Model.create(params, function(err, model) {
-			
-			// TODO: differentiate between waterline-originated validation errors
-			//			and serious underlying issues
-			// TODO: Respond with badRequest if an error is encountered, w/ validation info
-			if (err) return res.serverError(err);
-
-			// If the model is silent, don't use the built-in pubsub
-			// (also ignore pubsub logic if the hook is not enabled)
-			if (sails.config.hooks.pubsub && !Model.silent) {
-				Model.publishCreate(model.toJSON()); // req.socket
-			}
-
-			// Set status code (HTTP 201: Created)
-			res.status(201);
-
-			// Interlace app-global `config.controllers` with this controller's `_config`
-			var controllerConfig = util.merge({}, 
-				sails.config.controllers, 
-				sails.controllers[req.target.controller]._config || {});
-			
-			// and respond with JSON or JSONP
-			if ( controllerConfig.jsonp ) {
-				return res.jsonp(model.toJSON());
-			}
-			else {
-				return res.json(model.toJSON());
-			}
-		});
-	};
-
+		// Otherwise, strictly JSON.
+		else {
+			return res.json(newInstance.toJSON());
+		}
+	});
 };

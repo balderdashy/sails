@@ -1,162 +1,98 @@
 module.exports = function (sails) {
 
 	/**
-	 * Module dependencies.
-	 */
-
-	var idHelper = require('./helpers/id')(sails),
-		util = require('sails-util');
-
-
-	/**
-	 * CRUD find() blueprint
+	 * Find Records
+	 * 
+	 * An API call to find and return model instances from the data adapter
+	 * using the specified criteria.  If an id was specified, just the instance
+	 * with that unique id will be returned.
 	 *
-	 * @api private
+	 * @param {Integer|String} id  - the unique id of the particular instance you'd like to look up
+	 * @param {Object} where       - the find criteria (passed directly to the ORM)
+	 * @param {Integer} limit      - the maximum number of records to send back (useful for pagination)
+	 * @param {Integer} skip       - the number of records to skip (useful for pagination)
+	 * @param {String} sort        - the order of returned records, e.g. `name ASC` or `age DESC`
 	 */
 
-	return function find (req, res, next) {
+	return function find (req, res) {
 
-		// Locate and validate id parameter
-		var id = idHelper(req.param('id'), req.target.controller, 'find');
-		if (id === false) {
-			// Id was invalid-- and probably unintentional.
-			// Continue on as if this blueprint doesn't exist
-			return next();
-		}
-
-		// Grab model class based on the controller this blueprint comes from
-		// If no model exists, move on to the next middleware
-		var Model = sails.hooks.orm && sails.models[req.target.controller];
-		if (!Model) {
-			return next();
-		}
-
-		// Interlace app-global `config.controllers` with this controller's `_config`
-		var controllerConfig = util.merge({}, 
-			sails.config.controllers, 
-			sails.controllers[req.target.controller]._config || {});
-
+		// Get access to sails (globals might be disabled)
+		var sails = req._sails;
 		
-		/**
-		 * If a valid id was specified, find that model in particular
-		 *
-		 */
+		// The name of the parameter to use for JSONP callbacks
+		var JSONP_CALLBACK_PARAM = 'callback';
 
-		if (id) {
-			
-			Model.findOne(id).done(function(err, model) {
+		// if req.transport is falsy or doesn't contain the phrase "socket"
+		// and JSONP is enabled for this action, we'll say we're "isJSONPCompatible"
+		var isJSONPCompatible = req.options.jsonp && ! ( req.transport && req.transport.match(/socket/i) );
+
+		// Look up the model....
+		var Model = sails.models[req.options.model];
+		
+
+
+
+
+		/**
+		 * If a valid id was specified, find the particular instance with that id.
+		 */
+		if (id) {			
+			Model.findOne(id).exec(function found(err, matchingRecord) {
 
 				// TODO: differentiate between waterline-originated validation errors
 				//			and serious underlying issues
 				// TODO: Respond with badRequest if an error is encountered, w/ validation info
 				if (err) return res.serverError(err);
 
-				// Model not found
-				if(!model) return res.notFound();
+				// No model instance found with the specified id
+				if(!matchingRecord) return res.notFound();
 
-				// If the model is silent, don't use the built-in pubsub
-				// (also ignore pubsub logic if the hook is not enabled)
-				if (sails.config.hooks.pubsub && !Model.silent) {
+				// 	// TODO: enable pubsub in blueprints again when new syntax if fully fleshed out
+				// 	req.socket.subscribe(newInstance);
 
-					// Subscribe to the model that were returned
-					Model.subscribe(req.socket, model);
-				}
+				// toJSON() the instance.
+				matchingRecord = matchingRecord.toJSON();
 
 				// Otherwise serve a JSON(P) API
-				if ( controllerConfig.jsonp ) {
-					return res.jsonp(model.toJSON());
+				if ( isJSONPCompatible ) {
+					return res.jsonp(matchingRecord);
 				}
 				else {
-					return res.json(model.toJSON());
+					return res.json(matchingRecord);
 				}
 			});
 		}
 
 
 		/**
-		 * If no id was specified, find models using the criteria passed in as params
-		 *
+		 * If no id was specified, find instances matching the specified criteria.
 		 */
+		else {		
 
-		else {
-
-			var where = req.param('where');
-
-			// If WHERE is a string, try to interpret it as JSON
-			if (util.isString(where)) {
-				where = tryToParseJSON(where);
-			}
-
-			// If WHERE has not been specified, but other params ARE specified build the WHERE option using them
-			var params;
-			if (!where) {
-				
-				// Build monolithic parameter object
-				params = req.params.all();
-
-				// Pluck params:
-				params = util.objReject(params, function (param, key) {
-
-					// if req.transport is falsy or doesn't contain the phrase "socket"
-					// we'll call it "jsonpCompatible"
-					var jsonpCompatible = ! ( req.transport && req.transport.match(/socket/i) );
-
-					// undefined params
-					return util.isUndefined(param) ||
-
-						// and limit, skip, and sort
-						key === 'limit' || key === 'skip' || key === 'sort' ||
-
-						// and JSONP callback (if this is jsonpCompatible)
-						(key === 'callback' && jsonpCompatible);
-				});
-
-				// to build a proper where query
-				where = params;
-			}
-
-			// Build options object
-			var options = {
+			// Lookup for records that match the specified criteria
+			Model.find({
 				limit: req.param('limit') || undefined,
 				skip: req.param('skip') || req.param('offset') || undefined,
 				sort: req.param('sort') || req.param('order') || undefined,
-				where: where || undefined
-			};
-
-			// Respond to queries
-			var finding = Model.find(options);
-
-			finding.done(function afterFound(err, models) {
+				where: parseWhereParam(req.params.all()) || undefined
+			}).exec(function found(err, matchingRecords) {
 
 				// TODO: differentiate between waterline-originated validation errors
 				//			and serious underlying issues
 				// TODO: Respond with badRequest if an error is encountered, w/ validation info
 				if (err) return res.serverError(err);
 
-				// No models found
-				if(!models) return res.notFound();
+				// No instances found
+				if(!matchingRecords) return res.notFound();
 
-				// If the model is silent, don't use the built-in pubsub
-				if (sails.config.hooks.pubsub && !Model.silent) {
+				// 	// TODO: enable pubsub in blueprints again when new syntax if fully fleshed out
+				// 	req.socket.subscribe(matchingRecords);
 
-					// Subscribe to the collection itself
-					// (listen for `create`s)
-					Model.subscribe(req.socket);
-
-					// Subscribe to the models that were returned
-					// (listen for `updates` and `destroy`s)
-					Model.subscribe(req.socket, models);
-				}
-
-				// Build set of model values
-				var modelValues = [];
-
-				models.forEach(function(model) {
-					modelValues.push(model.toJSON());
-				});
+				// toJSON() all of the model instances
+				matchingRecords = sails.util.invoke(matchingRecords, 'toJSON');
 
 				// Otherwise serve a JSON(P) API
-				if ( controllerConfig.jsonp ) {
+				if ( isJSONPCompatible ) {
 					return res.jsonp(modelValues);
 				}
 				else {
@@ -166,12 +102,21 @@ module.exports = function (sails) {
 		}
 
 
+
+
+
+
+
+		// TODO:
+		// 
+		// Replace the following helper with the version in sails.util:
+
 		// Attempt to parse JSON
 		// If the parse fails, return the error object
 		// If JSON is falsey, return null
 		// (this is so that it will be ignored if not specified)
 		function tryToParseJSON (json) {
-			if (!util.isString(json)) return null;
+			if (!sails.util.isString(json)) return null;
 			try {
 				return JSON.parse(json);
 			}
@@ -182,4 +127,31 @@ module.exports = function (sails) {
 
 	};
 
+
+	/**
+	 * parseWhereParam
+	 * 
+	 * @param  {Object} allParams [result of calling req.params.all()]
+	 * @return {Object}           the WHERE criteria object
+	 */
+	function parseWhereParam( allParams ) {
+
+		// If `where` parameter is a string, try to interpret it as JSON
+		if (sails.util.isString(where)) {
+			where = tryToParseJSON(where);
+		}
+
+		// If `where` has not been specified, but other unbound parameter variables
+		// **ARE** specified, build the `where` option using them.
+		if (!where) {
+			// Prune params which aren't fit to be used as `where` criteria
+			// to build a proper where query
+			where = sails.util.omit(allParams, ['limit', 'skip', 'sort']);
+			if (isJSONPCompatible) { sails.util.omit(where, JSONP_CALLBACK_PARAM); }
+		}
+	}
+
 };
+
+
+
