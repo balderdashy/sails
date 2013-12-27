@@ -50,13 +50,13 @@ module.exports = {
 			'api',
 				'api/adapters',
 				'api/blueprints',
-				'api/blueprints/errors',
 				'api/controllers',
+				'api/errors',
 				'api/models',
 				'api/policies',
 				'api/services',
 			'config',
-			'config/locales',
+			'config/locales', // TODO: consider putting this in `views/locales` by default?
 			'views',
 			'assets',
 				'assets/images',
@@ -68,15 +68,17 @@ module.exports = {
 
 		var templateFiles = [
 
+			// api/errors/*
+			'api/errors/serverError.js',
+			'api/errors/badRequest.js',
+			'api/errors/notFound.js',
+			'api/errors/forbidden.js',
+
 			// api/blueprints/*
-			// 'api/blueprints/errors/serverError.js',		// needs some adjustments in core before they're all usable
-			// 'api/blueprints/errors/badRequest.js',
-			// 'api/blueprints/errors/notFound.js',
-			// 'api/blueprints/errors/forbidden.js',
-			// 'api/blueprints/find.js',
-			// 'api/blueprints/create.js',
-			// 'api/blueprints/update.js',
-			// 'api/blueprints/destroy.js',
+			'api/blueprints/find.js',
+			'api/blueprints/create.js',
+			'api/blueprints/update.js',
+			'api/blueprints/destroy.js',
 
 			// api/policies/*
 			'api/policies/sessionAuth.js',

@@ -1,12 +1,5 @@
 module.exports = function (sails) {
 
-	/**
-	 * Module dependencies.
-	 */
-
-	var idHelper = require('./helpers/id')(sails),
-		util = require('sails-util');
-
 
 	/**
 	 * CRUD find() blueprint
@@ -25,7 +18,8 @@ module.exports = function (sails) {
 
 		
 		// Locate and validate id parameter
-		var id = idHelper(req.param('id'), req.target.controller, 'update');
+		// var id = idHelper(req.param('id'), req.target.controller, 'update');
+		var id = req.param('id');
 		if (!id) {
 			return res.badRequest('No id provided.');
 		}
@@ -38,14 +32,14 @@ module.exports = function (sails) {
 		params = req.params.all();
 
 		// Don't include JSONP callback parameter as data
-		params = util.objReject(params, function (param, key) {
+		params = sails.util.objReject(params, function (param, key) {
 
 			// if req.transport is falsy or doesn't contain the phrase "socket"
 			// we'll call it "jsonpCompatible"
 			var jsonpCompatible = ! ( req.transport && req.transport.match(/socket/i) );
 
 			// undefined params
-			return util.isUndefined(param) ||
+			return sails.util.isUndefined(param) ||
 
 				// and JSONP callback (if this is jsonpCompatible)
 				(key === 'callback' && jsonpCompatible);
@@ -72,7 +66,7 @@ module.exports = function (sails) {
 			}
 
 			// Interlace app-global `config.controllers` with this controller's `_config`
-			var controllerConfig = util.merge({}, 
+			var controllerConfig = sails.util.merge({}, 
 				sails.config.controllers, 
 				sails.controllers[req.target.controller]._config || {});
 

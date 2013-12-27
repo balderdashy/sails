@@ -1,14 +1,6 @@
 module.exports = function (sails) {
 
 	/**
-	 * Module dependencies.
-	 */
-
-	var idHelper = require('./helpers/id')(sails),
-		util = require('sails-util');
-
-
-	/**
 	 * CRUD find() blueprint
 	 *
 	 * @api private
@@ -17,7 +9,8 @@ module.exports = function (sails) {
 	return function find (req, res, next) {
 
 		// Locate and validate id parameter
-		var id = idHelper(req.param('id'), req.target.controller, 'find');
+		// var id = sails.util.(req.param('id'), req.target.controller, 'find');
+		var id = req.param('id');
 		if (id === false) {
 			// Id was invalid-- and probably unintentional.
 			// Continue on as if this blueprint doesn't exist
@@ -32,7 +25,7 @@ module.exports = function (sails) {
 		}
 
 		// Interlace app-global `config.controllers` with this controller's `_config`
-		var controllerConfig = util.merge({}, 
+		var controllerConfig = sails.util.merge({}, 
 			sails.config.controllers, 
 			sails.controllers[req.target.controller]._config || {});
 
@@ -83,7 +76,7 @@ module.exports = function (sails) {
 			var where = req.param('where');
 
 			// If WHERE is a string, try to interpret it as JSON
-			if (util.isString(where)) {
+			if (sails.util.isString(where)) {
 				where = tryToParseJSON(where);
 			}
 
@@ -95,14 +88,14 @@ module.exports = function (sails) {
 				params = req.params.all();
 
 				// Pluck params:
-				params = util.objReject(params, function (param, key) {
+				params = sails.util.objReject(params, function (param, key) {
 
 					// if req.transport is falsy or doesn't contain the phrase "socket"
 					// we'll call it "jsonpCompatible"
 					var jsonpCompatible = ! ( req.transport && req.transport.match(/socket/i) );
 
 					// undefined params
-					return util.isUndefined(param) ||
+					return sails.util.isUndefined(param) ||
 
 						// and limit, skip, and sort
 						key === 'limit' || key === 'skip' || key === 'sort' ||
@@ -171,7 +164,7 @@ module.exports = function (sails) {
 		// If JSON is falsey, return null
 		// (this is so that it will be ignored if not specified)
 		function tryToParseJSON (json) {
-			if (!util.isString(json)) return null;
+			if (!sails.util.isString(json)) return null;
 			try {
 				return JSON.parse(json);
 			}

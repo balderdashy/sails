@@ -1,14 +1,6 @@
 module.exports = function (sails) {
 
 
-	/**
-	 * Module dependencies.
-	 */
-
-	var idHelper = require('./helpers/id')(sails),
-		util = require('sails-util');
-
-
 
 	/**
 	 * CRUD find() blueprint
@@ -26,7 +18,8 @@ module.exports = function (sails) {
 			return next();
 		}
 		
-		var id = idHelper(req.param('id'), req.target.controller, 'destroy');
+		// var id = idHelper(req.param('id'), req.target.controller, 'destroy');
+		var id = req.param('id');
 		if (!id) {
 			return res.badRequest('No id provided.');
 		}
@@ -54,7 +47,7 @@ module.exports = function (sails) {
 				}
 
 				// Interlace app-global `config.controllers` with this controller's `_config`
-				var controllerConfig = util.merge({}, 
+				var controllerConfig = sails.util.merge({}, 
 					sails.config.controllers, 
 					sails.controllers[req.target.controller]._config || {});
 				
