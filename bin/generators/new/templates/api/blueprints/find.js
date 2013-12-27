@@ -16,8 +16,8 @@ module.exports = function (sails) {
 
 	return function find (req, res) {
 
-		// Get access to sails from context.
-		var sails = this;
+		// Get access to sails (globals might be disabled)
+		var sails = req._sails;
 		
 		// The name of the parameter to use for JSONP callbacks
 		var JSONP_CALLBACK_PARAM = 'callback';
