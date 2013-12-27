@@ -1,15 +1,14 @@
 /**
- * 500 (Server Error) middleware
+ * 500 (Server Error) Handler
+ * 
+ * Usage:
+ * return res.serverError(err);
  *
- * If an error is thrown in a policy or controller,
- * Sails will respond using this default error handler
+ * @param {Array|Object|String|Error} error(s)     [optional]
  *
- * This middleware can also be invoked manually from a controller or policy:
- * res.serverError( [errors] )
- *
- *
- * @param {Array|Object|String} errors
- *      optional errors
+ * NOTE:
+ * If something throws in a policy or controller, or an internal
+ * error is encountered, Sails will call `res.serverError()`.
  */
 
 module.exports = function serverError (errors) {
@@ -52,24 +51,33 @@ module.exports = function serverError (errors) {
     result.errors = errorsToDisplay;
   }
 
+  // Set status code
+  res.status(result.status);
+
   // If the user-agent wants JSON, respond with JSON
   if (req.wantsJSON) {
-    return res.json(result, result.status);
+    return res.json(result);
   }
 
-  // Set status code and view locals
-  res.status(result.status);
-  for (var key in result) {
-    res.locals[key] = result[key];
-  }
-  // And render view
-  res.render(viewFilePath, result, function(err) {
-    // If the view doesn't exist, or an error occured, just send JSON
-    if (err) {
-      return res.json(result, result.status);
+
+  // Make data more readable for view locals
+  var locals = _.mapValues(result, function readabilify(value) {
+    if (sails.util.isArray(value)) {
+      return _.map(value, sails.util.inspect);
     }
+    else if (sails.util.isPlainObject(value)) {
+      return sails.util.inspect(value);
+    }
+    else return value;
+  });
+
+
+  // And try to render view
+  res.render(viewFilePath, locals, function(err) {
+    // But if the view doesn't exist, or a rendering error occured, just send JSON
+    if (err) return res.json(result);
 
     // Otherwise, if it can be rendered, the `views/500.*` page is rendered
-    res.render(viewFilePath, result);
+    res.render(viewFilePath, locals);
   });
 };

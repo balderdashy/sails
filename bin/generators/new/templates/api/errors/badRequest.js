@@ -1,14 +1,12 @@
 /**
- * 400 (Bad Request) handler
+ * 400 (Bad Request) Handler
  *
- * Sails will automatically respond using this middleware when a blueprint is requested
- * with missing or invalid parameters
- * (e.g. `POST /user` was used to create a user, but required parameters were missing)
- *
- * This middleware can also be invoked manually from a controller or policy:
- * res.badRequest( [validationErrors], [redirectTo] )
- *
- *
+ * Usage:
+ * return res.badRequest(
+ *   'Please choose a valid `password` (6-12 characters)',
+ *   '/trial/signup'
+ * );
+ * 
  * @param {Array|Object|String} validationErrors
  *      optional errors
  *      usually an array of validation errors from the ORM

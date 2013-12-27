@@ -1,10 +1,12 @@
 /**
- * 404 (Not Found) handler
+ * 404 (Not Found) Handler
  *
- * If no route matches are found for a request, Sails will respond using this handler.
- *
- * This middleware can also be invoked manually from a controller or policy:
- * Usage: res.notFound()
+ * Usage:
+ * return res.notFound();
+ * 
+ * NOTE:
+ * If no user-defined route, blueprint route, or static file matches
+ * the requested URL, Sails will call `res.notFound()`.
  */
 
 module.exports = function notFound() {

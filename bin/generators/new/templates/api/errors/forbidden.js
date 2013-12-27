@@ -1,10 +1,9 @@
 /**
- * 403 (Forbidden) middleware
+ * 403 (Forbidden) Handler
  *
- * This middleware can be invoked from a controller or policy:
- * res.forbidden( [message] )
- *
- *
+ * Usage:
+ * return res.forbidden('Access denied.');
+ * 
  * @param {String|Object|Array} message
  *      optional message to inject into view locals or JSON response
  *
