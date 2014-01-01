@@ -5,7 +5,7 @@ The community is what makes Sails great, without you we wouldn't have come so fa
 ## Opening issues
 1. If you have a question about setting up/using Sails, please check out the [Sails docs](http://sailsjs.org/#!documentation) or try searching  [StackOverflow](http://stackoverflow.com/questions/tagged/sails.js).
 2. Search for issues similar to yours in [GitHub search](https://github.com/balderdashy/sails/search?type=Issues) and [Google](https://www.google.nl/search?q=sails+js). 
-3. If you want to request a feature, please do! Just make sure it's clear that you're making a feature request so we can tag it as such. (Starting the title off with "Feature Request:" helps a lot.)
+3. Feature requests are very welcome, but we would prefer to keep them separate from actual issues with the framework. If you want to submit a feature request, please post it on our [Trello Board](https://trello.com/b/cGzNVE0b/sails-js-feature-requests). You can do so by emailing the issue to sailsfeaturerequests+wlhnmobeqngolth6lh6z@boards.trello.com. You can put the name of the request in the subject line, and the description in the body. It can sometimes take a few minutes for it to appear on the board, so please be patient if you don't see it right away.
 4. If there's an open issue, please contribute to that issue.
 5. If there's a closed issue, open a new issue and link the url of the already closed issue(s).
 6. If there is no issue, open a new issue and specify the following:
