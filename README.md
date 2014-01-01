@@ -1,4 +1,4 @@
-# Sails.js [![Build Status](https://travis-ci.org/balderdashy/sails.png?branch=master)](https://travis-ci.org/balderdashy/sails) [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)
+# Sails.js [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)
 
 ![image_squidhome@2x.png](http://i.imgur.com/RIvu9.png)
 
