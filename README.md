@@ -259,6 +259,16 @@ Sails is tested with [node](http://nodejs.org/) versions 0.8.22 and 0.10.x, and 
 <br/>
 <br/>
 
+## Issue Submission
+Make sure you've read the [issue submission guidelines](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#opening-issues) before opening a new issue.
+
+Sails is composed of a number of different sub-projects, many of which have their own dedicated repository. If you are looking for a repo for a particular piece, you'll find it on the [organization](https://github.com/balderdashy) page.
+
+## Feature Requests
+Feature requests should be submitted to the [repo](https://github.com/balderdashy) it concerns. Submit to [balderdashy/sails](https://github.com/balderdashy/sails) if you're unsure.
+
+## Contribute
+See the [contributing docs](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md).
 
 
 ## Support
@@ -284,20 +294,16 @@ The Sails framework was developed by Mike McNeil ([@mikermcneil](http://twitter.
 
 After building a few realtime JavaScript apps and taking them into production, we realized that the Node.js development landscape was very much still the Wild West.  Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  I hope it saves you some time :)
 
-## Core Team
 Sails is actively maintained by these [contributors](https://github.com/balderdashy/sails/graphs/contributors):
 
 [![Mike McNeil](http://gravatar.com/avatar/199046437b76e6ca73e00b4cc182a1c5?s=144)](http://michaelmcneil.com) | [![Cody Stoltman](https://1.gravatar.com/avatar/368567acca0c5dfb9a4ff512c5c0c3fa?s=144)](http://particlebanana.com) |  [![Zoli Kahan](http://gravatar.com/avatar/55dbeca986f875e1d1cb4d51e2fc42e4?s=144)](http://www.zolmeister.com/) | [![Colin Wren](https://1.gravatar.com/avatar/5ec6c3cf68cefac8dc74524a21e5cd37?s=144)](http://cawren.com) | [![Dennis Bartlett](http://gravatar.com/avatar/165b325d23d53c12ed2e4c14307a37f6?s=144)](http://dcbartlett.info)
 :---:|:---:|:---:|:---:|:---:
-[Mike McNeil](http://michaelmcneil.com) | [Cody Stoltman](http://particlebanana.com) | [Zoli Kahan](http://www.zolmeister.com/) | [Colin Wren](http://cawren.com) | [Dennis Bartlett](http://dcbartlett.info)
+[Mike McNeil](http://michaelmcneil.com) | [Cody Stoltman](http://particlebanana.com) | [Scott Gress](https://github.com/sgress454) | [Greg Thornton](https://github.com/xdissent) | [Zoli Kahan](https://github.com/Zolmeister)
 
 
 
 
-
-
-License
---
+## License
 
 [MIT License](http://sails.mit-license.org/)  Copyright © 2012-2014 Mike McNeil
 
