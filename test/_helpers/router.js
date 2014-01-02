@@ -2,7 +2,6 @@
  * Module dependencies
  */
 var _ = require('lodash');
-var supertest = require('supertest');
 // var util = require ('sails-util');
 
 
@@ -16,9 +15,7 @@ var $Router = {
 	 * @return {$Router}
 	 */
 	test: function(customTests) {
-		// Use slave router instance to build a supertest instance
-		var server = supertest(this.sails.router._slave);
-		customTests(server);
+		customTests();
 
 		// Chainable
 		return $Router;
@@ -80,10 +77,7 @@ var $Router = {
 
 			// Run custom tests if provided
 			test: function(customTests) {
-
-				// Use slave router instance to build a supertest instance
-				var server = supertest(this.sails.router._slave);
-				customTests(server);
+				customTests();
 
 				return Chainable;
 			}

@@ -1,6 +1,7 @@
 /**
  * Module dependencies
  */
+var supertest = require('supertest');
 var $Sails = require('../../_helpers/sails');
 var $Router = require('../../_helpers/router');
 
@@ -19,9 +20,9 @@ describe('Router.bind', function (){
 		path: '/foo',
 		method: 'get'
 	})
-	.test(function (server) {
+	.test(function () {
 		it('should send expected response (get /foo)', function (done) {
-			server
+			supertest(this.sails.router._slave)
 			.get('/foo')
 			.expect(200, 'hello world!')
 			.end(done);
@@ -35,9 +36,9 @@ describe('Router.bind', function (){
 		path: '/bar_baz_beezzz',
 		method: 'post'
 	})
-	.test(function (server) {
+	.test(function () {
 		it('should send expected response (post /bar_baz_beezzz)', function (done) {
-			server
+			supertest(this.sails.router._slave)
 			.post('/bar_baz_beezzz')
 			.expect(500, 'hello world!')
 			.end(done);
@@ -51,9 +52,9 @@ describe('Router.bind', function (){
 		path: '/user',
 		method: 'patch'
 	})
-	.test(function (server) {
+	.test(function () {
 		it('should send expected response (patch /user)', function (done) {
-			server
+			supertest(this.sails.router._slave)
 			.patch('/user')
 			.expect(200, { hello: 'world' })
 			.end(done);
@@ -62,9 +63,9 @@ describe('Router.bind', function (){
 
 
 	$Router
-	.test(function (server) {
+	.test(function () {
 		it('should respond with 404 handler', function (done) {
-			server
+			supertest(this.sails.router._slave)
 			.get('/something_undefined')
 			.expect(404)
 			.end(done);
@@ -73,9 +74,9 @@ describe('Router.bind', function (){
 
 
 	$Router.bind('post /something_that_throws', RESPOND.SOMETHING_THAT_THROWS)
-	.test(function (server) {
+	.test(function () {
 		it('should respond with 500 handler if something throws', function (done) {
-			server
+			supertest(this.sails.router._slave)
 			.post('/something_that_throws')
 			.expect(500)
 			.end(done);
