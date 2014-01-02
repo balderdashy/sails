@@ -8,6 +8,18 @@ var _ = require('lodash');
 
 var $Router = {
 
+
+	/**
+	 * Run custom tests if provided
+	 * @param  {Function} customTests
+	 * @return {$Router}
+	 */
+	test: function(customTests) {
+		customTests();
+		return $Router;
+	},
+
+
 	/**
 	 * unbind(route)
 	 *   .expect(expectations)
@@ -21,21 +33,25 @@ var $Router = {
 			this.sails.router.bind.apply(this.sails.router.bind, args);
 		});
 
-		return {
+		var Chainable = {
 			shouldDelete: function(expected) {
 				it('should delete route in slave router', function() {
 					var boundRoutes = this.sails.router._slave.routes[expected.method];
 					_.some(boundRoutes, expected).should.be.false;
 				});
+				
+				return Chainable;
 			}
 		};
+
+		return Chainable;
 	},
 
 
 	/**
 	 * bindRoute(route, handler)
 	 *   .expectBoundRoute(expectedRoute)
-	 *   .test(customMochaTest)
+	 *   .test(fnContainingCustomMochaTests)
 	 *
 	 */
 	bind: function (route, handler) {
@@ -57,9 +73,9 @@ var $Router = {
 				return Chainable;
 			},
 
-			// Run custom test if provided
-			test: function(customTest) {
-				customTest();
+			// Run custom tests if provided
+			test: function(customTests) {
+				customTests();
 				return Chainable;
 			}
 		};

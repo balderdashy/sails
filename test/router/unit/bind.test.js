@@ -61,6 +61,17 @@ describe('Router.bind', function (){
 		});
 	});
 
+
+	$Router
+	.test(function () {
+		it('should respond with 404 handler', function (done) {
+			supertest(this.sails.router._slave)
+			.patch('/something_undefined')
+			.expect(404)
+			.end(done);
+		});
+	});
+
 });
 
 
