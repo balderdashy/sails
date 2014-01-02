@@ -254,6 +254,7 @@ Need help or have a question?
 
 - [Stackoverflow](http://stackoverflow.com/questions/tagged/sails.js)
 - [#sailsjs](http://webchat.freenode.net/) on Freenode (IRC channel)
+- [Professional/Enterprise Options](https://github.com/balderdashy/sails/wiki#are-there-professional-support-options)
 
 _Please don't use the issue tracker for support/questions._
 
@@ -266,27 +267,16 @@ _Please don't use the issue tracker for support/questions._
 - [Twitter](https://twitter.com/sailsjs)
 - [SailsCasts](http://irlnathan.github.io/sailscasts/)
 
-[![NPM](https://nodei.co/npm/sails.png?downloads=true&stars=true)](https://nodei.co/npm/sails/)
 
-## Who Built This?
 
-The Sails framework was developed by Mike McNeil ([@mikermcneil](http://twitter.com/mikermcneil)) and is maintained by [Balderdash](http://balderdash.co) ([@balderdashy](http://twitter.com/balderdashy)), a realtime web & mobile studio I started with Heather White (@hdesignsit) in Austin, TX a few years ago.  We design/build scalable Node.js apps for startups and enterprise customers.
-
-After building a few realtime JavaScript apps and taking them into production, we realized that the Node.js development landscape was very much still the Wild West.  Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  I hope it saves you some time :)
-
-#### Team
-Sails is actively maintained by these [contributors](https://github.com/balderdashy/sails/graphs/contributors):
+## Team
+Sails is actively built and maintained by [Balderdash](http://balderdash.co) ([@balderdashy](http://twitter.com/balderdashy)), a realtime web & mobile studio, with the help of these [contributors](https://github.com/balderdashy/sails/graphs/contributors):
 
 [![Mike McNeil](http://gravatar.com/avatar/199046437b76e6ca73e00b4cc182a1c5?s=144)](http://michaelmcneil.com) | [![Cody Stoltman](https://1.gravatar.com/avatar/368567acca0c5dfb9a4ff512c5c0c3fa?s=144)](http://particlebanana.com) |  [![Zoli Kahan](http://gravatar.com/avatar/55dbeca986f875e1d1cb4d51e2fc42e4?s=144)](http://www.zolmeister.com/) | [![Colin Wren](https://1.gravatar.com/avatar/5ec6c3cf68cefac8dc74524a21e5cd37?s=144)](http://cawren.com) | [![Dennis Bartlett](http://gravatar.com/avatar/165b325d23d53c12ed2e4c14307a37f6?s=144)](http://dcbartlett.info)
 :---:|:---:|:---:|:---:|:---:
 [Mike McNeil](http://michaelmcneil.com) | [Cody Stoltman](http://particlebanana.com) | [Scott Gress](https://github.com/sgress454) | [Greg Thornton](https://github.com/xdissent) | [Zoli Kahan](https://github.com/Zolmeister)
 
-
-
-#### Dependencies
-Sails is tested with [node](http://nodejs.org/) versions 0.8.22 and 0.10.x, and built on the rock-solid foundations of [Express](http://expressjs.com/) and [Socket.io](http://socket.io/).
-
-[![NPM](https://nodei.co/npm/express.png?compact=true)](https://nodei.co/npm/express/)  [![NPM](https://nodei.co/npm/socket.io.png?compact=true)](https://nodei.co/npm/socket.io/)
+Balderdash designs/builds scalable Node.js apps for startups and enterprise customers.  After building a few apps and taking them into production, we realized that the Node.js development landscape was very much still the Wild West.  Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  [I](http://twitter.com/mikermcneil) hope it saves you some time :)
 
 
 ## License
@@ -295,5 +285,7 @@ Sails is tested with [node](http://nodejs.org/) versions 0.8.22 and 0.10.x, and 
 
 > Sails is built around so many great open-source technologies that it would never have crossed our minds to keep it proprietary.  We owe huge gratitude and props to TJ Holowaychuk ([@visionmedia](https://github.com/visionmedia)) and Guillermo Rauch ([@guille](https://github.com/guille)) for the work they did, as well as the stewards of all the other open-source modules we use.  Sails could never have been developed without your tremendous contributions to the node community.
 
+
+[![NPM](https://nodei.co/npm/sails.png?downloads=true&stars=true)](https://nodei.co/npm/sails/)
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/8acf2fc2ca0aca8a3018e355ad776ed7 "githalytics.com")](http://githalytics.com/balderdashy/sails)
