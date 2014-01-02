@@ -39,9 +39,7 @@ Now, let's get Sails to do cool stuff.
 
 ## Creating a RESTful JSON API
 
-Sails.js API blueprints are nothing like scaffolds. Generated forms just don't make sense for modern web apps (no one uses them!)
-Instead, Sails allows you to generate a powerful RESTful JSON API using the command line tool.
-This is exactly what you need for [AJAX web pages](http://irlnathan.github.io/sailscasts/blog/2013/10/10/building-a-sails-application-ep22-manipulating-the-dom-based-upon-changes-via-real-time-model-events/), [realtime apps](http://lanyrd.com/2013/nodepdx/video/), [SPAs](https://www.youtube.com/watch?v=Di50_eHqI7I), [Backbone apps](http://net.tutsplus.com/tutorials/javascript-ajax/working-with-data-in-sails-js/), [Angular apps](https://github.com/rdroro/tulipe-personal-todolist), [Cordova/PhoneGap apps](https://groups.google.com/forum/#!topic/sailsjs/o7HaB0rvSKU), [native mobile apps](https://github.com/aug2uag/SampleAppiOS), [refrigerators](https://www.youtube.com/watch?v=tisWSKMPIg8), [lamps](https://www.youtube.com/watch?v=OmcQZD_LIAE), etc.
+Sails allows you to generate a powerful RESTful JSON API using the command line tool.  This is exactly what you need for [AJAX web pages](http://irlnathan.github.io/sailscasts/blog/2013/10/10/building-a-sails-application-ep22-manipulating-the-dom-based-upon-changes-via-real-time-model-events/), [realtime apps](http://lanyrd.com/2013/nodepdx/video/), [SPAs](https://www.youtube.com/watch?v=Di50_eHqI7I), [Backbone apps](http://net.tutsplus.com/tutorials/javascript-ajax/working-with-data-in-sails-js/), [Angular apps](https://github.com/rdroro/tulipe-personal-todolist), [Cordova/PhoneGap apps](https://groups.google.com/forum/#!topic/sailsjs/o7HaB0rvSKU), [native mobile apps](https://github.com/aug2uag/SampleAppiOS), [refrigerators](https://www.youtube.com/watch?v=tisWSKMPIg8), [lamps](https://www.youtube.com/watch?v=OmcQZD_LIAE), etc.
 
 Without writing any code, Sails supports:
   + filtering (`where`)
@@ -56,6 +54,7 @@ Best of all, all of these things work with both HTTP _and_ WebSockets, and work 
 
 [![Creating a REST API with Sails.js](http://i.imgur.com/drtMlWH.png)](//www.youtube.com/embed/xlOolpwwGQg?feature=player_embedded) [![Original Sails.js Screencast from March 2013](http://balderdashy.github.com/sails/images/screenshot.png)](http://youtu.be/GK-tFvpIR7c)
 
+<!--
 ---------------------------------------------------------------------------------
 
 ###### Enough talk!  Let's generate a User API.
@@ -233,31 +232,10 @@ If you have questions, ideas, or run into a problem, post it to our google group
 
 #### IRC
 We're [#sailsjs on freenode](http://webchat.freenode.net/)
+-->
 
 
-
-
-
-## Version, Dependencies and Compatibility
-
-#### Latest stable release
 [![NPM](https://nodei.co/npm/sails.png?downloads=true&stars=true)](https://nodei.co/npm/sails/)
-
-
-#### Dependencies
-Sails is tested with [node](http://nodejs.org/) versions 0.8.22 and 0.10.x, and built on the rock-solid foundations of [Express](http://expressjs.com/) and [Socket.io](http://socket.io/).
-
-[![NPM](https://nodei.co/npm/express.png?compact=true)](https://nodei.co/npm/express/)  [![NPM](https://nodei.co/npm/socket.io.png?compact=true)](https://nodei.co/npm/socket.io/)
-<!-- <img src="http://nodejs.org/images/logos/nodejs.png"/> -->
-
-#### What's Next?
-+ [Roadmap](https://github.com/balderdashy/sails-wiki/blob/0.9/roadmap.md)
-
-#### What's Changed?
-+ [Changelog](https://github.com/balderdashy/sails-wiki/blob/0.9/changelog.md)
-
-<br/>
-<br/>
 
 ## Issue Submission
 Make sure you've read the [issue submission guidelines](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#opening-issues) before opening a new issue.
@@ -283,6 +261,7 @@ _Please don't use the issue tracker for support/questions._
 - [Website](http://sailsjs.org/)
 - [Documentation](http://sailsjs.org/#!documentation)
 - [Changelog](https://github.com/balderdashy/sails-docs/blob/0.9/changelog.md)
+- [Roadmap](https://github.com/balderdashy/sails-wiki/blob/0.9/roadmap.md)
 - [Google group](https://groups.google.com/forum/?fromgroups#!forum/sailsjs)
 - [Twitter](https://twitter.com/sailsjs)
 - [SailsCasts](http://irlnathan.github.io/sailscasts/)
@@ -301,6 +280,10 @@ Sails is actively maintained by these [contributors](https://github.com/balderda
 [Mike McNeil](http://michaelmcneil.com) | [Cody Stoltman](http://particlebanana.com) | [Scott Gress](https://github.com/sgress454) | [Greg Thornton](https://github.com/xdissent) | [Zoli Kahan](https://github.com/Zolmeister)
 
 
+#### Dependencies
+Sails is tested with [node](http://nodejs.org/) versions 0.8.22 and 0.10.x, and built on the rock-solid foundations of [Express](http://expressjs.com/) and [Socket.io](http://socket.io/).
+
+[![NPM](https://nodei.co/npm/express.png?compact=true)](https://nodei.co/npm/express/)  [![NPM](https://nodei.co/npm/socket.io.png?compact=true)](https://nodei.co/npm/socket.io/)
 
 
 ## License
