@@ -1,6 +1,9 @@
 # Sails.js
 
+[![NPM](https://nodei.co/npm/sails.png?downloads=true&stars=true)](https://nodei.co/npm/sails/)
+<!--
 [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)
+-->
 
 ![image_squidhome@2x.png](http://i.imgur.com/RIvu9.png)
 
@@ -235,8 +238,6 @@ If you have questions, ideas, or run into a problem, post it to our google group
 We're [#sailsjs on freenode](http://webchat.freenode.net/)
 -->
 
-
-[![NPM](https://nodei.co/npm/sails.png?downloads=true&stars=true)](https://nodei.co/npm/sails/)
 
 ## Issue Submission
 Make sure you've read the [issue submission guidelines](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#opening-issues) before opening a new issue.
