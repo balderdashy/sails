@@ -66,8 +66,19 @@ describe('Router.bind', function (){
 	.test(function () {
 		it('should respond with 404 handler', function (done) {
 			supertest(this.sails.router._slave)
-			.patch('/something_undefined')
+			.get('/something_undefined')
 			.expect(404)
+			.end(done);
+		});
+	});
+
+
+	$Router.bind('post /something_that_throws', RESPOND.SOMETHING_THAT_THROWS)
+	.test(function () {
+		it('should respond with 500 handler if something throws', function (done) {
+			supertest(this.sails.router._slave)
+			.post('/something_that_throws')
+			.expect(500)
 			.end(done);
 		});
 	});
