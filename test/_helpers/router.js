@@ -34,7 +34,8 @@ var $Router = {
 
 	/**
 	 * bindRoute(route, handler)
-	 *   .expect(expectations)
+	 *   .expectBoundRoute(expectedRoute)
+	 *   .test(customMochaTest)
 	 *
 	 */
 	bind: function (route, handler) {
@@ -45,14 +46,25 @@ var $Router = {
 			this.sails.router.bind.apply(this.sails.router.bind, args);
 		});
 
-		return {
-			expect: function(expected) {
-				it('should create route in slave router', function() {
+		var Chainable = {
+			expectBoundRoute: function(expected) {
+				var readableRoute = expected.method + ' ' + expected.path;
+
+				it('should create ' + readableRoute + ' in slave router', function() {
 					var boundRoutes = this.sails.router._slave.routes[expected.method];
 					_.some(boundRoutes, expected).should.be.true;
 				});
+				return Chainable;
+			},
+
+			// Run custom test if provided
+			test: function(customTest) {
+				customTest();
+				return Chainable;
 			}
 		};
+
+		return Chainable;
 	}
 
 };

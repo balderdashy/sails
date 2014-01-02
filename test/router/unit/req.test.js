@@ -3,7 +3,7 @@
  */
 var assert = require('assert');
 var should = require('should');		// https://github.com/visionmedia/should.js/
-var supertest = require('supertest');
+
 
 /**
  * This mocked implementation of `req` forms the basis for
