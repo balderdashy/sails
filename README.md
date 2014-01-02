@@ -1,9 +1,7 @@
 # Sails.js
 
-[![NPM](https://nodei.co/npm/sails.png?downloads=true&stars=true)](https://nodei.co/npm/sails/)
-<!--
 [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)
--->
+
 
 ![image_squidhome@2x.png](http://i.imgur.com/RIvu9.png)
 
@@ -255,7 +253,7 @@ See the [contributing docs](https://github.com/balderdashy/sails/blob/master/CON
 Need help or have a question?
 
 - [Stackoverflow](http://stackoverflow.com/questions/tagged/sails.js)
-- [#sailsjs](http://webchat.freenode.net/) on Freenode
+- [#sailsjs](http://webchat.freenode.net/) on Freenode (IRC channel)
 
 _Please don't use the issue tracker for support/questions._
 
@@ -268,6 +266,7 @@ _Please don't use the issue tracker for support/questions._
 - [Twitter](https://twitter.com/sailsjs)
 - [SailsCasts](http://irlnathan.github.io/sailscasts/)
 
+[![NPM](https://nodei.co/npm/sails.png?downloads=true&stars=true)](https://nodei.co/npm/sails/)
 
 ## Who Built This?
 
@@ -281,6 +280,7 @@ Sails is actively maintained by these [contributors](https://github.com/balderda
 [![Mike McNeil](http://gravatar.com/avatar/199046437b76e6ca73e00b4cc182a1c5?s=144)](http://michaelmcneil.com) | [![Cody Stoltman](https://1.gravatar.com/avatar/368567acca0c5dfb9a4ff512c5c0c3fa?s=144)](http://particlebanana.com) |  [![Zoli Kahan](http://gravatar.com/avatar/55dbeca986f875e1d1cb4d51e2fc42e4?s=144)](http://www.zolmeister.com/) | [![Colin Wren](https://1.gravatar.com/avatar/5ec6c3cf68cefac8dc74524a21e5cd37?s=144)](http://cawren.com) | [![Dennis Bartlett](http://gravatar.com/avatar/165b325d23d53c12ed2e4c14307a37f6?s=144)](http://dcbartlett.info)
 :---:|:---:|:---:|:---:|:---:
 [Mike McNeil](http://michaelmcneil.com) | [Cody Stoltman](http://particlebanana.com) | [Scott Gress](https://github.com/sgress454) | [Greg Thornton](https://github.com/xdissent) | [Zoli Kahan](https://github.com/Zolmeister)
+
 
 
 #### Dependencies
