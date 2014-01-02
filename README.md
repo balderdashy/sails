@@ -1,28 +1,29 @@
-# Sails.js [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)
+# Sails.js
+
+[![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)
 
 ![image_squidhome@2x.png](http://i.imgur.com/RIvu9.png)
 
-Sails.js makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development.  It's especially good for building realtime features like chat.
-
+> Sails.js makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development.  It's especially good for building realtime features like chat.
 
 
 ## Installation
 
-To install the latest stable release with the command-line tool:
+With [node](http://nodejs.org) installed:
 ```sh
-sudo npm -g install sails
+sudo npm install sails -g
 ```
 
 
-## Creating a New Sails Project
+## Your First Sails Project
 
-Create a new app
+Create a new app:
 ```sh
 # Create the app
 sails new testProject
 ```
 
-Lift Sails
+Start the server:
 ```sh
 # cd into the new folder
 cd testProject
@@ -259,7 +260,23 @@ Sails is tested with [node](http://nodejs.org/) versions 0.8.22 and 0.10.x, and 
 <br/>
 
 
-<!-- ![icon_circleheart@2x.png](http://i.imgur.com/liHPV.png) -->
+
+## Support
+Need help or have a question?
+
+- [Stackoverflow](http://stackoverflow.com/questions/tagged/sails.js)
+- [#sailsjs](http://webchat.freenode.net/) on Freenode
+
+_Please don't use the issue tracker for support/questions._
+
+## Links
+- [Website](http://sailsjs.org/)
+- [Documentation](http://sailsjs.org/#!documentation)
+- [Changelog](https://github.com/balderdashy/sails-docs/blob/0.9/changelog.md)
+- [Google group](https://groups.google.com/forum/?fromgroups#!forum/sailsjs)
+- [Twitter](https://twitter.com/sailsjs)
+- [SailsCasts](http://irlnathan.github.io/sailscasts/)
+
 
 ## Who Built This?
 
@@ -267,26 +284,24 @@ The Sails framework was developed by Mike McNeil ([@mikermcneil](http://twitter.
 
 After building a few realtime JavaScript apps and taking them into production, we realized that the Node.js development landscape was very much still the Wild West.  Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  I hope it saves you some time :)
 
+## Core Team
+Sails is actively maintained by these [contributors](https://github.com/balderdashy/sails/graphs/contributors):
+
+[![Mike McNeil](http://gravatar.com/avatar/199046437b76e6ca73e00b4cc182a1c5?s=144)](http://michaelmcneil.com) | [![Cody Stoltman](https://1.gravatar.com/avatar/368567acca0c5dfb9a4ff512c5c0c3fa?s=144)](http://particlebanana.com) |  [![Zoli Kahan](http://gravatar.com/avatar/55dbeca986f875e1d1cb4d51e2fc42e4?s=144)](http://www.zolmeister.com/) | [![Colin Wren](https://1.gravatar.com/avatar/5ec6c3cf68cefac8dc74524a21e5cd37?s=144)](http://cawren.com) | [![Dennis Bartlett](http://gravatar.com/avatar/165b325d23d53c12ed2e4c14307a37f6?s=144)](http://dcbartlett.info)
+:---:|:---:|:---:|:---:|:---:
+[Mike McNeil](http://michaelmcneil.com) | [Cody Stoltman](http://particlebanana.com) | [Zoli Kahan](http://www.zolmeister.com/) | [Colin Wren](http://cawren.com) | [Dennis Bartlett](http://dcbartlett.info)
 
 
 
-<!-- ![icon_circlelightbulb@2x.png](http://i.imgur.com/eOFXn.png)  -->
+
+
 
 License
 --
 
-Sails is built around so many great open-source technologies that it would never have crossed our minds to keep it proprietary.  We owe huge gratitude and props to TJ Holowaychuk ([@visionmedia](https://github.com/visionmedia)) and Guillermo Rauch ([@guille](https://github.com/guille)) for the work they did, as well as the stewards of all the other open-source modules we use.  Sails could never have been developed without your tremendous contributions to the node community.
+[MIT License](http://sails.mit-license.org/)  Copyright © 2012-2014 Mike McNeil
 
+> Sails is built around so many great open-source technologies that it would never have crossed our minds to keep it proprietary.  We owe huge gratitude and props to TJ Holowaychuk ([@visionmedia](https://github.com/visionmedia)) and Guillermo Rauch ([@guille](https://github.com/guille)) for the work they did, as well as the stewards of all the other open-source modules we use.  Sails could never have been developed without your tremendous contributions to the node community.
 
-The MIT License (MIT)
---
-
-Copyright © 2012-2013 Mike McNeil
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/8acf2fc2ca0aca8a3018e355ad776ed7 "githalytics.com")](http://githalytics.com/balderdashy/sails)
