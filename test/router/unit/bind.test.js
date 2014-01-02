@@ -21,7 +21,7 @@ describe('Router.bind', function (){
 		method: 'get'
 	})
 	.test(function () {
-		it('should respond as expected', function (done) {
+		it('should send expected response (get /foo)', function (done) {
 			supertest(this.sails.router._slave)
 			.get('/foo')
 			.expect(200, 'hello world!')
@@ -37,7 +37,7 @@ describe('Router.bind', function (){
 		method: 'post'
 	})
 	.test(function () {
-		it('should respond as expected', function (done) {
+		it('should send expected response (post /bar_baz_beezzz)', function (done) {
 			supertest(this.sails.router._slave)
 			.post('/bar_baz_beezzz')
 			.expect(500, 'hello world!')
@@ -53,7 +53,7 @@ describe('Router.bind', function (){
 		method: 'patch'
 	})
 	.test(function () {
-		it('should respond to requests (patch /user)', function (done) {
+		it('should send expected response (patch /user)', function (done) {
 			supertest(this.sails.router._slave)
 			.patch('/user')
 			.expect(200, { hello: 'world' })
