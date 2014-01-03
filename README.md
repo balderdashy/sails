@@ -6,9 +6,9 @@
 >
 > It's especially good for building realtime features like chat.
 
-![image_squidhome@2x.png](http://i.imgur.com/RIvu9.png)
-
 #### [Website](http://sailsjs.org/) | [Getting Started](http://sailsjs.org/#!getStarted) | [Documentation](http://sailsjs.org/#!documentation) | [Submit Issue](https://github.com/balderdashy/sails/search?q=&type=Issues)
+
+![image_squidhome@2x.png](http://i.imgur.com/RIvu9.png)
 
 ## Installation
 
