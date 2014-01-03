@@ -3,11 +3,11 @@
  */
 
 var _ = require('lodash'),
-	npm = require('enpeem'),
 	path = require('path'),
 	async = require('async'),
 	Sails = require('../../../lib/app'),
 	switcher = require('sails-util/switcher'),
+	cliutil = require('sails-util/cli'),
 	GenerateModuleHelper = require('../_helpers/module'),
 	GenerateFolderHelper = require('../_helpers/folder');
 	GenerateJSONHelper = require('../_helpers/jsonfile');
@@ -297,25 +297,28 @@ module.exports = {
 					'grunt@'+sails.dependencies['grunt']
 				];
 
-				// `cd` into the newly created app and load up npm
-				process.chdir(appPath);
-
-				// Just for diagnostics
-				// var cmd = 'npm install ' + dependenciesToCopy.join(' ');
-				// console.time(cmd);
-
-				// Install dependencies from npm cache
-				npm.install( dependenciesToCopy, {
-					// see: https://github.com/isaacs/npm/issues/2568#issuecomment-30626394
-					'cache-min': 999999999,
-					// see: https://github.com/isaacs/npm/pull/4320
-					loglevel: 'silent'
-				}, cb);
-				// }, function (err) {
-					// if (err) return cb(err);
-					// console.timeEnd(cmd);
-					// cb();
-				// });
+				// Copy dependencies (to avoid having to do a local npm install in new projects)
+				//
+				// TODO:
+				// long term-- remove this completely (see above)
+				// short term-- bundle these dependencies in the generator and manually copy them (this is how it worked in 0.9.x)
+				
+				// Create node_modules folder
+				var nodeModulesPath = path.resolve(appPath, 'node_modules');
+				GenerateFolderHelper({
+					pathToNew: nodeModulesPath
+				}, {
+					alreadyExists: function (path) {
+						return cb('A file or folder already exists at the destination path :: ' + path);
+					},
+					error: cb,
+					success: function andThen () {
+						cliutil.copySailsDependency('optimist', nodeModulesPath);
+						cliutil.copySailsDependency('sails-disk', nodeModulesPath);
+						cliutil.copySailsDependency('ejs', nodeModulesPath);
+						cb();
+					}
+				});
 			}]
 
 		}, handlers);
@@ -328,6 +331,35 @@ module.exports = {
 
 
 
+
+
+
+
+
+
+// Using npm to install local deps is very slow!! (even from the cache)
+// 
+// 
+// npm = require('enpeem'),
+// // `cd` into the newly created app and load up npm
+// process.chdir(appPath);
+
+// // Just for diagnostics
+// // var cmd = 'npm install ' + dependenciesToCopy.join(' ');
+// // console.time(cmd);
+
+// // Install dependencies from npm cache
+// npm.install( dependenciesToCopy, {
+// 	// see: https://github.com/isaacs/npm/issues/2568#issuecomment-30626394
+// 	'cache-min': 999999999,
+// 	// see: https://github.com/isaacs/npm/pull/4320
+// 	loglevel: 'silent'
+// }, cb);
+// // }, function (err) {
+// 	// if (err) return cb(err);
+// 	// console.timeEnd(cmd);
+// 	// cb();
+// // });
 
 	///////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////
