@@ -19,7 +19,7 @@ module.exports = function (generatorName) {
 	}
 	catch(e0) {
 		throw new Error(
-			'Generator, `'+ generatorName +'` failed to load' + 
+			'Generator, `'+ util.inspect(generatorName) +'` failed to load' + 
 			' ( @ ' + util.inspect(generatorPath) + ')'+'\n'+e0
 		);
 	}

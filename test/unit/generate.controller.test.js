@@ -5,7 +5,7 @@ var expect = require('./helpers/expectHandler');
 var assert = require('./helpers/fileAssertions');
 
 var Generator = require('root-require')('bin/generators/factory');
-Generator('controller');
+Generator = Generator('controller');
 
 
 describe('controller generator', function () {
