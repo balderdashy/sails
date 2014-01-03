@@ -4,10 +4,10 @@
 
 var _ = require('lodash'),
 	path = require('path'),
+	moduleRootPath = require('packpath').self(),
 	async = require('async'),
 	Sails = require('../../../lib/app'),
 	switcher = require('sails-util/switcher'),
-	cliutil = require('sails-util/cli'),
 	GenerateModuleHelper = require('../_helpers/module'),
 	GenerateFolderHelper = require('../_helpers/folder');
 	GenerateJSONHelper = require('../_helpers/jsonfile');
@@ -286,39 +286,18 @@ module.exports = {
 			 * If anyone wants to help w/ this, it'd be a great spot to jump in!
 			 */
 			copyAppDependencies: ['folders','sails', function (cb, async_data) {
-				
-				var sails = async_data.sails;
-
-				// Build dependency strings
-				// The dependencies we should copy over:
-				var dependenciesToCopy = [
-					'sails-disk@'+sails.dependencies['sails-disk'],
-					'ejs@'+sails.dependencies['ejs'],
-					'grunt@'+sails.dependencies['grunt']
-				];
 
 				// Copy dependencies (to avoid having to do a local npm install in new projects)
 				//
 				// TODO:
 				// long term-- remove this completely (see above)
-				// short term-- bundle these dependencies in the generator and manually copy them (this is how it worked in 0.9.x)
 				
-				// Create node_modules folder
-				var nodeModulesPath = path.resolve(appPath, 'node_modules');
-				GenerateFolderHelper({
-					pathToNew: nodeModulesPath
-				}, {
-					alreadyExists: function (path) {
-						return cb('A file or folder already exists at the destination path :: ' + path);
-					},
-					error: cb,
-					success: function andThen () {
-						cliutil.copySailsDependency('optimist', nodeModulesPath);
-						cliutil.copySailsDependency('sails-disk', nodeModulesPath);
-						cliutil.copySailsDependency('ejs', nodeModulesPath);
-						cb();
-					}
-				});
+				// Don't wait for them to finish
+				copyDependency('grunt', moduleRootPath, appPath);
+				copyDependency('sails-disk', moduleRootPath, appPath);
+				copyDependency('ejs', moduleRootPath, appPath);
+				cb();
+
 			}]
 
 		}, handlers);
@@ -333,6 +312,60 @@ module.exports = {
 
 
 
+/** 
+ * Copy a core Sails dependency to the top-level node_modules directory
+ * of the current application---- in a smart way
+ *
+ * TODO: extrapolate into a separate module
+ *
+ * @api private
+ */
+var fs = require('fs-extra');
+function copyDependency (moduleName, srcRoot, destRoot, cb) {
+	var srcModulePath = path.resolve(srcRoot, 'node_modules', moduleName);
+	var destModulePath = path.resolve(destRoot, 'node_modules',moduleName);
+
+	fs.copy(srcModulePath, destModulePath, function(err) {
+		if (err) return cb && cb(err);
+
+		// Parse the module's package.json
+		var packageJSONPath = path.resolve(srcRoot,'package.json');
+		var packageJSON;
+		try {
+			packageJSON = JSON.parse(fs.readFileSync(packageJSONPath, 'utf-8'));
+		} catch (e) {
+			// Ignore missing package.json
+			packageJSON = {
+				dependencies: {}
+			};
+		}
+
+		// Get actual dependencies in this module's node_modules directory
+		var dependencies;
+		try {
+			dependencies = fs.readdirSync(path.resolve(srcRoot, 'node_modules'));
+			// Remove hidden files
+			_.without(dependencies, function(val) {
+				return val.match(/\..+/);
+			});
+		} catch (e) {
+			// Assume empty dependencies in the event of an error
+			dependencies = {};
+		}
+
+		// If there are any missing dependencies which are available in the parent package.json
+		// copy them from that node_modules directory.
+		var missingModules = _.difference(_.keys(packageJSON.dependencies || {}), _.values(dependencies));
+		_.each(missingModules, function(missingModuleName) {
+			log.verbose('Resolving ' + moduleName + '\'s missing dependency (' + missingModuleName + ') using the version in Sails.');
+			copyDependency(missingModuleName, srcRoot, path.resolve(destRoot, 'node_modules', moduleName, 'node_modules'));
+		});
+
+		return cb && cb(err);
+	});
+}
+
+
 
 
 
@@ -341,6 +374,16 @@ module.exports = {
 // 
 // 
 // npm = require('enpeem'),
+// 
+// var sails = async_data.sails;
+				// Build dependency strings
+				// The dependencies we should copy over:
+				// var dependenciesToCopy = [
+				// 	'sails-disk@'+sails.dependencies['sails-disk'],
+				// 	'ejs@'+sails.dependencies['ejs'],
+				// 	'grunt@'+sails.dependencies['grunt']
+				// ];
+				// 
 // // `cd` into the newly created app and load up npm
 // process.chdir(appPath);
 
