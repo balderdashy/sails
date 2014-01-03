@@ -3,8 +3,9 @@
  */
 var expect = require('./helpers/expect');
 var assert = require('./helpers/assertions');
-var __bin = '../../../bin';
-var Generator = require(__bin+'/generators/factory')('controller');
+
+var Generator = require('root-require')('bin/generators/factory');
+Generator('controller');
 
 
 describe('controller generator', function () {

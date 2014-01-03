@@ -3,9 +3,9 @@
  */
 var expect = require('./helpers/expect');
 var assert = require('./helpers/assertions');
-var __bin = '../../../bin';
-var Generator = require(__bin+'/generators/factory')('model');
 
+var Generator = require('root-require')('bin/generators/factory');
+Generator('model');
 
 describe('model generator', function () {
 

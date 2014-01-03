@@ -4,9 +4,7 @@
 var expect = require('./helpers/expect');
 var assert = require('./helpers/assertions');
 
-var __bin = '../../../bin';
-var Generator = require(__bin+'/generators/_helpers/jsonfile');
-
+var Generator = require('root-require')('bin/generators/_helpers/jsonfile');
 
 
 describe('jsonfile generator', function () {
