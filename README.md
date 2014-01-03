@@ -1,27 +1,30 @@
-# Sails.js [![Build Status](https://travis-ci.org/balderdashy/sails.png?branch=master)](https://travis-ci.org/balderdashy/sails) [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)
+# Sails.js
+
+[![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)
+
 
 ![image_squidhome@2x.png](http://i.imgur.com/RIvu9.png)
 
-Sails.js makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development.  It's especially good for building realtime features like chat.
+> Sails.js makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development.  It's especially good for building realtime features like chat.
 
 
 ## Installation
 
-To install the latest stable release with the command-line tool:
+With [node](http://nodejs.org) installed:
 ```sh
-sudo npm -g install sails
+sudo npm install sails -g
 ```
 
 
-## Creating a New Sails Project
+## Your First Sails Project
 
-Create a new app
+Create a new app:
 ```sh
 # Create the app
 sails new testProject
 ```
 
-Lift Sails
+Start the server:
 ```sh
 # cd into the new folder
 cd testProject
@@ -30,6 +33,7 @@ cd testProject
 sails lift
 ```
 
+<!--
 The default port for Sails is 1337, so at this point, if you visit <a href="http://localhost:1337/">http://localhost:1337/</a>, you'll see the default home page.
 
 Now, let's get Sails to do cool stuff.
@@ -37,9 +41,7 @@ Now, let's get Sails to do cool stuff.
 
 ## Creating a RESTful JSON API
 
-Sails.js API blueprints are nothing like scaffolds. Generated forms just don't make sense for modern web apps (no one uses them!)
-Instead, Sails allows you to generate a powerful RESTful JSON API using the command line tool.
-This is exactly what you need for [AJAX web pages](http://irlnathan.github.io/sailscasts/blog/2013/10/10/building-a-sails-application-ep22-manipulating-the-dom-based-upon-changes-via-real-time-model-events/), [realtime apps](http://lanyrd.com/2013/nodepdx/video/), [SPAs](https://www.youtube.com/watch?v=Di50_eHqI7I), [Backbone apps](http://net.tutsplus.com/tutorials/javascript-ajax/working-with-data-in-sails-js/), [Angular apps](https://github.com/rdroro/tulipe-personal-todolist), [Cordova/PhoneGap apps](https://groups.google.com/forum/#!topic/sailsjs/o7HaB0rvSKU), [native mobile apps](https://github.com/aug2uag/SampleAppiOS), [refrigerators](https://www.youtube.com/watch?v=tisWSKMPIg8), [lamps](https://www.youtube.com/watch?v=OmcQZD_LIAE), etc.
+Sails allows you to generate a powerful RESTful JSON API using the command line tool.  This is exactly what you need for [AJAX web pages](http://irlnathan.github.io/sailscasts/blog/2013/10/10/building-a-sails-application-ep22-manipulating-the-dom-based-upon-changes-via-real-time-model-events/), [realtime apps](http://lanyrd.com/2013/nodepdx/video/), [SPAs](https://www.youtube.com/watch?v=Di50_eHqI7I), [Backbone apps](http://net.tutsplus.com/tutorials/javascript-ajax/working-with-data-in-sails-js/), [Angular apps](https://github.com/rdroro/tulipe-personal-todolist), [Cordova/PhoneGap apps](https://groups.google.com/forum/#!topic/sailsjs/o7HaB0rvSKU), [native mobile apps](https://github.com/aug2uag/SampleAppiOS), [refrigerators](https://www.youtube.com/watch?v=tisWSKMPIg8), [lamps](https://www.youtube.com/watch?v=OmcQZD_LIAE), etc.
 
 Without writing any code, Sails supports:
   + filtering (`where`)
@@ -53,6 +55,7 @@ Without writing any code, Sails supports:
 Best of all, all of these things work with both HTTP _and_ WebSockets, and work across any of the supported database adapters, including PostgreSQL, MongoDB, and MySQL.  Authentication and access control are implemented using [policies](https://github.com/balderdashy/sails-docs/blob/0.9/policies.md).  More on all that stuff here:
 
 [![Creating a REST API with Sails.js](http://i.imgur.com/drtMlWH.png)](//www.youtube.com/embed/xlOolpwwGQg?feature=player_embedded) [![Original Sails.js Screencast from March 2013](http://balderdashy.github.com/sails/images/screenshot.png)](http://youtu.be/GK-tFvpIR7c)
+
 
 ---------------------------------------------------------------------------------
 
@@ -231,61 +234,56 @@ If you have questions, ideas, or run into a problem, post it to our google group
 
 #### IRC
 We're [#sailsjs on freenode](http://webchat.freenode.net/)
+-->
+
+
+## Issue Submission
+Make sure you've read the [issue submission guidelines](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#opening-issues) before opening a new issue.
+
+Sails is composed of a number of different sub-projects, many of which have their own dedicated repository. If you are looking for a repo for a particular piece, you'll find it on the [organization](https://github.com/balderdashy) page.
+
+## Feature Requests
+Feature requests should be submitted to the [repo](https://github.com/balderdashy) it concerns. Submit to [balderdashy/sails](https://github.com/balderdashy/sails) if you're unsure.
+
+## Contribute
+See the [contributing docs](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md).
+
+
+## Support
+Need help or have a question?
+
+- [Stackoverflow](http://stackoverflow.com/questions/tagged/sails.js)
+- [#sailsjs](http://webchat.freenode.net/) on Freenode (IRC channel)
+- [Professional/Enterprise Options](https://github.com/balderdashy/sails/wiki#are-there-professional-support-options)
+
+_Please don't use the issue tracker for support/questions._
+
+## Links
+- [Website](http://sailsjs.org/)
+- [Official Documentation](http://sailsjs.org/#!documentation)
+- [Changelog](https://github.com/balderdashy/sails-docs/blob/0.9/changelog.md)
+- [Roadmap](https://github.com/balderdashy/sails-wiki/blob/0.9/roadmap.md)
+- [Google group](https://groups.google.com/forum/?fromgroups#!forum/sailsjs)
+- [Twitter](https://twitter.com/sailsjs)
+- [SailsCasts](http://irlnathan.github.io/sailscasts/)
 
 
 
+## Team
+Sails is actively built and maintained by [Balderdash](http://balderdash.co) ([@balderdashy](http://twitter.com/balderdashy)), a realtime web & mobile studio, with the help of these [contributors](https://github.com/balderdashy/sails/graphs/contributors):
+
+[![Mike McNeil](http://gravatar.com/avatar/199046437b76e6ca73e00b4cc182a1c5?s=144)](http://michaelmcneil.com) | [![Cody Stoltman](https://1.gravatar.com/avatar/368567acca0c5dfb9a4ff512c5c0c3fa?s=144)](http://particlebanana.com) |  [![Scott Gress](https://0.gravatar.com/avatar/b74e07aa543552709bf546ca279c9c67?s=144)](http://www.pigandcow.com/) | [![Greg Thornton](https://2.gravatar.com/avatar/b7c50edb558d5289331440f45ff600b0?s=144)](http://xdissent.com) | [![Zoli Kahan](http://gravatar.com/avatar/55dbeca986f875e1d1cb4d51e2fc42e4?s=144)](http://www.zolmeister.com/)
+:---:|:---:|:---:|:---:|:---:
+[Mike McNeil](http://michaelmcneil.com) | [Cody Stoltman](http://particlebanana.com) | [Scott Gress](https://github.com/sgress454) | [Greg Thornton](https://github.com/xdissent) | [Zoli Kahan](https://github.com/Zolmeister)
+
+Balderdash designs/builds scalable Node.js apps for startups and enterprise customers.  After building a few apps and taking them into production, we realized that the Node.js development landscape was very much still the Wild West.  Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  [I](http://twitter.com/mikermcneil) hope it saves you some time :)
 
 
-## Version, Dependencies and Compatibility
+## License
 
-#### Latest stable release
-[![NPM](https://nodei.co/npm/sails.png?downloads=true&stars=true)](https://nodei.co/npm/sails/)
+[MIT License](http://sails.mit-license.org/)  Copyright © 2012-2014 Mike McNeil
 
+> Sails is built around so many great open-source technologies that it would never have crossed our minds to keep it proprietary.  We owe huge gratitude and props to TJ Holowaychuk ([@visionmedia](https://github.com/visionmedia)) and Guillermo Rauch ([@guille](https://github.com/guille)) for the work they did, as well as the stewards of all the other open-source modules we use.  Sails could never have been developed without your tremendous contributions to the node community.
 
-#### Dependencies
-Sails is tested with [node](http://nodejs.org/) versions 0.8.22 and 0.10.x, and built on the rock-solid foundations of [Express](http://expressjs.com/) and [Socket.io](http://socket.io/).
-
-[![NPM](https://nodei.co/npm/express.png?compact=true)](https://nodei.co/npm/express/)  [![NPM](https://nodei.co/npm/socket.io.png?compact=true)](https://nodei.co/npm/socket.io/)
-<!-- <img src="http://nodejs.org/images/logos/nodejs.png"/> -->
-
-#### What's Next?
-+ [Roadmap](https://github.com/balderdashy/sails-wiki/blob/0.9/roadmap.md)
-
-#### What's Changed?
-+ [Changelog](https://github.com/balderdashy/sails-wiki/blob/0.9/changelog.md)
-
-<br/>
-<br/>
-
-
-<!-- ![icon_circleheart@2x.png](http://i.imgur.com/liHPV.png) -->
-
-## Who Built This?
-
-The Sails framework was developed by Mike McNeil ([@mikermcneil](http://twitter.com/mikermcneil)) and is maintained by [Balderdash](http://balderdash.co) ([@balderdashy](http://twitter.com/balderdashy)), a realtime web & mobile studio I started with Heather White (@hdesignsit) in Austin, TX a few years ago.  We design/build scalable Node.js apps for startups and enterprise customers.
-
-After building a few realtime JavaScript apps and taking them into production, we realized that the Node.js development landscape was very much still the Wild West.  Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  I hope it saves you some time :)
-
-
-
-
-<!-- ![icon_circlelightbulb@2x.png](http://i.imgur.com/eOFXn.png)  -->
-
-License
---
-
-Sails is built around so many great open-source technologies that it would never have crossed our minds to keep it proprietary.  We owe huge gratitude and props to TJ Holowaychuk ([@visionmedia](https://github.com/visionmedia)) and Guillermo Rauch ([@guille](https://github.com/guille)) for the work they did, as well as the stewards of all the other open-source modules we use.  Sails could never have been developed without your tremendous contributions to the node community.
-
-
-The MIT License (MIT)
---
-
-Copyright © 2012-2013 Mike McNeil
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/8acf2fc2ca0aca8a3018e355ad776ed7 "githalytics.com")](http://githalytics.com/balderdashy/sails)
