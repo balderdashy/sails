@@ -48,8 +48,8 @@ module.exports = {
 
 	// Invalid user module errors
 	invalidCustomResponse: function(responseIdentity) {
-		log.error(err);
-		log.error('`res.' + responseIdentity + '` has special meaning in Connect/Express/Sails and cannot be overridden.');
+		log.error('Cannot define custom response `'+responseIdentity+'`.');
+		log.error('`res.' + responseIdentity + '` has special meaning in Connect/Express/Sails.');
 		log.error('Please remove the `'+responseIdentity+'` file from the `responses` directory.');
 		process.exit(1);
 	},
