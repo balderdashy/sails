@@ -1,8 +1,8 @@
 /**
  * Module dependencies
  */
-var expect = require('./helpers/expect');
-var assert = require('./helpers/assertions');
+var expect = require('./helpers/expectHandler');
+var assert = require('./helpers/fileAssertions');
 
 var GenerateModuleHelper = require('root-require')('bin/generators/_helpers/module');
 

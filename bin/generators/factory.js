@@ -2,6 +2,7 @@
  * Module dependencies
  */
 var _ = require('lodash');
+var util = require('util');
 var GenerateModuleHelper = require('../generators/_helpers/module');
 
 
@@ -19,7 +20,7 @@ module.exports = function (generatorName) {
 	catch(e0) {
 		throw new Error(
 			'Generator, `'+ generatorName +'` failed to load' + 
-			' ( @ ' + generatorPath + ')'+'\n'+e0
+			' ( @ ' + util.inspect(generatorPath) + ')'+'\n'+e0
 		);
 	}
 

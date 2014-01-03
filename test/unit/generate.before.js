@@ -2,10 +2,10 @@
  * Dependencies
  */
 var async = require('async');
-// var TemplateManifest = require('./helpers/TemplateManifest');
-var rootRequire = require('root-require');
 var FileHeap = require('./helpers/FileHeap');
-var GenerateJSONFileHelper = rootRequire('bin/generators/_helpers/jsonfile');
+// var TemplateManifest = require('./helpers/TemplateManifest');
+
+var GenerateJSONFileHelper = require('root-require')('bin/generators/_helpers/jsonfile');
 
 
 before(function (cb) {

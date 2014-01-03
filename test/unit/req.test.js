@@ -5,6 +5,9 @@ var assert = require('assert');
 var should = require('should');		// https://github.com/visionmedia/should.js/
 
 
+var BaseRequest = require('root-require')('lib/router/req');
+
+
 /**
  * This mocked implementation of `req` forms the basis for
  * Sails' transport-agnostic support of Connect/Express
@@ -17,7 +20,7 @@ describe('Base Request (`req`)', function (){
 
 	// Mock the request object.
 	before(function (){
-		req = require('../../../lib/router/req');
+		req = BaseRequest;
 		req.should.be.an.Object;
 		this.req = req;
 	});
