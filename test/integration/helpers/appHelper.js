@@ -1,3 +1,13 @@
+//
+//
+// TODO
+// =================
+// Merge with appHelper.js!
+//
+//
+
+
+
 var fs = require('fs-extra');
 var wrench = require('wrench');
 var exec = require('child_process').exec;

@@ -2,11 +2,11 @@
  * Module dependencies
  */
 var supertest = require('supertest');
-var $Sails = require('../../_helpers/sails');
-var $Router = require('../../_helpers/router');
+var $Sails = require('../helpers/sails');
+var $Router = require('../helpers/router');
 
 // Middleware fixtures
-var RESPOND = require('../../_fixtures/middleware');
+var RESPOND = require('../fixtures/middleware');
 
 
 describe('Router.bind', function (){

@@ -1,7 +1,7 @@
 /**
  * Module dependencies
  */
-var Sails = require('../../lib/app');
+var Sails = require('../../../lib/app');
 var util = require('sails-util');
 
 
