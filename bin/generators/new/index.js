@@ -51,7 +51,7 @@ module.exports = {
 				'api/adapters',
 				'api/blueprints',
 				'api/controllers',
-				'api/errors',
+				'api/responses',
 				'api/models',
 				'api/policies',
 				'api/services',
@@ -68,11 +68,11 @@ module.exports = {
 
 		var templateFiles = [
 
-			// api/errors/*
-			'api/errors/serverError.js',
-			'api/errors/badRequest.js',
-			'api/errors/notFound.js',
-			'api/errors/forbidden.js',
+			// api/responses/*
+			'api/responses/serverError.js',
+			'api/responses/badRequest.js',
+			'api/responses/notFound.js',
+			'api/responses/forbidden.js',
 
 			// api/blueprints/*
 			'api/blueprints/find.js',
