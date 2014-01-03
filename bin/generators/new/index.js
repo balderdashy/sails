@@ -4,7 +4,7 @@
 
 var _ = require('lodash'),
 	path = require('path'),
-	moduleRootPath = require('root-require').packpath.self(),
+	moduleRootPath = require('root-require').packpath.parent(),
 	async = require('async'),
 	Sails = require('root-require')('lib/app'),
 	switcher = require('sails-util/switcher'),
@@ -293,9 +293,10 @@ module.exports = {
 				// long term-- remove this completely (see above)
 				
 				// Don't wait for them to finish
-				copyDependency('grunt', moduleRootPath, appPath);
-				copyDependency('sails-disk', moduleRootPath, appPath);
-				copyDependency('ejs', moduleRootPath, appPath);
+				var logAnyErrors = function (err){ if (err) console.error(err); };
+				copyDependency('grunt', moduleRootPath, appPath, logAnyErrors);
+				copyDependency('sails-disk', moduleRootPath, appPath, logAnyErrors);
+				copyDependency('ejs', moduleRootPath, appPath, logAnyErrors);
 				cb();
 
 			}]
@@ -324,12 +325,14 @@ var fs = require('fs-extra');
 function copyDependency (moduleName, srcRoot, destRoot, cb) {
 	var srcModulePath = path.resolve(srcRoot, 'node_modules', moduleName);
 	var destModulePath = path.resolve(destRoot, 'node_modules',moduleName);
+	// console.log('src:',srcModulePath);
+	// console.log('dest:',destModulePath);
 
 	fs.copy(srcModulePath, destModulePath, function(err) {
 		if (err) return cb && cb(err);
 
 		// Parse the module's package.json
-		var packageJSONPath = path.resolve(srcRoot,'package.json');
+		var packageJSONPath = path.resolve(srcRoot, 'node_modules', moduleName, 'package.json');
 		var packageJSON;
 		try {
 			packageJSON = JSON.parse(fs.readFileSync(packageJSONPath, 'utf-8'));
@@ -343,7 +346,7 @@ function copyDependency (moduleName, srcRoot, destRoot, cb) {
 		// Get actual dependencies in this module's node_modules directory
 		var dependencies;
 		try {
-			dependencies = fs.readdirSync(path.resolve(srcRoot, 'node_modules'));
+			dependencies = fs.readdirSync(path.resolve(srcRoot, 'node_modules', moduleName, 'node_modules'));
 			// Remove hidden files
 			_.without(dependencies, function(val) {
 				return val.match(/\..+/);
@@ -356,9 +359,12 @@ function copyDependency (moduleName, srcRoot, destRoot, cb) {
 		// If there are any missing dependencies which are available in the parent package.json
 		// copy them from that node_modules directory.
 		var missingModules = _.difference(_.keys(packageJSON.dependencies || {}), _.values(dependencies));
+		// console.log('stated deps of ' + moduleName + ' ::' , packageJSON.dependencies);
+		// console.log('actual deps of ' + moduleName + ' ::' , dependencies);
+		// console.log('missing from ' + moduleName + ' ::' , missingModules);
 		_.each(missingModules, function(missingModuleName) {
-			log.verbose('Resolving ' + moduleName + '\'s missing dependency (' + missingModuleName + ') using the version in Sails.');
-			copyDependency(missingModuleName, srcRoot, path.resolve(destRoot, 'node_modules', moduleName, 'node_modules'));
+			// console.log('Resolving ' + moduleName + '\'s missing dependency (' + missingModuleName + ') using the version in Sails.');
+			copyDependency(missingModuleName, srcRoot, path.resolve(destRoot, 'node_modules', moduleName));
 		});
 
 		return cb && cb(err);
