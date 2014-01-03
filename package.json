@@ -52,7 +52,6 @@
     "fs-extra": "0.8.1",
     "glob": "3.1.14",
     "root-require": "~0.1.0",
-    "packpath": "~0.1.0",
     "grunt-cli": "0.1.9",
     "sails-generate-gruntfile": "0.10.1",
     "grunt-contrib-copy": "0.4.1",

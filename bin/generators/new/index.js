@@ -4,7 +4,7 @@
 
 var _ = require('lodash'),
 	path = require('path'),
-	moduleRootPath = require('packpath').self(),
+	moduleRootPath = require('root-require/node_modules/packpath').self(),
 	async = require('async'),
 	Sails = require('root-require')('../../../lib/app'),
 	switcher = require('sails-util/switcher'),
