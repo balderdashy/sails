@@ -77,7 +77,7 @@
     "expect.js": "~0.2.0",
     "should": "~2.1.1",
     "supertest": "~0.8.2",
-    "root-require": "0.0.3"
+    "root-require": "~0.1.0"
   },
   "optionalDependencies": {
     "coffee-script": "1.6.2"
