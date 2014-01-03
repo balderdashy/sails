@@ -271,9 +271,20 @@ module.exports = {
 				}, cb);
 			}],
 
-
-			// TODO: Copy required app-level dependencies
-			// (to avoid having to do a local npm install in new projects)
+			/**
+			 * Copy required app-level dependencies
+			 * (to avoid having to do a local npm install in new projects)
+			 * 
+			 * NOTE:
+			 * This function should eventually be deprecated, IMO.
+			 * 
+			 * Only reason the need to copy these dependencies has not been removed is that it's complicated:
+			 * --> For `ejs` and `sails-disk`, it's because the normal pattern of installing adapters/view engines w/ Sails
+			 * is to `npm install` them in the end-user app.
+			 * --> For `grunt`, it's because I couldn't figure it out the first time I tried.
+			 *
+			 * If anyone wants to help w/ this, it'd be a great spot to jump in!
+			 */
 			copyAppDependencies: ['folders','sails', function (cb, async_data) {
 				
 				var sails = async_data.sails;
@@ -312,11 +323,6 @@ module.exports = {
 
 
 };
-
-
-
-
-
 
 
 
