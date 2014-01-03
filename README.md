@@ -243,7 +243,7 @@ Make sure you've read the [issue submission guidelines](https://github.com/balde
 Sails is composed of a number of different sub-projects, many of which have their own dedicated repository. If you are looking for a repo for a particular piece, you'll find it on the [organization](https://github.com/balderdashy) page.
 
 ## Feature Requests
-Feature requests should be submitted to the [repo](https://github.com/balderdashy) it concerns. Submit to [balderdashy/sails](https://github.com/balderdashy/sails) if you're unsure.
+Before submitting a new feature request, please check out the [Trello board](https://trello.com/b/cGzNVE0b/sails-js-feature-requests) and see if it's already there.  You can upvote and comment.  New feature requests may be submitted by [sending an email](sailsfeaturerequests+wlhnmobeqngolth6lh6z@boards.trello.com) with a short, < 10-word summary of the feature in the subject line.  It might take a few minutes to show up.
 
 ## Contribute
 See the [contributing docs](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md).
