@@ -2,11 +2,13 @@
 
 [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)
 
-> Sails.js makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development.  It's especially good for building realtime features like chat.
+> Sails.js makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development.
+>
+> It's especially good for building realtime features like chat.
 
 ![image_squidhome@2x.png](http://i.imgur.com/RIvu9.png)
 
-### [Website](http://sailsjs.org/) | [Getting Started](http://sailsjs.org/#!getStarted) | [Documentation](http://sailsjs.org/#!documentation) | [Submit Issue](https://github.com/balderdashy/sails/issues)
+#### [Website](http://sailsjs.org/) | [Getting Started](http://sailsjs.org/#!getStarted) | [Documentation](http://sailsjs.org/#!documentation) | [Submit Issue](https://github.com/balderdashy/sails/search?q=&type=Issues)
 
 ## Installation
 
