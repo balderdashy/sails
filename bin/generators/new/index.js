@@ -4,9 +4,9 @@
 
 var _ = require('lodash'),
 	path = require('path'),
-	moduleRootPath = require('root-require/node_modules/packpath').self(),
+	moduleRootPath = require('root-require').packpath.self(),
 	async = require('async'),
-	Sails = require('root-require')('../../../lib/app'),
+	Sails = require('root-require')('lib/app'),
 	switcher = require('sails-util/switcher'),
 	GenerateModuleHelper = require('../_helpers/module'),
 	GenerateFolderHelper = require('../_helpers/folder');
