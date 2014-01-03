@@ -41,7 +41,6 @@
     "lodash": "2.4.1",
     "underscore.string": "2.3.0",
     "include-all": "0.1.2",
-    "inflection": "1.2.5",
     "connect-flash": "0.1.1",
     "pluralize": "0.0.5",
     "json-stringify-safe": "5.0.0",
