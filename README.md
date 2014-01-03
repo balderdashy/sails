@@ -2,9 +2,7 @@
 
 [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)
 
-> Sails.js makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development.
->
-> It's especially good for building realtime features like chat.
+> Sails.js makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development. It's especially good for building realtime features like chat.
 
 #### [Website](http://sailsjs.org/) | [Getting Started](http://sailsjs.org/#!getStarted) | [Documentation](http://sailsjs.org/#!documentation) | [Submit Issue](https://github.com/balderdashy/sails/search?q=&type=Issues)
 
@@ -254,6 +252,7 @@ See the [contributing docs](https://github.com/balderdashy/sails/blob/master/CON
 ## Support
 Need help or have a question?
 
+- [Tutorials](http://irlnathan.github.io/sailscasts/)
 - [Stackoverflow](http://stackoverflow.com/questions/tagged/sails.js)
 - [#sailsjs](http://webchat.freenode.net/) on Freenode (IRC channel)
 - [Professional/Enterprise Options](https://github.com/balderdashy/sails/wiki#are-there-professional-support-options)
@@ -265,7 +264,7 @@ _Please don't use the issue tracker for support/questions._
 - [Official Documentation](http://sailsjs.org/#!documentation)
 - [Changelog](https://github.com/balderdashy/sails-docs/blob/0.9/changelog.md)
 - [Roadmap](https://github.com/balderdashy/sails-wiki/blob/0.9/roadmap.md)
-- [Google group](https://groups.google.com/forum/?fromgroups#!forum/sailsjs)
+- [Google Group](https://groups.google.com/forum/?fromgroups#!forum/sailsjs)
 - [Twitter](https://twitter.com/sailsjs)
 - [SailsCasts](http://irlnathan.github.io/sailscasts/)
 
