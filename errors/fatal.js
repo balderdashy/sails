@@ -14,7 +14,7 @@ var log = new Logger(cliutil.getCLIConfig(argv).log);
  */
 module.exports = {
 
-	
+	// Lift-time and load-time errors
 	failedToLoadSails: function(err) {
 		log.error(err);
 		log.error('Could not load Sails.');
@@ -43,6 +43,21 @@ module.exports = {
 		log.error('rm -rf ' + pathTo_localSails + ' && npm install sails@' + app.dependencies.sails);
 		process.exit(1);
 	},
+
+
+
+	// Invalid user module errors
+	invalidCustomResponse: function(responseIdentity) {
+		log.error(err);
+		log.error('`res.' + responseIdentity + '` has special meaning in Connect/Express/Sails and cannot be overridden.');
+		log.error('Please remove the `'+responseIdentity+'` file from the `responses` directory.');
+		process.exit(1);
+	},
+
+
+
+
+
 
 	__GruntAborted__: function ( consoleMsg, stackTrace ) {
 		log.error(
