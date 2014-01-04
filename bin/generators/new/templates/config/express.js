@@ -7,23 +7,26 @@
 module.exports.express = {
 
 
-	// Configures the middleware function used for parsing the HTTP request body
-	// Defaults to the Formidable-based version built-in to Express/Connect
+	// The middleware function used for parsing the HTTP request body.
+	// (this most commonly comes up in the context of file uploads)
 	//
-	// To enable streaming file uploads (to disk or somewhere else)
-	// you'll want to set this option to `false` to disable the body parser.
-	//
-	// Defaults to `express.bodyParser` with a slight distinction:
-	// If `bodyParser` doesn't understand the HTTP body request data, 
-	// Sails runs it again with an artificial header, forcing it to try
-	// and parse the request body as JSON.
-	// (this allows JSON to be used as your request data without the need to 
-	// specify a 'Content-type: application/json' header)
+	// Defaults to a slightly modified version of `express.bodyParser`, i.e.:
+	// If the Connect `bodyParser` doesn't understand the HTTP body request 
+	// data, Sails runs it again with an artificial header, forcing it to try
+	// and parse the request body as JSON.  (this allows JSON to be used as your
+	// request data without the need to specify a 'Content-type: application/json'
+	// header)
 	// 
-	// If you want to change any of that, you can complete override 
-	// this behavior like so:
+	// If you want to change any of that, you can override the bodyParser with
+	// your own custom middleware:
+	// bodyParser: function customBodyParser (options) { ... },
 	// 
-	// bodyParser: function customBodyParser (options) { ... }
+	// Or you can always revert back to the vanilla parser built-in to Connect/Express:
+	// bodyParser: require('express').bodyParser,
+	// 
+	// Or to disable the body parser completely:
+	// bodyParser: false,
+	// (useful for streaming file uploads-- to disk or S3 or wherever you like)
 	//
 	// WARNING
 	// ======================================================================
@@ -57,7 +60,7 @@ module.exports.express = {
 	//			(or false to disable)
 	//
 	// This option allows artificial query params to be passed to trick 
-	// Express into thinking a different HTTP verb was used.
+	// Sails into thinking a different HTTP verb was used.
 	// Useful when supporting an API for user-agents which don't allow 
 	// PUT or DELETE requests
 	//
@@ -74,10 +77,10 @@ module.exports.express = {
 /**
  * HTTP Flat-File Cache
  * 
- * These settings are for Express' static middleware- stuff like your
- * images, css, etc. 
+ * These settings are for Express' static middleware- the part that serves
+ * flat-files like images, css, client-side templates, favicons, etc.
  *
- * In Sails, this is probably your app's `assets directory.
+ * In Sails, this affects the files in your app's `assets` directory.
  * By default, Sails uses your project's Gruntfile to compile/copy those 
  * assets to `.tmp/public`, where they're accessible to Express.
  *
