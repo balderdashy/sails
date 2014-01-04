@@ -139,10 +139,12 @@ module.exports = {
  */
 function _terminateProcess (code) {
 	if ( process.env.NODE_ENV === 'test' ) {
-		return process.emit('_sails', {
-			type: 'terminated',
+		var Signal = new Error({
+			type: 'terminate',
 			code: code
 		});
+		process.emit('_sails', Signal);
+		throw Signal;
 	}
 	return process.exit(code);
 }
