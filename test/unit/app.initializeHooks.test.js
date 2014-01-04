@@ -34,7 +34,7 @@ describe('app.initializeHooks()', function() {
 		it('should expose hooks on the `sails` global', function () {
 			this.sails.hooks.should.be.an.Object;
 		});
-		it('should expose at least the expected hooks', function () {
+		it('should expose at least the expected core hooks', function () {
 			this.sails.hooks.should.have
 			.properties(constants.EXPECTED_DEFAULT_HOOKS);
 		});
@@ -42,9 +42,18 @@ describe('app.initializeHooks()', function() {
 
 
 
-	describe('configured with a custom hook', function () {
+	describe('configured with a custom hook called `someCustomHook`', function () {
 		$Sails.load({
-			hooks: { myCustomHook: customHooks.NOOP }
+			hooks: { someCustomHook: customHooks.NOOP }
+		});
+
+		it('should expose `someCustomHook`', function () {
+			this.sails.hooks.should.have
+			.property('someCustomHook');
+		});
+		it('should also expose the expected core hooks', function () {
+			this.sails.hooks.should.have
+			.properties(constants.EXPECTED_DEFAULT_HOOKS);
 		});
 	});
 
