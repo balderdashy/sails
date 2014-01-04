@@ -19,19 +19,19 @@ module.exports = {
 		log.error(err);
 		log.error('Could not load Sails.');
 		log.error('Are you using the latest stable version?');
-		process.exit(1);
+		_terminateProcess(1);
 	},
 
 	noPackageJSON: function() {
 		log.error('Cannot read package.json in the current directory (' + process.cwd() + ')');
 		log.error('Are you sure this is a Sails app?');
-		process.exit(1);
+		_terminateProcess(1);
 	},
 
 	notSailsApp: function() {
 		log.error('The package.json in the current directory does not list Sails as a dependency...');
 		log.error('Are you sure `' + process.cwd() + '` is a Sails app?');
-		process.exit(1);
+		_terminateProcess(1);
 	},
 
 	badLocalDependency: function(pathTo_localSails, requiredVersion) {
@@ -41,7 +41,7 @@ module.exports = {
 		);
 		log.error('You may consider running:');
 		log.error('rm -rf ' + pathTo_localSails + ' && npm install sails@' + app.dependencies.sails);
-		process.exit(1);
+		_terminateProcess(1);
 	},
 
 
@@ -51,7 +51,7 @@ module.exports = {
 		log.error('Cannot define custom response `'+responseIdentity+'`.');
 		log.error('`res.' + responseIdentity + '` has special meaning in Connect/Express/Sails.');
 		log.error('Please remove the `'+responseIdentity+'` file from the `responses` directory.');
-		process.exit(1);
+		_terminateProcess(1);
 	},
 
 
@@ -76,7 +76,7 @@ module.exports = {
 		log.error('sudo chown -R',uid,relativePublicPath);
 		console.log();
 		
-		return process.exit(1);
+		return _terminateProcess(1);
 	},
 
 
@@ -86,13 +86,13 @@ module.exports = {
 		log.error('Unknown policy, "' + policy + '", referenced in `' + source + '`.');
 		log.error('Are you sure that policy exists?');
 		log.error('It would be located at: `' + pathToPolicies + '/' + policy + '.js`');
-		return process.exit(1);
+		return _terminateProcess(1);
 	},
 
 	__InvalidConnection__: function(connection, sourceModelId) {
 		log.error('In model (' + sourceModelId + '), invalid connection ::', connection);
 		log.error('Must contain an `adapter` key referencing the adapter to use.');
-		return process.exit(1);
+		return _terminateProcess(1);
 	},
 
 	__UnknownConnection__: function(connectionId, sourceModelId) {
@@ -105,7 +105,7 @@ module.exports = {
 		// }
 		// log.error('Otherwise, if you\'re trying to use an adapter named `' + connectionId + '`, please run ' +
 		// 	'`npm install ' + probableAdapterModuleName + '@' + sails.majorVersion + '.' + sails.minorVersion + '.x`');
-		return process.exit(1);
+		return _terminateProcess(1);
 	},
 
 	__UnknownAdapter__: function(adapterId, sourceModelId, sailsMajorV, sailsMinorV) {
@@ -119,7 +119,7 @@ module.exports = {
 		}
 		log.error('Otherwise, if you\'re trying to use an adapter named `' + adapterId + '`, please run ' +
 			'`npm install ' + probableAdapterModuleName + '@' + sailsMajorV + '.' + sailsMinorV + '.x`');
-		return process.exit(1);
+		return _terminateProcess(1);
 	},
 
 	__InvalidAdapter__: function(attemptedModuleName, supplementalErrMsg) {
@@ -127,6 +127,22 @@ module.exports = {
 		log.error('Is this a valid Sails/Waterline adapter?  The following error was encountered ::');
 		log.error(supplementalErrMsg);
 
-		return process.exit(1);
+		return _terminateProcess(1);
 	}
 };
+
+
+
+/**
+ * Terminate the process as elegantly as possible.
+ * If process.env is 'test', emit a mock signal instead.
+ */
+function _terminateProcess (code) {
+	if ( process.env.NODE_ENV === 'test' ) {
+		return process.emit('_sails', {
+			type: 'terminated',
+			code: code
+		});
+	}
+	return process.exit(code);
+}
