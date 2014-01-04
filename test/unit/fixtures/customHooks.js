@@ -4,5 +4,17 @@
  * @type {Object}
  */
 module.exports = {
-	NOOP: function (sails) { return {}; }
+
+	// Extremely simple hook that doesn't do anything.
+	NOOP: function (sails) { 
+		return { identity: 'noop' };
+	},
+	
+	// Depends on 'noop' hook
+	NOOP2: function (sails) {
+		return {
+			// TODO: indicate dependency on 'noop' hook
+			identity: 'noop2'
+		};
+	}
 };

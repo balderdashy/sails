@@ -42,14 +42,14 @@ describe('app.initializeHooks()', function() {
 
 
 
-	describe('configured with a custom hook called `someCustomHook`', function () {
+	describe('configured with a custom hook called `noop`', function () {
 		$Sails.load({
-			hooks: { someCustomHook: customHooks.NOOP }
+			hooks: { noop: customHooks.NOOP }
 		});
 
-		it('should expose `someCustomHook`', function () {
+		it('should expose `noop`', function () {
 			this.sails.hooks.should.have
-			.property('someCustomHook');
+			.property('noop');
 		});
 		it('should also expose the expected core hooks', function () {
 			this.sails.hooks.should.have
@@ -59,14 +59,26 @@ describe('app.initializeHooks()', function() {
 
 
 
-	describe('configured with a missing hook dependency', function () {
-		// $Sails.load();
+	describe('configured with a hook (`noop2`), but not its dependency (`noop`)', function () {
+		$Sails.load({
+			hooks: {
+				noop2: customHooks.NOOP2
+			}
+		});
+
+		it('should throw a fatal error');
 	});
 
 
 
 	describe('configured with a circular hook dependency', function () {
+		
+		// NOTE #1: not currently implemented
+		// NOTE #2: not currently possible
+		// (should be possible after merging @ragulka's PR)
 		// $Sails.load();
+
+		it('should throw a fatal error');
 	});
 
 
