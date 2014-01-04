@@ -12,9 +12,10 @@ These tests are related to benchmarking the performance of different parts of Sa
 + Write a benchmark test that isolates that functionality. (the hard part)
 + Then see how many miliseconds it takes. (easy)
 
-> Advice from [@felixge](https://github.com/felixge):
+> **Advice from Felix Geisendörfer ([@felixge](https://github.com/felixge))**
+>
 >	+ First of all, keep in mind our problems are definitely not the same as Felix's, and we must remember to follow [his own advice](https://github.com/felixge/faster-than-c#taking-performance-advice-from-strangers): `[What]...does not work is taking performance advise (euro-sic) from strangers...`  That said, he's got some great ideas.
 >	+ [Benchmark-Driven Optimization](https://github.com/felixge/faster-than-c#benchmark-driven-development)
->	+ I also highly recommend this [talk on optimization and benchmarking](http://2012.jsconf.eu/speaker/2012/09/05/faster-than-c-parsing-node-js-streams-.html) by Felix Geisendörfer ([@felixge](https://github.com/felixge)) ([slides](https://github.com/felixge/faster-than-c)).
+>	+ I also highly recommend this [talk on optimization and benchmarking](http://2012.jsconf.eu/speaker/2012/09/05/faster-than-c-parsing-node-js-streams-.html) ([slides](https://github.com/felixge/faster-than-c)).
 
 
