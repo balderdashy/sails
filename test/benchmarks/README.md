@@ -3,8 +3,10 @@
 
 These tests are related to benchmarking the performance of different parts of Sails.  For now, our benchmark tests should be "integration" or "acceptance" tests.  By that, I mean they should measure a specific "user action" (e.g. running `sails new`, running `sails lift`, sending an HTTP request to a dummy endpoint, connecting a Socket.io client, etc.).
 
-> Why test features first, and not functions?
-> Those tests are the "lowest-hanging fruit", if you will.
+> **Why test features first, and not each individual methods?**
+>
+> Feature-wide benchmarks are the "lowest-hanging fruit", if you will.  We'll spend much less development time, and still get valuable benchmarks that will give us ongoing data on Sails performance.  This way, we'll know where to start writing lower-level benchmarks to identify choke-points.
+
 
 ###### Writing good benchmarks
 + Pick what you want to test.
