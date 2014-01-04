@@ -100,7 +100,6 @@ module.exports = {
 			'config/i18n.js',
 			'config/globals.js',
 			'config/express.js',
-			'config/session.js',
 			'config/sockets.js',
 			'config/adapters.js',
 			'config/bootstrap.js',
