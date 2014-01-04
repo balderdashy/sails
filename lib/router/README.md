@@ -2,12 +2,25 @@
 
 ## What does it do?
 
-The core router in Sails is the main, _but not ONLY_ player responsible for routing requests.
+The core Router in Sails is the main (_but not ONLY_) player responsible for routing requests.
 It is not involved with HTTP, WebSockets, or other internet protocols directly-- instead, it emits
 events on the `sails` object (a Node EventEmitter) when a route should be bound, allowing flexibility
-in hooks' implementation.  For instance, at the time of this writing, the `http` hook listens for `bind` events
-and takes over for the core Router directly.  On the other hand, the `sockets` hook defers to the core router,
-emitting a `request` event whenever it receives and interprets a new, appropriately-formatted, socket message
+in hooks' implementations.
+
+The core Router includes a latent Express instance which is used only for internal routing of requests,
+and is not actually used by any application code in userland-- that's the job of hooks.  It _may_, however,
+be used by app-level unit tests, in order to run test suites without having to lift a server and occupy a network port.
+
+
+## Which hooks attach servers / use the Router?
+
+At the time of this writing, the `http` hook listens for `bind` events emitted from the core Router
+and binds them directly to an external instance of Express.
+
+On the other hand, the `sockets` hook defers to the core router, emitting a `request` event whenever
+it receives and interprets a new, appropriately-formatted, socket message.  The core Router intercepts this
+and routes the request using its known middleware bindings. (core middleware, blueprint aka "shadow" routes,
+and statically configured routes from the `routes.js` config file in userland)
 
 
 ## FAQ
