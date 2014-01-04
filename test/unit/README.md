@@ -3,7 +3,7 @@
 Unit tests shouldn't lift the server (i.e. bind an HTTP server or WebSocket server to a port). Instead, they should bootstrap the minimal set of necessary components to test a particular method or group of methods.  The goal is to identify breaking changes and isolate _exactly what broke_.  This makes would-be issues easier to spot, and real bugs easier to track down.
 
 
-## Areas to Avoid
+## What _Not_ To Test
 Since unit tests are more implementation-specific, we shouldn't unit test parts of Sails which are currently in flux or likely to change.
 
 ## How Can I Help?
