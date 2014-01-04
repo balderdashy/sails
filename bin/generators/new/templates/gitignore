@@ -49,18 +49,25 @@ config/local.js
 # Dependencies
 #
 # When releasing a production app, you may 
-# consider including your node_modules directory
-# in your git repo, but during development, its
-# best to exclude it, since different developers
-# may be working on different kernels, where
-# dependencies would need to be recompiled anyway.
+# consider including your node_modules and
+# bower_components directory in your git repo,
+# but during development, its best to exclude it,
+# since different developers may be working on
+# different kernels, where dependencies would
+# need to be recompiled anyway.
 #
-# More on that here:
+# More on that here about node_modules dir:
 # http://www.futurealoof.com/posts/nodemodules-in-git.html
 # (credit Mikeal Rogers, @mikeal)
+#
+# About bower_components dir, you can see this:
+# http://addyosmani.com/blog/checking-in-front-end-dependencies/
+# (credit Addy Osmani, @addyosmani)
+# 
 ################################################
 
 node_modules
+bower_components
 
 
 
