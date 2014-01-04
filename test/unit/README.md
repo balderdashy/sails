@@ -1,6 +1,6 @@
 # Unit tests
 
-Unit tests shouldn't lift the server (i.e. bind an HTTP server or WebSocket server to a port). Instead, they should bootstrap the minimal set of necessary components to test a particular method or group of methods.  The goal is to identify breaking changes and isolate _exactly what broke_.  This makes would-be issues easier to spot, and real bugs easier to track down.
+Unit tests shouldn't lift the server (i.e. bind an HTTP server or WebSocket server to a port). Instead, they should bootstrap the minimal set of necessary components to test a particular method (or sometimes a group of methods, if it makes more sense.)  The goal is to identify future breaking changes and isolate _exactly what broke_.  This makes would-be issues easier to spot in advance, and real bugs easier to track down after the fact.
 
 
 ## What _Not_ To Test
