@@ -47,9 +47,9 @@ module.exports = helper;
 /**
  * Setup and teardown a Sails instance for testing.
  * 
- * @param  {[type]} description [description]
- * @param  {[type]} sailsOpts   [description]
- * @param  {[type]} msThreshold [description]
+ * @param  {String} description
+ * @param  {Object} sailsOpts
+ * @param  {Integer} msThreshold [before we consider it "slow"]
  * 
  * @api private
  */
@@ -62,7 +62,7 @@ function _with (description, sailsOpts, msThreshold) {
 		var self = this;
 		self.sails = new Sails();
 		self.sails.load(sailsOpts || {}, function (err) {
-			done(err, this.sails);
+			done(err, self.sails);
 		});
 	});
 
