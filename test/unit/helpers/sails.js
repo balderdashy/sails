@@ -1,6 +1,7 @@
 /**
  * Module dependencies
  */
+var _ = require('lodash');
 var Sails = require('root-require')('lib/app');
 
 /**
@@ -18,8 +19,24 @@ var helper = {
 	 */
 	load: (function () {
 
-		var _load = function () {
-			_with('default settings', {}, 750);
+		var testDefaults = { log: {level: 'error'} };
+
+		var _load = function (options) {
+			
+			// Defaults
+			// (except use test defaults)
+			if (!options) {
+				_with('default settings', testDefaults, 750);
+				return;
+			}
+
+			// Specified options + defaults
+			// (except default log level to 'error')
+			var humanReadableOpts = require('util').inspect(options);
+			_with(humanReadableOpts,
+				_.defaults(options, testDefaults),
+				2000);
+
 		};
 
 		_load.withAllHooksDisabled = function () {
@@ -32,7 +49,18 @@ var helper = {
 
 		return _load;
 
-	})()
+	})(),
+
+
+	/**
+	 * @return {Sails} `sails` instance from mocha context
+	 */
+	get: function (passbackFn) {
+		// Use mocha context to get a hold of the Sails instance
+		it('should get a Sails instance', function () {
+			passbackFn(this.sails);
+		});
+	}
 };
 
 
@@ -61,9 +89,7 @@ function _with (description, sailsOpts, msThreshold) {
 
 		var self = this;
 		self.sails = new Sails();
-		self.sails.load(sailsOpts || {}, function (err) {
-			done(err, self.sails);
-		});
+		self.sails.load(sailsOpts || {}, done);
 	});
 
 	after(function teardown(done) {
