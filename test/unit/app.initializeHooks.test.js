@@ -3,7 +3,12 @@
  */
 var should = require('should');
 
+var constants = require('./helpers/constants');
+var customHooks = require('./helpers/customHooks');
+
 var $Sails = require('./helpers/sails');
+
+
 
 // TIP:
 // 
@@ -16,32 +21,43 @@ var $Sails = require('./helpers/sails');
 describe('app.initializeHooks()', function() {
 	
 	describe('with no hooks', function () {
-
 		$Sails.load.withAllHooksDisabled();
-
 		it('hooks should be exposed on the `sails` global', function () {
 			this.sails.hooks.should.be.an.Object;
 		});
 	});
 
 
-	describe('with default config', function () {
-		
+
+	describe('with all core hooks and default config', function () {
 		$Sails.load();
-		
-		it('hooks should be exposed on the `sails` global', function () {
+		it('should expose hooks on the `sails` global', function () {
 			this.sails.hooks.should.be.an.Object;
+		});
+		it('should expose at least the expected hooks', function () {
+			this.sails.hooks.should.have
+			.properties(constants.EXPECTED_DEFAULT_HOOKS);
 		});
 	});
 
 
-	describe('with default config', function () {
-		
-		$Sails.load();
-		
-		it('hooks should be exposed on the `sails` global', function () {
-			this.sails.hooks.should.be.an.Object;
+
+	describe('configured with a custom hook', function () {
+		$Sails.load({
+			hooks: { myCustomHook: customHooks.NOOP }
 		});
+	});
+
+
+
+	describe('configured with a missing hook dependency', function () {
+		// $Sails.load();
+	});
+
+
+
+	describe('configured with a circular hook dependency', function () {
+		// $Sails.load();
 	});
 
 
