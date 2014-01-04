@@ -15,11 +15,23 @@ module.exports.express = {
 	//
 	// Defaults to `express.bodyParser`
 	//
-	// Alternatively, if you're comfortable with the bleeding edge,
-	// check out: https://github.com/mikermcneil/stream-debug
-	//
 	// Example override:
 	// bodyParser: (function customBodyParser (req, res, next) {})(),
+	//
+	// WARNING
+	// ======================================================================
+	// Multipart bodyParser (i.e. express.multipart() ) will be removed
+	// in Connect 3 / Express 4.
+	// [Why?](https://github.com/senchalabs/connect/wiki/Connect-3.0)
+	//
+	// The multipart component of this parser will be replaced
+	// in a subsequent version of Sails (after v0.10, probably v0.11) with:
+	// [file-parser](https://github.com/mikermcneil/file-parser)
+	// (or something comparable)
+	// ======================================================================
+	//
+	// To disable the warning about the multipart parser, uncomment:
+	// silenceMultipartWarning: true,
 
 
 
