@@ -377,39 +377,6 @@ function copyDependency (moduleName, srcRoot, destRoot, cb) {
 
 
 
-// Using npm to install local deps is very slow!! (even from the cache)
-// 
-// 
-// npm = require('enpeem'),
-// 
-// var sails = async_data.sails;
-				// Build dependency strings
-				// The dependencies we should copy over:
-				// var dependenciesToCopy = [
-				// 	'sails-disk@'+sails.dependencies['sails-disk'],
-				// 	'ejs@'+sails.dependencies['ejs'],
-				// 	'grunt@'+sails.dependencies['grunt']
-				// ];
-				// 
-// // `cd` into the newly created app and load up npm
-// process.chdir(appPath);
-
-// // Just for diagnostics
-// // var cmd = 'npm install ' + dependenciesToCopy.join(' ');
-// // console.time(cmd);
-
-// // Install dependencies from npm cache
-// npm.install( dependenciesToCopy, {
-// 	// see: https://github.com/isaacs/npm/issues/2568#issuecomment-30626394
-// 	'cache-min': 999999999,
-// 	// see: https://github.com/isaacs/npm/pull/4320
-// 	loglevel: 'silent'
-// }, cb);
-// // }, function (err) {
-// 	// if (err) return cb(err);
-// 	// console.timeEnd(cmd);
-// 	// cb();
-// // });
 
 	///////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////
@@ -596,3 +563,44 @@ function copyDependency (moduleName, srcRoot, destRoot, cb) {
 
 		// log.error('Sorry, `sails new` is currently out of commission.');
 		// process.exit(1);
+
+
+
+
+
+
+
+// Using npm to install local deps is very slow!! (even from the cache)
+// 
+// 
+// npm = require('enpeem'),
+// 
+// var sails = async_data.sails;
+				// Build dependency strings
+				// The dependencies we should copy over:
+				// var dependenciesToCopy = [
+				// 	'sails-disk@'+sails.dependencies['sails-disk'],
+				// 	'ejs@'+sails.dependencies['ejs'],
+				// 	'grunt@'+sails.dependencies['grunt']
+				// ];
+				// 
+// // `cd` into the newly created app and load up npm
+// process.chdir(appPath);
+
+// // Just for diagnostics
+// // var cmd = 'npm install ' + dependenciesToCopy.join(' ');
+// // console.time(cmd);
+
+// // Install dependencies from npm cache
+// npm.install( dependenciesToCopy, {
+// 	// see: https://github.com/isaacs/npm/issues/2568#issuecomment-30626394
+// 	'cache-min': 999999999,
+// 	// see: https://github.com/isaacs/npm/pull/4320
+// 	loglevel: 'silent'
+// }, cb);
+// // }, function (err) {
+// 	// if (err) return cb(err);
+// 	// console.timeEnd(cmd);
+// 	// cb();
+// // });
+
