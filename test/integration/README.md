@@ -5,16 +5,16 @@ The goal of these tests is to run Sails just like you or I would, and verify tha
 Currently, most of these tests are out of date for 0.10 and need some work.  This is a great place to jump in if you're interested in contributing!
 
 
-## Structure
 
-##### test files
-The test files are all in the top level of the `/test/integration` directory.  If broken up into multiple files, each one should be namespaced (e.g. `router.specifiedRoutes.test.js`, `router.APIScaffold.test.js`, etc.)
+## How Can I Help?
 
-##### fixtures
-Contains sample files or templates from a dummy Sails app used for testing.
+#### Update the existing integration tests
+The integration tests need some updates so they'll pass with Sails v0.10.  Currently, they're disabled.
 
-##### helpers
-Logic to help setup or teardown Sails, read fixtures, and otherwise simplify the logic in our tests.
+> No one is currently working on this.
 
-##### benchmark
-Special tests related to benchmarking the performance of different parts of Sails.
+
+#### Integration test for file uploads
+Because file uploads are going to be changing in the near future, it would be great to test a basic file upload using the standard Connect multipart bodyParser (e.g. http://howtonode.org/really-simple-file-uploads).  That way, any changes that are made are much easier to evaluate.
+
+> No one is currently working on this.
