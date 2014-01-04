@@ -4,5 +4,5 @@
  * @type {Object}
  */
 module.exports = {
-	NOOP: {}
+	NOOP: function (sails) { return {}; }
 };

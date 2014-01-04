@@ -3,8 +3,8 @@
  */
 var should = require('should');
 
-var constants = require('./helpers/constants');
-var customHooks = require('./helpers/customHooks');
+var constants = require('./fixtures/constants');
+var customHooks = require('./fixtures/customHooks');
 
 var $Sails = require('./helpers/sails');
 
