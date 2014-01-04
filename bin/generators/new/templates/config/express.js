@@ -13,10 +13,17 @@ module.exports.express = {
 	// To enable streaming file uploads (to disk or somewhere else)
 	// you'll want to set this option to `false` to disable the body parser.
 	//
-	// Defaults to `express.bodyParser`
-	//
-	// Example override:
-	// bodyParser: (function customBodyParser (req, res, next) {})(),
+	// Defaults to `express.bodyParser` with a slight distinction:
+	// If `bodyParser` doesn't understand the HTTP body request data, 
+	// Sails runs it again with an artificial header, forcing it to try
+	// and parse the request body as JSON.
+	// (this allows JSON to be used as your request data without the need to 
+	// specify a 'Content-type: application/json' header)
+	// 
+	// If you want to change any of that, you can complete override 
+	// this behavior like so:
+	// 
+	// bodyParser: function customBodyParser (options) { ... }
 	//
 	// WARNING
 	// ======================================================================
@@ -28,23 +35,11 @@ module.exports.express = {
 	// in a subsequent version of Sails (after v0.10, probably v0.11) with:
 	// [file-parser](https://github.com/mikermcneil/file-parser)
 	// (or something comparable)
-	// ======================================================================
-	//
-	// To disable the warning about the multipart parser, uncomment:
+	// 
+	// If you understand the risks of using the multipart bodyParser,
+	// and would like to disable the warning log messages, uncomment:
 	// silenceMultipartWarning: true,
-
-
-
-	// If bodyParser doesn't understand the HTTP body request data, 
-	// run it again with an artificial header, forcing it to try and parse
-	// the request body as JSON.
-	// (this allows JSON to be used as your request data without the need to 
-	// specify a 'Content-type: application/json' header)
-	//
-	// Defaults to `true`.
-	//
-	// NOTE: If using the `file-parser` above, you'll want to explicitly disable this:
-	// retryBodyParserWithJSON: false,
+	// ======================================================================
 
 
 
