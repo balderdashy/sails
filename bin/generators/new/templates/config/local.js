@@ -1,12 +1,13 @@
 /**
  * Local environment settings
  *
- * While you're developing your app, this config file should include
+ * While you're DEVELOPING your app, this config file should include
  * any settings specifically for your development computer (db passwords, etc.)
- * When you're ready to deploy your app in production, you can use this file
- * for configuration options on the server where it will be deployed.
- *
- *
+ * 
+ * When you're ready to deploy your app in PRODUCTION, you can always use this file
+ * for configuration options specific to the server where the app will be deployed. 
+ * But environment variables are usually the best way to handle production settings.
+ * 
  * PLEASE NOTE: 
  *		This file is included in your .gitignore, so if you're using git 
  *		as a version control solution for your Sails app, keep in mind that
