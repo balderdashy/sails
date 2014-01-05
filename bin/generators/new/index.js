@@ -189,7 +189,7 @@ module.exports = {
 
 				// Override sails version temporarily
 				var sailsVersionDependency = '~' + sails.version;
-				sailsVersionDependency = 'git://github.com/balderdashy/sails.git#associations';
+				sailsVersionDependency = 'git://github.com/balderdashy/sails.git#v0.10';
 
 				// Generate package.json file
 				GenerateJSONHelper({
