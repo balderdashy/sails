@@ -60,14 +60,13 @@ describe('app.initializeHooks()', function() {
 
 
 	describe('configured with a hook (`noop2`), but not its dependency (`noop`)', function () {
-		$Sails.load
-		.expectTerminatedProcess({
+		$Sails.load.expectFatalError({
 			hooks: {
 
 				// This forced failure is only temporary--
 				// very hard to test right now as things stand.
 				whadga: function (sails) {
-					throw 'forced failure';
+					throw 'temporary forced failure to simulate dependency issue';
 				},
 
 				noop2: customHooks.NOOP2
@@ -77,18 +76,12 @@ describe('app.initializeHooks()', function() {
 
 
 
-	describe('configured with a hook that throws', function () {
-		$Sails.load
-		.expectTerminatedProcess({
+	describe('configured with a hook that always throws', function () {
+		$Sails.load.expectFatalError({
 			hooks: {
-
 				// This forced failure is only temporary--
 				// very hard to test right now as things stand.
-				whadga: function (sails) {
-					throw 'forced failure';
-				},
-
-				noop2: customHooks.NOOP2
+				badHook: customHooks.SPOILED_HOOK
 			}
 		});
 	});

@@ -16,5 +16,10 @@ module.exports = {
 			// TODO: indicate dependency on 'noop' hook
 			identity: 'noop2'
 		};
+	},
+
+	// Deliberately rotten hook- it throws.
+	SPOILED_HOOK: function (sails) {
+		throw new Error('smells nasty');
 	}
 };

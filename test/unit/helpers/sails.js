@@ -37,7 +37,11 @@ var helper = {
 		}
 
 
-
+		/**
+		 * [_load description]
+		 * @param  {[type]} options [description]
+		 * @return {[type]}         [description]
+		 */
 		var _load = function (options) {
 			
 			var testDescription, msSlowThreshold;
@@ -60,6 +64,11 @@ var helper = {
 			return _with(testDescription, sailsOpts, msSlowThreshold);
 		};
 
+
+		/**
+		 * [withAllHooksDisabled description]
+		 * @return {[type]} [description]
+		 */
 		_load.withAllHooksDisabled = function () {
 			return _with('all hooks disabled', {
 				log: {level: 'error'},
@@ -68,13 +77,24 @@ var helper = {
 			}, 500);
 		};
 
-		_load.expectTerminatedProcess = function( options ) {
+
+		/**
+		 * [expectFatalError description]
+		 * @param  {[type]} options [description]
+		 * @return {[type]}         [description]
+		 */
+		_load.expectFatalError = function( options ) {
 			options = _.isObject(options) ? options : {};
 			var sailsOpts = _cleanOptions(options);
 
 			it(', sails should deliberately terminate process', function (done) {
 				var sails = new Sails();
 				
+				// TODO:
+				// Pull this error domain into the core and
+				// wrap the hook loading process (or a comparable solution.)
+				// Should not have to do this here!
+
 				// Use error domain to catch failure
 				var DELIBERATE_ERROR = domain.create();
 				DELIBERATE_ERROR.on('error', function (err) {
