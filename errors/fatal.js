@@ -44,6 +44,24 @@ module.exports = {
 		_terminateProcess(1);
 	},
 
+	// TODO: replace the inline version of this error
+	// app/loadHooks.js:42
+	malformedHook: function () {
+		log.error('Malformed hook! (' + id + ')');
+		log.error('Hooks should be a function with one argument (`sails`)');
+		_terminateProcess(1);
+	},
+
+	// TODO: replace the inline version of this error
+	// app/load.js:146
+	hooksTookTooLong: function () {
+		var hooksTookTooLongErr = 'Hooks are taking way too long to get ready...  ' +
+			'Something is amiss.\nAre you using any custom hooks?\nIf so, make sure the hook\'s ' +
+			'`initialize()` method is triggering it\'s callback.';
+		log.error(hooksTookTooLongErr);
+		process.exit(1);
+	},
+
 
 
 	// Invalid user module errors
@@ -133,18 +151,52 @@ module.exports = {
 
 
 
+
 /**
- * Terminate the process as elegantly as possible.
- * If process.env is 'test', emit a mock signal instead.
+ * 
+ * TODO: Make all of this more elegant.
+ * ========================================================
+ * + Ideally we don't call `process.exit()` at all.
+ * We should consistently use `sails.lower()` for unhandleable core
+ * errors and just trigger the appropriate callback w/ an error for
+ * core lift/load and any CLI errors.
+ * 
+ * + Then we won't have to worry as much about dangling child processes
+ * and things like that. Plus it's more testable that way.
+ * 
+ * In practice, the best way to do this may be an error domain or an
+ * event emitted on the sails object (or both!)
+ * ========================================================
+ *
+ *
+ * 
+ * TODO: Merge w/ app/teardown.js
+ * ========================================================
+ * (probably achievable by doing the aforementioned cleanup)
+ * ========================================================
  */
-function _terminateProcess (code) {
+
+
+
+/**
+ * _terminateProcess
+ *
+ * Terminate the process as elegantly as possible.
+ * If process.env is 'test', throw instead.
+ * 
+ * @param  {[type]} code [console error code]
+ * @param  {[type]} opts [currently unused]
+ */
+function _terminateProcess (code, opts) {
 	if ( process.env.NODE_ENV === 'test' ) {
 		var Signal = new Error({
 			type: 'terminate',
-			code: code
+			code: code,
+			options: { todo: 'put the stuff from the original errors in here' }
 		});
-		process.emit('_sails', Signal);
 		throw Signal;
 	}
+
 	return process.exit(code);
 }
+
