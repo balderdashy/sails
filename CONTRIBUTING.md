@@ -31,10 +31,10 @@ We use [Trello](https://trello.com/b/cGzNVE0b/sails-js-feature-requests) for tra
 ##### Submitting a New Feature Request
 
 1. Check to see if a feature request already exists for what you're interested in.  You can upvote and comment on existing requests.
-2. [Send the board an email][sailsfeaturerequests+wlhnmobeqngolth6lh6z@boards.trello.com] with a short label (< 10 words or so) for the feature request as the subject line and a more detailed description in the body of the message with your github username.  If you'd be able to help contribute to the development of the feature, please mention that in the description!
+2. [Send the board an email](sailsfeaturerequests+wlhnmobeqngolth6lh6z@boards.trello.com) with a short label (< 10 words or so) for the feature request as the subject line and a more detailed description in the body of the message with your github username.  If you'd be able to help contribute to the development of the feature, please mention that in the description!
 
 It can sometimes take a few minutes for a new request to appear on the board, due to latency processing our little email message hack, so please be patient if you don't see it right away.
 
 
 ## Additional Resources
-[Get Started](http://sailsjs.org/#!getStarted) | [Documentation](http://sailsjs.org/#!documentation) | [Changelog](https://github.com/balderdashy/sails/wiki/Changelog) | [#sailsjs on IRC](http://webchat.freenode.net/) | [Google Group](https://groups.google.com/forum/?fromgroups#!forum/sailsjs) | [Twitter](http://twitter.com/sailsjs)
+[Get Started](http://sailsjs.org/#!getStarted) | [Documentation](http://sailsjs.org/#!documentation) | [Changelog](https://github.com/balderdashy/sails/blob/master/CHANGELOG.md) | [#sailsjs on IRC](http://webchat.freenode.net/) | [Google Group](https://groups.google.com/forum/?fromgroups#!forum/sailsjs) | [Twitter](http://twitter.com/sailsjs)
