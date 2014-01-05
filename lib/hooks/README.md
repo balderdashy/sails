@@ -28,11 +28,11 @@ https://gist.github.com/mikermcneil/5746660
 
 ## Custom Hooks = Plugins?
 
-Sort of! The goal is to make hooks powerful, and simple to work w/ for plugin developers, but also predictable, easy to distribute and install, and documented for end users.  Custom hooks might leverage a number of different tools
+Sort of! The goal is to make hooks powerful, and simple to work w/ for plugin developers, but also predictable, easy to distribute and install, and documented for end users.
 
 **The hooks API is tentative**, and it is currently going through at least one more set of changes.  We are quickly approaching the point where we can call this feature "Stable", prioritize backwards compatibilty, and limit API changes.
 
-If you're interested in the roadmap for the plugin system, or developing a plugin yourself, consider/check out the following tools at your disposal:
+That said, you _can_ write and distribute a custom hook today.  If you're interested in the roadmap for the plugin system, or developing a plugin yourself, consider/check out the following tools at your disposal:
 
 + [Custom Generators](https://github.com/balderdashy/sails/blob/v0.10/bin/generators/README.md) :: coming in v0.10, useful for extending the Sails command-line interface (Stage 1 - Experimental)
 + [Custom Adapters](https://github.com/balderdashy/sails-docs/blob/0.9/api.adapter-interface.md) :: Since v0.8, useful for adding database support, API integrations, etc. (Stage 2 - Unstable, but approaching Stage 3)
