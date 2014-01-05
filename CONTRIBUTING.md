@@ -18,7 +18,7 @@ The community is what makes Sails great, without you we wouldn't have come so fa
 
 ## Submitting Pull Requests
 0. If you don't know how to fork and PR, [follow our instructions on contributing](https://github.com/balderdashy/sails-docs/blob/0.9/Contributing-to-Sails.md).
-1. Check that someone else hasn't already starting working on your patch.  Please [search the issues and PRs](https://github.com/balderdashy/sails/search?q=&type=Issues) first!  There might be an open pull request, issue, or closed pull request you can reference.
+1. Check that someone else hasn't already starting working on your patch (i.e. [search issues and PRs](https://github.com/balderdashy/sails/search?q=&type=Issues).)  There might be an open pull request, issue, or closed pull request you can reference.
 2. Fork the repo.
 3. Add a test for your change. Only refactoring and documentation changes require no new tests. If you are adding functionality or fixing a bug, we need a test to ensure the patch can be quickly merged.
 4. Make the tests pass and make sure you follow [our syntax guidelines](https://github.com/balderdashy/sails/blob/master/.jshintrc).
