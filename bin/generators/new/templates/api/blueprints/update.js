@@ -10,8 +10,12 @@ module.exports = function update (req, res) {
 		return res.badRequest('No id provided.');
 	}
 
-	// Get access to sails (globals might be disabled)
+	// Get access to `sails` (globals might be disabled) and look up the model.
 	var sails = req._sails;
+	var Model = sails.models[req.options.model];
+	
+	// If no model exists for this controller, it's a 404.
+	if ( !Model ) return res.notFound();
 
 	// The name of the parameter to use for JSONP callbacks
 	var JSONP_CALLBACK_PARAM = 'callback';
@@ -25,10 +29,6 @@ module.exports = function update (req, res) {
 	// and params whose values are `undefined`
 	var data = req.params.all();
 	if (isJSONPCompatible) { data = sails.util.omit(data, JSONP_CALLBACK_PARAM); }
-
-	// Look up the model....
-	var Model = sails.models[req.options.model];
-
 
 
 

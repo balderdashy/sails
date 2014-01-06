@@ -14,8 +14,12 @@
 
 module.exports = function find (req, res) {
 
-	// Get access to sails (globals might be disabled)
+	// Get access to `sails` (globals might be disabled) and look up the model.
 	var sails = req._sails;
+	var Model = sails.models[req.options.model];
+	
+	// If no model exists for this controller, it's a 404.
+	if ( !Model ) return res.notFound();
 	
 	// The name of the parameter to use for JSONP callbacks
 	var JSONP_CALLBACK_PARAM = 'callback';
@@ -24,9 +28,7 @@ module.exports = function find (req, res) {
 	// and JSONP is enabled for this action, we'll say we're "isJSONPCompatible"
 	var isJSONPCompatible = req.options.jsonp && ! ( req.transport && req.transport.match(/socket/i) );
 
-	// Look up the model....
-	var Model = sails.models[req.options.model];
-	
+
 
 
 
