@@ -14,8 +14,9 @@
 This hook's responsibilities are:
 
 1. Use `sails.modules` to read policies from the user's app into `self.middleware`.
-2. Normalize `sails.config.policies`
+2. Normalize the policy mapping config (`sails.config.policies`)
 3. Listen for `route:typeUnknown` and bind a policy if the route requests it.
+4. Listen for `router:before` and when it fires, transform loaded middleware that match the policy mapping config (i.e. controller actions) to arrays of functions, where the original middleware is "protected" by one or more relevant policy middleware.
 
 
 
