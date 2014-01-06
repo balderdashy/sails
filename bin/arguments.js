@@ -36,7 +36,7 @@ module.exports = function interpretArguments ( argv, handlers ) {
 
 	var isLift		= _.contains(['lift', 'raise', 'start', 'server', 's', 'l'], first),
 		isConsole	= _.contains(['console', 'c'], first),
-		isGenerate	= _.contains(['generate'], first),
+		isGenerate	= _.contains(['generate', 'g'], first),
 		isNew		= _.contains(['new'], first),
 		isVersion	= _.contains(['version'], first),
 		isWWW		= _.contains(['www', 'build'], first),
