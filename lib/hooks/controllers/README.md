@@ -22,3 +22,5 @@ This hook's responsibilities are:
 
 + Why is this a hook and not part of core?
   + Makes it easier to change independently (e.g. you don't like the `*Controller.js` suffix in your controller filenames, or you want to do something else custom)
+
+> If you have a question that isn't covered here, please feel free to send a PR adding it to this section (even if you don't have the answer!)
