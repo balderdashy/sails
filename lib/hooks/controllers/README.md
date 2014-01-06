@@ -1,4 +1,4 @@
-# `Controllers` (Core Hook)
+# Controllers (Core Hook)
 
 ## Status
 
