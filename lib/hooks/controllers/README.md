@@ -3,15 +3,10 @@
 ## Status
 
 > ##### Stability: [2](http://nodejs.org/api/documentation.html#documentation_stability_index) - Unstable
-
-The API is in the process of settling, but has not yet had sufficient real-world testing to be considered stable.  
-
-Backwards-compatibility will be maintained if reasonable.
-
-Most of the non-essential Sails core has been pulled into hooks already.
-These hooks may eventually be pulled out into separate modules, or they may continue to live in the main Sails repo (like Connect middleware).
-
-Custom hooks in userland are functional- specifiable as dependencies (`node_modules`) or by tossing them into a folder in your project.  However, this process is not currently well-documented and backwards-compatibility is not guaranteed.  Please check out the source for more details.
+>
+> The API is in the process of settling, but has not yet had sufficient real-world testing to be considered stable.  
+>
+> Backwards-compatibility will be maintained if reasonable.
 
 
 ## Purpose
