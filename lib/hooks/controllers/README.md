@@ -11,9 +11,10 @@
 
 ## Purpose
 
-The controller hook's responsibilities are:
-1. Use moduleloader to read controllers from the user's app into `self.middleware`.
-2. Bind a handler on the Sails object that will be fired when the Sails Router is loaded later.  It will interpret route syntax which should match controller.
+This hook's responsibilities are:
+
+1. Use `sails.modules` to read controllers from the user's app into `self.middleware`.
+2. Listen for `route:typeUnknown` on `sails`, interpret route syntax which should match a controller, and bind the appropriate middleware (this will happen later, when the Router is loaded, after all the hooks.)
 
 
 
