@@ -1,5 +1,11 @@
 /**
+ * Update Record
  * 
+ * An API call to update a model instance with the specified `id`,
+ * treating the other unbound parameters as attributes.
+ *
+ * @param {Integer|String} id  - the unique id of the particular record you'd like to update
+ * @param *                    - values to set on the record
  * 
  */
 module.exports = function update (req, res) {
@@ -26,10 +32,9 @@ module.exports = function update (req, res) {
 
 	// Create data object (monolithic combination of all parameters)
 	// Omit the JSONP callback parameter (if this is isJSONPCompatible)
-	// and params whose values are `undefined`
 	var data = req.params.all();
 	if (isJSONPCompatible) { data = sails.util.omit(data, JSONP_CALLBACK_PARAM); }
-
+	// TODO: and params whose values are `undefined`
 
 
 
