@@ -41,7 +41,8 @@ The stability indices are as follows:
 > ###### Stability: 3 - Stable
 > The API has proven satisfactory, but cleanup in the underlying
 > code may cause minor changes.  Backwards-compatibility is guaranteed.
-> Stability: 4 - API Frozen
+
+> ###### Stability: 4 - API Frozen
 > This API has been tested extensively in production and is
 > unlikely to ever have to change.
 
