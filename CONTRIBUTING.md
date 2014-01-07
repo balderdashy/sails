@@ -1,4 +1,4 @@
-# How to contribute
+# How To Contribute
 The community is what makes Sails great, without you we wouldn't have come so far. But to help us keep our sanity and reach code-nirvana together, please follow these quick rules whenever contributing.
 
 
@@ -15,17 +15,10 @@ The community is what makes Sails great, without you we wouldn't have come so fa
 7. If you are experiencing more than one problem, create a separate issue for each one. If you think they might be related, please reference the other issues you've created.
 
 
-## Contributing to Sails core
+## Writing Code
 
 > This section is based on the [Node.js contribution guide](https://github.com/joyent/node/blob/master/CONTRIBUTING.md#contributing).
 
-Consult the stability index page for details.
-
-Sub-modules within the Sails core are at varying levels of API stability. Bug fixes are always welcome but API or behavioral changes to modules at stability level 3 and up cannot be merged without serious planning.
-
-Sails has several dependencies referenced in the `package.json` file that are not part of the project proper. Any proposed changes to those dependencies or _their_ dependencies should be sent to their respective projects (i.e. Waterline, Anchor, etc.) Please do not send your patch or feature request to this repository, we cannot accept or fulfill it.
-
-In case of doubt, open an issue in the [issue tracker](), post your question to the [mailing list]() or contact one of the project maintainers on IRC (#sailsjs on freenode).  Especially if you plan to work on something big. Nothing is more frustrating than seeing your hard work go to waste because your vision does not align with a project's roadmap.  At the end of the day, we just want to be able to merge your code.
 
 #### Contributing to an adapter
 
@@ -38,6 +31,15 @@ The custom adapter API is not stable yet, but it is settling.  Feel free to star
 #### Contributing to a generator
 
 If the generator is part of core (code base is located in the Sails repo), please follow the general best practices for contributing to Sails core.  If it is located in a different repo, please send feature requests, patches, and issues there.
+
+
+#### Contributing to core
+
+Sub-modules within the Sails core are at varying levels of API stability. Bug fixes are always welcome but API or behavioral changes to modules at stability level 3 and up cannot be merged without serious planning.
+
+Sails has several dependencies referenced in the `package.json` file that are not part of the project proper. Any proposed changes to those dependencies or _their_ dependencies should be sent to their respective projects (i.e. Waterline, Anchor, etc.) Please do not send your patch or feature request to this repository, we cannot accept or fulfill it.
+
+In case of doubt, open an issue in the [issue tracker](), post your question to the [mailing list]() or contact one of the project maintainers on IRC (#sailsjs on freenode).  Especially if you plan to work on something big. Nothing is more frustrating than seeing your hard work go to waste because your vision does not align with a project's roadmap.  At the end of the day, we just want to be able to merge your code.
 
 #### Contributing to a hook
 
@@ -53,13 +55,25 @@ The custom generator API is very new, and still experimental.  If you are seriou
 
 
 
-
 ## Submitting Pull Requests
 0. If you don't know how to fork and PR, [follow our instructions on contributing](https://github.com/balderdashy/sails-docs/blob/0.9/Contributing-to-Sails.md).
 1. Fork the repo.
 2. Add a test for your change. Only refactoring and documentation changes require no new tests. If you are adding functionality or fixing a bug, we need a test!
 4. Make the tests pass and make sure you follow [our syntax guidelines](https://github.com/balderdashy/sails/blob/master/.jshintrc).
 5. Push to your fork and submit a pull request to our [the v0.10 branch](https://github.com/balderdashy/sails/tree/v0.10).
+
+
+## Requesting Features
+We use [Trello](https://trello.com/b/cGzNVE0b/sails-js-feature-requests) for tracking feature requests.
+
+##### Submitting a New Feature Request
+
+1. Check to see if a feature request already exists for what you're interested in.  You can upvote and comment on existing requests.
+2. [Send the board an email](sailsfeaturerequests+wlhnmobeqngolth6lh6z@boards.trello.com) with a short label (< 10 words or so) for the feature request as the subject line and a more detailed description in the body of the message with your github username.  If you'd be able to help contribute to the development of the feature, please mention that in the description!
+
+It can sometimes take a few minutes for a new request to appear on the board, due to latency processing our little email message hack, so please be patient if you don't see it right away.
+
+
 
 
 ## Additional Resources
