@@ -15,17 +15,10 @@ The community is what makes Sails great, without you we wouldn't have come so fa
 7. If you are experiencing more than one problem, create a separate issue for each one. If you think they might be related, please reference the other issues you've created.
 
 
-## Contributing to Sails core
+## Writing Code
 
 > This section is based on the [Node.js contribution guide](https://github.com/joyent/node/blob/master/CONTRIBUTING.md#contributing).
 
-Consult the stability index page for details.
-
-Sub-modules within the Sails core are at varying levels of API stability. Bug fixes are always welcome but API or behavioral changes to modules at stability level 3 and up cannot be merged without serious planning.
-
-Sails has several dependencies referenced in the `package.json` file that are not part of the project proper. Any proposed changes to those dependencies or _their_ dependencies should be sent to their respective projects (i.e. Waterline, Anchor, etc.) Please do not send your patch or feature request to this repository, we cannot accept or fulfill it.
-
-In case of doubt, open an issue in the [issue tracker](), post your question to the [mailing list]() or contact one of the project maintainers on IRC (#sailsjs on freenode).  Especially if you plan to work on something big. Nothing is more frustrating than seeing your hard work go to waste because your vision does not align with a project's roadmap.  At the end of the day, we just want to be able to merge your code.
 
 #### Contributing to an adapter
 
@@ -39,6 +32,15 @@ The custom adapter API is not stable yet, but it is settling.  Feel free to star
 
 If the generator is part of core (code base is located in the Sails repo), please follow the general best practices for contributing to Sails core.  If it is located in a different repo, please send feature requests, patches, and issues there.
 
+
+#### Contributing to core
+
+Sub-modules within the Sails core are at varying levels of API stability. Bug fixes are always welcome but API or behavioral changes to modules at stability level 3 and up cannot be merged without serious planning.
+
+Sails has several dependencies referenced in the `package.json` file that are not part of the project proper. Any proposed changes to those dependencies or _their_ dependencies should be sent to their respective projects (i.e. Waterline, Anchor, etc.) Please do not send your patch or feature request to this repository, we cannot accept or fulfill it.
+
+In case of doubt, open an issue in the [issue tracker](), post your question to the [mailing list]() or contact one of the project maintainers on IRC (#sailsjs on freenode).  Especially if you plan to work on something big. Nothing is more frustrating than seeing your hard work go to waste because your vision does not align with a project's roadmap.  At the end of the day, we just want to be able to merge your code.
+
 #### Contributing to a hook
 
 If the hook is part of core (code base is located in the Sails repo), please follow the general best practices for contributing to Sails core.  If the hook is located in a different repo, please send feature requests, patches, and issues there.
@@ -50,7 +52,6 @@ The custom hook API, while functional, is still unstable.  Feel free to start wo
 #### Authoring a new generator
 
 The custom generator API is very new, and still experimental.  If you are serious about building a new generator, please consult with one of the project maintainers before you start so we can help set you off on the right foot.
-
 
 
 
