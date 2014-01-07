@@ -1,4 +1,4 @@
-# How to contribute
+# How To Contribute
 The community is what makes Sails great, without you we wouldn't have come so far. But to help us keep our sanity and reach code-nirvana together, please follow these quick rules whenever contributing.
 
 
@@ -61,6 +61,19 @@ The custom generator API is very new, and still experimental.  If you are seriou
 2. Add a test for your change. Only refactoring and documentation changes require no new tests. If you are adding functionality or fixing a bug, we need a test!
 4. Make the tests pass and make sure you follow [our syntax guidelines](https://github.com/balderdashy/sails/blob/master/.jshintrc).
 5. Push to your fork and submit a pull request to our [the v0.10 branch](https://github.com/balderdashy/sails/tree/v0.10).
+
+
+## Requesting Features
+We use [Trello](https://trello.com/b/cGzNVE0b/sails-js-feature-requests) for tracking feature requests.
+
+##### Submitting a New Feature Request
+
+1. Check to see if a feature request already exists for what you're interested in.  You can upvote and comment on existing requests.
+2. [Send the board an email](sailsfeaturerequests+wlhnmobeqngolth6lh6z@boards.trello.com) with a short label (< 10 words or so) for the feature request as the subject line and a more detailed description in the body of the message with your github username.  If you'd be able to help contribute to the development of the feature, please mention that in the description!
+
+It can sometimes take a few minutes for a new request to appear on the board, due to latency processing our little email message hack, so please be patient if you don't see it right away.
+
+
 
 
 ## Additional Resources
