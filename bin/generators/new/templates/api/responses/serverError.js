@@ -11,6 +11,8 @@
  * error is encountered, Sails will call `res.serverError()`.
  */
 
+var sails = require('sails');
+
 module.exports = function serverError (errors) {
 
   // Get access to `req` and `res`
