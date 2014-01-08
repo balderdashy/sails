@@ -39,7 +39,7 @@ Make sure you've read the [issue submission guidelines](https://github.com/balde
 Sails is composed of a [number of different sub-projects](https://npmjs.org/search?q=sails), many of which have [their own dedicated repository](https://github.com/search?q=sails+user%3Amikermcneil+user%3Abalderdashy+user%3Aparticlebanana&type=Repositories&ref=advsearch&l=). If you are looking for a repo for a particular piece, you'll usually find it on the [organization](https://github.com/balderdashy) page.
 
 ## Feature Requests
-Before submitting a new feature request, please check out the [Trello board](https://trello.com/b/cGzNVE0b/sails-js-feature-requests) and see if it's already there.  You can upvote and comment.  New feature requests may be submitted by [sending an email](sailsfeaturerequests+wlhnmobeqngolth6lh6z@boards.trello.com) with a short, < 10-word summary of the feature in the subject line.  It might take a few minutes to show up.
+Before submitting a new feature request, please check out the [Trello board](https://trello.com/b/cGzNVE0b/sails-js-feature-requests) and see if it's already there.  You can upvote and comment.  New feature requests may be submitted by [sending an email](mailto:sailsfeaturerequests+wlhnmobeqngolth6lh6z@boards.trello.com) with a short, < 10-word summary of the feature in the subject line.  It might take a few minutes to show up.
 
 ## Contribute
 See the [contributing docs](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md).
