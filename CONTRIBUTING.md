@@ -41,6 +41,8 @@ Sails has several dependencies referenced in the `package.json` file that are no
 
 In case of doubt, open an issue in the [issue tracker](), post your question to the [mailing list]() or contact one of the project maintainers on IRC (#sailsjs on freenode).  Especially if you plan to work on something big. Nothing is more frustrating than seeing your hard work go to waste because your vision does not align with a project's roadmap.  At the end of the day, we just want to be able to merge your code.
 
+> For consistency, all code in Sails core, including core hooks and core generators, must be written in JavaScript, not CoffeeScript or TypeScript.  We can't merge a pull request in CofeeScript.
+
 #### Contributing to a hook
 
 If the hook is part of core (code base is located in the Sails repo), please follow the general best practices for contributing to Sails core.  If the hook is located in a different repo, please send feature requests, patches, and issues there.
