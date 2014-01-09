@@ -18,7 +18,9 @@ The community is what makes Sails great, without you we wouldn't have come so fa
 ## Writing Code
 
 > This section is based on the [Node.js contribution guide](https://github.com/joyent/node/blob/master/CONTRIBUTING.md#contributing).
-
+>
+> **CoffeeScript?**
+> For consistency, all code in Sails core, including core hooks and core generators, must be written in JavaScript, not CoffeeScript or TypeScript.  We can't merge a pull request in CofeeScript.
 
 #### Contributing to an adapter
 
@@ -40,8 +42,6 @@ Sub-modules within the Sails core are at varying levels of API stability. Bug fi
 Sails has several dependencies referenced in the `package.json` file that are not part of the project proper. Any proposed changes to those dependencies or _their_ dependencies should be sent to their respective projects (i.e. Waterline, Anchor, etc.) Please do not send your patch or feature request to this repository, we cannot accept or fulfill it.
 
 In case of doubt, open an issue in the [issue tracker](), post your question to the [mailing list]() or contact one of the project maintainers on IRC (#sailsjs on freenode).  Especially if you plan to work on something big. Nothing is more frustrating than seeing your hard work go to waste because your vision does not align with a project's roadmap.  At the end of the day, we just want to be able to merge your code.
-
-> For consistency, all code in Sails core, including core hooks and core generators, must be written in JavaScript, not CoffeeScript or TypeScript.  We can't merge a pull request in CofeeScript.
 
 #### Contributing to a hook
 
