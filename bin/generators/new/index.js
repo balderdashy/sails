@@ -4,13 +4,16 @@
 
 var _ = require('lodash'),
 	path = require('path'),
-	moduleRootPath = require('root-require').packpath.parent(),
 	async = require('async'),
-	Sails = require('root-require')('lib/app'),
-	switcher = require('sails-util/switcher'),
+	rootRequire = require('root-require'),
+	fs = require('fs-extra'),
+	switcher = require('sails-util/switcher');
+var moduleRootPath = rootRequire.packpath.parent(),
+	Sails = rootRequire('lib/app'),
 	GenerateModuleHelper = require('../_helpers/module'),
 	GenerateFolderHelper = require('../_helpers/folder');
 	GenerateJSONHelper = require('../_helpers/jsonfile');
+
 
 /**
  * Expose `sails new` functionality
@@ -89,8 +92,8 @@ module.exports = {
 			'assets/js/socketio_example.js',
 
 			// config/*
-			require('./generators/config.session'),
-			require('./generators/config.views'),
+			rootRequire('bin/generators/config.session'),
+			rootRequire('bin/generators/config.views'),
 			'config/routes.js',
 			'config/policies.js',
 			'config/cors.js',
@@ -114,18 +117,20 @@ module.exports = {
 
 			// top-level files
 			require('sails-generate-gruntfile'),
-			require('./generators/gitignore'),
-			require('./generators/README.md'),
+			rootRequire('bin/generators/gitignore'),
+			rootRequire('bin/generators/README.md'),
 			'app.js',
 
 
 			// views/*
+			// 
+			// TODO: actually use view generator
 			{
 				configure: function (options, sails, handlers) {
 					var id = 'homepage';
 					handlers.success({
 						pathToNew: path.resolve(sails.config.paths.views, id + '.' + options.viewEngine),
-						templateFilePath: path.resolve(__dirname, './generators/view', options.viewEngine, id + '.' + options.viewEngine)
+						templateFilePath: path.resolve(moduleRootPath, 'bin/generators/view', options.viewEngine, id + '.' + options.viewEngine)
 					});
 				}
 			},
@@ -134,7 +139,7 @@ module.exports = {
 					var id = '404';
 					handlers.success({
 						pathToNew: path.resolve(sails.config.paths.views, id + '.' + options.viewEngine),
-						templateFilePath: path.resolve(__dirname, './generators/view', options.viewEngine, id + '.' + options.viewEngine)
+						templateFilePath: path.resolve(moduleRootPath, 'bin/generators/view', options.viewEngine, id + '.' + options.viewEngine)
 					});
 				}
 			},
@@ -143,7 +148,7 @@ module.exports = {
 					var id = '500';
 					handlers.success({
 						pathToNew: path.resolve(sails.config.paths.views, id + '.' + options.viewEngine),
-						templateFilePath: path.resolve(__dirname, './generators/view', options.viewEngine, id + '.' + options.viewEngine)
+						templateFilePath: path.resolve(moduleRootPath, 'bin/generators/view', options.viewEngine, id + '.' + options.viewEngine)
 					});
 				}
 			},
@@ -152,7 +157,7 @@ module.exports = {
 					var id = 'layout';
 					handlers.success({
 						pathToNew: path.resolve(sails.config.paths.views, id + '.' + options.viewEngine),
-						templateFilePath: path.resolve(__dirname, './generators/view', options.viewEngine, id + '.' + options.viewEngine)
+						templateFilePath: path.resolve(moduleRootPath, 'bin/generators/view', options.viewEngine, id + '.' + options.viewEngine)
 					});
 				}
 			}
@@ -254,7 +259,7 @@ module.exports = {
 						// No custom generator exists: just copy file from templates
 						opts = _.extend({}/*{force: true}*/, options,{
 							generator: {},
-							templateFilePath: path.resolve(__dirname,'./templates/' + fileOrGenerator),
+							templateFilePath: path.resolve(__dirname,'./template/' + fileOrGenerator),
 							pathToNew: path.resolve(appPath, fileOrGenerator)
 						});
 					}
@@ -321,7 +326,6 @@ module.exports = {
  *
  * @api private
  */
-var fs = require('fs-extra');
 function copyDependency (moduleName, srcRoot, destRoot, cb) {
 	var srcModulePath = path.resolve(srcRoot, 'node_modules', moduleName);
 	var destModulePath = path.resolve(destRoot, 'node_modules',moduleName);
