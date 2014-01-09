@@ -28,7 +28,7 @@
     "lib": "lib"
   },
   "dependencies": {
-    "waterline": "git://github.com/balderdashy/waterline.git#multiAssociations",
+    "waterline": "git://github.com/balderdashy/waterline.git#associations",
     "sails-disk": "git://github.com/balderdashy/sails-disk.git#associations",
     "sails-util": "~0.10.0",
     "captains-log": "~0.10.6",
