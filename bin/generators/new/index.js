@@ -11,8 +11,11 @@ var _ = require('lodash'),
 var moduleRootPath = rootRequire.packpath.parent(),
 	Sails = rootRequire('lib/app'),
 	GenerateModuleHelper = require('../_helpers/module'),
-	GenerateFolderHelper = require('../_helpers/folder');
+	GenerateFolderHelper = require('../_helpers/folder'),
 	GenerateJSONHelper = require('../_helpers/jsonfile');
+
+var GeneratorFactory = rootRequire('bin/generators/factory');
+var generateAssetsDirectory = GeneratorFactory( 'assetsDirectory' );
 
 
 /**
@@ -61,11 +64,6 @@ module.exports = {
 			'config',
 			'config/locales', // TODO: consider putting this in `views/locales` by default?
 			'views',
-			'assets',
-				'assets/images',
-				'assets/js',
-				'assets/styles',
-				'assets/templates',
 			'node_modules',
 		];
 
@@ -87,9 +85,7 @@ module.exports = {
 			'api/policies/sessionAuth.js',
 			
 			// assets/*
-			'assets/js/sails.io.js',
-			'assets/js/socket.io.js',
-			'assets/js/socketio_example.js',
+			// rootRequire('bin/generators/assetsDirectory'),
 
 			// config/*
 			rootRequire('bin/generators/config.session'),
@@ -118,7 +114,7 @@ module.exports = {
 			// top-level files
 			require('sails-generate-gruntfile'),
 			rootRequire('bin/generators/gitignore'),
-			rootRequire('bin/generators/README.md'),
+			rootRequire('bin/generators/README'),
 			'app.js',
 
 
@@ -167,7 +163,7 @@ module.exports = {
 		
 
 		if (options.dry) {
-			log.debug( 'DRY RUN');
+			// log.debug( 'DRY RUN');
 			return handlers.success('Would have created a new app `' + options.appName + '` at ' + appPath + '.');
 		}
 		
@@ -250,6 +246,7 @@ module.exports = {
 
 			templates: ['folders', 'package.json', function(cb) {
 				async.each(templateFiles, function(fileOrGenerator, cb) {
+					// console.log('U**** doing template: ',fileOrGenerator);//, typeof fileOrGenerator==='object' && fileOrGenerator.configure);
 					cb = switcher(cb);
 
 					// Build new options set
@@ -306,7 +303,16 @@ module.exports = {
 
 			}]
 
-		}, handlers);
+		}, function (err, async_data) {
+			if (err) return handlers(err);
+
+			// TODO: clean up module generator so this can be simpler
+
+			// Generate the `assets` directory
+			generateAssetsDirectory({
+				appPath: options.appPath
+			}, handlers);
+		});
 	}
 
 

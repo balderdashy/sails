@@ -1,7 +1,7 @@
 /**
  * Module dependencies
  */
-var generateSecret = require('../../../../../lib/hooks/session/generateSecret'),
+var generateSecret = require('root-require')('lib/hooks/session/generateSecret'),
 	fs = require('fs-extra'),
 	path = require('path'),
 	ejs = require('ejs');

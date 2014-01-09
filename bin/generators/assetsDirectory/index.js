@@ -6,35 +6,15 @@ var _ = require('lodash');
 var async = require('async');
 var path = require('path');
 
-
+var GenerateModuleHelper = require('root-require')('bin/generators/_helpers/module');
+var GenerateFolderHelper = require('root-require')('bin/generators/_helpers/folder');
+var GenerateJSONHelper = require('root-require')('bin/generators/_helpers/jsonfile');
 
 
 /**
  * Generate the `assets` directory in a Sails app, toegether w/ its default contents.
  */
 module.exports = {
-
-	/**
-	 * If a required option is not specified, the generator will refuse to
-	 * proceed until the error is corrected.
-	 */
-	requiredOptions: ['pathToNew'],
-
-
-
-	/**
-	 * Provide custom validations & defaults for this generator's options.
-	 *
-	 * @param {Object} options
-	 * @param {SailsApp} sails
-	 * @param {Object{Functions}} handlers
-	 *
-	 * @return options
-	 */
-	configure: function (options, sails, handlers) {
-		return handlers.success(options);
-	},
-
 
 	/**
 	 * generate
@@ -47,29 +27,31 @@ module.exports = {
 
 
 		var folders = [
-			'assets',
-				'assets/images',
-				'assets/js',
-				'assets/styles',
-				'assets/templates'
+			'images',
+			'js',
+			'styles',
+			'templates'
 		];
 
 		var templateFiles = [
 
 			// assets/*
-			'assets/js/sails.io.js',
-			'assets/js/socket.io.js',
-			'assets/js/socketio_example.js'
+			'js/sails.io.js',
+			'js/socket.io.js',
+			'js/socketio_example.js'
 		];
 
-		
-
-		if (options.dry) {
-			log.debug( 'DRY RUN');
-			return sb.success('Would have created assets directory at ' + options.pathToNew + '.');
+		if (! options.pathToNew) {
+			options.pathToNew = path.resolve(options.appPath, 'assets');
+			// console.log('OPTIONS', options);
 		}
 		
 
+		if (options.dry) {
+			// log.debug( 'DRY RUN');
+			return sb.success('Would have created assets directory at ' + options.pathToNew + '.');
+		}
+		
 		async.auto({
 
 			folders: function(cb) {
