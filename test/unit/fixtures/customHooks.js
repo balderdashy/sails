@@ -43,8 +43,7 @@ module.exports = {
 		};
 	},
 
-	// Deliberately rotten hook- it throws.
-	SPOILED_HOOK: function (sails) {
-		throw new Error('smells nasty');
-	}
+	// Deliberately rotten hook- it's malformed.
+	SPOILED_HOOK: true,
+
 };

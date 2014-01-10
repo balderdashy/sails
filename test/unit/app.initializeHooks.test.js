@@ -70,12 +70,10 @@ describe('app.initializeHooks()', function() {
 
 
 
-	describe('configured with a hook that always throws', function () {
+	describe('configured with a malformed hook', function () {
 		$Sails.load.expectFatalError({
-			log: { level: 'silent' },
+			log: { level: 'silly' },
 			hooks: {
-				// This forced failure is only temporary--
-				// very hard to test right now as things stand.
 				badHook: customHooks.SPOILED_HOOK
 			}
 		});
