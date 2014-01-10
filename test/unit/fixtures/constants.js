@@ -24,7 +24,6 @@ module.exports = {
 		'session',
 		'sockets',
 		'userconfig',
-		'userhooks',
 		'views'
 	]
 };
