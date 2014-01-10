@@ -18,7 +18,7 @@ var $Sails = require('./helpers/sails');
 // $Sails.get(function (_sails) { sails = _sails; });
 
 
-describe.only('app.initializeHooks()', function() {
+describe('app.initializeHooks()', function() {
 	
 	describe('with no hooks', function () {
 		$Sails.load.withAllHooksDisabled();
