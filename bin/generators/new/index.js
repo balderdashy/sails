@@ -73,6 +73,7 @@ module.exports = {
 			'api/responses/badRequest.js',
 			'api/responses/notFound.js',
 			'api/responses/forbidden.js',
+			'api/responses/unauthorized.js',
 
 			// api/blueprints/*
 			'api/blueprints/find.js',
