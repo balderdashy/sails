@@ -18,7 +18,7 @@ var $Sails = require('./helpers/sails');
 // $Sails.get(function (_sails) { sails = _sails; });
 
 
-describe('app.initializeHooks()', function() {
+describe.only('app.initializeHooks()', function() {
 	
 	describe('with no hooks', function () {
 		$Sails.load.withAllHooksDisabled();
@@ -59,6 +59,17 @@ describe('app.initializeHooks()', function() {
 
 
 
+	describe('configured with a malformed hook', function () {
+		$Sails.load.expectFatalError({
+			log: { level: 'silent' },
+			hooks: {
+				badHook: customHooks.SPOILED_HOOK
+			}
+		});
+	});
+
+
+
 	describe('configured with a hook (`noop2`), but not its dependency (`noop`)', function () {
 		$Sails.load.expectFatalError({
 			log: { level: 'silent' },
@@ -70,27 +81,16 @@ describe('app.initializeHooks()', function() {
 
 
 
-	describe('configured with a malformed hook', function () {
-		$Sails.load.expectFatalError({
-			log: { level: 'silly' },
-			hooks: {
-				badHook: customHooks.SPOILED_HOOK
-			}
-		});
-	});
-
-
-
 	describe('configured with a circular hook dependency', function () {
 		$Sails.load.expectFatalError({
-			log: { level: 'info' },
+			log: { level: 'silent' },
 			hooks: {
 				noop: customHooks.NOOP, 
 				noop3: customHooks.NOOP3
 			}
 		});
 		$Sails.load.expectFatalError({
-			log: { level: 'silly' },
+			log: { level: 'silent' },
 			hooks: {
 				noop4: customHooks.NOOP4, 
 				noop5: customHooks.NOOP5
