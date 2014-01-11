@@ -41,6 +41,7 @@ module.exports = function interpretArguments ( argv, handlers ) {
 		isVersion	= _.contains(['version'], first),
 		isWWW		= _.contains(['www', 'build'], first),
 		isRun		= _.contains(['run','issue'], first);
+		isConfigure	= _.contains(['configure'], first);
 
 
 	// Interpret/validate arguments to `sails generate`
@@ -168,7 +169,7 @@ module.exports = function interpretArguments ( argv, handlers ) {
 	if ( isVersion )	return handlers.version();
 	if ( isRun )		return handlers.run();
 	if ( isWWW )		return handlers.www();
-
+	if ( isConfigure )	return handlers.configure();
 
 	// Unknown action
 	return handlers.invalid( { first: first } );
