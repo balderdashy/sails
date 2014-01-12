@@ -16,7 +16,8 @@ var _			= require('lodash'),
 	REPL		= require('repl'),
 	Grunt__		= require('./www'),
 	path		= require('path');
-	_.str		= require('underscore.string');
+	_.str		= require('underscore.string'),
+	generate	= require('sails-generate');
 
 
 
@@ -95,14 +96,24 @@ var CLIController = {
 	 */
 
 	generate: function ( options ) {
-		var generate = require('sails-generate');
+		var entity = options.module;
 
-		if (!options.module) { throw new Error(); }
+		if (!entity) { throw new Error(); }
 
-		generate(require(options.module), {}, {
-			error: function (err) {},
-			success: function (output) {},
-			notSailsApp: function () {},
+		// TODO: Look up generator entity in config and grab the module name
+		// for now:
+		var module = 'sails-generate-' + entity;
+
+		var Generator;
+		try {
+			Generator = require(module);
+		}
+		catch (e) { throw e; }
+
+		generate(Generator, options, {
+			error: function (err) { log.error(err); },
+			success: function (output) { log.info('ok!'); },
+			notSailsApp: function () { log.error('Not a sails app.'); },
 			alreadyExists: function () {
 				
 				// Log custom message if override is defined

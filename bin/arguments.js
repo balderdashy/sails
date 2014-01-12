@@ -62,13 +62,24 @@ module.exports = function interpretArguments ( argv, handlers ) {
 			);
 		}
 
+		// Whitelist
 		var knownGenerators = [
+			// Client
+			'frontend',
+			'gruntfile',
+
+			// Core
+			'backend',
 			'controller',
 			'model',
 			'view',
 			'api',
+			'policy',
+
+			// Plugins
+			'generator',
 			'adapter',
-			'policy'
+			'hook'
 		];
 
 		// Check for unknown generators
@@ -81,19 +92,17 @@ module.exports = function interpretArguments ( argv, handlers ) {
 		}
 
 		// Check for todo/not-yet-supported generators
-		switch ( module ) {
-			case 'view':
-			case 'policy':
-			case 'adapter':
-				return handlers.error(
-				'Sorry, `sails generate ' + second + '` ' +
-				'is currently out of commission.');
-		}
+		// switch ( module ) {
+		// 	case 'view':
+		// 	case 'policy':
+		// 	case 'adapter':
+		// 		return handlers.error(
+		// 		'Sorry, `sails generate ' + second + '` ' +
+		// 		'is currently out of commission.');
+		// }
 
 
 		// If no id argument exists, this is a usage error
-		// TODO: support `sails generate` again
-		// 		 (for creating a model AND controller at the same time)
 		if ( !id ) {
 			return handlers.invalid(
 				'Please specify the name for the new ' + module + '.'
@@ -127,6 +136,7 @@ module.exports = function interpretArguments ( argv, handlers ) {
 
 		// Build options
 		var options = _.extend({}, argv, {
+			args: [id],
 			id: id,
 			module: second,
 			actions:  actions,
