@@ -20,7 +20,7 @@
 
 module.exports = function ( options ) {
 	var log = this.logger;
-	var sailsOptions = this.baseOptions;
+	var config = this.config;
 
 	var entity = options.module;
 

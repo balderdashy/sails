@@ -5,7 +5,7 @@
  */
 module.exports = function ( err ) {
 	var log = this.logger;
-	var sailsOptions = this.baseOptions;
+	var config = this.config;
 
 	// log.error( 'An error occurred.' );
 	log.error( err );

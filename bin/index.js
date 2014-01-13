@@ -7,6 +7,7 @@
 
 var	CaptainsLog	= require('captains-log')
 , mergeCtx = require('merge-context')
+, cliutil = require('sails-util/cli')
 , CLIController = {
 	configure : require('./commands/configure'),
 	new       : require('./commands/new'),
@@ -31,34 +32,34 @@ var	CaptainsLog	= require('captains-log')
 
 // Build Sails options using ONLY command-line arguments
 // (the only configuration we have available at this point)
-var sailsOptions = cliutil.getCLIConfig(require('optimist').argv);
+var config = cliutil.getCLIConfig(require('optimist').argv);
 
 // Build logger
-var logger = new CaptainsLog(sailsOptions.log);
+var logger = new CaptainsLog(config.log);
 
 
 // Mix-in options and logger into each command's context
 CLIController = mergeCtx.all(CLIController, {
-	sailsOptions: sailsOptions,
+	config: config,
 	logger: logger
 });
 
 // Interpret arguments, route to appropriate handler
-_interpretArgs( argv, CLIController );
+require('./arguments')( require('optimist').argv, CLIController );
 
 
 // todo move these to their respective spots:
-_			= require('lodash'),
-	fs			= require('fs-extra'),
-	argv		= require('optimist').argv,
-	Err			= require('../errors'),
-	CaptainsLog	= require('captains-log'),
-	Sails		= require('../lib/app');
-	_interpretArgs = require('./arguments');
-	cliutil		= require('sails-util/cli');
-	_.str		= require('underscore.string'),
-	REPL		= require('repl'),
-	Grunt__		= require('./www'),
-	path		= require('path');
-	_.str		= require('underscore.string'),
-	generate	= require('sails-generate');
+	
+
+	// fs			= require('fs-extra'),
+	// argv		= require('optimist').argv,
+	// Err			= require('../errors'),
+	// CaptainsLog	= require('captains-log'),
+	// Sails		= require('../lib/app');
+	// cliutil		= require('sails-util/cli');
+	// // _.str		= require('underscore.string'),
+	// REPL		= require('repl'),
+	// Grunt__		= require('./www'),
+	// path		= require('path');
+	// // _.str		= require('underscore.string'),
+	// generate	= require('sails-generate');

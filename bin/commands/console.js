@@ -7,11 +7,11 @@
 
 module.exports = function() {
 	var log = this.logger;
-	var sailsOptions = this.baseOptions;
+	var config = this.config;
 
 	// Load up sails just to get the version
 	var sails0 = new Sails();
-	sails0.load(_.merge({}, sailsOptions, {
+	sails0.load(_.merge({}, config, {
 		hooks: false,
 		globals: false
 	}), function(err) {
@@ -28,7 +28,7 @@ module.exports = function() {
 		// Now load up sails for real
 		var sails = new Sails();
 		sails.lift(_.merge({},
-			sailsOptions, {
+			config, {
 
 				// Disable ASCII ship to keep from dirtying things up
 				log: {

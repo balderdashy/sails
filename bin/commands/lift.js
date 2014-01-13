@@ -8,10 +8,10 @@
  */
 module.exports = function() {
 	var log = this.logger;
-	var sailsOptions = this.baseOptions;
+	var config = this.config;
 
 	// Ensure options passed in are not mutated
-	var options = _.cloneDeep(sailsOptions);
+	var options = _.cloneDeep(config);
 
 	// Use the app's local Sails in `node_modules` if one exists
 	var appPath = process.cwd();

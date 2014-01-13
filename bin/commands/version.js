@@ -10,10 +10,10 @@
  */
 module.exports = function() {
 	var log = this.logger;
-	var sailsOptions = this.baseOptions;
+	var config = this.config;
 
 	var sails = new Sails();
-	sails.load(_.merge({}, sailsOptions, {
+	sails.load(_.merge({}, config, {
 		hooks: false,
 		globals: false
 	}), function(err) {

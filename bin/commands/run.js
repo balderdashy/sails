@@ -10,7 +10,7 @@ var Grunt = require('../lib/hooks/grunt');
  */
 module.exports = function() {
 	var log = this.logger;
-	var sailsOptions = this.baseOptions;
+	var config = this.config;
 
 	// Run a grunt task.
 	// Grunt = Grunt(sails);

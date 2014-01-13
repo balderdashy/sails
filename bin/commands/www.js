@@ -6,7 +6,7 @@
  */
 module.exports = function() {
 	var log = this.logger;
-	var sailsOptions = this.baseOptions;
+	var config = this.config;
 
 	var wwwPath = path.resolve( process.cwd(), './www'),
 		GRUNT_TASK_NAME = 'build';
@@ -14,7 +14,7 @@ module.exports = function() {
 	log.info('Compiling assets into standalone `www` directory with `grunt ' + GRUNT_TASK_NAME + '`...');
 
 	var sails = new Sails();
-	sails.load(_.merge({}, sailsOptions, {
+	sails.load(_.merge({}, config, {
 		hooks: {
 			grunt: false
 		},

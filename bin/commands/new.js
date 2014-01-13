@@ -10,7 +10,7 @@
  */
 module.exports = function ( options ) {
 	var log = this.logger;
-	var sailsOptions = this.baseOptions;
+	var config = this.config;
 
 	var GeneratorFactory = require('./generators/factory');
 	var generate = GeneratorFactory( 'new' );

@@ -7,11 +7,11 @@ var _ = require('lodash');
 
 
 /**
- * Interpret and validate command-line arguments.
+ * Interpret, validate, and normalize command-line arguments.
  * Then take the appropriate action.
  *
  * Calls one of:
- *		- handler.sails
+ *		- handler.usage
  *		- handler.console
  *		- handler.lift
  *		- handler.generate
@@ -24,7 +24,7 @@ module.exports = function interpretArguments ( argv, handlers ) {
 
 	if ( !_.isObject(argv) ) return handlers.invalid();
 	if ( !_.isArray(argv._) ) return handlers.invalid();
-	if ( !argv._.length ) return handlers.sails();
+	if ( !argv._.length ) return handlers.usage();
 	
 	var first	= argv._[0] || '',
 		second	= argv._[1] || '',

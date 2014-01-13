@@ -5,7 +5,7 @@
  */
 module.exports = function( /* [msg1|options], [msg2], [msg3], [...] */ ) {
 	var log = this.logger;
-	var sailsOptions = this.baseOptions;
+	var config = this.config;
 
 	var args = Array.prototype.slice.call(arguments, 0),
 		options = _.isPlainObject(args[0]) ? args[0] : null,

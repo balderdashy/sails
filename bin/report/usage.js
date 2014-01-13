@@ -1,3 +1,9 @@
+var _       = require('lodash')
+  , Sails   = require('root-require')('lib/app')
+  , cliutil = require('sails-util/cli');
+
+
+
 /**
  * Display usage info.
  * 
@@ -8,10 +14,10 @@
  */
 module.exports = function usage() {
 	var log = this.logger;
-	var sailsOptions = this.baseOptions;
+	var config = this.config;
 
 	var sails = new Sails();
-	sails.load( _.merge({},sailsOptions, {
+	sails.load( _.merge({},config, {
 		hooks: false,
 		globals: false
 	}), function (err) {
