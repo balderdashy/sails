@@ -122,7 +122,7 @@
     }
 
     // Build to request
-    var json = window.io.JSON.stringify({
+    var json = io.JSON.stringify({
       url: url,
       data: data
     });
@@ -135,7 +135,7 @@
 
       if (result && typeof result === 'string') {
         try {
-          parsedResult = window.io.JSON.parse(result);
+          parsedResult = io.JSON.parse(result);
         } catch (e) {
           if (typeof console !== 'undefined') {
             console.warn("Could not parse:", result, e);
