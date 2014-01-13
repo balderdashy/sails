@@ -1,5 +1,6 @@
 module.exports = function ( options ) {
-	var log = this._log;
+	var log = this.logger;
+	var sailsOptions = this.baseOptions;
 
 	log.info('To configure the Sails command-line interface, create a `.sailsrc` file.');
 	console.log();

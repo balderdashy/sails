@@ -1,6 +1,4 @@
 #!/bin/sh
 
-# Convert this to a command like the rest
-# `sails debug`
-
+# This is here for backwards compatibility.
 node --debug `which sails` $@

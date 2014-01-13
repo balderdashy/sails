@@ -27,26 +27,8 @@
   // Suppress warnings about "weird constructions"
   // i.e. allow code like:
   //  (new (function OneTimeUsePrototype () { } ))
-  "supernew": true
+  "supernew": true,
 
-  // "bitwise": true,
-  // "camelcase": true,
-  // "node": true,
-  // "undef": true,
-  // "unused": true,
-  // "curly": true,
-  // "immed": true,
-  // "latedef": true,
-  // "noarg": true,
-  // "noempty": true,
-  // "plusplus": true,
-  // "quotmark": "single",
-  // "trailing": true,
-  // "asi": false,
-  // "eqnull": true,
-  // "eval": true,
-  // "sub": true,
-  // "supernew": true,
-  // "eqeqeq": true,
-  // "eqnull": true
+  // Allow backwards, node-dependency-style commas
+  "laxcomma": true
 }
