@@ -64,7 +64,8 @@
     "grunt-contrib-cssmin": "0.6.1",
     "grunt-contrib-less": "~0.8.3",
     "grunt-contrib-coffee": "0.7.0",
-    "sails-generate": "0.0.1"
+    "sails-generate": "0.0.1",
+    "merge-context": "0.0.3"
   },
   "devDependencies": {
     "checksum": "~0.1.1",

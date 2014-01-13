@@ -6,7 +6,7 @@
  */
 
 var	CaptainsLog	= require('captains-log')
-, mergeCtx = require('extend-context')
+, mergeCtx = require('merge-context')
 , CLIController = {
 	configure : require('./commands/configure'),
 	new       : require('./commands/new'),
@@ -15,9 +15,9 @@ var	CaptainsLog	= require('captains-log')
 	lift      : require('./commands/lift'),
 	console   : require('./commands/console'),
 	www       : require('./commands/www'),
-	error     : require('./error'),
-	invalid   : require('./invalid'),
-	usage     : require('./usage')
+	error     : require('./report/error'),
+	invalid   : require('./report/invalid'),
+	usage     : require('./report/usage')
 };
 
 
@@ -46,6 +46,8 @@ CLIController = mergeCtx.all(CLIController, {
 // Interpret arguments, route to appropriate handler
 _interpretArgs( argv, CLIController );
 
+
+// todo move these to their respective spots:
 _			= require('lodash'),
 	fs			= require('fs-extra'),
 	argv		= require('optimist').argv,
