@@ -1,4 +1,4 @@
-[![Sails.js](http://balderdashy.github.io/sails/images/logo.png)](http://sailsjs.org)
+# [![Sails.js](http://balderdashy.github.io/sails/images/logo.png)](http://sailsjs.org)
 
 ### [Website](http://sailsjs.org/)  &nbsp; [Getting Started](http://sailsjs.org/#!getStarted) &nbsp;  [Documentation](http://sailsjs.org/#!documentation)  &nbsp; [Submit Issue](https://github.com/balderdashy/sails/search?q=&type=Issues)
 
