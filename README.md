@@ -44,7 +44,7 @@ Sails is built on Node.js, Connect, Express, and Socket.io.
 
 Sails [controllers](http://sailsjs.org/#!documentation/controllers) are compatible with Connect middleware, so in most cases, you can paste code into Sails from an existing Express project and everything will work-- plus you'll be able to use WebSockets to talk to your API, and vice versa.
 
-The ORM, [Waterline](github.com/balderdashy/waterline), has a well-defined adapter system for supporting all kinds of datastores.  Officially supported databases include **[MySQL]()**, **[PostgreSQL]()**, **[MongoDB]()**, **[Redis]()**, local [disk](https://github.com/balderdashy/sails-disk), and local [memory](https://github.com/balderdashy/sails-memory).  [Community adapters](https://github.com/balderdashy/sails-docs/blob/master/intro-to-custom-adapters.md#notable-community-adapters) exist for Riak, CouchDB, and ElasticSearch; for various 3rd-party REST APIs like Yelp and Twitter; plus some [eclectic projects](https://www.youtube.com/watch?v=OmcQZD_LIAE).
+The ORM, [Waterline](github.com/balderdashy/waterline), has a well-defined adapter system for supporting all kinds of datastores.  Officially supported databases include **[MySQL](https://github.com/balderdashy/sails-mysql)**, **[PostgreSQL](https://github.com/balderdashy/sails-postgresql)**, **[MongoDB](https://github.com/balderdashy/sails-mongo)**, **[Redis](https://github.com/balderdashy/sails-redis)**, local [disk](https://github.com/balderdashy/sails-disk), and local [memory](https://github.com/balderdashy/sails-memory).  [Community adapters](https://github.com/balderdashy/sails-docs/blob/master/intro-to-custom-adapters.md#notable-community-adapters) exist for Riak, CouchDB, and ElasticSearch; for various 3rd-party REST APIs like Yelp and Twitter; plus some [eclectic projects](https://www.youtube.com/watch?v=OmcQZD_LIAE).
 
 
 
@@ -83,10 +83,10 @@ See the [contributing docs](https://github.com/balderdashy/sails/blob/master/CON
 ## Support
 Need help or have a question?
 
-- [Tutorials](http://irlnathan.github.io/sailscasts/)
+- [Tutorials](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#where-do-i-get-help)
 - [Stackoverflow](http://stackoverflow.com/questions/tagged/sails.js)
-- [#sailsjs](http://webchat.freenode.net/) on Freenode (IRC channel)
-- [Professional/Enterprise Options](https://github.com/balderdashy/sails/wiki#are-there-professional-support-options)
+- [#sailsjs on Freenode](http://webchat.freenode.net/) (IRC channel)
+- [Professional/Enterprise Options](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#are-there-professional-support-options)
 
 _Please don't use the issue tracker for support/questions._
 
