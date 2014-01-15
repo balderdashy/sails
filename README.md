@@ -1,37 +1,72 @@
-# Sails.js
+# [![Sails.js](http://balderdashy.github.io/sails/images/logo.png)](http://sailsjs.org)
 
-[![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)
+### [Website](http://sailsjs.org/)  &nbsp; [Getting Started](http://sailsjs.org/#!getStarted) &nbsp;  [Documentation](http://sailsjs.org/#!documentation)  &nbsp; [Submit Issue](https://github.com/balderdashy/sails/search?q=&type=Issues)
 
-> Sails.js makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development. It's especially good for building realtime features like chat.
+Sails.js is a web framework that makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development. It's especially good for building realtime features like chat.
 
-#### [Website](http://sailsjs.org/) | [Getting Started](http://sailsjs.org/#!getStarted) | [Documentation](http://sailsjs.org/#!documentation) | [Submit Issue](https://github.com/balderdashy/sails/search?q=&type=Issues)
-
-![image_squidhome@2x.png](http://i.imgur.com/RIvu9.png)
 
 ## Installation
 
-With [node](http://nodejs.org) installed:
+**With [node](http://nodejs.org) [installed](http://sailsjs.com/#!documentation/new-to-nodejs):**
 ```sh
-sudo npm install sails -g
+# Get the latest stable release of Sails
+$ sudo npm install sails -g
 ```
 
 
 ## Your First Sails Project
 
-Create a new app:
+**Create a new app:**
 ```sh
 # Create the app
-sails new testProject
+$ sails new testProject
 ```
 
-Start the server:
+**Lift sails:**
 ```sh
 # cd into the new folder
-cd testProject
+$ cd testProject
 
-# Fire up the server  
-sails lift
+# fire up the server
+$ sails lift
 ```
+
+**Generate a REST API:**
+
+[![ScreenShot](http://i.imgur.com/Ii88jlhl.png)](https://www.youtube.com/watch?v=GK-tFvpIR7c)
+
+
+## Compatibility
+
+[![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)
+
+Sails is built on Node.js, Connect, Express, and Socket.io.
+
+Sails [controllers](http://sailsjs.org/#!documentation/controllers) are compatible with Connect middleware, so in most cases, you can paste code into Sails from an existing Express project and everything will work-- plus you'll be able to use WebSockets to talk to your API, and vice versa.
+
+The ORM, [Waterline](github.com/balderdashy/waterline), has a well-defined adapter system for supporting all kinds of datastores.  Officially supported databases include **[MySQL](https://github.com/balderdashy/sails-mysql)**, **[PostgreSQL](https://github.com/balderdashy/sails-postgresql)**, **[MongoDB](https://github.com/balderdashy/sails-mongo)**, **[Redis](https://github.com/balderdashy/sails-redis)**, local [disk](https://github.com/balderdashy/sails-disk), and local [memory](https://github.com/balderdashy/sails-memory).  [Community adapters](https://github.com/balderdashy/sails-docs/blob/master/intro-to-custom-adapters.md#notable-community-adapters) exist for Riak, CouchDB, and ElasticSearch; for various 3rd-party REST APIs like Yelp and Twitter; plus some [eclectic projects](https://www.youtube.com/watch?v=OmcQZD_LIAE).
+
+
+
+
+<!--
+Generate a JSON API:
+```sh
+# generate a user model + controller (i.e. a User API)
+sails generate user
+```
+-->
+
+<!--
+> Sails provides "blueprint routes" (URL mappings) and "blueprint actions" (built-in CRUD and pubsub operations) for every controller+model in your app. These "blueprints" can be configured and/or completely disabled as needed.  Notably, all logic in Sails (including blueprint actions) supports both WebSockets and HTTP out of the box.  
+
++ List all users ([http://localhost:1337/user](http://localhost:1337/user))
++ Find the user with id 1 ([http://localhost:1337/user/1](http://localhost:1337/user/1))
++ Create a new user ([http://localhost:1337/user/create?name=Fisslewick](http://localhost:1337/user/create?name=Fisslewick), or `POST to http://localhost:1337/user`)
++ Update the name of the user with id 1 ([http://localhost:1337/user/update/1?name=Gordo](http://localhost:1337/user/update/1?name=Gordo), or `PUT http://localhost:1337/user/1`)
++ Destroy the user with id 1 (visit [http://localhost:1337/user/destroy/1](http://localhost:1337/user/destroy/1), or `DELETE http://localhost:1337/user/1`)
+-->
+
 
 ## Issue Submission
 Make sure you've read the [issue submission guidelines](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#opening-issues) before opening a new issue.
@@ -39,7 +74,7 @@ Make sure you've read the [issue submission guidelines](https://github.com/balde
 Sails is composed of a [number of different sub-projects](https://npmjs.org/search?q=sails), many of which have [their own dedicated repository](https://github.com/search?q=sails+user%3Amikermcneil+user%3Abalderdashy+user%3Aparticlebanana&type=Repositories&ref=advsearch&l=). If you are looking for a repo for a particular piece, you'll usually find it on the [organization](https://github.com/balderdashy) page.
 
 ## Feature Requests
-Before submitting a new feature request, please check out the [Trello board](https://trello.com/b/cGzNVE0b/sails-js-feature-requests) and see if it's already there.  You can upvote and comment.  New feature requests may be submitted by [sending an email](mailto:sailsfeaturerequests+wlhnmobeqngolth6lh6z@boards.trello.com) with a short, < 10-word summary of the feature in the subject line.  It might take a few minutes to show up.
+See the [Trello board](https://trello.com/b/cGzNVE0b/sails-js-feature-requests) to view/discuss our roadmap and [request features](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#requesting-features).
 
 ## Contribute
 See the [contributing docs](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md).
@@ -48,10 +83,10 @@ See the [contributing docs](https://github.com/balderdashy/sails/blob/master/CON
 ## Support
 Need help or have a question?
 
-- [Tutorials](http://irlnathan.github.io/sailscasts/)
+- [Tutorials](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#where-do-i-get-help)
 - [Stackoverflow](http://stackoverflow.com/questions/tagged/sails.js)
-- [#sailsjs](http://webchat.freenode.net/) on Freenode (IRC channel)
-- [Professional/Enterprise Options](https://github.com/balderdashy/sails/wiki#are-there-professional-support-options)
+- [#sailsjs on Freenode](http://webchat.freenode.net/) (IRC channel)
+- [Professional/Enterprise Options](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#are-there-professional-support-options)
 
 _Please don't use the issue tracker for support/questions._
 
@@ -82,5 +117,6 @@ Balderdash designs/builds scalable Node.js apps for startups and enterprise cust
 
 > Sails is built around so many great open-source technologies that it would never have crossed our minds to keep it proprietary.  We owe huge gratitude and props to TJ Holowaychuk ([@visionmedia](https://github.com/visionmedia)) and Guillermo Rauch ([@guille](https://github.com/guille)) for the work they did, as well as the stewards of all the other open-source modules we use.  Sails could never have been developed without your tremendous contributions to the node community.
 
+![image_squidhome@2x.png](http://i.imgur.com/RIvu9.png)
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/8acf2fc2ca0aca8a3018e355ad776ed7 "githalytics.com")](http://githalytics.com/balderdashy/sails)
