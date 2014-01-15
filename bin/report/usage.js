@@ -1,5 +1,5 @@
 var _       = require('lodash')
-  , Sails   = require('root-require')('lib/app')
+  , Sails   = require('../../lib/app')
   , cliutil = require('sails-util/cli');
 
 
