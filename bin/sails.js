@@ -62,7 +62,11 @@ program
 	.command('new <appname>')
 	.option('--dry')
 	.description('')
-	.action( require('./sails-new') );
+	.action( function() {
+		var args = Array.prototype.slice.call(arguments);
+		args.unshift('new');
+		require('./sails-generate').apply(this, args);
+	} );
 
 
 // $ sails generate <module>
