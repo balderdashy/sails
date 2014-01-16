@@ -5,48 +5,165 @@
  * Module dependencies
  */
 var _ = require('lodash')
-	, program = require('commander')
-	, SAILS_VERSION = require('../package.json').version;
+	, program = require('./_commander')
+	, package = require('../package.json')
+	, Err = require('../errors/fatal')
+	, NOOP = function (){};
 
 
 
-// Monkey-patch commander to allow us to display help while
-// omitting a certain command.
-program.help.maskCommand = function () {
-	program.commands = _.reject(program.commands, {_name: '*'});
-	program.help();
-};
-
-
-
-var NOOP = function (){};
 
 program
-	.version(SAILS_VERSION, '-v, --version');
+	.version(package.version, '-v, --version');
 
 
-
-
-program.command('lift')
-		.action(NOOP);
-
-
-// 	.command('new')
-// 	.command('generate')
-// 	.command('help')
-// 	.command('version')
-// 	.command('console')
-// 	.command('run')
-// 	.command('debug')
-// 	.command('www')
-// 	.command('configure');
-
-
+//
+// Normalize version argument, i.e.
+// 
 // $ sails -v
-// Make `-v` option case-insensitive
+// $ sails -V
+// $ sails --version
+// $ sails version
+//
+
+
+// make `-v` option case-insensitive
 process.argv = _.map(process.argv,function(arg){
 	return (arg === '-V') ? '-v' : arg;
 });
+
+
+// $ sails version (--version synonym)
+program
+	.command('version')
+	.description('')
+	.action( program.versionInformation );
+
+
+
+
+
+program
+	.option('--silent')
+	.option('--verbose')
+	.option('--silly');
+
+
+
+// $ sails lift
+program
+	.command('lift')
+	.option('--prod')
+	.option('--port')
+	.description('')
+	.action(NOOP);
+
+
+// $ sails new <appname>
+program
+	.command('new <appname>')
+	.option('--dry')
+	.description('')
+	.action(NOOP);
+
+
+// $ sails generate <module>
+program.command('generate')
+	.description('')
+	.option('--dry')
+	.action(function (module) {
+		var cmd = module;
+		if (arguments.length === 1) {
+			module = null;
+		}
+
+		console.log('sails generate '+module);
+		// program
+		// 	.command('model <resource>')
+		// 	.description('')
+		// 	.action(console.log);
+		// program
+		// 	.command('controller <resource>')
+		// 	.description('');
+		// program
+		// 	.command('api <resource>')
+		// 	.description('');
+		// generate
+		// 	.command('response <method>')
+		// 	.description('');
+		// generate
+		// 	.command('policy <name>')
+		// 	.description('');
+		// generate
+		// 	.command('service <name>')
+		// 	.description('');
+		// generate
+		// 	.command('adapter <name>')
+		// 	.description('');
+		// generate
+		// 	.command('generator <name>')
+		// 	.description('');
+		// generate
+		// 	.command('hook <name>')
+		// 	.description('');
+	});
+
+
+
+// $ sails console
+program
+	.command('console')
+	.description('')
+	.action( require('./sails-console') );
+
+// $ sails www
+program
+	.command('www')
+	.description('')
+	.action(NOOP);
+
+
+// $ sails run
+program
+	.command('run')
+	.description('')
+	.action(NOOP);
+
+
+// $ sails debug
+program
+	.command('debug')
+	.description('')
+	.action(NOOP);
+
+
+// $ sails configure
+program
+	.command('configure')
+	.description('')
+	.action(NOOP);
+
+
+
+
+
+
+
+//
+// Normalize help argument, i.e.
+// 
+// $ sails --help
+// $ sails help
+// $ sails
+// $ sails <unrecognized_cmd>
+//
+
+
+// $ sails help (--help synonym)
+program
+	.command('help')
+	.description('')
+	.action( program.usageMinusWildcard );
 
 
 
@@ -55,26 +172,30 @@ process.argv = _.map(process.argv,function(arg){
 // Mask the '*' in `help`.
 program
 	.command('*')
-	.action(function () {
-		program.help.maskCommand('*');
-	});
+	.action( program.usageMinusWildcard );
 
-program.parse(process.argv);
+
+
 
 
 // $ sails
+// 
+program.parse(process.argv);
 var NO_COMMAND_SPECIFIED = program.args.length === 0;
 if (NO_COMMAND_SPECIFIED) {
-  program.help.maskCommand('*');
+  program.usageMinusWildcard();
 }
-if (program.args.length === 0) { program.help(); }
 
-// console.log('PRASE!')
 
-// If no arguments were provided, treat it just like `help`
-// if ( ! process.argv.length < 3 ) {
-//         program.help();
-// }
+
+
+
+
+
+
+
+
+
 
 
 

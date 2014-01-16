@@ -1,4 +1,13 @@
 /**
+ * Module dependencies
+ */
+
+var Sails = require('../lib/app');
+
+
+
+
+/**
  * `sails lift`
  *
  * Expose method which lifts the appropriate instance of Sails.
@@ -6,12 +15,10 @@
  *
  * @param {Object} options - to pass to sails.lift()
  */
-module.exports = function() {
-	var log = this.logger;
-	var config = this.config;
+module.exports = function(options) {
 
 	// Ensure options passed in are not mutated
-	var options = _.cloneDeep(config);
+	options = _.cloneDeep(options);
 
 	// Use the app's local Sails in `node_modules` if one exists
 	var appPath = process.cwd();

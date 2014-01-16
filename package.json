@@ -16,13 +16,13 @@
     "orm",
     "socket.io"
   ],
-  "main": "./lib/index",
+  "main": "./lib/index.js",
   "bin": {
-    "sails": "./bin/index.js",
-    "sailsd": "./bin/sailsd.sh"
+    "sails": "./bin/sails.js"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "prepublish": "npm prune"
   },
   "directories": {
     "lib": "lib"
@@ -64,7 +64,8 @@
     "grunt-contrib-less": "~0.8.3",
     "grunt-contrib-coffee": "0.7.0",
     "sails-generate": "0.0.7",
-    "merge-context": "0.0.3"
+    "merge-context": "0.0.3",
+    "commander": "~2.1.0"
   },
   "devDependencies": {
     "root-require": "~0.2.0",
