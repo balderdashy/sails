@@ -28,7 +28,6 @@ module.exports = function () {
 
 	// Build initial scope
 	var scope = {
-		args: cliArguments,
 		rootPath: process.cwd(),
 		sailsPackageJSON: package
 	};
@@ -36,9 +35,12 @@ module.exports = function () {
 	// Mix-in rc config
 	_.merge(scope, config.generators);
 
-	// Peel off the generatorType
 	var cliArguments = Array.prototype.slice.call(arguments);
+	
+	// Remove commander's extra argument
 	cliArguments.pop();
+	
+	// Peel off the generatorType and the rest of the args
 	scope.generatorType = cliArguments.shift();
 	scope.args = cliArguments;
 

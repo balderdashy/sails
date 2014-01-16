@@ -5,10 +5,15 @@
  * Module dependencies
  */
 
-var Sails = require('../lib/app')
-	, path  = require('path')
-	, captains = require('captains-log')
+var package = require('../package.json')
+	, reportback = require('reportback')()
+	, rc = require('rc')
+	, _ = require('lodash')
 	, sailsgen = require('sails-generate');
+
+
+
+
 
 /**
  * `sails new`
@@ -19,28 +24,40 @@ var Sails = require('../lib/app')
  * Asset auto-"linker" is enabled by default.
  */
 
-module.exports = function ( ) {
+module.exports = function () {
+
+	// Get CLI configuration
+	var config = rc('sails');
+
+	// Build initial scope
+	var scope = {
+		rootPath: process.cwd(),
+		sailsPackageJSON: package
+	};
+
+	// Mix-in rc config
+	_.merge(scope, config.generators);
+
+
+	var cliArguments = Array.prototype.slice.call(arguments);
+
+	// Remove commander's extra argument
+	cliArguments.pop();
 	
-	var config = {};
-	var log = captains(config.log);
+	// Peel off the rest of the args
+	scope.args = cliArguments;
 
-	// Look at config, determine which module to use for this generator
-	// `new`
-	var module = 'sails-generate-new';
-	var Generator = require(module);
-
-	sailsgen( Generator, scope, {
-		error: function(err) {
-			log.error(err);
-			return;
-		},
-		success: function() {
-			log('Created a new app `' + scope.appName + '` at ' + scope.appPath + '.');
-			return;
-		},
-		missingAppName: function () {
-			log.error('Please choose the name or destination path for your new app.');
-			return;
-		}
-	});
+	// return sailsgen( scope, reportback.extend({
+	// 	error: reportback.log.error,
+	// 	success: function() {
+	// 		util.format(require('.'))
+	// 		'Created a new sails app `' + scope.appName + '` at ' + scope.appPath + '.'
+	// 		reportback.log.info();
+	// 	},
+	// 	missingAppName: function () {
+	// 		reportback.log.error('Please choose the name or destination path for your new app.');
+	// 	}
+	// }));
 };
+
+
