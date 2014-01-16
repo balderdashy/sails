@@ -7,8 +7,7 @@
 var _ = require('lodash')
 	, program = require('./_commander')
 	, package = require('../package.json')
-	, Err = require('../errors/fatal')
-	, NOOP = function (){};
+	, Err = require('../errors/fatal');
 
 
 
@@ -56,7 +55,7 @@ program
 	.option('--prod')
 	.option('--port')
 	.description('')
-	.action(NOOP);
+	.action( require('./sails-lift') );
 
 
 // $ sails new <appname>
@@ -64,7 +63,7 @@ program
 	.command('new <appname>')
 	.option('--dry')
 	.description('')
-	.action(NOOP);
+	.action( require('./sails-new') );
 
 
 // $ sails generate <module>
@@ -116,32 +115,20 @@ program
 	.description('')
 	.action( require('./sails-console') );
 
-// $ sails www
-program
-	.command('www')
-	.description('')
-	.action(NOOP);
-
-
-// $ sails run
-program
-	.command('run')
-	.description('')
-	.action(NOOP);
 
 
 // $ sails debug
 program
 	.command('debug')
 	.description('')
-	.action(NOOP);
+	.action( require('./sails-debug') );
 
 
 // $ sails configure
 program
 	.command('configure')
 	.description('')
-	.action(NOOP);
+	.action( require('./sails-configure') );
 
 
 
