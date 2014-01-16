@@ -7,7 +7,7 @@ module.exports = {
 
 	cli: {
 		new: {
-			success: 'Created a new sails app `%s` at %s.',
+			success: 'Created a new sails app `%s` at %s.', // [ appName, appPath ]
 			missingAppName: 'Please choose the name or destination path for your new app.'
 		},
 		invalid: 'Sorry, I don\'t understand what that means.',
