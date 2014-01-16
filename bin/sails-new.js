@@ -1,4 +1,14 @@
-var sailsgen = require('sails-generate');
+#!/usr/bin/env node
+
+
+/**
+ * Module dependencies
+ */
+
+var Sails = require('../lib/app')
+	, path  = require('path')
+	, captains = require('captains-log')
+	, sailsgen = require('sails-generate');
 
 /**
  * `sails new`
@@ -7,12 +17,12 @@ var sailsgen = require('sails-generate');
  * Relative and/or absolute paths are ok!
  *
  * Asset auto-"linker" is enabled by default.
- * 
- * @param  {Object} scope [description]
  */
-module.exports = function ( scope ) {
-	var log = this.logger;
-	var config = this.config;
+
+module.exports = function ( ) {
+	
+	var config = {};
+	var log = captains(config.log);
 
 	// Look at config, determine which module to use for this generator
 	// `new`

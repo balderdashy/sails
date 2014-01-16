@@ -6,8 +6,7 @@
  */
 var _ = require('lodash')
 	, program = require('./_commander')
-	, package = require('../package.json')
-	, Err = require('../errors/fatal');
+	, package = require('../package.json');
 
 
 

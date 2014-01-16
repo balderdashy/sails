@@ -1,9 +1,13 @@
+#!/usr/bin/env node
+
+
 /**
  * Module dependencies
  */
 
-var Sails = require('../lib/app');
-
+var Sails = require('../lib/app')
+	, path  = require('path')
+	, captains = require('captains-log');
 
 
 
@@ -15,10 +19,11 @@ var Sails = require('../lib/app');
  *
  * @param {Object} options - to pass to sails.lift()
  */
-module.exports = function(options) {
 
-	// Ensure options passed in are not mutated
-	options = _.cloneDeep(options);
+module.exports = function () {
+
+	var config = {};
+	var log = captains(config.log);
 
 	// Use the app's local Sails in `node_modules` if one exists
 	var appPath = process.cwd();

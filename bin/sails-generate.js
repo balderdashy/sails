@@ -1,3 +1,18 @@
+#!/usr/bin/env node
+
+
+/**
+ * Module dependencies
+ */
+
+var Sails = require('../lib/app')
+	, path  = require('path')
+	, captains = require('captains-log')
+	, sailsgen = require('sails-generate');
+
+
+
+
 /**
  * `sails generate`
  *
@@ -17,10 +32,12 @@
  * @param {Object} handlers
  *	{Function} * - different callbacks than may be triggered
  */
-var generate = require('sails-generate');
-module.exports = function ( options ) {
-	var log = this.logger;
-	var config = this.config;
+
+module.exports = function (  ) {
+	
+	var config = {};
+	var log = captains(config.log);
+
 
 	var entity = options.module;
 
@@ -36,7 +53,7 @@ module.exports = function ( options ) {
 	}
 	catch (e) { throw e; }
 
-	generate(Generator, options, {
+	sailsgen (Generator, options, {
 		error: function (err) { log.error(err); },
 		success: function (output) { log.info('ok!'); },
 		notSailsApp: function () { log.error('Not a sails app.'); },

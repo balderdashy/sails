@@ -23,7 +23,7 @@ var Sails = require('../lib/app')
 module.exports = function () {
 
 	var config = {};
-	var log = captains();
+	var log = captains(config.log);
 
 	console.log();
 	log.info('Welcome to the Sails console.');
