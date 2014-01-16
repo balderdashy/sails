@@ -7,10 +7,8 @@
 
 var package = require('../package.json')
 	, reportback = require('reportback')()
-	, path  = require('path')
 	, rc = require('rc')
 	, _ = require('lodash')
-	, captains = require('captains-log')
 	, sailsgen = require('sails-generate');
 
 
@@ -25,11 +23,8 @@ var package = require('../package.json')
 
 module.exports = function () {
 
-	// TODO: get config
+	// Get CLI configuration
 	var config = rc('sails');
-
-	console.log(config);
-	var log = captains(config.log);
 
 	// Build initial scope
 	var scope = {
