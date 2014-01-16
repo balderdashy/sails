@@ -17,7 +17,7 @@
  * @param {Object} handlers
  *	{Function} * - different callbacks than may be triggered
  */
-
+var generate = require('sails-generate');
 module.exports = function ( options ) {
 	var log = this.logger;
 	var config = this.config;
