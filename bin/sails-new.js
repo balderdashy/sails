@@ -9,6 +9,7 @@ var package = require('../package.json')
 	, reportback = require('reportback')()
 	, rc = require('rc')
 	, _ = require('lodash')
+	, gettext = require('../locales/gettext')
 	, sailsgen = require('sails-generate');
 
 
@@ -47,17 +48,15 @@ module.exports = function () {
 	// Peel off the rest of the args
 	scope.args = cliArguments;
 
-	// return sailsgen( scope, reportback.extend({
-	// 	error: reportback.log.error,
-	// 	success: function() {
-	// 		util.format(require('.'))
-	// 		'Created a new sails app `' + scope.appName + '` at ' + scope.appPath + '.'
-	// 		reportback.log.info();
-	// 	},
-	// 	missingAppName: function () {
-	// 		reportback.log.error('Please choose the name or destination path for your new app.');
-	// 	}
-	// }));
+	return sailsgen( scope, reportback.extend({
+		error: reportback.log.error,
+		success: function() {
+			reportback.log.info( gettext(cli.new.success, [scope.appName, scope.appPath]) );
+		},
+		missingAppName: function () {
+			reportback.log.error( gettext(cli.new.missingAppName) );
+		}
+	}));
 };
 
 
