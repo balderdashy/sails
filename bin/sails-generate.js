@@ -30,7 +30,10 @@ module.exports = function () {
 	var scope = {
 		args: cliArguments,
 		rootPath: process.cwd(),
-		sailsPackageJSON: package
+		sailsPackageJSON: package,
+		options: {
+			maxDepth: 5
+		}
 	};
 
 	// Mix-in rc config
