@@ -31,7 +31,7 @@
     "waterline": "git://github.com/balderdashy/waterline.git#v0.10",
     "sails-disk": "git://github.com/balderdashy/sails-disk.git#associations",
     "sails-util": "~0.10.0",
-    "captains-log": "~0.10.6",
+    "captains-log": "~0.11.0",
     "express": "3.4.3",
     "socket.io": "0.9.14",
     "connect-redis": "1.4.5",
