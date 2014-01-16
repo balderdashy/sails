@@ -27,11 +27,11 @@ module.exports = function () {
 
 	// Use the app's local Sails in `node_modules` if one exists
 	var appPath = process.cwd();
-	var localSailsPath = appPath + '/node_modules/sails';
+	var localSailsPath = path.resolve(appPath, '/node_modules/sails', '/lib');
 
 	// But first make sure it'll work...
-	if (Sails.isLocalSailsValid(localSailsPath, appPath)) {
-		require(localSailsPath + '/lib').lift(options);
+	if ( Sails.isLocalSailsValid(localSailsPath, appPath) ) {
+		require(localSailsPath).lift(options);
 		return;
 	}
 

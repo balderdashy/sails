@@ -69,42 +69,7 @@ program
 program.command('generate')
 	.description('')
 	.option('--dry')
-	.action(function (module) {
-		var cmd = module;
-		if (arguments.length === 1) {
-			module = null;
-		}
-
-		console.log('sails generate '+module);
-		// program
-		// 	.command('model <resource>')
-		// 	.description('')
-		// 	.action(console.log);
-		// program
-		// 	.command('controller <resource>')
-		// 	.description('');
-		// program
-		// 	.command('api <resource>')
-		// 	.description('');
-		// generate
-		// 	.command('response <method>')
-		// 	.description('');
-		// generate
-		// 	.command('policy <name>')
-		// 	.description('');
-		// generate
-		// 	.command('service <name>')
-		// 	.description('');
-		// generate
-		// 	.command('adapter <name>')
-		// 	.description('');
-		// generate
-		// 	.command('generator <name>')
-		// 	.description('');
-		// generate
-		// 	.command('hook <name>')
-		// 	.description('');
-	});
+	.action(require('./sails-generate'));
 
 
 

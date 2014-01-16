@@ -5,7 +5,8 @@
  * Module dependencies
  */
 
-var Sails = require('../lib/app')
+var package = require('../package.json')
+	, reportback = require('reportback')()
 	, path  = require('path')
 	, captains = require('captains-log')
 	, sailsgen = require('sails-generate');
@@ -19,7 +20,7 @@ var Sails = require('../lib/app')
  * Generate module(s) for the app in our working directory.
  * Internally, uses ejs for rendering the various module templates.
  *
- * @param {Object} options
+ * @param {Object} scope
  *	 {String} appPath		- path to sails app
  *	 {String} module		- e.g. 'controller' or 'model'
  *	 {String} path			- path to output directory
@@ -33,38 +34,79 @@ var Sails = require('../lib/app')
  *	{Function} * - different callbacks than may be triggered
  */
 
-module.exports = function (  ) {
+module.exports = function () {
+
 	
+	// TODO: get config
 	var config = {};
 	var log = captains(config.log);
 
 
-	var entity = options.module;
+	// Build initial scope
+	var scope = {
 
-	if (!entity) { throw new Error(); }
+		// TODO: get semantic info from CLI args
+		args: cliArguments,
+		rootPath: process.cwd(),
+		sailsPackageJSON: package
+	};
 
-	// TODO: Look up generator entity in config and grab the module name
-	// for now:
-	var module = 'sails-generate-' + entity;
+	var cliArguments = Array.prototype.slice.call(arguments);
+	cliArguments.pop();
+
+	var generatorType = cliArguments.shift();
+	scope.args = cliArguments;
+
+	var module = 'sails-generate-'+generatorType;
 
 	var Generator;
 	try {
 		Generator = require(module);
 	}
-	catch (e) { throw e; }
+	catch(e) {
+		// cb.couldNotLoadGenerator
+		throw e;
+	}
 
-	sailsgen (Generator, options, {
-		error: function (err) { log.error(err); },
-		success: function (output) { log.info('ok!'); },
-		notSailsApp: function () { log.error('Not a sails app.'); },
-		alreadyExists: function () {
-			
-			// Log custom message if override is defined
-			if (options.logStatusOverrides && options.logStatusOverrides.alreadyExists) {
-				return options.logStatusOverrides.alreadyExists(options, log);
-			}
-
-			CLIController.error(options.globalID + ' already exists!');
-		}
-	});
+	return sailsgen(Generator, scope, reportback.extend());
 };
+
+
+
+
+	// function (module) {
+	// 	var cmd = module;
+	// 	if (arguments.length === 1) {
+	// 		module = null;
+	// 	}
+
+	// 	console.log('sails generate '+module);
+	// 	// program
+	// 	// 	.command('model <resource>')
+	// 	// 	.description('')
+	// 	// 	.action(console.log);
+	// 	// program
+	// 	// 	.command('controller <resource>')
+	// 	// 	.description('');
+	// 	// program
+	// 	// 	.command('api <resource>')
+	// 	// 	.description('');
+	// 	// generate
+	// 	// 	.command('response <method>')
+	// 	// 	.description('');
+	// 	// generate
+	// 	// 	.command('policy <name>')
+	// 	// 	.description('');
+	// 	// generate
+	// 	// 	.command('service <name>')
+	// 	// 	.description('');
+	// 	// generate
+	// 	// 	.command('adapter <name>')
+	// 	// 	.description('');
+	// 	// generate
+	// 	// 	.command('generator <name>')
+	// 	// 	.description('');
+	// 	// generate
+	// 	// 	.command('hook <name>')
+	// 	// 	.description('');
+	// });
