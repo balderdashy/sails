@@ -1,3 +1,5 @@
+var sailsgen = require('sails-generate');
+
 /**
  * `sails new`
  *
@@ -6,22 +8,24 @@
  *
  * Asset auto-"linker" is enabled by default.
  * 
- * @param  {Object} options [description]
+ * @param  {Object} scope [description]
  */
-module.exports = function ( options ) {
+module.exports = function ( scope ) {
 	var log = this.logger;
 	var config = this.config;
 
-	var GeneratorFactory = require('./generators/factory');
-	var generate = GeneratorFactory( 'new' );
+	// Look at config, determine which module to use for this generator
+	// `new`
+	var module = 'sails-generate-new';
+	var Generator = require(module);
 
-	generate( options, {
+	sailsgen( Generator, scope, {
 		error: function(err) {
 			log.error(err);
 			return;
 		},
 		success: function() {
-			log('Created a new app `' + options.appName + '` at ' + options.appPath + '.');
+			log('Created a new app `' + scope.appName + '` at ' + scope.appPath + '.');
 			return;
 		},
 		missingAppName: function () {
