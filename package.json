@@ -27,48 +27,37 @@
   "directories": {
     "lib": "lib"
   },
-  "dependencies": {
+  "configuredDependencies": {
+    "connect-redis": "~1.4.5",
+    "connect-mongo": "~0.3.2"
+  },
+  "optionalDependencies": {
     "waterline": "git://github.com/balderdashy/waterline.git#v0.10",
     "sails-disk": "git://github.com/balderdashy/sails-disk.git#associations",
-    "sails-util": "~0.10.0",
-    "captains-log": "~0.11.0",
-    "express": "3.4.3",
-    "socket.io": "0.9.14",
-    "connect-redis": "1.4.5",
-    "connect-mongo": "0.3.2",
-    "async": "0.2.9",
-    "i18n": "0.4.1",
-    "lodash": "2.4.1",
-    "underscore.string": "2.3.0",
-    "include-all": "0.1.2",
-    "connect-flash": "0.1.1",
-    "pluralize": "0.0.5",
-    "json-stringify-safe": "5.0.0",
-    "node-uuid": "1.4.0",
-    "ejs": "0.8.4",
-    "ejs-locals": "1.0.2",
-    "grunt": "0.4.1",
-    "optimist": "0.3.4",
-    "fs-extra": "0.8.1",
-    "glob": "3.1.14",
-    "grunt-cli": "0.1.9",
-    "sails-generate-gruntfile": "0.10.1",
-    "grunt-contrib-copy": "0.4.1",
-    "grunt-contrib-clean": "0.4.1",
-    "grunt-contrib-concat": "0.3.0",
-    "grunt-sails-linker": "0.9.5",
-    "grunt-contrib-jst": "0.5.0",
-    "grunt-contrib-watch": "0.4.4",
-    "grunt-contrib-uglify": "0.2.2",
-    "grunt-contrib-cssmin": "0.6.1",
-    "grunt-contrib-less": "~0.8.3",
-    "grunt-contrib-coffee": "0.7.0",
-    "sails-generate": "0.0.8",
-    "commander": "~2.1.0",
-    "reportback": "~0.1.4",
-    "rc": "~0.3.3"
+    "socket.io": "~0.9.14",
+    "connect-flash": "~0.1.1",
+    "pluralize": "~0.0.5",
+    "node-uuid": "~1.4.0",
+    "ejs": "~0.8.4",
+    "ejs-locals": "~1.0.2",
+    "glob": "~3.1.14",
+    "i18n": "~0.4.1"
   },
-  "devDependencies": {
+  "dependencies": {
+    "express": "3.4.3",
+    "commander": "~2.1.0",
+    "rc": "~0.3.3",
+    "sails-stringfile": "~0.0.0",
+    "async": "~0.2.9",
+    "lodash": "~2.4.1",
+    "include-all": "~0.1.2",
+    "captains-log": "~0.11.0",
+    "reportback": "~0.1.4",
+    "sails-util": "~0.10.0",
+    "optimist": "~0.3.4",
+    "sails-generate": "~0.0.12"
+  },
+  "testDependencies": {
     "root-require": "~0.2.0",
     "checksum": "~0.1.1",
     "mocha": "*",
@@ -79,10 +68,8 @@
     "colors": "~0.6.2",
     "expect.js": "~0.2.0",
     "should": "~2.1.1",
-    "supertest": "~0.8.2"
-  },
-  "optionalDependencies": {
-    "coffee-script": "1.6.2"
+    "supertest": "~0.8.2",
+    "fs-extra": "~0.8.1"
   },
   "repository": {
     "type": "git",

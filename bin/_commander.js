@@ -25,5 +25,4 @@ function () {
 	program.emit('version');
 };
 
-
 module.exports = program;

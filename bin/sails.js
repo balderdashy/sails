@@ -6,7 +6,8 @@
  */
 var _ = require('lodash')
 	, program = require('./_commander')
-	, package = require('../package.json');
+	, package = require('../package.json')
+	, NOOP    = function(){};
 
 
 
@@ -70,7 +71,9 @@ program
 
 
 // $ sails generate <module>
-program.command('generate')
+var generate = program.command('generate');
+generate.unknownOption = NOOP;
+generate
 	.description('')
 	.option('--dry')
 	.action(require('./sails-generate'));
@@ -130,6 +133,9 @@ program
 	.action( program.usageMinusWildcard );
 
 
+
+// Don't balk at unknown options
+program.unknownOption = NOOP;
 
 
 

@@ -26,18 +26,21 @@ module.exports = function ( ) {
 	// Get CLI configuration
 	var config = rc('sails');
 
+
 	// Build initial scope
 	var scope = {
 		rootPath: process.cwd(),
-		sailsPackageJSON: package,
-		options: {
-			maxDepth: 5
-		},
 		modules: {}
+		sailsPackageJSON: package
 	};
 
 	// Mix-in rc config
 	_.merge(scope, config.generators);
+
+	// TODO: just do a top-level merge and reference
+	// `scope.generators.modules` as needed (simpler)
+	_.merge(scope, config);
+
 
 	var cliArguments = Array.prototype.slice.call(arguments);
 	
