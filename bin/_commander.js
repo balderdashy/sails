@@ -25,8 +25,4 @@ function () {
 	program.emit('version');
 };
 
-// Don't balk at unknown options
-program.unknownOption = function(){};
-
-
 module.exports = program;

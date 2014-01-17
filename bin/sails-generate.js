@@ -26,6 +26,7 @@ module.exports = function () {
 	// Get CLI configuration
 	var config = rc('sails');
 
+
 	// Build initial scope
 	var scope = {
 		rootPath: process.cwd(),
@@ -34,6 +35,12 @@ module.exports = function () {
 
 	// Mix-in rc config
 	_.merge(scope, config.generators);
+
+	// TODO: just do a top-level merge and reference
+	// `scope.generators.modules` as needed (simpler)
+	_.merge(scope, config);
+
+	console.log(config);
 
 	var cliArguments = Array.prototype.slice.call(arguments);
 	
