@@ -39,19 +39,20 @@
     "ejs": "~0.8.4",
     "ejs-locals": "~1.0.2",
     "glob": "~3.1.14",
-    "i18n": "~0.4.1",
+    "i18n": "~0.4.1"
   },
   "dependencies": {
     "express": "3.4.3",
     "commander": "~2.1.0",
     "rc": "~0.3.3",
+    "sails-stringfile": "~0.0.0",
     "async": "~0.2.9",
     "lodash": "~2.4.1",
     "include-all": "~0.1.2",
     "captains-log": "~0.11.0",
     "reportback": "~0.1.4",
     "sails-util": "~0.10.0",
-    "optimist": "~0.3.4",
+    "optimist": "~0.3.4"
   },
   "devDependencies": {
     "root-require": "~0.2.0",
@@ -70,12 +71,10 @@
     "type": "git",
     "url": "git://github.com/balderdashy/sails.git"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://sails.mit-license.org/"
-    }
-  ],
+  "licenses": [{
+    "type": "MIT",
+    "url": "http://sails.mit-license.org/"
+  }],
   "bugs": {
     "url": "http://github.com/balderdashy/sails/issues"
   },
