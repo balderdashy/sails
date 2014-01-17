@@ -21,7 +21,7 @@ var package = require('../package.json')
  * Internally, uses ejs for rendering the various module templates.
  */
 
-module.exports = function () {
+module.exports = function ( ) {
 
 	// Get CLI configuration
 	var config = rc('sails');
@@ -32,7 +32,8 @@ module.exports = function () {
 		sailsPackageJSON: package,
 		options: {
 			maxDepth: 5
-		}
+		},
+		modules: {}
 	};
 
 	// Mix-in rc config
@@ -47,6 +48,6 @@ module.exports = function () {
 	scope.generatorType = cliArguments.shift();
 	scope.args = cliArguments;
 
-	return sailsgen( scope, reportback.extend() );
+	return sailsgen( scope );
 };
 
