@@ -60,14 +60,9 @@ program
 
 // $ sails new <appname>
 program
-	.command('new <appname>')
+	.command('new [appname]')
 	.option('--dry')
-	.description('')
-	.action( function() {
-		var args = Array.prototype.slice.call(arguments);
-		args.unshift('new');
-		require('./sails-generate').apply(this, args);
-	} );
+	.action(require('./sails-new'));
 
 
 // $ sails generate <module>
