@@ -65,16 +65,19 @@
     "colors": "~0.6.2",
     "expect.js": "~0.2.0",
     "should": "~2.1.1",
-    "supertest": "~0.8.2"
+    "supertest": "~0.8.2",
+    "fs-extra": "~0.8.1"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/balderdashy/sails.git"
   },
-  "licenses": [{
-    "type": "MIT",
-    "url": "http://sails.mit-license.org/"
-  }],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://sails.mit-license.org/"
+    }
+  ],
   "bugs": {
     "url": "http://github.com/balderdashy/sails/issues"
   },
