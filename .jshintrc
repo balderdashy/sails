@@ -27,7 +27,10 @@
   // Suppress warnings about "weird constructions"
   // i.e. allow code like:
   //  (new (function OneTimeUsePrototype () { } ))
-  "supernew": true
+  "supernew": true,
+  
+  // Allow backwards, node-dependency-style commas
+  "laxcomma": true
 
   // "bitwise": true,
   // "camelcase": true,
