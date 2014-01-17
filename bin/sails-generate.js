@@ -40,7 +40,6 @@ module.exports = function () {
 	// `scope.generators.modules` as needed (simpler)
 	_.merge(scope, config);
 
-	console.log(config);
 
 	var cliArguments = Array.prototype.slice.call(arguments);
 	

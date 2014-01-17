@@ -5,9 +5,12 @@
  * Module dependencies
  */
 
-var Sails = require('../lib/app')
-	, path  = require('path')
-	, captains = require('captains-log');
+var package = require('../package.json')
+	, Sails = require('../lib/app')
+	, rc = require('rc')
+	, reportback = require('reportback')()
+	, _ = require('lodash')
+	, path  = require('path');
 
 
 
@@ -16,14 +19,26 @@ var Sails = require('../lib/app')
  *
  * Expose method which lifts the appropriate instance of Sails.
  * (Fire up the Sails app in our working directory.)
- *
- * @param {Object} options - to pass to sails.lift()
  */
 
 module.exports = function () {
 
-	var config = {};
-	var log = captains(config.log);
+	// Get CLI configuration
+	var config = rc('sails');
+
+
+	// Build initial scope
+	var scope = {
+		rootPath: process.cwd(),
+		sailsPackageJSON: package
+	};
+
+	// Mix-in rc config
+	_.merge(scope, config.generators);
+
+	// TODO: just do a top-level merge and reference
+	// `scope.generators.modules` as needed (simpler)
+	_.merge(scope, config);
 
 	// Use the app's local Sails in `node_modules` if one exists
 	var appPath = process.cwd();
@@ -31,7 +46,7 @@ module.exports = function () {
 
 	// But first make sure it'll work...
 	if ( Sails.isLocalSailsValid(localSailsPath, appPath) ) {
-		require(localSailsPath).lift(options);
+		require(localSailsPath).lift(scope);
 		return;
 	}
 
@@ -39,6 +54,6 @@ module.exports = function () {
 	// using the currently running version of Sails.  This is 
 	// probably always the global install.
 	var globalSails = new Sails();
-	globalSails.lift(options);
+	globalSails.lift(scope);
 	return;
 };
