@@ -54,9 +54,10 @@
     "captains-log": "~0.11.0",
     "reportback": "~0.1.4",
     "sails-util": "~0.10.0",
-    "optimist": "~0.3.4"
+    "optimist": "~0.3.4",
+    "sails-generate": "~0.0.11"
   },
-  "testDependencies" :{
+  "testDependencies": {
     "root-require": "~0.2.0",
     "checksum": "~0.1.1",
     "mocha": "*",
