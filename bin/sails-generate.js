@@ -30,7 +30,7 @@ module.exports = function ( ) {
 	// Build initial scope
 	var scope = {
 		rootPath: process.cwd(),
-		modules: {}
+		modules: {},
 		sailsPackageJSON: package
 	};
 
