@@ -27,12 +27,14 @@
   "directories": {
     "lib": "lib"
   },
+  "configuredDependencies": {
+    "connect-redis": "~1.4.5",
+    "connect-mongo": "~0.3.2"
+  },
   "optionalDependencies": {
     "waterline": "git://github.com/balderdashy/waterline.git#v0.10",
     "sails-disk": "git://github.com/balderdashy/sails-disk.git#associations",
     "socket.io": "~0.9.14",
-    "connect-redis": "~1.4.5",
-    "connect-mongo": "~0.3.2",
     "connect-flash": "~0.1.1",
     "pluralize": "~0.0.5",
     "node-uuid": "~1.4.0",
