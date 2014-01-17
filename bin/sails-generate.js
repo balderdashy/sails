@@ -29,10 +29,7 @@ module.exports = function () {
 	// Build initial scope
 	var scope = {
 		rootPath: process.cwd(),
-		sailsPackageJSON: package,
-		options: {
-			maxDepth: 5
-		}
+		sailsPackageJSON: package
 	};
 
 	// Mix-in rc config

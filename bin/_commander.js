@@ -26,7 +26,7 @@ function () {
 };
 
 // Don't balk at unknown options
-program.unknownOptions = function(){};
+program.unknownOption = function(){};
 
 
 module.exports = program;
