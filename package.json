@@ -54,7 +54,7 @@
     "sails-util": "~0.10.0",
     "optimist": "~0.3.4"
   },
-  "devDependencies": {
+  "testDependencies" :{
     "root-require": "~0.2.0",
     "checksum": "~0.1.1",
     "mocha": "*",
