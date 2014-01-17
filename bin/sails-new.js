@@ -50,6 +50,6 @@ module.exports = function ( ) {
 	scope.generatorType = 'new'
 	scope.args = cliArguments;
 
-	return sailsgen( scope );
+	return sailsgen( scope, {success: function(){}} );
 };
 
