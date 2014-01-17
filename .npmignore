@@ -4,21 +4,15 @@ ssl
 .DS_STORE
 *~
 .idea
-
 nbproject
-
-
 test
 CONTRIBUTING.md
 .git
 .gitignore
 .tmp
-
 *.swo
 *.swp
 *.swn
 *.swm
-
-
-#Ignore JSHint RC file for NPM
 .jshintrc
+.editorconfig
