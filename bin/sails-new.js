@@ -9,9 +9,8 @@ var package = require('../package.json')
 	, reportback = require('reportback')()
 	, rc = require('rc')
 	, _ = require('lodash')
-	, gettext = require('../locales/gettext')
+	, path = require('path')
 	, sailsgen = require('sails-generate');
-
 
 
 
@@ -19,13 +18,10 @@ var package = require('../package.json')
 /**
  * `sails new`
  *
- * Create all the files/folders for a new app at the specified path.
- * Relative and/or absolute paths are ok!
- *
- * Asset auto-"linker" is enabled by default.
+ * Generate a new Sails app.
  */
 
-module.exports = function () {
+module.exports = function ( ) {
 
 	// Get CLI configuration
 	var config = rc('sails');
@@ -33,30 +29,27 @@ module.exports = function () {
 	// Build initial scope
 	var scope = {
 		rootPath: process.cwd(),
+		modules: {},
+		sailsRoot: path.resolve(__dirname, '..'),
 		sailsPackageJSON: package
 	};
 
 	// Mix-in rc config
 	_.merge(scope, config.generators);
 
+	// TODO: just do a top-level merge and reference
+	// `scope.generators.modules` as needed (simpler)
+	_.merge(scope, config);
+
 
 	var cliArguments = Array.prototype.slice.call(arguments);
-
+	
 	// Remove commander's extra argument
 	cliArguments.pop();
 	
-	// Peel off the rest of the args
+	scope.generatorType = 'new'
 	scope.args = cliArguments;
 
-	return sailsgen( scope, reportback.extend({
-		error: reportback.log.error,
-		success: function() {
-			reportback.log.info( gettext(cli.new.success, [scope.appName, scope.appPath]) );
-		},
-		missingAppName: function () {
-			reportback.log.error( gettext(cli.new.missingAppName) );
-		}
-	}));
+	return sailsgen( scope, {success: function(){}} );
 };
-
 
