@@ -30,7 +30,7 @@ module.exports = function () {
 	console.log();
 
 	// Now load up sails for real
-	var sails = new Sails();
+	var sails = Sails();
 	sails.lift(_.merge({}, rconf, {
 
 		// Silence annoying warning
@@ -48,6 +48,7 @@ module.exports = function () {
 
 		log.info('Welcome to the Sails console.');
 		log.info(('( to exit, type '+'<CTRL>+<C>'+' )').grey);
+		console.log();
 		require('colors');
 
 		var repl = REPL.start('sails> ');
