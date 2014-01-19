@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "waterline": "git://github.com/balderdashy/waterline.git#v0.10",
-    "sails-disk": "git://github.com/balderdashy/sails-disk.git#associations",
+    "sails-disk": "git://github.com/balderdashy/sails-disk.git#0.10.beta",
     "sails-util": "~0.10.0",
     "captains-log": "~0.10.6",
     "express": "3.4.3",
