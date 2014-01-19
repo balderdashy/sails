@@ -27,7 +27,7 @@
   "directories": {
     "lib": "lib"
   },
-  "configuredDependencies": {
+  "configurableDependencies": {
     "connect-redis": "~1.4.5",
     "connect-mongo": "~0.3.2"
   },
@@ -51,11 +51,12 @@
     "async": "~0.2.9",
     "lodash": "~2.4.1",
     "include-all": "~0.1.2",
-    "captains-log": "~0.11.0",
+    "captains-log": "~0.11.1",
     "reportback": "~0.1.4",
     "sails-util": "~0.10.0",
     "optimist": "~0.3.4",
-    "sails-generate": "~0.0.12"
+    "sails-generate": "~0.0.12",
+    "colors": "~0.6.2"
   },
   "testDependencies": {
     "root-require": "~0.2.0",

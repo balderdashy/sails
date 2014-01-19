@@ -8,9 +8,11 @@
 var Sails = require('../lib/app')
 	, path  = require('path')
 	, _     = require('lodash')
+	, rconf = require('../lib/configuration/rc')
 	, captains = require('captains-log')
 	, REPL		= require('repl');
 
+require('colors');
 
 
 /**
@@ -22,15 +24,15 @@ var Sails = require('../lib/app')
 
 module.exports = function () {
 
-	var config = {};
-	var log = captains(config.log);
+	var log = captains(rconf.log);
 
 	console.log();
-	log.verbose('Lifting `' + process.cwd() + '` in interactive mode...');
+	log.info('Starting app in interactive mode...'.debug);
+	console.log();
 
 	// Now load up sails for real
-	var sails = new Sails();
-	sails.lift(_.merge({}, config, {
+	var sails = Sails();
+	sails.lift(_.merge({}, rconf, {
 
 		// Silence annoying warning
 		// (if you're in the REPL, you already know.)
@@ -46,7 +48,8 @@ module.exports = function () {
 		if (err) return Err.fatal.failedToLoadSails(err);
 
 		log.info('Welcome to the Sails console.');
-		log.info('( to exit, type <CTRL>+<C> )');
+		log.info(('( to exit, type '+'<CTRL>+<C>'+' )').grey);
+		console.log();
 
 		var repl = REPL.start('sails> ');
 		repl.on('exit', function(err) {

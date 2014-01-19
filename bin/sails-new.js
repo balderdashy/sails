@@ -6,8 +6,7 @@
  */
 
 var package = require('../package.json')
-	, reportback = require('reportback')()
-	, rc = require('rc')
+	, rconf = require('../lib/configuration/rc')
 	, _ = require('lodash')
 	, path = require('path')
 	, sailsgen = require('sails-generate');
@@ -24,7 +23,7 @@ var package = require('../package.json')
 module.exports = function ( ) {
 
 	// Get CLI configuration
-	var config = rc('sails');
+	var rconf = rc('sails');
 
 	// Build initial scope
 	var scope = {
@@ -35,12 +34,12 @@ module.exports = function ( ) {
 		viewEngine: config.viewEngine || config.template || 'ejs'
 	};
 
-	// Mix-in rc config
-	_.merge(scope, config.generators);
+	// Mix-in rconf
+	_.merge(scope, rconf.generators);
 
 	// TODO: just do a top-level merge and reference
 	// `scope.generators.modules` as needed (simpler)
-	_.merge(scope, config);
+	_.merge(scope, rconf);
 
 
 	var cliArguments = Array.prototype.slice.call(arguments);
@@ -48,7 +47,7 @@ module.exports = function ( ) {
 	// Remove commander's extra argument
 	cliArguments.pop();
 	
-	scope.generatorType = 'new'
+	scope.generatorType = 'new';
 	scope.args = cliArguments;
 
 	return sailsgen( scope, {success: function(){}} );

@@ -7,11 +7,13 @@
 
 var package = require('../package.json')
 	, Sails = require('../lib/app')
-	, rc = require('rc')
 	, reportback = require('reportback')()
 	, _ = require('lodash')
+	, rconf = require('../lib/configuration/rc')
+	, captains = require('captains-log')
 	, path  = require('path');
 
+require('colors');
 
 
 /**
@@ -23,26 +25,21 @@ var package = require('../package.json')
 
 module.exports = function () {
 
-	// Get CLI configuration
-	var config = rc('sails');
+	var log = captains(rconf.log);
 
+	console.log();
+	log.info('Starting app...'.debug);
+	console.log();
 
-	// Build initial scope
-	var scope = {
+	// Build initial scope, mixing-in rc config
+	var scope = _.merge({
 		rootPath: process.cwd(),
 		sailsPackageJSON: package
-	};
-
-	// Mix-in rc config
-	_.merge(scope, config.generators);
-
-	// TODO: just do a top-level merge and reference
-	// `scope.generators.modules` as needed (simpler)
-	_.merge(scope, config);
+	}, rconf);
 
 	// Use the app's local Sails in `node_modules` if one exists
 	var appPath = process.cwd();
-	var localSailsPath = path.resolve(appPath, '/node_modules/sails', '/lib');
+	var localSailsPath = path.resolve(appPath, '/node_modules/sails');
 
 	// But first make sure it'll work...
 	if ( Sails.isLocalSailsValid(localSailsPath, appPath) ) {
@@ -53,7 +50,7 @@ module.exports = function () {
 	// Otherwise, if no workable local Sails exists, run the app 
 	// using the currently running version of Sails.  This is 
 	// probably always the global install.
-	var globalSails = new Sails();
+	var globalSails = Sails();
 	globalSails.lift(scope);
 	return;
 };
