@@ -12,6 +12,7 @@ var Sails = require('../lib/app')
 	, captains = require('captains-log')
 	, REPL		= require('repl');
 
+require('colors');
 
 
 /**
@@ -26,7 +27,7 @@ module.exports = function () {
 	var log = captains(rconf.log);
 
 	console.log();
-	log.info('Lifting Sails in interactive mode...'.debug);
+	log.info('Starting app in interactive mode...'.debug);
 	console.log();
 
 	// Now load up sails for real
@@ -49,7 +50,6 @@ module.exports = function () {
 		log.info('Welcome to the Sails console.');
 		log.info(('( to exit, type '+'<CTRL>+<C>'+' )').grey);
 		console.log();
-		require('colors');
 
 		var repl = REPL.start('sails> ');
 		repl.on('exit', function(err) {

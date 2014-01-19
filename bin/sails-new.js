@@ -6,7 +6,6 @@
  */
 
 var package = require('../package.json')
-	, reportback = require('reportback')()
 	, rconf = require('../lib/configuration/rc')
 	, _ = require('lodash')
 	, path = require('path')

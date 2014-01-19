@@ -19,5 +19,5 @@ node --debug `which sails` $@
 
 module.exports = function () {
 	var config = {};
-	var log = captains(config.log);
+	var log = captains();
 };

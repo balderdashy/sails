@@ -10,8 +10,10 @@ var package = require('../package.json')
 	, reportback = require('reportback')()
 	, _ = require('lodash')
 	, rconf = require('../lib/configuration/rc')
+	, captains = require('captains-log')
 	, path  = require('path');
 
+require('colors');
 
 
 /**
@@ -23,18 +25,17 @@ var package = require('../package.json')
 
 module.exports = function () {
 
-	// Build initial scope
-	var scope = {
+	var log = captains(rconf.log);
+
+	console.log();
+	log.info('Starting app...'.debug);
+	console.log();
+
+	// Build initial scope, mixing-in rc config
+	var scope = _.merge({
 		rootPath: process.cwd(),
 		sailsPackageJSON: package
-	};
-
-	// Mix-in rc config
-	_.merge(scope, rconf.generators);
-
-	// TODO: just do a top-level merge and reference
-	// `scope.generators.modules` as needed (simpler)
-	_.merge(scope, rconf);
+	}, rconf);
 
 	// Use the app's local Sails in `node_modules` if one exists
 	var appPath = process.cwd();
