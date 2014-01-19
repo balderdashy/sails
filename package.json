@@ -51,7 +51,7 @@
     "async": "~0.2.9",
     "lodash": "~2.4.1",
     "include-all": "~0.1.2",
-    "captains-log": "~0.11.0",
+    "captains-log": "~0.11.1",
     "reportback": "~0.1.4",
     "sails-util": "~0.10.0",
     "optimist": "~0.3.4",
