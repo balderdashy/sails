@@ -8,6 +8,7 @@
 var Sails = require('../lib/app')
 	, path  = require('path')
 	, _     = require('lodash')
+	, rconf = require('../lib/configuration/rc')
 	, captains = require('captains-log')
 	, REPL		= require('repl');
 
@@ -22,15 +23,15 @@ var Sails = require('../lib/app')
 
 module.exports = function () {
 
-	var config = {};
-	var log = captains(config.log);
+	var rconf = {};
+	var log = captains(rconf.log);
 
 	console.log();
 	log.verbose('Lifting `' + process.cwd() + '` in interactive mode...');
 
 	// Now load up sails for real
 	var sails = new Sails();
-	sails.lift(_.merge({}, config, {
+	sails.lift(_.merge({}, rconf, {
 
 		// Silence annoying warning
 		// (if you're in the REPL, you already know.)

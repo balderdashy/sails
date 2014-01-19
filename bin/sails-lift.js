@@ -7,9 +7,9 @@
 
 var package = require('../package.json')
 	, Sails = require('../lib/app')
-	, rc = require('rc')
 	, reportback = require('reportback')()
 	, _ = require('lodash')
+	, rconf = require('../lib/configuration/rc')
 	, path  = require('path');
 
 
@@ -23,10 +23,6 @@ var package = require('../package.json')
 
 module.exports = function () {
 
-	// Get CLI configuration
-	var config = rc('sails');
-
-
 	// Build initial scope
 	var scope = {
 		rootPath: process.cwd(),
@@ -34,11 +30,11 @@ module.exports = function () {
 	};
 
 	// Mix-in rc config
-	_.merge(scope, config.generators);
+	_.merge(scope, rconf.generators);
 
 	// TODO: just do a top-level merge and reference
 	// `scope.generators.modules` as needed (simpler)
-	_.merge(scope, config);
+	_.merge(scope, rconf);
 
 	// Use the app's local Sails in `node_modules` if one exists
 	var appPath = process.cwd();
