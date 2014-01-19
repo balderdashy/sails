@@ -31,7 +31,8 @@ module.exports = function ( ) {
 		rootPath: process.cwd(),
 		modules: {},
 		sailsRoot: path.resolve(__dirname, '..'),
-		sailsPackageJSON: package
+		sailsPackageJSON: package,
+		viewEngine: config.viewEngine || config.template || 'ejs'
 	};
 
 	// Mix-in rc config
