@@ -21,7 +21,7 @@
     "sails": "./bin/sails.js"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "istanbul cover _mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | coveralls"
   },
   "directories": {
     "lib": "lib"
@@ -64,7 +64,9 @@
   "devDependencies": {
     "mocha": "*",
     "request": "*",
-    "wrench": "~1.5.1"
+    "wrench": "~1.5.1",
+    "istanbul": "~0.2.3",
+    "coveralls": "~2.6.1"
   },
   "optionalDependencies": {
     "coffee-script": "1.6.2"
