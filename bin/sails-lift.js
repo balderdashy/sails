@@ -49,7 +49,7 @@ module.exports = function () {
 	// Otherwise, if no workable local Sails exists, run the app 
 	// using the currently running version of Sails.  This is 
 	// probably always the global install.
-	var globalSails = new Sails();
+	var globalSails = Sails();
 	globalSails.lift(scope);
 	return;
 };

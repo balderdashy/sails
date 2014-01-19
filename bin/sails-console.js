@@ -26,7 +26,8 @@ module.exports = function () {
 	var log = captains(rconf.log);
 
 	console.log();
-	log.verbose('Lifting `' + process.cwd() + '` in interactive mode...');
+	log.info('Lifting Sails in interactive mode...'.debug);
+	console.log();
 
 	// Now load up sails for real
 	var sails = new Sails();
@@ -46,7 +47,8 @@ module.exports = function () {
 		if (err) return Err.fatal.failedToLoadSails(err);
 
 		log.info('Welcome to the Sails console.');
-		log.info('( to exit, type <CTRL>+<C> )');
+		log.info(('( to exit, type '+'<CTRL>+<C>'+' )').grey);
+		require('colors');
 
 		var repl = REPL.start('sails> ');
 		repl.on('exit', function(err) {

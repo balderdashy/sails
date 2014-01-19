@@ -55,7 +55,8 @@
     "reportback": "~0.1.4",
     "sails-util": "~0.10.0",
     "optimist": "~0.3.4",
-    "sails-generate": "~0.0.12"
+    "sails-generate": "~0.0.12",
+    "colors": "~0.6.2"
   },
   "testDependencies": {
     "root-require": "~0.2.0",
