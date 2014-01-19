@@ -23,7 +23,6 @@ var Sails = require('../lib/app')
 
 module.exports = function () {
 
-	var rconf = {};
 	var log = captains(rconf.log);
 
 	console.log();
