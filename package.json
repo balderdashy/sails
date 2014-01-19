@@ -27,7 +27,7 @@
   "directories": {
     "lib": "lib"
   },
-  "configuredDependencies": {
+  "configurableDependencies": {
     "connect-redis": "~1.4.5",
     "connect-mongo": "~0.3.2"
   },
