@@ -51,7 +51,7 @@ Called after all of the app's configured static routes have been bound.
 i.e. a hook might listen to this event to bind a "shadow route" to a blueprint.
 
 ### `router:done`
-Called when all routes have been bound, including those originating from hooks.
+Called when all routes have been bound, including those originating from hooks (i.e. things listening for `router:after`.)
 
 ### `router:reset`
 Called when the router is flushed (i.e. all routes are unbound).
