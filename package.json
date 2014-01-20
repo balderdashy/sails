@@ -59,7 +59,8 @@
   },
   "devDependencies": {
     "commander": "~2.1.0",
-    "enpeem": "~0.1.1"
+    "enpeem": "~0.1.1",
+    "grunt": "0.4.2"
   },
   "testDependencies": {
     "root-require": "~0.2.0",
