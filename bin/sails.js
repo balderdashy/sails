@@ -62,6 +62,8 @@ program
 program
 	.command('new [appname]')
 	.option('--dry')
+	.option('--viewEngine [viewEngine]')
+	.option('--template [viewEngine]')
 	.action(require('./sails-new'));
 
 

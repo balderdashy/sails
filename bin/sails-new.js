@@ -22,15 +22,13 @@ var package = require('../package.json')
 
 module.exports = function ( ) {
 
-	// Get CLI configuration
-	var rconf = rc('sails');
-
 	// Build initial scope
 	var scope = {
 		rootPath: process.cwd(),
 		modules: {},
 		sailsRoot: path.resolve(__dirname, '..'),
-		sailsPackageJSON: package
+		sailsPackageJSON: package,
+		viewEngine: rconf.viewEngine || rconf.template
 	};
 
 	// Mix-in rconf
