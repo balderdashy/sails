@@ -4,17 +4,31 @@
  */
 
 var npm = require('enpeem')
-	, modules = require('../package.json').testDependencies
+	, package = require('../package.json')
+	, util = require('util')
 	, _ = require('lodash');
 
-modules = _.reduce(modules, function (modules, version, name) {
+modules = _.reduce(package.testDependencies, function (modules, version, name) {
 	modules.push(name+'@'+version);
 	return modules;
 }, []);
 
+console.log(
+	'\n\n',
+	'Ensuring test dependencies are installed...',
+	'\n',
+	util.format('(To skip this step next time, just run `%s` intead of `npm test`)', package.scripts.test),
+	'\n\n');
+
 npm.install(modules, {
-	production: ''
+	production: true,
+	'cache-min': 999999999
 }, function(err) {
 	if (err) throw err;
-	console.log('\n\n','Test dependencies installed!');
+	console.log(
+		'\n\n',
+		'Ready!',
+		'\n',
+		'Running tests...'
+	);
 });
