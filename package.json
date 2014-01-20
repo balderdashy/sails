@@ -27,13 +27,20 @@
   "directories": {
     "lib": "lib"
   },
-  "configurableDependencies": {
-    "connect-redis": "~1.4.5",
-    "connect-mongo": "~0.3.2"
+  "dependencies": {
+    "express": "3.4.3",
+    "rc": "~0.3.3",
+    "sails-stringfile": "~0.0.0",
+    "async": "~0.2.9",
+    "lodash": "~2.4.1",
+    "optimist": "~0.3.4",
+    "captains-log": "~0.11.1",
+    "reportback": "~0.1.4",
+    "sails-util": "~0.10.0"
   },
   "optionalDependencies": {
     "waterline": "git://github.com/balderdashy/waterline.git#v0.10",
-    "sails-disk": "git://github.com/balderdashy/sails-disk.git#associations",
+    "sails-disk": "git://github.com/balderdashy/sails-disk.git#0.10.beta",
     "socket.io": "~0.9.14",
     "connect-flash": "~0.1.1",
     "pluralize": "~0.0.5",
@@ -41,22 +48,15 @@
     "ejs": "~0.8.4",
     "ejs-locals": "~1.0.2",
     "glob": "~3.1.14",
-    "i18n": "~0.4.1"
-  },
-  "dependencies": {
-    "express": "3.4.3",
-    "commander": "~2.1.0",
-    "rc": "~0.3.3",
-    "sails-stringfile": "~0.0.0",
-    "async": "~0.2.9",
-    "lodash": "~2.4.1",
-    "include-all": "~0.1.2",
-    "captains-log": "~0.11.1",
-    "reportback": "~0.1.4",
-    "sails-util": "~0.10.0",
-    "optimist": "~0.3.4",
+    "i18n": "~0.4.1",
     "sails-generate": "~0.0.12",
-    "colors": "~0.6.2"
+    "include-all": "~0.1.2",
+    "connect-redis": "~1.4.5",
+    "connect-mongo": "~0.3.2"
+  },
+  "devDependencies": {
+    "colors": "~0.6.2",
+    "commander": "~2.1.0"
   },
   "testDependencies": {
     "root-require": "~0.2.0",
