@@ -3,7 +3,7 @@
   "author": "Mike McNeil <mike@balderdash.co>",
   "version": "0.10.0",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
-  "homepage": "http://sailsjs.com",
+  "homepage": "http://sailsjs.org",
   "keywords": [
     "mvc",
     "web-framework",
@@ -54,7 +54,8 @@
     "sails-generate": "~0.0.12",
     "include-all": "~0.1.2",
     "connect-redis": "~1.4.5",
-    "connect-mongo": "~0.3.2"
+    "connect-mongo": "~0.3.2",
+    "grunt-cli": "~0.1.11"
   },
   "devDependencies": {
     "commander": "~2.1.0",
@@ -63,7 +64,6 @@
   "testDependencies": {
     "root-require": "~0.2.0",
     "checksum": "~0.1.1",
-    "mocha": "*",
     "request": "*",
     "wrench": "~1.5.1",
     "benchmark": "~1.0.0",
