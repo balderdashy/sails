@@ -18,7 +18,9 @@ The community is what makes Sails great, without you we wouldn't have come so fa
 ## Writing Code
 
 > This section is based on the [Node.js contribution guide](https://github.com/joyent/node/blob/master/CONTRIBUTING.md#contributing).
-
+>
+> **CoffeeScript?**
+> For consistency, all code in Sails core, including core hooks and core generators, must be written in JavaScript, not CoffeeScript or TypeScript.  We can't merge a pull request in CofeeScript.
 
 #### Contributing to an adapter
 

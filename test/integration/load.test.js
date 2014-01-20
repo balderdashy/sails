@@ -49,15 +49,22 @@ describe.skip('Configs', function() {
 			});
 		});
 
-		it('should load adapter configs', function() {
-			var conf = config.adapters;
-			assert(conf.
-				default.module === 'sails-disk');
-			assert(conf.custom && conf.custom.module === 'sails-disk');
-			assert(conf.sqlite.module === 'sails-sqlite');
-			assert(conf.sqlite.host === 'sqliteHOST');
-			assert(conf.sqlite.user === 'sqliteUSER');
+		it('should retain legacy `config.adapters` for backwards compat.', function() {
+			var legacyConfig = config.adapters;
+			assert(legacyConfig.custom && legacyConfig.custom.module === 'sails-disk');
+			assert(legacyConfig.sqlite.module === 'sails-sqlite');
+			assert(legacyConfig.sqlite.host === 'sqliteHOST');
+			assert(legacyConfig.sqlite.user === 'sqliteUSER');
 		});
+
+		// it('should load connection configs', function() {
+		// 	var connectionsConfig = config.connections;
+		// 	assert(config.model.adapter === 'sails-disk');
+		// 	assert(connectionsConfig.custom && connectionsConfig.custom.module === 'sails-disk');
+		// 	assert(connectionsConfig.sqlite.module === 'sails-sqlite');
+		// 	assert(connectionsConfig.sqlite.host === 'sqliteHOST');
+		// 	assert(connectionsConfig.sqlite.user === 'sqliteUSER');
+		// });
 
 		
 

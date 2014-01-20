@@ -35,8 +35,12 @@ Events have been a feature of the Sails core since v0.9.
 
 #### Lifecycle
 
+### `lifted`
+Called after drawing the sailboat.
+
 ### `ready`
-Called when the Sails app is ready to start accepting requests.
+Called when all hooks are loaded and the internal router is ready to handle requests.
+i.e. the HTTP hook listens for `ready` before binding its HTTP server.
   
 ### `router:before`
 Called before any of the app's configured static routes have been bound.

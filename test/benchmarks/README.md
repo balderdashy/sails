@@ -21,3 +21,52 @@ These tests are related to benchmarking the performance of different parts of Sa
 >	+ I also highly recommend this [talk on optimization and benchmarking](http://2012.jsconf.eu/speaker/2012/09/05/faster-than-c-parsing-node-js-streams-.html) ([slides](https://github.com/felixge/faster-than-c)).
 
 
+## Things to test
+
+Here are the most important things we need to benchmark:
+
+#### Features:
+
++ Bootstrap
+	+ `sails.load` (programmatic)
+	+ `sails.lift` (programmatic) and `sails lift` (CLI)
+	+ `sails load`
+	+ `sails new` and `sails generate *`
+	  + (could be pulled into generic generator suite, like adapters)
+
++ Router
+	+ private Sails requests via `sails.emit('request')`
+	+ http requests to the HTTP server
+	+ http file uploads to the HTTP server
+	+ connections to the socket.io server
+	+ socket emissions to the socket.io server
+	+ socket broadcasts FROM the socket.io server (pubsub hook)
+
+
+> Thankfully, the ORM is already covered by the benchmarks in Waterline core and its generic adapter tests.
+
+
+#### Measuring:
+
++ Execution time
++ Memory usage
+
+#### Under varying levels of stress:
+
++ Low concurrency (c1k)
++ High-moderate concurrency (c10k)
+
+#### In varying environments:
+
++ Every permutation of the core hook configuration
++ With different configuration options set
+
+
+## Benchmarking libraries
+
+> Don't know the best route here yet-- but here are some links for reference.  Would love to hear your ideas!
+
++ https://github.com/spumko/flod
++ https://github.com/LearnBoost/mongoose/blob/3.8.x/benchmarks/benchjs/casting.js
++ https://npmjs.org/package/benchmark
+
