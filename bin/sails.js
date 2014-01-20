@@ -59,12 +59,13 @@ program
 
 
 // $ sails new <appname>
-program
-	.command('new [appname]')
-	.option('--dry')
-	.option('--viewEngine [viewEngine]')
-	.option('--template [viewEngine]')
-	.action(require('./sails-new'));
+var newCmd = program.command('new [appname]');
+newCmd.unknownOption = NOOP;
+	newCmd
+		.option('--dry')
+		.option('--viewEngine [viewEngine]')
+		.option('--template [viewEngine]')
+		.action(require('./sails-new'));
 
 
 // $ sails generate <module>
