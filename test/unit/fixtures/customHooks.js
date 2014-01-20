@@ -13,13 +13,37 @@ module.exports = {
 	// Depends on 'noop' hook
 	NOOP2: function (sails) {
 		return {
-			// TODO: indicate dependency on 'noop' hook
-			identity: 'noop2'
+			identity: 'noop2',
+			dependencies: 'noop'
 		};
 	},
 
-	// Deliberately rotten hook- it throws.
-	SPOILED_HOOK: function (sails) {
-		throw new Error('smells nasty');
-	}
+	// Depends on 'noop' hook in both loadAfter and loadBefore
+	NOOP3: function (sails) {
+		return {
+			identity: 'noop3',
+			loadBefore: 'noop',
+			loadAfter: 'noop'
+		};
+	},
+
+	// Depends on 'noop5' hook in loadAfter
+	NOOP4: function (sails) {
+		return {
+			identity: 'noop4',
+			loadAfter: 'noop5'
+		};
+	},
+
+	// Depends on 'noop4' hook in loadAfter
+	NOOP5: function (sails) {
+		return {
+			identity: 'noop5',
+			loadAfter: 'noop4'
+		};
+	},
+
+	// Deliberately rotten hook- it's malformed.
+	SPOILED_HOOK: true,
+
 };

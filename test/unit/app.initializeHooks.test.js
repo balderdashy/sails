@@ -59,28 +59,10 @@ describe('app.initializeHooks()', function() {
 
 
 
-	describe('configured with a hook (`noop2`), but not its dependency (`noop`)', function () {
+	describe('configured with a malformed hook', function () {
 		$Sails.load.expectFatalError({
+			log: { level: 'silent' },
 			hooks: {
-
-				// This forced failure is only temporary--
-				// very hard to test right now as things stand.
-				whadga: function (sails) {
-					throw 'temporary forced failure to simulate dependency issue';
-				},
-
-				noop2: customHooks.NOOP2
-			}
-		});
-	});
-
-
-
-	describe('configured with a hook that always throws', function () {
-		$Sails.load.expectFatalError({
-			hooks: {
-				// This forced failure is only temporary--
-				// very hard to test right now as things stand.
 				badHook: customHooks.SPOILED_HOOK
 			}
 		});
@@ -88,14 +70,32 @@ describe('app.initializeHooks()', function() {
 
 
 
-	describe('configured with a circular hook dependency', function () {
-		
-		// NOTE #1: not currently implemented
-		// NOTE #2: not currently possible
-		// (should be possible after merging @ragulka's PR)
-		// $Sails.load();
+	describe('configured with a hook (`noop2`), but not its dependency (`noop`)', function () {
+		$Sails.load.expectFatalError({
+			log: { level: 'silent' },
+			hooks: {
+				noop2: customHooks.NOOP2
+			}
+		});
+	});
 
-		it('should throw a fatal error');
+
+
+	describe('configured with a circular hook dependency', function () {
+		$Sails.load.expectFatalError({
+			log: { level: 'silent' },
+			hooks: {
+				noop: customHooks.NOOP, 
+				noop3: customHooks.NOOP3
+			}
+		});
+		$Sails.load.expectFatalError({
+			log: { level: 'silent' },
+			hooks: {
+				noop4: customHooks.NOOP4, 
+				noop5: customHooks.NOOP5
+			}
+		});
 	});
 
 
