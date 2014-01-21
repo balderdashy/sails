@@ -81,7 +81,7 @@ describe('Router.bind', function (){
 			.post('/something_that_throws')
 			.expect(500)
 			.end(done);
-		});
+		}); 
 	});
 
 });
