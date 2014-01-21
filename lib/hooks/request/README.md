@@ -15,21 +15,25 @@ This hook's responsibilities are:
 + req.explicitlyAcceptsHTML()
 + req.baseUrl
 + req.port
++ req._sails (access to the app's `sails` object in case it's not global)
 
 ##### Flash Middleware
 + req.flash('keyToGet')
 + req.flash('keyToSet','valueToSetOnKey')
 
-##### Base locals (for views)
+##### Set default view locals (i.e. `app.locals`)
 + `_` (lodash)
 + `session`
 + `req`
 + `res`
 + `sails`
 
-##### JSONP
 
-> This is not implemented yet.
+
+##### Future: JSONP/Blueprint config
+
+> This feature is not implemented yet.
+> Keep in mind-- JSONP is always accessible using res.jsonp(), thanks to TJ & express.
 
 1. Check `req.options`.
 2. If `jsonp` is enabled for a route/middleware, `req.options.jsonp` should be truthy.

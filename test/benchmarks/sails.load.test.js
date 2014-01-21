@@ -1,17 +1,29 @@
 
-describe.skip('benchmarks', function () {
+describe('benchmarks', function () {
 
 	describe('sails.load()', function() {
 		before(setupBenchmarks);
 		after(reportBenchmarks);
 
+
+		//
+		// Instantiate
+		//
+
 		benchmark('require("sails")', function(cb) {
-			var sails = require('sails');
+			var Sails = require('../../lib/app');
+			var sails = new Sails();
 			return cb();
 		});
 		
-		benchmark('first time, no hooks', function(cb) {
-			var sails = require('sails');
+
+		//
+		// Load
+		//
+
+		benchmark('sails.load  [first time, no hooks]', function(cb) {
+			var Sails = require('../../lib/app');
+			var sails = new Sails();
 			sails.load({
 				log: { level: 'error' },
 				globals: false,
@@ -19,11 +31,12 @@ describe.skip('benchmarks', function () {
 			}, cb);
 		});
 
-		benchmark('again, no hooks', function(cb) {
+		benchmark('sails.load  [again, no hooks]', function(cb) {
 			this.expected = 25;
-			this.comment = 'should be faster b/c of require cache';
+			this.comment = 'faster b/c of require cache';
 
-			var sails = require('sails');
+			var Sails = require('../../lib/app');
+			var sails = new Sails();
 			sails.load({
 				log: { level: 'error' },
 				globals: false,
@@ -31,15 +44,69 @@ describe.skip('benchmarks', function () {
 			}, cb);
 		});
 
-		benchmark('with moduleloader hook', function(cb) {
+		benchmark('sails.load  [with moduleloader hook]', function(cb) {
 			this.expected = 25;
-			this.comment = 'should be faster b/c of require cache';
+			this.comment = 'faster b/c of require cache';
 
-			var sails = require('sails');
+			var Sails = require('../../lib/app');
+			var sails = new Sails();
+
 			sails.load({
 				log: { level: 'error' },
 				globals: false,
 				loadHooks: ['moduleloader']
+			}, cb);
+
+		});
+
+		benchmark('sails.load  [all core hooks]', function(cb) {
+			this.expected = 3000;
+
+			var Sails = require('../../lib/app');
+			var sails = new Sails();
+			sails.load({
+				log: { level: 'error' },
+				globals: false
+			}, cb);
+		});
+
+		benchmark('sails.load  [again, all core hooks]', function(cb) {
+			this.expected = 3000;
+
+			var Sails = require('../../lib/app');
+			var sails = new Sails();
+			sails.load({
+				log: { level: 'error' },
+				globals: false
+			}, cb);
+		});
+
+
+		//
+		// Lift
+		//
+
+		benchmark('sails.lift  [w/ a hot require cache]', function(cb) {
+			this.expected = 3000;
+
+			var Sails = require('../../lib/app');
+			var sails = new Sails();
+			sails.lift({
+				log: { level: 'error' },
+				port: 2001,
+				globals: false
+			}, cb);
+		});
+
+		benchmark('sails.lift  [again, w/ a hot require cache]', function(cb) {
+			this.expected = 3000;
+
+			var Sails = require('../../lib/app');
+			var sails = new Sails();
+			sails.lift({
+				log: { level: 'error' },
+				port: 2001,
+				globals: false
 			}, cb);
 		});
 
@@ -57,11 +124,13 @@ describe.skip('benchmarks', function () {
  * @return {[type]}               [description]
  */
 function benchmark (description, fn) {
-	it(description, function (cb) {
+	
+	it (description, function (cb) {
 		var self = this;
 
 		var startedAt = self.microtime.now();
 		// console.time(description);
+
 		fn.apply(this, [function _callback () {
 			
 			var _result = {};
@@ -75,6 +144,7 @@ function benchmark (description, fn) {
 			_result.duration = finishedAt - startedAt;
 			_result.benchmark = description;
 
+			// console.log('finished ',_result);
 			self.benchmarks.push(_result);
 			cb.apply(Array.prototype.slice.call(arguments));
 		}]);
@@ -102,10 +172,11 @@ function setupBenchmarks() {
  */
 function reportBenchmarks () {
 	var _ = require('lodash');
+
 	require('colors');
-	console.log('\n\n');
-	console.log('Benchmarks::');
-	var benchmarks = _.reduce(this.benchmarks, function (memo, result) {
+
+	var output = '\n\nBenchmark Report ::\n';
+	output += _.reduce(this.benchmarks, function (memo, result) {
 
 		// Convert to ms-
 		var ms = (result.duration / 1000.0);
@@ -123,26 +194,31 @@ function reportBenchmarks () {
 		var threshold = result.expected;
 
 		var color =
-			(ms < 1*expected/10) ? 'blue' :
-			(ms < 3*expected/10) ? 'cyan' :
-			(ms < 6*expected/10) ? 'yellow' :
-			(ms < threshold) ? 'orange' : 
+			(ms < 1*expected/10) ? 'green' :
+			(ms < 3*expected/10) ? 'green' :
+			(ms < 6*expected/10) ? 'cyan' :
+			(ms < threshold) ? 'yellow' : 
 			'red';
 
 		ms += 'ms';
 		ms = ms[color];
 
+		// Whether to show expected ms
+		var showExpected = true; // ms >= threshold;
+
 		return memo + '\n ' + 
-			(result.benchmark+'').grey + ' :: ' + ms +
+			(result.benchmark+'') + ' :: '.grey + ms +
 
 			// Expected ms provided, and the test took quite a while
-			(result.expected && ms >= threshold ? '\t\t\t(expected '+expected+'ms' +
+			(result.expected && showExpected ? '\n   (expected '+expected+'ms' +
 				(result.comment ? ' --' + result.comment : '') +
 			')' :
 
 			// Comment provided - but no expected ms
-			(result.comment ? '\t\t\t(' + result.comment +')' : '')
+			(result.comment ? '\n   (' + result.comment +')\n' : '')
 			).grey;
 	},'');
-	console.log(benchmarks);
+
+	// Log output (optional)
+	// console.log( output );
 }

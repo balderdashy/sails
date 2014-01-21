@@ -42,24 +42,34 @@
   },
   "optionalDependencies": {
     "waterline": "git://github.com/balderdashy/waterline.git#v0.10",
-    "sails-disk": "git://github.com/balderdashy/sails-disk.git#0.10.beta",
     "socket.io": "~0.9.14",
     "connect-flash": "~0.1.1",
     "pluralize": "~0.0.5",
     "node-uuid": "~1.4.0",
-    "ejs": "~0.8.4",
     "ejs-locals": "~1.0.2",
     "glob": "~3.1.14",
     "i18n": "~0.4.1",
-    "sails-generate": "~0.0.12",
+    "sails-generate": "~0.0.13",
     "include-all": "~0.1.2",
     "connect-redis": "~1.4.5",
     "connect-mongo": "~0.3.2",
-    "grunt-cli": "~0.1.11"
-  },
-  "devDependencies": {
+    "grunt-cli": "~0.1.11",
+    "ejs": "~0.8.4",
+    "sails-disk": "git://github.com/balderdashy/sails-disk.git#0.10.beta",
+    
     "commander": "~2.1.0",
-    "enpeem": "~0.1.1"
+    "enpeem": "~0.1.1",
+    "grunt": "0.4.2",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-clean": "~0.4.1",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-sails-linker": "~0.9.5",
+    "grunt-contrib-jst": "~0.5.0",
+    "grunt-contrib-watch": "~0.4.4",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-cssmin": "~0.6.1",
+    "grunt-contrib-less": "~0.8.3",
+    "grunt-contrib-coffee": "~0.7.0"
   },
   "testDependencies": {
     "root-require": "~0.2.0",
@@ -76,12 +86,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/balderdashy/sails.git"
+    "url": "git://github.com/balderdashy/sails.git#v0.10"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://sails.mit-license.org/"
+      "url": "http://links.sailsjs.org/license/mit"
     }
   ],
   "bugs": {
@@ -89,5 +99,8 @@
   },
   "engines": {
     "node": ">= 0.10.0"
+  },
+  "sails": {
+    "prerelease": "git://github.com/balderdashy/sails.git#v0.10"
   }
 }

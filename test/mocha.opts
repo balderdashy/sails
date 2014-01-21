@@ -1,3 +1,4 @@
 --require should
---reporter dot
+--reporter spec
 --recursive
+--slow 300
