@@ -1,4 +1,11 @@
 
+
+var _ = require('lodash');
+
+var SHOW_VERBOSE_BENCHMARK_REPORT = _.any(process.argv, function(arg) {
+	return arg.match(/-v/);
+});
+
 describe('benchmarks', function () {
 
 	describe('sails.load()', function() {
@@ -220,5 +227,7 @@ function reportBenchmarks () {
 	},'');
 
 	// Log output (optional)
-	// console.log( output );
+	if (SHOW_VERBOSE_BENCHMARK_REPORT) {
+		console.log( output );
+	}
 }
