@@ -1,14 +1,34 @@
-
 # Benchmarks
+
+### Run the tests
+
+From the root directory of sails:
+
+```sh
+$ mocha test/benchmarks
+```
+
+To get a more detailed report with milisecond timings for each benchmark, run:
+
+```sh
+$ mocha test/benchmarks -v
+```
+
+
+
+
+## About
 
 These tests are related to benchmarking the performance of different parts of Sails.  For now, our benchmark tests should be "integration" or "acceptance" tests.  By that, I mean they should measure a specific "user action" (e.g. running `sails new`, running `sails lift`, sending an HTTP request to a dummy endpoint, connecting a Socket.io client, etc.).
 
-> **Why test features first, and not each individual methods?**
->
-> Feature-wide benchmarks are the "lowest-hanging fruit", if you will.  We'll spend much less development time, and still get valuable benchmarks that will give us ongoing data on Sails performance.  This way, we'll know where to start writing lower-level benchmarks to identify choke-points.
 
 
-###### Writing good benchmarks
+#### Why test features first, and not each individual method?
+
+Feature-wide benchmarks are the "lowest-hanging fruit", if you will.  We'll spend much less development time, and still get valuable benchmarks that will give us ongoing data on Sails performance.  This way, we'll know where to start writing lower-level benchmarks to identify choke-points.
+
+
+#### Writing good benchmarks
 + Pick what you want to test.
 + Whatever you choose does not have to be atomic (see examples above)-- in an ideal world, we would have benchmarks for every single function in our apps, but that is not how things work today.
 + Write a benchmark test that isolates that functionality. (the hard part)
