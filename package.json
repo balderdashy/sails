@@ -91,7 +91,7 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://sails.mit-license.org/"
+      "url": "http://links.sailsjs.org/license/mit"
     }
   ],
   "bugs": {
