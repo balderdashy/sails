@@ -6,12 +6,14 @@ describe('benchmarks', function () {
 		after(reportBenchmarks);
 
 		benchmark('require("sails")', function(cb) {
-			var sails = require('../..');
+			var Sails = require('../../lib/app');
+			var sails = new Sails();
 			return cb();
 		});
 		
 		benchmark('sails.load  [first time, no hooks]', function(cb) {
-			var sails = require('../..');
+			var Sails = require('../../lib/app');
+			var sails = new Sails();
 			sails.load({
 				log: { level: 'error' },
 				globals: false,
@@ -23,7 +25,8 @@ describe('benchmarks', function () {
 			this.expected = 25;
 			this.comment = 'faster b/c of require cache';
 
-			var sails = require('../..');
+			var Sails = require('../../lib/app');
+			var sails = new Sails();
 			sails.load({
 				log: { level: 'error' },
 				globals: false,
@@ -35,7 +38,8 @@ describe('benchmarks', function () {
 			this.expected = 25;
 			this.comment = 'faster b/c of require cache';
 
-			var sails = require('../..');
+			var Sails = require('../../lib/app');
+			var sails = new Sails();
 			sails.load({
 				log: { level: 'error' },
 				globals: false,
@@ -46,7 +50,8 @@ describe('benchmarks', function () {
 		benchmark('sails.load  [all core hooks]', function(cb) {
 			this.expected = 3000;
 
-			var sails = require('../..');
+			var Sails = require('../../lib/app');
+			var sails = new Sails();
 			sails.load({
 				log: { level: 'error' },
 				globals: false
@@ -56,7 +61,8 @@ describe('benchmarks', function () {
 		benchmark('sails.load  [again, all core hooks]', function(cb) {
 			this.expected = 3000;
 
-			var sails = require('../..');
+			var Sails = require('../../lib/app');
+			var sails = new Sails();
 			sails.load({
 				log: { level: 'error' },
 				globals: false
