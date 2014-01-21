@@ -17,18 +17,18 @@ $ mocha test/benchmarks -v
 
 
 
-## About
+### About
 
 These tests are related to benchmarking the performance of different parts of Sails.  For now, our benchmark tests should be "integration" or "acceptance" tests.  By that, I mean they should measure a specific "user action" (e.g. running `sails new`, running `sails lift`, sending an HTTP request to a dummy endpoint, connecting a Socket.io client, etc.).
 
 
 
-#### Why test features first, and not each individual method?
+##### Why test features first, and not each individual method?
 
 Feature-wide benchmarks are the "lowest-hanging fruit", if you will.  We'll spend much less development time, and still get valuable benchmarks that will give us ongoing data on Sails performance.  This way, we'll know where to start writing lower-level benchmarks to identify choke-points.
 
 
-#### Writing good benchmarks
+##### Writing good benchmarks
 + Pick what you want to test.
 + Whatever you choose does not have to be atomic (see examples above)-- in an ideal world, we would have benchmarks for every single function in our apps, but that is not how things work today.
 + Write a benchmark test that isolates that functionality. (the hard part)
@@ -41,11 +41,11 @@ Feature-wide benchmarks are the "lowest-hanging fruit", if you will.  We'll spen
 >	+ I also highly recommend this [talk on optimization and benchmarking](http://2012.jsconf.eu/speaker/2012/09/05/faster-than-c-parsing-node-js-streams-.html) ([slides](https://github.com/felixge/faster-than-c)).
 
 
-## Things to test
+### Things to test
 
 Here are the most important things we need to benchmark:
 
-#### Features:
+##### Features:
 
 + Bootstrap
 	+ `sails.load` (programmatic)
@@ -66,23 +66,24 @@ Here are the most important things we need to benchmark:
 > Thankfully, the ORM is already covered by the benchmarks in Waterline core and its generic adapter tests.
 
 
-#### Measuring:
+##### Measuring:
 
 + Execution time
 + Memory usage
 
-#### Under varying levels of stress:
+##### Under varying levels of stress:
 
 + Low concurrency (c1k)
 + High-moderate concurrency (c10k)
 
-#### In varying environments:
+##### In varying environments:
 
 + Every permutation of the core hook configuration
 + With different configuration options set
 
 
-## Benchmarking libraries
+
+### Benchmarking libraries
 
 > Don't know the best route here yet-- but here are some links for reference.  Would love to hear your ideas!
 
