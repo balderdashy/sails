@@ -1,17 +1,17 @@
 
-describe.skip('benchmarks', function () {
+describe('benchmarks', function () {
 
 	describe('sails.load()', function() {
 		before(setupBenchmarks);
 		after(reportBenchmarks);
 
 		benchmark('require("sails")', function(cb) {
-			var sails = require('sails');
+			var sails = require('../..');
 			return cb();
 		});
 		
-		benchmark('first time, no hooks', function(cb) {
-			var sails = require('sails');
+		benchmark('sails.load  [first time, no hooks]', function(cb) {
+			var sails = require('../..');
 			sails.load({
 				log: { level: 'error' },
 				globals: false,
@@ -19,11 +19,11 @@ describe.skip('benchmarks', function () {
 			}, cb);
 		});
 
-		benchmark('again, no hooks', function(cb) {
+		benchmark('sails.load  [again, no hooks]', function(cb) {
 			this.expected = 25;
-			this.comment = 'should be faster b/c of require cache';
+			this.comment = 'faster b/c of require cache';
 
-			var sails = require('sails');
+			var sails = require('../..');
 			sails.load({
 				log: { level: 'error' },
 				globals: false,
@@ -31,15 +31,35 @@ describe.skip('benchmarks', function () {
 			}, cb);
 		});
 
-		benchmark('with moduleloader hook', function(cb) {
+		benchmark('sails.load  [with moduleloader hook]', function(cb) {
 			this.expected = 25;
-			this.comment = 'should be faster b/c of require cache';
+			this.comment = 'faster b/c of require cache';
 
-			var sails = require('sails');
+			var sails = require('../..');
 			sails.load({
 				log: { level: 'error' },
 				globals: false,
 				loadHooks: ['moduleloader']
+			}, cb);
+		});
+
+		benchmark('sails.load  [all core hooks]', function(cb) {
+			this.expected = 3000;
+
+			var sails = require('../..');
+			sails.load({
+				log: { level: 'error' },
+				globals: false
+			}, cb);
+		});
+
+		benchmark('sails.load  [again, all core hooks]', function(cb) {
+			this.expected = 3000;
+
+			var sails = require('../..');
+			sails.load({
+				log: { level: 'error' },
+				globals: false
 			}, cb);
 		});
 
@@ -133,15 +153,15 @@ function reportBenchmarks () {
 		ms = ms[color];
 
 		return memo + '\n ' + 
-			(result.benchmark+'').grey + ' :: ' + ms +
+			(result.benchmark+'') + ' :: '.grey + ms +
 
 			// Expected ms provided, and the test took quite a while
-			(result.expected && ms >= threshold ? '\t\t\t(expected '+expected+'ms' +
+			(result.expected && ms >= threshold ? '\n   (expected '+expected+'ms' +
 				(result.comment ? ' --' + result.comment : '') +
 			')' :
 
 			// Comment provided - but no expected ms
-			(result.comment ? '\t\t\t(' + result.comment +')' : '')
+			(result.comment ? '\n   (' + result.comment +')\n' : '')
 			).grey;
 	},'');
 	console.log(benchmarks);
