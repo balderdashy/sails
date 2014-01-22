@@ -17,6 +17,9 @@ if(argv.verbose){
 if(argv.port){
   sails.config.port = argv.port;
 }
+if(argv.host){
+  sails.config.host = argv.host;
+}
 
 require('../lib/configuration')(sails).load(function (err, config) {
   if (err) throw new Error(err);
@@ -315,6 +318,7 @@ require('../lib/configuration')(sails).load(function (err, config) {
     usage += leftColumn('sails lift') + 'Run the Sails app in the current dir (if node_modules/sails exists, it will be used instead of the global install)\n';
     usage += leftColumn('  [--dev]') + 'in development environment \n';
     usage += leftColumn('  [--prod]') + 'in production environment \n';
+    usage += leftColumn('  [--host 0.0.0.0]') + 'at host 0.0.0.0 \n';
     usage += leftColumn('  [--port 9000]') + 'on port 9000 \n';
     usage += leftColumn('  [--verbose]') + 'with verbose logging enabled \n';
     usage += leftColumn('sails console') + 'Run this Sails app (in the current dir & in interactive mode.)\n';
