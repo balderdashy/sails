@@ -41,7 +41,7 @@
     "colors": "~0.6.2"
   },
   "optionalDependencies": {
-    "waterline": "git://github.com/balderdashy/waterline.git#v0.10",
+    "waterline": "git://github.com/balderdashy/waterline.git#connections_config",
     "socket.io": "~0.9.14",
     "connect-flash": "~0.1.1",
     "pluralize": "~0.0.5",
@@ -55,8 +55,8 @@
     "connect-mongo": "~0.3.2",
     "grunt-cli": "~0.1.11",
     "ejs": "~0.8.4",
-    "sails-disk": "git://github.com/balderdashy/sails-disk.git#0.10.beta",
-    
+    "sails-disk": "git://github.com/balderdashy/sails-disk.git#connections",
+
     "commander": "~2.1.0",
     "enpeem": "~0.1.1",
     "grunt": "0.4.2",
