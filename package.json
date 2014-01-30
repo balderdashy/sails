@@ -69,7 +69,8 @@
     "grunt-contrib-uglify": "~0.2.2",
     "grunt-contrib-cssmin": "~0.6.1",
     "grunt-contrib-less": "~0.8.3",
-    "grunt-contrib-coffee": "~0.7.0"
+    "grunt-contrib-coffee": "0.7.0",
+    "express3-handlebars": "~0.5.0"
   },
   "testDependencies": {
     "root-require": "~0.2.0",
