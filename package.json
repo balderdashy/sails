@@ -51,6 +51,7 @@
     "i18n": "~0.4.1",
     "sails-generate": "~0.0.13",
     "include-all": "~0.1.2",
+    "sails-build-dictionary": "0.1.0",
     "connect-redis": "~1.4.5",
     "connect-mongo": "~0.3.2",
     "grunt-cli": "~0.1.11",
