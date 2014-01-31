@@ -1,9 +1,10 @@
 /**
  * Module dependencies
  */
-var argv = require('optimist').argv,
-	cliutil = require('sails-util/cli'),
-	Logger = require('captains-log');
+var argv = require('optimist').argv
+	,	util = require('util')
+	,	cliutil = require('sails-util/cli')
+	,	Logger = require('captains-log');
 
 
 // Build logger using command-line arguments
@@ -123,6 +124,13 @@ module.exports = {
 		// }
 		// log.error('Otherwise, if you\'re trying to use an adapter named `' + connectionId + '`, please run ' +
 		// 	'`npm install ' + probableAdapterModuleName + '@' + sails.majorVersion + '.' + sails.minorVersion + '.x`');
+		return _terminateProcess(1);
+	},
+
+
+	__ModelIsMissingConnection__: function(sourceModelId) {
+		log.error(util.format('One of your models (%s) doesn\'t have a connection.', sourceModelId));
+		log.error('Do you have a default `connection` in your `config/models.js` file?');
 		return _terminateProcess(1);
 	},
 
