@@ -69,7 +69,7 @@
     "grunt-contrib-watch": "~0.4.4",
     "grunt-contrib-uglify": "~0.2.2",
     "grunt-contrib-cssmin": "~0.6.1",
-    "grunt-contrib-less": "~0.8.3",
+    "grunt-contrib-less": "~0.9.0",
     "grunt-contrib-coffee": "~0.7.0",
     "grunt-sync": "~0.0.4"
   },
