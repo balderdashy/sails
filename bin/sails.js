@@ -85,6 +85,15 @@ program
 	.action( require('./sails-console') );
 
 
+// $ sails www
+var www = program
+	.command('www');
+www.unknownOption = NOOP;
+www
+	.description('')
+	.action( require('./sails-www') );
+
+
 
 // $ sails debug
 program
