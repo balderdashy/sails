@@ -11,8 +11,8 @@ module.exports = {
 
 	// Write routes object to blueprint config file
 	writeBlueprint: function(config) {
-		config = {controllers: {blueprints: config}};
-		fs.writeFileSync('config/controllers.js', 'module.exports = ' + JSON.stringify(config));
+		config = {blueprints: config};
+		fs.writeFileSync('config/blueprints.js', 'module.exports = ' + JSON.stringify(config));
 	},
 
 	// Starts sails server, makes request, returns response, kills sails server
@@ -26,7 +26,7 @@ module.exports = {
 		}
 
 		// Start the sails server process
-		var sailsprocess = spawn('../bin/sails.js', ['lift', '--dev']);
+		var sailsprocess = spawn('../bin/sails.js', ['lift']);
 
 		sailsprocess.on('error',function(err) {
 			return callback(err);
