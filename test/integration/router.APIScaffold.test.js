@@ -16,7 +16,7 @@ var Err = {
 };
 
 
-describe.skip('router :: ', function() {
+describe('router :: ', function() {
 
 	describe('API scaffold routes', function() {
 		var appName = 'testApp';
