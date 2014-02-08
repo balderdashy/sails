@@ -70,7 +70,7 @@ describe('pubsub :: ', function() {
 
 			it('hitting the custom /userMessage route should result in a correct `user` event being received by all subscribers', function(done) {
 				socket2.on('user', function(message) {
-					assert(message.id === 1 && message.verb == 'messaged' && message.message.greeting == 'hello', Err.badResponse(message));
+					assert(message.id === 1 && message.verb == 'messaged' && message.data.greeting == 'hello', Err.badResponse(message));
 					done();
 				})
 				socket1.get('/user/message', function(){});
