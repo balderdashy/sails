@@ -84,7 +84,8 @@
     "expect.js": "~0.2.0",
     "should": "~2.1.1",
     "supertest": "~0.8.2",
-    "fs-extra": "~0.8.1"
+    "fs-extra": "~0.8.1",
+    "socket.io-client": "~0.9.16"
   },
   "repository": {
     "type": "git",

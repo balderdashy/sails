@@ -1,4 +1,3 @@
-var request = require('request');
 var fs = require('fs');
 
 module.exports = {
@@ -14,22 +13,28 @@ module.exports = {
 		fs.writeFileSync('config/blueprints.js', 'module.exports = ' + JSON.stringify(config));
 	},
 
-
-
 	// Starts sails server, makes request, returns response, kills sails server
-	testRoute: function(method, options, callback) {
+	testRoute: function(socket, method, options, callback) {
 
+		var url, data = {};
 		// Prefix url with domain:port
 		if (typeof options === 'string') {
-			options = 'http://localhost:1337/' + options;
+			url = options;
 		} else {
-			options.url = 'http://localhost:1337/'  + options.url;
+			url = options.url;
 		}
 
-		request[method](options, function(err, response) {
-			if (err) return callback(err);
-			callback(null, response);
-		});
+		if (method == 'get') {
+			socket[method](url, function(response) {
+				callback(null, response);
+			});
+		}
+
+		else {
+			socket[method](url, data, function(response) {
+				callback(null, response);
+			});
+		}
 
 	}
 };

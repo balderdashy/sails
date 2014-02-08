@@ -18,17 +18,27 @@ var Err = {
 
 describe('router :: ', function() {
 
+	this.timeout(10000);
+	var sailsprocess;
+
 	describe('API scaffold routes', function() {
 		var appName = 'testApp';
 
 		before(function(done) {
-			appHelper.build(function(err) {
-				// console.log('before chdir ' + appName + ', cwd was :: ' + process.cwd());
-				process.chdir(appName);
-				// console.log('after chdir ' + appName + ', new cwd is :: ' + process.cwd());
-				if (err) return done(err);
-				done();
+			appHelper.build(done);
+		});
+
+		beforeEach(function(done) {
+			appHelper.lift(function(err, sails) {
+				if (err) {throw new Error(err);}
+				sailsprocess = sails;
+				setTimeout(done, 100);
 			});
+		});
+
+		afterEach(function(done) {
+			sailsprocess.kill();
+			done();
 		});
 
 		after(function() {
