@@ -53,7 +53,7 @@ program
 program
 	.command('lift')
 	.option('--prod')
-	.option('--port')
+	.option('--port [port]')
 	.description('')
 	.action( require('./sails-lift') );
 
