@@ -7,7 +7,8 @@
 var _ = require('lodash')
 	, program = require('./_commander')
 	, package = require('../package.json')
-	, NOOP    = function(){};
+	, NOOP    = function(){}
+	, cmd;
 
 
 
@@ -45,68 +46,65 @@ program
 program
 	.option('--silent')
 	.option('--verbose')
-	.option('--silly');
+	.option('--silly')
+	.unknownOption = NOOP;
 
 
 
 // $ sails lift
-program
-	.command('lift')
-	.option('--prod')
-	.option('--port [port]')
-	.description('')
-	.action( require('./sails-lift') );
+cmd = program.command('lift');
+cmd.option('--prod');
+cmd.option('--port [port]');
+cmd.unknownOption = NOOP;
+cmd.description('');
+cmd.action( require('./sails-lift') );
 
 
 // $ sails new <appname>
-var newCmd = program.command('new [appname]');
-newCmd.unknownOption = NOOP;
-	newCmd
-		.option('--dry')
-		.option('--viewEngine [viewEngine]')
-		.option('--template [viewEngine]')
-		.action(require('./sails-new'));
+cmd = program.command('new [appname]');
+cmd.option('--dry');
+cmd.option('--viewEngine [viewEngine]');
+cmd.option('--template [viewEngine]');
+cmd.unknownOption = NOOP;
+cmd.action(require('./sails-new'));
 
 
 // $ sails generate <module>
-var generate = program.command('generate');
-generate.unknownOption = NOOP;
-generate
-	.description('')
-	.option('--dry')
-	.action(require('./sails-generate'));
+cmd = program.command('generate');
+cmd.option('--dry');
+cmd.unknownOption = NOOP;
+cmd.description('');
+cmd.action(require('./sails-generate'));
 
 
 
 // $ sails console
-program
-	.command('console')
-	.description('')
-	.action( require('./sails-console') );
+cmd = program.command('console');
+cmd.unknownOption = NOOP;
+cmd.description('');
+cmd.action( require('./sails-console') );
 
 
 // $ sails www
-var www = program
-	.command('www');
-www.unknownOption = NOOP;
-www
-	.description('')
-	.action( require('./sails-www') );
+cmd = program.command('www');
+cmd.unknownOption = NOOP;
+cmd.description('');
+cmd.action( require('./sails-www') );
 
 
 
 // $ sails debug
-program
-	.command('debug')
-	.description('')
-	.action( require('./sails-debug') );
+cmd = program.command('debug');
+cmd.unknownOption = NOOP;
+cmd.description('');
+cmd.action( require('./sails-debug') );
 
 
 // $ sails configure
-program
-	.command('configure')
-	.description('')
-	.action( require('./sails-configure') );
+cmd = program.command('configure');
+cmd.unknownOption = NOOP;
+cmd.description('');
+cmd.action( require('./sails-configure') );
 
 
 
@@ -125,10 +123,9 @@ program
 
 
 // $ sails help (--help synonym)
-program
-	.command('help')
-	.description('')
-	.action( program.usageMinusWildcard );
+cmd = program.command('help');
+cmd.description('');
+cmd.action( program.usageMinusWildcard );
 
 
 
