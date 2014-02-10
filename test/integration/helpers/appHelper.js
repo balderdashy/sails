@@ -146,12 +146,12 @@ module.exports.buildAndLift = function(appName, options, callback) {
 	});
 };
 
-module.exports.buildAndLiftWithTwoSockets = function(appName, options, callback) {
+module.exports.liftWithTwoSockets = function(options, callback) {
 	if (typeof options == 'function') {
 		callback = options;
 		options = null;
 	}
-	module.exports.buildAndLift(appName, options, function(err, sails) {
+	module.exports.lift(options, function(err, sails) {
 		if (err) {return callback(err);}
 		var socket1 = _ioClient.connect('http://localhost:1337',{'force new connection': true});
 		socket1.on('connect', function() {
@@ -160,5 +160,15 @@ module.exports.buildAndLiftWithTwoSockets = function(appName, options, callback)
 				callback(null, sails, socket1, socket2);
 			});	
 		});
+	});
+};
+
+module.exports.buildAndLiftWithTwoSockets = function(appName, options, callback) {
+	if (typeof options == 'function') {
+		callback = options;
+		options = null;
+	}
+	module.exports.build(appName, function() {
+		module.exports.liftWithTwoSockets(options, callback);
 	});
 };

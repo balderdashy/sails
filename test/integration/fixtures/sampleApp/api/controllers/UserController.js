@@ -10,6 +10,12 @@ module.exports = {
 			User.message(user, {greeting: 'hello'}, req);
 			res.send(200);
 		});
+	},
+
+	subscribe: function(req, res) {
+		User.subscribe(req, {id:req.param('id')}, req.param('context'));
+		res.send(200);
 	}
+
 
 };

@@ -2,15 +2,9 @@ var fs = require('fs');
 
 module.exports = {
 
-	// Write routes object to router file
-	writeRoutes: function(routes) {
-		fs.writeFileSync('config/routes.js', 'module.exports.routes = ' + JSON.stringify(routes));
-	},
-
 	// Write routes object to blueprint config file
-	writeBlueprint: function(config) {
-		config = {blueprints: config};
-		fs.writeFileSync('config/blueprints.js', 'module.exports = ' + JSON.stringify(config));
+	writeModelConfig: function(config) {
+		fs.writeFileSync('config/models.js', 'module.exports.models = {autosubscribe: [], connection: "localDiskDb"}');
 	},
 
 	// Starts sails server, makes request, returns response, kills sails server
