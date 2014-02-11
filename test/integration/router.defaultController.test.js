@@ -1,20 +1,37 @@
 var assert = require('assert');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
+var util = require('util');
 
+/**
+ * Errors
+ */
+var Err = {
+	badResponse: function(response) {
+		return 'Wrong server response!  Response :::\n' + util.inspect(response.body);
+	}
+};
 
-describe.skip('router :: ', function() {
+describe('router :: ', function() {
 	describe('Default controller routing', function() {
 		var appName = 'testApp';
 
 		before(function(done) {
-			appHelper.build(function(err) {
-				// console.log('before chdir ' + appName + ', cwd was :: ' + process.cwd());
-				process.chdir(appName);
-				// console.log('after chdir ' + appName + ', new cwd is :: ' + process.cwd());
-				if (err) return done(err);
-				done();
+			this.timeout(5000);
+			appHelper.build(done);
+		});
+
+		beforeEach(function(done) {
+			appHelper.lift(function(err, sails) {
+				if (err) {throw new Error(err);}
+				sailsprocess = sails;
+				setTimeout(done, 100);
 			});
+		});
+
+		afterEach(function(done) {
+			sailsprocess.kill();
+			done();
 		});
 
 		after(function() {
@@ -24,6 +41,7 @@ describe.skip('router :: ', function() {
 			appHelper.teardown();
 		});
 
+
 		describe('requests to :controller/:method', function() {
 
 			it('should call the specified method of the specified controller', function(done) {
@@ -31,7 +49,7 @@ describe.skip('router :: ', function() {
 				httpHelper.testRoute('get', 'test/index', function(err, response) {
 					if (err) return done(new Error(err));
 
-					assert(response.body === 'index');
+					assert(response.body === 'index', Err.badResponse(response));
 					done();
 				});
 			});
@@ -47,7 +65,7 @@ describe.skip('router :: ', function() {
 					httpHelper.testRoute('get', 'test', function(err, response) {
 						if (err) return done(new Error(err));
 
-						assert(response.body === 'index');
+						assert(response.body === 'index', Err.badResponse(response));
 						done();
 					});
 				});
@@ -60,7 +78,7 @@ describe.skip('router :: ', function() {
 					httpHelper.testRoute('get', 'test/1', function(err, response) {
 						if (err) return done(new Error(err));
 
-						assert(response.body === 'find');
+						assert(response.body === 'find', Err.badResponse(response));
 						done();
 					});
 				});
@@ -73,7 +91,7 @@ describe.skip('router :: ', function() {
 					httpHelper.testRoute('get', 'test/create', function(err, response) {
 						if (err) return done(new Error(err));
 
-						assert(response.body === 'create');
+						assert(response.body === 'create', Err.badResponse(response));
 						done();
 					});
 				});
@@ -86,7 +104,7 @@ describe.skip('router :: ', function() {
 					httpHelper.testRoute('post', 'test/create', function(err, response) {
 						if (err) return done(new Error(err));
 
-						assert(response.body === 'create');
+						assert(response.body === 'create', Err.badResponse(response));
 						done();
 					});
 				});
@@ -99,7 +117,7 @@ describe.skip('router :: ', function() {
 					httpHelper.testRoute('put', 'test/1', function(err, response) {
 						if (err) return done(new Error(err));
 
-						assert(response.body === 'update');
+						assert(response.body === 'update', Err.badResponse(response));
 						done();
 					});
 				});
@@ -112,7 +130,7 @@ describe.skip('router :: ', function() {
 					httpHelper.testRoute('del', 'test/1', function(err, response) {
 						if (err) return done(new Error(err));
 
-						assert(response.body === 'destroy');
+						assert(response.body === 'destroy', Err.badResponse(response));
 						done();
 					});
 				});

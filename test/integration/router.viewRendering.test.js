@@ -2,18 +2,26 @@ var assert = require('assert');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
 
-describe.skip('router :: ', function() {
+describe('router :: ', function() {
 	describe('View routes', function() {
 		var appName = 'testApp';
 
 		before(function(done) {
-			appHelper.build(function(err) {
-				// console.log('before chdir ' + appName + ', cwd was :: ' + process.cwd());
-				process.chdir(appName);
-				// console.log('after chdir ' + appName + ', new cwd is :: ' + process.cwd());
-				if (err) return done(err);
-				done();
+			this.timeout(5000);
+			appHelper.build(done);
+		});
+
+		beforeEach(function(done) {
+			appHelper.lift({verbose: false}, function(err, sails) {
+				if (err) {throw new Error(err);}
+				sailsprocess = sails;
+				setTimeout(done, 100);
 			});
+		});
+
+		afterEach(function(done) {
+			sailsprocess.kill();
+			done();
 		});
 
 		after(function() {
@@ -38,11 +46,14 @@ describe.skip('router :: ', function() {
 
 		describe('with no specified routing', function() {
 
+			before(function() {
+				httpHelper.writeRoutes({});
+			});
+
 			it('should respond to get request to :controller with the template at views/:controller/index.ejs', function(done) {
 
 				// Empty router file
-				httpHelper.writeRoutes({});
-
+				
 				httpHelper.testRoute('get', 'viewTest', function(err, response) {
 					if (err) return done(new Error(err));
 
