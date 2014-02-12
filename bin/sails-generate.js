@@ -53,6 +53,12 @@ module.exports = function ( ) {
 	var cb = reportback.extend();
 
 	// Set the "invalid" exit to forward to "error"
+	cb.error = function(msg) {
+		var log = this.log || cb.log;
+		log.error(msg);
+		process.exit(1);
+	};
+
 	cb.invalid = 'error';
 
 	// If the generator type is "api", we currently treat it as a special case.
