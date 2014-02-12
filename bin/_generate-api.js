@@ -23,7 +23,6 @@ module.exports = function generateAPI (scope, cb) {
 			console.log();
 			cb.log.info('REST API generated @ ' + ('http://localhost:1337/' + scope.args[0]).underline);
 			cb.log.info('and will be available the next time you run `sails lift`.');
-			STRINGFILE.terminalLinkHelp(cb.log.info);
 		}
 	});
 
