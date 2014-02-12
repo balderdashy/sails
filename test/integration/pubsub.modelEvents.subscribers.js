@@ -145,7 +145,7 @@ describe('pubsub :: ', function() {
 
 			});
 
-			it ('adding a user to the pet via POST /user/1/pets should result a correct `pet` event being received by all subscribers', function(done) {
+			it ('adding a user to the pet via POST /user/1/pets should result in a correct `pet` event being received by all subscribers', function(done) {
 
 				socket1.on('pet', function(message) {
 					assert(message.id == 1 
