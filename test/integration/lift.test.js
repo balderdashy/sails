@@ -8,7 +8,7 @@ var spawn = require('child_process').spawn;
 // Make existsSync not crash on older versions of Node
 fs.existsSync = fs.existsSync || require('path').existsSync;
 
-describe.skip('Starting sails server with lift', function() {
+describe('Starting sails server with lift', function() {
 	var sailsBin = './bin/sails.js';
 	var appName = 'testApp';
 	var sailsServer;
@@ -47,7 +47,7 @@ describe.skip('Starting sails server with lift', function() {
 
 			sailsServer.stderr.on('data', function(data) {
 				var dataString = data + '';
-				assert(dataString.indexOf('error') !== -1);
+				assert(dataString.indexOf('[err]') !== -1);
 				sailsServer.stderr.removeAllListeners('data');
 				sailsServer.kill();
 				done();
@@ -111,22 +111,6 @@ describe.skip('Starting sails server with lift', function() {
 			sailsServer.stderr.removeAllListeners('data');
 			sailsServer.kill();
 			process.chdir('../');
-		});
-
-		it('--prod and --dev should throw an error', function(done) {
-
-			// Move into app directory
-			process.chdir(appName);
-
-			sailsServer = spawn(sailsBin, ['lift', '--dev', '--prod']);
-
-			sailsServer.stderr.on('data', function(data) {
-				var dataString = data + '';
-				assert(dataString.indexOf('error') !== -1);
-
-				// Move out of app directory
-				done();
-			});
 		});
 
 		it('--prod should change the environemnt to production', function(done) {
