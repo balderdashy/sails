@@ -1,4 +1,4 @@
-describe.skip('API and adapter generators', function () {
+describe('API and adapter generators', function () {
 	
 	var assert = require('assert');
 	var fs = require('fs');
@@ -14,6 +14,8 @@ describe.skip('API and adapter generators', function () {
 	var sailsBin = './bin/sails.js';
 	var appName = 'testApp';
 
+	this.slow(1000);
+	
 	before(function(done) {
 
 		if (fs.existsSync(appName)) {
@@ -126,7 +128,7 @@ describe.skip('API and adapter generators', function () {
 				if (err) done(new Error(err));
 
 				assert.doesNotThrow(function() {
-					fs.readFileSync('./api/adapters/' + capitalize(adapterName) + 'Adapter.js', 'utf8');
+					fs.readFileSync('./api/adapters/' + capitalize(adapterName) + '/lib/adapter.js', 'utf8');
 				});
 
 				done();
@@ -155,7 +157,7 @@ describe.skip('API and adapter generators', function () {
 
 		it('should create a controller and a model file', function(done) {
 
-			exec(sailsBin + ' generate ' + modelName , function (err) {
+			exec(sailsBin + ' generate api ' + modelName , function (err) {
 				if (err) done(new Error(err));
 
 				assert.doesNotThrow(function() {
@@ -172,7 +174,7 @@ describe.skip('API and adapter generators', function () {
 
 		it('should throw an error if a controller file and model file with the same name exists', function(done) {
 
-			exec(sailsBin + ' generate ' + modelName , function (err) {
+			exec(sailsBin + ' generate api ' + modelName , function (err) {
 				assert.equal(err.code, 1);
 				done();
 			});
