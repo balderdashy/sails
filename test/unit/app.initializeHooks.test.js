@@ -88,15 +88,15 @@ describe('app.initializeHooks()', function() {
 
 
 
-	describe('configured with a circular hook dependency', function () {
+	// describe('configured with a circular hook dependency', function () {
 		
-		// NOTE #1: not currently implemented
-		// NOTE #2: not currently possible
-		// (should be possible after merging @ragulka's PR)
-		// $Sails.load();
+	// 	// NOTE #1: not currently implemented
+	// 	// NOTE #2: not currently possible
+	// 	// (should be possible after merging @ragulka's PR)
+	// 	// $Sails.load();
 
-		it('should throw a fatal error');
-	});
+	// 	it('should throw a fatal error');
+	// });
 
 
 });

@@ -95,7 +95,8 @@ module.exports.lift = function(options, callback) {
 	if (options.port) {
 		liftOpts.push('--port='+options.port);
 	}
-	var sailsprocess = spawn('../bin/sails.js', liftOpts);
+	var sailsbin = options.sailsbin || '../bin/sails.js';
+	var sailsprocess = spawn(sailsbin, liftOpts);
 
 	sailsprocess.on('error',function(err) {
 		return callback(err);
