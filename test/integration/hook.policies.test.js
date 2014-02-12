@@ -4,30 +4,37 @@ var appHelper = require('./helpers/appHelper');
 var path = require('path');
 var fs = require('fs');
 
-describe.skip('router :: ', function() {
+describe('router :: ', function() {
 
 	describe('Policies', function() {
 		var appName = 'testApp';
 
-		before(function(done) {
-			appHelper.build(function(err) {
-				// console.log('before chdir ' + appName + ', cwd was :: ' + process.cwd());
-				process.chdir(appName);
-				// console.log('after chdir ' + appName + ', new cwd is :: ' + process.cwd());
-				
-				if (err) return done(err);
+			before(function(done) {
+				this.timeout(5000);
+				appHelper.build(done);
+			});
+
+			beforeEach(function(done) {
+				appHelper.lift(function(err, sails) {
+					if (err) {throw new Error(err);}
+					sailsprocess = sails;
+					setTimeout(done, 100);
+				});
+			});
+
+			afterEach(function(done) {
+				sailsprocess.kill();
 				done();
 			});
-		});
 
-		after(function() {
-			// console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
-			process.chdir('../');
-			// console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
-			appHelper.teardown();
-		});
+			after(function() {
+				// console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
+				process.chdir('../');
+				// console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
+				appHelper.teardown();
+			});
 
-		describe('an error in the policy callback', function() {
+			describe('an error in the policy callback', function() {
 
 			before(function() {
 				var config = "module.exports.policies = { '*': 'error_policy' };";
@@ -116,7 +123,7 @@ describe.skip('router :: ', function() {
 			before(function() {
 				var policy = {
 					'test': {
-						'index': ['fake_auth', 'isAuthenticated']
+						'index': ['fake_auth', 'sessionAuth']
 					}
 				};
 
@@ -146,7 +153,7 @@ describe.skip('router :: ', function() {
 			before(function() {
 				var policy = {
 					'test': {
-						'*': ['fake_auth', 'isAuthenticated']
+						'*': ['fake_auth', 'sessionAuth']
 					}
 				};
 
