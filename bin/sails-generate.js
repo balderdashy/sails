@@ -70,6 +70,9 @@ module.exports = function ( ) {
 	// If the generator type is "api", we currently treat it as a special case.
 	// (todo: pull this out into a simple generator)
 	if (scope.generatorType === 'api') {
+		if (scope.args.length === 0) {
+			return cb.error('Usage: sails generate api [api name]');
+		}
 		require('./_generate-api')(scope, cb);
 	}
 
