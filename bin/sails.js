@@ -62,7 +62,7 @@ cmd.action( require('./sails-lift') );
 
 // $ sails new <appname>
 cmd = program.command('new [appname]');
-cmd.option('--dry');
+// cmd.option('--dry');
 cmd.option('--viewEngine [viewEngine]');
 cmd.option('--template [viewEngine]');
 cmd.unknownOption = NOOP;
@@ -70,12 +70,12 @@ cmd.action(require('./sails-new'));
 
 
 // $ sails generate <module>
-cmd = program.command('generate');
-cmd.option('--dry');
+cmd = program.command('generate [type_of_thing]');
+// cmd.option('--dry');
 cmd.unknownOption = NOOP;
 cmd.description('');
 cmd.action( function () {
-	require('./sails-generate')(program);
+	require('./sails-generate')(cmd);
 });
 
 
