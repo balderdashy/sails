@@ -144,28 +144,42 @@ describe('API and adapter generators', function () {
 		});
 	});
 
-	describe('sails generate <modelname>', function () {
+	describe('sails generate', function () {
 		var modelName = 'post';
 
-		it('should throw an error if no model name is specified', function(done) {
+		it('should display usage if no generator name is specified', function(done) {
 
-			exec(sailsBin + ' generate', function (err) {
-				assert.equal(err.code, 1);
+			exec(sailsBin + ' generate', function (err, dumb, response) {
+				assert.notEqual(response.indexOf('Usage'), -1);
+				done();
+			});
+		});
+
+	});
+
+	describe('sails generate api <apiname>', function () {	
+
+		var apiName = 'foo';
+
+		it('should display usage if no api name is specified', function(done) {
+
+			exec(sailsBin + ' generate api', function (err, dumb, response) {
+				assert.notEqual(response.indexOf('Usage'), -1);
 				done();
 			});
 		});
 
 		it('should create a controller and a model file', function(done) {
 
-			exec(sailsBin + ' generate api ' + modelName , function (err) {
+			exec(sailsBin + ' generate api ' + apiName , function (err) {
 				if (err) done(new Error(err));
 
 				assert.doesNotThrow(function() {
-					fs.readFileSync('./api/models/' + capitalize(modelName) + '.js', 'utf8');
+					fs.readFileSync('./api/models/' + capitalize(apiName) + '.js', 'utf8');
 				});
 
 				assert.doesNotThrow(function() {
-					fs.readFileSync('./api/controllers/' + capitalize(modelName) + 'Controller.js', 'utf8');
+					fs.readFileSync('./api/controllers/' + capitalize(apiName) + 'Controller.js', 'utf8');
 				});
 
 				done();
@@ -174,7 +188,7 @@ describe('API and adapter generators', function () {
 
 		it('should throw an error if a controller file and model file with the same name exists', function(done) {
 
-			exec(sailsBin + ' generate api ' + modelName , function (err) {
+			exec(sailsBin + ' generate api ' + apiName , function (err) {
 				assert.equal(err.code, 1);
 				done();
 			});
