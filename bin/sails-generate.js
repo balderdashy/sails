@@ -42,7 +42,7 @@ module.exports = function ( ) {
 	// Get command-line arguments
 	// from the arguments to this function
 	var cliArguments = Array.prototype.slice.call(arguments);
-	
+
 	// Remove commander's extra argument
 	var commanderCmd = cliArguments.pop();
 	
@@ -50,14 +50,13 @@ module.exports = function ( ) {
 	scope.generatorType = cliArguments.shift();
 	scope.args = cliArguments;
 
-	// Show usage if no generator type is defined
-	if (!scope.generatorType) {
-		commanderCmd.usageMinusWildcard();
-		return;
-	}
-
 	// Create a new reportback
 	var cb = reportback.extend();
+
+	// Show usage if no generator type is defined
+	if (!scope.generatorType) {
+		return cb.log.error('Usage: sails generate [something]');
+	}
 
 	// Set the "invalid" exit to forward to "error"
 	cb.error = function(msg) {

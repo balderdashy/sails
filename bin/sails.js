@@ -71,7 +71,7 @@ cmd.action(require('./sails-new'));
 
 
 // $ sails generate <module>
-cmd = program.command('generate [something]');
+cmd = program.command('generate');
 // cmd.option('--dry');
 cmd.unknownOption = NOOP;
 cmd.description('');
