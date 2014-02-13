@@ -48,7 +48,7 @@ program
 	.option('--verbose')
 	.option('--silly')
 	.unknownOption = NOOP;
-
+program.usage('[command]');
 
 
 // $ sails lift
@@ -61,19 +61,21 @@ cmd.action( require('./sails-lift') );
 
 
 // $ sails new <appname>
-cmd = program.command('new [appname]');
+cmd = program.command('new [path_to_new_app]');
 // cmd.option('--dry');
 cmd.option('--viewEngine [viewEngine]');
 cmd.option('--template [viewEngine]');
+cmd.usage('[path_to_new_app]');
 cmd.unknownOption = NOOP;
 cmd.action(require('./sails-new'));
 
 
 // $ sails generate <module>
-cmd = program.command('generate [type_of_thing]');
+cmd = program.command('generate [something]');
 // cmd.option('--dry');
 cmd.unknownOption = NOOP;
 cmd.description('');
+cmd.usage('[something]');
 cmd.action( function () {
 	require('./sails-generate')(cmd);
 });
@@ -88,6 +90,7 @@ cmd.action( require('./sails-console') );
 
 
 // $ sails www
+// Compile `assets` directory into a standalone `www` folder.
 cmd = program.command('www');
 cmd.unknownOption = NOOP;
 cmd.description('');
