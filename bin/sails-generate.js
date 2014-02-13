@@ -22,7 +22,7 @@ var package = require('../package.json')
  * Internally, uses ejs for rendering the various module templates.
  */
 
-module.exports = function ( program ) {
+module.exports = function ( ) {
 
 	// Build initial scope
 	var scope = {
@@ -40,10 +40,11 @@ module.exports = function ( program ) {
 
 
 	// Get command-line arguments
+	// from the arguments to this function
 	var cliArguments = Array.prototype.slice.call(arguments);
 	
 	// Remove commander's extra argument
-	cliArguments.pop();
+	var commanderCmd = cliArguments.pop();
 	
 	// Peel off the generatorType and the rest of the args
 	scope.generatorType = cliArguments.shift();
@@ -51,7 +52,7 @@ module.exports = function ( program ) {
 
 	// Show usage if no generator type is defined
 	if (!scope.generatorType) {
-		program.usageMinusWildcard();
+		commanderCmd.usageMinusWildcard();
 		return;
 	}
 

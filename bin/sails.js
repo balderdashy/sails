@@ -76,9 +76,7 @@ cmd = program.command('generate [something]');
 cmd.unknownOption = NOOP;
 cmd.description('');
 cmd.usage('[something]');
-cmd.action( function () {
-	require('./sails-generate')(cmd);
-});
+cmd.action( require('./sails-generate') );
 
 
 
