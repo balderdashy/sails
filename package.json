@@ -1,7 +1,7 @@
 {
   "name": "sails",
   "author": "Mike McNeil <mike@balderdash.co>",
-  "version": "0.10.0",
+  "version": "0.10.0-rc1",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
   "homepage": "http://sailsjs.org",
   "keywords": [
@@ -38,10 +38,8 @@
     "captains-log": "~0.11.1",
     "reportback": "~0.1.4",
     "sails-util": "~0.10.0",
-    "colors": "~0.6.2"
-  },
-  "optionalDependencies": {
-    "waterline": "git://github.com/balderdashy/waterline.git#v0.10",
+    "colors": "~0.6.2",
+    "waterline": "~0.10.0",
     "socket.io": "~0.9.14",
     "connect-flash": "~0.1.1",
     "pluralize": "~0.0.5",
@@ -56,7 +54,7 @@
     "connect-mongo": "~0.3.2",
     "grunt-cli": "~0.1.11",
     "ejs": "~0.8.4",
-    "sails-disk": "git://github.com/balderdashy/sails-disk.git#v0.10",
+    "sails-disk": "~0.10.0",
 
     "commander": "~2.1.0",
     "enpeem": "~0.1.1",
@@ -89,7 +87,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/balderdashy/sails.git#v0.10"
+    "url": "git://github.com/balderdashy/sails.git"
   },
   "licenses": [
     {
@@ -102,8 +100,5 @@
   },
   "engines": {
     "node": ">= 0.10.0"
-  },
-  "sails": {
-    "prerelease": "git://github.com/balderdashy/sails.git#v0.10"
   }
 }
