@@ -1,6 +1,6 @@
 # Benchmarks
 
-### Run the tests
+### Run the benchmarks
 
 From the root directory of sails:
 
@@ -15,9 +15,7 @@ $ mocha test/benchmarks -v
 ```
 
 
-
-
-### About
+### Goals
 
 These tests are related to benchmarking the performance of different parts of Sails.  For now, our benchmark tests should be "integration" or "acceptance" tests.  By that, I mean they should measure a specific "user action" (e.g. running `sails new`, running `sails lift`, sending an HTTP request to a dummy endpoint, connecting a Socket.io client, etc.).
 
@@ -80,6 +78,17 @@ Here are the most important things we need to benchmark:
 
 + Every permutation of the core hook configuration
 + With different configuration options set
+
+
+### Considerations
+
+Some important things to consider when benchmarking Node.js / Express-based apps in general:
+
++ Keep in mind that, unless you use the cluster module, or spin up multiple instances of the server, you're testing performance on one CPU.  Most production servers, cloud or not, have more than one CPU available.  This may or may not be relevant, depending on the benchmark and whether it is CPU-intensive.
++ Be sure to configure [`maxSockets`](http://nodejs.org/api/http.html#http_agent_maxsockets), since most of the requests in a benchmark test are likely to originate from the same source.
+
+> **Sources:**
+> + https://groups.google.com/forum/#!topic/nodejs/tgATyqF-HIc
 
 
 
