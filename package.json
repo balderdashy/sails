@@ -39,7 +39,7 @@
     "reportback": "~0.1.4",
     "sails-util": "~0.10.0",
     "colors": "~0.6.2",
-    "waterline": "~0.10.0",
+    "waterline": "^0.10.0-rc2",
     "socket.io": "~0.9.14",
     "connect-flash": "~0.1.1",
     "pluralize": "~0.0.5",
@@ -55,7 +55,6 @@
     "grunt-cli": "~0.1.11",
     "ejs": "~0.8.4",
     "sails-disk": "~0.10.0",
-
     "commander": "~2.1.0",
     "enpeem": "~0.1.1",
     "grunt": "0.4.2",
