@@ -82,7 +82,8 @@
     "should": "~2.1.1",
     "supertest": "~0.8.2",
     "fs-extra": "~0.8.1",
-    "socket.io-client": "~0.9.16"
+    "socket.io-client": "~0.9.16",
+    "mocha": "~1.17.1"
   },
   "repository": {
     "type": "git",
