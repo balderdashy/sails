@@ -22,8 +22,7 @@
   },
   "scripts": {
     "test": "mocha",
-    "prepublish": "npm prune",
-    "pretest": "node test/.installDependencies"
+    "prepublish": "npm prune"
   },
   "directories": {
     "lib": "lib"
@@ -56,7 +55,6 @@
     "ejs": "~0.8.4",
     "sails-disk": "~0.10.0",
     "commander": "~2.1.0",
-    "enpeem": "~0.1.1",
     "grunt": "0.4.2",
     "grunt-contrib-copy": "~0.4.1",
     "grunt-contrib-clean": "~0.4.1",
@@ -70,7 +68,7 @@
     "grunt-contrib-coffee": "~0.7.0",
     "grunt-sync": "~0.0.4"
   },
-  "testDependencies": {
+  "devDependencies": {
     "root-require": "~0.2.0",
     "checksum": "~0.1.1",
     "request": "*",
@@ -82,7 +80,8 @@
     "should": "~2.1.1",
     "supertest": "~0.8.2",
     "fs-extra": "~0.8.1",
-    "socket.io-client": "~0.9.16"
+    "socket.io-client": "~0.9.16",
+    "mocha": "~1.17.1"
   },
   "repository": {
     "type": "git",
