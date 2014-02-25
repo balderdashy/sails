@@ -28,7 +28,7 @@ module.exports = function () {
 	var log = captains(rconf.log);
 
 	console.log();
-	log.info('Starting app...'.debug);
+	log.info('Starting app...'.grey);
 	console.log();
 
 	// Build initial scope, mixing-in rc config
