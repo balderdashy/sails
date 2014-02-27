@@ -57,7 +57,7 @@ module.exports = {
 	// app/load.js:146
 	hooksTookTooLong: function () {
 		var hooksTookTooLongErr = 'Hooks are taking way too long to get ready...  ' +
-			'Something is amiss.\nAre you using any custom hooks?\nIf so, make sure the hook\'s ' +
+			'Something might be amiss.\nAre you using any custom hooks?\nIf so, make sure the hook\'s ' +
 			'`initialize()` method is triggering it\'s callback.';
 		log.error(hooksTookTooLongErr);
 		process.exit(1);
