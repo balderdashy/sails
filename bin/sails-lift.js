@@ -28,7 +28,7 @@ module.exports = function () {
 	var log = captains(rconf.log);
 
 	console.log();
-	log.info('Starting app...'.debug);
+	log.info('Starting app...'.grey);
 	console.log();
 
 	// Build initial scope, mixing-in rc config
@@ -39,7 +39,7 @@ module.exports = function () {
 
 	// Use the app's local Sails in `node_modules` if one exists
 	var appPath = process.cwd();
-	var localSailsPath = path.resolve(appPath, '/node_modules/sails');
+	var localSailsPath = path.resolve(appPath, 'node_modules/sails');
 
 	// But first make sure it'll work...
 	if ( Sails.isLocalSailsValid(localSailsPath, appPath) ) {

@@ -57,8 +57,8 @@ module.exports = {
 	// app/load.js:146
 	hooksTookTooLong: function () {
 		var hooksTookTooLongErr = 'Hooks are taking way too long to get ready...  ' +
-			'Something is amiss.\nAre you using any custom hooks?\nIf so, make sure the hook\'s ' +
-			'`initialize()` method is triggering it\'s callback.';
+			'Something might be amiss.\nAre you using any custom hooks?\nIf so, make sure the hook\'s ' +
+			'`initialize()` method is triggering its callback.';
 		log.error(hooksTookTooLongErr);
 		process.exit(1);
 	},
@@ -86,13 +86,13 @@ module.exports = {
 		var relativePublicPath = (require('path').resolve(process.cwd(), './.tmp'));
 		var uid = process.getuid && process.getuid() || 'YOUR_COMPUTER_USER_NAME';
 		console.log();
-		log.error('You might have a malformed LESS or CoffeeScript file...');
-		log.error('Or maybe you don\'t have permissions to access the `.tmp` directory?');
-		log.error('e.g.');
-		log.error(relativePublicPath,'?' );
+		log.error(' *-> You might have a malformed LESS or CoffeeScript file...');
 		log.error();
-		log.error('If you think it\'s the latter case, you might try running:');
-		log.error('sudo chown -R',uid,relativePublicPath);
+		log.error(' *-> Or maybe you don\'t have permissions to access the `.tmp` directory?');
+		log.error('     e.g., `' + relativePublicPath+'`','?' );
+		log.error();
+		log.error('     If you think this might be the case, try running:');
+		log.error('     sudo chown -R',uid,relativePublicPath);
 		console.log();
 		
 		return _terminateProcess(1);
