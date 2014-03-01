@@ -1,14 +1,11 @@
 /**
  * Module dependencies
  */
-var argv = require('optimist').argv,
-	util = require('sails-util'),
-	Logger = require('captains-log'),
-	path = require('path');
+var path = require('path');
 
-
-// Build logger using command-line arguments
-var log = new Logger(util.getCLIConfig(argv).log);
+// Build logger using best-available information
+// when this module is initially required.
+var log = require('captains-log')(require('../lib/configuration/rc'));
 
 
 /**
