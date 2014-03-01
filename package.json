@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "express": "3.4.3",
+    "waterline": "~0.10.0-rc2",
     "rc": "~0.3.3",
     "sails-stringfile": "~0.3.0",
     "async": "~0.2.9",
@@ -38,7 +39,6 @@
     "reportback": "~0.1.4",
     "sails-util": "~0.10.0",
     "colors": "~0.6.2",
-    "waterline": "^0.10.0-rc2",
     "socket.io": "~0.9.14",
     "connect-flash": "~0.1.1",
     "pluralize": "~0.0.5",

@@ -7,7 +7,6 @@
 
 var package = require('../package.json')
 	, Sails = require('../lib/app')
-	, reportback = require('reportback')()
 	, _ = require('lodash')
 	, rconf = require('../lib/configuration/rc')
 	, captains = require('captains-log')
