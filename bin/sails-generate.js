@@ -39,14 +39,11 @@ module.exports = function ( ) {
 	_.merge(scope, rconf);
 
 
-	// Get command-line arguments
-	// from the arguments to this function
+	// Pass the original CLI arguments down to the generator
+	// (but first, remove commander's extra argument)
+	// (also peel off the `generatorType` arg)
 	var cliArguments = Array.prototype.slice.call(arguments);
-
-	// Remove commander's extra argument
-	var commanderCmd = cliArguments.pop();
-	
-	// Peel off the generatorType and the rest of the args
+	cliArguments.pop();
 	scope.generatorType = cliArguments.shift();
 	scope.args = cliArguments;
 
