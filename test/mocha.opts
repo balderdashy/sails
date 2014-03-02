@@ -1,4 +1,4 @@
---timeout 60000
---reporter dot
---ui bdd
-test/**/*.test.js
+--require should
+--reporter spec
+--recursive
+--slow 300

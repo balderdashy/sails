@@ -18,7 +18,9 @@ The community is what makes Sails great, without you we wouldn't have come so fa
 ## Writing Code
 
 > This section is based on the [Node.js contribution guide](https://github.com/joyent/node/blob/master/CONTRIBUTING.md#contributing).
-
+>
+> **CoffeeScript?**
+> For consistency, all code in Sails core, including core hooks and core generators, must be written in JavaScript, not CoffeeScript or TypeScript.  We can't merge a pull request in CofeeScript.
 
 #### Contributing to an adapter
 
@@ -32,8 +34,6 @@ The custom adapter API is not stable yet, but it is settling.  Feel free to star
 
 If the generator is part of core (code base is located in the Sails repo), please follow the general best practices for contributing to Sails core.  If it is located in a different repo, please send feature requests, patches, and issues there.
 
-> For consistency, all code in Sails core, including core hooks and core generators, must be written in JavaScript, not CoffeeScript or TypeScript.  We can't merge a pull request in CofeeScript.
-
 
 #### Contributing to core
 
@@ -43,13 +43,9 @@ Sails has several dependencies referenced in the `package.json` file that are no
 
 In case of doubt, open an issue in the [issue tracker](), post your question to the [mailing list]() or contact one of the project maintainers on IRC (#sailsjs on freenode).  Especially if you plan to work on something big. Nothing is more frustrating than seeing your hard work go to waste because your vision does not align with a project's roadmap.  At the end of the day, we just want to be able to merge your code.
 
-> For consistency, all code in Sails core, including core hooks and core generators, must be written in JavaScript, not CoffeeScript or TypeScript.  We can't merge a pull request in CofeeScript.
-
 #### Contributing to a hook
 
 If the hook is part of core (code base is located in the Sails repo), please follow the general best practices for contributing to Sails core.  If the hook is located in a different repo, please send feature requests, patches, and issues there.
-
-> For consistency, all code in Sails core, including core hooks and core generators, must be written in JavaScript, not CoffeeScript or TypeScript.  We can't merge a pull request in CofeeScript.
 
 #### Authoring a new hook
 
@@ -66,7 +62,7 @@ The custom generator API is very new, and still experimental.  If you are seriou
 1. Fork the repo.
 2. Add a test for your change. Only refactoring and documentation changes require no new tests. If you are adding functionality or fixing a bug, we need a test!
 4. Make the tests pass and make sure you follow [our syntax guidelines](https://github.com/balderdashy/sails/blob/master/.jshintrc).
-5. Push to your fork and submit a pull request to our [the v0.10 branch](https://github.com/balderdashy/sails/tree/v0.10).
+5. Push to your fork and submit a pull request to the [master branch](https://github.com/balderdashy/sails/tree/master).
 
 
 ## Requesting Features

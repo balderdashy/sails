@@ -1,9 +1,9 @@
 {
   "name": "sails",
   "author": "Mike McNeil <mike@balderdash.co>",
-  "version": "0.9.8",
+  "version": "0.10.0-rc3",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
-  "homepage": "http://sailsjs.com",
+  "homepage": "http://sailsjs.org",
   "keywords": [
     "mvc",
     "web-framework",
@@ -16,60 +16,73 @@
     "orm",
     "socket.io"
   ],
-  "main": "./lib/index",
+  "main": "./lib/index.js",
   "bin": {
     "sails": "./bin/sails.js"
   },
   "scripts": {
-    "test": "istanbul cover _mocha --report lcovonly && cat ./coverage/lcov.info | coveralls"
+    "test": "istanbul cover _mocha --report lcovonly && cat ./coverage/lcov.info | coveralls",
+    "prepublish": "npm prune"
   },
   "directories": {
     "lib": "lib"
   },
   "dependencies": {
-    "waterline": "~0.9.4",
-    "sails-disk": "~0.9.0",
-    "express": "3.4.0",
-    "socket.io": "0.9.14",
-    "connect-redis": "1.4.5",
-    "connect-mongo": "0.3.2",
-    "async": "0.2.9",
-    "winston": "0.7.1",
-    "i18n": "0.4.1",
-    "optimist": "0.3.4",
-    "fs-extra": "0.5.0",
-    "lodash": "2.4.1",
-    "glob": "3.1.14",
-    "underscore.string": "2.3.0",
-    "include-all": "0.1.2",
-    "inflection": "1.2.5",
-    "node-uuid": "1.4.0",
-    "grunt": "0.4.1",
-    "grunt-cli": "0.1.9",
-    "grunt-contrib-copy": "0.4.1",
-    "grunt-contrib-clean": "0.4.1",
-    "grunt-contrib-concat": "0.3.0",
-    "grunt-sails-linker": "0.9.5",
-    "grunt-contrib-jst": "0.5.0",
-    "grunt-contrib-watch": "0.4.4",
-    "grunt-contrib-uglify": "0.2.2",
-    "grunt-contrib-cssmin": "0.6.1",
-    "grunt-contrib-less": "0.5.2",
+    "express": "3.4.3",
+    "waterline": "~0.10.0-rc2",
+    "rc": "~0.3.3",
+    "sails-stringfile": "~0.3.0",
+    "async": "~0.2.9",
+    "lodash": "~2.4.1",
+    "captains-log": "~0.11.1",
+    "reportback": "~0.1.4",
+    "sails-util": "~0.10.0",
+    "colors": "~0.6.2",
+    "socket.io": "~0.9.14",
+    "connect-flash": "~0.1.1",
+    "pluralize": "~0.0.5",
+    "node-uuid": "~1.4.0",
+    "ejs-locals": "~1.0.2",
+    "glob": "~3.1.14",
+    "i18n": "~0.4.1",
+    "sails-generate": "~0.10.0",
+    "sails-build-dictionary": "0.1.0",
+    "connect-redis": "~1.4.5",
+    "connect-mongo": "~0.3.2",
+    "grunt-cli": "~0.1.11",
+    "ejs": "~0.8.4",
+    "sails-disk": "~0.10.0",
+    "commander": "~2.1.0",
+    "grunt": "0.4.2",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-clean": "~0.4.1",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-sails-linker": "~0.9.5",
+    "grunt-contrib-jst": "~0.5.0",
+    "grunt-contrib-watch": "~0.4.4",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-cssmin": "~0.6.1",
+    "grunt-contrib-less": "~0.9.0",
     "grunt-contrib-coffee": "~0.7.0",
-    "ejs": "0.8.4",
-    "ejs-locals": "1.0.2",
-    "connect-flash": "0.1.1",
-    "pluralize": "0.0.5"
+    "grunt-sync": "~0.0.4"
   },
   "devDependencies": {
-    "mocha": "*",
+    "root-require": "~0.2.0",
+    "checksum": "~0.1.1",
     "request": "*",
     "istanbul": "*",
     "coveralls": "*",
-    "wrench": "~1.5.1"
-  },
-  "optionalDependencies": {
-    "coffee-script": "1.6.2"
+    "wrench": "~1.5.1",
+    "benchmark": "~1.0.0",
+    "microtime": "~0.5.1",
+    "colors": "~0.6.2",
+    "expect.js": "~0.2.0",
+    "should": "~2.1.1",
+    "supertest": "~0.8.2",
+    "fs-extra": "~0.8.1",
+    "socket.io-client": "~0.9.16",
+    "mocha": "~1.17.1",
+    "portfinder": "~0.2.1"
   },
   "repository": {
     "type": "git",
@@ -78,7 +91,7 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://sails.mit-license.org/"
+      "url": "http://links.sailsjs.org/license/mit"
     }
   ],
   "bugs": {

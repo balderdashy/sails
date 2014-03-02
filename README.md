@@ -7,7 +7,7 @@ Sails.js is a web framework that makes it easy to build custom, enterprise-grade
 
 ## Installation
 
-**With [node](http://nodejs.org) [installed](http://sailsjs.com/#!documentation/new-to-nodejs):**
+**With [node](http://nodejs.org) [installed](http://sailsjs.org/#!documentation/new-to-nodejs):**
 ```sh
 # Get the latest stable release of Sails
 $ sudo npm install sails -g
@@ -39,33 +39,15 @@ $ sails lift
 ## Compatibility
 
 [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)
+[![Dependency Status](https://david-dm.org/balderdashy/sails.png)](https://david-dm.org/balderdashy/sails)
 
 Sails is built on Node.js, Connect, Express, and Socket.io.
 
 Sails [controllers](http://sailsjs.org/#!documentation/controllers) are compatible with Connect middleware, so in most cases, you can paste code into Sails from an existing Express project and everything will work-- plus you'll be able to use WebSockets to talk to your API, and vice versa.
 
-The ORM, [Waterline](github.com/balderdashy/waterline), has a well-defined adapter system for supporting all kinds of datastores.  Officially supported databases include **[MySQL](https://github.com/balderdashy/sails-mysql)**, **[PostgreSQL](https://github.com/balderdashy/sails-postgresql)**, **[MongoDB](https://github.com/balderdashy/sails-mongo)**, **[Redis](https://github.com/balderdashy/sails-redis)**, local [disk](https://github.com/balderdashy/sails-disk), and local [memory](https://github.com/balderdashy/sails-memory).  [Community adapters](https://github.com/balderdashy/sails-docs/blob/master/intro-to-custom-adapters.md#notable-community-adapters) exist for Riak, CouchDB, and ElasticSearch; for various 3rd-party REST APIs like Yelp and Twitter; plus some [eclectic projects](https://www.youtube.com/watch?v=OmcQZD_LIAE).
+The ORM, [Waterline](https://github.com/balderdashy/waterline), has a well-defined adapter system for supporting all kinds of datastores.  Officially supported databases include **[MySQL](https://github.com/balderdashy/sails-mysql)**, **[PostgreSQL](https://github.com/balderdashy/sails-postgresql)**, **[MongoDB](https://github.com/balderdashy/sails-mongo)**, **[Redis](https://github.com/balderdashy/sails-redis)**, local [disk](https://github.com/balderdashy/sails-disk), and local [memory](https://github.com/balderdashy/sails-memory).  [Community adapters](https://github.com/balderdashy/sails-docs/blob/master/intro-to-custom-adapters.md#notable-community-adapters) exist for Riak, CouchDB, and ElasticSearch; for various 3rd-party REST APIs like Yelp and Twitter; plus some [eclectic projects](https://www.youtube.com/watch?v=OmcQZD_LIAE).
 
 
-
-
-<!--
-Generate a JSON API:
-```sh
-# generate a user model + controller (i.e. a User API)
-sails generate user
-```
--->
-
-<!--
-> Sails provides "blueprint routes" (URL mappings) and "blueprint actions" (built-in CRUD and pubsub operations) for every controller+model in your app. These "blueprints" can be configured and/or completely disabled as needed.  Notably, all logic in Sails (including blueprint actions) supports both WebSockets and HTTP out of the box.  
-
-+ List all users ([http://localhost:1337/user](http://localhost:1337/user))
-+ Find the user with id 1 ([http://localhost:1337/user/1](http://localhost:1337/user/1))
-+ Create a new user ([http://localhost:1337/user/create?name=Fisslewick](http://localhost:1337/user/create?name=Fisslewick), or `POST to http://localhost:1337/user`)
-+ Update the name of the user with id 1 ([http://localhost:1337/user/update/1?name=Gordo](http://localhost:1337/user/update/1?name=Gordo), or `PUT http://localhost:1337/user/1`)
-+ Destroy the user with id 1 (visit [http://localhost:1337/user/destroy/1](http://localhost:1337/user/destroy/1), or `DELETE http://localhost:1337/user/1`)
--->
 
 
 ## Issue Submission
@@ -106,7 +88,7 @@ Sails is actively built and maintained by [Balderdash](http://balderdash.co) ([@
 
 [![Mike McNeil](http://gravatar.com/avatar/199046437b76e6ca73e00b4cc182a1c5?s=144)](http://michaelmcneil.com) | [![Cody Stoltman](https://1.gravatar.com/avatar/368567acca0c5dfb9a4ff512c5c0c3fa?s=144)](http://particlebanana.com) |  [![Scott Gress](https://0.gravatar.com/avatar/b74e07aa543552709bf546ca279c9c67?s=144)](http://www.pigandcow.com/) | [![Greg Thornton](https://2.gravatar.com/avatar/b7c50edb558d5289331440f45ff600b0?s=144)](http://xdissent.com) | [![Zoli Kahan](http://gravatar.com/avatar/55dbeca986f875e1d1cb4d51e2fc42e4?s=144)](http://www.zolmeister.com/)
 :---:|:---:|:---:|:---:|:---:
-[Mike McNeil](http://michaelmcneil.com) | [Cody Stoltman](http://particlebanana.com) | [Scott Gress](https://github.com/sgress454) | [Greg Thornton](https://github.com/xdissent) | [Zoli Kahan](https://github.com/Zolmeister)
+[Mike McNeil](http://michaelmcneil.com) | [Cody Stoltman](https://github.com/particlebanana) | [Scott Gress](https://github.com/sgress454) | [Greg Thornton](https://github.com/xdissent) | [Zoli Kahan](https://github.com/Zolmeister)
 
 Balderdash designs/builds scalable Node.js apps for startups and enterprise customers.  After building a few apps and taking them into production, we realized that the Node.js development landscape was very much still the Wild West.  Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  [I](http://twitter.com/mikermcneil) hope it saves you some time :)
 
@@ -117,6 +99,9 @@ Balderdash designs/builds scalable Node.js apps for startups and enterprise cust
 
 > Sails is built around so many great open-source technologies that it would never have crossed our minds to keep it proprietary.  We owe huge gratitude and props to TJ Holowaychuk ([@visionmedia](https://github.com/visionmedia)) and Guillermo Rauch ([@guille](https://github.com/guille)) for the work they did, as well as the stewards of all the other open-source modules we use.  Sails could never have been developed without your tremendous contributions to the node community.
 
+
+
 ![image_squidhome@2x.png](http://i.imgur.com/RIvu9.png)
+
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/8acf2fc2ca0aca8a3018e355ad776ed7 "githalytics.com")](http://githalytics.com/balderdashy/sails)

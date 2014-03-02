@@ -42,3 +42,7 @@ That said, you _can_ write and distribute a custom hook today.  If you're intere
 + Custom route-level options (since v0.9, but changing in 0.10: Stage 2 - Unstable, but approaching Stage 3)
 + Custom configuration (since v0.7)
 + Custom "shadow routes" (since v0.7, merged in hooks in v0.9)
+
+## FAQ
+
+> If you have a question that isn't covered here, please feel free to send a PR adding it to this section (even if you don't have the answer!)
