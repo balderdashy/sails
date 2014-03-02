@@ -16,6 +16,8 @@ The community is what makes Sails great, without you we wouldn't have come so fa
 | [**captains-log**](http://github.com/balderdashy/captains-log) | N/A | [![NPM version](https://badge.fury.io/js/captains-log.png)](http://badge.fury.io/js/captains-log) |
 | [**reportback**](http://github.com/balderdashy/reportback) | N/A | [![NPM version](https://badge.fury.io/js/reportback.png)](http://badge.fury.io/js/reportback) |
 | [**node-switchback**](http://github.com/balderdashy/switchback) | N/A | [![NPM version](https://badge.fury.io/js/node-switchback.png)](http://badge.fury.io/js/node-switchback) |
+| [**sails-stringfile**](http://github.com/balderdashy/sails-stringfile) | N/A | [![NPM version](https://badge.fury.io/js/sails-stringfile.png)](http://badge.fury.io/js/sails-stringfile) |
+| [**sails-util**](http://github.com/balderdashy/sails-util) | _will be deprecated_ | [![NPM version](https://badge.fury.io/js/sails-util.png)](http://badge.fury.io/js/sails-util) |
 
 
 #### Built-in generators
