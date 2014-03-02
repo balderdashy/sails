@@ -1,6 +1,8 @@
 # Modules
 
-Sails is a large project.  Below, you'll find an overview of modules maintained as part of the Sails effort.  Each module is located in its own repository, and in most cases is tested individually.
+Sails is a large project, with many modular components.  Each module is located in its own repository, and in most cases is tested individually.
+
+Below, you'll find an overview of the modules maintained by the core team and community members.
 
 
 #### Core modules
