@@ -21,7 +21,7 @@
     "sails": "./bin/sails.js"
   },
   "scripts": {
-    "test": "mocha",
+    "test": "istanbul cover _mocha --report lcovonly && cat ./coverage/lcov.info | coveralls",
     "prepublish": "npm prune"
   },
   "directories": {
@@ -71,6 +71,8 @@
     "root-require": "~0.2.0",
     "checksum": "~0.1.1",
     "request": "*",
+    "istanbul": "*",
+    "coveralls": "*",
     "wrench": "~1.5.1",
     "benchmark": "~1.0.0",
     "microtime": "~0.5.1",
