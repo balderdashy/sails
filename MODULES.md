@@ -29,6 +29,12 @@ Below, you'll find an overview of the modules maintained by the core team and co
 | [**include-all**](http://github.com/balderdashy/include-all) | [![NPM version](https://badge.fury.io/js/include-all.png)](http://badge.fury.io/js/include-all) |
 | [**reportback**](http://github.com/balderdashy/reportback) | [![NPM version](https://badge.fury.io/js/reportback.png)](http://badge.fury.io/js/reportback) |
 | [**node-switchback**](http://github.com/balderdashy/switchback) | [![NPM version](https://badge.fury.io/js/node-switchback.png)](http://badge.fury.io/js/node-switchback) |
+| [**merge-defaults**](http://github.com/balderdashy/merge-defaults) | [![NPM version](https://badge.fury.io/js/merge-defaults.png)](http://badge.fury.io/js/merge-defaults) |
+| [**enpeem**](http://github.com/balderdashy/enpeem) | [![NPM version](https://badge.fury.io/js/enpeem.png)](http://badge.fury.io/js/enpeem) |
+| [**merge-context**](http://github.com/balderdashy/merge-context) | [![NPM version](https://badge.fury.io/js/merge-context.png)](http://badge.fury.io/js/merge-context) |
+| [**fixture-stdout**](http://github.com/balderdashy/fixture-stdout) | [![NPM version](https://badge.fury.io/js/fixture-stdout.png)](http://badge.fury.io/js/fixture-stdout) |
+
+
 
 
 #### Built-in generators
