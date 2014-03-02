@@ -73,7 +73,7 @@ Below, you'll find an overview of the modules maintained by the core team and co
 
 
 
-#### Client-SDKs
+#### Browser SDKs
 
 | Repo       |  Latest Stable Version (bower)   |
 |------------|----------------------------------|
