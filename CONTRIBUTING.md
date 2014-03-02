@@ -17,6 +17,10 @@ The community is what makes Sails great, without you we wouldn't have come so fa
 
 ## Writing Code
 
+[![Build Status](https://travis-ci.org/balderdashy/sails.png?branch=master)](https://travis-ci.org/balderdashy/sails)
+
+[![Build Status](https://travis-ci.org/balderdashy/waterline.png?branch=master)](https://travis-ci.org/balderdashy/waterline)
+
 > This section is based on the [Node.js contribution guide](https://github.com/joyent/node/blob/master/CONTRIBUTING.md#contributing).
 >
 > **CoffeeScript?**
