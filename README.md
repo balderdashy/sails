@@ -40,6 +40,7 @@ $ sails lift
 
 [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)
 [![Dependency Status](https://david-dm.org/balderdashy/sails.png)](https://david-dm.org/balderdashy/sails)
+[![Coverage Status](https://coveralls.io/repos/balderdashy/sails/badge.png)](https://coveralls.io/r/balderdashy/sails)
 
 Sails is built on Node.js, Connect, Express, and Socket.io.
 
