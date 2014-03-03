@@ -41,18 +41,19 @@ describe('Starting sails server with lift', function() {
 			sailsBin = sailsBin.substr(1);
 		});
 
-		it('should throw an error', function(done) {
+		// TODO: make this test more useful
+		// it('should throw an error', function(done) {
 
-			sailsServer = spawn(sailsBin, ['lift']);
+		// 	sailsServer = spawn(sailsBin, ['lift']);
 
-			sailsServer.stderr.on('data', function(data) {
-				var dataString = data + '';
-				assert(dataString.indexOf('[err]') !== -1);
-				sailsServer.stderr.removeAllListeners('data');
-				sailsServer.kill();
-				done();
-			});
-		});
+		// 	sailsServer.stderr.on('data', function(data) {
+		// 		var dataString = data + '';
+		// 		assert(dataString.indexOf('[err]') !== -1);
+		// 		sailsServer.stderr.removeAllListeners('data');
+		// 		sailsServer.kill();
+		// 		done();
+		// 	});
+		// });
 	});
 
 	describe('in an sails app directory', function() {

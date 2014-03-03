@@ -28,8 +28,13 @@ module.exports = function ( ) {
 		modules: {},
 		sailsRoot: path.resolve(__dirname, '..'),
 		sailsPackageJSON: package,
-		viewEngine: rconf.viewEngine || rconf.template
+		viewEngine: rconf.viewEngine
 	};
+
+	// Support --template option for backwards-compat.
+	if (!scope.viewEngine && rconf.template) {
+		scope.viewEngine = rconf.template;
+	}
 
 	// Mix-in rconf
 	_.merge(scope, rconf.generators);
@@ -39,13 +44,13 @@ module.exports = function ( ) {
 	_.merge(scope, rconf);
 
 
+	// Pass the original CLI arguments down to the generator
+	// (but first, remove commander's extra argument)
 	var cliArguments = Array.prototype.slice.call(arguments);
-	
-	// Remove commander's extra argument
 	cliArguments.pop();
+	scope.args = cliArguments;
 	
 	scope.generatorType = 'new';
-	scope.args = cliArguments;
 
 	return sailsgen( scope, {success: function(){}} );
 };

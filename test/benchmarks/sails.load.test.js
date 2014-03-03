@@ -1,6 +1,8 @@
 
 
 var _ = require('lodash');
+var portfinder = require('portfinder');
+portfinder.basePort = 2001;
 
 var SHOW_VERBOSE_BENCHMARK_REPORT = _.any(process.argv, function(arg) {
 	return arg.match(/-v/);
@@ -98,11 +100,15 @@ describe('benchmarks', function () {
 
 			var Sails = require('../../lib/app');
 			var sails = new Sails();
-			sails.lift({
-				log: { level: 'error' },
-				port: 2001,
-				globals: false
-			}, cb);
+			portfinder.getPort(function (err, port) {
+				if (err) throw err;
+
+				sails.lift({
+					log: { level: 'error' },
+					port: port,
+					globals: false
+				}, cb);
+			});
 		});
 
 		benchmark('sails.lift  [again, w/ a hot require cache]', function(cb) {
@@ -110,11 +116,15 @@ describe('benchmarks', function () {
 
 			var Sails = require('../../lib/app');
 			var sails = new Sails();
-			sails.lift({
-				log: { level: 'error' },
-				port: 2001,
-				globals: false
-			}, cb);
+			portfinder.getPort(function (err, port) {
+				if (err) throw err;
+
+				sails.lift({
+					log: { level: 'error' },
+					port: port,
+					globals: false
+				}, cb);
+			});
 		});
 
 	});

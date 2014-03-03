@@ -21,7 +21,7 @@
     "sails": "./bin/sails.js"
   },
   "scripts": {
-    "test": "mocha",
+    "test": "istanbul cover _mocha --report lcovonly && cat ./coverage/lcov.info | coveralls",
     "prepublish": "npm prune"
   },
   "directories": {
@@ -29,16 +29,15 @@
   },
   "dependencies": {
     "express": "3.4.3",
+    "waterline": "~0.10.0-rc2",
     "rc": "~0.3.3",
     "sails-stringfile": "~0.3.0",
     "async": "~0.2.9",
     "lodash": "~2.4.1",
-    "optimist": "~0.3.4",
     "captains-log": "~0.11.1",
     "reportback": "~0.1.4",
     "sails-util": "~0.10.0",
     "colors": "~0.6.2",
-    "waterline": "^0.10.0-rc2",
     "socket.io": "~0.9.14",
     "connect-flash": "~0.1.1",
     "pluralize": "~0.0.5",
@@ -46,8 +45,7 @@
     "ejs-locals": "~1.0.2",
     "glob": "~3.1.14",
     "i18n": "~0.4.1",
-    "sails-generate": "~0.1.1",
-    "include-all": "~0.1.2",
+    "sails-generate": "~0.10.0",
     "sails-build-dictionary": "0.1.0",
     "connect-redis": "~1.4.5",
     "connect-mongo": "~0.3.2",
@@ -66,12 +64,15 @@
     "grunt-contrib-cssmin": "~0.6.1",
     "grunt-contrib-less": "~0.9.0",
     "grunt-contrib-coffee": "~0.7.0",
-    "grunt-sync": "~0.0.4"
+    "grunt-sync": "~0.0.4",
+    "express3-handlebars": "~0.5.0"
   },
   "devDependencies": {
     "root-require": "~0.2.0",
     "checksum": "~0.1.1",
     "request": "*",
+    "istanbul": "*",
+    "coveralls": "*",
     "wrench": "~1.5.1",
     "benchmark": "~1.0.0",
     "microtime": "~0.5.1",
@@ -81,7 +82,8 @@
     "supertest": "~0.8.2",
     "fs-extra": "~0.8.1",
     "socket.io-client": "~0.9.16",
-    "mocha": "~1.17.1"
+    "mocha": "~1.17.1",
+    "portfinder": "~0.2.1"
   },
   "repository": {
     "type": "git",

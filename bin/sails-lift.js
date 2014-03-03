@@ -7,13 +7,11 @@
 
 var package = require('../package.json')
 	, Sails = require('../lib/app')
-	, reportback = require('reportback')()
 	, _ = require('lodash')
 	, rconf = require('../lib/configuration/rc')
 	, captains = require('captains-log')
 	, path  = require('path');
 
-require('colors');
 
 
 /**
@@ -28,6 +26,7 @@ module.exports = function () {
 	var log = captains(rconf.log);
 
 	console.log();
+	require('colors');
 	log.info('Starting app...'.grey);
 	console.log();
 
@@ -37,11 +36,10 @@ module.exports = function () {
 		sailsPackageJSON: package
 	}, rconf);
 
-	// Use the app's local Sails in `node_modules` if one exists
 	var appPath = process.cwd();
+	
+	// Use the app's local Sails in `node_modules` if it's extant and valid
 	var localSailsPath = path.resolve(appPath, 'node_modules/sails');
-
-	// But first make sure it'll work...
 	if ( Sails.isLocalSailsValid(localSailsPath, appPath) ) {
 		require(localSailsPath).lift(scope);
 		return;
