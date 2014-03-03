@@ -10,6 +10,9 @@ module.exports = {
 		pets: {
 			collection: 'pet',
 			via: 'owner'
+		},
+		profile: {
+			model: 'userprofile'
 		}
 	}
 

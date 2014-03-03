@@ -29,7 +29,7 @@ describe('pubsub :: ', function() {
 		describe('when a socket is watching Users ', function() {
 
 			before(function(done) {
-				this.timeout(5000);
+				this.timeout(10000);
 				appHelper.buildAndLiftWithTwoSockets(appName, {verbose: false}, function(err, sails, _socket1, _socket2) {
 					if (err) {throw new Error(err);}
 					sailsprocess = sails;
@@ -103,6 +103,19 @@ describe('pubsub :: ', function() {
 
 			});
 
+			it ('adding a profile to the user via POST /userprofile should result a correct `user` event being received by all subscribers', function(done) {
+
+				socket2.on('user', function(message) {
+					assert(message.id == 1 
+						&& message.verb == 'updated' 
+						&& message.data.profile == '1', Err.badResponse(message));
+					done();
+				});
+
+				socket1.post('/userprofile', {user:1, zodiac: 'taurus'});
+
+			});			
+
 			it ('removing a pet from the user via PUT /pet/1 should result a correct `user` event being received by all subscribers', function(done) {
 
 				socket2.on('user', function(message) {
@@ -114,6 +127,30 @@ describe('pubsub :: ', function() {
 				})
 
 				socket1.put('/pet/1', {owner: null});
+
+			});
+
+			it ('changing a profile\'s user via PUT /userprofile/1 should result in two correct `user` events being received by all subscribers', function(done) {
+
+				// Create a new user to attach the profile to
+				socket1.post('/user', {name: 'Sandy'}, function() {
+
+					var msgsReceived = 0;
+					// We should receive two 'user' updates: one from user #1 telling us they no longer have a profile, one
+					// from user #2 telling us they are now attached to profile #1
+					socket2.on('user', function(message) {
+						assert(
+							(message.id == 1 && message.verb == 'updated' && message.data.profile == null) 
+							|| (message.id == 2 && message.verb == 'updated' && message.data.profile == '1') 
+						, Err.badResponse(message));
+						msgsReceived++;
+						if (msgsReceived == 2) {done();}
+					});
+
+					socket1.put('/userprofile/1', {user: 2});
+
+				});
+
 
 			});
 
@@ -131,6 +168,7 @@ describe('pubsub :: ', function() {
 
 			});
 
+
 			it ('removing the user from the pet via DELETE /user/1/pets should result a correct `pet` event being received by all subscribers', function(done) {
 
 				socket1.on('pet', function(message) {
@@ -144,6 +182,20 @@ describe('pubsub :: ', function() {
 				socket2.delete('/user/1/pets', {id:1});
 
 			});
+
+			it ('removing a profile from the user via DELETE /userprofile/1 should result a correct `user` event being received by all subscribers', function(done) {
+
+				socket2.on('user', function(message) {
+					assert(message.id == 2 
+						&& message.verb == 'updated' 
+						&& message.data.profile == null, Err.badResponse(message));
+					done();
+				})
+
+				socket1.delete('/userprofile/1');
+
+			});
+
 
 			it ('adding a user to the pet via POST /user/1/pets should result in a correct `pet` event being received by all subscribers', function(done) {
 
