@@ -15,7 +15,9 @@ describe('router :: ', function() {
 			});
 
 			beforeEach(function(done) {
-				appHelper.lift(function(err, sails) {
+				appHelper.lift({
+					verbose: false
+				}, function(err, sails) {
 					if (err) {throw new Error(err);}
 					sailsprocess = sails;
 					setTimeout(done, 100);
