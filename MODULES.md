@@ -57,13 +57,6 @@ Below, you'll find an overview of the modules maintained by the core team and co
 | Redis         |    |     | ... |
 
 
-#### Community adapters
-
-| Repo          |  Bleeding edge build status (master)  |  Latest Stable Version   | Interfaces |
-|---------------|---------------------------------------|--------------------------|------------|
-| TODO: update this |  |  |  |
-
-
 
 #### Docs
 
@@ -73,12 +66,31 @@ Below, you'll find an overview of the modules maintained by the core team and co
 
 
 
-#### Browser SDKs
+#### SDKs
 
-| Repo       |  Latest Stable Version (bower)   |
+| Repo       |  Latest Stable Version   |
 |------------|----------------------------------|
-| [backbone-to-sails](https://github.com/balderdashy/backbone-to-sails)  | ... |
 | [sails.io.js](https://github.com/balderdashy/sails-generate-frontend)  | ...  |
+
+
+## Community
+
+
+
+#### Adapters
+
+| Repo          |  Bleeding edge build status (master)  |  Latest Stable Version   | Interfaces |
+|---------------|---------------------------------------|--------------------------|------------|
+| TODO: update this |  |  |  |
+
+
+
+#### SDKs
+
+| Repo       |  Latest Stable Version   |
+|------------|----------------------------------|
+| [sails.io.objective-c](https://github.com/fishrod-interactive/sails-io.objective-c) | ... |
+| [backbone-to-sails](https://github.com/balderdashy/backbone-to-sails)  | ... |
 
 
 
