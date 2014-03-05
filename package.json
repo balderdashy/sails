@@ -55,7 +55,7 @@
     "commander": "~2.1.0",
     "grunt": "0.4.2",
     "grunt-contrib-copy": "~0.4.1",
-    "grunt-contrib-clean": "~0.4.1",
+    "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-sails-linker": "~0.9.5",
     "grunt-contrib-jst": "~0.5.0",
