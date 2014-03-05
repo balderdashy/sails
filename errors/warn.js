@@ -23,6 +23,6 @@ module.exports = {
 		log.warn('If you run into compatibility problems, try reinstalling Sails locally:');
 		log.warn('    $ npm install sails@' + requiredVersion);
 		log.warn();
-		console.log();
+		log.blank();
 	}
 };
