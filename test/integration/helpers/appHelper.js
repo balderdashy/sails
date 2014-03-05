@@ -15,6 +15,7 @@ var path = require('path');
 var sailsBin = path.resolve('./bin/sails.js');
 var spawn = require('child_process').spawn;
 var _ioClient = require('./sails.io')(require('socket.io-client'));
+var Sails = require('../../../lib/app');
 
 // Make existsSync not crash on older versions of Node
 fs.existsSync = fs.existsSync || path.existsSync;
@@ -90,51 +91,13 @@ module.exports.lift = function(options, callback) {
 	}
 
 	options = options || {};
-	// Start the sails server process
-	var liftOpts = ['lift'];
-	if (options.port) {
-		liftOpts.push('--port='+options.port);
-	}
-	var sailsbin = options.sailsbin || '../bin/sails.js';
-	var sailsprocess = spawn(sailsbin, liftOpts);
 
-	sailsprocess.on('error',function(err) {
-		return callback(err);
+	Sails().lift(options, function(err, sails) {
+		if (err) return callback(err);
+		sails.kill = sails.lower;
+		return callback(null, sails);
 	});
 
-	// Catch stderr messages 
-	sailsprocess.stderr.on('data', function (data) {
-		// Change buffer to string, then error
-		var dataString = (data + '');
-
-		// Share error with user running tests
-		console.error(dataString);
-
-		// In some cases, fire cb w/ error (automatically failing test)
-		// var err = new Error( dataString );
-		// throw err;
-	});
-
-
-	sailsprocess.stdout.on('data',function(data) {
-
-		// Change buffer to string
-		var dataString = data + '';
-
-		if (options.verbose) {
-			console.log(dataString);
-		}
-
-		// Make request once server has sucessfully started
-		if (dataString.match(/Server lifted/)) {
-			if (!options.verbose) {
-				sailsprocess.stdout.removeAllListeners('data');
-			}
-			sailsprocess.stderr.removeAllListeners('data');
-			callback(null, sailsprocess);
-		}
-
-	});
 };
 
 module.exports.buildAndLift = function(appName, options, callback) {

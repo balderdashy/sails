@@ -44,17 +44,14 @@ describe('New app generator', function() {
 	describe('sails new <appname>', function() {
 
 		it('should create new, liftable app in new folder', function(done) {
-
 			exec(sailsbin + ' new ' + appName, function(err) {
 				if (err) { return done(new Error(err)); }
-
-				process.chdir(appName);
-				appHelper.lift(function(err, sailsprocess) {
+				appHelper.lift({log:{level:'silent'}}, function(err, sailsprocess) {					
 					if (err) {return done(err);}
-					sailsprocess.kill();
-					process.chdir('..');
-					done();
-				})
+					sailsprocess.once('hook:http:listening', function(){sailsprocess.kill(done);});
+					// sailsprocess.kill(done);
+					// setTimeout(done, function(){sailsprocess.kill(done)});
+				});
 			});
 		});
 

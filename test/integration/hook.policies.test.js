@@ -20,13 +20,12 @@ describe('router :: ', function() {
 				}, function(err, sails) {
 					if (err) {throw new Error(err);}
 					sailsprocess = sails;
-					setTimeout(done, 100);
+					sailsprocess.once('hook:http:listening', done);
 				});
 			});
 
 			afterEach(function(done) {
-				sailsprocess.kill();
-				done();
+				sailsprocess.kill(done);
 			});
 
 			after(function() {

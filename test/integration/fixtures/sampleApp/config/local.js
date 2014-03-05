@@ -1,6 +1,6 @@
 module.exports = {
 	log: {
-		level: 'silly'
+		level: 'silent'
 	},
 	sockets: {
 		authorization: false
