@@ -66,6 +66,9 @@ Called after drawing the sailboat.
 Called when all hooks are loaded and the internal router is ready to handle requests.
 i.e. the HTTP hook listens for `ready` before binding its HTTP server.
   
+##### `lower`
+Called when `sails.lower()` is called.  `sails.lower()` is called automatically when the process is halted.
+
 ##### `router:before`
 Called before any of the app's configured static routes have been bound.
 i.e. a hook might listen to this event to bind some middleware.
