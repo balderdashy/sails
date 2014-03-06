@@ -21,7 +21,7 @@
     "sails": "./bin/sails.js"
   },
   "scripts": {
-    "test": "istanbul cover _mocha --report lcovonly && cat ./coverage/lcov.info | coveralls",
+    "test": "istanbul cover _mocha --report lcovonly",
     "prepublish": "npm prune"
   },
   "directories": {
