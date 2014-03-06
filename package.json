@@ -49,6 +49,7 @@
     "sails-build-dictionary": "0.1.0",
     "connect-redis": "~1.4.5",
     "connect-mongo": "~0.3.2",
+    "connect-to-mongo": "~0.1.2",
     "grunt-cli": "~0.1.11",
     "ejs": "~0.8.4",
     "sails-disk": "~0.10.0",
