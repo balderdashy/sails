@@ -1,12 +1,14 @@
-# [![Sails.js](http://balderdashy.github.io/sails/images/logo.png)](http://sailsjs.org)
+<h1>
+<a href="http://sailsjs.org"><img src="http://balderdashy.github.io/sails/images/logo.png" title="Sails.js"/>
+</h1>
 
 ### [Website](http://sailsjs.org/)  &nbsp; [Getting Started](http://sailsjs.org/#!getStarted) &nbsp;  [Documentation](http://sailsjs.org/#!documentation)  &nbsp; [Submit Issue](https://github.com/balderdashy/sails/search?q=&type=Issues)
+
 
 Sails.js is a web framework that makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development. It's especially good for building realtime features like chat.
 
 
-## Installation
-
+## Installation &nbsp;  [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)
 **With [node](http://nodejs.org) [installed](http://sailsjs.org/#!documentation/new-to-nodejs):**
 ```sh
 # Get the latest stable release of Sails
@@ -38,10 +40,6 @@ $ sails lift
 
 ## Compatibility
 
-[![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)
-[![Dependency Status](https://david-dm.org/balderdashy/sails.png)](https://david-dm.org/balderdashy/sails)
-[![Coverage Status](https://coveralls.io/repos/balderdashy/sails/badge.png)](https://coveralls.io/r/balderdashy/sails)
-
 Sails is built on Node.js, Connect, Express, and Socket.io.
 
 Sails [controllers](http://sailsjs.org/#!documentation/controllers) are compatible with Connect middleware, so in most cases, you can paste code into Sails from an existing Express project and everything will work-- plus you'll be able to use WebSockets to talk to your API, and vice versa.
@@ -54,13 +52,13 @@ The ORM, [Waterline](https://github.com/balderdashy/waterline), has a well-defin
 ## Issue Submission
 Make sure you've read the [issue submission guidelines](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#opening-issues) before opening a new issue.
 
-Sails is composed of a [number of different sub-projects](https://npmjs.org/search?q=sails), many of which have [their own dedicated repository](https://github.com/search?q=sails+user%3Amikermcneil+user%3Abalderdashy+user%3Aparticlebanana&type=Repositories&ref=advsearch&l=). If you are looking for a repo for a particular piece, you'll usually find it on the [organization](https://github.com/balderdashy) page.
+Sails is composed of a [number of different sub-projects](https://github.com/balderdashy/sails/blob/master/MODULES.md), many of which have [their own dedicated repository](https://github.com/search?q=sails+user%3Amikermcneil+user%3Abalderdashy+user%3Aparticlebanana&type=Repositories&ref=advsearch&l=). If you are looking for a repo for a particular piece, you'll usually find it on the [organization](https://github.com/balderdashy) page.
 
 ## Feature Requests
 See the [Trello board](https://trello.com/b/cGzNVE0b/sails-js-feature-requests) to view/discuss our roadmap and [request features](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#requesting-features).
 
 ## Contribute
-See the [contributing docs](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md).
+See the [contribution guide](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md).
 
 
 ## Support
@@ -103,6 +101,5 @@ Balderdash designs/builds scalable Node.js apps for startups and enterprise cust
 
 
 ![image_squidhome@2x.png](http://i.imgur.com/RIvu9.png)
-
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/8acf2fc2ca0aca8a3018e355ad776ed7 "githalytics.com")](http://githalytics.com/balderdashy/sails)
