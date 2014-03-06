@@ -33,7 +33,7 @@ describe('router :: ', function() {
 
 		describe('with default routing', function() {
 
-			it('should respond to a get request to localhost:1337 with welcome page', function(done) {
+			it('should respond to a get request to localhost:1341 with welcome page', function(done) {
 
 				httpHelper.testRoute('get', '', function(err, response) {
 					if (err) return done(new Error(err));

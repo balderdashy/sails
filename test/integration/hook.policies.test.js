@@ -6,6 +6,8 @@ var fs = require('fs');
 
 describe('router :: ', function() {
 
+	var sailsprocess;
+
 	describe('Policies', function() {
 		var appName = 'testApp';
 

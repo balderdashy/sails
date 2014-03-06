@@ -81,7 +81,7 @@ describe('Starting sails server with lift', function() {
 			});
 		});
 
-		it('should respond to a request to port 1337 with a 200 status code', function(done) {
+		it('should respond to a request to port 1341 with a 200 status code', function(done) {
 			process.chdir(appName);
 			sailsServer = spawn(sailsBin, ['lift']);
 			sailsServer.stdout.on('data', function(data){
@@ -90,7 +90,7 @@ describe('Starting sails server with lift', function() {
 				if (dataString.match(/Server lifted/)) {
 					sailsServer.stdout.removeAllListeners('data');
 					setTimeout(function(){
-						request('http://localhost:1337/', function(err, response) {
+						request('http://localhost:1341/', function(err, response) {
 							if (err) {
 								sailsServer.kill();
 								done(new Error(err));
@@ -143,7 +143,7 @@ describe('Starting sails server with lift', function() {
 			// Change environment to production in config file
 			fs.writeFileSync('config/application.js', 'module.exports = ' + JSON.stringify({
 				appName: 'Sails Application',
-				port: 1337,
+				port: 1341,
 				environment: 'production',
 				log: {
 					level: 'info'
