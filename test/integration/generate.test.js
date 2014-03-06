@@ -128,7 +128,7 @@ describe('API and adapter generators', function () {
 				if (err) done(new Error(err));
 
 				assert.doesNotThrow(function() {
-					fs.readFileSync('./api/adapters/' + capitalize(adapterName) + '/lib/adapter.js', 'utf8');
+					fs.readFileSync('./api/adapters/' + adapterName + '/lib/adapter.js', 'utf8');
 				});
 
 				done();
