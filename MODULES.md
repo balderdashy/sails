@@ -45,7 +45,8 @@ Below, you'll find an overview of the modules maintained by the core team and co
 | [generator](https://github.com/balderdashy/sails-generate-generator)  | [![NPM version](https://badge.fury.io/js/sails-generate-generator.png)](http://badge.fury.io/js/sails-generate-generator) |
 | [new](https://github.com/balderdashy/sails-generate-new) | [![NPM version](https://badge.fury.io/js/sails-generate-new.png)](http://badge.fury.io/js/sails-generate-new) |
 | [controller](https://github.com/balderdashy/sails-generate-controller) | [![NPM version](https://badge.fury.io/js/sails-generate-controller.png)](http://badge.fury.io/js/sails-generate-controller) |
-| etc...     | ...TODO: add the rest... |
+| [frontend](https://github.com/balderdashy/sails-generate-frontend) | [![NPM version](https://badge.fury.io/js/sails-generate-frontend.png)](http://badge.fury.io/js/sails-generate-frontend) |
+| etc...     | ...TODO: add the rest to this list... |
 
 #### Officially-supported adapters
 
