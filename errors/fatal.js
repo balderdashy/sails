@@ -76,13 +76,21 @@ module.exports = {
 
 
 	__GruntAborted__: function ( consoleMsg, stackTrace ) {
-		log.error(
-			'A Grunt error occurred-- please fix it, then restart ' +
-			'Sails to continue watching assets.'
-		);
+
+		
+		log.error(consoleMsg);
+		if (stackTrace) {log.error(stackTrace);}
+		log.blank();
+		
+		log.error('Looks like a Grunt error occurred--');
+		log.error('Please fix it, then restart Sails to continue watching assets.');
+		log.error('Or if you\'re stuck, check out the troubleshooting tips below.');
+		log.blank();
+
+		log.error('Troubleshooting tips:'.underline);
 		var relativePublicPath = (require('path').resolve(process.cwd(), './.tmp'));
 		var uid = process.getuid && process.getuid() || 'YOUR_COMPUTER_USER_NAME';
-		log.blank();
+		log.error();
 		log.error(' *-> You might have a malformed LESS or CoffeeScript file...');
 		log.error();
 		log.error(' *-> Or maybe you don\'t have permissions to access the `.tmp` directory?');
@@ -91,7 +99,7 @@ module.exports = {
 		log.error('     If you think this might be the case, try running:');
 		log.error('     sudo chown -R',uid,relativePublicPath);
 		log.blank();
-		
+
 		return _terminateProcess(1);
 	},
 
