@@ -77,9 +77,11 @@ module.exports = {
 
 	__GruntAborted__: function ( consoleMsg, stackTrace ) {
 
-		
-		log.error(consoleMsg);
-		if (stackTrace) {log.error(stackTrace);}
+		var gruntErr =
+			'\n------------------------------------------------------------------------\n' +
+			consoleMsg + '\n' + (stackTrace||'') +
+			'\n------------------------------------------------------------------------';
+		log.error(gruntErr);
 		log.blank();
 		
 		log.error('Looks like a Grunt error occurred--');
