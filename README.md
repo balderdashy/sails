@@ -10,14 +10,14 @@ Sails.js is a web framework that makes it easy to build custom, enterprise-grade
 
 ## Installation &nbsp;  [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)
 
-> Want to try out the v0.10 beta version of Sails with support for associations?
-> Check out the [Google group announcement](https://groups.google.com/forum/#!searchin/sailsjs/beta/sailsjs/OrRFkDb8fII/8e_e-I4J5MYJ) and/or the relevant sections of the [FAQ](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#what-version-of-sails-should-i-use) and [contribution guide](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#installing-different-versions-of-sails) for instructions and tips.
-
 **With [node](http://nodejs.org) [installed](http://sailsjs.org/#!documentation/new-to-nodejs):**
 ```sh
 # Get the latest stable release of Sails
 $ sudo npm install sails -g
 ```
+
+> ######Installing sails@beta
+> Associations support in Sails is finally here.  Ready to upgrade? v0.10 is still in beta, but the API has stabilized and now's a good time to start upgrading.  Check out the [Google group announcement](https://groups.google.com/forum/#!searchin/sailsjs/beta/sailsjs/OrRFkDb8fII/8e_e-I4J5MYJ) and/or the relevant sections of the [FAQ](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#what-version-of-sails-should-i-use) and [contribution guide](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#installing-different-versions-of-sails) for instructions and tips.
 
 
 ## Your First Sails Project
