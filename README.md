@@ -9,11 +9,15 @@ Sails.js is a web framework that makes it easy to build custom, enterprise-grade
 
 
 ## Installation &nbsp;  [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)
+
 **With [node](http://nodejs.org) [installed](http://sailsjs.org/#!documentation/new-to-nodejs):**
 ```sh
 # Get the latest stable release of Sails
 $ sudo npm install sails -g
 ```
+
+> ######Installing sails@beta
+> Associations support in Sails is finally here.  Ready to upgrade? v0.10 is still in beta, but the API has stabilized and now's a good time to start upgrading.  Check out the [Google group announcement](https://groups.google.com/forum/#!searchin/sailsjs/beta/sailsjs/OrRFkDb8fII/8e_e-I4J5MYJ) and/or the relevant sections of the [FAQ](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#what-version-of-sails-should-i-use) and [contribution guide](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#installing-different-versions-of-sails) for instructions and tips.
 
 
 ## Your First Sails Project
@@ -45,15 +49,16 @@ Sails is built on [Node.js](http://nodejs.org/), [Connect](http://www.senchalabs
 Sails [controllers](http://sailsjs.org/#!documentation/controllers) are compatible with Connect middleware, so in most cases, you can paste code into Sails from an existing Express project and everything will work-- plus you'll be able to use WebSockets to talk to your API, and vice versa.
 
 
-The ORM, [Waterline](https://github.com/balderdashy/waterline), has a well-defined adapter system for supporting all kinds of datastores.  Officially supported databases include [MySQL](https://github.com/balderdashy/sails-mysql), [PostgreSQL](https://github.com/balderdashy/sails-postgresql), [MongoDB](https://github.com/balderdashy/sails-mongo), [Redis](https://github.com/balderdashy/sails-redis), local [disk](https://github.com/balderdashy/sails-disk), and local [memory](https://github.com/balderdashy/sails-memory).  [Community adapters](https://github.com/balderdashy/sails-docs/blob/master/intro-to-custom-adapters.md#notable-community-adapters) exist for Riak, CouchDB, and ElasticSearch; for various 3rd-party REST APIs like Yelp and Twitter; plus some [eclectic projects](https://www.youtube.com/watch?v=OmcQZD_LIAE).
+The ORM, [Waterline](https://github.com/balderdashy/waterline), has a well-defined adapter system for supporting all kinds of datastores.  Officially supported databases include [MySQL](https://github.com/balderdashy/sails-mysql), [PostgreSQL](https://github.com/balderdashy/sails-postgresql), [MongoDB](https://github.com/balderdashy/sails-mongo), [Redis](https://github.com/balderdashy/sails-redis), local [disk](https://github.com/balderdashy/sails-disk), and local [memory](https://github.com/balderdashy/sails-memory).  [Community adapters](https://github.com/balderdashy/sails-docs/blob/master/intro-to-custom-adapters.md#notable-community-adapters) exist for Riak, CouchDB, Oracle, MSSQL, RethinkDB, and ElasticSearch; for various 3rd-party REST APIs like Yelp and Twitter; plus some [eclectic projects](https://www.youtube.com/watch?v=OmcQZD_LIAE).
 
+<!-- Core adapter logos -->
 <a target="_blank" href="http://www.mysql.com">
   <img width="75" src="http://www.mysql.com/common/logos/powered-by-mysql-125x64.png" alt="Powered by MySQL" title="sails-mysql: MySQL adapter for Sails"/>
 </a>&nbsp; &nbsp; &nbsp; &nbsp;
 <a target="_blank" href="http://www.postgresql.org/"><img width="50" title="PostgreSQL" src="http://i.imgur.com/OSlDDKv.png"/></a>&nbsp; &nbsp; &nbsp; &nbsp;
 <a target="_blank" href="http://www.mongodb.org/"><img width="100" title="MongoDB" src="http://i.imgur.com/bC2j13z.png"/></a>&nbsp; &nbsp; &nbsp; &nbsp;
 <a target="_blank" href="http://redis.io/"><img width="75" title="Redis" src="http://i.imgur.com/dozv0ub.jpg"/></a>&nbsp; &nbsp; &nbsp; &nbsp;
-
+<!-- /core adapter logos -->
 
 
 ## Issue Submission

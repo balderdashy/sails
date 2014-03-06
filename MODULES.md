@@ -12,13 +12,13 @@ Below, you'll find an overview of the modules maintained by the core team and co
 |---------------|---------------------------------------|--------------------------|
 | <a href="http://github.com/balderdashy/sails" target="_blank" title="Github repo for Sails core"><img src="https://github-camo.global.ssl.fastly.net/9e49073459ed4e0e2687b80eaf515d87b0da4a6b/687474703a2f2f62616c64657264617368792e6769746875622e696f2f7361696c732f696d616765732f6c6f676f2e706e67" width=60 alt="Sails.js logo (small)"/></a>     | [![Build Status](https://travis-ci.org/balderdashy/sails.png?branch=master)](https://travis-ci.org/balderdashy/sails)  | [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails) |
 | [**waterline**](http://github.com/balderdashy/waterline) | [![Build Status](https://travis-ci.org/balderdashy/waterline.png?branch=master)](https://travis-ci.org/balderdashy/waterline) | [![NPM version](https://badge.fury.io/js/waterline.png)](http://badge.fury.io/js/waterline) |
-| [**anchor**](http://github.com/balderdashy/anchor) | NEEDS_TRAVIS_SETUP | [![NPM version](https://badge.fury.io/js/anchor.png)](http://badge.fury.io/js/anchor) |
-| [**waterline-criteria**](http://github.com/balderdashy/waterline-criteria) | NEEDS_TRAVIS_SETUP | [![NPM version](https://badge.fury.io/js/waterline-criteria.png)](http://badge.fury.io/js/waterline-criteria) |
+| [**anchor**](http://github.com/balderdashy/anchor) | [![Build Status](https://travis-ci.org/balderdashy/anchor.png?branch=master)](https://travis-ci.org/balderdashy/anchor) | [![NPM version](https://badge.fury.io/js/anchor.png)](http://badge.fury.io/js/anchor) |
+| [**waterline-criteria**](http://github.com/balderdashy/waterline-criteria) | [![Build Status](https://travis-ci.org/balderdashy/waterline-criteria.png?branch=master)](https://travis-ci.org/balderdashy/waterline-criteria) | [![NPM version](https://badge.fury.io/js/waterline-criteria.png)](http://badge.fury.io/js/waterline-criteria) |
 | [**waterline-errors**](http://github.com/balderdashy/waterline-errors) | NEEDS_TRAVIS_SETUP | [![NPM version](https://badge.fury.io/js/waterline-errors.png)](http://badge.fury.io/js/waterline-errors) |
 | [**waterline-schema**](http://github.com/balderdashy/waterline-schema) | NEEDS_TRAVIS_SETUP | [![NPM version](https://badge.fury.io/js/waterline-schema.png)](http://badge.fury.io/js/waterline-schema) |
-| [**sails-generate**](http://github.com/balderdashy/sails-generate) | NEEDS_TRAVIS_SETUP | [![NPM version](https://badge.fury.io/js/sails-generate.png)](http://badge.fury.io/js/sails-generate) |
+| [**sails-generate**](http://github.com/balderdashy/sails-generate) | [![Build Status](https://travis-ci.org/balderdashy/sails-generate.png?branch=master)](https://travis-ci.org/balderdashy/sails-generate) | [![NPM version](https://badge.fury.io/js/sails-generate.png)](http://badge.fury.io/js/sails-generate) |
 | [**sails-build-dictionary**](http://github.com/balderdashy/sails-build-dictionary) | N/A | [![NPM version](https://badge.fury.io/js/sails-build-dictionary.png)](http://badge.fury.io/js/sails-build-dictionary) |
-| [**captains-log**](http://github.com/balderdashy/captains-log) | NEEDS_TRAVIS_SETUP | [![NPM version](https://badge.fury.io/js/captains-log.png)](http://badge.fury.io/js/captains-log) |
+| [**captains-log**](http://github.com/balderdashy/captains-log) | [![Build Status](https://travis-ci.org/balderdashy/captains-log.png?branch=master)](https://travis-ci.org/balderdashy/captains-log) | [![NPM version](https://badge.fury.io/js/captains-log.png)](http://badge.fury.io/js/captains-log) |
 | [**sails-stringfile**](http://github.com/balderdashy/sails-stringfile) | N/A | [![NPM version](https://badge.fury.io/js/sails-stringfile.png)](http://badge.fury.io/js/sails-stringfile) |
 
 
@@ -45,7 +45,8 @@ Below, you'll find an overview of the modules maintained by the core team and co
 | [generator](https://github.com/balderdashy/sails-generate-generator)  | [![NPM version](https://badge.fury.io/js/sails-generate-generator.png)](http://badge.fury.io/js/sails-generate-generator) |
 | [new](https://github.com/balderdashy/sails-generate-new) | [![NPM version](https://badge.fury.io/js/sails-generate-new.png)](http://badge.fury.io/js/sails-generate-new) |
 | [controller](https://github.com/balderdashy/sails-generate-controller) | [![NPM version](https://badge.fury.io/js/sails-generate-controller.png)](http://badge.fury.io/js/sails-generate-controller) |
-| etc...     | ...TODO: add the rest... |
+| [frontend](https://github.com/balderdashy/sails-generate-frontend) | [![NPM version](https://badge.fury.io/js/sails-generate-frontend.png)](http://badge.fury.io/js/sails-generate-frontend) |
+| etc...     | ...TODO: add the rest to this list... |
 
 #### Officially-supported adapters
 

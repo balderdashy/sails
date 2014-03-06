@@ -109,4 +109,4 @@ The custom generator API is very new, and still experimental.  If you are seriou
 
 
 ## Additional Resources
-[Get Started](http://sailsjs.org/#!getStarted) | [Documentation](http://sailsjs.org/#!documentation) | [Changelog](https://github.com/balderdashy/sails/wiki/Changelog) | [#sailsjs on IRC](http://webchat.freenode.net/) | [Google Group](https://groups.google.com/forum/?fromgroups#!forum/sailsjs) | [Twitter](http://twitter.com/sailsjs)
+#### [Get Started](http://sailsjs.org/#!getStarted) | [Documentation](http://sailsjs.org/#!documentation) | [Changelog](https://github.com/balderdashy/sails/wiki/Changelog) | [#sailsjs on IRC](http://webchat.freenode.net/) | [Google Group](https://groups.google.com/forum/?fromgroups#!forum/sailsjs) | [Twitter](http://twitter.com/sailsjs)
