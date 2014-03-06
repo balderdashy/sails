@@ -57,7 +57,7 @@ describe('router :: ', function() {
 				httpHelper.testRoute('get', 'viewTest', function(err, response) {
 					if (err) return done(new Error(err));
 
-					assert(response.body.indexOf('indexView') !== -1);
+					assert(response.body.indexOf('indexView') !== -1, response.body);
 					done();
 				});
 			});
