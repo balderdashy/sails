@@ -21,9 +21,9 @@ module.exports = {
 
 		// Prefix url with domain:port
 		if (typeof options === 'string') {
-			options = 'http://localhost:1337/' + options;
+			options = 'http://localhost:1342/' + options;
 		} else {
-			options.url = 'http://localhost:1337/'  + options.url;
+			options.url = 'http://localhost:1342/'  + options.url;
 		}
 
 		request[method](options, function(err, response) {

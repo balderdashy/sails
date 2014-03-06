@@ -10,6 +10,7 @@
 
 var fs = require('fs-extra');
 var wrench = require('wrench');
+var _ = require('lodash');
 var exec = require('child_process').exec;
 var path = require('path');
 var sailsBin = path.resolve('./bin/sails.js');
@@ -91,6 +92,9 @@ module.exports.lift = function(options, callback) {
 	}
 
 	options = options || {};
+	_.defaults(options, {
+		port: 1342
+	});
 
 	Sails().lift(options, function(err, sails) {
 		if (err) return callback(err);
@@ -117,9 +121,9 @@ module.exports.liftWithTwoSockets = function(options, callback) {
 	}
 	module.exports.lift(options, function(err, sails) {
 		if (err) {return callback(err);}
-		var socket1 = _ioClient.connect('http://localhost:1337',{'force new connection': true});
+		var socket1 = _ioClient.connect('http://localhost:1342',{'force new connection': true});
 		socket1.on('connect', function() {
-			var socket2 = _ioClient.connect('http://localhost:1337',{'force new connection': true});
+			var socket2 = _ioClient.connect('http://localhost:1342',{'force new connection': true});
 			socket2.on('connect', function() {
 				callback(null, sails, socket1, socket2);
 			});	
