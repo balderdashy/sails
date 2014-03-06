@@ -20,7 +20,7 @@ module.exports = {
 		log.warn('But the package.json in the current directory indicates a dependency');
 		log.warn('on Sails `' + requiredVersion + '`, and the locally installed Sails is `' + localVersion + '`!');
 		log.warn();
-		log.warn('If you run into compatibility problems, try reinstalling Sails locally:');
+		log.warn('If you run into compatibility issues, try installing '+requiredVersion+' locally:');
 		log.warn('    $ npm install sails@' + requiredVersion);
 		log.warn();
 		log.blank();
