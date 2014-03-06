@@ -22,4 +22,5 @@ notifications:
 branches:
   only:
     - master
-    - development
+    - stable
+    - beta
