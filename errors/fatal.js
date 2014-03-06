@@ -91,7 +91,9 @@ module.exports = {
 		var relativePublicPath = (require('path').resolve(process.cwd(), './.tmp'));
 		var uid = process.getuid && process.getuid() || 'YOUR_COMPUTER_USER_NAME';
 		log.error();
-		log.error(' *-> You might have a malformed LESS or CoffeeScript file...');
+		log.error(' *-> Is grunt installed locally?  Run `npm install grunt` if you\'re not sure.');
+		log.error();
+		log.error(' *-> You might have a malformed LESS, SASS, CoffeeScript file, etc.');
 		log.error();
 		log.error(' *-> Or maybe you don\'t have permissions to access the `.tmp` directory?');
 		log.error('     e.g., `' + relativePublicPath+'`','?' );
