@@ -42,5 +42,5 @@ module.exports = function () {
 	console.log();
 
 	// Spin up child process for Sails
-	Womb.spawn('node', ['debug', pathToSails, 'lift'], { stdio: 'inherit' });
+	Womb.spawn('node', ['--debug', pathToSails, 'lift'], { stdio: 'inherit' });
 };
