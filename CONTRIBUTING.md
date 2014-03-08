@@ -108,5 +108,11 @@ The custom generator API is very new, and still experimental.  If you are seriou
 
 
 
+## Financial Support
+
++ Sails is sponsored by [Balderdash](http://balderdash.co), a small development and design studio in Austin, TX.  If you have a mutually beneficial opportunity to work together, or want to fund us to accelerate the development of a feature in Sails for a real-world use case, please [contact us](http://balderdash.co).
++ [Donate](https://www.gittip.com/mikermcneil/) to help me (@mikermcneil) stop paying myself, and instead use that money to expand the core team, improve docs, etc.
+
+
 ## Additional Resources
 #### [Get Started](http://sailsjs.org/#!getStarted) | [Documentation](http://sailsjs.org/#!documentation) | [Changelog](https://github.com/balderdashy/sails/wiki/Changelog) | [#sailsjs on IRC](http://webchat.freenode.net/) | [Google Group](https://groups.google.com/forum/?fromgroups#!forum/sailsjs) | [Twitter](http://twitter.com/sailsjs)
