@@ -111,7 +111,7 @@ The custom generator API is very new, and still experimental.  If you are seriou
 ## Financial Support
 
 + Sails is sponsored by [Balderdash](http://balderdash.co), a small development and design studio in Austin, TX.  If you have a mutually beneficial opportunity to work together, or want to fund us to accelerate the development of a feature in Sails for a real-world use case, please [contact us](http://balderdash.co).
-+ [Donate](https://www.gittip.com/mikermcneil/) help me (@mikermcneil) stop paying myself and use that money to expand the core team, improve docs, etc.
++ [Donate](https://www.gittip.com/mikermcneil/) to help me (@mikermcneil) stop paying myself, and instead use that money to expand the core team, improve docs, etc.
 
 
 ## Additional Resources
