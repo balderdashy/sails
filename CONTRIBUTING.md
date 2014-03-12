@@ -107,6 +107,30 @@ The custom generator API is very new, and still experimental.  If you are seriou
 
 
 
+## Best-practices / workflow for developing on Sails
+
+The best way to work with Sails core is to fork the repository, `git clone` it to your filesystem, and then run `npm link`.  In addition to writing tests, you'll often want to use a sample project as a harness-- to do that, `cd` into the sample app and run `npm link sails`.  This will create a symbolic link in the `node_modules` directory of your sample app that points to your local cloned version of sails.  This keeps you from having to copy the framework over every time you make a change.  You can force your sample app to use the local sails dependency by running `node app` instead of `sails lift` (although `sails lift` **should** use the local dependency, if one exists).  If you need to test the command line tool this way, you can access it from your sample app as `node node_modules/sails/bin/sails`.  For example, if you were working on `sails new`, and you wanted to test it manually, you could run `node node_modules/sails/bin/sails new testProj`.
+
+Of course, that's just my opinion, so if you have a more productive way to collaborate/contribute, that is entirely your perogative.  And as always, if you have suggestions, please let us know.
+
+
+## Installing an unreleased branch for testing
+
+In general, you can `npm install` sails directly from Github as follows:
+
+```sh
+# Install an unreleased branch of Sails in the current directory's `node_modules`
+$ npm install sails@git://github.com/balderdashy/sails.git#nameOfDesiredBranch
+```
+
+This is useful for testing/installing hot-fixes, and just a good thing to know how to do in general.  Here's how you'd install a few different branches:
+
+| Release               | Install Command          |
+|-----------------------|--------------------------|
+| [stable](https://github.com/balderdashy/sails/tree/stable)                | `npm install sails@git://github.com/balderdashy/sails.git#stable`      |
+| [beta](https://github.com/balderdashy/sails/tree/beta)                  | `npm install sails@git://github.com/balderdashy/sails.git#beta` |
+| [edge](https://github.com/balderdashy/sails/tree/master)                  | `npm install sails@git://github.com/balderdashy/sails.git` |
+
 
 ## Financial Support
 
