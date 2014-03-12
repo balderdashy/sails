@@ -14,6 +14,8 @@ This guide is designed to help you get off the ground quickly contributing to Sa
 
 ## Opening issues
 
+> Sails is composed of a number of different sub-projects, many of which have their [own dedicated repository](https://github.com/balderdashy/sails/blob/master/MODULES.md).  Please open issues with Waterline, various adapters, various generators, etc. in the relevant repo.  This helps us stay on top of issues and keep organized.
+
 When submitting an issue, please follow these simple instructions:
 
 1. If you have a question about setting up/using Sails, please check out the [Sails docs](http://sailsjs.org/#!documentation) or try searching  [StackOverflow](http://stackoverflow.com/questions/tagged/sails.js).
