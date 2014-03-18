@@ -68,32 +68,32 @@ Below, you'll find an overview of the modules maintained by the core team and co
 
 
 
-#### SDKs
+#### Socket Client SDKs
 
 | Platform     | Repo       |  Build Status (edge)             |
 |--------------|------------|----------------------------------|
-| Browser      | [sails.io.js](https://github.com/balderdashy/sails.io.js)  |   |
-| Node.js      | [sails.io.js](https://github.com/balderdashy/sails.io.js)  | ...  |
+| Browser      | [sails.io.js](https://github.com/balderdashy/sails.io.js)  | [![Build Status](https://travis-ci.org/balderdashy/sails.io.js.png?branch=master)](https://travis-ci.org/balderdashy/sails.io.js)  |
+| Node.js      | [sails.io.js](https://github.com/balderdashy/sails.io.js)  | [![Build Status](https://travis-ci.org/balderdashy/sails.io.js.png?branch=master)](https://travis-ci.org/balderdashy/sails.io.js)  |
+
+
 
 
 ## Community
 
-
-
 #### Adapters
 
-| Repo          |  Bleeding edge build status (master)  |  Latest Stable Version   | Interfaces |
+| Repo          |  Build Status (edge)  |  Latest Stable Version   | Interfaces |
 |---------------|---------------------------------------|--------------------------|------------|
 | TODO: update this |  |  |  |
 
 
 
-#### SDKs
+#### Socket Client SDKs
 
-| Repo       |  Latest Stable Version   |
+| Repo       |  Build Status (edge)   |
 |------------|----------------------------------|
-| [sails.io.objective-c](https://github.com/fishrod-interactive/sails-io.objective-c) | [![Build Status](https://travis-ci.org/balderdashy/sails.io.js.png?branch=master)](https://travis-ci.org/balderdashy/sails.io.js) |
-| [backbone-to-sails](https://github.com/balderdashy/backbone-to-sails)  | [![Build Status](https://travis-ci.org/balderdashy/sails.io.js.png?branch=master)](https://travis-ci.org/balderdashy/sails.io.js) |
+| [sails.io.objective-c](https://github.com/fishrod-interactive/sails-io.objective-c) | ... |
+| [backbone-to-sails](https://github.com/balderdashy/backbone-to-sails)  | [![Build Status](https://travis-ci.org/balderdashy/backbone-to-sails.png?branch=master)](https://travis-ci.org/balderdashy/backbone-to-sails) |
 
 
 
