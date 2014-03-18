@@ -38,61 +38,91 @@ Below, you'll find an overview of the modules maintained by the core team and co
 
 
 
-#### Built-in generators
+#### Officially-supported generators
 
 | Repo       |  Latest Stable Version   |
 |------------|--------------------------|
-| [generator](https://github.com/balderdashy/sails-generate-generator)  | [![NPM version](https://badge.fury.io/js/sails-generate-generator.png)](http://badge.fury.io/js/sails-generate-generator) |
-| [new](https://github.com/balderdashy/sails-generate-new) | [![NPM version](https://badge.fury.io/js/sails-generate-new.png)](http://badge.fury.io/js/sails-generate-new) |
-| [controller](https://github.com/balderdashy/sails-generate-controller) | [![NPM version](https://badge.fury.io/js/sails-generate-controller.png)](http://badge.fury.io/js/sails-generate-controller) |
-| [frontend](https://github.com/balderdashy/sails-generate-frontend) | [![NPM version](https://badge.fury.io/js/sails-generate-frontend.png)](http://badge.fury.io/js/sails-generate-frontend) |
-| etc...     | ...TODO: add the rest to this list... |
+| [sails-generate-generator](https://github.com/balderdashy/sails-generate-generator)  | [![NPM version](https://badge.fury.io/js/sails-generate-generator.png)](http://badge.fury.io/js/sails-generate-generator) |
+| [sails-generate-new](https://github.com/balderdashy/sails-generate-new) | [![NPM version](https://badge.fury.io/js/sails-generate-new.png)](http://badge.fury.io/js/sails-generate-new) |
+| [sails-generate-controller](https://github.com/balderdashy/sails-generate-controller) | [![NPM version](https://badge.fury.io/js/sails-generate-controllzer.png)](http://badge.fury.io/js/sails-generate-controller) |
+| [sails-generate-frontend](https://github.com/balderdashy/sails-generate-frontend) | [![NPM version](https://badge.fury.io/js/sails-generate-frontend.png)](http://badge.fury.io/js/sails-generate-frontend) |
+| [sails-generate-backend]() | |
+| [sails-generate-views]()   | |
+| [sails-generate-adapter]()   | |
+| [sails-generate-model]()   | |
+
 
 #### Officially-supported adapters
 
-| Repo          |  Bleeding edge build status (master)  |  Latest Stable Version   | Interfaces |
-|---------------|---------------------------------------|--------------------------|------------|
-| Local Disk    |    |     | ... |
-| MySQL         |    |     | ... |
-| PostgreSQL    |    |     | ... |
-| Mongo         |    |     | ... |
-| Redis         |    |     | ... |
+| Repo          |  Build Status (edge)  |  Latest Stable Version   |
+|---------------|---------------------------------------|-----------
+| Local Disk    | [![Build Status](https://travis-ci.org/balderdashy/sails-disk.png?branch=master)](https://travis-ci.org/balderdashy/sails-disk)   | [![NPM version](https://badge.fury.io/js/sails-disk.png)](http://badge.fury.io/js/sails-disk)    |
+| MySQL         | [![Build Status](https://travis-ci.org/balderdashy/sails-mysql.png?branch=master)](https://travis-ci.org/balderdashy/sails-mysql)   | [![NPM version](https://badge.fury.io/js/sails-mysql.png)](http://badge.fury.io/js/sails-mysql)    |
+| PostgreSQL    | [![Build Status](https://travis-ci.org/balderdashy/sails-postgresql.png?branch=master)](https://travis-ci.org/balderdashy/sails-postgresql)   | [![NPM version](https://badge.fury.io/js/sails-postgresql.png)](http://badge.fury.io/js/sails-postgresql)    |
+| Mongo         | [![Build Status](https://travis-ci.org/balderdashy/sails-mongo.png?branch=master)](https://travis-ci.org/balderdashy/sails-mongo)   | [![NPM version](https://badge.fury.io/js/sails-mongo.png)](http://badge.fury.io/js/sails-mongo)    |
+| Redis         | [![Build Status](https://travis-ci.org/balderdashy/sails-redis.png?branch=master)](https://travis-ci.org/balderdashy/sails-redis)   | [![NPM version](https://badge.fury.io/js/sails-redis.png)](http://badge.fury.io/js/sails-redis)    |
+
+
+#### Officially-supported hooks
+
+> Currently contained in core Sails repo.
+
+
+#### Socket Client SDKs
+
+| Platform     | Repo       |  Build Status (edge)             |
+|--------------|------------|----------------------------------|
+| Browser      | [sails.io.js](https://github.com/balderdashy/sails.io.js)  | [![Build Status](https://travis-ci.org/balderdashy/sails.io.js.png?branch=master)](https://travis-ci.org/balderdashy/sails.io.js)  |
+| Node.js      | [sails.io.js](https://github.com/balderdashy/sails.io.js)  | [![Build Status](https://travis-ci.org/balderdashy/sails.io.js.png?branch=master)](https://travis-ci.org/balderdashy/sails.io.js)  |
 
 
 
-#### Docs
+#### Documentation
 
 | Repo       |
 |------------|
 | [sails-docs](https://github.com/balderdashy/sails-docs)  |
+| [www.sailsjs.org](https://github.com/balderdashy/www.sailsjs.org) |
 
 
 
-#### SDKs
 
-| Repo       |  Latest Stable Version   |
-|------------|----------------------------------|
-| [sails.io.js](https://github.com/balderdashy/sails-generate-frontend)  | ...  |
 
 
 ## Community
 
-
-
 #### Adapters
 
-| Repo          |  Bleeding edge build status (master)  |  Latest Stable Version   | Interfaces |
+| Repo          |  Build Status (edge)  |  Latest Stable Version   | Interfaces |
 |---------------|---------------------------------------|--------------------------|------------|
 | TODO: update this |  |  |  |
 
 
+#### Generators
 
-#### SDKs
+| Repo                   | Build Status (edge)  |
+|------------------------|----------------------|
+| [sails-generate-auth]() |           |
+| [sails-generate-test]() |          |
+| [sails-generate-testharness]() |  |
+| [sails-generate-hook]() |          |
 
-| Repo       |  Latest Stable Version   |
+
+#### Socket Client SDKs
+
+| Repo       |  Build Status (edge)   |
 |------------|----------------------------------|
-| [sails.io.objective-c](https://github.com/fishrod-interactive/sails-io.objective-c) | ... |
-| [backbone-to-sails](https://github.com/balderdashy/backbone-to-sails)  | ... |
+| [angularSails](https://github.com/balderdashy/angularSails)  | [![Build Status](https://travis-ci.org/balderdashy/angularSails.png?branch=master)](https://travis-ci.org/balderdashy/angularSails) |
+| [sails.io.objective-c](https://github.com/fishrod-interactive/sails-io.objective-c) | NEEDS_TRAVIS_SETUP |
+| [backbone-to-sails](https://github.com/balderdashy/backbone-to-sails)  | [![Build Status](https://travis-ci.org/balderdashy/backbone-to-sails.png?branch=master)](https://travis-ci.org/balderdashy/backbone-to-sails) |
+
+
+#### Misc. Projects
+
+| Repo                   | Build Status (edge)  |
+|------------------------|----------------------|
+| [sails-migrations]() |           |
+
 
 
 
