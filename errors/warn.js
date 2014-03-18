@@ -24,5 +24,32 @@ module.exports = {
 		log.warn('    $ npm install sails@' + requiredVersion);
 		log.warn();
 		log.blank();
+	},
+
+
+
+
+	// Verbose-only warnings:
+
+	noPackageJSON: function() {
+		log.warn('Cannot read package.json in the current directory (' + process.cwd() + ')');
+		log.warn('Are you sure this is a Sails app?');
+		log.warn();
+	},
+
+	notSailsApp: function() {
+		log.warn('The package.json in the current directory does not list Sails as a dependency...');
+		log.warn('Are you sure `' + process.cwd() + '` is a Sails app?');
+		log.warn();
+	},
+
+	badLocalDependency: function(pathTo_localSails, requiredVersion) {
+		log.warn(
+			'The local Sails dependency installed at `' + pathTo.localSails + '` ' +
+			'has a corrupted, missing, or un-parsable package.json file.'
+		);
+		log.warn('You may consider running:');
+		log.warn('rm -rf ' + pathTo_localSails + ' && npm install sails@' + app.dependencies.sails);
+		log.warn();
 	}
 };
