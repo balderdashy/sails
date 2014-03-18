@@ -177,6 +177,12 @@ sails.after('hook:yourHookID:someEvent', function yourEventHandler ( /* a, b, c,
 });
 ```
 
+<!--
+
+This can be omitted for now-- it really shouldn't be used in userspace.
+May be deprecated, API may change.  Please do not use.
+
+
 #### sails.emit
 
 Emit the specified event with the specified arguments to all listeners.
@@ -185,6 +191,7 @@ Emit the specified event with the specified arguments to all listeners.
 sails.emit('hook:yourHookID:someEvent', 'arbitrary', 'number', {of: 'arguments'}, ['allowed']);
 ```
 
+-->
 
 
 ## FAQ
