@@ -92,9 +92,9 @@ Below, you'll find an overview of the modules maintained by the core team and co
 
 | Repo       |  Build Status (edge)   |
 |------------|----------------------------------|
+| [angularSails](https://github.com/balderdashy/angularSails)  | [![Build Status](https://travis-ci.org/balderdashy/angularSails?branch=master)](https://travis-ci.org/balderdashy/angularSails) |
 | [sails.io.objective-c](https://github.com/fishrod-interactive/sails-io.objective-c) | ... |
 | [backbone-to-sails](https://github.com/balderdashy/backbone-to-sails)  | [![Build Status](https://travis-ci.org/balderdashy/backbone-to-sails.png?branch=master)](https://travis-ci.org/balderdashy/backbone-to-sails) |
-
 
 
 ## FAQ
