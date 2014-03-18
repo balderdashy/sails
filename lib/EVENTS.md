@@ -172,7 +172,7 @@ Kind of like jQuery's `$(document).ready()`, except `document` is whatever you w
 Useful for checking whether some state has been achieved yet.
 
 ```javascript
-sails.on('hook:yourHookID:someEvent', function yourEventHandler ( /* a, b, c, ..., z */ ) {
+sails.after('hook:yourHookID:someEvent', function yourEventHandler ( /* a, b, c, ..., z */ ) {
 	// your implementation
 });
 ```
