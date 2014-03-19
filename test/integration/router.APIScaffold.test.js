@@ -172,9 +172,8 @@ describe('router :: ', function() {
 					json: true
 				}, function(err, response) {
 					if (err) done(new Error(err));
-
-					assert(response.body instanceof Object);
-					assert(response.body.status === 404);
+				
+					assert(response.statusCode === 404);
 					done();
 				});
 			});
