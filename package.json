@@ -21,7 +21,7 @@
     "sails": "./bin/sails.js"
   },
   "scripts": {
-    "test": "istanbul cover _mocha --report lcovonly",
+    "test": "mocha -b",
     "prepublish": "npm prune"
   },
   "directories": {
