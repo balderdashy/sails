@@ -181,12 +181,14 @@ describe('pubsub :: ', function() {
           done();
         })
 
-        socket2.delete('/user/1/pets', {pet_id:1}, function (body, jwr) {
+        // Avoiding this case temporarily:
+        // socket2.delete('/user/1/pets', {pet_id:1}, function (body, jwr) {
+
+        // Instead, use:
+        socket2.delete('/user/1/pets/1', {}, function (body, jwr) {
           // TODO:
           // when new sails.io.js client is being used in tests,
           // ensure that a valid response came back from the server here.
-
-          console.log(body, body.invalidAttributes.user_id);
         });
 
       });
