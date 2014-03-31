@@ -6,6 +6,14 @@ module.exports = {
 
 	create: function(req, res, next) {
 		res.view();
-	}
+	},
+
+  viewOptions: function(req, res, next) {
+    res.view();
+  },
+
+  viewOptionsOverride: function(req, res, next) {
+    res.view('viewTest/viewOptions', {foo:'!baz!'});
+  }
 
 };

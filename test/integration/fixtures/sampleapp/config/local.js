@@ -4,5 +4,10 @@ module.exports = {
 	},
 	sockets: {
 		authorization: false
-	}
+	},
+	views: {
+    locals: {
+      foo: '!bar!'
+    }
+  }
 };

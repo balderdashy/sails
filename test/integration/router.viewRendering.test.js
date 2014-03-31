@@ -71,6 +71,27 @@ describe('router :: ', function() {
 					done();
 				});
 			});
+
+      it('should merge config.views.locals into the view locals', function(done) {
+
+        httpHelper.testRoute('get', 'viewTest/viewOptions', function(err, response) {
+          if (err) return done(new Error(err));
+
+          assert(response.body.indexOf('!bar!') !== -1);
+          done();
+        });
+      });
+
+      it('should allow config.views.locals to be overridden', function(done) {
+
+        httpHelper.testRoute('get', 'viewTest/viewOptionsOverride', function(err, response) {
+          if (err) return done(new Error(err));
+          assert(response.body.indexOf('!baz!') !== -1);
+          done();
+        });
+      });
+
+
 		});
 	});
 });
