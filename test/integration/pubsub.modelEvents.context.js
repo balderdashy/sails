@@ -38,7 +38,7 @@ describe('pubsub :: ', function() {
 						sailsprocess = sails;
 						socket1 = _socket1;
 						socket2 = _socket2;
-						
+
 						socket2.get('/user/create?name=joe', function(){
 							socket2.get('/user/create?name=abby', function() {
 								done();
@@ -50,7 +50,7 @@ describe('pubsub :: ', function() {
 
 			after(function() {
 
-				socket1.disconnect();				
+				socket1.disconnect();
 				socket2.disconnect();
 
 				if (sailsprocess) {
@@ -84,11 +84,16 @@ describe('pubsub :: ', function() {
 					socket2.get('/user/subscribe?id=1&context=update', function(){done();});
 				});
 				it('updating an instance via put should result in a correct socket messages being received', function(done) {
-					socket2.on('user', function(message) {
-						assert(message.id == 1 && message.verb == 'updated' && message.data.name == 'bob', Err.badResponse(message));
-						done();
-					})
-					socket1.put('/user/1', {name:'bob'});
+          var TIME_TO_WAIT = 1500;
+          var timer = setTimeout(function () {
+            done(new Error('`update` event was not fired in a timely manner (probably was never going to happen.)  Waited '+TIME_TO_WAIT+'ms.'));
+          }, TIME_TO_WAIT);
+          socket2.on('user', function(message) {
+            clearTimeout(timer);
+            assert(message.id == 1 && message.verb == 'updated' && message.data.name === 'bob', Err.badResponse(message));
+            done();
+          });
+          socket1.put('/user/1', {name:'bob'});
 				})
 			});
 
@@ -114,7 +119,7 @@ describe('pubsub :: ', function() {
 					})
 					socket1.get('/user/message');
 				})
-			});			
+			});
 
 			it('adding a pet to the user should not result in any socket messages being received', function(done) {
 
@@ -162,7 +167,7 @@ describe('pubsub :: ', function() {
 					})
 					socket1.delete('/pet', {id: 2});
 				})
-			});			
+			});
 
 			it('deleting a user should not result in any socket messages being received', function(done) {
 
@@ -177,7 +182,7 @@ describe('pubsub :: ', function() {
 
 			describe('after subscribing to the destroy context', function() {
 				before(function(done) {
-					socket2.get('/user/subscribe?id=1&context=destroy', function(){done();});	
+					socket2.get('/user/subscribe?id=1&context=destroy', function(){done();});
 				});
 				it('deleting a user should result in a correct socket messages being received', function(done) {
 					socket2.on('user', function(message) {
@@ -186,7 +191,7 @@ describe('pubsub :: ', function() {
 					})
 					socket1.delete('/user', {id: 1});
 				})
-			});			
+			});
 		});
 
 	});

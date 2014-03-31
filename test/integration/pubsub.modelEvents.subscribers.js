@@ -169,6 +169,8 @@ describe('pubsub :: ', function() {
       });
 
 
+      // TODO: make this test work without relying on previous tests.
+      // (i.e. bootstrap some data in a `before()`)
       it ('removing the user from the pet via DELETE /user/1/pets should result a correct `pet` event being received by all subscribers', function(done) {
 
         socket1.on('pet', function(message) {
@@ -179,7 +181,13 @@ describe('pubsub :: ', function() {
           done();
         })
 
-        socket2.delete('/user/1/pets', {pet_id:1});
+        socket2.delete('/user/1/pets', {pet_id:1}, function (body, jwr) {
+          // TODO:
+          // when new sails.io.js client is being used in tests,
+          // ensure that a valid response came back from the server here.
+
+          console.log(body, body.invalidAttributes.user_id);
+        });
 
       });
 
