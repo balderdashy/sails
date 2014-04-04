@@ -52,7 +52,7 @@ module.exports = function () {
 		console.log();
 
 		var repl = REPL.start('sails> ');
-    history(repl, path.resolve(__dirname, '../.node_history'));
+    history(repl, path.join(sails.config.appPath, '.node_history'));
 		repl.on('exit', function(err) {
 			if (err) {
 				log.error(err);
