@@ -8,7 +8,7 @@ module.exports = {
 		res.view();
 	},
 
-  viewOptions: function(req, res, next) t
+  viewOptions: function(req, res, next) {
     res.view();
   },
 
