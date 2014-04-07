@@ -8,12 +8,12 @@ module.exports = {
 		res.view();
 	},
 
-  viewOptions: function(req, res, next) {
+  viewOptions: function(req, res, next) t
     res.view();
   },
 
   viewOptionsOverride: function(req, res, next) {
-    res.view('viewTest/viewOptions', {foo:'!baz!'});
+    res.view('viewtest/viewOptions', {foo:'!baz!'});
   }
 
 };
