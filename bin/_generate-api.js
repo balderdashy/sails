@@ -39,7 +39,8 @@ module.exports = function generateAPI (scope, cb) {
 				error: function(err) {
 					cb.error(err);
 					return _cb(err);
-				}
+				},
+        invalid: 'error'
 			});
 		};
 	}
