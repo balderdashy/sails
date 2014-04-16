@@ -1,5 +1,5 @@
 module.exports = {
-	autoPK: false,	
+	autoPK: false,
 	attributes: {
 		pet_id: {
 			type: 'integer',
@@ -9,7 +9,11 @@ module.exports = {
 		name: 'string',
 		owner: {
 			model: 'user',
-		}
+		},
+    isPet: {
+      type: 'boolean',
+      defaultsTo: true
+    }
 	}
 
 };

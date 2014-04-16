@@ -9,5 +9,8 @@ module.exports = {
     locals: {
       foo: '!bar!'
     }
+  },
+  blueprints: {
+    defaultLimit: 10
   }
 };
