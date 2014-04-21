@@ -53,7 +53,10 @@ module.exports = function() {
     console.log();
 
     var repl = REPL.start('sails> ');
-    history(repl, path.join(sails.config.paths.tmp, '.node_history'));
+    try {
+      history(repl, path.join(sails.config.paths.tmp, '.node_history'));
+    }
+    catch(e) { log.verbose('Error finding console history:',e); }
     repl.on('exit', function(err) {
       if (err) {
         log.error(err);
