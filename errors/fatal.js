@@ -75,6 +75,9 @@ module.exports = {
 
 
 
+  // This doesn't technically _need_ to be a fatal error- it just is
+  // because certain grunt modules (e.g. grunt-contrib-watch) don't restart
+  // when an error occurs.
 	__GruntAborted__: function ( consoleMsg, stackTrace ) {
 
 		var gruntErr =
@@ -85,7 +88,7 @@ module.exports = {
 		log.blank();
 
 		log.error('Looks like a Grunt error occurred--');
-		log.error('Please fix it, then restart Sails to continue watching assets.');
+		log.error('Please fix it, then **restart Sails** to continue running tasks (e.g. watching for changes in assets)');
 		log.error('Or if you\'re stuck, check out the troubleshooting tips below.');
 		log.blank();
 
@@ -104,7 +107,10 @@ module.exports = {
 		log.error('     sudo chown -R',uid,relativePublicPath);
 		log.blank();
 
-		return _terminateProcess(1);
+    // See note above this function - for now, this will not
+    // actually terminate the process.  The rest of Sails should
+    // continue to run.
+		// return _terminateProcess(1);
 	},
 
 
