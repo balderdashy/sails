@@ -83,7 +83,7 @@ module.exports = {
 			'\n------------------------------------------------------------------------';
 		log.error(gruntErr);
 		log.blank();
-		
+
 		log.error('Looks like a Grunt error occurred--');
 		log.error('Please fix it, then restart Sails to continue watching assets.');
 		log.error('Or if you\'re stuck, check out the troubleshooting tips below.');
@@ -93,7 +93,7 @@ module.exports = {
 		var relativePublicPath = (require('path').resolve(process.cwd(), './.tmp'));
 		var uid = process.getuid && process.getuid() || 'YOUR_COMPUTER_USER_NAME';
 		log.error();
-		log.error(' *-> Is grunt installed locally?  Run `npm install grunt` if you\'re not sure.');
+		log.error(' *-> Are "grunt" and related grunt task modules installed locally?  Run `npm install` if you\'re not sure.');
 		log.error();
 		log.error(' *-> You might have a malformed LESS, SASS, CoffeeScript file, etc.');
 		log.error();
@@ -170,23 +170,23 @@ module.exports = {
 
 
 /**
- * 
+ *
  * TODO: Make all of this more elegant.
  * ========================================================
  * + Ideally we don't call `process.exit()` at all.
  * We should consistently use `sails.lower()` for unhandleable core
  * errors and just trigger the appropriate callback w/ an error for
  * core lift/load and any CLI errors.
- * 
+ *
  * + Then we won't have to worry as much about dangling child processes
  * and things like that. Plus it's more testable that way.
- * 
+ *
  * In practice, the best way to do this may be an error domain or an
  * event emitted on the sails object (or both!)
  * ========================================================
  *
  *
- * 
+ *
  * TODO: Merge w/ app/teardown.js
  * ========================================================
  * (probably achievable by doing the aforementioned cleanup)
@@ -200,7 +200,7 @@ module.exports = {
  *
  * Terminate the process as elegantly as possible.
  * If process.env is 'test', throw instead.
- * 
+ *
  * @param  {[type]} code [console error code]
  * @param  {[type]} opts [currently unused]
  */
