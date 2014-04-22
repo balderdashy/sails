@@ -7,8 +7,16 @@
 
 module.exports = {
 
+  schema: true,
+
   attributes: {
 
+    username: {
+      type: 'string',
+      minLength: 4,
+      maxLength: 10,
+      required: true,
+      unique: true
+    }
   }
 };
-
