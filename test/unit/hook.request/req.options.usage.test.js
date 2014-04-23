@@ -44,7 +44,8 @@ describe('Request hook', function (){
           foo: 'nasty string'
         }
       }, {
-        send: function () {
+        send: function (statusCode) {
+          assert(statusCode === 400);
           done();
         }
       });
@@ -67,8 +68,8 @@ describe('Request hook', function (){
           foo: 123
         }
       }, {
-        send: function () {
-          console.log(arguments);
+        send: function (statusCode) {
+          assert(statusCode === 200);
           done();
         }
       });
