@@ -8,7 +8,7 @@ var $Router = require('root-require')('test/unit/helpers/router');
 
 describe('sails.router.unbind', function (){
 
-	$Sails.load.withAllHooksDisabled();
+	var sails = $Sails.load.withAllHooksDisabled();
 
 
 	$Router.unbind('get /foo')

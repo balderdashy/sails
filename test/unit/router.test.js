@@ -7,13 +7,13 @@ var $Sails = require('./helpers/sails');
 
 
 describe('`sails.router`', function() {
-	
-	$Sails.load.withAllHooksDisabled();
+
+	var sails = $Sails.load.withAllHooksDisabled();
 
 
 
 	it('should be exposed on the `sails` global', function () {
-		this.sails
+		sails
 			.router
 			._slave
 			.routes
