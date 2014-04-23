@@ -29,7 +29,7 @@ describe('Request hook', function (){
 
     it('should call `req.validate(req.options.usage)` and cause server to send 400 response upon receiving invalid params', function (done) {
       var ROUTEADDRESS = '/req_options_usage';
-      sails.router.bind('/*', function (req,res,next) {
+      sails.router.bind(ROUTEADDRESS, function (req,res,next) {
         req.options.usage = {
           foo: 'integer'
         };
@@ -45,19 +45,21 @@ describe('Request hook', function (){
         }
       }, {
         send: function () {
-          console.log('ok');
           done();
         }
       });
     });
 
     it('should call `req.validate(req.options.usage)` but still work correctly upon receiving valid params', function (done) {
-      var ROUTEADDRESS = '/req_options_usage';
-      sails.router.bind('/*', function (req,res,next) {
+      var ROUTEADDRESS = '/req_options_usage2';
+      sails.router.bind(ROUTEADDRESS, function (req,res,next) {
         req.options.usage = {
           foo: 'integer'
         };
         next();
+      })
+      .router.bind(ROUTEADDRESS, function (req, res, next) {
+        res.send(200);
       })
       .emit('router:request', {
         url: ROUTEADDRESS,
@@ -66,7 +68,7 @@ describe('Request hook', function (){
         }
       }, {
         send: function () {
-          console.log('ok');
+          console.log(arguments);
           done();
         }
       });
