@@ -21,14 +21,15 @@ describe('Request hook', function (){
     loadHooks: [
       'moduleloader',
       'userconfig',
-      'request'
+      'request',
+      'responses'
     ]
   });
 
   describe('setting req.options.usage', function () {
 
     it('should call `req.validate(req.options.usage)` and cause server to send 400 response upon receiving invalid params', function (done) {
-      var ROUTEADDRESS = '/req_options_usage';
+      var ROUTEADDRESS = '/req_options_usage1';
       sails.router.bind(ROUTEADDRESS, function (req,res,next) {
         req.options.usage = {
           foo: 'integer'
@@ -36,7 +37,7 @@ describe('Request hook', function (){
         next();
       })
       .router.bind(ROUTEADDRESS, function (req, res, next) {
-        done(new Error('Should never get here'));
+        return res.send(500, 'Should never get here');
       })
       .emit('router:request', {
         url: ROUTEADDRESS,
@@ -44,36 +45,36 @@ describe('Request hook', function (){
           foo: 'nasty string'
         }
       }, {
-        send: function (statusCode) {
-          assert(statusCode === 400);
-          done();
+        send: function (statusCode, body) {
+          if (statusCode === 400) done();
+          else done(new Error('Incorrect status code sent: '+statusCode+ '\nFull response body:'+body));
         }
       });
     });
 
-    it('should call `req.validate(req.options.usage)` but still work correctly upon receiving valid params', function (done) {
-      var ROUTEADDRESS = '/req_options_usage2';
-      sails.router.bind(ROUTEADDRESS, function (req,res,next) {
-        req.options.usage = {
-          foo: 'integer'
-        };
-        next();
-      })
-      .router.bind(ROUTEADDRESS, function (req, res, next) {
-        res.send(200);
-      })
-      .emit('router:request', {
-        url: ROUTEADDRESS,
-        query: {
-          foo: 123
-        }
-      }, {
-        send: function (statusCode) {
-          assert(statusCode === 200);
-          done();
-        }
-      });
-    });
+    // it('should call `req.validate(req.options.usage)` but still work correctly upon receiving valid params', function (done) {
+    //   var ROUTEADDRESS = '/req_options_usage2';
+    //   sails.router.bind(ROUTEADDRESS, function (req,res,next) {
+    //     req.options.usage = {
+    //       foo: 'integer'
+    //     };
+    //     next();
+    //   })
+    //   .router.bind(ROUTEADDRESS, function (req, res, next) {
+    //     res.send(200);
+    //   })
+    //   .emit('router:request', {
+    //     url: ROUTEADDRESS,
+    //     query: {
+    //       foo: 123
+    //     }
+    //   }, {
+    //     send: function (statusCode) {
+    //       assert(statusCode === 200);
+    //       done();
+    //     }
+    //   });
+    // });
 
   });
 
