@@ -9,7 +9,7 @@ var Sails = require('root-require')('lib/app');
 
 /**
  * Manage an instance of Sails
- * 
+ *
  * @type {Object}
  */
 var helper = {
@@ -25,7 +25,7 @@ var helper = {
 
 		/**
 		 * _cleanOptions()
-		 * 
+		 *
 		 * @param {Object} options
 		 * @type {Function}
 		 * @api private
@@ -38,12 +38,14 @@ var helper = {
 
 
 		/**
-		 * [_load description]
-		 * @param  {[type]} options [description]
-		 * @return {[type]}         [description]
+		 * This function is returned by this test helper
+     * to be called by subsequent tests.
+     *
+		 * @param  {Object} options
+		 * @return {SJSApp}
 		 */
 		var _load = function (options) {
-			
+
 			var testDescription, msSlowThreshold;
 			var sailsOpts = _cleanOptions(options);
 
@@ -89,7 +91,7 @@ var helper = {
 
 			it(', sails should deliberately terminate process', function (done) {
 				var sails = new Sails();
-				
+
 				// TODO:
 				// Pull this error domain into the core and
 				// wrap the hook loading process (or a comparable solution.)
@@ -102,7 +104,7 @@ var helper = {
 				});
 				DELIBERATE_ERROR.run(function () {
 					sails.load(sailsOpts || {}, function (err) {
-						var e = 
+						var e =
 						'Should not have made it to load() ' +
 						'callback, with or without an error!';
 						if (err) e+='\nError: ' + util.inspect(err);
@@ -140,29 +142,37 @@ module.exports = helper;
 
 /**
  * Setup and teardown a Sails instance for testing.
- * 
+ *
  * @param  {String} description
  * @param  {Object} sailsOpts
  * @param  {Integer} msThreshold [before we consider it "slow"]
  *
- * @returns {Chainable}
+ * @returns {SJSApp}
  * @api private
  */
 function _with (description, sailsOpts, msThreshold) {
 
 
+  var sails = new Sails();
+
 	it('sails loaded (with ' + description + ')', function (done) {
 		if (msThreshold) { this.slow(msThreshold); }
 
-		var self = this;
-		self.sails = new Sails();
-		self.sails.load(sailsOpts || {}, done);
+
+    // Expose a new app instance as `this.sails`
+    // for other tests to use.
+    this.sails = sails;
+
+    // Load the app
+    sails.load(sailsOpts || {}, done);
 	});
 
 	after(function teardown(done) {
-		this.sails.lower(done);
+    // Make sure the app is done
+		sails.lower(done);
 	});
 
+  return sails;
 }
 
 

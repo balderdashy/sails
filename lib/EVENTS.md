@@ -4,7 +4,7 @@
 
 > ##### Stability: [2](http://nodejs.org/api/documentation.html#documentation_stability_index) - Unstable
 >
-> The API is in the process of settling, but has not yet had sufficient real-world testing to be considered stable.  
+> The API is in the process of settling, but has not yet had sufficient real-world testing to be considered stable.
 >
 > Backwards-compatibility will be maintained if reasonable.
 
@@ -24,7 +24,7 @@ The instantiated `sails` object is a Node EventEmitter.
 Events have been a feature of the Sails core since v0.9.
 
 + Developers needed an easier way to modify the Sails core for their needs.  Hooks and events make this possible!
-+ Events themselves originated as a feature to allow hooks to talk to each other during and after the app bootstrapping process. 
++ Events themselves originated as a feature to allow hooks to talk to each other during and after the app bootstrapping process.
 + For posterity, the original `sails.on(*)` event proposal: https://gist.github.com/mikermcneil/5898598
 
 ### Best Practices
@@ -41,15 +41,15 @@ In my hook's initialize method, I might have the following:
 
 // Wait until all the middleware from this app's controllers have loaded
 sails.on('hook:controllers:loaded', function () {
-  
+
   // Do stuff
   // e.g. prevent any methods called `login`, `logout` or `signup`
   // since we've opted organizationally for using CRUD on a SessionController instead
   // .....code here........
-  
+
   // When you're done, fire an event in
   sails.emit('hook:enforceRestfulSesssions:checked');
-  
+
 });
 ```
 
@@ -65,7 +65,7 @@ Called after drawing the sailboat.
 ##### `ready`
 Called when all hooks are loaded and the internal router is ready to handle requests.
 i.e. the HTTP hook listens for `ready` before binding its HTTP server.
-  
+
 ##### `lower`
 Called when `sails.lower()` is called.  `sails.lower()` is called automatically when the process is halted.
 
