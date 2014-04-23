@@ -12,7 +12,7 @@ var RESPOND = require('./fixtures/middleware');
 
 describe('Router.bind', function (){
 
-	$Sails.load.withAllHooksDisabled();
+	var sails = $Sails.load.withAllHooksDisabled();
 
 
 
@@ -81,7 +81,7 @@ describe('Router.bind', function (){
 			.post('/something_that_throws')
 			.expect(500)
 			.end(done);
-		}); 
+		});
 	});
 
 });
