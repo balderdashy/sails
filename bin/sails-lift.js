@@ -37,7 +37,7 @@ module.exports = function () {
 	}, rconf);
 
 	var appPath = process.cwd();
-	
+
 	// Use the app's local Sails in `node_modules` if it's extant and valid
 	var localSailsPath = path.resolve(appPath, 'node_modules/sails');
 	if ( Sails.isLocalSailsValid(localSailsPath, appPath) ) {
@@ -45,8 +45,8 @@ module.exports = function () {
 		return;
 	}
 
-	// Otherwise, if no workable local Sails exists, run the app 
-	// using the currently running version of Sails.  This is 
+	// Otherwise, if no workable local Sails exists, run the app
+	// using the currently running version of Sails.  This is
 	// probably always the global install.
 	var globalSails = Sails();
 	globalSails.lift(scope);
