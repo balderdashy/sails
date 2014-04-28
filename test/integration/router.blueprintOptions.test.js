@@ -116,7 +116,7 @@ describe('router :: ', function() {
         });
       });
 
-      it.skip('...and a user profile.', function() {
+      it('...and a user profile.', function() {
         users.forEach(function(user) {
           assert(user.profile.zodiac == (user.name + '_zodiac'), "Expected profile zodiac '" + user.name + '_zodiac' + "' for user " + user.name + "; got " + user.profile.zodiac);
         });
@@ -166,7 +166,7 @@ describe('router :: ', function() {
         });
       });
 
-      it.skip('...and a user profile.', function() {
+      it('...and a user profile.', function() {
         users.forEach(function(user) {
           assert(user.profile.zodiac == (user.name + '_zodiac'), "Expected profile zodiac '" + user.name + '_zodiac' + "' for user " + user.name + "; got " + user.profile.zodiac);
         });
@@ -198,7 +198,7 @@ describe('router :: ', function() {
         });
       });
 
-      it.skip('...and a user profile.', function() {
+      it('...and a user profile.', function() {
         users.forEach(function(user) {
           assert(user.profile.zodiac == (user.name + '_zodiac'), "Expected profile zodiac '" + user.name + '_zodiac' + "' for user " + user.name + "; got " + user.profile.zodiac);
         });
@@ -230,7 +230,7 @@ describe('router :: ', function() {
         });
       });
 
-      it.skip('...and a user profile.', function() {
+      it('...and a user profile.', function() {
         users.forEach(function(user) {
           assert(user.profile.zodiac == (user.name + '_zodiac'), "Expected profile zodiac '" + user.name + '_zodiac' + "' for user " + user.name + "; got " + user.profile.zodiac);
         });
@@ -262,7 +262,7 @@ describe('router :: ', function() {
         });
       });
 
-      it.skip('...and a user profile.', function() {
+      it('...and a user profile.', function() {
         users.forEach(function(user) {
           assert(user.profile.zodiac == (user.name + '_zodiac'), "Expected profile zodiac '" + user.name + '_zodiac' + "' for user " + user.name + "; got " + user.profile.zodiac);
         });
@@ -294,7 +294,7 @@ describe('router :: ', function() {
         });
       });
 
-      it.skip('...and a user profile.', function() {
+      it('...and a user profile.', function() {
         users.forEach(function(user) {
           assert(user.profile.zodiac == (user.name + '_zodiac'), "Expected profile zodiac '" + user.name + '_zodiac' + "' for user " + user.name + "; got " + user.profile.zodiac);
         });
@@ -326,7 +326,7 @@ describe('router :: ', function() {
         });
       });
 
-      it.skip('...and just an ID for the user profile.', function() {
+      it('...and just an ID for the user profile.', function() {
         users.forEach(function(user) {
           assert(_.isFinite(user.profile), "Expected an ID for 'profile' attribute of user " + user.name + "; got " + JSON.stringify(user.profile));
         });
