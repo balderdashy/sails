@@ -113,7 +113,7 @@ describe('router :: ', function() {
 
       describe('a get request to /:controller/:id', function() {
 
-        it('should return a string', function(done) {
+        it('should NOT hit the `find` action', function(done) {
 
           httpHelper.testRoute('get', {
             url: 'test/1',
@@ -124,10 +124,26 @@ describe('router :: ', function() {
           }, function(err, response) {
             if (err) return done(err);
 
-            assert.equal(response.body, "find");
+            assert.notEqual(response.body, "find");
             done();
           });
         });
+
+        it('should hit the `findOne` action', function(done) {
+          httpHelper.testRoute('get', {
+            url: 'test/1',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            json: true
+          }, function(err, response) {
+            if (err) return done(err);
+
+            assert.equal(response.body, 'findOne');
+            done();
+          });
+        });
+
       });
     });
 
