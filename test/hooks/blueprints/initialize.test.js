@@ -3,8 +3,8 @@
  */
 var supertest = require('supertest');
 
-var $Sails = require('../helpers/sails');
-var $Router = require('../helpers/router');
+var $Sails = require('../../helpers/sails');
+var $Router = require('../../helpers/router');
 
 
 describe('Blueprints hook', function (){

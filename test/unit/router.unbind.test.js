@@ -1,8 +1,8 @@
 /**
  * Module dependencies
  */
-var $Sails = require('root-require')('test/unit/helpers/sails');
-var $Router = require('root-require')('test/unit/helpers/router');
+var $Sails = require('root-require')('test/helpers/sails');
+var $Router = require('root-require')('test/helpers/router');
 
 
 

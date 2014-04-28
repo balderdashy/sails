@@ -3,7 +3,7 @@
  */
 var should = require('should');
 
-var $Sails = require('./helpers/sails');
+var $Sails = require('../helpers/sails');
 
 
 describe('`sails.router`', function() {

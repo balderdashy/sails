@@ -2,11 +2,13 @@
  * Module dependencies
  */
 var should = require('should');
+var assert = require('assert');
+var _ = require('lodash');
 
-var constants = require('./fixtures/constants');
-var customHooks = require('./fixtures/customHooks');
+var constants = require('../fixtures/constants');
+var customHooks = require('../fixtures/customHooks');
 
-var $Sails = require('./helpers/sails');
+var $Sails = require('../helpers/sails');
 
 
 
@@ -35,8 +37,9 @@ describe('app.initializeHooks()', function() {
       sails.hooks.should.be.an.Object;
     });
     it('should expose at least the expected core hooks', function() {
-      sails.hooks.should.have
-        .properties(constants.EXPECTED_DEFAULT_HOOKS);
+
+      var intersection = _.intersection(Object.keys(sails.hooks), constants.EXPECTED_DEFAULT_HOOKS);
+      assert.deepEqual(intersection, constants.EXPECTED_DEFAULT_HOOKS,  'Missing expected default hooks');
     });
   });
 
@@ -54,8 +57,8 @@ describe('app.initializeHooks()', function() {
         .property('noop');
     });
     it('should also expose the expected core hooks', function() {
-      sails.hooks.should.have
-        .properties(constants.EXPECTED_DEFAULT_HOOKS);
+      var intersection = _.intersection(Object.keys(sails.hooks), constants.EXPECTED_DEFAULT_HOOKS);
+      assert.deepEqual(intersection, constants.EXPECTED_DEFAULT_HOOKS,  'Missing expected default hooks');
     });
   });
 
