@@ -5,14 +5,14 @@
  * Module dependencies
  */
 
-var Sails = require('../lib/app');
-var path = require('path');
-var _ = require('lodash');
-var rconf = require('../lib/configuration/rc');
-var captains = require('captains-log');
+var nodepath = require('path');
 var REPL = require('repl');
 var fs = require('fs');
+var _ = require('lodash');
 require('colors');
+var CaptainsLog = require('captains-log');
+var Sails = require('../lib/app');
+var rconf = require('../lib/app/configuration/rc');
 
 
 
@@ -25,7 +25,7 @@ require('colors');
 
 module.exports = function() {
 
-  var log = captains(rconf.log);
+  var log = CaptainsLog(rconf.log);
 
   console.log();
   log.info('Starting app in interactive mode...'.debug);
@@ -54,9 +54,10 @@ module.exports = function() {
 
     var repl = REPL.start('sails> ');
     try {
-      history(repl, path.join(sails.config.paths.tmp, '.node_history'));
+      history(repl, nodepath.join(sails.config.paths.tmp, '.node_history'));
+    } catch (e) {
+      log.verbose('Error finding console history:', e);
     }
-    catch(e) { log.verbose('Error finding console history:',e); }
     repl.on('exit', function(err) {
       if (err) {
         log.error(err);
@@ -67,7 +68,6 @@ module.exports = function() {
 
   });
 };
-
 
 
 
