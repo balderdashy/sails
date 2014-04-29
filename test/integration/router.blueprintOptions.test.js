@@ -31,18 +31,47 @@ describe('router :: ', function() {
       appHelper.build(function() {
 
         httpHelper.writeRoutes({
-          'POST /pet': {blueprint: 'find'},
-          'GET /users': {blueprint: 'find', model: 'user'},
-          'GET /users2': {blueprint: 'find', model: 'user', limit: 5},
-          'GET /users3': {blueprint: 'find', model: 'user', limit: 5, populate_limit: 3},
-          'GET /users4': {blueprint: 'find', model: 'user', limit: 5, populate_pets_limit: 3},
-          'GET /users5': {blueprint: 'find', model: 'user', associations: ['profile']},
-          'GET /users6': {blueprint: 'find', model: 'user', associations: ['pets']}
+          'POST /pet': {
+            blueprint: 'find'
+          },
+          'GET /users': {
+            blueprint: 'find',
+            model: 'user'
+          },
+          'GET /users2': {
+            blueprint: 'find',
+            model: 'user',
+            limit: 5
+          },
+          'GET /users3': {
+            blueprint: 'find',
+            model: 'user',
+            limit: 5,
+            populate_limit: 3
+          },
+          'GET /users4': {
+            blueprint: 'find',
+            model: 'user',
+            limit: 5,
+            populate_pets_limit: 3
+          },
+          'GET /users5': {
+            blueprint: 'find',
+            model: 'user',
+            associations: ['profile']
+          },
+          'GET /users6': {
+            blueprint: 'find',
+            model: 'user',
+            associations: ['pets']
+          }
         });
 
         appHelper.lift(function(err, sails) {
 
-          if (err) {throw new Error(err);}
+          if (err) {
+            throw new Error(err);
+          }
           sailsprocess = sails;
 
           // Add 31 users with 31 pets each
@@ -78,20 +107,20 @@ describe('router :: ', function() {
       });
 
       it('should return an array of 10 users (sails.config.blueprints.defaultLimit)', function() {
-        assert(users.length === 10, "Expected 10 users, got "+users.length);
+        assert(users.length === 10, "Expected 10 users, got " + users.length);
       });
 
       it('...each of which should have an array of 10 pets (sails.config.blueprints.defaultLimit)', function() {
         users.forEach(function(user) {
-          assert(user.pets.length === 10, "Expected 10 pets for user "+user.name+"; got "+user.pets.length);
+          assert(user.pets.length === 10, "Expected 10 pets for user " + user.name + "; got " + user.pets.length);
         });
       });
 
-      it('...and a user profile.', function () {
+      it('...and a user profile.', function() {
         users.forEach(function(user) {
-          assert(user.profile.zodiac == (user.name+'_zodiac'), "Expected profile zodiac '"+user.name+'_zodiac'+"' for user "+user.name+"; got "+user.profile.zodiac);
+          assert(user.profile.zodiac == (user.name + '_zodiac'), "Expected profile zodiac '" + user.name + '_zodiac' + "' for user " + user.name + "; got " + user.profile.zodiac);
         });
-      })
+      });
 
 
 
@@ -101,7 +130,10 @@ describe('router :: ', function() {
 
       it('should default to using the Pet model', function(done) {
 
-        httpHelper.testRoute('post', {url: 'pet', json:true}, function(err, response) {
+        httpHelper.testRoute('post', {
+          url: 'pet',
+          json: true
+        }, function(err, response) {
           assert(response.body[0].isPet === true, "Expected a pet record; got: " + JSON.stringify(response.body[0]));
           return done();
         });
@@ -125,20 +157,20 @@ describe('router :: ', function() {
       });
 
       it('should return an array of 10 users (sails.config.blueprints.defaultLimit)', function() {
-        assert(users.length === 10, "Expected 10 users, got "+users.length);
+        assert(users.length === 10, "Expected 10 users, got " + users.length);
       });
 
       it('...each of which should have an array of 10 pets (sails.config.blueprints.defaultLimit)', function() {
         users.forEach(function(user) {
-          assert(user.pets.length === 10, "Expected 10 pets for user "+user.name+"; got "+user.pets.length);
+          assert(user.pets.length === 10, "Expected 10 pets for user " + user.name + "; got " + user.pets.length);
         });
       });
 
-      it('...and a user profile.', function () {
+      it('...and a user profile.', function() {
         users.forEach(function(user) {
-          assert(user.profile.zodiac == (user.name+'_zodiac'), "Expected profile zodiac '"+user.name+'_zodiac'+"' for user "+user.name+"; got "+user.profile.zodiac);
+          assert(user.profile.zodiac == (user.name + '_zodiac'), "Expected profile zodiac '" + user.name + '_zodiac' + "' for user " + user.name + "; got " + user.profile.zodiac);
         });
-      })
+      });
 
     });
 
@@ -157,20 +189,20 @@ describe('router :: ', function() {
       });
 
       it('should return an array of 5 users', function() {
-        assert(users.length === 5, "Expected 5 users, got "+users.length);
+        assert(users.length === 5, "Expected 5 users, got " + users.length);
       });
 
       it('...each of which should have an array of 5 pets', function() {
         users.forEach(function(user) {
-          assert(user.pets.length === 5, "Expected 5 pets for user "+user.name+"; got "+user.pets.length);
+          assert(user.pets.length === 5, "Expected 5 pets for user " + user.name + "; got " + user.pets.length);
         });
       });
 
-      it('...and a user profile.', function () {
+      it('...and a user profile.', function() {
         users.forEach(function(user) {
-          assert(user.profile.zodiac == (user.name+'_zodiac'), "Expected profile zodiac '"+user.name+'_zodiac'+"' for user "+user.name+"; got "+user.profile.zodiac);
+          assert(user.profile.zodiac == (user.name + '_zodiac'), "Expected profile zodiac '" + user.name + '_zodiac' + "' for user " + user.name + "; got " + user.profile.zodiac);
         });
-      })
+      });
 
     });
 
@@ -189,20 +221,20 @@ describe('router :: ', function() {
       });
 
       it('should return an array of 5 users', function() {
-        assert(users.length === 5, "Expected 5 users, got "+users.length);
+        assert(users.length === 5, "Expected 5 users, got " + users.length);
       });
 
       it('...each of which should have an array of 3 pets', function() {
         users.forEach(function(user) {
-          assert(user.pets.length === 3, "Expected 3 pets for user "+user.name+"; got "+user.pets.length);
+          assert(user.pets.length === 3, "Expected 3 pets for user " + user.name + "; got " + user.pets.length);
         });
       });
 
-      it('...and a user profile.', function () {
+      it('...and a user profile.', function() {
         users.forEach(function(user) {
-          assert(user.profile.zodiac == (user.name+'_zodiac'), "Expected profile zodiac '"+user.name+'_zodiac'+"' for user "+user.name+"; got "+user.profile.zodiac);
+          assert(user.profile.zodiac == (user.name + '_zodiac'), "Expected profile zodiac '" + user.name + '_zodiac' + "' for user " + user.name + "; got " + user.profile.zodiac);
         });
-      })
+      });
 
     });
 
@@ -221,18 +253,18 @@ describe('router :: ', function() {
       });
 
       it('should return an array of 5 users', function() {
-        assert(users.length === 5, "Expected 5 users, got "+users.length);
+        assert(users.length === 5, "Expected 5 users, got " + users.length);
       });
 
       it('...each of which should have an array of 3 pets', function() {
         users.forEach(function(user) {
-          assert(user.pets.length === 3, "Expected 3 pets for user "+user.name+"; got "+user.pets.length);
+          assert(user.pets.length === 3, "Expected 3 pets for user " + user.name + "; got " + user.pets.length);
         });
       });
 
-      it('...and a user profile.', function () {
+      it('...and a user profile.', function() {
         users.forEach(function(user) {
-          assert(user.profile.zodiac == (user.name+'_zodiac'), "Expected profile zodiac '"+user.name+'_zodiac'+"' for user "+user.name+"; got "+user.profile.zodiac);
+          assert(user.profile.zodiac == (user.name + '_zodiac'), "Expected profile zodiac '" + user.name + '_zodiac' + "' for user " + user.name + "; got " + user.profile.zodiac);
         });
       })
 
@@ -253,18 +285,18 @@ describe('router :: ', function() {
       });
 
       it('should return an array of 10 users', function() {
-        assert(users.length === 10, "Expected 10 users, got "+users.length);
+        assert(users.length === 10, "Expected 10 users, got " + users.length);
       });
 
       it('...each of which should have no pets', function() {
         users.forEach(function(user) {
-          assert(!user.pets, "Expected no pets for user "+user.name+"; got "+JSON.stringify(user.pets));
+          assert(!user.pets, "Expected no pets for user " + user.name + "; got " + JSON.stringify(user.pets));
         });
       });
 
-      it('...and a user profile.', function () {
+      it('...and a user profile.', function() {
         users.forEach(function(user) {
-          assert(user.profile.zodiac == (user.name+'_zodiac'), "Expected profile zodiac '"+user.name+'_zodiac'+"' for user "+user.name+"; got "+user.profile.zodiac);
+          assert(user.profile.zodiac == (user.name + '_zodiac'), "Expected profile zodiac '" + user.name + '_zodiac' + "' for user " + user.name + "; got " + user.profile.zodiac);
         });
       })
 
@@ -285,20 +317,20 @@ describe('router :: ', function() {
       });
 
       it('should return an array of 10 users', function() {
-        assert(users.length === 10, "Expected 10 users, got "+users.length);
+        assert(users.length === 10, "Expected 10 users, got " + users.length);
       });
 
       it('...each of which should have 10 pets', function() {
         users.forEach(function(user) {
-          assert(user.pets.length === 10, "Expected 10 pets for user "+user.name+"; got "+user.pets.length);
+          assert(user.pets.length === 10, "Expected 10 pets for user " + user.name + "; got " + user.pets.length);
         });
       });
 
-      it('...and just an ID for the user profile.', function () {
+      it('...and just an ID for the user profile.', function() {
         users.forEach(function(user) {
-          assert(_.isFinite(user.profile), "Expected an ID for 'profile' attribute of user "+user.name+"; got "+JSON.stringify(user.profile));
+          assert(_.isFinite(user.profile), "Expected an ID for 'profile' attribute of user " + user.name + "; got " + JSON.stringify(user.profile));
         });
-      })
+      });
 
     });
 

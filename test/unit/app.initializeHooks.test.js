@@ -2,11 +2,13 @@
  * Module dependencies
  */
 var should = require('should');
+var assert = require('assert');
+var _ = require('lodash');
 
-var constants = require('./fixtures/constants');
-var customHooks = require('./fixtures/customHooks');
+var constants = require('../fixtures/constants');
+var customHooks = require('../fixtures/customHooks');
 
-var $Sails = require('./helpers/sails');
+var $Sails = require('../helpers/sails');
 
 
 
@@ -20,83 +22,86 @@ var $Sails = require('./helpers/sails');
 
 describe('app.initializeHooks()', function() {
 
-	describe('with no hooks', function () {
-		var sails = $Sails.load.withAllHooksDisabled();
-		it('hooks should be exposed on the `sails` global', function () {
-			sails.hooks.should.be.an.Object;
-		});
-	});
+  describe('with no hooks', function() {
+    var sails = $Sails.load.withAllHooksDisabled();
+    it('hooks should be exposed on the `sails` global', function() {
+      sails.hooks.should.be.an.Object;
+    });
+  });
 
 
 
-	describe('with all core hooks and default config', function () {
-		var sails = $Sails.load();
-		it('should expose hooks on the `sails` global', function () {
-			sails.hooks.should.be.an.Object;
-		});
-		it('should expose at least the expected core hooks', function () {
-			sails.hooks.should.have
-			.properties(constants.EXPECTED_DEFAULT_HOOKS);
-		});
-	});
+  describe('with all core hooks and default config', function() {
+    var sails = $Sails.load();
+    it('should expose hooks on the `sails` global', function() {
+      sails.hooks.should.be.an.Object;
+    });
+    it('should expose at least the expected core hooks', function() {
+
+      var intersection = _.intersection(Object.keys(sails.hooks), constants.EXPECTED_DEFAULT_HOOKS);
+      assert.deepEqual(intersection, constants.EXPECTED_DEFAULT_HOOKS,  'Missing expected default hooks');
+    });
+  });
 
 
 
-	describe('configured with a custom hook called `noop`', function () {
-		var sails = $Sails.load({
-			hooks: { noop: customHooks.NOOP }
-		});
+  describe('configured with a custom hook called `noop`', function() {
+    var sails = $Sails.load({
+      hooks: {
+        noop: customHooks.NOOP
+      }
+    });
 
-		it('should expose `noop`', function () {
-			sails.hooks.should.have
-			.property('noop');
-		});
-		it('should also expose the expected core hooks', function () {
-			sails.hooks.should.have
-			.properties(constants.EXPECTED_DEFAULT_HOOKS);
-		});
-	});
-
-
-
-	describe('configured with a hook (`noop2`), but not its dependency (`noop`)', function () {
-		var sails = $Sails.load.expectFatalError({
-			hooks: {
-
-				// This forced failure is only temporary--
-				// very hard to test right now as things stand.
-				whadga: function (sails) {
-					throw 'temporary forced failure to simulate dependency issue';
-				},
-
-				noop2: customHooks.NOOP2
-			}
-		});
-	});
+    it('should expose `noop`', function() {
+      sails.hooks.should.have
+        .property('noop');
+    });
+    it('should also expose the expected core hooks', function() {
+      var intersection = _.intersection(Object.keys(sails.hooks), constants.EXPECTED_DEFAULT_HOOKS);
+      assert.deepEqual(intersection, constants.EXPECTED_DEFAULT_HOOKS,  'Missing expected default hooks');
+    });
+  });
 
 
 
-	describe('configured with a hook that always throws', function () {
-		var sails = $Sails.load.expectFatalError({
-			hooks: {
-				// This forced failure is only temporary--
-				// very hard to test right now as things stand.
-				badHook: customHooks.SPOILED_HOOK
-			}
-		});
-	});
+  describe('configured with a hook (`noop2`), but not its dependency (`noop`)', function() {
+    var sails = $Sails.load.expectFatalError({
+      hooks: {
+
+        // This forced failure is only temporary--
+        // very hard to test right now as things stand.
+        whadga: function(sails) {
+          throw 'temporary forced failure to simulate dependency issue';
+        },
+
+        noop2: customHooks.NOOP2
+      }
+    });
+  });
 
 
 
-	// describe('configured with a circular hook dependency', function () {
+  describe('configured with a hook that always throws', function() {
+    var sails = $Sails.load.expectFatalError({
+      hooks: {
+        // This forced failure is only temporary--
+        // very hard to test right now as things stand.
+        badHook: customHooks.SPOILED_HOOK
+      }
+    });
+  });
 
-	// 	// NOTE #1: not currently implemented
-	// 	// NOTE #2: not currently possible
-	// 	// (should be possible after merging @ragulka's PR)
-	// 	// $Sails.load();
 
-	// 	it('should throw a fatal error');
-	// });
+
+  // describe('configured with a circular hook dependency', function () {
+
+  // 	// NOTE #1: not currently implemented
+  // 	// NOTE #2: not currently possible
+  // 	// (should be possible after merging @ragulka's PR)
+  // 	// $Sails.load();
+
+  // 	it('should throw a fatal error');
+  // });
 
 
 });

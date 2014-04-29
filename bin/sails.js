@@ -4,22 +4,21 @@
 /**
  * Module dependencies
  */
-var _ = require('lodash')
-	, program = require('./_commander')
-	, package = require('../package.json')
-	, NOOP    = function(){}
-	, cmd;
 
+var _ = require('lodash');
+var program = require('./_commander');
+var package = require('../package.json');
+var NOOP = function() {};
 
 
 
 program
-	.version(package.version, '-v, --version');
+  .version(package.version, '-v, --version');
 
 
 //
 // Normalize version argument, i.e.
-// 
+//
 // $ sails -v
 // $ sails -V
 // $ sails --version
@@ -28,36 +27,35 @@ program
 
 
 // make `-v` option case-insensitive
-process.argv = _.map(process.argv,function(arg){
-	return (arg === '-V') ? '-v' : arg;
+process.argv = _.map(process.argv, function(arg) {
+  return (arg === '-V') ? '-v' : arg;
 });
 
 
 // $ sails version (--version synonym)
 program
-	.command('version')
-	.description('')
-	.action( program.versionInformation );
-
-
+  .command('version')
+  .description('')
+  .action(program.versionInformation);
 
 
 
 program
-	.option('--silent')
-	.option('--verbose')
-	.option('--silly')
-	.unknownOption = NOOP;
+  .option('--silent')
+  .option('--verbose')
+  .option('--silly')
+  .unknownOption = NOOP;
 program.usage('[command]');
 
 
 // $ sails lift
+var cmd;
 cmd = program.command('lift');
 cmd.option('--prod');
 cmd.option('--port [port]');
 cmd.unknownOption = NOOP;
 cmd.description('');
-cmd.action( require('./sails-lift') );
+cmd.action(require('./sails-lift'));
 
 
 // $ sails new <appname>
@@ -76,7 +74,7 @@ cmd = program.command('generate');
 cmd.unknownOption = NOOP;
 cmd.description('');
 cmd.usage('[something]');
-cmd.action( require('./sails-generate') );
+cmd.action(require('./sails-generate'));
 
 
 
@@ -84,7 +82,7 @@ cmd.action( require('./sails-generate') );
 cmd = program.command('console');
 cmd.unknownOption = NOOP;
 cmd.description('');
-cmd.action( require('./sails-console') );
+cmd.action(require('./sails-console'));
 
 
 // $ sails www
@@ -92,7 +90,7 @@ cmd.action( require('./sails-console') );
 cmd = program.command('www');
 cmd.unknownOption = NOOP;
 cmd.description('');
-cmd.action( require('./sails-www') );
+cmd.action(require('./sails-www'));
 
 
 
@@ -100,24 +98,20 @@ cmd.action( require('./sails-www') );
 cmd = program.command('debug');
 cmd.unknownOption = NOOP;
 cmd.description('');
-cmd.action( require('./sails-debug') );
+cmd.action(require('./sails-debug'));
 
 
 // $ sails configure
 cmd = program.command('configure');
 cmd.unknownOption = NOOP;
 cmd.description('');
-cmd.action( require('./sails-configure') );
-
-
-
-
+cmd.action(require('./sails-configure'));
 
 
 
 //
 // Normalize help argument, i.e.
-// 
+//
 // $ sails --help
 // $ sails help
 // $ sails
@@ -128,16 +122,15 @@ cmd.action( require('./sails-configure') );
 // $ sails help (--help synonym)
 cmd = program.command('help');
 cmd.description('');
-cmd.action( program.usageMinusWildcard );
-
+cmd.action(program.usageMinusWildcard);
 
 
 
 // $ sails <unrecognized_cmd>
 // Mask the '*' in `help`.
 program
-	.command('*')
-	.action( program.usageMinusWildcard );
+  .command('*')
+  .action(program.usageMinusWildcard);
 
 
 
@@ -147,10 +140,9 @@ program.unknownOption = NOOP;
 
 
 // $ sails
-// 
+//
 program.parse(process.argv);
 var NO_COMMAND_SPECIFIED = program.args.length === 0;
 if (NO_COMMAND_SPECIFIED) {
   program.usageMinusWildcard();
 }
-

@@ -5,7 +5,7 @@
 
 > ##### Stability: [2](http://nodejs.org/api/documentation.html#documentation_stability_index) - Unstable
 >
-> The API is in the process of settling, but has not yet had sufficient real-world testing to be considered stable.  
+> The API is in the process of settling, but has not yet had sufficient real-world testing to be considered stable.
 >
 > Backwards-compatibility will be maintained if reasonable.
 
@@ -43,12 +43,15 @@ Grab `this.middleware` from each hook and make it available on the `sails` objec
 
 Prepares the core Router, then emit multiple events on the `sails` object informing hooks that they can safely bind routes.
 
+#### Expose global variables
+After all hooks have initialized, Sails exposes global variables
+(by default: `sails` object, models, services, `_`, and `async`)
+
 #### Initialize App Runtime
 
 > This step does not run when `sails.load()` is used programmatically.
 > To also run the initialization step, use `sails.lift()` instead.
 
-+ Expose global variables (by default: `sails` object, models, services, `_`, and `async`)
 + Start attached servers (by default: Express and Socket.io)
 + Run the bootstrap function (`sails.config.bootstrap`)
 
@@ -57,8 +60,8 @@ Prepares the core Router, then emit multiple events on the `sails` object inform
 ## FAQ
 
 
-+ What is the difference between `sails.lift()` and `sails.load()`? 
-  + `lift()` === `load()` + `initialize()`.  It does everything `load()` does, plus it exposes global variables, starts any attached servers, (e.g. HTTP) and logs a picture of a boat.
++ What is the difference between `sails.lift()` and `sails.load()`?
+  + `lift()` === `load()` + `initialize()`.  It does everything `load()` does, plus it starts any attached servers (e.g. HTTP) and logs a picture of a boat.
 
 > If you have a question that isn't covered here, please feel free to send a PR adding it to this section (even if you don't have the answer!)
 

@@ -3,8 +3,8 @@
  */
 var supertest = require('supertest');
 
-var $Sails = require('./helpers/sails');
-var $Router = require('./helpers/router');
+var $Sails = require('../../helpers/sails');
+var $Router = require('../../helpers/router');
 
 
 describe('Blueprints hook', function (){
@@ -46,7 +46,7 @@ describe('Blueprints hook', function (){
 		//			+ CRUD methods (find(),create(),etc.)
 		//				+ RESTful (GET,POST,PUT,DELETE)
 		//				+ URL-bar shortcuts (/find, /create, etc.)
-		
+
 	});
 
 
@@ -69,7 +69,7 @@ describe('Blueprints hook', function (){
 		//			+ CRUD methods (find(),create(),etc.)
 		//				+ RESTful (GET,POST,PUT,DELETE)
 		//				+ URL-bar shortcuts (/find, /create, etc.)
-		
+
 	});
 
 
@@ -92,7 +92,7 @@ describe('Blueprints hook', function (){
 		//			+ CRUD methods (find(),create(),etc.)
 		//				+ RESTful (GET,POST,PUT,DELETE)
 		//				+ URL-bar shortcuts (/find, /create, etc.)
-		
+
 	});
 
 	describe('with ORM and policies hooks', function (){
@@ -114,7 +114,7 @@ describe('Blueprints hook', function (){
 		//			+ CRUD methods (find(),create(),etc.)
 		//				+ RESTful (GET,POST,PUT,DELETE)
 		//				+ URL-bar shortcuts (/find, /create, etc.)
-		
+
 	});
 
 
@@ -137,7 +137,7 @@ describe('Blueprints hook', function (){
 		//			+ CRUD methods (find(),create(),etc.)
 		//				+ RESTful (GET,POST,PUT,DELETE)
 		//				+ URL-bar shortcuts (/find, /create, etc.)
-		
+
 	});
 
 
@@ -161,9 +161,9 @@ describe('Blueprints hook', function (){
 		//			+ CRUD methods (find(),create(),etc.)
 		//				+ RESTful (GET,POST,PUT,DELETE)
 		//				+ URL-bar shortcuts (/find, /create, etc.)
-		
+
 	});
-	
+
 
 });
 

@@ -15,6 +15,10 @@ module.exports = {
 		res.send('find');
 	},
 
+  findOne: function(req, res) {
+    res.send('findOne');
+  },
+
 	create: function(req, res) {
 		res.send('create');
 	},

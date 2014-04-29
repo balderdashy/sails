@@ -4,8 +4,8 @@
 
 var assert = require('assert');
 
-var $Sails = require('../helpers/sails');
-var $Router = require('../helpers/router');
+var $Sails = require('../../helpers/sails');
+var $Router = require('../../helpers/router');
 
 
 
