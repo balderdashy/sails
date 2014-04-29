@@ -144,6 +144,35 @@ describe('router :: ', function() {
           });
         });
 
+        describe('with error_policy', function(done) {
+
+          before(function() {
+            var config = "module.exports.policies = { '*': 'error_policy' };";
+            fs.writeFileSync(path.resolve('../', appName, 'config/policies.js'), config);
+          });
+
+          it('should NOT hit the `findOne` action', function(done) {
+            httpHelper.testRoute('get', {
+              url: 'empty/1',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              json: true
+            }, function(err, response) {
+              if (err) return done(err);
+              // Assert HTTP status code is correct
+              assert.equal(response.statusCode, 500);
+
+              // Assert that response has status: 500
+              assert.equal(response.body.status, 500);
+
+              // Assert that response has the proper error message
+              assert.equal(response.body['errors'][0], 'Test Error');
+              done();
+            });
+          });
+        });
+
       });
     });
 
