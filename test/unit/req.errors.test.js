@@ -1,0 +1,59 @@
+/**
+ * Module dependencies
+ */
+
+var assert = require('assert');
+
+var $Sails = require('../helpers/sails');
+
+
+describe('request that causes an error', function (){
+
+  var sails = $Sails.load({
+    globals: false,
+    loadHooks: [
+      'moduleloader',
+      'userconfig',
+      'responses'
+    ]
+  });
+
+  it('should return the expected error when something throws', function (done) {
+
+    var ERROR = 'oh no I forgot my keys';
+
+    sails.get('/errors/1', function (req, res) {
+      throw ERROR;
+    });
+
+    sails.request('GET /errors/1', {}, function (err) {
+      assert.equal(ERROR, err);
+      done();
+    });
+
+  });
+
+  it('should call the `res.serverError()` handler when something throws and the "responses" hook is enabled, and the error should emerge, untampered-with', function (done) {
+
+    var ERROR = 'oh no I forgot my keys';
+    var CHECKPOINT = 'made it';
+
+    sails.registry.responses.serverError = function (err) {
+      var req = this.req;
+      var res = this.res;
+      assert.equal(ERROR, err);
+      res.send(500, CHECKPOINT);
+    };
+
+    sails.get('/errors/2', function (req, res) {
+      throw ERROR;
+    });
+
+    sails.request('GET /errors/2', {}, function (err) {
+      assert.equal(CHECKPOINT, err);
+      done();
+    });
+
+  });
+
+});
