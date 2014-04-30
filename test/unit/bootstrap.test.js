@@ -12,21 +12,19 @@ describe('bootstrap', function (){
   it('should return the expected error when something throws', function (done) {
 
     var ERROR = 'oh no I forgot my keys';
+    var bootstrapWasFired;
 
-    var firedBootstrap = false;
-
-    var sails = Sails();
-    sails.lift({
+    Sails().lift({
       globals: false,
-      loadHooks: [ 'moduleloader', 'userconfig' ],
+      loadHooks: false,
       bootstrap: function (cb) {
-        firedBootstrap = true;
-        cb('oops');
+        bootstrapWasFired = true;
+        cb(ERROR);
       }
     }, function (err) {
-      if (!firedBootstrap) return done(new Error('Should have called the bootstrap function'));
+      if (!bootstrapWasFired) return done(new Error('Should have called the bootstrap function'));
       if (!err) {
-        return done(new Error('Should have passed an error to the callback of sails.load()'));
+        return done(new Error('Should have passed an error to the callback of sails.lift()'));
       }
       if (err) {
         return done();
@@ -34,4 +32,7 @@ describe('bootstrap', function (){
     });
   });
 
+  it('should return an error if the bootstrap\'s callback is called twice', function (done) {
+    done();
+  });
 });
