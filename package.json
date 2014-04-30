@@ -34,7 +34,7 @@
     "sails-stringfile": "~0.3.0",
     "async": "~0.2.9",
     "lodash": "~2.4.1",
-    "captains-log": "~0.11.1",
+    "captains-log": "~0.11.8",
     "reportback": "~0.1.4",
     "sails-util": "~0.10.0",
     "colors": "~0.6.2",
