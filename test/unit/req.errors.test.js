@@ -27,7 +27,7 @@ describe('request that causes an error', function (){
     });
 
     sails.request('GET /errors/1', {}, function (err) {
-      assert.equal(ERROR, err);
+      assert.deepEqual(ERROR, err);
       done();
     });
 
@@ -39,10 +39,8 @@ describe('request that causes an error', function (){
     var CHECKPOINT = 'made it';
 
     sails.registry.responses.serverError = function (err) {
-      var req = this.req;
-      var res = this.res;
-      assert.equal(ERROR, err);
-      res.send(500, CHECKPOINT);
+      assert.deepEqual(ERROR, err);
+      this.res.send(500, CHECKPOINT);
     };
 
     sails.get('/errors/2', function (req, res) {
@@ -50,7 +48,7 @@ describe('request that causes an error', function (){
     });
 
     sails.request('GET /errors/2', {}, function (err) {
-      assert.equal(CHECKPOINT, err);
+      assert.deepEqual(CHECKPOINT, err);
       done();
     });
 
