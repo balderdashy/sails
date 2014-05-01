@@ -77,22 +77,33 @@ module.exports = function() {
   else {
     cb.success = function() {
 
-      // Determine the output path
-      var outputPath = scope.outputPath;
-      if (!outputPath && scope.filename) {
-        outputPath = scope.destDir + scope.filename;
-      }
-      var humanizedPath;
-      if (outputPath) {
-        humanizedPath = 'at ' + outputPath;
-      }
-      else {
-        humanizedPath = 'in ' + scope.destDir;
+      // Infer the `outputPath` if necessary/possible.
+      if (!scope.outputPath && scope.filename && scope.destDir) {
+        scope.outputPath = scope.destDir + scope.filename;
       }
 
+      // Humanize the output path
+      var humanizedPath;
+      if (scope.outputPath) {
+        humanizedPath = ' at ' + outputPath;
+      }
+      else if (scope.destDir) {
+        humanizedPath = ' in ' + scope.destDir;
+      }
+      else {
+        humanizedPath = '';
+      }
+
+      // Humanize the module identity
+      var humanizedId;
+      if (scope.id) {
+        humanizedId = util.format(' ("%s")',scope.id);
+      }
+      else humanizedId = '';
+
       cb.log.info(util.format(
-        'Generated a new %s ("%s") %s!',
-        scope.generatorType, scope.id, humanizedPath
+        'Created a new %s%s%s!',
+        scope.generatorType, humanizedId, humanizedPath
       ));
     };
 
