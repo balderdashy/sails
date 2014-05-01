@@ -98,16 +98,19 @@ var helper = {
         // Should not have to do this here!
 
         // Use error domain to catch failure
-        var DELIBERATE_ERROR = domain.create();
-        DELIBERATE_ERROR.on('error', function (err) {
+        var deliberateErrorDomain = domain.create();
+        deliberateErrorDomain.on('error', function (err) {
+          console.log('domain emitted error', err);
+          deliberateErrorDomain.exit();
           return done();
         });
-        DELIBERATE_ERROR.run(function () {
+        deliberateErrorDomain.run(function () {
           sails.load(sailsOpts || {}, function (err) {
             var e =
             'Should not have made it to load() ' +
             'callback, with or without an error!';
             if (err) e+='\nError: ' + util.inspect(err);
+            deliberateErrorDomain.exit();
             return done(new Error(e));
           });
         });
