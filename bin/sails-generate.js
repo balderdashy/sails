@@ -85,7 +85,7 @@ module.exports = function() {
       // Humanize the output path
       var humanizedPath;
       if (scope.outputPath) {
-        humanizedPath = ' at ' + outputPath;
+        humanizedPath = ' at ' + scope.outputPath;
       }
       else if (scope.destDir) {
         humanizedPath = ' in ' + scope.destDir;
