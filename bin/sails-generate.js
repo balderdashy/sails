@@ -6,6 +6,7 @@
  */
 
 var _ = require('lodash');
+var util = require('util');
 var async = require('async');
 var reportback = require('reportback')();
 var sailsgen = require('sails-generate');
@@ -75,7 +76,35 @@ module.exports = function() {
   // Otherwise just run whichever generator was requested.
   else {
     cb.success = function() {
-      cb.log.info('Generated a new ' + scope.generatorType + ' `' + scope.id + '` at ' + scope.destDir + scope.globalID + '.js!');
+
+      // Infer the `outputPath` if necessary/possible.
+      if (!scope.outputPath && scope.filename && scope.destDir) {
+        scope.outputPath = scope.destDir + scope.filename;
+      }
+
+      // Humanize the output path
+      var humanizedPath;
+      if (scope.outputPath) {
+        humanizedPath = ' at ' + outputPath;
+      }
+      else if (scope.destDir) {
+        humanizedPath = ' in ' + scope.destDir;
+      }
+      else {
+        humanizedPath = '';
+      }
+
+      // Humanize the module identity
+      var humanizedId;
+      if (scope.id) {
+        humanizedId = util.format(' ("%s")',scope.id);
+      }
+      else humanizedId = '';
+
+      cb.log.info(util.format(
+        'Created a new %s%s%s!',
+        scope.generatorType, humanizedId, humanizedPath
+      ));
     };
 
     //

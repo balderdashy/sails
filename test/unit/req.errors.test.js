@@ -11,6 +11,7 @@ describe('request that causes an error', function (){
 
   var sails = $Sails.load({
     globals: false,
+    log: { level: 'silent' },
     loadHooks: [
       'moduleloader',
       'userconfig',
