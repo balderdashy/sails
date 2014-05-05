@@ -2,7 +2,7 @@
 <a href="http://sailsjs.org"><img src="http://balderdashy.github.io/sails/images/logo.png" title="Sails.js"/>
 </h1>
 
-### [Website](http://sailsjs.org/)  &nbsp; [Getting Started](http://sailsjs.org/#!getStarted) &nbsp;  [Documentation](http://sailsjs.org/#!documentation)  &nbsp; [Submit Issue](https://github.com/balderdashy/sails/search?q=&type=Issues)
+### [Website](http://sailsjs.org/)  &nbsp; [Getting Started](http://sailsjs.org/#!getStarted) &nbsp;  [Docs (v0.9)](http://sailsjs.org/#!documentation)  &nbsp; [Submit Issue](https://github.com/balderdashy/sails/search?q=&type=Issues)
 
 
 Sails.js is a web framework that makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development. It's especially good for building realtime features like chat.
@@ -18,6 +18,8 @@ $ sudo npm install sails -g
 
 > ######Installing sails@beta
 > Associations support in Sails is finally here.  Ready to upgrade? v0.10 is still in beta, but the API has stabilized and now's a good time to start upgrading.  Check out the [Google group announcement](https://groups.google.com/forum/#!searchin/sailsjs/beta/sailsjs/OrRFkDb8fII/8e_e-I4J5MYJ) and/or the relevant sections of the [FAQ](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#what-version-of-sails-should-i-use) and [contribution guide](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#installing-different-versions-of-sails) for instructions and tips.
+>
+> In particular, if you're using the beta, **please be sure and check out the [beta documentation](http://beta.sailsjs.org)**.
 
 
 ## Your First Sails Project
