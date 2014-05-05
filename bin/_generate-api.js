@@ -5,6 +5,7 @@
 var _ = require('lodash');
 var async = require('async');
 var sailsgen = require('sails-generate');
+var util = require('util');
 
 
 /**
@@ -42,7 +43,37 @@ module.exports = function generateAPI(scope, cb) {
     return function(_cb) {
       sailsgen(_scope, {
         success: function() {
-          cb.log('Generated a new ' + _scope.generatorType + ' `' + _scope.id + '` at ' + _scope.destDir + _scope.globalID + '.js!');
+
+          // console.log(scope);
+
+          // Infer the `outputPath` if necessary/possible.
+          if (!_scope.outputPath && _scope.filename && _scope.destDir) {
+            _scope.outputPath = _scope.destDir + _scope.filename;
+          }
+
+          // Humanize the output path
+          var humanizedPath;
+          if (_scope.outputPath) {
+            humanizedPath = ' at ' + _scope.outputPath;
+          }
+          else if (_scope.destDir) {
+            humanizedPath = ' in ' + _scope.destDir;
+          }
+          else {
+            humanizedPath = '';
+          }
+
+          // Humanize the module identity
+          var humanizedId;
+          if (_scope.id) {
+            humanizedId = util.format(' ("%s")',_scope.id);
+          }
+          else humanizedId = '';
+
+          cb.log.info(util.format(
+            'Created a new %s%s%s!',
+            _scope.generatorType, humanizedId, humanizedPath
+          ));
           return _cb();
         },
         error: function(err) {
