@@ -23,7 +23,12 @@ var Sails = require('../lib/app');
 
 module.exports = function() {
 
+  // console.time('cli_lift');
+  // console.time('cli_prelift');
+
+  // console.time('cli_rc');
   var log = captains(rconf.log);
+  // console.timeEnd('cli_rc');
 
   console.log();
   require('colors');
@@ -41,7 +46,10 @@ module.exports = function() {
   // Use the app's local Sails in `node_modules` if it's extant and valid
   var localSailsPath = nodepath.resolve(appPath, 'node_modules/sails');
   if (Sails.isLocalSailsValid(localSailsPath, appPath)) {
-    require(localSailsPath).lift(scope);
+    var localSails = require(localSailsPath);
+    // console.timeEnd('cli_prelift');
+
+    localSails.lift(scope, afterwards);
     return;
   }
 
@@ -49,6 +57,16 @@ module.exports = function() {
   // using the currently running version of Sails.  This is
   // probably always the global install.
   var globalSails = Sails();
-  globalSails.lift(scope);
+  // console.timeEnd('cli_prelift');
+
+  globalSails.lift(scope, afterwards);
   return;
 };
+
+
+
+
+function afterwards (err, sails) {
+  if (err) { return sails.log.error(err); }
+  // try {console.timeEnd('cli_lift');}catch(e){}
+}
