@@ -60,13 +60,14 @@ module.exports = function() {
   // console.timeEnd('cli_prelift');
 
   globalSails.lift(scope, afterwards);
-  return;
+
+
+  function afterwards (err, sails) {
+    if (err) { return sails ? sails.log.error(err) : log.error(err); }
+    // try {console.timeEnd('cli_lift');}catch(e){}
+  }
 };
 
 
 
 
-function afterwards (err, sails) {
-  if (err) { return sails.log.error(err); }
-  // try {console.timeEnd('cli_lift');}catch(e){}
-}
