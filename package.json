@@ -1,7 +1,7 @@
 {
   "name": "sails",
   "author": "Mike McNeil <mike@balderdash.co>",
-  "version": "0.10.0-rc6",
+  "version": "0.10.0-rc7",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
   "homepage": "http://sailsjs.org",
   "keywords": [
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "express": "3.4.3",
-    "waterline": "0.10.0-rc11",
+    "waterline": "0.10.0-rc12",
     "rc": "~0.3.3",
     "sails-stringfile": "~0.3.0",
     "async": "~0.2.9",
