@@ -36,7 +36,7 @@ describe('router :: ', function() {
 			});
 		});
 
-		describe('with no specified routing', function() {
+		xdescribe('with no specified routing', function() {
 
 			it('should respond to get request to :controller with the template at views/:controller/index.ejs', function(done) {
 
