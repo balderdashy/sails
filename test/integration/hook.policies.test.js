@@ -65,8 +65,8 @@ describe('router :: ', function() {
           if (err) return done(new Error(err));
           assert.equal(response.statusCode, 500);
           assert(response.body instanceof Object);
-          assert(response.body.errors instanceof Array);
-          assert.equal(response.body.errors[0], 'Test Error');
+          assert(response.body.error);
+          assert.equal(response.body.error, 'Test Error');
           done();
         });
       });
@@ -101,11 +101,8 @@ describe('router :: ', function() {
             // Assert HTTP status code is correct
             assert.equal(response.statusCode, 500);
 
-            // Assert that response has status: 500
-            assert.equal(response.body.status, 500);
-
             // Assert that response has the proper error message
-            assert.equal(response.body.errors[0], 'Test Error');
+            assert.equal(response.body.error, 'Test Error');
             done();
           });
         });
@@ -163,11 +160,8 @@ describe('router :: ', function() {
               // Assert HTTP status code is correct
               assert.equal(response.statusCode, 500);
 
-              // Assert that response has status: 500
-              assert.equal(response.body.status, 500);
-
               // Assert that response has the proper error message
-              assert.equal(response.body['errors'][0], 'Test Error');
+              assert.equal(response.body.error, 'Test Error');
               done();
             });
           });
