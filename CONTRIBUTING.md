@@ -61,7 +61,7 @@ The community is what makes Sails great, without you we wouldn't have come so fa
 
 ###### No CoffeeScript.
 
-For consistency, all code in Sails core, including core hooks and core generators, must be written in JavaScript, not CoffeeScript or TypeScript.  We can't merge a pull request in CofeeScript.
+For consistency, all code in Sails core, including core hooks and core generators, must be written in JavaScript, not CoffeeScript or TypeScript.  We can't merge a pull request in CoffeeScript.
 
 ###### Contributing to an adapter
 
