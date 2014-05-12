@@ -3,7 +3,7 @@
  */
 
 var assert = require('assert');
-
+var util = require('util');
 var $Sails = require('../../helpers/sails');
 var $Router = require('../../helpers/router');
 
@@ -62,18 +62,20 @@ describe('Request hook', function (){
     it('should not throw when required params are specified in req.query', function (done) {
       var ROUTEADDRESS = '/req_validate0';
       sails.router.bind(ROUTEADDRESS, function (req, res, next) {
-        assert.doesNotThrow(function () {
+        try {
           req.validate({
             foo: 'string'
           });
-        });
-        done();
+          res.send(200);
+          return done();
+        }
+        catch (e) {
+          res.send(500, e);
+          return done(util.inspect(e));
+        }
       })
       .emit('router:request', {
-        url: ROUTEADDRESS,
-        query: {
-          foo: 'hi'
-        }
+        url: ROUTEADDRESS+'?foo=hi'
       });
     });
 
@@ -90,10 +92,7 @@ describe('Request hook', function (){
         }
       })
       .emit('router:request', {
-        url: ROUTEADDRESS,
-        query: {
-          foo: 'hi'
-        }
+        url: ROUTEADDRESS+'?foo=hi'
       });
     });
 
