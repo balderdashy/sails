@@ -65,8 +65,13 @@ describe('router :: ', function() {
           if (err) return done(new Error(err));
           assert.equal(response.statusCode, 500);
           assert(response.body instanceof Object);
+<<<<<<< Updated upstream
           assert(response.body.error);
           assert.equal(response.body.error, 'Test Error');
+=======
+          // assert(response.body.errors instanceof Array, 'instead got '+response.body.errors);
+          // assert.equal(response.body.errors[0], 'Test Error', 'instead got '+response.body.errors);
+>>>>>>> Stashed changes
           done();
         });
       });
