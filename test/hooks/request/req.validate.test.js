@@ -27,11 +27,14 @@ describe('Request hook', function (){
     it('should not throw when required params are specified in req.query', function (done) {
       var ROUTEADDRESS = '/req_validate0';
       sails.router.bind(ROUTEADDRESS, function (req, res, next) {
-        assert.doesNotThrow(function () {
+        try {
           req.validate({
             foo: 'string'
           });
-        });
+        }
+        catch(e) {
+          return done(e);
+        }
         done();
       })
       .emit('router:request', {
