@@ -27,7 +27,7 @@ describe('request that causes an error', function (){
       throw ERROR;
     });
 
-    sails.request('GET /errors/1', {}, function (err, res) {
+    sails.request('GET /errors/1', {}, function (err) {
       assert.deepEqual(ERROR, err);
       done();
     });
