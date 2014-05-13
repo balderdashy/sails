@@ -26,6 +26,7 @@ module.exports = {
   },
 
   subscribe: function(req, res) {
+
     User.subscribe(req, {
       user_id: req.param('id')
     }, req.param('context'));

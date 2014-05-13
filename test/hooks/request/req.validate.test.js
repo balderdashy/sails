@@ -85,8 +85,7 @@ describe('Request hook', function (){
       }, {
         redirect: function fakeRedirect (dest) {
           assert(dest === '/somewhereElse');
-          console.log(fakeSession);
-          // assert(fakeSession.flash.error);
+          assert(fakeSession.flash.error);
           return done();
         }
       });
