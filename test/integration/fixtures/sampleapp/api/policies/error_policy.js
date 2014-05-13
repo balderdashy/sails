@@ -5,5 +5,5 @@
  */
 
 module.exports = function(req, res, next) {
-  return res.serverError( new Error('Test Error') );
+  return res.serverError('Test Error');
 };

@@ -16,6 +16,15 @@ var Err = {
 };
 
 
+/**
+ * NOTE:
+ * These tests connect to the Sails server using the traditional v0.9.x-style
+ * connection.  They don't specify a version string when initiating the socket.io
+ * connection, so they are automatically downgraded to the legacy usage.
+ *
+ * Fortunately, this provides a great test suite to ensure consistent support.
+ */
+
 describe('pubsub :: ', function() {
 
   var sailsprocess;
@@ -30,7 +39,7 @@ describe('pubsub :: ', function() {
 
       before(function(done) {
         this.timeout(10000);
-        appHelper.buildAndLiftWithTwoSockets(appName, {silly: false}, function(err, sails, _socket1, _socket2) {
+        appHelper.buildAndLiftWithTwoSockets(appName, {silly: false /*, sockets: {'backwardsCompatibilityFor0.9SocketClients':false} */}, function(err, sails, _socket1, _socket2) {
           if (err) {throw new Error(err);}
           sailsprocess = sails;
           socket1 = _socket1;
@@ -64,7 +73,7 @@ describe('pubsub :: ', function() {
         socket2.on('user', function(message) {
           assert(message.id === 1 && message.verb == 'created' && message.data.name == 'scott', Err.badResponse(message));
           done();
-        })
+        });
         socket1.post('/user', {name:'scott'});
 
       });
@@ -73,8 +82,8 @@ describe('pubsub :: ', function() {
         socket2.on('user', function(message) {
           assert(message.id === 1 && message.verb == 'messaged' && message.data.greeting == 'hello', Err.badResponse(message));
           done();
-        })
-        socket1.get('/user/message', function(){});
+        });
+        socket1.get('/user/message', function(){ });
 
       });
 
@@ -83,7 +92,7 @@ describe('pubsub :: ', function() {
         socket2.on('user', function(message) {
           assert(message.id == 1 && message.verb == 'updated' && message.data.name == 'joe' && message.previous.name == 'scott', Err.badResponse(message));
           done();
-        })
+        });
 
         socket1.put('/user/1', {name:'joe'});
 
@@ -124,7 +133,7 @@ describe('pubsub :: ', function() {
             && message.attribute == 'pets'
             && message.removedId == 1, Err.badResponse(message));
           done();
-        })
+        });
 
         socket1.put('/pet/1', {owner: null});
 
@@ -162,7 +171,7 @@ describe('pubsub :: ', function() {
             && message.attribute == 'pets'
             && message.addedId == 1, Err.badResponse(message));
           done();
-        })
+        });
 
         socket1.put('/pet/1', {owner: 1});
 

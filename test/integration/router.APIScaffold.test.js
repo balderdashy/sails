@@ -55,7 +55,7 @@ describe('router :: ', function() {
         httpHelper.testRoute('get', {
           url: 'empty/create',
           json: true
-        }, function(err, response) {
+        }, function(err, response, body) {
           if (err) return done(new Error(err));
 
           assert(response.body.id === 1, Err.badResponse(response));

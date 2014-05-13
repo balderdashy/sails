@@ -86,6 +86,8 @@ module.exports.teardown = function(appName) {
 
 module.exports.lift = function(options, callback) {
 
+	delete process.env.NODE_ENV;
+
 	if (typeof options == 'function') {
 		callback = options;
 		options = null;
@@ -126,7 +128,7 @@ module.exports.liftWithTwoSockets = function(options, callback) {
 			var socket2 = _ioClient.connect('http://localhost:1342',{'force new connection': true});
 			socket2.on('connect', function() {
 				callback(null, sails, socket1, socket2);
-			});	
+			});
 		});
 	});
 };
