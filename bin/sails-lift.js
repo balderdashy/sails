@@ -29,12 +29,13 @@ module.exports = function() {
 
   // console.time('cli_rc');
   var log = captains(rconf.log);
+  var workerCount = rconf.workers || 1;
   // console.timeEnd('cli_rc');
 
   if (cluster.isMaster) {
     console.log();
     require('colors');
-    log.info(('Starting app with ' + rconf.workers + ' workers...').grey);
+    log.info(('Starting app with ' + workerCount + ' worker' + (workerCount === 1 ? '' : 's') + '...').grey);
     console.log();
   }
 
