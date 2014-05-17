@@ -29,7 +29,7 @@ module.exports = function() {
 
   // console.time('cli_rc');
   var log = captains(rconf.log);
-  var workerCount = rconf.workers || 1;
+  var workerCount = (1 * rconf.workers) || 1;
   // console.timeEnd('cli_rc');
 
   if (cluster.isMaster) {
