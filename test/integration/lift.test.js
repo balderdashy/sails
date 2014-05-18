@@ -75,7 +75,7 @@ describe('Starting sails server with lift', function() {
 
 		it('should start server without error', function(done) {
 
-			sailsServer = spawn(sailsBin, ['lift', '--port=1342']);
+			sailsServer = spawn(sailsBin, ['lift']);
 
 			sailsServer.stdout.on('data', function(data) {
 				var dataString = data + '';
@@ -94,6 +94,7 @@ describe('Starting sails server with lift', function() {
 				var dataString = data + '';
 				if (dataString.toLowerCase().indexOf('starting app') > -1) {
 					assert(new RegExp(workerCount + ' workers').test(dataString), 'Should have reported info "n workers"');
+					sailsServer.kill();
 					done();
 				}
 			});
@@ -109,6 +110,7 @@ describe('Starting sails server with lift', function() {
 					workersForked++;
 				}
 				if (workersForked === workerCount) {
+					sailsServer.kill();
 					done();
 				}
 			});
@@ -125,11 +127,10 @@ describe('Starting sails server with lift', function() {
 					setTimeout(function(){
 						request('http://localhost:1342/', function(err, response) {
 							if (err) {
-								process.chdir('../');
-								return done(new Error(err));
+								done(new Error(err));
 							}
-
 							assert(response.statusCode === 200);
+							sailsServer.kill();
 							process.chdir('../');
 							done();
 						});
@@ -138,7 +139,7 @@ describe('Starting sails server with lift', function() {
 			});
 		});
 
-		it('should respond to a request to port 1343 with a 200 status code with mutiple workers', function(done) {
+		it('should respond to a request to port 1345 with a 200 status code with mutiple workers', function(done) {
 			process.chdir(appName);
 			sailsServer = spawn(sailsBin, ['lift', '--port=1345', '--workers=3']);
 			sailsServer.stdout.on('data', function(data) {
@@ -149,11 +150,10 @@ describe('Starting sails server with lift', function() {
 					setTimeout(function(){
 						request('http://localhost:1345/', function(err, response) {
 							if (err) {
-								process.chdir('../');
-								return done(new Error(err));
+								done(new Error(err));
 							}
-
 							assert(response.statusCode === 200);
+							sailsServer.kill();
 							process.chdir('../');
 							done();
 						});
