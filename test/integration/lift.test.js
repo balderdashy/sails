@@ -123,7 +123,7 @@ describe('Starting sails server with lift', function() {
 			sailsServer.stdout.on('data', function(data) {
 				var dataString = data + '';
 				// Server has finished starting up
-				if (dataString.match(/Server lifted/)) {
+				if (dataString.match(/forked/)) {
 					sailsServer.stdout.removeAllListeners('data');
 					setTimeout(function(){
 						request('http://localhost:1342/', function(err, response) {
@@ -226,7 +226,7 @@ describe('Starting sails server with lift', function() {
 		});
 
 		afterEach(function() {
-			sailsServer.stderr.removeAllListeners('data');
+			sailsServer.stdout.removeAllListeners('data');
 			sailsServer.kill();
 			process.chdir('../');
 		});
