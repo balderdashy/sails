@@ -4,6 +4,7 @@ var wrench = require('wrench');
 var request = require('request');
 var exec = require('child_process').exec;
 var spawn = require('child_process').spawn;
+var cpus = require('os').cpus().length;
 
 // Make existsSync not crash on older versions of Node
 fs.existsSync = fs.existsSync || require('path').existsSync;
@@ -44,47 +45,79 @@ describe('Starting sails server with lift', function() {
 		// TODO: make this test more useful
 		// it('should throw an error', function(done) {
 
-		// 	sailsServer = spawn(sailsBin, ['lift']);
+		//  sailsServer = spawn(sailsBin, ['lift']);
 
-		// 	sailsServer.stderr.on('data', function(data) {
-		// 		var dataString = data + '';
-		// 		assert(dataString.indexOf('[err]') !== -1);
-		// 		sailsServer.stderr.removeAllListeners('data');
-		// 		sailsServer.kill();
-		// 		done();
-		// 	});
+		//  sailsServer.stderr.on('data', function(data) {
+		//    var dataString = data + '';
+		//    assert(dataString.indexOf('[err]') !== -1);
+		//    sailsServer.stderr.removeAllListeners('data');
+		//    sailsServer.kill();
+		//    done();
+		//  });
 		// });
 	});
 
 	describe('in an sails app directory', function() {
 
-		it('should start server without error', function(done) {
+		afterEach(function() {
+			try { sailsServer.kill(); } catch(e) {}
+		});
 
+		it('should generate a liftable app', function(done) {
 			exec(sailsBin + ' new ' + appName, function(err) {
 				if (err) done(new Error(err));
-
 				// Move into app directory
 				process.chdir(appName);
 				sailsBin = '.' + sailsBin;
+				done();
+			});
+		});
 
-				sailsServer = spawn(sailsBin, ['lift', '--port=1342']);
+		it('should start server without error', function(done) {
 
-				sailsServer.stdout.on('data', function(data) {					
-					var dataString = data + '';
-					assert(dataString.indexOf('error') === -1);
-					sailsServer.stdout.removeAllListeners('data');
-					sailsServer.kill();
-					// Move out of app directory
-					process.chdir('../');
+			sailsServer = spawn(sailsBin, ['lift', '--port=1342']);
+
+			sailsServer.stdout.on('data', function(data) {
+				var dataString = data + '';
+				assert(dataString.indexOf('error') === -1);
+				sailsServer.stdout.removeAllListeners('data');
+				sailsServer.kill();
+				process.chdir('../');
+				done();
+			});
+		});
+
+		it('should report server lift with n workers', function(done) {
+			var workerCount = cpus;
+			sailsServer = spawn(sailsBin, ['lift', '--workers=' + workerCount], {cwd: appName});
+			sailsServer.stdout.on('data', function(data) {
+				var dataString = data + '';
+				if (dataString.toLowerCase().indexOf('starting app') > -1) {
+					assert(new RegExp(workerCount + ' workers').test(dataString), 'Should have reported info "n workers"');
 					done();
-				});
+				}
+			});
+		});
+
+		it('should report each worker being forked', function(done) {
+			var workerCount = 3,
+					workersForked = 0;
+			sailsServer = spawn(sailsBin, ['lift', '--workers=' + workerCount], {cwd: appName});
+			sailsServer.stdout.on('data', function(data) {
+				var dataString = data + '';
+				if (dataString.match(/forked/)) {
+					workersForked++;
+				}
+				if (workersForked === workerCount) {
+					done();
+				}
 			});
 		});
 
 		it('should respond to a request to port 1342 with a 200 status code', function(done) {
 			process.chdir(appName);
 			sailsServer = spawn(sailsBin, ['lift', '--port=1342']);
-			sailsServer.stdout.on('data', function(data){
+			sailsServer.stdout.on('data', function(data) {
 				var dataString = data + '';
 				// Server has finished starting up
 				if (dataString.match(/Server lifted/)) {
@@ -92,12 +125,33 @@ describe('Starting sails server with lift', function() {
 					setTimeout(function(){
 						request('http://localhost:1342/', function(err, response) {
 							if (err) {
-								sailsServer.kill();
 								done(new Error(err));
 							}
 
 							assert(response.statusCode === 200);
-							sailsServer.kill();
+							process.chdir('../');
+							done();
+						});
+					},1000);
+				}
+			});
+		});
+
+		it('should respond to a request to port 1342 with a 200 status code with mutiple workers', function(done) {
+			process.chdir(appName);
+			sailsServer = spawn(sailsBin, ['lift', '--port=1342', '--workers=3']);
+			sailsServer.stdout.on('data', function(data) {
+				var dataString = data + '';
+				// Server has finished starting up
+				if (dataString.match(/forked/)) {
+					sailsServer.stdout.removeAllListeners('data');
+					setTimeout(function(){
+						request('http://localhost:1342/', function(err, response) {
+							if (err) {
+								done(new Error(err));
+							}
+
+							assert(response.statusCode === 200);
 							process.chdir('../');
 							done();
 						});
