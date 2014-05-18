@@ -255,18 +255,22 @@ describe('Starting sails server with lift', function() {
 								},
 								// sails should report that a file has changed
 								function reportFileChanged(pcb) {
-									sailsServer.stdout.on('data', function(data) {
+									sailsServer.stdout.on('data', function onChangedStdout(data) {
 										var dataString = '' + data;
 										if (dataString.match(/changed/)) {
+											sailsServer.stdout.removeListener('data', onChangedStdout);
 											pcb(null, dataString);
 										}
 									});
 								},
 								// sails should fork a new process
 								function listenForNewFork(pcb) {
-									sailsServer.stdout.on('data', function(data) {
+									var calledBack = false;
+									sailsServer.stdout.on('data', function onForkedStdout(data) {
 										var dataString = '' + data;
 										if (dataString.match(/forked/)) {
+											sailsServer.stdout.removeListener('data', onForkedStdout);
+											calledBack = true;
 											pcb(null, dataString);
 										}
 									});
