@@ -102,7 +102,7 @@ describe('Starting sails server with lift', function() {
 		it('should report each worker being forked', function(done) {
 			var workerCount = 3,
 					workersForked = 0;
-			sailsServer = spawn(sailsBin, ['lift', '--workers=' + workerCount], {cwd: appName});
+			sailsServer = spawn(sailsBin, ['lift', '--port=1341', '--workers=' + workerCount], {cwd: appName});
 			sailsServer.stdout.on('data', function(data) {
 				var dataString = data + '';
 				if (dataString.match(/forked/)) {
@@ -125,7 +125,8 @@ describe('Starting sails server with lift', function() {
 					setTimeout(function(){
 						request('http://localhost:1342/', function(err, response) {
 							if (err) {
-								done(new Error(err));
+								process.chdir('../');
+								return done(new Error(err));
 							}
 
 							assert(response.statusCode === 200);
@@ -137,18 +138,19 @@ describe('Starting sails server with lift', function() {
 			});
 		});
 
-		it('should respond to a request to port 1342 with a 200 status code with mutiple workers', function(done) {
+		it('should respond to a request to port 1343 with a 200 status code with mutiple workers', function(done) {
 			process.chdir(appName);
-			sailsServer = spawn(sailsBin, ['lift', '--port=1342', '--workers=3']);
+			sailsServer = spawn(sailsBin, ['lift', '--port=1345', '--workers=3']);
 			sailsServer.stdout.on('data', function(data) {
 				var dataString = data + '';
 				// Server has finished starting up
 				if (dataString.match(/forked/)) {
 					sailsServer.stdout.removeAllListeners('data');
 					setTimeout(function(){
-						request('http://localhost:1342/', function(err, response) {
+						request('http://localhost:1345/', function(err, response) {
 							if (err) {
-								done(new Error(err));
+								process.chdir('../');
+								return done(new Error(err));
 							}
 
 							assert(response.statusCode === 200);
