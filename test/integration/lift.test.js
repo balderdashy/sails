@@ -233,8 +233,8 @@ describe('Starting sails server with lift', function() {
 
 		it('should cycle workers when an api file is added or changed', function(done) {
 			sailsServer = spawn(sailsBin, ['lift', '--port=1342', '--workers=1']);
-			sailsServer.stdout.on('data', function(data) {
-				var dataString = data + '';
+			sailsServer.stdout.on('data', function serverLifted(data) {
+				var dataString = '' + data;
 				// worker forked. app is ready.
 				if (dataString.match(/forked/)) {
 					sailsServer.stdout.removeAllListeners('data');
@@ -265,12 +265,10 @@ describe('Starting sails server with lift', function() {
 								},
 								// sails should fork a new process
 								function listenForNewFork(pcb) {
-									var calledBack = false;
 									sailsServer.stdout.on('data', function onForkedStdout(data) {
 										var dataString = '' + data;
 										if (dataString.match(/forked/)) {
 											sailsServer.stdout.removeListener('data', onForkedStdout);
-											calledBack = true;
 											pcb(null, dataString);
 										}
 									});

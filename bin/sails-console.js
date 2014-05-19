@@ -41,6 +41,8 @@ module.exports = function() {
       silenceMultipartWarning: true
     },
 
+    workers: 0,
+
     // Disable ASCII ship to keep from dirtying things up
     log: {
       noShip: true
