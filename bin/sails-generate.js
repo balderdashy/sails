@@ -103,10 +103,15 @@ module.exports = function() {
       }
       else humanizedId = '';
 
-      cb.log.info(util.format(
-        'Created a new %s%s%s!',
-        scope.generatorType, humanizedId, humanizedPath
-      ));
+      if (scope.generatorType != 'new') {
+
+        cb.log.info(util.format(
+          'Created a new %s%s%s!',
+          scope.generatorType, humanizedId, humanizedPath
+        ));
+
+      }
+
     };
 
     //
