@@ -7,6 +7,7 @@
 
 var _ = require('lodash');
 var util = require('util');
+var path = require('path');
 var async = require('async');
 var reportback = require('reportback')();
 var sailsgen = require('sails-generate');
@@ -27,6 +28,7 @@ module.exports = function() {
   // Build initial scope
   var scope = {
     rootPath: process.cwd(),
+    sailsRoot: path.resolve(__dirname, '..'),
     modules: {},
     sailsPackageJSON: package,
   };
