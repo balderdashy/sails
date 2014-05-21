@@ -41,6 +41,9 @@ module.exports = function() {
       silenceMultipartWarning: true
     },
 
+    // we only want 1 master process handling the console
+    workers: 0,
+
     // Disable ASCII ship to keep from dirtying things up
     log: {
       noShip: true

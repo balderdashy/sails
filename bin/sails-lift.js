@@ -11,6 +11,7 @@ var captains = require('captains-log');
 var package = require('../package.json');
 var rconf = require('../lib/app/configuration/rc');
 var Sails = require('../lib/app');
+var cluster = require('cluster');
 
 
 
@@ -28,12 +29,15 @@ module.exports = function() {
 
   // console.time('cli_rc');
   var log = captains(rconf.log);
+  var workerCount = _.isUndefined(rconf.workers) ? 1 : parseInt(rconf.workers);
   // console.timeEnd('cli_rc');
 
-  console.log();
-  require('colors');
-  log.info('Starting app...'.grey);
-  console.log();
+  if (cluster.isMaster) {
+    console.log();
+    require('colors');
+    log.info(('Starting app with ' + workerCount + ' worker' + (workerCount === 1 ? '' : 's') + '...').grey);
+    console.log();
+  }
 
   // Build initial scope, mixing-in rc config
   var scope = _.merge({
