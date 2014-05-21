@@ -8,11 +8,6 @@ describe('CORS and CSRF ::', function() {
 
   var appName = 'testApp';
 
-  before(function(done) {
-    this.timeout(5000);
-    appHelper.build(done);
-  });
-
   beforeEach(function(done) {
     appHelper.lift({
       verbose: false
@@ -29,15 +24,20 @@ describe('CORS and CSRF ::', function() {
     sailsprocess.kill(done);
   });
 
-  after(function() {
-    // console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
-    process.chdir('../');
-    // console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
-    appHelper.teardown();
-  });
-
-
   describe('CORS config ::', function() {
+
+    before(function(done) {
+      this.timeout(5000);
+      appHelper.build(done);
+    });
+
+    after(function() {
+      // console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
+      process.chdir('../');
+      // console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
+      appHelper.teardown();
+    });
+
     describe('with "allRoutes: true" and origin "*", a request with origin "http://www.example.com"', function () {
 
       before(function() {
@@ -472,6 +472,18 @@ describe('CORS and CSRF ::', function() {
 
   describe("CSRF config ::", function () {
 
+    before(function(done) {
+      this.timeout(5000);
+      appHelper.build(done);
+    });
+
+    after(function() {
+      // console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
+      process.chdir('../');
+      // console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
+      appHelper.teardown();
+    });
+
     describe("with CSRF set to 'false'", function() {
 
       it("no CSRF token should be present in view locals", function(done) {
@@ -501,7 +513,7 @@ describe('CORS and CSRF ::', function() {
       it("a CSRF token should be present in view locals", function(done) {
         httpHelper.testRoute("get", 'viewtest/csrf', function (err, response) {
           if (err) return done(new Error(err));
-          assert(response.body.match(/csrf=.+=/).length, response.body);
+          assert(response.body.match(/csrf=.+=/), response.body);
           done();
         });
       });
@@ -561,7 +573,7 @@ describe('CORS and CSRF ::', function() {
       });
     });
 
-    describe.only("with CSRF set to {protectionEnabled: true, grantTokenViaAjax: false}", function() {
+    describe("with CSRF set to {protectionEnabled: true, grantTokenViaAjax: false}", function() {
 
       before(function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = {protectionEnabled: true, grantTokenViaAjax: false};");
@@ -580,6 +592,163 @@ describe('CORS and CSRF ::', function() {
 
   });
 
+  describe("CORS+CSRF ::", function () {
 
+    before(function(done) {
+      this.timeout(5000);
+      appHelper.build(done);
+    });
+
+    after(function() {
+      // console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
+      process.chdir('../');
+      // console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
+      appHelper.teardown();
+    });
+
+    describe("with CSRF set to true", function() {
+
+      before(function() {
+        fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = true;");
+      });
+
+      it("no CSRF token should be present in view locals", function(done) {
+        httpHelper.testRoute("get", {
+            url: 'viewtest/csrf',
+            headers: {
+              origin: "http://www.example.com"
+            }
+          }, function (err, response) {
+          if (err) return done(new Error(err));
+          assert(response.body.indexOf('csrf=null') !== -1, response.body);
+          done();
+        });
+      });
+
+      it("a request to /csrfToken should result in a 404 error", function(done) {
+        httpHelper.testRoute("get", {
+            url: '/csrfToken',
+            headers: {
+              origin: "http://www.example.com"
+            }
+          }, function (err, response) {
+          if (err) return done(new Error(err));
+          assert(response.statusCode == 404);
+          done();
+        });
+      });
+
+    });
+
+    describe("with CSRF set to {origin: 'http://www.example.com,http://www.someplace.com'}", function() {
+
+      before(function() {
+        fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = {origin: 'http://www.example.com,http://www.someplace.com'};");
+      });
+
+      describe("when the request origin header is 'http://www.example.com'", function() {
+
+        it("a CSRF token should be present in view locals", function(done) {
+          httpHelper.testRoute("get", {
+              url: 'viewtest/csrf',
+              headers: {
+                origin: "http://www.example.com"
+              }
+            }, function (err, response) {
+            if (err) return done(new Error(err));
+            assert(response.body.match(/csrf=.+=/));
+            done();
+          });
+        });
+
+        it("a request to /csrfToken should respond with a _csrf roken", function(done) {
+          httpHelper.testRoute("get", {
+              url: 'csrfToken',
+              headers: {
+                origin: "http://www.example.com"
+              }
+            }, function (err, response) {
+            if (err) return done(new Error(err));
+            try {
+              var body = JSON.parse(response.body);
+              assert(body._csrf, response.body);
+              done();
+            } catch (e) {
+              done(new Error('Unexpected response: '+response.body));
+            }
+          });
+        });
+
+      });
+
+      describe("when the request origin header is 'http://www.someplace.com'", function() {
+
+        it("a CSRF token should be present in view locals", function(done) {
+          httpHelper.testRoute("get", {
+              url: 'viewtest/csrf',
+              headers: {
+                origin: "http://www.someplace.com"
+              }
+            }, function (err, response) {
+            if (err) return done(new Error(err));
+            assert(response.body.match(/csrf=.+=/));
+            done();
+          });
+        });
+
+        it("a request to /csrfToken should respond with a _csrf roken", function(done) {
+          httpHelper.testRoute("get", {
+              url: 'csrfToken',
+              headers: {
+                origin: "http://www.someplace.com"
+              }
+            }, function (err, response) {
+            if (err) return done(new Error(err));
+            try {
+              var body = JSON.parse(response.body);
+              assert(body._csrf, response.body);
+              done();
+            } catch (e) {
+              done(new Error('Unexpected response: '+response.body));
+            }
+          });
+        });
+
+      });
+
+      describe("when the request origin header is 'http://www.different.com'", function() {
+
+        it("no CSRF token should be present in view locals", function(done) {
+          httpHelper.testRoute("get", {
+              url: 'viewtest/csrf',
+              headers: {
+                origin: "http://www.different.com"
+              }
+            }, function (err, response) {
+            if (err) return done(new Error(err));
+            assert(response.body.indexOf('csrf=null') !== -1, response.body);
+            done();
+          });
+        });
+
+        it("a request to /csrfToken should result in a 404 error", function(done) {
+          httpHelper.testRoute("get", {
+              url: '/csrfToken',
+              headers: {
+                origin: "http://www.different.com"
+              }
+            }, function (err, response) {
+            if (err) return done(new Error(err));
+            assert(response.statusCode == 404);
+            done();
+          });
+        });
+
+      });
+
+
+    });
+
+  });
 
 });
