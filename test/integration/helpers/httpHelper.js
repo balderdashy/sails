@@ -23,12 +23,14 @@ module.exports = {
 
     // Prefix url with domain:port
     if (typeof options === 'string') {
-      options = 'http://localhost:1342/' + options;
+      options = {url: 'http://localhost:1342/' + options};
     } else {
       options.url = 'http://localhost:1342/' + options.url;
     }
 
-    request[method](options, function(err, response, body) {
+    options.method = method == 'del' ? 'delete' : method;
+
+    request(options, function(err, response, body) {
       if (err) return callback(err, response, body);
       callback(null, response, body);
     });

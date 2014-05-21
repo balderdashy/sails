@@ -8,12 +8,16 @@ module.exports = {
 		res.view();
 	},
 
-  viewOptions: function(req, res, next) {
-    res.view();
-  },
+  	viewOptions: function(req, res, next) {
+    	res.view();
+  	},
 
-  viewOptionsOverride: function(req, res, next) {
-    res.view('viewtest/viewOptions', {foo:'!baz!'});
-  }
+  	viewOptionsOverride: function(req, res, next) {
+    	res.view('viewtest/viewOptions', {foo:'!baz!'});
+  	},
+
+  	csrf: function(req, res, next) {
+  		res.view();
+  	}
 
 };
