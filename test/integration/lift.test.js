@@ -69,7 +69,7 @@ describe('Starting sails server with lift', function() {
 
 				sailsServer = spawn(sailsBin, ['lift', '--port=1342']);
 
-				sailsServer.stdout.on('data', function(data) {					
+				sailsServer.stdout.on('data', function(data) {
 					var dataString = data + '';
 					assert(dataString.indexOf('error') === -1);
 					sailsServer.stdout.removeAllListeners('data');
@@ -114,7 +114,7 @@ describe('Starting sails server with lift', function() {
 			process.chdir('../');
 		});
 
-		it('--prod should change the environemnt to production', function(done) {
+		it('--prod should change the environment to production', function(done) {
 
 			// Move into app directory
 			process.chdir(appName);
@@ -135,7 +135,7 @@ describe('Starting sails server with lift', function() {
 			});
 		});
 
-		it('--dev should change the environemnt to development', function(done) {
+		it('--dev should change the environment to development', function(done) {
 
 			// Move into app directory
 			process.chdir(appName);
