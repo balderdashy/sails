@@ -524,15 +524,60 @@ describe('CORS and CSRF ::', function() {
         httpHelper.testRoute("post", 'user', function (err, response) {
 
           if (err) return done(new Error(err));
-          console.log(response);
           assert.equal(response.statusCode, 403);
           done();
 
         });
 
-      })
+      });
+
+      it("a POST request with a valid CSRF token should result in a 200 response", function (done) {
+
+        httpHelper.testRoute("get", 'csrftoken', function (err, response) {
+          if (err) return done(new Error(err));
+          try {
+            var body = JSON.parse(response.body);
+            var sid = response.headers['set-cookie'][0].split(';')[0].substr(10);
+            httpHelper.testRoute("post", {
+                url: 'user',
+                headers: {
+                  'Content-type': 'application/json',
+                  'cookie': 'sails.sid='+sid
+                },
+                body: '{"_csrf":"'+body._csrf+'"}'
+              }, function (err, response) {
+
+              if (err) return done(new Error(err));
+
+              assert.equal(response.statusCode, 200);
+              done();
+
+            });
+          } catch (e) {
+            done(e);
+          }
+        });
+
+      });
+    });
+
+    describe.only("with CSRF set to {protectionEnabled: true, grantTokenViaAjax: false}", function() {
+
+      before(function() {
+        fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = {protectionEnabled: true, grantTokenViaAjax: false};");
+      });
+
+      it("a request to /csrfToken should respond with a 404", function(done) {
+        httpHelper.testRoute("get", 'csrftoken', function (err, response) {
+          if (err) return done(new Error(err));
+          assert.equal(response.statusCode, 404);
+          done();
+        });
+
+      });
 
     });
+
   });
 
 
