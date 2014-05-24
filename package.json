@@ -104,6 +104,7 @@
     "url": "http://github.com/balderdashy/sails/issues"
   },
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 0.10.0",
+    "npm": ">= 1.4.0"
   }
 }
