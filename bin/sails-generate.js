@@ -7,6 +7,7 @@
 
 var _ = require('lodash');
 var util = require('util');
+var path = require('path');
 var async = require('async');
 var reportback = require('reportback')();
 var sailsgen = require('sails-generate');
@@ -27,6 +28,7 @@ module.exports = function() {
   // Build initial scope
   var scope = {
     rootPath: process.cwd(),
+    sailsRoot: path.resolve(__dirname, '..'),
     modules: {},
     sailsPackageJSON: package,
   };
@@ -101,10 +103,15 @@ module.exports = function() {
       }
       else humanizedId = '';
 
-      cb.log.info(util.format(
-        'Created a new %s%s%s!',
-        scope.generatorType, humanizedId, humanizedPath
-      ));
+      if (scope.generatorType != 'new') {
+
+        cb.log.info(util.format(
+          'Created a new %s%s%s!',
+          scope.generatorType, humanizedId, humanizedPath
+        ));
+
+      }
+
     };
 
     //
