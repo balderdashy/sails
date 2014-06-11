@@ -19,7 +19,7 @@ $ sudo npm install sails -g
 > ######Installing sails@beta
 > Associations support in Sails is finally here.  Ready to upgrade? v0.10 is still in beta, but the API has stabilized and now's a good time to start upgrading.  Check out the [Google group announcement](https://groups.google.com/forum/#!searchin/sailsjs/beta/sailsjs/OrRFkDb8fII/8e_e-I4J5MYJ) and/or the relevant sections of the [FAQ](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#what-version-of-sails-should-i-use) for tips.  For instructions on installing different builds (i.e. stable, beta, and edge), see the docs on [Installing Different Versions of Sails](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#installing-different-versions-of-sails).
 >
-> If you're using the v0.10 beta release, **please be sure and check out the [beta documentation](http://beta.sailsjs.org/#!documentation/reference)**.
+> If you're using the v0.10 beta release, **please be sure and check out the [beta documentation](http://beta.sailsjs.org/#/documentation/reference/Upgrading)**.
 
 
 ## Your First Sails Project
