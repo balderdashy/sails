@@ -48,18 +48,20 @@ describe('pubsub :: ', function() {
         });
       });
 
-      after(function() {
+      after(function(done) {
 
         socket1.disconnect();
         socket2.disconnect();
 
-        if (sailsprocess) {
+        // Add a delay before killing the app to account for any queries that
+        // haven't been run by the blueprints yet; otherwise they might casue an error
+        setTimeout(function() {
           sailsprocess.kill();
-        }
-        // console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
-        process.chdir('../');
-        // console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
-        appHelper.teardown();
+          process.chdir('../');
+          appHelper.teardown();
+          done();
+        }, 500);
+
       });
 
       afterEach(function(done) {
@@ -148,6 +150,8 @@ describe('pubsub :: ', function() {
           // We should receive two 'user' updates: one from user #1 telling us they no longer have a profile, one
           // from user #2 telling us they are now attached to profile #1
           socket2.on('user', function(message) {
+            // Ignore the "create" message if we happen to get it
+            if (message.verb == 'created' && message.data.name == 'Sandy') {return;}
             assert(
               (message.id == 1 && message.verb == 'updated' && message.data.profile == null)
               || (message.id == 2 && message.verb == 'updated' && message.data.profile == 1)
