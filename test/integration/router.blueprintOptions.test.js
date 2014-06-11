@@ -110,7 +110,7 @@ describe('router :: ', function() {
         assert(users.length === 10, "Expected 10 users, got " + users.length);
       });
 
-      it('...each of which should have an array of 10 pets (sails.config.blueprints.defaultLimit)', function() {
+      xit('...each of which should have an array of 10 pets (sails.config.blueprints.defaultLimit)', function() {
         users.forEach(function(user) {
           assert(user.pets.length === 10, "Expected 10 pets for user " + user.name + "; got " + user.pets.length);
         });
@@ -160,7 +160,7 @@ describe('router :: ', function() {
         assert(users.length === 10, "Expected 10 users, got " + users.length);
       });
 
-      it('...each of which should have an array of 10 pets (sails.config.blueprints.defaultLimit)', function() {
+      xit('...each of which should have an array of 10 pets (sails.config.blueprints.defaultLimit)', function() {
         users.forEach(function(user) {
           assert(user.pets.length === 10, "Expected 10 pets for user " + user.name + "; got " + user.pets.length);
         });
@@ -192,7 +192,7 @@ describe('router :: ', function() {
         assert(users.length === 5, "Expected 5 users, got " + users.length);
       });
 
-      it('...each of which should have an array of 5 pets', function() {
+      xit('...each of which should have an array of 5 pets', function() {
         users.forEach(function(user) {
           assert(user.pets.length === 5, "Expected 5 pets for user " + user.name + "; got " + user.pets.length);
         });
@@ -224,7 +224,7 @@ describe('router :: ', function() {
         assert(users.length === 5, "Expected 5 users, got " + users.length);
       });
 
-      it('...each of which should have an array of 3 pets', function() {
+      xit('...each of which should have an array of 3 pets', function() {
         users.forEach(function(user) {
           assert(user.pets.length === 3, "Expected 3 pets for user " + user.name + "; got " + user.pets.length);
         });
@@ -256,7 +256,7 @@ describe('router :: ', function() {
         assert(users.length === 5, "Expected 5 users, got " + users.length);
       });
 
-      it('...each of which should have an array of 3 pets', function() {
+      xit('...each of which should have an array of 3 pets', function() {
         users.forEach(function(user) {
           assert(user.pets.length === 3, "Expected 3 pets for user " + user.name + "; got " + user.pets.length);
         });
