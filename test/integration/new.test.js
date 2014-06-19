@@ -69,6 +69,32 @@ describe('New app generator', function() {
 		});
 	});
 
+	describe('sails generate new <appname>', function() {
+
+		it('should create new app', function(done) {
+			exec(sailsbin + ' generate new ' + appName, function(err) {
+				if (err) { return done(new Error(err)); }
+				appHelper.lift({log:{level:'silent'}}, function(err, sailsprocess) {
+					if (err) {return done(err);}
+					sailsprocess.once('hook:http:listening', function(){sailsprocess.kill(done);});
+				});
+			});
+		});
+
+		it('should not overwrite a folder', function(done) {
+			exec('mkdir ' + appName, function(err) {
+				if (err) { return done(new Error(err)); }
+				exec('touch '+appName+'/test', function(err) {
+					if (err) { return done(new Error(err)); }
+					exec(sailsbin + ' generate new ' + appName, function(err, dumb, result) {
+						assert.notEqual(result.indexOf('error'), -1);
+						done();
+					});
+				});
+			});
+		});
+	});
+
 	describe('sails new .', function() {
 
 		it('should create new app in existing folder', function(done) {

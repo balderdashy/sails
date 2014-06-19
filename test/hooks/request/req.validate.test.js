@@ -3,6 +3,7 @@
  */
 
 var assert = require('assert');
+var util = require('util');
 
 var $Sails = require('../../helpers/sails');
 var $Router = require('../../helpers/router');
@@ -27,19 +28,18 @@ describe('Request hook', function (){
     it('should not throw when required params are specified in req.query', function (done) {
       var ROUTEADDRESS = '/req_validate0';
       sails.router.bind(ROUTEADDRESS, function (req, res, next) {
-        assert.doesNotThrow(function () {
+        try {
           req.validate({
             foo: 'string'
           });
-        });
-        done();
-      })
-      .emit('router:request', {
-        url: ROUTEADDRESS,
-        query: {
-          foo: 'hi'
         }
+        catch(e) {
+          return res.send(500, e);
+        }
+        return res.send(200);
       });
+
+      sails.request(ROUTEADDRESS+'?foo=hi', done);
     });
 
     it('should throw E_INVALID_PARAMS when required params are missing', function (done) {
@@ -58,15 +58,13 @@ describe('Request hook', function (){
           assert(e.usage);
           assert(e.toJSON);
           assert(e.inspect);
-          done();
+          res.send(200);
+          return done();
         }
-      })
-      .emit('router:request', {
-        url: ROUTEADDRESS,
-        query: {
-          foo: 'hi'
-        }
+        res.send(500);
+        return done(new Error('should not have made it here'));
       });
+      sails.request(ROUTEADDRESS+'?foo=hi');
     });
 
     it('should redirect and use req.flash to store error in session if `redirectTo` is specified', function (done) {
@@ -76,6 +74,7 @@ describe('Request hook', function (){
         req.validate({
           bar: 'string'
         }, '/somewhereElse');
+        return res.send(200);
       })
       .emit('router:request', {
         url: ROUTEADDRESS,
@@ -87,16 +86,16 @@ describe('Request hook', function (){
         redirect: function fakeRedirect (dest) {
           assert(dest === '/somewhereElse');
           assert(fakeSession.flash.error);
-          done();
+          return done();
         }
       });
     });
 
 
     it('should support nested usage', function (done) {
-      var ROUTEADDRESS = '/req_validate3';
+      var ROUTEADDRESS = 'POST /req_validate3';
       sails.router.bind(ROUTEADDRESS, function (req, res, next) {
-        assert.doesNotThrow(function () {
+        try {
           req.validate({
             foo: {
               bar: 'string'
@@ -109,8 +108,13 @@ describe('Request hook', function (){
               }
             }
           });
-        });
-        assert.throws(function () {
+        }
+        catch(e) {
+          res.send(200);
+          return done(util.inspect(e));
+        }
+
+        try {
           req.validate({
             foo: {
               bar: 'string'
@@ -123,22 +127,24 @@ describe('Request hook', function (){
               }
             }
           });
-        });
+        }
+        catch (e) {
+          res.send(200);
+          return done();
+        }
+        res.send(200);
+        return done(new Error('Should have thrown'));
+      });
 
-        done();
-      })
-      .emit('router:request', {
-        url: ROUTEADDRESS,
-        query: {
-          foo: {
-            bar: 'hi'
-          },
-          baz: {
-            bing: {
-              barge: false,
-              dingy: 131351393,
-              batwell: true
-            }
+      sails.request(ROUTEADDRESS, {
+        foo: {
+          bar: 'hi'
+        },
+        baz: {
+          bing: {
+            barge: false,
+            dingy: 131351393,
+            batwell: true
           }
         }
       });

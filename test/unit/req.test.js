@@ -5,7 +5,7 @@ var assert = require('assert');
 var should = require('should');   // https://github.com/visionmedia/should.js/
 
 
-var BaseRequest = require('root-require')('lib/router/req');
+var buildReq = require('root-require')('lib/router/req');
 
 
 /**
@@ -20,7 +20,7 @@ describe('Base Request (`req`)', function (){
 
   // Mock the request object.
   before(function (){
-    req = BaseRequest;
+    req = buildReq();
     req.should.be.an.Object;
     this.req = req;
   });

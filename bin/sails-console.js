@@ -13,6 +13,7 @@ require('colors');
 var CaptainsLog = require('captains-log');
 var Sails = require('../lib/app');
 var rconf = require('../lib/app/configuration/rc');
+var Err = require('../errors');
 
 
 

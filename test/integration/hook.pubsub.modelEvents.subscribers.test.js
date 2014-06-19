@@ -48,18 +48,20 @@ describe('pubsub :: ', function() {
         });
       });
 
-      after(function() {
+      after(function(done) {
 
         socket1.disconnect();
         socket2.disconnect();
 
-        if (sailsprocess) {
+        // Add a delay before killing the app to account for any queries that
+        // haven't been run by the blueprints yet; otherwise they might casue an error
+        setTimeout(function() {
           sailsprocess.kill();
-        }
-        // console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
-        process.chdir('../');
-        // console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
-        appHelper.teardown();
+          process.chdir('../');
+          appHelper.teardown();
+          done();
+        }, 500);
+
       });
 
       afterEach(function(done) {
@@ -117,7 +119,7 @@ describe('pubsub :: ', function() {
         socket2.on('user', function(message) {
           assert(message.id == 1
             && message.verb == 'updated'
-            && message.data.profile == '1', Err.badResponse(message));
+            && message.data.profile == 1, Err.badResponse(message));
           done();
         });
 
@@ -148,9 +150,11 @@ describe('pubsub :: ', function() {
           // We should receive two 'user' updates: one from user #1 telling us they no longer have a profile, one
           // from user #2 telling us they are now attached to profile #1
           socket2.on('user', function(message) {
+            // Ignore the "create" message if we happen to get it
+            if (message.verb == 'created' && message.data.name == 'Sandy') {return;}
             assert(
               (message.id == 1 && message.verb == 'updated' && message.data.profile == null)
-              || (message.id == 2 && message.verb == 'updated' && message.data.profile == '1')
+              || (message.id == 2 && message.verb == 'updated' && message.data.profile == 1)
             , Err.badResponse(message));
             msgsReceived++;
             if (msgsReceived == 2) {done();}
@@ -191,7 +195,7 @@ describe('pubsub :: ', function() {
         })
 
         // Avoiding this case temporarily:
-        // socket2.delete('/user/1/pets', {pet_id:1}, function (body, jwr) {
+        // socket2.delete('/user/1/pets', {pet_id:1});
 
         // Instead, use:
         socket2.delete('/user/1/pets/1', {}, function (body, jwr) {
@@ -244,27 +248,29 @@ describe('pubsub :: ', function() {
 
       });
 
-      it ('creating a new pet and adding it via POST /user/1/pets should result in a `pet` event being received by all subscribers', function(done) {
+      it ('creating a new pet and adding it via POST /user/1/pets should result in a `pet` event and a `user` event being received by all subscribers', function(done) {
 
+        var msgsReceived = 0;
+        // We should receive two 'user' updates: one from user #1 telling us they no longer have a profile, one
+        // from user #2 telling us they are now attached to profile #1
         socket1.on('pet', function(message) {
-          assert(message.id === 2 && message.verb == 'created' && message.data.name == 'alice', Err.badResponse(message));
-          done();
-        })
+          assert(
+            (message.id === 2 && message.verb == 'created' && message.data.name == 'alice')
+          , Err.badResponse(message));
+          msgsReceived++;
+          if (msgsReceived == 2) {done();}
+        });
+
+        socket1.on('user', function(message) {
+          assert(message.id === 1 && message.verb == 'addedTo' && message.attribute == 'pets' && message.addedId == 2, Err.badResponse(message));
+          msgsReceived++;
+          if (msgsReceived == 2) {done();}
+        });
+
 
         socket1.get('/pet/watch', function() {
           socket2.post('/user/1/pets', {name:'alice'});
         });
-
-      });
-
-      it ('creating a new pet and adding it via POST /user/1/pets should result in a `user` event being received by all subscribers', function(done) {
-
-        socket1.on('user', function(message) {
-          assert(message.id === 1 && message.verb == 'addedTo' && message.attribute == 'pets' && message.addedId == 3, Err.badResponse(message));
-          done();
-        })
-
-        socket2.post('/user/1/pets', {name:'fido'});
 
       });
 

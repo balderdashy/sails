@@ -95,7 +95,8 @@ Below, you'll find an overview of the modules maintained by the core team and co
 
 | Repo          |  Build Status (edge)  |  Latest Stable Version   | Interfaces |
 |---------------|---------------------------------------|--------------------------|------------|
-| TODO: update this |  |  |  |
+| [sails-rest](https://github.com/zohararad/sails-rest) |  |  | REST |
+| [sails-mssql](https://github.com/swelham/sails-mssql) | | | MSSQL |
 
 
 #### Generators
