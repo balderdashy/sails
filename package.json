@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "express": "3.4.3",
-    "waterline": "0.10.0-rc14",
+    "waterline": "git://github.com/balderdashy/waterline.git#wl2-mike",
     "rc": "~0.3.3",
     "sails-stringfile": "~0.3.0",
     "async": "~0.2.9",
