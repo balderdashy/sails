@@ -166,5 +166,19 @@ describe('New app generator', function() {
 			});
 		});
 	});
+
+    describe('sails new <appname> with options --template=twig', function() {
+
+        it('should create new app with twig templates', function(done) {
+
+            exec(sailsbin + ' new ' + appName + ' --template=twig', function(err) {
+                if (err) { return done(new Error(err)); }
+
+                var viewConfig = fs.readFileSync('./' + appName + '/config/views.js', 'utf8');
+                assert(viewConfig.indexOf('twig') !== -1, 'configuration file is incorrect');
+                done();
+            });
+        });
+    });
 });
 
