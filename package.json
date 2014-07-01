@@ -88,7 +88,8 @@
     "fs-extra": "~0.8.1",
     "socket.io-client": "~0.9.16",
     "mocha": "~1.17.1",
-    "portfinder": "~0.2.1"
+    "portfinder": "~0.2.1",
+    "coffee-script": "^1.7.1"
   },
   "repository": {
     "type": "git",
