@@ -133,6 +133,22 @@ describe('router :: ', function() {
       });
     });
 
+    describe('a post request to /:controller/:id', function() {
+
+      it('should return JSON for the updated instance of the test model', function(done) {
+
+        httpHelper.testRoute('put', {
+          url: 'empty/1?foo=baz',
+          json: true
+        }, function(err, response) {
+          if (err) return done(new Error(err));
+
+          assert(response.body.foo === 'baz', Err.badResponse(response));
+          done();
+        });
+      });
+    });
+
     describe('a delete request to /:controller/:id', function() {
 
       it('should return JSON for the destroyed instance of the test model', function(done) {
