@@ -4,7 +4,6 @@ node_js:
   - "0.10"
 
 notifications:
-  email: false
   irc:
     channels:
       - "irc.freenode.org#sailsjs"
