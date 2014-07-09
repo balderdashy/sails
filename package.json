@@ -30,7 +30,7 @@
     "waterline": "~0.9.16",
     "sails-disk": "~0.9.0",
     "express": "3.4.0",
-    "socket.io": "0.9.14",
+    "socket.io": "0.9.17",
     "connect-redis": "1.4.5",
     "connect-mongo": "0.3.2",
     "async": "0.2.9",
