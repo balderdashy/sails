@@ -30,6 +30,16 @@ describe('Request hook', function (){
     .emit('router:request', {url: ROUTEADDRESS});
   });
 
+  it('should expose `req.allParams()`', function (done) {
+    var ROUTEADDRESS = '/req_allParams';
+    sails.router.bind(ROUTEADDRESS, function (req, res) {
+      assert(typeof req.allParams === 'function', 'req.allParams() should be defined when request hook is enabled.');
+      res.send(200);
+      done();
+    })
+    .emit('router:request', {url: ROUTEADDRESS});
+  });
+
 
   it('should expose `req.validate()`', function (done) {
     var ROUTEADDRESS = '/req_validate';
