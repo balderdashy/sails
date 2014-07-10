@@ -64,7 +64,7 @@ describe('router :: ', function() {
         }, function(err, response) {
           if (err) return done(new Error(err));
           assert.equal(response.statusCode, 500);
-          assert(response.body instanceof Object);
+          assert(response.body instanceof Object, require('util').format('response.body should be an object, instead it is %s, a %s', response.body, typeof response.body));
           assert(response.body.error);
           assert.equal(response.body.error, 'Test Error');
           done();
