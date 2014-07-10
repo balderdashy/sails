@@ -1,8 +1,15 @@
+/**
+ * Module dependencies
+ */
+
+var util = require('util');
 var assert = require('assert');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
 var path = require('path');
 var fs = require('fs');
+
+
 
 
 // These tests changed for Sails v0.10 because of the introduction
@@ -62,12 +69,29 @@ describe('router :: ', function() {
           },
           json: true
         }, function(err, response) {
-          if (err) return done(new Error(err));
-          assert.equal(response.statusCode, 500);
-          assert(response.body instanceof Object, require('util').format('response.body should be an object, instead it is %s, a %s', response.body, typeof response.body));
-          assert(response.body.error);
-          assert.equal(response.body.error, 'Test Error');
-          done();
+          if (err) return done(err);
+
+          try {
+            // console.log('----------------');
+            // console.log('Response.body ===> ');
+            // console.log(response.body);
+            // console.log(response.body.length + ' characters');
+            // console.log(response.body.split(''));
+            // console.log('----------------');
+
+            assert.equal(response.statusCode, 500);
+            assert.equal(
+              typeof response.body, 'string',
+              util.format('response.body should be a string, instead it is "%s", a %s', response.body, typeof response.body)
+            );
+            assert.equal(response.body, 'Test Error',
+              util.format('`response.body` should === "Test Error" but instead it is "%s"', response.body.error)
+            );
+          }
+          catch (e) {
+            return done(e);
+          }
+          return done();
         });
       });
     });
@@ -98,12 +122,16 @@ describe('router :: ', function() {
           }, function(err, response) {
             if (err) return done(err);
 
-            // Assert HTTP status code is correct
-            assert.equal(response.statusCode, 500);
+            try {
 
-            // Assert that response has the proper error message
-            assert.equal(response.body.error, 'Test Error');
-            done();
+              // Assert HTTP status code is correct
+              assert.equal(response.statusCode, 500);
+
+              // Assert that response has the proper error message
+              assert.equal(response.body, 'Test Error');
+            }
+            catch (e) { return done(e); }
+            return done();
           });
         });
       });
@@ -136,8 +164,13 @@ describe('router :: ', function() {
           }, function(err, response) {
             if (err) return done(err);
 
-            assert.equal(response.body, 'findOne');
-            done();
+            try {
+              assert.equal(response.body, 'findOne');
+            }
+            catch (e) {
+              return done(e);
+            }
+            return done();
           });
         });
 
@@ -163,7 +196,7 @@ describe('router :: ', function() {
                 assert.equal(response.statusCode, 500);
 
                 // Assert that response has the proper error message
-                assert.equal(response.body.error, 'Test Error');
+                assert.equal(response.body, 'Test Error');
 
               }
               catch (e) {
