@@ -157,12 +157,20 @@ describe('router :: ', function() {
               json: true
             }, function(err, response) {
               if (err) return done(err);
-              // Assert HTTP status code is correct
-              assert.equal(response.statusCode, 500);
 
-              // Assert that response has the proper error message
-              assert.equal(response.body.error, 'Test Error');
-              done();
+              try {
+                // Assert HTTP status code is correct
+                assert.equal(response.statusCode, 500);
+
+                // Assert that response has the proper error message
+                assert.equal(response.body.error, 'Test Error');
+
+              }
+              catch (e) {
+                return done(e);
+              }
+
+              return done();
             });
           });
         });

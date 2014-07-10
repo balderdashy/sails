@@ -95,7 +95,10 @@ module.exports.lift = function(options, callback) {
 
 	options = options || {};
 	_.defaults(options, {
-		port: 1342
+		port: 1342,
+    process: {
+      removeAllListeners: true
+    }
 	});
 
 	Sails().lift(options, function(err, sails) {
