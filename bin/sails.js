@@ -51,6 +51,7 @@ program.usage('[command]');
 // $ sails lift
 var cmd;
 cmd = program.command('lift');
+cmd.alias('lf');
 cmd.option('--prod');
 cmd.option('--port [port]');
 cmd.unknownOption = NOOP;
@@ -61,6 +62,7 @@ cmd.action(require('./sails-lift'));
 // $ sails new <appname>
 cmd = program.command('new [path_to_new_app]');
 // cmd.option('--dry');
+cmd.alias('n');
 cmd.option('--viewEngine [viewEngine]');
 cmd.option('--template [viewEngine]');
 cmd.usage('[path_to_new_app]');
@@ -71,6 +73,7 @@ cmd.action(require('./sails-new'));
 // $ sails generate <module>
 cmd = program.command('generate');
 // cmd.option('--dry');
+cmd.alias('g');
 cmd.unknownOption = NOOP;
 cmd.description('');
 cmd.usage('[something]');
@@ -80,6 +83,7 @@ cmd.action(require('./sails-generate'));
 
 // $ sails console
 cmd = program.command('console');
+cmd.alias('c');
 cmd.unknownOption = NOOP;
 cmd.description('');
 cmd.action(require('./sails-console'));
@@ -88,6 +92,7 @@ cmd.action(require('./sails-console'));
 // $ sails www
 // Compile `assets` directory into a standalone `www` folder.
 cmd = program.command('www');
+cmd.alias('w');
 cmd.unknownOption = NOOP;
 cmd.description('');
 cmd.action(require('./sails-www'));
@@ -96,6 +101,7 @@ cmd.action(require('./sails-www'));
 
 // $ sails debug
 cmd = program.command('debug');
+cmd.alias('d');
 cmd.unknownOption = NOOP;
 cmd.description('');
 cmd.action(require('./sails-debug'));
@@ -103,6 +109,7 @@ cmd.action(require('./sails-debug'));
 
 // $ sails configure
 cmd = program.command('configure');
+cmd.alias('co');
 cmd.unknownOption = NOOP;
 cmd.description('');
 cmd.action(require('./sails-configure'));
@@ -121,6 +128,7 @@ cmd.action(require('./sails-configure'));
 
 // $ sails help (--help synonym)
 cmd = program.command('help');
+cmd.alias('h');
 cmd.description('');
 cmd.action(program.usageMinusWildcard);
 
