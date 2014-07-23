@@ -45,9 +45,20 @@ describe('Request hook', function (){
           foo: 'nasty string'
         }
       }, {
-        send: function (statusCode, body) {
-          if (statusCode === 400) done();
-          else done(new Error('Incorrect status code sent: '+statusCode+ '\nFull response body:'+body));
+        send: function (_statusCode, body) {
+          var statusCode;
+
+          // Determine order of arguments in this usage
+          if ( +statusCode <999 && +statusCode > -1 ) {
+            statusCode = _statusCode;
+          }
+          else {
+            statusCode = body;
+            body = _statusCode;
+          }
+
+          if (statusCode === 400) return done();
+          return done(new Error('Incorrect status code sent: '+statusCode+ '\nFull response body:'+body));
         }
       });
     });
