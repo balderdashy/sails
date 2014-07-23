@@ -596,7 +596,12 @@ describe('CORS and CSRF ::', function() {
 
     before(function(done) {
       this.timeout(5000);
-      appHelper.build(done);
+      appHelper.build(function() {
+        // Add a CORS config that should be IGNORED by the CSRF hook, which does its own CORS handling
+        // If this isn't being ignored properly, then errors should occur when requesting /csrfToken from a different origin
+        fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': 'http://noplace.com', 'allRoutes': true, 'credentials': false};");
+        done();
+      });
     });
 
     after(function() {
@@ -661,7 +666,7 @@ describe('CORS and CSRF ::', function() {
           });
         });
 
-        it("a request to /csrfToken should respond with a _csrf roken", function(done) {
+        it("a request to /csrfToken should respond with a _csrf token", function(done) {
           httpHelper.testRoute("get", {
               url: 'csrfToken',
               headers: {
@@ -669,6 +674,7 @@ describe('CORS and CSRF ::', function() {
               }
             }, function (err, response) {
             if (err) return done(new Error(err));
+            assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
             try {
               var body = JSON.parse(response.body);
               assert(body._csrf, response.body);
@@ -704,6 +710,7 @@ describe('CORS and CSRF ::', function() {
               }
             }, function (err, response) {
             if (err) return done(new Error(err));
+            assert.equal(response.headers['access-control-allow-origin'], 'http://www.someplace.com');
             try {
               var body = JSON.parse(response.body);
               assert(body._csrf, response.body);
@@ -731,15 +738,15 @@ describe('CORS and CSRF ::', function() {
           });
         });
 
-        it("a request to /csrfToken should result in a 404 error", function(done) {
+        it("a request to /csrfToken should result in a 403 error", function(done) {
           httpHelper.testRoute("get", {
-              url: '/csrfToken',
+              url: 'csrfToken',
               headers: {
                 origin: "http://www.different.com"
               }
             }, function (err, response) {
             if (err) return done(new Error(err));
-            assert(response.statusCode == 404);
+            assert(response.statusCode == 403);
             done();
           });
         });
