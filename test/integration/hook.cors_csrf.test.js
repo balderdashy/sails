@@ -388,7 +388,7 @@ describe('CORS and CSRF ::', function() {
 
     });
 
-    describe('with "methods: \'GET, POST, PUT, DELETE, OPTIONS, HEAD\'", an OPTIONS request from an allowable origin', function() {
+    xdescribe('with "methods: \'GET, POST, PUT, DELETE, OPTIONS, HEAD\'", an OPTIONS request from an allowable origin', function() {
 
       before(function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': '*', 'allRoutes': true, 'methods': 'GET, POST, PUT, DELETE, OPTIONS, HEAD'};");
@@ -428,7 +428,7 @@ describe('CORS and CSRF ::', function() {
 
     });
 
-    describe('with "headers: \'content-type\'", an OPTIONS request from an allowable origin', function() {
+    xdescribe('with "headers: \'content-type\'", an OPTIONS request from an allowable origin', function() {
 
       before(function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': '*', 'allRoutes': true, 'headers': 'content-type'};");
@@ -599,7 +599,7 @@ describe('CORS and CSRF ::', function() {
       appHelper.build(function() {
         // Add a CORS config that should be IGNORED by the CSRF hook, which does its own CORS handling
         // If this isn't being ignored properly, then errors should occur when requesting /csrfToken from a different origin
-        fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': 'http://noplace.com', 'allRoutes': true, 'credentials': false};");
+        fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': 'http://www.example.com,http://www.someplace.com,http://www.different.com', 'allRoutes': true, 'credentials': false};");
         done();
       });
     });
@@ -611,34 +611,21 @@ describe('CORS and CSRF ::', function() {
       appHelper.teardown();
     });
 
-    describe("with CSRF set to true", function() {
+    describe("with CSRF set to true (no origin set)", function() {
 
       before(function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = true;");
       });
 
-      it("no CSRF token should be present in view locals", function(done) {
+      it("a request to /csrfToken should result in a 403 error", function(done) {
         httpHelper.testRoute("get", {
-            url: 'viewtest/csrf',
+            url: 'csrfToken',
             headers: {
               origin: "http://www.example.com"
             }
           }, function (err, response) {
           if (err) return done(new Error(err));
-          assert(response.body.indexOf('csrf=null') !== -1, response.body);
-          done();
-        });
-      });
-
-      it("a request to /csrfToken should result in a 404 error", function(done) {
-        httpHelper.testRoute("get", {
-            url: '/csrfToken',
-            headers: {
-              origin: "http://www.example.com"
-            }
-          }, function (err, response) {
-          if (err) return done(new Error(err));
-          assert(response.statusCode == 404);
+          assert(response.statusCode == 403);
           done();
         });
       });
