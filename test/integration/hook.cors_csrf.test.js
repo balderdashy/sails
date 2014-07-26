@@ -123,7 +123,7 @@ describe('CORS and CSRF ::', function() {
     });
 
 
-    describe('with "allRoutes: false" and origin "*", a request with origin "http://www.example.com"', function () {
+    describe('with "allRoutes: false" and origin "*"', function () {
 
       before(function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': '*', 'allRoutes': false };");
@@ -136,72 +136,99 @@ describe('CORS and CSRF ::', function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), "module.exports.routes = " + JSON.stringify(routeConfig));
       });
 
-      it('to a route with no CORS should result in a 403 response with no Access-Control-Allow-Origin header', function(done) {
+      describe('a request with origin "http://www.example.com"', function() {
+
+        it('to a route with no CORS should result in a 403 response with no Access-Control-Allow-Origin header', function(done) {
+          httpHelper.testRoute('get', {
+            url: 'test',
+            headers: {
+              'Origin': 'http://www.example.com'
+            },
+          }, function(err, response) {
+            if (err) return done(new Error(err));
+            assert.equal(response.statusCode, 403);
+            assert.equal(typeof response.headers['access-control-allow-origin'], 'undefined');
+            done();
+          });
+        });
+
+        it('to a route with {cors: true} should result in a 200 response and a correct Access-Control-Allow-Origin header', function(done) {
+          httpHelper.testRoute('get', {
+            url: 'test/find',
+            headers: {
+              'Origin': 'http://www.example.com'
+            },
+          }, function(err, response) {
+            if (err) return done(new Error(err));
+            assert.equal(response.statusCode, 200);
+            assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
+            done();
+          });
+        });
+
+        it('to a route with config {cors: "http://www.example.com"} should result in a 200 response with a correct Access-Control-Allow-Origin header', function(done) {
+          httpHelper.testRoute('get', {
+            url: 'test/update',
+            headers: {
+              'Origin': 'http://www.example.com'
+            },
+          }, function(err, response) {
+            if (err) return done(new Error(err));
+            assert.equal(response.statusCode, 200);
+            assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
+            done();
+          });
+        });
+
+        it('to a route with config {cors: {origin: "http://www.example.com"}} should result in a 200 response with a correct Access-Control-Allow-Origin header', function(done) {
+          httpHelper.testRoute('get', {
+            url: 'test/destroy',
+            headers: {
+              'Origin': 'http://www.example.com'
+            },
+          }, function(err, response) {
+            if (err) return done(new Error(err));
+            assert.equal(response.statusCode, 200);
+            assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
+            done();
+          });
+        });
+
+        it('to a route with config {cors: "http://www.different.com"} should result in a 403 response with an empty Access-Control-Allow-Origin header', function(done) {
+          httpHelper.testRoute('get', {
+            url: 'test/create',
+            headers: {
+              'Origin': 'http://www.example.com'
+            },
+          }, function(err, response) {
+            if (err) return done(new Error(err));
+            assert.equal(response.statusCode, 403);
+            assert.equal(response.headers['access-control-allow-origin'], '');
+            done();
+          });
+        });
+      });
+
+      it('a request with no origin header to a route with no CORS should return successfully', function(done) {
+        httpHelper.testRoute('get', {
+          url: 'test',
+        }, function(err, response) {
+          if (err) return done(new Error(err));
+          assert.equal(response.statusCode, 200);
+          done();
+        });
+      });
+
+      it('a request with a non-http origin header to a route with no CORS should return successfully', function(done) {
         httpHelper.testRoute('get', {
           url: 'test',
           headers: {
-            'Origin': 'http://www.example.com'
+            'Origin': 'chrome-extension://abc123'
           },
-        }, function(err, response) {
-          if (err) return done(new Error(err));
-          assert.equal(response.statusCode, 403);
-          assert.equal(typeof response.headers['access-control-allow-origin'], 'undefined');
-          done();
-        });
-      });
 
-      it('to a route with {cors: true} should result in a 200 response and a correct Access-Control-Allow-Origin header', function(done) {
-        httpHelper.testRoute('get', {
-          url: 'test/find',
-          headers: {
-            'Origin': 'http://www.example.com'
-          },
         }, function(err, response) {
           if (err) return done(new Error(err));
           assert.equal(response.statusCode, 200);
-          assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
-          done();
-        });
-      });
-
-      it('to a route with config {cors: "http://www.example.com"} should result in a 200 response with a correct Access-Control-Allow-Origin header', function(done) {
-        httpHelper.testRoute('get', {
-          url: 'test/update',
-          headers: {
-            'Origin': 'http://www.example.com'
-          },
-        }, function(err, response) {
-          if (err) return done(new Error(err));
-          assert.equal(response.statusCode, 200);
-          assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
-          done();
-        });
-      });
-
-      it('to a route with config {cors: {origin: "http://www.example.com"}} should result in a 200 response with a correct Access-Control-Allow-Origin header', function(done) {
-        httpHelper.testRoute('get', {
-          url: 'test/destroy',
-          headers: {
-            'Origin': 'http://www.example.com'
-          },
-        }, function(err, response) {
-          if (err) return done(new Error(err));
-          assert.equal(response.statusCode, 200);
-          assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
-          done();
-        });
-      });
-
-      it('to a route with config {cors: "http://www.different.com"} should result in a 403 response with an empty Access-Control-Allow-Origin header', function(done) {
-        httpHelper.testRoute('get', {
-          url: 'test/create',
-          headers: {
-            'Origin': 'http://www.example.com'
-          },
-        }, function(err, response) {
-          if (err) return done(new Error(err));
-          assert.equal(response.statusCode, 403);
-          assert.equal(response.headers['access-control-allow-origin'], '');
           done();
         });
       });
