@@ -36,7 +36,7 @@
     "lodash": "~2.4.1",
     "captains-log": "~0.11.8",
     "reportback": "~0.1.4",
-    "sails-util": "~0.10.0",
+    "sails-util": "~0.10.3",
     "colors": "~0.6.2",
     "socket.io": "~0.9.14",
     "connect-flash": "~0.1.1",
