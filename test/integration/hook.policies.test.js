@@ -303,6 +303,41 @@ describe('router :: ', function() {
       });
     });
 
+    describe('policies added inline to custom routes', function() {
+
+      before(function() {
+        var config = 'module.exports.routes = {"get /testPol": [{policy: "error_policy"}]}';
+        fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), config);
+      });
+
+      it ('should be applied', function(done) {
+        httpHelper.testRoute('get', {
+          url: 'testPol',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          json: true
+        }, function(err, response) {
+          if (err) return done(err);
+
+          try {
+            // Assert HTTP status code is correct
+            assert.equal(response.statusCode, 500);
+
+            // Assert that response has the proper error message
+            assert.equal(response.body, 'Test Error');
+
+          }
+          catch (e) {
+            return done(e);
+          }
+
+          return done();
+        });
+      });
+
+    });
+
   });
 
 
