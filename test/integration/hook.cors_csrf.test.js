@@ -88,7 +88,7 @@ describe('CORS and CSRF ::', function() {
           }, function(err, response) {
             if (err) return done(new Error(err));
             assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
+            assert.equal(typeof response.headers['access-control-allow-origin'], 'undefined');
             assert.equal(response.headers['access-control-allow-methods'], 'post');
             done();
           });
@@ -106,8 +106,8 @@ describe('CORS and CSRF ::', function() {
           }, function(err, response) {
             if (err) return done(new Error(err));
             assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
-            assert.equal(response.headers['access-control-allow-methods'], '');
+            assert.equal(typeof response.headers['access-control-allow-origin'], 'undefined');
+            assert.equal(typeof response.headers['access-control-allow-methods'], 'undefined');
             done();
           });
 
@@ -176,7 +176,7 @@ describe('CORS and CSRF ::', function() {
           }, function(err, response) {
             if (err) return done(new Error(err));
             assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
+            assert.equal(typeof response.headers['access-control-allow-origin'], 'undefined');
             done();
           });
         });
@@ -204,7 +204,7 @@ describe('CORS and CSRF ::', function() {
           }, function(err, response) {
             if (err) return done(new Error(err));
             assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
+            assert.equal(typeof response.headers['access-control-allow-origin'], 'undefined');
             done();
           });
         });
@@ -232,7 +232,7 @@ describe('CORS and CSRF ::', function() {
           }, function(err, response) {
             if (err) return done(new Error(err));
             assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
+            assert.equal(typeof response.headers['access-control-allow-origin'], 'undefined');
             done();
           });
         });
@@ -264,7 +264,7 @@ describe('CORS and CSRF ::', function() {
           }, function(err, response) {
             if (err) return done(new Error(err));
             assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
+            assert.equal(typeof response.headers['access-control-allow-origin'], 'undefined');
             done();
           });
         });
@@ -282,7 +282,7 @@ describe('CORS and CSRF ::', function() {
           }, function(err, response) {
             if (err) return done(new Error(err));
             assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
+            assert.equal(typeof response.headers['access-control-allow-origin'], 'undefined');
             done();
           });
         });
@@ -296,7 +296,7 @@ describe('CORS and CSRF ::', function() {
           }, function(err, response) {
             if (err) return done(new Error(err));
             assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
+            assert.equal(typeof response.headers['access-control-allow-origin'], 'undefined');
             done();
           });
         });
@@ -331,7 +331,7 @@ describe('CORS and CSRF ::', function() {
           }, function(err, response) {
             if (err) return done(new Error(err));
             assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
+            assert.equal(typeof response.headers['access-control-allow-origin'], 'undefined');
             done();
           });
         });
@@ -387,7 +387,7 @@ describe('CORS and CSRF ::', function() {
           }, function(err, response) {
             if (err) return done(new Error(err));
             assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
+            assert.equal(typeof response.headers['access-control-allow-origin'], 'undefined');
             done();
           });
         });
@@ -457,7 +457,7 @@ describe('CORS and CSRF ::', function() {
           }, function(err, response) {
             if (err) return done(new Error(err));
             assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
+            assert.equal(typeof response.headers['access-control-allow-origin'], 'undefined');
             done();
           });
         });
@@ -485,7 +485,7 @@ describe('CORS and CSRF ::', function() {
           }, function(err, response) {
             if (err) return done(new Error(err));
             assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
+            assert.equal(typeof response.headers['access-control-allow-origin'], 'undefined');
             done();
           });
         });
@@ -503,7 +503,7 @@ describe('CORS and CSRF ::', function() {
           }, function(err, response) {
             if (err) return done(new Error(err));
             assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
+            assert.equal(typeof response.headers['access-control-allow-origin'], 'undefined');
             done();
           });
         });
@@ -531,7 +531,7 @@ describe('CORS and CSRF ::', function() {
           }, function(err, response) {
             if (err) return done(new Error(err));
             assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
+            assert.equal(typeof response.headers['access-control-allow-origin'], 'undefined');
             done();
           });
         });
