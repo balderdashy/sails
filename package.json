@@ -72,7 +72,7 @@
     "sails-generate": "~0.11.2",
     "semver": "~2.2.1",
     "skipper": "~0.1.2",
-    "socket.io": "~0.9.14",
+    "socket.io": "~0.9.14"
   },
   "devDependencies": {
     "root-require": "~0.2.0",
