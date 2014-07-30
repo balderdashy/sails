@@ -31,18 +31,25 @@ module.exports = function() {
   }
 
   console.log();
-  log.info('Running node-inspector on this app...');
-  log.info('If you don\'t know what to do next, type `help`');
-  log.info('Or check out the docs:');
-  log.info('http://nodejs.org/api/debugger.html');
-  console.log();
+  log.info('Running app in debug mode...');
 
+  // Check whether node-inspector is running
+  Womb.exec('ps', function(error, stdout, stderr) {
 
-  log.info(('( to exit, type ' + '<CTRL>+<C>' + ' )').grey);
-  console.log();
+    // If not, suggest that they run it
+    if (error || stderr || !stdout.toString().match(/node-inspector/)) {
+      log.info('You probably want to install / run node-inspector to help with debugging!');
+      log.info('https://github.com/node-inspector/node-inspector');
+      console.log();
+    }
 
-  // Spin up child process for Sails
-  Womb.spawn('node', ['--debug', pathToSails, 'lift'], {
-    stdio: 'inherit'
+    log.info(('( to exit, type ' + '<CTRL>+<C>' + ' )').grey);
+    console.log();
+
+    // Spin up child process for Sails
+    Womb.spawn('node', ['--debug', pathToSails, 'lift'], {
+      stdio: 'inherit'
+    });
   });
+
 };
