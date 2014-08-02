@@ -96,6 +96,7 @@ module.exports.lift = function(options, callback) {
 	options = options || {};
 	_.defaults(options, {
 		port: 1342,
+    environment: process.env.TEST_ENV,
     process: {
       removeAllListeners: true
     }
