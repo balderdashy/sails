@@ -2,7 +2,7 @@
 <a href="http://sailsjs.org"><img src="http://balderdashy.github.io/sails/images/logo.png" title="Sails.js"/>
 </h1>
 
-### [Website](http://sailsjs.org/)  &nbsp; [Getting Started](http://sailsjs.org/#!getStarted) &nbsp;  [Docs (v0.9)](http://sailsjs.org/#!documentation)  &nbsp; [Submit Issue](https://github.com/balderdashy/sails/search?q=&type=Issues)
+### [Website](http://sailsjs.org/)  &nbsp; [Getting Started](http://sailsjs.org/#!getStarted) &nbsp;  [Docs](http://sailsjs.org/#!documentation)  &nbsp; [Submit Issue](https://github.com/balderdashy/sails/search?q=&type=Issues)
 
 
 Sails.js is a web framework that makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development. It's especially good for building realtime features like chat.
@@ -16,10 +16,8 @@ Sails.js is a web framework that makes it easy to build custom, enterprise-grade
 $ sudo npm install sails -g
 ```
 
-> ######Installing sails@beta
-> Associations support in Sails is finally here.  Ready to upgrade? v0.10 is still in beta, but the API has stabilized and now's a good time to start upgrading.  Check out the [Google group announcement](https://groups.google.com/forum/#!searchin/sailsjs/beta/sailsjs/OrRFkDb8fII/8e_e-I4J5MYJ) and/or the relevant sections of the [FAQ](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#what-version-of-sails-should-i-use) for tips.  For instructions on installing different builds (i.e. stable, beta, and edge), see the docs on [Installing Different Versions of Sails](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#installing-different-versions-of-sails).
->
-> If you're using the v0.10 beta release, **please be sure and check out the [beta documentation](http://beta.sailsjs.org/#/documentation/reference/Upgrading)**.
+> ######Upgrading from v0.9?
+> Be sure and check out the [v0.10 upgrading guide](http://beta.sailsjs.org/#/documentation/reference/Upgrading).
 
 
 ## Your First Sails Project
@@ -116,6 +114,6 @@ Sails is actively built and maintained by [Balderdash](http://balderdash.co) ([@
 
 
 
-![image_squidhome@2x.png](http://i.imgur.com/RIvu9.png)
+![image_squidhome@2x.png](http://sailsjs.org/images/bkgd_squid@2x.png)
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/8acf2fc2ca0aca8a3018e355ad776ed7 "githalytics.com")](http://githalytics.com/balderdashy/sails)
