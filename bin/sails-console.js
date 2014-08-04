@@ -36,12 +36,6 @@ module.exports = function() {
   var sails = Sails();
   sails.lift(_.merge({}, rconf, {
 
-    // Silence annoying warning
-    // (if you're in the REPL, you already know.)
-    express: {
-      silenceMultipartWarning: true
-    },
-
     // Disable ASCII ship to keep from dirtying things up
     log: {
       noShip: true
