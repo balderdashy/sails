@@ -1,5 +1,5 @@
 <h1>
-<a href="http://sailsjs.org"><img src="http://balderdashy.github.io/sails/images/logo.png" title="Sails.js"/>
+<a href="http://sailsjs.org"><img alt="Sails.js logo" src="http://balderdashy.github.io/sails/images/logo.png" title="Sails.js"/></a>
 </h1>
 
 ### [Website](http://sailsjs.org/)  &nbsp; [Getting Started](http://sailsjs.org/#!getStarted) &nbsp;  [Docs](http://sailsjs.org/#!documentation)  &nbsp; [Submit Issue](https://github.com/balderdashy/sails/search?q=&type=Issues)
