@@ -71,7 +71,8 @@
     "anchor": "~0.10.0",
     "mock-req": "0.1.0",
     "mock-res": "0.1.0",
-    "semver": "~2.2.1"
+    "semver": "~2.2.1",
+    "prompt": "^0.2.13"
   },
   "devDependencies": {
     "root-require": "~0.2.0",
