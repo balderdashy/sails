@@ -42,6 +42,7 @@ describe('pubsub :: ', function() {
               throw new Error(err);
             }
             sailsprocess = sails;
+
             socket1 = _socket1;
             socket2 = _socket2;
 

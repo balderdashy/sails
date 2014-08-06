@@ -52,9 +52,11 @@
     "sails-stringfile": "~0.3.0",
     "sails-util": "~0.10.3",
     "semver": "~2.2.1",
-    "skipper": "~0.1.2",
+    "skipper": "~0.5.2",
     "socket.io": "~0.9.14",
-    "waterline": "~0.10.0"
+    "waterline": "~0.10.0",
+    "semver": "~2.2.1",
+    "prompt": "^0.2.13"
   },
   "devDependencies": {
     "benchmark": "~1.0.0",
