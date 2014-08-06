@@ -1,13 +1,31 @@
 {
   "name": "sails",
-  "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
-  "version": "0.10.1",
   "author": "Mike McNeil <mike@balderdash.co>",
+  "version": "0.10.1",
+  "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
+  "homepage": "http://sailsjs.org",
+  "keywords": [
+    "mvc",
+    "web-framework",
+    "express",
+    "sails",
+    "sailsjs",
+    "sails.js",
+    "REST",
+    "API",
+    "orm",
+    "socket.io"
+  ],
+  "main": "./lib/index.js",
   "bin": {
     "sails": "./bin/sails.js"
   },
-  "bugs": {
-    "url": "http://github.com/balderdashy/sails/issues"
+  "scripts": {
+    "test": "mocha -b",
+    "prepublish": "npm prune"
+  },
+  "directories": {
+    "lib": "lib"
   },
   "dependencies": {
     "anchor": "~0.10.0",
@@ -20,7 +38,7 @@
     "ejs-locals": "~1.0.2",
     "express": "3.4.3",
     "express3-handlebars": "~0.5.0",
-    "figures": "^1.0.2",
+    "figures": "^1.1.0",
     "fs-extra": "~0.8.1",
     "glob": "~3.2.9",
     "grunt": "0.4.2",
@@ -44,6 +62,7 @@
     "mock-res": "0.1.0",
     "node-uuid": "~1.4.0",
     "pluralize": "~0.0.5",
+    "prompt": "^0.2.13",
     "rc": "~0.5.0",
     "reportback": "~0.1.4",
     "sails-build-dictionary": "~0.10.1",
@@ -54,59 +73,39 @@
     "semver": "~2.2.1",
     "skipper": "~0.5.2",
     "socket.io": "~0.9.14",
-    "waterline": "~0.10.0",
-    "semver": "~2.2.1",
-    "prompt": "^0.2.13"
+    "waterline": "~0.10.0"
   },
   "devDependencies": {
-    "benchmark": "~1.0.0",
+    "root-require": "~0.2.0",
     "checksum": "~0.1.1",
-    "coffee-script": "~1.7.1",
+    "request": "*",
+    "istanbul": "*",
+    "wrench": "~1.5.1",
+    "benchmark": "~1.0.0",
+    "microtime": "~0.6.0",
     "colors": "~0.6.2",
     "expect.js": "~0.2.0",
-    "istanbul": "*",
-    "microtime": "~0.6.0",
+    "should": "~2.1.1",
+    "supertest": "~0.8.2",
+    "socket.io-client": "~0.9.16",
     "mocha": "~1.17.1",
     "portfinder": "~0.2.1",
-    "request": "*",
-    "root-require": "~0.2.0",
-    "should": "~2.1.1",
-    "socket.io-client": "~0.9.16",
-    "supertest": "~0.8.2",
-    "wrench": "~1.5.1"
+    "coffee-script": "~1.7.1"
   },
-  "directories": {
-    "lib": "lib"
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/balderdashy/sails.git"
   },
-  "engines": {
-    "node": ">= 0.10.0"
-  },
-  "homepage": "http://sailsjs.org",
-  "keywords": [
-    "mvc",
-    "web-framework",
-    "express",
-    "sails",
-    "sailsjs",
-    "sails.js",
-    "REST",
-    "API",
-    "orm",
-    "socket.io"
-  ],
   "licenses": [
     {
       "type": "MIT",
       "url": "http://links.sailsjs.org/license/mit"
     }
   ],
-  "main": "./lib/index.js",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/balderdashy/sails.git"
+  "bugs": {
+    "url": "http://github.com/balderdashy/sails/issues"
   },
-  "scripts": {
-    "test": "mocha -b",
-    "prepublish": "npm prune"
+  "engines": {
+    "node": ">= 0.10.0"
   }
 }
