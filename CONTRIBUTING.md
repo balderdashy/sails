@@ -34,12 +34,14 @@ When submitting an issue, please follow these simple instructions:
 ## Requesting Features
 
 
-> Note: The process for tracking feature requests has recently changed. We are still using Trello for the Sails roadmap, but are migrating feature requests back into GitHub issues in order to allow more people to participate in the discussion.
+> Note: The process for tracking feature requests has recently changed. We are no longer using Trello.  Everything is being moved back to Github to allow more people to participate in the discussion.
 
-#####Submitting a new feature request
-1. First, check to see if a feature request already exists for what you're interested in. If it does, you can join the discussion in that request's comment thread.
-2. If it doesn't already exist, create a new issue for it. Please prefix the title with **[#feature]** so we can easily spot it and keep track of feature requests.
+> New feature requests should be made as pull requests to the `backlog` section of [ROADMAP.MD](https://github.com/balderdashy/sails/blob/master/ROADMAP.MD).  We will monitor community discussion on these PRs and if they are wanted by the community/sails devs, they will be merged.  Further discussion is welcome even after a PR has been merged. 
 
+##### Submitting a new feature request
+1. First, look at the `backlog` table in [ROADMAP.MD](https://github.com/balderdashy/sails/blob/master/ROADMAP.MD) and also search open pull requests in that file to make sure your change hasn't already been proposed.  If it has, join the discussion.
+2. If it doesn't already exist, create a pull request editing the `backlog` table of [ROADMAP.MD](https://github.com/balderdashy/sails/blob/master/ROADMAP.MD).
+3. Start a discussion about why your feature should be built (or better yet, build it).  Get feedback in the #sailjs on IRC.  The more feedback we get from you guys, the better we are able to build the framework of your dreams :boat: 
 
 ## Writing Tests
 
