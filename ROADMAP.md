@@ -104,8 +104,8 @@ The backlog consists of features which are not currently in the immediate-term r
  :---------------------------------------------- | :--------------------- | :------
   SDPY protocol support (on top of http:// and ws://)  | @mikermcneil  | https://github.com/balderdashy/sails/issues/80
   Replace Socket.io with Primus | @alejandroiglesias | https://github.com/balderdashy/sails/issues/945
- | Support for multiple blueprint prefixes | @mnaughto | https://github.com/balderdashy/sails/issues/2031
- | Live reloading of backend componants | Many | Reload controllers/models/config/services/etc. without restarting the server. Show a filler page while re-bootstrapping. 
+ Support for multiple blueprint prefixes | @mnaughto | https://github.com/balderdashy/sails/issues/2031
+ Live reloading of backend componants | Many | Reload controllers/models/config/services/etc. without restarting the server. Show a filler page while re-bootstrapping. 
 
 #### Feature Requests
 
