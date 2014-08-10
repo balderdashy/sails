@@ -24,8 +24,7 @@ module.exports = function() {
 
   var wwwPath = nodepath.resolve(process.cwd(), './www'),
     GRUNT_TASK_NAME = 'build';
-
-  log.info('Compiling assets into standalone `www` directory with `grunt ' + GRUNT_TASK_NAME + '`...');
+    GRUNT_TASK_PROD_NAME = 'buildProd';
 
   var sails = Sails();
   sails.load(_.merge({}, rconf, {
@@ -36,13 +35,17 @@ module.exports = function() {
   }), function sailsReady(err) {
     if (err) return Err.fatal.failedToLoadSails(err);
 
+    var overrideGruntTask = (sails.config.environment == 'production' ? GRUNT_TASK_PROD_NAME : GRUNT_TASK_NAME)
+  
     // Run Grunt task
     var Grunt = __Grunt(sails);
-    Grunt.runTask(GRUNT_TASK_NAME);
+
+    log.info('Compiling assets into standalone `www` directory with `grunt ' + overrideGruntTask + '`...');
+    Grunt.runTask(overrideGruntTask);
 
     // Bind error event
     sails.on('hook:grunt:error', function(err) {
-      log.error('Error occured starting `grunt ' + GRUNT_TASK_NAME + '`');
+      log.error('Error occured starting `grunt ' + overrideGruntTask + '`');
       log.error('Please resolve any issues and try running `sails www` again.');
       log.error(err);
       process.exit(1);
