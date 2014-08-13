@@ -46,21 +46,21 @@ Below, you'll find an overview of the modules maintained by the core team and co
 | [sails-generate-new](https://github.com/balderdashy/sails-generate-new) | [![NPM version](https://badge.fury.io/js/sails-generate-new.png)](http://badge.fury.io/js/sails-generate-new) |
 | [sails-generate-controller](https://github.com/balderdashy/sails-generate-controller) | [![NPM version](https://badge.fury.io/js/sails-generate-controllzer.png)](http://badge.fury.io/js/sails-generate-controller) |
 | [sails-generate-frontend](https://github.com/balderdashy/sails-generate-frontend) | [![NPM version](https://badge.fury.io/js/sails-generate-frontend.png)](http://badge.fury.io/js/sails-generate-frontend) |
-| [sails-generate-backend]() | |
-| [sails-generate-views]()   | |
-| [sails-generate-adapter]()   | |
-| [sails-generate-model]()   | |
+| [sails-generate-backend](https://github.com/balderdashy/sails-generate-backend) | |
+| [sails-generate-views](https://github.com/balderdashy/sails-generate-views)   | |
+| [sails-generate-adapter](https://github.com/balderdashy/sails-generate-adapter)   | |
+| [sails-generate-model](https://github.com/balderdashy/sails-generate-model)   | |
 
 
 #### Officially-supported adapters
 
 | Repo          |  Build Status (edge)  |  Latest Stable Version   |
 |---------------|---------------------------------------|-----------
-| Local Disk    | [![Build Status](https://travis-ci.org/balderdashy/sails-disk.png?branch=master)](https://travis-ci.org/balderdashy/sails-disk)   | [![NPM version](https://badge.fury.io/js/sails-disk.png)](http://badge.fury.io/js/sails-disk)    |
-| MySQL         | [![Build Status](https://travis-ci.org/balderdashy/sails-mysql.png?branch=master)](https://travis-ci.org/balderdashy/sails-mysql)   | [![NPM version](https://badge.fury.io/js/sails-mysql.png)](http://badge.fury.io/js/sails-mysql)    |
-| PostgreSQL    | [![Build Status](https://travis-ci.org/balderdashy/sails-postgresql.png?branch=master)](https://travis-ci.org/balderdashy/sails-postgresql)   | [![NPM version](https://badge.fury.io/js/sails-postgresql.png)](http://badge.fury.io/js/sails-postgresql)    |
-| Mongo         | [![Build Status](https://travis-ci.org/balderdashy/sails-mongo.png?branch=master)](https://travis-ci.org/balderdashy/sails-mongo)   | [![NPM version](https://badge.fury.io/js/sails-mongo.png)](http://badge.fury.io/js/sails-mongo)    |
-| Redis         | [![Build Status](https://travis-ci.org/balderdashy/sails-redis.png?branch=master)](https://travis-ci.org/balderdashy/sails-redis)   | [![NPM version](https://badge.fury.io/js/sails-redis.png)](http://badge.fury.io/js/sails-redis)    |
+| [Local Disk](https://github.com/balderdashy/sails-disk)    | [![Build Status](https://travis-ci.org/balderdashy/sails-disk.png?branch=master)](https://travis-ci.org/balderdashy/sails-disk)   | [![NPM version](https://badge.fury.io/js/sails-disk.png)](http://badge.fury.io/js/sails-disk)    |
+| [MySQL](https://github.com/balderdashy/sails-mysql)         | [![Build Status](https://travis-ci.org/balderdashy/sails-mysql.png?branch=master)](https://travis-ci.org/balderdashy/sails-mysql)   | [![NPM version](https://badge.fury.io/js/sails-mysql.png)](http://badge.fury.io/js/sails-mysql)    |
+| [PostgreSQL](https://github.com/balderdashy/sails-postgresql)    | [![Build Status](https://travis-ci.org/balderdashy/sails-postgresql.png?branch=master)](https://travis-ci.org/balderdashy/sails-postgresql)   | [![NPM version](https://badge.fury.io/js/sails-postgresql.png)](http://badge.fury.io/js/sails-postgresql)    |
+| [Mongo](https://github.com/balderdashy/sails-mongo)        | [![Build Status](https://travis-ci.org/balderdashy/sails-mongo.png?branch=master)](https://travis-ci.org/balderdashy/sails-mongo)   | [![NPM version](https://badge.fury.io/js/sails-mongo.png)](http://badge.fury.io/js/sails-mongo)    |
+| [Redis](https://github.com/balderdashy/sails-redis)         | [![Build Status](https://travis-ci.org/balderdashy/sails-redis.png?branch=master)](https://travis-ci.org/balderdashy/sails-redis)   | [![NPM version](https://badge.fury.io/js/sails-redis.png)](http://badge.fury.io/js/sails-redis)    |
 
 
 #### Officially-supported hooks
