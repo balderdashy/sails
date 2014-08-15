@@ -17,7 +17,7 @@ $ sudo npm install sails -g
 ```
 
 > ######Upgrading from v0.9?
-> Be sure and check out the [v0.10 upgrading guide](http://beta.sailsjs.org/#/documentation/reference/Upgrading).
+> Be sure and check out the [v0.10 upgrading guide](http://sailsjs.org/#/documentation/concepts/Upgrading).
 
 
 ## Your First Sails Project
