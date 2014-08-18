@@ -771,6 +771,32 @@ describe('CORS and CSRF ::', function() {
 
     });
 
+    describe("with CSRF set to {protectionEnabled: true, routesDisabled: '/user'}", function() {
+
+      before(function() {
+        fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = {protectionEnabled: true, routesDisabled: '/user'};");
+      });
+
+      it("a POST request on /user without a CSRF token should result in a 200 response", function (done) {        
+        httpHelper.testRoute("post", 'user', function (err, response) {
+          if (err) return done(new Error(err));
+          assert.equal(response.statusCode, 200);
+          done();
+        });    
+
+      });
+
+      it("a POST request on /test without a CSRF token should result in a 403 response", function (done) {        
+        httpHelper.testRoute("post", 'test', function (err, response) {
+          if (err) return done(new Error(err));
+          assert.equal(response.statusCode, 403);
+          done();
+        });    
+
+      });
+
+    });
+
   });
 
   describe("CORS+CSRF ::", function () {
