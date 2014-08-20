@@ -154,7 +154,7 @@ describe('pubsub :: ', function() {
             if (message.verb == 'created' && message.data.name == 'Sandy') {return;}
             assert(
               (message.id == 1 && message.verb == 'updated' && message.data.profile == null)
-              || (message.id == 2 && message.verb == 'updated' && message.data.profile == 1)
+              || (message.id == 2 && message.verb == 'updated' && message.data.profile.user.id == 2)
             , Err.badResponse(message));
             msgsReceived++;
             if (msgsReceived == 2) {done();}
