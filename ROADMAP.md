@@ -38,6 +38,7 @@ _(feel free to suggest things)_
  Standalone static middleware                             | [@mikermcneil](https://github.com/mikermcneil)                                   | use static middleware directly in `lib/router` (enables static files over sockets)
  Request interpreter: Full stream support                 | [@mikermcneil](https://github.com/mikermcneil)                                   | Use new manufactured req/res streams in lib/hooks/sockets (this adds full streams2 compatibility to our socket.io integration, or more generally for any type of attached server)
  Break out core hooks into separate modules               | [@mikermcneil](https://github.com/mikermcneil)                                   | Makes Sails more composable, and removes most of its dependencies in core. Also allows for easier sharing of responsibility w/ the community, controls issue flow
+  sails.getConfig();                | [@albertosouza](https://github.com/albertosouza)                                   | Add one config getter, somethink like ember.js variable getter, see https://gist.github.com/albertosouza/4b4e05e7fa49e6cb73cd 
 
 
 #### Backlog
