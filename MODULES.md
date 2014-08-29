@@ -107,6 +107,7 @@ Below, you'll find an overview of the modules maintained by the core team and co
 | [sails-generate-test]() |          |
 | [sails-generate-testharness]() |  |
 | [sails-generate-hook]() |          |
+| [sails-generate-bower](https://github.com/smies/sails-generate-bower) |          |
 
 
 #### Socket Client SDKs
