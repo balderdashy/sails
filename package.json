@@ -1,7 +1,7 @@
 {
   "name": "sails",
   "author": "Mike McNeil <mike@balderdash.co>",
-  "version": "0.10.4",
+  "version": "0.10.5",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
   "homepage": "http://sailsjs.org",
   "keywords": [
@@ -28,6 +28,10 @@
   },
   "dependencies": {
     "anchor": "~0.10.0",
+    "express": "3.4.3",
+    "waterline": "~0.10.9",
+    "rc": "~0.5.0",
+    "sails-stringfile": "~0.3.0",
     "async": "~0.2.9",
     "captains-log": "~0.11.8",
     "colors": "~0.6.2",
@@ -35,7 +39,6 @@
     "connect-flash": "~0.1.1",
     "ejs": "~0.8.4",
     "ejs-locals": "~1.0.2",
-    "express": "3.4.3",
     "express-handlebars": "~1.0.1",
     "figures": "*",
     "fs-extra": "~0.8.1",
@@ -62,17 +65,14 @@
     "node-uuid": "~1.4.0",
     "pluralize": "~0.0.5",
     "prompt": "~0.2.13",
-    "rc": "~0.5.0",
     "reportback": "~0.1.4",
     "sails-build-dictionary": "~0.10.1",
     "sails-disk": "~0.10.0",
     "sails-generate": "~0.11.2",
-    "sails-stringfile": "~0.3.0",
     "sails-util": "~0.10.3",
     "semver": "~2.2.1",
     "skipper": "~0.5.3",
-    "socket.io": "~0.9.14",
-    "waterline": "~0.10.7"
+    "socket.io": "~0.9.14"
   },
   "devDependencies": {
     "root-require": "~0.2.0",
