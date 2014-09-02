@@ -48,6 +48,6 @@ The backlog consists of features which are not currently in the immediate-term r
  :---------------------------------------------- | :------------------------------------------------- | :------
  Watch+reload controllers, models, etc. w/o re-lifting  | [@jbielick](https://github.com/jbielick)    | Reload controllers/models/config/services/etc. without restarting the server. Show a "rebuilding" page while re-bootstrapping.
  Support for multiple blueprint prefixes         | [@mnaughto](https://github.com/mnaughto)           | https://github.com/balderdashy/sails/issues/2031
- SDPY protocol support                           | [@mikermcneil](https://github.com/mikermcneil)     | https://github.com/balderdashy/sails/issues/80
+ SPDY protocol support                           | [@mikermcneil](https://github.com/mikermcneil)     | https://github.com/balderdashy/sails/issues/80
  Sockets hook: drop-in Primus alternative        | [@alejandroiglesias](https://github.com/alejandroiglesias) | https://github.com/balderdashy/sails/issues/945
 
