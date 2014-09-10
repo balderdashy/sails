@@ -110,6 +110,12 @@ Below, you'll find an overview of the modules maintained by the core team and co
 |------------------------|----------------------|
 | [sails-generate-auth](https://github.com/kasperisager/sails-generate-auth) |           |
 | [sails-generate-bower](https://github.com/smies/sails-generate-bower) |          |
+| [sails-generate-new-gulp](https://github.com/Karnith/sails-generate-new-gulp) |          |
+| [sails-generate-frontend-gulp](https://github.com/Karnith/sails-generate-frontend-gulp) |          |
+| [sails-generate-backend-gulp](https://github.com/Karnith/sails-generate-backend-gulp) |          |
+| [sails-generate-gulpfile](https://github.com/Karnith/sails-generate-gulpfile) |          |
+| [sails-generate-bower-gulp](https://github.com/Karnith/sails-generate-bower-gulp) |          |
+| [sails-generate-angular-gulp](https://github.com/Karnith/sails-generate-angular-gulp) |          |
 
 
 #### Socket Client SDKs
