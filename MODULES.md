@@ -101,7 +101,22 @@ Below, you'll find an overview of the modules maintained by the core team and co
 | Repo          |  Build Status (edge)  |  Latest Stable Version   | Interfaces |
 |---------------|---------------------------------------|--------------------------|------------|
 | [sails-rest](https://github.com/zohararad/sails-rest) |  |  | REST |
+| [sails-oracle](https://github.com/mayconheerdt/sails-oracle) | | | Oracle |
 | [sails-mssql](https://github.com/swelham/sails-mssql) | | | MSSQL |
+| [sails-neo4j](https://github.com/natgeo/sails-neo4j) | | | Neo4j |
+| [sails-sqlite3](https://github.com/AndrewJo/sails-sqlite3) | | | SQLite3 |
+| [sails-dynamodb](https://github.com/dohzoh/sails-dynamodb) | | | DynamoDB |
+| [sails-elasticsearch](https://github.com/DarthHater/sails-elasticsearch) | | | Elasticsearch |
+| [sails-couchdb](https://github.com/shmakes/sails-couchdb) | | | CouchDB |
+| [sails-couchbase](https://github.com/CaseyJones-/sails-couchbase) | | | Couchbase |
+| [sails-odata](https://github.com/TheSharpieOne/sails-odata) | | | OData |
+| [sails-db2](https://github.com/IbuildingsItaly/sails-db2) | | | DB2 |
+| [sails-rethinkdb](https://github.com/dsincl12/sails-rethinkdb) | | | RethinkDB |
+| [sails-azuretables](https://github.com/azuqua/sails-azuretables) | | | Windows Azure Tables |
+| [sails-riak](https://github.com/balderdashy/sails-riak) | | | Riak |
+| [sails-nedb](https://github.com/balderdashy/sails-riak) | | | NeDB |
+| [sails-parse](https://github.com/tskaggs/sails-parse) | | | Parse |
+
 
 
 #### Generators
