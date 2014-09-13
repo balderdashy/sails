@@ -21,7 +21,9 @@
     "sails": "./bin/sails.js"
   },
   "scripts": {
-    "test": "mocha -b"
+    "test": "mocha -b",
+    "prepublish": "npm prune",
+    "preinstall" : "node ./lib/preinstall_npmcheck.js"
   },
   "directories": {
     "lib": "lib"
@@ -105,6 +107,7 @@
     "url": "http://github.com/balderdashy/sails/issues"
   },
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 0.10.0",
+    "npm": ">= 1.4.0"
   }
 }
