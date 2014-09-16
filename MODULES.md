@@ -98,7 +98,7 @@ Below, you'll find an overview of the modules maintained by the core team and co
 
 #### Adapters
 
-| Repo          |  Build Status (edge)  |  Latest Stable Version   | Interfaces |
+| Repo          |  Build Status (edge)  |  Latest Stable Version   | Platform |
 |---------------|---------------------------------------|--------------------------|------------|
 | [sails-rest](https://github.com/zohararad/sails-rest) |  |  | REST |
 | [sails-oracle](https://github.com/mayconheerdt/sails-oracle) | | | Oracle |
