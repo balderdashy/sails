@@ -2,6 +2,7 @@
 
 ### master
 
+* [BUGFIX] Fixed dependency errors with npm 2.0.0
 * [ENHANCEMENT] Updated "skipAssets" regex to ignore query string
 
 ### 0.10.5
