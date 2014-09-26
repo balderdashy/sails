@@ -27,7 +27,8 @@ module.exports = function() {
     modules: {},
     sailsRoot: nodepath.resolve(__dirname, '..'),
     sailsPackageJSON: package,
-    viewEngine: rconf.viewEngine
+    viewEngine: rconf.viewEngine,
+    blueprintType: rconf.blueprintType
   };
 
   // Support --template option for backwards-compat.

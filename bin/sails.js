@@ -63,6 +63,7 @@ cmd = program.command('new [path_to_new_app]');
 // cmd.option('--dry');
 cmd.option('--viewEngine [viewEngine]');
 cmd.option('--template [viewEngine]');
+cmd.option('--blueprintType [blueprintType]');
 cmd.usage('[path_to_new_app]');
 cmd.unknownOption = NOOP;
 cmd.action(require('./sails-new'));
