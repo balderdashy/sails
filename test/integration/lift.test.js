@@ -160,5 +160,41 @@ describe('Starting sails server with lift', function() {
 				}
 			});
 		});
+
+		it("--prod with disableProductionBuild not defined should execute grunt prod", function(done) {
+
+			// Move into app directory
+			process.chdir(appName);
+
+			sailsServer = spawn(sailsBin, ['lift', '--prod', '--verbose', '--port=1342']);
+
+			sailsServer.stdout.on('data', function(data) {
+				var dataString = data + '';
+				if (dataString.indexOf("Running 'prod' Grunt task once server is lifted") !== -1) {
+
+					done();
+				}
+			});
+		});
+
+		it("--prod with disableProductionBuild set to 'true' should not execute grunt prod", function(done) {
+
+			// Move into app directory
+			process.chdir(appName);
+
+			// Overrwrite local config file
+			// to set disableProductionBuild true ( to prevent Sails from running grunt tasks )
+			fs.writeFileSync('config/local.js', 'module.exports = { disableProductionBuild: true }');
+
+			sailsServer = spawn(sailsBin, ['lift', '--prod', '--verbose', '--port=1342']);
+
+			sailsServer.stdout.on('data', function(data) {
+				var dataString = data + '';
+				if (dataString.indexOf("Skipping 'prod' Grunt task because disableProductionBuild is set to 'true'") !== -1) {
+
+					done();
+				}
+			});
+		});
 	});
 });
