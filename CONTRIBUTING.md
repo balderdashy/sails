@@ -39,7 +39,7 @@ When submitting an issue, please follow these simple instructions:
 > New feature requests should be made as pull requests to the `backlog` section of [ROADMAP.MD](https://github.com/balderdashy/sails/blob/master/ROADMAP.md).  We will monitor community discussion on these PRs and if they are wanted by the community/sails devs, they will be merged.  Further discussion is welcome even after a PR has been merged. 
 
 ##### Submitting a new feature request
-1. First, look at the `backlog` table in [ROADMAP.MD](https://github.com/balderdashy/sails/blob/master/ROADMAP.MD) and also search open pull requests in that file to make sure your change hasn't already been proposed.  If it has, join the discussion.
+1. First, look at the `backlog` table in [ROADMAP.MD](https://github.com/balderdashy/sails/blob/master/ROADMAP.md) and also search open pull requests in that file to make sure your change hasn't already been proposed.  If it has, join the discussion.
 2. If it doesn't already exist, create a pull request editing the `backlog` table of [ROADMAP.MD](https://github.com/balderdashy/sails/blob/master/ROADMAP.md).
 3. Start a discussion about why your feature should be built (or better yet, build it).  Get feedback in the #sailjs on IRC.  The more feedback we get from you guys, the better we are able to build the framework of your dreams :boat: 
 
