@@ -49,6 +49,7 @@ describe('CORS and CSRF ::', function() {
           'POST /test': {controller: 'TestController', action: 'create', cors: 'http://www.different.com'},
           'DELETE /test': {controller: 'TestController', action: 'delete', cors: false},
           'POST /test2': {controller: 'TestController', action: 'create', cors: true},
+          'OPTIONS /test2': {controller: 'TestController', action: 'index'},
           'PUT /test2': {controller: 'TestController', action: 'update'},
           'GET /test/patch': {controller: 'TestController', action: 'update', cors: 'http://www.example.com:1338'},
           'GET /test/create': {controller: 'TestController', action: 'create', cors: 'http://www.different.com'},
@@ -72,6 +73,32 @@ describe('CORS and CSRF ::', function() {
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
             assert.equal(response.headers['access-control-allow-methods'], 'put');
+            done();
+          });
+
+        });
+
+        it('for a route without a custom OPTIONS handler should use the default Express handler', function(done) {
+
+          httpHelper.testRoute('options', {
+            url: 'test',
+          }, function(err, response) {
+            if (err) return done(new Error(err));
+            assert.equal(response.statusCode, 200);
+            assert.equal(response.body, "GET,POST,PUT,HEAD,DELETE,TRACE,COPY,LOCK,MKCOL,MOVE,PROPFIND,PROPPATCH,UNLOCK,REPORT,MKACTIVITY,CHECKOUT,MERGE,M-SEARCH,NOTIFY,SUBSCRIBE,UNSUBSCRIBE,PATCH");
+            done();
+          });
+
+        });
+
+        it('for a route with a custom OPTIONS handler should use the custom handler', function(done) {
+
+          httpHelper.testRoute('options', {
+            url: 'test2',
+          }, function(err, response) {
+            if (err) return done(new Error(err));
+            assert.equal(response.statusCode, 200);
+            assert.equal(response.body, "index");
             done();
           });
 
@@ -116,7 +143,7 @@ describe('CORS and CSRF ::', function() {
         it('for a POST route with {cors: true} and an Access-Control-Request-Method header set to "POST" should respond with correct Access-Control-Allow-Origin and Access-Control-Allow-Method headers', function(done) {
 
           httpHelper.testRoute('options', {
-            url: 'test/2',
+            url: 'test2',
             headers: {
               'Access-Control-Request-Method': 'POST',
               'Origin': 'http://www.example.com'
@@ -134,7 +161,7 @@ describe('CORS and CSRF ::', function() {
         it('for a PUT route with no CORS settings and an Access-Control-Request-Method header set to "PUT" should respond with correct Access-Control-Allow-Origin and Access-Control-Allow-Method headers', function(done) {
 
           httpHelper.testRoute('options', {
-            url: 'test/2',
+            url: 'test2',
             headers: {
               'Access-Control-Request-Method': 'PUT',
               'Origin': 'http://www.example.com'
@@ -744,6 +771,32 @@ describe('CORS and CSRF ::', function() {
 
     });
 
+    describe("with CSRF set to {protectionEnabled: true, routesDisabled: '/foo, /user'}", function() {
+
+      before(function() {
+        fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = {protectionEnabled: true, routesDisabled: '/user'};");
+      });
+
+      it("a POST request on /user without a CSRF token should result in a 200 response", function (done) {
+        httpHelper.testRoute("post", 'user', function (err, response) {
+          if (err) return done(new Error(err));
+          assert.equal(response.statusCode, 200);
+          done();
+        });
+
+      });
+
+      it("a POST request on /test without a CSRF token should result in a 403 response", function (done) {
+        httpHelper.testRoute("post", 'test', function (err, response) {
+          if (err) return done(new Error(err));
+          assert.equal(response.statusCode, 403);
+          done();
+        });
+
+      });
+
+    });
+
   });
 
   describe("CORS+CSRF ::", function () {
@@ -791,7 +844,7 @@ describe('CORS and CSRF ::', function() {
 
       before(function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': '*', 'allRoutes': false, 'credentials': false};");
-        fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = {origin: 'http://www.example.com,http://www.someplace.com'};");
+        fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = {origin: ' http://www.example.com, http://www.someplace.com '};");
         fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), "module.exports.routes = {\"/viewtest/csrf\":{\"cors\":true}}");
       });
 

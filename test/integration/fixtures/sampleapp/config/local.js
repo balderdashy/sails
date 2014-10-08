@@ -12,5 +12,8 @@ module.exports = {
   },
   blueprints: {
     defaultLimit: 10
+  },
+  models: {
+    migrate: 'alter'
   }
 };

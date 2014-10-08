@@ -286,5 +286,167 @@ describe('router :: ', function() {
 			});
 		});
 
+    describe('regex routes - get r|^/\\\\d+/(\\\\w+)/(\\\\w+)$|foo,bar', function() {
+
+      before(function(){
+        require('fs').writeFileSync('config/routes.js', 'module.exports.routes = {"r|^/\\\\d+/(\\\\w+)/(\\\\w+)$|foo,bar": function(req,res){res.json({foo:req.param("foo"),bar:req.param("bar")});}};');
+      });
+
+      it('should match /123/abc/def and put "abc" and "def" in "foo" and "bar" params', function(done) {
+        httpHelper.testRoute('get', '123/abc/def', function(err, response) {
+          if (err) done(new Error(err));
+          var body = JSON.parse(response.body);
+          assert(body.foo=='abc', Err.badResponse(response));
+          assert(body.bar=='def', Err.badResponse(response));
+          done();
+        });
+
+      });
+
+      it('should match /9/fizzle/fazzle and put "fizzle" and "fazzle" in "foo" and "bar" params', function(done) {
+        httpHelper.testRoute('get', '9/fizzle/fazzle', function(err, response) {
+          if (err) done(new Error(err));
+          var body = JSON.parse(response.body);
+          assert(body.foo=='fizzle', Err.badResponse(response));
+          assert(body.bar=='fazzle', Err.badResponse(response));
+          done();
+        });
+
+      });
+
+    });
+
+    describe('skipAssets', function() {
+
+      before(function(){
+        httpHelper.writeRoutes({
+          '/*': {
+            skipAssets: true,
+            controller: 'test',
+            action: 'index'
+          }
+        });
+      });
+
+      it('should match /foo', function(done) {
+
+        httpHelper.testRoute('get', 'foo', function(err, response) {
+          if (err) done(new Error(err));
+          assert(response.body == 'index', Err.badResponse(response));
+          done();
+        });
+
+      });
+
+      it('should match /foo?abc=1.2.3', function(done) {
+
+        httpHelper.testRoute('get', 'foo?abc=1.2.3', function(err, response) {
+          if (err) done(new Error(err));
+          assert(response.body == 'index', Err.badResponse(response));
+          done();
+        });
+
+      });
+
+      it('should match /foo.bar/baz?abc=1.2.3', function(done) {
+
+        httpHelper.testRoute('get', 'foo.bar/baz?abc=1.2.3', function(err, response) {
+          if (err) done(new Error(err));
+          assert(response.body == 'index', Err.badResponse(response));
+          done();
+        });
+
+      });
+
+      it('should not match /foo.js', function(done) {
+
+        httpHelper.testRoute('get', 'foo.js', function(err, response) {
+          if (err) done(new Error(err));
+          assert(response.statusCode == 404, Err.badResponse(response));
+          done();
+        });
+
+      });
+
+      it('should not match /foo.bar/foo.js', function(done) {
+
+        httpHelper.testRoute('get', 'foo.js', function(err, response) {
+          if (err) done(new Error(err));
+          assert(response.statusCode == 404, Err.badResponse(response));
+          done();
+        });
+
+      });
+
+    });
+
+    describe('skipRegex /abc/', function() {
+
+      before(function(){
+        require('fs').writeFileSync('config/routes.js', "module.exports.routes = {'/*': {skipRegex: /abc/,controller: 'test',action: 'index'}};");
+      });
+
+      it('should match /foo', function(done) {
+
+        httpHelper.testRoute('get', 'foo', function(err, response) {
+          if (err) done(new Error(err));
+          assert(response.body == 'index', Err.badResponse(response));
+          done();
+        });
+
+      });
+
+      it('should not match /fooabcbar', function(done) {
+
+        httpHelper.testRoute('get', 'fooabcbar', function(err, response) {
+          if (err) done(new Error(err));
+          assert(response.statusCode == 404, Err.badResponse(response));
+          done();
+        });
+
+      });
+
+    });
+
+    describe('skipRegex [/abc/, /def/]', function() {
+
+      before(function(){
+        require('fs').writeFileSync('config/routes.js', "module.exports.routes = {'/*': {skipRegex: [/abc/,/def/],controller: 'test',action: 'index'}};");
+      });
+
+      it('should match /foo', function(done) {
+
+        httpHelper.testRoute('get', 'foo', function(err, response) {
+          if (err) done(new Error(err));
+          assert(response.body == 'index', Err.badResponse(response));
+          done();
+        });
+
+      });
+
+      it('should not match /fooabcbar', function(done) {
+
+        httpHelper.testRoute('get', 'fooabcbar', function(err, response) {
+          if (err) done(new Error(err));
+          assert(response.statusCode == 404, Err.badResponse(response));
+          done();
+        });
+
+      });
+
+      it('should not match /foodefbar', function(done) {
+
+        httpHelper.testRoute('get', 'foodefbar', function(err, response) {
+          if (err) done(new Error(err));
+          assert(response.statusCode == 404, Err.badResponse(response));
+          done();
+        });
+
+      });
+
+    });
+
+
+
 	});
 });

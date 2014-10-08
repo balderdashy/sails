@@ -40,7 +40,7 @@ In my hook's initialize method, I might have the following:
 ```javscript
 
 // Wait until all the middleware from this app's controllers have loaded
-sails.on('hook:controllers:loaded', function () {
+sails.after('hook:controllers:loaded', function () {
 
   // Do stuff
   // e.g. prevent any methods called `login`, `logout` or `signup`
@@ -173,6 +173,14 @@ Useful for checking whether some state has been achieved yet.
 
 ```javascript
 sails.after('hook:yourHookID:someEvent', function yourEventHandler ( /* a, b, c, ..., z */ ) {
+	// your implementation
+});
+```
+
+You can actually wait for several events using `.after` as well:
+
+```javascript
+sails.after(['hook:yourHookID:someEvent', 'hook:someOtherHookID:someOtherEvent'], function yourEventHandler ( /* a, b, c, ..., z */ ) {
 	// your implementation
 });
 ```

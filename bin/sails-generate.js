@@ -13,7 +13,6 @@ var reportback = require('reportback')();
 var sailsgen = require('sails-generate');
 var package = require('../package.json');
 var rconf = require('../lib/app/configuration/rc');
-var _generateAPI = require('./_generate-api');
 
 
 /**
@@ -66,56 +65,42 @@ module.exports = function() {
 
   cb.invalid = 'error';
 
-  // If the generator type is "api", we currently treat it as a special case.
-  // (todo: pull this out into a simple generator)
-  if (scope.generatorType === 'api') {
-    if (scope.args.length === 0) {
-      return cb.error('Usage: sails generate api [api name]');
+  cb.success = function() {
+
+    // Infer the `outputPath` if necessary/possible.
+    if (!scope.outputPath && scope.filename && scope.destDir) {
+      scope.outputPath = scope.destDir + scope.filename;
     }
-    _generateAPI(scope, cb);
-  }
 
-  // Otherwise just run whichever generator was requested.
-  else {
-    cb.success = function() {
+    // Humanize the output path
+    var humanizedPath;
+    if (scope.outputPath) {
+      humanizedPath = ' at ' + scope.outputPath;
+    }
+    else if (scope.destDir) {
+      humanizedPath = ' in ' + scope.destDir;
+    }
+    else {
+      humanizedPath = '';
+    }
 
-      // Infer the `outputPath` if necessary/possible.
-      if (!scope.outputPath && scope.filename && scope.destDir) {
-        scope.outputPath = scope.destDir + scope.filename;
-      }
+    // Humanize the module identity
+    var humanizedId;
+    if (scope.id) {
+      humanizedId = util.format(' ("%s")',scope.id);
+    }
+    else humanizedId = '';
 
-      // Humanize the output path
-      var humanizedPath;
-      if (scope.outputPath) {
-        humanizedPath = ' at ' + scope.outputPath;
-      }
-      else if (scope.destDir) {
-        humanizedPath = ' in ' + scope.destDir;
-      }
-      else {
-        humanizedPath = '';
-      }
+    if (scope.generatorType != 'new') {
 
-      // Humanize the module identity
-      var humanizedId;
-      if (scope.id) {
-        humanizedId = util.format(' ("%s")',scope.id);
-      }
-      else humanizedId = '';
+      cb.log.info(util.format(
+        'Created a new %s%s%s!',
+        scope.generatorType, humanizedId, humanizedPath
+      ));
 
-      if (scope.generatorType != 'new') {
+    }
 
-        cb.log.info(util.format(
-          'Created a new %s%s%s!',
-          scope.generatorType, humanizedId, humanizedPath
-        ));
+  };
 
-      }
-
-    };
-
-    //
-    return sailsgen(scope, cb);
-  }
-
+  return sailsgen(scope, cb);
 };
