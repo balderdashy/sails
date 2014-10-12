@@ -85,7 +85,17 @@ describe('CORS and CSRF ::', function() {
           }, function(err, response) {
             if (err) return done(new Error(err));
             assert.equal(response.statusCode, 200);
-            assert.equal(response.body, "GET,POST,PUT,HEAD,DELETE,TRACE,COPY,LOCK,MKCOL,MOVE,PURGE,PROPFIND,PROPPATCH,UNLOCK,REPORT,MKACTIVITY,CHECKOUT,MERGE,M-SEARCH,NOTIFY,SUBSCRIBE,UNSUBSCRIBE,PATCH,SEARCH,CONNECT");
+            //
+            // NOTE:
+            // The bump to Express 3.16.0 caused a change here.
+            // see https://github.com/balderdashy/sails/pull/2291#issuecomment-58809939
+            //
+            // Original test:
+            // assert.equal(response.body, "GET,POST,PUT,HEAD,DELETE,TRACE,COPY,LOCK,MKCOL,MOVE,PURGE,PROPFIND,PROPPATCH,UNLOCK,REPORT,MKACTIVITY,CHECKOUT,MERGE,M-SEARCH,NOTIFY,SUBSCRIBE,UNSUBSCRIBE,PATCH,SEARCH,CONNECT");
+
+            // Changed to match what comes back post-upgrade:
+            // (removed "PURGE", "SEARCH", and "CONNECT")
+            assert.equal(response.body, "GET,POST,PUT,HEAD,DELETE,TRACE,COPY,LOCK,MKCOL,MOVE,PROPFIND,PROPPATCH,UNLOCK,REPORT,MKACTIVITY,CHECKOUT,MERGE,M-SEARCH,NOTIFY,SUBSCRIBE,UNSUBSCRIBE,PATCH", require('util').format('Unexpected HTTP methods:  "%s"', response.body));
             done();
           });
 
