@@ -85,7 +85,7 @@ describe('CORS and CSRF ::', function() {
           }, function(err, response) {
             if (err) return done(new Error(err));
             assert.equal(response.statusCode, 200);
-            assert.equal(response.body, "GET,POST,PUT,HEAD,DELETE,TRACE,COPY,LOCK,MKCOL,MOVE,PROPFIND,PROPPATCH,UNLOCK,REPORT,MKACTIVITY,CHECKOUT,MERGE,M-SEARCH,NOTIFY,SUBSCRIBE,UNSUBSCRIBE,PATCH");
+            assert.equal(response.body, "GET,POST,PUT,HEAD,DELETE,TRACE,COPY,LOCK,MKCOL,MOVE,PURGE,PROPFIND,PROPPATCH,UNLOCK,REPORT,MKACTIVITY,CHECKOUT,MERGE,M-SEARCH,NOTIFY,SUBSCRIBE,UNSUBSCRIBE,PATCH,SEARCH,CONNECT", require('util').format('Unexpected HTTP methods:  "%s"', response.body));
             done();
           });
 
@@ -694,7 +694,7 @@ describe('CORS and CSRF ::', function() {
       it("a CSRF token should be present in view locals", function(done) {
         httpHelper.testRoute("get", 'viewtest/csrf', function (err, response) {
           if (err) return done(new Error(err));
-          assert(response.body.match(/csrf=.+=/), response.body);
+          assert(response.body.match(/csrf=.{36}(?!.)/), response.body);
           done();
         });
       });
@@ -858,7 +858,7 @@ describe('CORS and CSRF ::', function() {
               }
             }, function (err, response) {
             if (err) return done(new Error(err));
-            assert(response.body.match(/csrf=.+=/));
+            assert(response.body.match(/csrf=.{36}(?!.)/));
             done();
           });
         });
@@ -895,7 +895,7 @@ describe('CORS and CSRF ::', function() {
               }
             }, function (err, response) {
             if (err) return done(new Error(err));
-            assert(response.body.match(/csrf=.+=/));
+            assert(response.body.match(/csrf=.{36}(?!.)/));
             done();
           });
         });
@@ -962,7 +962,7 @@ describe('CORS and CSRF ::', function() {
               }
             }, function (err, response) {
             if (err) return done(new Error(err));
-            assert(response.body.match(/csrf=.+=/));
+            assert(response.body.match(/csrf=.{36}(?!.)/));
             done();
           });
         });
@@ -997,7 +997,7 @@ describe('CORS and CSRF ::', function() {
               }
             }, function (err, response) {
             if (err) return done(new Error(err));
-            assert(response.body.match(/csrf=.+=/));
+            assert(response.body.match(/csrf=.{36}(?!.)/));
             done();
           });
         });
