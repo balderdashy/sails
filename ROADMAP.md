@@ -50,4 +50,4 @@ The backlog consists of features which are not currently in the immediate-term r
  Support for multiple blueprint prefixes         | [@mnaughto](https://github.com/mnaughto)           | https://github.com/balderdashy/sails/issues/2031
  SPDY protocol support                           | [@mikermcneil](https://github.com/mikermcneil)     | https://github.com/balderdashy/sails/issues/80
  Sockets hook: drop-in Primus alternative        | [@alejandroiglesias](https://github.com/alejandroiglesias) | https://github.com/balderdashy/sails/issues/945
-
+ Harmony generators support | [@anilanar](https://github.com/anilanar) | With the new / incoming plugin system, there should be an option to run `sails cli` with `--harmony-generators` enabled. This would enable plugin developers to make use of generators (ECMAScript-6).
