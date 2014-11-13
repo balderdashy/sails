@@ -23,7 +23,7 @@ module.exports = function() {
   var log = CaptainsLog(rconf.log);
 
   var wwwPath = nodepath.resolve(process.cwd(), './www'),
-    GRUNT_TASK_NAME = 'build';
+    GRUNT_TASK_NAME = 'build',
     GRUNT_TASK_PROD_NAME = 'buildProd';
 
   var sails = Sails();
