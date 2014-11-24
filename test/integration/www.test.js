@@ -112,7 +112,7 @@ describe('Starting sails server with lift', function() {
 			// to set session adapter:null ( to prevent warning message from appearing on command line )
 			fs.writeFileSync('config/session.js', 'module.exports.session = { adapter: null }');
 
-			sailsServer = spawn(sailsBin, ['www', '--prod']);
+			sailsServer = spawn(sailsBin, ['www', '--env=production']);
 
 			sailsServer.stdout.on('data', function(data) {
 				var dataString = data + '';
