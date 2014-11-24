@@ -77,7 +77,7 @@ describe('Starting sails server with lift', function() {
 			process.chdir('../');
 		});
 
-		it('--dev should execute grunt build', function(done) {
+		it('--env=development should execute grunt build', function(done) {
 
 			// Move into app directory
 			process.chdir(appName);
@@ -92,7 +92,7 @@ describe('Starting sails server with lift', function() {
 				}
 			}));
 
-			sailsServer = spawn(sailsBin, ['www', '--dev']);
+			sailsServer = spawn(sailsBin, ['www', '--env=development']);
 
 			sailsServer.stdout.on('data', function(data) {
 				var dataString = data + '';
@@ -103,7 +103,7 @@ describe('Starting sails server with lift', function() {
 			});
 		});
 
-		it('--prod should execute grunt buildProd', function(done) {
+		it('--env=production should execute grunt buildProd', function(done) {
 
 			// Move into app directory
 			process.chdir(appName);
