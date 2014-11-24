@@ -114,7 +114,7 @@ describe('Starting sails server with lift', function() {
 			process.chdir('../');
 		});
 
-		it('--prod should change the environment to production', function(done) {
+		it('--environment=production should change the environment to production', function(done) {
 
 			// Move into app directory
 			process.chdir(appName);
@@ -124,7 +124,7 @@ describe('Starting sails server with lift', function() {
 			fs.writeFileSync('config/session.js', 'module.exports.session = { adapter: null }');
 
 
-			sailsServer = spawn(sailsBin, ['lift', '--prod', '--port=1342']);
+			sailsServer = spawn(sailsBin, ['lift', '--environment=production', '--port=1342']);
 
 			sailsServer.stderr.on('data', function(data) {
 				var dataString = data + '';
