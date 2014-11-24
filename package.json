@@ -75,7 +75,8 @@
     "mock-req": "0.1.0",
     "mock-res": "0.1.0",
     "semver": "~2.2.1",
-    "prompt": "~0.2.13"
+    "prompt": "~0.2.13",
+    "morgan": "~1.5.0"
   },
   "devDependencies": {
     "root-require": "~0.2.0",
