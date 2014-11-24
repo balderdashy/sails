@@ -12,7 +12,7 @@
 
 ## Purpose
 
-The `app` directory conatins logic concerned with the lifecycle of the Sails core itself.  This includes:
+The `app` directory contains logic concerned with the lifecycle of the Sails core itself.  This includes:
 
 + Loading and initializing hooks
 + Loading the router
