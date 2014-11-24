@@ -2,6 +2,11 @@
 
 ### master
 
+* [ENHANCEMENT] Upgrade express and skipper because of security vulnerabilities
+* [BUGFIX] Fix Sails crashes if Redis goes down [#2277](https://github.com/balderdashy/sails/pull/2277)
+* [BUGFIX] Fix crash when using sessionless requests over WebSockets [#2107](https://github.com/balderdashy/sails/pull/2107)
+* [ENHANCEMENT] Allow hooks to be installed in node_modules and dynamic changing of hook name
+* [ENHANCEMENT] Checking npm-version on install
 * [ENHANCEMENT] Updated "skipAssets" regex to ignore query string
 
 ### 0.10.5

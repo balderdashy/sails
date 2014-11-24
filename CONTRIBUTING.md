@@ -105,7 +105,8 @@ The custom generator API is very new, and still experimental.  If you are seriou
 1. Fork the repo.
 2. Add a test for your change. Only refactoring and documentation changes require no new tests. If you are adding functionality or fixing a bug, we need a test!
 4. Make the tests pass and make sure you follow [our syntax guidelines](https://github.com/balderdashy/sails/blob/master/.jshintrc).
-5. Push to your fork and submit a pull request to the appropriate branch:
+5. Add a line of what you did to CHANGELOG.md (right under `master`).
+6. Push to your fork and submit a pull request to the appropriate branch:
   + [master](https://github.com/balderdashy/sails/tree/master)
     + corresponds with the "edge" version-- the latest, not-yet-released version of Sails. Most pull requests should be sent here
   + [stable](https://github.com/balderdashy/sails/tree/stable)
