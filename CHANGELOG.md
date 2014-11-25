@@ -2,6 +2,7 @@
 
 ### master
 
+* [FEATURE] Added request logging via [morgan](https://github.com/expressjs/morgan) [#2432](https://github.com/balderdashy/sails/pull/2432) as well as options in `http.js` to configure settings
 * [ENHANCEMENT] Upgrade express and skipper because of security vulnerabilities
 * [BUGFIX] Fix Sails crashes if Redis goes down [#2277](https://github.com/balderdashy/sails/pull/2277)
 * [BUGFIX] Fix crash when using sessionless requests over WebSockets [#2107](https://github.com/balderdashy/sails/pull/2107)
