@@ -724,7 +724,7 @@ describe('CORS and CSRF ::', function() {
 
       });
 
-      it("a POST request with a valid CSRF token should result in a 200 response", function (done) {
+      it("a POST request with a valid CSRF token should result in a 201 response", function (done) {
 
         httpHelper.testRoute("get", 'csrftoken', function (err, response) {
           if (err) return done(new Error(err));
@@ -742,7 +742,7 @@ describe('CORS and CSRF ::', function() {
 
               if (err) return done(new Error(err));
 
-              assert.equal(response.statusCode, 200);
+              assert.equal(response.statusCode, 201);
               done();
 
             });
@@ -777,10 +777,10 @@ describe('CORS and CSRF ::', function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = {protectionEnabled: true, routesDisabled: '/user'};");
       });
 
-      it("a POST request on /user without a CSRF token should result in a 200 response", function (done) {
+      it("a POST request on /user without a CSRF token should result in a 201 response", function (done) {
         httpHelper.testRoute("post", 'user', function (err, response) {
           if (err) return done(new Error(err));
-          assert.equal(response.statusCode, 200);
+          assert.equal(response.statusCode, 201);
           done();
         });
 
