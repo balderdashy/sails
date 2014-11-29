@@ -140,6 +140,11 @@ module.exports = {
     return _terminateProcess(1);
   },
 
+  __ModuleMissing__: function(module) {
+    log.error('Missing module "' + module + '" and is necessary for the system or for other module dependency.');
+    log.error('Are you sure that are installed and declared in `config.modules.js` file?');
+    return _terminateProcess(1);
+  },
 
   __ModelIsMissingConnection__: function(sourceModelId) {
     log.error(nodeutil.format('One of your models (%s) doesn\'t have a connection.', sourceModelId));
