@@ -2,6 +2,14 @@
 
 ### master
 
+* [ENHANCEMENT] Support partials and layout with Handlebars for the `backend` generator
+* [BUGFIX] Blueprint creation returns 201 status code instead of 200
+* [BUGFIX] `ractive.toHTML()` replaces `ractive.renderHTML()` for Ractive template engine
+* [BUGFIX] Fix arguments for publishAdd, publishRemove and publishUpdate
+* [ENHANCEMENT] Enable views hook for all methods
+* [BUGFIX] Resolve depreciation warnings
+* [BUGFIX] Fix dependency for npm 2.0.0
+* [BUGFIX] Fix Grunt launching when it's a peer dep
 * [ENHANCEMENT] Upgrade express and skipper because of security vulnerabilities
 * [BUGFIX] Fix Sails crashes if Redis goes down [#2277](https://github.com/balderdashy/sails/pull/2277)
 * [BUGFIX] Fix crash when using sessionless requests over WebSockets [#2107](https://github.com/balderdashy/sails/pull/2107)
