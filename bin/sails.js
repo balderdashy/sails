@@ -51,7 +51,7 @@ program.usage('[command]');
 // $ sails lift
 var cmd;
 cmd = program.command('lift');
-cmd.option('--prod');
+cmd.option('--environment [environment]');
 cmd.option('--port [port]');
 cmd.unknownOption = NOOP;
 cmd.description('');

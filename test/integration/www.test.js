@@ -77,7 +77,7 @@ describe('Starting sails server with lift', function() {
 			process.chdir('../');
 		});
 
-		it('--dev should execute grunt build', function(done) {
+		it('--environment=development should execute grunt build', function(done) {
 
 			// Move into app directory
 			process.chdir(appName);
@@ -92,7 +92,7 @@ describe('Starting sails server with lift', function() {
 				}
 			}));
 
-			sailsServer = spawn(sailsBin, ['www', '--dev']);
+			sailsServer = spawn(sailsBin, ['www', '--environment=development']);
 
 			sailsServer.stdout.on('data', function(data) {
 				var dataString = data + '';
@@ -103,7 +103,7 @@ describe('Starting sails server with lift', function() {
 			});
 		});
 
-		it('--prod should execute grunt buildProd', function(done) {
+		it('--environment=production should execute grunt buildProd', function(done) {
 
 			// Move into app directory
 			process.chdir(appName);
@@ -112,7 +112,7 @@ describe('Starting sails server with lift', function() {
 			// to set session adapter:null ( to prevent warning message from appearing on command line )
 			fs.writeFileSync('config/session.js', 'module.exports.session = { adapter: null }');
 
-			sailsServer = spawn(sailsBin, ['www', '--prod']);
+			sailsServer = spawn(sailsBin, ['www', '--environment=production']);
 
 			sailsServer.stdout.on('data', function(data) {
 				var dataString = data + '';
