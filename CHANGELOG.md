@@ -2,6 +2,7 @@
 
 ### master
 
+* [ENHANCEMENT] Support CSRF hook route configuration [#2366](https://github.com/balderdashy/sails/issues/2366)
 * [ENHANCEMENT] Support partials and layout with Handlebars for the `backend` generator
 * [BUGFIX] Blueprint creation returns 201 status code instead of 200
 * [BUGFIX] `ractive.toHTML()` replaces `ractive.renderHTML()` for Ractive template engine
