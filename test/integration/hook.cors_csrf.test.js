@@ -754,6 +754,75 @@ describe('CORS and CSRF ::', function() {
       });
     });
 
+    describe("with CSRF set to {route: '/anotherCsrf'}", function() {
+      before(function() {
+        fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = {route: '/anotherCsrf'};");
+      });
+
+      it("a request to /csrfToken should respond with a 404", function(done) {
+        httpHelper.testRoute("get", 'csrftoken', function (err, response) {
+          if (err) return done(new Error(err));
+          assert.equal(response.statusCode, 404);
+          done();
+        });
+
+      });
+
+      it("a request to /anotherCsrf should respond with a _csrf token", function(done) {
+        httpHelper.testRoute("get", 'anotherCsrf', function (err, response) {
+          if (err) return done(new Error(err));
+          try {
+            var body = JSON.parse(response.body);
+            assert(body._csrf, response.body);
+            done();
+          } catch (e) {
+            done(new Error('Unexpected response: '+response.body));
+          }
+        });
+      });
+
+      it("a POST request without a CSRF token should result in a 403 response", function (done) {
+
+        httpHelper.testRoute("post", 'user', function (err, response) {
+
+          if (err) return done(new Error(err));
+          assert.equal(response.statusCode, 403);
+          done();
+
+        });
+
+      });
+
+      it("a POST request with a valid CSRF token should result in a 201 response", function (done) {
+
+        httpHelper.testRoute("get", 'anotherCsrf', function (err, response) {
+          if (err) return done(new Error(err));
+          try {
+            var body = JSON.parse(response.body);
+            var sid = response.headers['set-cookie'][0].split(';')[0].substr(10);
+            httpHelper.testRoute("post", {
+              url: 'user',
+              headers: {
+                'Content-type': 'application/json',
+                'cookie': 'sails.sid='+sid
+              },
+              body: '{"_csrf":"'+body._csrf+'"}'
+            }, function (err, response) {
+
+              if (err) return done(new Error(err));
+
+              assert.equal(response.statusCode, 201);
+              done();
+
+            });
+          } catch (e) {
+            done(e);
+          }
+        });
+      });
+
+    });
+
     describe("with CSRF set to {protectionEnabled: true, grantTokenViaAjax: false}", function() {
 
       before(function() {
