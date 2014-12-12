@@ -41,7 +41,6 @@
     "reportback": "~0.1.4",
     "sails-util": "~0.10.3",
     "colors": "~0.6.2",
-    "socket.io": "~0.9.14",
     "connect-flash": "~0.1.1",
     "pluralize": "~0.0.5",
     "node-uuid": "~1.4.0",
