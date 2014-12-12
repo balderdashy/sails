@@ -96,5 +96,40 @@ module.exports = {
     };
   },
 
+  // Hook to test `routes` function
+  ADVANCED_ROUTES: function(sails) {
+    return {
+      identity: 'advanced_routes',
+      initialize: function(cb) {
+        sails.on('router:before', function() {
+          sails.router.bind('GET /foo', function(req, res, next) {
+            sails.config.foo = sails.config.foo + "b";
+            next();
+          });
+        });
+        sails.on('router:after', function() {
+          sails.router.bind('GET /foo', function(req, res, next) {
+            sails.config.foo = sails.config.foo + "e";
+            res.send(sails.config.foo);
+          });
+        });
+        cb();
+      },
+      routes: {
+        before: {
+          "GET /foo": function(req, res, next) {
+            sails.config.foo = "a";
+            next();
+          }
+        },
+        after: {
+          "GET /foo": function(req, res, next) {
+            sails.config.foo = sails.config.foo + "d";
+            next();
+          }
+        }
+      }
+    };
+  },
 
 };

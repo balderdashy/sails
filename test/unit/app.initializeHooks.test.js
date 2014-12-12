@@ -189,6 +189,29 @@ describe('app.initializeHooks()', function() {
 
   });
 
+  describe('configured with a custom hook with advanced routing', function() {
+    var sails = $Sails.load({
+      hooks: {
+        advanced_routes: customHooks.ADVANCED_ROUTES
+      },
+      routes: {
+        "GET /foo": function(req, res, next) {sails.config.foo += "c"; return next();}
+      }
+    });
+
+    it('should add four `/foo` routes to the sails config', function() {
+      var boundRoutes = sails.router._privateRouter.routes['get'];
+      assert(_.where(boundRoutes, {path: "/foo", method: "get"}).length === 5);
+    });
+
+    it('should bind the routes in the correct order', function(done) {
+      supertest(sails.router._privateRouter)
+          .get('/foo')
+          .expect(200, 'abcde')
+          .end(done);
+    });
+
+  });
 
   // describe('configured with a circular hook dependency', function () {
 
