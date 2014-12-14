@@ -63,7 +63,10 @@ module.exports = function() {
 
 
   function afterwards (err, sails) {
-    if (err) { sails ? sails.log.error(err) : log.error(err); process.exit(1); }
+    if (err) {
+      var message = err.stack ? err.stack : err;
+      sails ? sails.log.error(message) : log.error(message); process.exit(1);
+    }
     // try {console.timeEnd('cli_lift');}catch(e){}
   }
 };
