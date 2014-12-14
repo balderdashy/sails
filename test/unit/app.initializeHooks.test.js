@@ -10,6 +10,7 @@ var customHooks = require('../fixtures/customHooks');
 
 var $Sails = require('../helpers/sails');
 
+var supertest = require('supertest');
 
 
 // TIP:
@@ -92,6 +93,125 @@ describe('app.initializeHooks()', function() {
   });
 
 
+  describe('configured with a custom hook with a `defaults` object', function() {
+    var sails = $Sails.load({
+      hooks: {
+        defaults_obj: customHooks.DEFAULTS_OBJ
+      },
+      inky: {
+        pinky: 'boo'
+      }
+    });
+
+    it('should add a `foo` key to sails config', function() {
+      assert(sails.config.foo == 'bar');
+    });
+    it('should add an `inky.dinky` key to sails config', function() {
+      assert(sails.config.inky.dinky == 'doo');
+    });
+    it('should keep the existing `inky.pinky` key to sails config', function() {
+      assert(sails.config.inky.pinky == 'boo');
+    });
+
+  });
+
+  describe('configured with a custom hook with a `defaults` function', function() {
+    var sails = $Sails.load({
+      hooks: {
+        defaults_fn: customHooks.DEFAULTS_FN
+      },
+      inky: {
+        pinky: 'boo'
+      }
+    });
+
+    it('should add a `foo` key to sails config', function() {
+      assert(sails.config.foo == 'bar');
+    });
+    it('should add an `inky.dinky` key to sails config', function() {
+      assert(sails.config.inky.dinky == 'doo');
+    });
+    it('should keep the existing `inky.pinky` key to sails config', function() {
+      assert(sails.config.inky.pinky == 'boo');
+    });
+
+  });
+
+  describe('configured with a custom hook with a `configure` function', function() {
+    var sails = $Sails.load({
+      hooks: {
+        config_fn: customHooks.CONFIG_FN
+      },
+      testConfig: 'oh yeah!'
+    });
+
+    it('should add a `hookConfigLikeABoss` key to sails config', function() {
+      assert(sails.config.hookConfigLikeABoss == 'oh yeah!');
+    });
+
+  });
+
+  describe('configured with a custom hook with an `initialize` function', function() {
+    var sails = $Sails.load({
+      hooks: {
+        init_fn: customHooks.INIT_FN
+      }
+    });
+
+    it('should add a `hookInitLikeABoss` key to sails config', function() {
+      assert(sails.config.hookInitLikeABoss === true);
+    });
+
+  });
+
+
+  describe('configured with a custom hook with a `routes` object', function() {
+    var sails = $Sails.load({
+      hooks: {
+        routes: customHooks.ROUTES
+      },
+      routes: {
+        "GET /foo": function(req, res, next) {sails.config.foo += "b"; return next();}
+      }
+    });
+
+    it('should add two `/foo` routes to the sails config', function() {
+      var boundRoutes = sails.router._privateRouter.routes['get'];
+      assert(_.where(boundRoutes, {path: "/foo", method: "get"}).length === 3);
+    });
+
+    it('should bind the routes in the correct order', function(done) {
+      supertest(sails.router._privateRouter)
+          .get('/foo')
+          .expect(200, 'abc')
+          .end(done);
+    });
+
+  });
+
+  describe('configured with a custom hook with advanced routing', function() {
+    var sails = $Sails.load({
+      hooks: {
+        advanced_routes: customHooks.ADVANCED_ROUTES
+      },
+      routes: {
+        "GET /foo": function(req, res, next) {sails.config.foo += "c"; return next();}
+      }
+    });
+
+    it('should add four `/foo` routes to the sails config', function() {
+      var boundRoutes = sails.router._privateRouter.routes['get'];
+      assert(_.where(boundRoutes, {path: "/foo", method: "get"}).length === 5);
+    });
+
+    it('should bind the routes in the correct order', function(done) {
+      supertest(sails.router._privateRouter)
+          .get('/foo')
+          .expect(200, 'abcde')
+          .end(done);
+    });
+
+  });
 
   // describe('configured with a circular hook dependency', function () {
 
