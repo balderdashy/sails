@@ -125,12 +125,12 @@ describe('hooks :: ', function() {
 
       });
 
-      describe('setting the hook identity to `foobar`', function(){
+      describe('setting the hook name to `foobar`', function(){
 
           var sails;
 
           before(function(done) {
-            appHelper.liftQuiet({installedHooks: {'sails-hook-shout': {identity: 'foobar'}}}, function(err, _sails) {
+            appHelper.liftQuiet({installedHooks: {'sails-hook-shout': {name: 'foobar'}}}, function(err, _sails) {
               if (err) {return done(err);}
               sails = _sails;
               return done();
@@ -162,10 +162,10 @@ describe('hooks :: ', function() {
 
       });
 
-      describe('setting the hook identity to `views` (an existing hook)', function(){
+      describe('setting the hook name to `views` (an existing hook)', function(){
 
           it ('should throw an error', function(done) {
-            appHelper.liftQuiet({installedHooks: {'sails-hook-shout': {identity: 'views'}}}, function(err, _sails) {
+            appHelper.liftQuiet({installedHooks: {'sails-hook-shout': {name: 'views'}}}, function(err, _sails) {
               assert(err && err.code == 'E_INVALID_HOOK_NAME');
               done();
             });
