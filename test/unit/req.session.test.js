@@ -76,6 +76,7 @@ describe('req.session (with no session hook)', function (){
         params: {},
         headers: {}
       }, function (err, res, body){
+        console.log('headers in final clientRes :', res.headers);
         if (err) return done(err);
         if (res.statusCode !== 200) return done(new Error('Expected 200 status code'));
         if (!doesSessionExist) return done(new Error('req.session should exist.'));
