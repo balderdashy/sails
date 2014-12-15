@@ -9,7 +9,7 @@ var async = require('async');
 var Sails = require('../../lib').Sails;
 
 
-describe('req.session', function (){
+describe('req.session (with no session hook)', function (){
 
   var app;
 
@@ -19,10 +19,13 @@ describe('req.session', function (){
       globals: false,
       loadHooks: [
         'moduleloader',
-        'userconfig',
-        'http',
-        'views'
-      ]
+        'userconfig'
+      ],
+      session: {
+        adapter: 'memory',
+        key: 'sails.sid',
+        secret: 'af9442683372850a85a87150c47b4a31'
+      }
     }, done);
   });
 
@@ -38,7 +41,12 @@ describe('req.session', function (){
         isSessionAnObject = _.isObject(req.session);
         res.send();
       });
-      app.request('get /dogs', {}, function (err, res, body){
+      app.request({
+        url: '/dogs',
+        method: 'GET',
+        params: {},
+        headers: {}
+      }, function (err, res, body){
         if (err) return done(err);
         if (res.statusCode !== 200) return done(new Error('Expected 200 status code'));
         if (!doesSessionExist) return done(new Error('req.session should exist.'));
