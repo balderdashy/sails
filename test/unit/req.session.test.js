@@ -47,6 +47,7 @@ describe('req.session (with no session hook)', function (){
 
       app.get('/sessionTest', function (req, res){
         console.log('RAN GET /sessionTest route...');
+        console.log('req.session:\n', req.session);
         doesSessionExist = !!req.session;
         isSessionAnObject = _.isObject(req.session);
         doesTestPropertyStillExist = req.session.something === 'some string';
@@ -63,7 +64,6 @@ describe('req.session (with no session hook)', function (){
         headers: {}
       }, function (err, res, body){
         if (err) return done(err);
-        console.log('res.headers',res.headers);
         if (res.statusCode !== 200) return done(new Error('Expected 200 status code'));
         if (!doesSessionExist) return done(new Error('req.session should exist.'));
         if (!isSessionAnObject) return done(new Error('req.session should be an object.'));
@@ -94,10 +94,10 @@ describe('req.session (with no session hook)', function (){
           }
         }, function (err, clientRes, body){
           if (err) return done(err);
-          console.log('\n\n\n----------callback-------\n');
-          console.log('err', err);
-          console.log('clientRes', clientRes);
-          console.log('body', body);
+          // console.log('\n\n\n----------callback-------\n');
+          // console.log('err', err);
+          // console.log('clientRes', clientRes);
+          // console.log('body', body);
           if (clientRes.statusCode !== 200) return done(new Error('Expected 200 status code'));
           if (!doesSessionExist) return done(new Error('req.session should exist.'));
           if (!isSessionAnObject) return done(new Error('req.session should be an object.'));
