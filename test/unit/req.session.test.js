@@ -71,6 +71,13 @@ describe('req.session (with no session hook)', function (){
       });
     });
 
+
+    //
+    // To test:
+    //
+    // DEBUG=express-session mocha test/unit/req.session.test.js -b -g 'should persist'
+    //
+
     it('should persist data between requests', function (done){
       app.request({
         url: '/sessionTest',
