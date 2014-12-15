@@ -84,6 +84,24 @@ module.exports.teardown = function(appName) {
 	}
 };
 
+module.exports.liftQuiet = function(options, callback) {
+
+  if (typeof options == 'function') {
+    callback = options;
+    options = null;
+  }
+
+  options = options || {};
+  _.defaults(options, {
+    log: {
+      level: 'silent'
+    }
+  });
+
+  return module.exports.lift(options, callback);
+
+};
+
 module.exports.lift = function(options, callback) {
 
 	delete process.env.NODE_ENV;
