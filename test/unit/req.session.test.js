@@ -48,7 +48,6 @@ describe('req.session', function (){
 
       app.get('/sessionTest', function (req, res){
         // console.log('RAN GET /sessionTest route...');
-        // console.log('req.session:\n', req.session);
         doesSessionExist = !!req.session;
         isSessionAnObject = _.isObject(req.session);
         doesTestPropertyStillExist = req.session.something === 'some string';
