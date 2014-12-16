@@ -15,11 +15,17 @@ var exec = require('child_process').exec;
 var path = require('path');
 var sailsBin = path.resolve('./bin/sails.js');
 var spawn = require('child_process').spawn;
-var _ioClient = require('./sails.io')(require('socket.io-client'));
 var Sails = require('../../../lib/app');
 
 // Make existsSync not crash on older versions of Node
 fs.existsSync = fs.existsSync || path.existsSync;
+
+
+// Set up `_ioClient` the first time this file is required
+var _ioClient = require('sails.io.js')(require('socket.io-client'));
+// var _ioClient = require('./sails.io')(require('socket.io-client'));
+
+
 
 /**
  * Uses the Sails binary to create a namespaced test app
@@ -145,8 +151,11 @@ module.exports.liftWithTwoSockets = function(options, callback) {
 	}
 	module.exports.lift(options, function(err, sails) {
 		if (err) {return callback(err);}
-		var socket1 = _ioClient.connect('http://localhost:1342',{'force new connection': true});
-		socket1.on('connect', function() {
+    console.log('trying to connect socket1');
+    var socket1 = _ioClient.connect('http://localhost:1342',{'force new connection': true});
+    socket1.on('connect', function() {
+      console.log('socket1 connected');
+      console.log('trying to connect socket2');
 			var socket2 = _ioClient.connect('http://localhost:1342',{'force new connection': true});
 			socket2.on('connect', function() {
 				callback(null, sails, socket1, socket2);
