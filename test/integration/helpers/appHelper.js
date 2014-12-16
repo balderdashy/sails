@@ -151,11 +151,11 @@ module.exports.liftWithTwoSockets = function(options, callback) {
 	}
 	module.exports.lift(options, function(err, sails) {
 		if (err) {return callback(err);}
-    console.log('trying to connect socket1');
+    // console.log('trying to connect socket1');
     var socket1 = _ioClient.connect('http://localhost:1342',{'force new connection': true});
     socket1.on('connect', function() {
-      console.log('socket1 connected');
-      console.log('trying to connect socket2');
+      // console.log('socket1 connected');
+      // console.log('trying to connect socket2');
 			var socket2 = _ioClient.connect('http://localhost:1342',{'force new connection': true});
 			socket2.on('connect', function() {
 				callback(null, sails, socket1, socket2);
