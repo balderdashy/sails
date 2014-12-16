@@ -23,7 +23,7 @@
   "scripts": {
     "test": "mocha -b",
     "prepublish": "npm prune",
-    "preinstall" : "node ./lib/preinstall_npmcheck.js"
+    "preinstall": "node ./lib/preinstall_npmcheck.js"
   },
   "directories": {
     "lib": "lib"
@@ -75,7 +75,8 @@
     "mock-req": "0.1.0",
     "mock-res": "0.1.0",
     "semver": "~2.2.1",
-    "prompt": "~0.2.13"
+    "prompt": "~0.2.13",
+    "uid-safe": "^1.0.1"
   },
   "devDependencies": {
     "root-require": "~0.2.0",
