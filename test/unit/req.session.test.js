@@ -9,7 +9,7 @@ var async = require('async');
 var Sails = require('../../lib').Sails;
 
 
-describe('req.session (with no session hook)', function (){
+describe('req.session', function (){
 
   var app;
 
@@ -19,7 +19,8 @@ describe('req.session (with no session hook)', function (){
       globals: false,
       loadHooks: [
         'moduleloader',
-        'userconfig'
+        'userconfig',
+        'session'
       ],
       session: {
         adapter: 'memory',
