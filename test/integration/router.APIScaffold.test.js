@@ -197,6 +197,53 @@ describe('router :: ', function() {
         });
       });
     });
+
+    describe('with `prefix` option set', function() {
+
+      before(function() {
+        httpHelper.writeBlueprint({
+          prefix: '/api'
+        });
+      });
+
+      it('should not bind blueprint actions without prefix', function(done) {
+        httpHelper.testRoute('get', {
+          url: 'empty',
+          json: true
+        }, function(err, response) {
+          if (err) done(new Error(err));
+
+          assert(response.statusCode === 404);
+          done();
+        });
+      });
+
+      it('should return JSON for a newly created instance of the test model called with prefix', function(done) {
+
+        httpHelper.testRoute('get', {
+          url: 'api/empty/create',
+          json: true
+        }, function (err, response, body) {
+          if (err) return done(new Error(err));
+
+          assert((response.statusCode === 201 || response.statusCode === 200));
+          done();
+        });
+      });
+
+      it('should bind blueprint actions with given prefix', function(done) {
+        httpHelper.testRoute('get', {
+          url: 'api/empty',
+          json: true
+        }, function(err, response) {
+          if (err) done(new Error(err));
+
+          assert(response.body instanceof Array);
+          done();
+        });
+      });
+
+    });
   });
 
 });
