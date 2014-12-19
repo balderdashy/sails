@@ -39,8 +39,8 @@ describe('app.initializeHooks()', function() {
     });
     it('should expose at least the expected core hooks', function() {
 
-      var intersection = _.intersection(Object.keys(sails.hooks), constants.EXPECTED_DEFAULT_HOOKS);
-      assert.deepEqual(intersection, constants.EXPECTED_DEFAULT_HOOKS,  'Missing expected default hooks');
+      var intersection = _.intersection(_.keys(sails.hooks), _.keys(constants.EXPECTED_DEFAULT_HOOKS));
+      assert.deepEqual(intersection, _.keys(constants.EXPECTED_DEFAULT_HOOKS),  'Missing expected default hooks');
     });
   });
 
@@ -58,8 +58,8 @@ describe('app.initializeHooks()', function() {
         .property('noop');
     });
     it('should also expose the expected core hooks', function() {
-      var intersection = _.intersection(Object.keys(sails.hooks), constants.EXPECTED_DEFAULT_HOOKS);
-      assert.deepEqual(intersection, constants.EXPECTED_DEFAULT_HOOKS,  'Missing expected default hooks');
+      var intersection = _.intersection(Object.keys(sails.hooks), _.keys(constants.EXPECTED_DEFAULT_HOOKS));
+      assert.deepEqual(intersection, _.keys(constants.EXPECTED_DEFAULT_HOOKS),  'Missing expected default hooks');
     });
   });
 

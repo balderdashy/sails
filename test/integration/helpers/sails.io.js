@@ -1,3 +1,9 @@
+/**
+ * Version 0.10.x of the sails.io.js JavaScript SDK.
+ * Here to test backwards compatibility.
+ */
+
+
 
 /*! Socket.IO.js build:0.9.16, development. Copyright(c) 2011 LearnBoost <dev@learnboost.com> MIT Licensed */
 
@@ -1618,7 +1624,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
           } else if (xhr.status == 403) {
             self.onError(xhr.responseText);
           } else {
-            self.connecting = false;            
+            self.connecting = false;
             !self.reconnecting && self.onError(xhr.responseText);
           }
         }
@@ -1662,7 +1668,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
 
     var self = this;
     self.connecting = true;
-    
+
     this.handshake(function (sid, heartbeat, close, transports) {
       self.sessionid = sid;
       self.closeTimeout = close * 1000;
@@ -1784,7 +1790,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
     this.transport.payload(this.buffer);
     this.buffer = [];
   };
-  
+
 
   /**
    * Disconnect the established connect.
@@ -1844,7 +1850,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
     var port = global.location.port ||
       ('https:' == global.location.protocol ? 443 : 80);
 
-    return this.options.host !== global.location.hostname 
+    return this.options.host !== global.location.hostname
       || this.options.port != port;
   };
 
@@ -2125,7 +2131,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    *
    * @api public
    */
-  
+
   SocketNamespace.prototype.emit = function (name) {
     var args = Array.prototype.slice.call(arguments, 1)
       , lastArg = args[args.length - 1]
@@ -2363,8 +2369,8 @@ var io = ('undefined' === typeof module ? {} : module.exports);
    * @api public
    */
 
-  // Do to a bug in the current IDevices browser, we need to wrap the send in a 
-  // setTimeout, when they resume from sleeping the browser will crash if 
+  // Do to a bug in the current IDevices browser, we need to wrap the send in a
+  // setTimeout, when they resume from sleeping the browser will crash if
   // we don't allow the browser time to detect the socket has been closed
   if (io.util.ua.iDevice) {
     WS.prototype.send = function (data) {
@@ -2697,7 +2703,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
 
   /**
    * The HTMLFile transport creates a `forever iframe` based transport
-   * for Internet Explorer. Regular forever iframe implementations will 
+   * for Internet Explorer. Regular forever iframe implementations will
    * continuously trigger the browsers buzy indicators. If the forever iframe
    * is created inside a `htmlfile` these indicators will not be trigged.
    *
@@ -2911,7 +2917,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
     return false;
   };
 
-  /** 
+  /**
    * Establish a connection, for iPhone and Android this will be done once the page
    * is loaded.
    *
@@ -2963,7 +2969,7 @@ var io = ('undefined' === typeof module ? {} : module.exports);
     function onerror () {
       self.retryCounter ++;
       if(!self.retryCounter || self.retryCounter > 3) {
-        self.onClose();  
+        self.onClose();
       } else {
         self.get();
       }
@@ -3517,11 +3523,11 @@ if (typeof define === "function" && define.amd) {
 
     /**
      * What is the `requestQueue`?
-     * 
+     *
      * The request queue is used to simplify app-level connection logic--
      * i.e. so you don't have to wait for the socket to be connected
      * to start trying to  synchronize data.
-     * 
+     *
      * @api private
      * @param  {Socket}  socket
      */
@@ -3551,7 +3557,7 @@ if (typeof define === "function" && define.amd) {
 
     /**
      * Send a JSONP request.
-     * 
+     *
      * @param  {Object}   opts [optional]
      * @param  {Function} cb
      * @return {XMLHttpRequest}
@@ -3651,7 +3657,7 @@ if (typeof define === "function" && define.amd) {
 
 
 
-    // We'll be adding methods to `io.SocketNamespace.prototype`, the prototype for the 
+    // We'll be adding methods to `io.SocketNamespace.prototype`, the prototype for the
     // Socket instance returned when the browser connects with `io.connect()`
     var Socket = io.SocketNamespace;
 
@@ -3870,10 +3876,10 @@ if (typeof define === "function" && define.amd) {
 
       // The environment we're running in.
       // (logs are not displayed when this is set to 'production')
-      // 
+      //
       // Defaults to development unless this script was fetched from a URL
       // that ends in `*.min.js` or '#production' (may also be manually overridden.)
-      // 
+      //
       environment: urlThisScriptWasFetchedFrom.match(/(\#production|\.min\.js)/g) ? 'production' : 'development'
     };
 
@@ -3910,13 +3916,13 @@ if (typeof define === "function" && define.amd) {
 
 
     // io.socket
-    // 
+    //
     // The eager instance of Socket which will automatically try to connect
     // using the host that this js file was served from.
-    // 
+    //
     // This can be disabled or configured by setting `io.socket.options` within the
     // first cycle of the event loop.
-    // 
+    //
 
     // In the mean time, this eager socket will be defined as a TmpSocket
     // so that events bound by the user before the first cycle of the event

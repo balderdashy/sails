@@ -67,25 +67,23 @@ describe('Request hook', function (){
       sails.request(ROUTEADDRESS+'?foo=hi');
     });
 
-    it('should redirect and use req.flash to store error in session if `redirectTo` is specified', function (done) {
+    it('should redirect if `redirectTo` is specified', function (done) {
       var ROUTEADDRESS = '/req_validate2';
-      var fakeSession = {};
       sails.router.bind(ROUTEADDRESS, function (req, res, next) {
         req.validate({
           bar: 'string'
         }, '/somewhereElse');
         return res.send(200);
-      })
-      .emit('router:request', {
+      });
+
+      sails.emit('router:request', {
         url: ROUTEADDRESS,
         query: {
           foo: 'hi'
-        },
-        session: fakeSession
+        }
       }, {
         redirect: function fakeRedirect (dest) {
           assert(dest === '/somewhereElse');
-          assert(fakeSession.flash.error);
           return done();
         }
       });
