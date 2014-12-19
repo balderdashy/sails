@@ -6,8 +6,6 @@ var socketHelper = require('./helpers/socketHelper.js');
 var appHelper = require('./helpers/appHelper');
 var httpHelper = require('./helpers/httpHelper');
 var util = require('util');
-var io = require('sails.io.js')(require('socket.io-client'));
-io.sails.environment = "production";
 /**
  * Errors
  */
