@@ -1,7 +1,7 @@
 {
   "name": "sails",
   "author": "Mike McNeil <@mikermcneil>",
-  "version": "0.11.0-rc1",
+  "version": "0.11.0-rc2",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
   "homepage": "http://sailsjs.org",
   "keywords": [
@@ -94,8 +94,7 @@
     "mocha": "~1.17.1",
     "portfinder": "~0.2.1",
     "coffee-script": "~1.7.1",
-    "socket.io-client": "^1.2.1",
-    "sails.io.js": "^0.11.0"
+    "socket.io-client": "^1.2.1"
   },
   "repository": {
     "type": "git",

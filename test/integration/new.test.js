@@ -46,7 +46,7 @@ describe('New app generator', function() {
 		it('should create new, liftable app in new folder', function(done) {
 			exec(sailsbin + ' new ' + appName, function(err) {
 				if (err) { return done(new Error(err)); }
-				appHelper.lift({log:{level:'silent'}}, function(err, sailsprocess) {
+				appHelper.lift({log:{level:'silent'}}, function(err, sailsprocess) {					
 					if (err) {return done(err);}
 					sailsprocess.once('hook:http:listening', function(){sailsprocess.kill(done);});
 					// sailsprocess.kill(done);
@@ -71,20 +71,8 @@ describe('New app generator', function() {
 
 	describe('sails generate new <appname>', function() {
 
-    // Workaround for issue where sails-generate tries to load
-    // sails/node_modules/sails.io.js as the sails.io.js generator
-    before(function() {
-      fs.mkdirSync("_test");
-      process.chdir("_test");
-    });
-
-    after(function() {
-      process.chdir("..");
-      wrench.rmdirSyncRecursive("_test");
-    });
-
 		it('should create new app', function(done) {
-			exec("../" + sailsbin + ' generate new ' + appName, function(err) {
+			exec(sailsbin + ' generate new ' + appName, function(err) {
 				if (err) { return done(new Error(err)); }
 				appHelper.lift({log:{level:'silent'}}, function(err, sailsprocess) {
 					if (err) {return done(err);}
@@ -98,7 +86,7 @@ describe('New app generator', function() {
 				if (err) { return done(new Error(err)); }
 				exec('touch '+appName+'/test', function(err) {
 					if (err) { return done(new Error(err)); }
-					exec("../" + sailsbin + ' generate new ' + appName, function(err, dumb, result) {
+					exec(sailsbin + ' generate new ' + appName, function(err, dumb, result) {
 						assert.notEqual(result.indexOf('error'), -1);
 						done();
 					});
