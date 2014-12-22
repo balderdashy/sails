@@ -43,7 +43,7 @@ describe('Pubsub hook', function (){
         globals: false,
         port: 1535,
         models: { migrate: 'safe' },
-        log: {level: 'warn'},
+        log: {level: 'silent'},
         loadHooks: ['moduleloader','userconfig','orm', 'http', 'sockets', 'pubsub'],
         routes: {
           'PUT /dock/:id/subscribe': function (req, res){
@@ -148,7 +148,7 @@ describe('Pubsub hook', function (){
       });
     });
 
-    describe('invoked with the entire child record', function (){
+    describe('invoked with an object representing the child record', function (){
 
       // Lenny triggers publishAdd with an entire vessel object
       before(function (done){
@@ -170,6 +170,35 @@ describe('Pubsub hook', function (){
           assert.equal(socket._receivedDockEvents[1].id, 1);
           assert.equal(socket._receivedDockEvents[1].addedId, 52);
           assert.equal(socket._receivedDockEvents[1].added.id, 52);
+          assert.equal(socket._receivedDockEvents[1].added.name, 'The Silver Goose');
+        });
+      });
+    });
+
+    describe('invoked with an object representing the child record, but missing the primary key value', function (){
+
+      // Larry triggers publishAdd with a vessel object with no PK value
+      before(function (done){
+        clientSocks.larry.post('/dock/1/addVessel', {
+          vessel: {
+            name: 'The Silver Goose'
+          }
+        }, function (body, jwr){
+          if (jwr.error) return done(jwr.error);
+          //
+          // NOTE:
+          // publishAdd does not currently throw an error, in keeping with
+          // the approach taken by the other methods there.
+          //
+          // This could be changed in the future.
+          //
+          return done();
+        });
+      });
+
+      it('should NOT notify any of the client sockets subscribed to parent record', function (){
+        _.each(clientSocks, function (socket, key) {
+          assert.equal(socket._receivedDockEvents.length, 2);
         });
       });
     });
