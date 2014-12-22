@@ -3,7 +3,7 @@ module.exports = {
 		level: 'silent'
 	},
 	sockets: {
-		authorization: false
+    beforeConnect: false
 	},
 	views: {
     locals: {
