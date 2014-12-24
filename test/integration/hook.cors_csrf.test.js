@@ -132,7 +132,7 @@ describe('CORS and CSRF ::', function() {
             },
           }, function(err, response) {
             if (err) return done(new Error(err));
-            assert.equal(response.statusCode, 200);
+            assert.equal(response.statusCode, 204);
             assert.equal(response.headers['access-control-allow-origin'], '');
             assert.equal(response.headers['access-control-allow-methods'], '');
             done();
