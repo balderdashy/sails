@@ -1,7 +1,7 @@
 {
   "name": "sails",
   "author": "Mike McNeil <@mikermcneil>",
-  "version": "0.11.0-rc3",
+  "version": "0.11.0-rc4",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
   "homepage": "http://sailsjs.org",
   "keywords": [
