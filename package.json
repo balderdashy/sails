@@ -71,7 +71,7 @@
     "sails-build-dictionary": "~0.10.1",
     "sails-disk": "~0.10.0",
     "sails-generate": "~0.12.0",
-    "sails-hook-sockets": "^0.11.8",
+    "sails-hook-sockets": "^0.11.13",
     "sails-stringfile": "~0.3.0",
     "sails-util": "~0.10.3",
     "semver": "~2.2.1",
