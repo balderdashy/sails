@@ -2,6 +2,16 @@
 
 ### master
 
+* [ENHANCEMENT] Support layout for Ractive template engine
+
+
+### 0.11.0
+
+* [ENHANCEMENT] Pull out the `sockets` hook to its own repository
+* [ENHANCEMENT] New way to load hooks
+* [ENHANCEMENT] Pull out `sails.io`.js to its own generator
+* [UPGRADE] Update `sails.io.js` for the latest version of the sockets hook
+* [UPGRADE] Upgrade from Socket.IO 0.9.17 to 1.2.1
 * [ENHANCEMENT] Support partials and layout with Handlebars for the `backend` generator
 * [BUGFIX] Blueprint creation returns 201 status code instead of 200
 * [BUGFIX] `ractive.toHTML()` replaces `ractive.renderHTML()` for Ractive template engine
@@ -16,6 +26,7 @@
 * [ENHANCEMENT] Allow hooks to be installed in node_modules and dynamic changing of hook name
 * [ENHANCEMENT] Checking npm-version on install
 * [ENHANCEMENT] Updated "skipAssets" regex to ignore query string
+
 
 ### 0.10.5
 
