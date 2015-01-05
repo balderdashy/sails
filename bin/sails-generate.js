@@ -43,8 +43,7 @@ module.exports = function() {
   // Pass the original CLI arguments down to the generator
   // (but first, remove commander's extra argument)
   // (also peel off the `generatorType` arg)
-  var cliArguments = Array.prototype.slice.call(arguments);
-  cliArguments.pop();
+  var cliArguments = _.initial(arguments);
   scope.generatorType = cliArguments.shift();
   scope.args = cliArguments;
 

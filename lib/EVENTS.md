@@ -106,7 +106,7 @@ Called when a route is unbound.
 
 ### Runtime
 
-> NOTE: these event should only be relied on by attached servers without their own routers, or when a hook
+> NOTE: these events should only be relied on by attached servers without their own routers, or when a hook
 > implementation prefers to use the built-in Sails router.
 >
 > The optimal behavior for the http hook implemented on Express, for instance, is to listen to `router:bind`

@@ -8,7 +8,7 @@ var spawn = require('child_process').spawn;
 // Make existsSync not crash on older versions of Node
 fs.existsSync = fs.existsSync || require('path').existsSync;
 
-describe('Starting sails server with lift', function() {
+describe('Running sails www', function() {
 	var sailsBin = './bin/sails.js';
 	var appName = 'testApp';
 	var sailsServer;
@@ -43,18 +43,21 @@ describe('Starting sails server with lift', function() {
 
 	});
 
-	describe('in an sails app directory', function() {
+	describe('in a sails app directory', function() {
 
 		it('should start server without error', function(done) {
 
 			exec(sailsBin + ' new ' + appName, function(err) {
 				if (err) done(new Error(err));
-
 				// Move into app directory
 				process.chdir(appName);
 				sailsBin = '.' + sailsBin;
 
 				sailsServer = spawn(sailsBin, ['www']);
+
+        sailsServer.stderr.on('data', function (data) {
+          return done(data);
+        });
 
 				sailsServer.stdout.on('data', function(data) {
 					var dataString = data + '';
