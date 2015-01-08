@@ -51,3 +51,4 @@ The backlog consists of features which are not currently in the immediate-term r
  SPDY protocol support                           | [@mikermcneil](https://github.com/mikermcneil)     | https://github.com/balderdashy/sails/issues/80
  Sockets hook: drop-in Primus alternative        | [@alejandroiglesias](https://github.com/alejandroiglesias) | https://github.com/balderdashy/sails/issues/945
  Have a `sails migrate` or `sails create-db` command | [@globegitter](https://github.com/Globegitter) | For production environments it would be nice to have a save/secure command that creates the db automatically for you
+ Define global hook timeout config | [@japel] | Add a configurable global timeout for hooks, rather than having to specify timeouts for each hook individually | 
