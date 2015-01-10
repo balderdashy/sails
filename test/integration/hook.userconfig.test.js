@@ -15,7 +15,7 @@ describe('hooks :: ', function() {
 
   var sailsprocess;
 
-  describe.only('userconfig hook', function() {
+  describe('userconfig hook', function() {
     var appName = 'testApp';
 
       before(function(done) {
