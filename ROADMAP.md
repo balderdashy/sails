@@ -38,6 +38,8 @@ _(feel free to suggest things)_
  Standalone static middleware                             | [@mikermcneil](https://github.com/mikermcneil)                                   | use static middleware directly in `lib/router` (enables static files over sockets)
  Request interpreter: Full stream support                 | [@mikermcneil](https://github.com/mikermcneil)                                   | Use new manufactured req/res streams in lib/hooks/sockets (this adds full streams2 compatibility to our socket.io integration, or more generally for any type of attached server)
  Break out core hooks into separate modules               | [@mikermcneil](https://github.com/mikermcneil)                                   | Makes Sails more composable, and removes most of its dependencies in core. Also allows for easier sharing of responsibility w/ the community, controls issue flow
+  ~~Support for multiple blueprint prefixes~~         | ~~[@mnaughto](https://github.com/konstantinzolotarev)~~           | ~~https://github.com/balderdashy/sails/issues/2031~~ *Thanks [@konstantinzolotarev](konstantinzolotarev)!*
+
 
 
 #### Backlog
@@ -47,8 +49,7 @@ The backlog consists of features which are not currently in the immediate-term r
  Feature                                         | Owner                                              | Details
  :---------------------------------------------- | :------------------------------------------------- | :------
  Watch+reload controllers, models, etc. w/o re-lifting  | [@jbielick](https://github.com/jbielick)    | Reload controllers/models/config/services/etc. without restarting the server. Show a "rebuilding" page while re-bootstrapping.
- Support for multiple blueprint prefixes         | [@mnaughto](https://github.com/konstantinzolotarev)           | https://github.com/balderdashy/sails/issues/2031
  SPDY protocol support                           | [@mikermcneil](https://github.com/mikermcneil)     | https://github.com/balderdashy/sails/issues/80
  Sockets hook: drop-in Primus alternative        | [@alejandroiglesias](https://github.com/alejandroiglesias) | https://github.com/balderdashy/sails/issues/945
  Have a `sails migrate` or `sails create-db` command | [@globegitter](https://github.com/Globegitter) | For production environments it would be nice to have a save/secure command that creates the db automatically for you
- Define global hook timeout config | [@japel] | Add a configurable global timeout for hooks, rather than having to specify timeouts for each hook individually | 
+ Define global hook timeout config | [@japel](https://github.com/japel) | Add a configurable global timeout for hooks, rather than having to specify timeouts for each hook individually | 
