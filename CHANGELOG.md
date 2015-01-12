@@ -12,6 +12,7 @@
 * [ENHANCEMENT] Pull out `sails.io`.js to its own generator
 * [UPGRADE] Update `sails.io.js` for the latest version of the sockets hook
 * [UPGRADE] Upgrade from Socket.IO 0.9.17 to 1.2.1
+* [FEATURE] Add `restPrefix` setting in addition to `prefix` setting for blueprints for finer control
 * [ENHANCEMENT] Support partials and layout with Handlebars for the `backend` generator
 * [BUGFIX] Blueprint creation returns 201 status code instead of 200
 * [BUGFIX] `ractive.toHTML()` replaces `ractive.renderHTML()` for Ractive template engine
