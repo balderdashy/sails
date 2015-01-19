@@ -116,7 +116,7 @@ Below, you'll find an overview of the modules maintained by the core team and co
 | [sails-riak](https://github.com/balderdashy/sails-riak) | | | Riak |
 | [sails-nedb](https://github.com/balderdashy/sails-riak) | | | NeDB |
 | [sails-parse](https://github.com/tskaggs/sails-parse) | | | Parse |
-
+| [sails-tingo](https://github.com/andyhu/sails-tingo) | | | TingoDB |
 
 
 #### Generators
