@@ -18,6 +18,13 @@ Sails.js is a web framework that makes it easy to build custom, enterprise-grade
 $ sudo npm install sails -g
 ```
 
+> ######New release available
+> The v0.11 release of Sails (with support for Socket.io v1.0) is nearly here.  You can preview the v0.11 upgrading guide [here](http://sailsjs.org/#/documentation/concepts/Upgrading).  To install the beta, run:
+> ```
+> sudo npm install -g sails@beta
+> ```
+
+
 > ######Upgrading from v0.9?
 > Be sure and check out the [v0.10 upgrading guide](http://sailsjs.org/#/documentation/concepts/Upgrading).
 
