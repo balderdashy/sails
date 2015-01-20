@@ -99,7 +99,7 @@ describe('Starting sails server with lift', function() {
 							assert(response.statusCode === 200);
 							sailsServer.kill();
 							process.chdir('../');
-							done();
+							return done();
 						});
 					},1000);
 				}
@@ -129,9 +129,9 @@ describe('Starting sails server with lift', function() {
 			sailsServer.stderr.on('data', function(data) {
 				var dataString = data + '';
 				if (dataString.indexOf('production') !== -1) {
-
-					done();
+					return done();
 				}
+        else return done(new Error('Expected log output to contain "production", but it didnt. Instead got: '+dataString));
 			});
 		});
 
@@ -155,9 +155,9 @@ describe('Starting sails server with lift', function() {
 			sailsServer.stderr.on('data', function(data) {
 				var dataString = data + '';
 				if (dataString.indexOf('development') !== -1) {
-
-					done();
+					return done();
 				}
+        else return done(new Error('Expected log output to have "development" in there, but it didnt. Instead got: '+dataString));
 			});
 		});
 	});
