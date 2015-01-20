@@ -152,6 +152,9 @@ describe('Starting sails server with lift', function() {
 
 			sailsServer = spawn(sailsBin, ['lift', '--dev', '--port=1342']);
 
+      sailsServer.stderr.on('data', function(data) { console.log('DEBUG:',data); });
+      sailsServer.stdout.on('data', function(data) { console.log('DEBUG:', data); });
+
 			sailsServer.stderr.on('data', function(data) {
 				var dataString = data + '';
 				if (dataString.indexOf('development') !== -1) {
