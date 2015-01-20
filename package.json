@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "anchor": "~0.10.0",
-    "async": "~0.2.9",
+    "async": "~0.9.2",
     "captains-log": "~0.11.8",
     "colors": "~0.6.2",
     "commander": "~2.1.0",
