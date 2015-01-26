@@ -75,7 +75,7 @@
     "sails-stringfile": "~0.3.0",
     "sails-util": "~0.10.3",
     "semver": "~2.2.1",
-    "skipper": "~0.5.3",
+    "skipper": "~0.5.5",
     "uid-safe": "^1.0.1",
     "waterline": "~0.10.11"
   },
