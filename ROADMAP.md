@@ -25,8 +25,6 @@ The current build status, immediate-term plans, and future goals of this reposit
 
 Our short-to-medium-term roadmap items, in order of descending priority:
 
-_(feel free to suggest things)_
-
 
  Feature                                                  | Owner                                                                            | Details
  :------------------------------------------------------- | :------------------------------------------------------------------------------- | :------
@@ -42,6 +40,8 @@ _(feel free to suggest things)_
 #### Backlog
 
 The backlog consists of features which are not currently in the immediate-term roadmap above, but are useful.  We would exuberantly accept a pull request implementing any of the items below, so long as it was accompanied with reasonable tests that prove it, and it doesn't break other core functionality.
+
+_(feel free to suggest things)_
 
  Feature                                         | Owner                                              | Details
  :---------------------------------------------- | :------------------------------------------------- | :------
