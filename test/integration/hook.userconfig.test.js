@@ -54,7 +54,7 @@ describe('hooks :: ', function() {
 
         it("should use filenames in subfolders as keys", function(done) {
 
-          Sails().load(dontFlattenConfig: true}, function(err, sails) {
+          Sails().load({dontFlattenConfig: true}, function(err, sails) {
             if (err) return callback(err);
             assert.equal(sails.config.foo, "goo");
             assert.equal(sails.config.bar.foo, "bar");
