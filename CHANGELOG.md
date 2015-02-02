@@ -7,8 +7,9 @@
 
 ### 0.11.0
 
+* [ENHANCEMENT] Allow hooks to be installed in node_modules and dynamic changing of hook name
 * [ENHANCEMENT] Pull out the `sockets` hook to its own repository
-* [ENHANCEMENT] New way to load hooks
+* [ENHANCEMENT] Allow hooks to have individual timeouts, and a global `sails.config.hookTimeout`
 * [ENHANCEMENT] Pull out `sails.io`.js to its own generator
 * [UPGRADE] Update `sails.io.js` for the latest version of the sockets hook
 * [UPGRADE] Upgrade from Socket.IO 0.9.17 to 1.2.1
@@ -24,7 +25,6 @@
 * [ENHANCEMENT] Upgrade express and skipper because of security vulnerabilities
 * [BUGFIX] Fix Sails crashes if Redis goes down [#2277](https://github.com/balderdashy/sails/pull/2277)
 * [BUGFIX] Fix crash when using sessionless requests over WebSockets [#2107](https://github.com/balderdashy/sails/pull/2107)
-* [ENHANCEMENT] Allow hooks to be installed in node_modules and dynamic changing of hook name
 * [ENHANCEMENT] Checking npm-version on install
 * [ENHANCEMENT] Updated "skipAssets" regex to ignore query string
 
