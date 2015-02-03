@@ -24,6 +24,10 @@ describe('hook:sockets :: ', function() {
         silly: false
       }, function(err, sails, _socket1, _socket2) {
         if (err) return done(err);
+
+        if (!_socket1 || !_socket2) {
+          return done(new Error('Failed to connect test sockets'));
+        }
         sailsprocess = sails;
         socket1 = _socket1;
         socket2 = _socket2;
