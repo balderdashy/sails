@@ -2,6 +2,7 @@
 
 ### master
 
+* [ENHANCEMENT] Support CSRF hook route configuration [#2366](https://github.com/balderdashy/sails/issues/2366)
 * [ENHANCEMENT] Support layout for Ractive template engine
 
 
