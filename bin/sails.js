@@ -84,6 +84,20 @@ cmd.unknownOption = NOOP;
 cmd.description('');
 cmd.action(require('./sails-console'));
 
+// some quick aliases (TODO do something more intelligent when we get around to upgrading commander)
+cmd = program.command('consle');
+cmd.unknownOption = NOOP;
+cmd.description('');
+cmd.action(require('./sails-console'));
+cmd = program.command('consloe');
+cmd.unknownOption = NOOP;
+cmd.description('');
+cmd.action(require('./sails-console'));
+cmd = program.command('c');
+cmd.unknownOption = NOOP;
+cmd.description('');
+cmd.action(require('./sails-console'));
+
 
 // $ sails www
 // Compile `assets` directory into a standalone `www` folder.

@@ -16,8 +16,8 @@ Below, you'll find an overview of the modules maintained by the core team and co
 | [**waterline**](http://github.com/balderdashy/waterline) | [![Build Status](https://travis-ci.org/balderdashy/waterline.png?branch=master)](https://travis-ci.org/balderdashy/waterline) | [![NPM version](https://badge.fury.io/js/waterline.png)](http://badge.fury.io/js/waterline) |
 | [**anchor**](http://github.com/balderdashy/anchor) | [![Build Status](https://travis-ci.org/balderdashy/anchor.png?branch=master)](https://travis-ci.org/balderdashy/anchor) | [![NPM version](https://badge.fury.io/js/anchor.png)](http://badge.fury.io/js/anchor) |
 | [**waterline-criteria**](http://github.com/balderdashy/waterline-criteria) | [![Build Status](https://travis-ci.org/balderdashy/waterline-criteria.png?branch=master)](https://travis-ci.org/balderdashy/waterline-criteria) | [![NPM version](https://badge.fury.io/js/waterline-criteria.png)](http://badge.fury.io/js/waterline-criteria) |
-| [**waterline-errors**](http://github.com/vanetix/waterline-errors) | NEEDS_TRAVIS_SETUP | [![NPM version](https://badge.fury.io/js/waterline-errors.png)](http://badge.fury.io/js/waterline-errors) |
-| [**waterline-schema**](http://github.com/balderdashy/waterline-schema) | NEEDS_TRAVIS_SETUP | [![NPM version](https://badge.fury.io/js/waterline-schema.png)](http://badge.fury.io/js/waterline-schema) |
+| [**waterline-errors**](http://github.com/vanetix/waterline-errors) | [![Build Status](https://travis-ci.org/vanetix/waterline-errors.svg?branch=master)](https://travis-ci.org/vanetix/waterline-errors) | [![NPM version](https://badge.fury.io/js/waterline-errors.png)](http://badge.fury.io/js/waterline-errors) |
+| [**waterline-schema**](http://github.com/balderdashy/waterline-schema) | [![Build Status](https://travis-ci.org/balderdashy/waterline-schema.svg?branch=master)](https://travis-ci.org/balderdashy/waterline-schema) | [![NPM version](https://badge.fury.io/js/waterline-schema.png)](http://badge.fury.io/js/waterline-schema) |
 | [**sails-generate**](http://github.com/balderdashy/sails-generate) | [![Build Status](https://travis-ci.org/balderdashy/sails-generate.png?branch=master)](https://travis-ci.org/balderdashy/sails-generate) | [![NPM version](https://badge.fury.io/js/sails-generate.png)](http://badge.fury.io/js/sails-generate) |
 | [**sails-build-dictionary**](http://github.com/balderdashy/sails-build-dictionary) | N/A | [![NPM version](https://badge.fury.io/js/sails-build-dictionary.png)](http://badge.fury.io/js/sails-build-dictionary) |
 | [**captains-log**](http://github.com/balderdashy/captains-log) | [![Build Status](https://travis-ci.org/balderdashy/captains-log.png?branch=master)](https://travis-ci.org/balderdashy/captains-log) | [![NPM version](https://badge.fury.io/js/captains-log.png)](http://badge.fury.io/js/captains-log) |
@@ -116,7 +116,7 @@ Below, you'll find an overview of the modules maintained by the core team and co
 | [sails-riak](https://github.com/balderdashy/sails-riak) | | | Riak |
 | [sails-nedb](https://github.com/balderdashy/sails-riak) | | | NeDB |
 | [sails-parse](https://github.com/tskaggs/sails-parse) | | | Parse |
-
+| [sails-tingo](https://github.com/andyhu/sails-tingo) | | | TingoDB |
 
 
 #### Generators
