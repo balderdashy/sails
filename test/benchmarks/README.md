@@ -8,7 +8,7 @@ From the root directory of sails:
 $ mocha test/benchmarks
 ```
 
-To get a more detailed report with milisecond timings for each benchmark, run:
+To get a more detailed report with millisecond timings for each benchmark, run:
 
 ```sh
 $ mocha test/benchmarks -v
@@ -30,7 +30,7 @@ Feature-wide benchmarks are the "lowest-hanging fruit", if you will.  We'll spen
 + Pick what you want to test.
 + Whatever you choose does not have to be atomic (see examples above)-- in an ideal world, we would have benchmarks for every single function in our apps, but that is not how things work today.
 + Write a benchmark test that isolates that functionality. (the hard part)
-+ Then see how many miliseconds it takes. (easy)
++ Then see how many milliseconds it takes. (easy)
 
 > **Advice from Felix Geisendörfer ([@felixge](https://github.com/felixge))**
 >
