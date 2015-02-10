@@ -2,6 +2,7 @@
 
 ### master
 
+* [ENHANCEMENT] Blueprints actionUtil::parsePk also checks params for where.id
 * [ENHANCEMENT] Support JSON sorting syntax in blueprints [#2449](https://github.com/balderdashy/sails/issues/2449)
 * [ENHANCEMENT] Support private modules as hooks [#3022](https://github.com/balderdashy/sails/issues/3022)
 * [BUGFIX] Fixed issues with subscribing sockets to new model instances in a clustered environment [#2990](https://github.com/balderdashy/sails/issues/2990), [#3008](https://github.com/balderdashy/sails/issues/3008)
