@@ -2,6 +2,7 @@
 
 ### master
 
+* [BUGFIX] Fix [RangeError: Maximum call stack size exceeded] error in PubSub hook
 * [ENHANCEMENT] Support layout for Ractive template engine
 
 
