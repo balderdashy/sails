@@ -279,14 +279,26 @@ module.exports = function () {
      */
     function getDeploymentArchiveStream () {
       var fs = require('fs');
+      return fs.createReadStream(getPathToDeploymentArchive());
+    }
+
+    /**
+     * @return {String} the absolute path where the .zip deployment archive should live
+     */
+    function getPathToDeploymentArchive (options) {
       var path = require('path');
 
-      var appPath = process.cwd();
-      // TODO: use a specific app path rather than process.cwd()
-      // TODO: load app config and use configured tmp directory
+      options = options || {appPath: process.cwd()};
 
-      return fs.createReadStream(path.resolve('.tmp/deployment.zip'));
+      // TODO: load app config and use configured tmp directory
+      var tmpDir = path.resolve(options.appPath, '.tmp/');
+      // TODO: configurable filename for archive, or use uuid
+      var archiveFilename = 'deployment.zip';
+      var archiveAbsPath = path.resolve(tmpDir, archiveFilename);
+
+      return archiveAbsPath;
     }
+
 
     /**
      * WARNING: unfinished
@@ -303,7 +315,7 @@ module.exports = function () {
 
       // Zip up the specified source files or directories and write a .zip file to disk.
       Zip.unzip({
-        source: inputs,
+        source: inputs.whatever,
         destination: '/Users/mikermcneil/tmp-contents.zip',
       }).exec({
         // An unexpected error occurred.
