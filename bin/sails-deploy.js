@@ -53,11 +53,11 @@ module.exports = function () {
     /* Test: Flow */
 
     // Step 1: Zip local folder
-    
+
     // Step 2: Create Website
-    
+
     // Step 3: Upload zip
-        
+
     // Step 4: Backup, unzip, npm install
 
     /* Helpers */
@@ -242,8 +242,8 @@ module.exports = function () {
                 errorCheck = checkForError(response);
                 if (errorCheck) {
                     return cb(new Error(errorCheck));
-                } 
-                
+                }
+
                 return cb(null, response);
             }
         );
@@ -261,10 +261,59 @@ module.exports = function () {
                 errorCheck = checkForError(response);
                 if (errorCheck) {
                     return cb(new Error(errorCheck));
-                } 
+                }
 
                 return cb(response);
             }
         );
-    };  
+    };
+
+
+
+    /**
+     * ```
+     * getDeploymentArchiveStream().pipe(outs);
+     * ```
+     *
+     * @return {Readable} get the read stream pointing at the deployment.zip file.
+     */
+    function getDeploymentArchiveStream () {
+      var fs = require('fs');
+      var path = require('path');
+
+      var appPath = process.cwd();
+      // TODO: use a specific app path rather than process.cwd()
+      // TODO: load app config and use configured tmp directory
+
+      return fs.createReadStream(path.resolve('.tmp/deployment.zip'));
+    }
+
+    /**
+     * WARNING: unfinished
+     * @param  {[type]} inputs [description]
+     * @param  {[type]} exits  [description]
+     * @return {[type]}        [description]
+     */
+    function zipSailsApp (inputs, exits) {
+
+      var Zip = require('machinepack-zip');
+      var path = require('path');
+
+      var appPath = path.resolve(inputs.dir);
+
+      // Zip up the specified source files or directories and write a .zip file to disk.
+      Zip.unzip({
+        source: inputs,
+        destination: '/Users/mikermcneil/tmp-contents.zip',
+      }).exec({
+        // An unexpected error occurred.
+        error: exits.error,
+        // OK.
+        success: function() {
+          return exits.success();
+        }
+      });
+    }
+
+
 };
