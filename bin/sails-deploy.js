@@ -133,12 +133,12 @@ module.exports = function () {
             return cb(err);
           }
 
-          errorCheck = checkForError(response);
+          errorCheck = checkForError(result);
           if (errorCheck) {
             return cb(new Error(errorCheck));
           }
 
-          cb(null, response);
+          cb(null, result);
         }));
     });
   };
@@ -147,11 +147,11 @@ module.exports = function () {
     var targetUrl, auth, errorCheck;
 
     if (!options || !options.website) {
-      return cb(new Error('No website given'));
+      return cb(new Error('Upload Webjob: No website given'));
     } else if (!fileStream) {
-      return cb(new Error('No filestream given!'));
+      return cb(new Error('Upload Webjob: No filestream given!'));
     } else if (!options.name) {
-      return cb(new Error('No name given!'));
+      return cb(new Error('Upload Webjob: No name given!'));
     }
 
     targetUrl = 'https://' + options.website + '.scm.azurewebsites.net/api/triggeredwebjobs/' + options.name;
@@ -187,8 +187,8 @@ module.exports = function () {
   var triggerWebJob = function (name, options, cb) {
     var targetUrl, errorCheck;
 
-    if (!options || options.website) {
-      return cb(new Error('No website given'));
+    if (!options || !options.website) {
+      return cb(new Error('Trigger Webjob: No website given'));
     }
 
     targetUrl = 'https://' + options.website + '.scm.azurewebsites.net/api/triggeredwebjobs/' + name + '/run',
@@ -215,7 +215,7 @@ module.exports = function () {
     var targetUrl, errorCheck;
 
     if (!name || !options || !options.website) {
-      return cb(new Error('No name or no website given'));
+      return cb(new Error('Get Webjob Info: No name or no website given'));
     }
 
     targetUrl = 'https://' + options.website + '.scm.azurewebsites.net/api/triggeredwebjobs/' + name;
@@ -238,7 +238,7 @@ module.exports = function () {
     );
   };
 
-  var getWebjobLog = function (targetUrl, options, cb) {
+  var getWebjobLog = function (targetUrl, cb) {
     var errorCheck;
 
     request.get(targetUrl, {
@@ -342,14 +342,14 @@ module.exports = function () {
   /* Test: Flow */
 
   var sitename = 'sailsdeploytest',
-    uploadOptions = {
-      website: sitename,
-      path: 'site/temp/sailsdeploy.zip'
-    },
-    webjobOptions = {
-      website: sitename,
-      name: 'sailsdeploy.ps1'
-    };
+      uploadOptions = {
+        website: sitename,
+        path: 'site/temp/sailsdeploy.zip'
+      },
+      webjobOptions = {
+        website: sitename,
+        name: 'sailsdeploy.ps1'
+      };
 
   // Step 1: Zip local folder
 
@@ -364,18 +364,20 @@ module.exports = function () {
     // Step 3: Set Deployment Credentials
     setDeploymentCredentials({}, function (err, response) {
       if (err) {
-        return console.log(err);
+        //return console.log(err);
       }
 
-      // Step 4: Upload Zip
+      config.username = 'slackbotbender';
+      config.password = 'bender123';
 
-      uploadFile(fs.createReadStream('./sails.zip'), uploadOptions, function (err, response) {
+      // Step 4: Upload Zip
+      uploadFile(fs.createReadStream('./bin/sails.zip'), uploadOptions, function (err, response) {
         if (err) {
           return console.log(err);
         }
 
         // Step 5: Backup, unzip, npm install
-        uploadWebJob(fs.createReadStream('./azure/sailsdeploy.ps1'), webjobOptions, function (err, response) {
+        uploadWebJob(fs.createReadStream('./bin/azure/sailsdeploy.ps1'), webjobOptions, function (err, response) {
           if (err) {
             return console.log(err);
           }
@@ -385,33 +387,32 @@ module.exports = function () {
               return console.log(err);
             }
 
-            getWebjobInfo('sailsdeploy.ps1', function (err, response) {
+            getWebjobInfo('sailsdeploy.ps1', webjobOptions, function (err, response) {
               if (err) {
                 return console.log(err);
               }
 
               var responseBody, updaterScriptLog, updaterScriptRunning;
 
-              if (result && result.statusCode === 200) {
-                responseBody = JSON.parse(result.body);
+              if (response && response.statusCode === 200) {
+                responseBody = JSON.parse(response.body);
                 updaterScriptLog = (responseBody.latest_run && responseBody.latest_run.output_url) ? responseBody.latest_run.output_url : '';
                 updaterScriptRunning = (updaterScriptLog) ? true : false;
               } else {
-                return console.log('No 200');
-
-                getWebjobLog(updaterScriptLog, function (err, response) {
-                  if (err) {
-                    return console.log(err);
-                  }
-
-                  console.log(response);
-                })
+                console.log('No 200');
               }
+
+              getWebjobLog(updaterScriptLog, function (err, response) {
+                if (err) {
+                  return console.log(err);
+                }
+
+                console.log(response);
+              })
             });
           });
         });
       })
     })
   });
-
 };
