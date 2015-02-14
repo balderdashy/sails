@@ -405,20 +405,20 @@ module.exports = function () {
               }
 
               // Step 3: Set Deployment Credentials
-              setDeploymentCredentials({}, function (err, response) {
-                if (err) {
-                  // TODO:
-                  // Explain you can't use this if you have multiple admin users users
+              // setDeploymentCredentials({}, function (err, response) {
+                // if (err) {
+                //   // TODO:
+                //   // Explain you can't use this if you have multiple admin users users
 
-                  // Eventually:
-                  // Link to the "Reset deployment credentials button"on Azure dashboard
-                  // 'https://manage.windowsazure.com/@%s.onmicrosoft.com#Workspaces/WebsiteExtension/Website/%s/dashboard', 'opstreeline', 'sailsazuredeploymenttest'
-                  // allow those credentials to be specified as opts
+                //   // Eventually:
+                //   // Link to the "Reset deployment credentials button"on Azure dashboard
+                //   // 'https://manage.windowsazure.com/@%s.onmicrosoft.com#Workspaces/WebsiteExtension/Website/%s/dashboard', 'opstreeline', 'sailsazuredeploymenttest'
+                //   // allow those credentials to be specified as opts
 
-                  console.log('Set deployment credentials response ERROR:', err);
-                  return;
-                  //return console.log(err);
-                }
+                //   console.log('Set deployment credentials response ERROR:', err);
+                //   return;
+                //   //return console.log(err);
+                // }
                 console.log('Set deployment credentials response:  %d body: %s', response.statusCode, response.body);
 
                 // config.username = 'slackbotbender';
@@ -470,7 +470,7 @@ module.exports = function () {
                     });
                   });
                 })
-              })
+              // })
             });
           }
         });

@@ -79,7 +79,7 @@
     "uid-safe": "^1.0.1",
     "waterline": "~0.10.17",
     "machinepack-zip": "^0.2.3",
-    "machinepack-azure": "^0.1.4"
+    "machinepack-azure": "^1.0.0"
   },
   "devDependencies": {
     "azure-cli": "^0.8.14",
