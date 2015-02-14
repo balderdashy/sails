@@ -259,7 +259,87 @@ module.exports = function () {
         );
     };
 
-        /* Test: Flow */
+    /**
+     * ```
+     * getDeploymentArchiveStream().pipe(outs);
+     * ```
+     *
+     * @return {Readable} get the read stream pointing at the deployment.zip file.
+     */
+    function getDeploymentArchiveStream() {
+        var fs = require('fs');
+        return fs.createReadStream(getPathToDeploymentArchive());
+    }
+
+    /**
+     * @return {String} the absolute path where the .zip deployment archive should live
+     */
+    function getPathToDeploymentArchive(options) {
+        var path = require('path');
+
+        options = options || {
+            appPath: process.cwd()
+        };
+
+        // TODO: load app config and use configured tmp directory
+        var tmpDir = path.resolve(options.appPath, '.tmp/');
+        // TODO: configurable filename for archive, or use uuid
+        var archiveFilename = 'deployment.zip';
+        var archiveAbsPath = path.resolve(tmpDir, archiveFilename);
+
+        return archiveAbsPath;
+    }
+
+
+    /**
+     * WARNING: unfinished
+     * @param  {[type]} inputs [description]
+     * @param  {[type]} exits  [description]
+     * @return {[type]}        [description]
+     */
+    function zipSailsApp(inputs, exits) {
+
+        var Zip = require('machinepack-zip');
+        var path = require('path');
+
+        var appPath = path.resolve(process.cwd(), inputs.dir || './');
+
+        // TODO ensure output folder exists
+        // TODO ensure src folders exist??
+
+        // Zip up the specified source files or directories and write a .zip file to disk.
+        Zip.zip({
+            // TODO: get all the things, not just the conventional things
+            sources: [
+                path.resolve(appPath, 'README.md'),
+                path.resolve(appPath, 'app.js'),
+                path.resolve(appPath, '.sailsrc'),
+                path.resolve(appPath, 'tasks'),
+                path.resolve(appPath, 'Gruntfile.js'),
+                path.resolve(appPath, 'package.json'),
+                path.resolve(appPath, 'assets'),
+                path.resolve(appPath, 'views'),
+                path.resolve(appPath, 'config'),
+                path.resolve(appPath, 'api')
+            ],
+            destination: getPathToDeploymentArchive(),
+        }).exec({
+            // An unexpected error occurred.
+            error: exits.error,
+            // OK.
+            success: function () {
+                return exits.success();
+            }
+        });
+    }
+
+    // To test zipping, uncomment:
+    // zipSailsApp({},{
+    //   error: function (err){ console.error('fuck: ',err); },
+    //   success: function (){ console.log('ok!'); }
+    // });
+
+    /* Test: Flow */
 
     var sitename = 'sailsdeploytest',
         uploadOptions = {
@@ -334,4 +414,4 @@ module.exports = function () {
         })
     });
 
-}
+};
