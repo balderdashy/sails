@@ -364,6 +364,13 @@ module.exports = function () {
     // Step 3: Set Deployment Credentials
     setDeploymentCredentials({}, function (err, response) {
       if (err) {
+        // TODO:
+        // Explain you can't use this if you have multiple admin users users
+
+        // Eventually:
+        // Link to the "Reset deployment credentials button"on Azure dashboard
+        // allow those credentials to be specified as opts
+
         //return console.log(err);
       }
 
