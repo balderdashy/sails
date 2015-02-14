@@ -341,86 +341,106 @@ module.exports = function () {
 
   /* Test: Flow */
 
-  var sitename = 'sailsdeploytest',
+  // Step 1: Zip local folder
+
+  var pathToDeploymentArchive = getPathToDeploymentArchive();
+
+  zipSailsApp({},{
+    error: function (err){ console.error('fuck: ',err); },
+    success: function (){
+
+      // TODO: pull this out and make it set by the user
+      var sitename = require(path.resolve('./package.json')).name,
       uploadOptions = {
         website: sitename,
-        path: 'site/temp/sailsdeploy.zip'
+        path: pathToDeploymentArchive
       },
       webjobOptions = {
         website: sitename,
         name: 'sailsdeploy.ps1'
       };
 
-  // Step 1: Zip local folder
-
-  // Step 2: Create Website
-  createWebsite({
-    name: sitename
-  }, function (err, response) {
-    if (err) {
-      return console.log(err);
-    }
-
-    // Step 3: Set Deployment Credentials
-    setDeploymentCredentials({}, function (err, response) {
-      if (err) {
-        // TODO:
-        // Explain you can't use this if you have multiple admin users users
-
-        // Eventually:
-        // Link to the "Reset deployment credentials button"on Azure dashboard
-        // 'https://manage.windowsazure.com/@%s.onmicrosoft.com#Workspaces/WebsiteExtension/Website/%s/dashboard', 'opstreeline', 'sailsazuredeploymenttest'
-        // allow those credentials to be specified as opts
-
-        //return console.log(err);
-      }
-
-      config.username = 'slackbotbender';
-      config.password = 'bender123';
-
-      // Step 4: Upload Zip
-      uploadFile(fs.createReadStream('./bin/sails.zip'), uploadOptions, function (err, response) {
+      // Step 2: Create Website
+      createWebsite({
+        name: sitename
+      }, function (err, response) {
         if (err) {
           return console.log(err);
         }
 
-        // Step 5: Backup, unzip, npm install
-        uploadWebJob(fs.createReadStream('./bin/azure/sailsdeploy.ps1'), webjobOptions, function (err, response) {
+        // Step 3: Set Deployment Credentials
+        setDeploymentCredentials({}, function (err, response) {
           if (err) {
-            return console.log(err);
-          }
+            // TODO:
+            // Explain you can't use this if you have multiple admin users users
 
-          triggerWebJob('sailsdeploy.ps1', webjobOptions, function (err, response) {
+            // Eventually:
+            // Link to the "Reset deployment credentials button"on Azure dashboard
+            // 'https://manage.windowsazure.com/@%s.onmicrosoft.com#Workspaces/WebsiteExtension/Website/%s/dashboard', 'opstreeline', 'sailsazuredeploymenttest'
+            // allow those credentials to be specified as opts
+
+            if (err) {
+              console.log('Set deployment credentials response ERROR:', err);
+              return;
+            }
+            //return console.log(err);
+          }
+          console.log('Set deployment credentials response:  %d body: %s', response.statusCode, response.body);
+
+
+          config.username = 'slackbotbender';
+          config.password = 'bender123';
+
+          // Step 4: Upload Zip
+          uploadFile(fs.createReadStream(pathToDeploymentArchive), uploadOptions, function (err, response) {
             if (err) {
               return console.log(err);
             }
+            console.log('Upload zip file response:  %d body: %s', response.statusCode, response.body);
 
-            getWebjobInfo('sailsdeploy.ps1', webjobOptions, function (err, response) {
+            // Step 5: Backup, unzip, npm install
+            console.log('hey Im trying to get this web job at ',require('path').resolve(__dirname, './azure/sailsdeploy.ps1'));
+            uploadWebJob(fs.createReadStream(path.resolve(__dirname, './azure/sailsdeploy.ps1')), webjobOptions, function (err, response) {
               if (err) {
                 return console.log(err);
               }
+              console.log('Upload web job response:  %d body: %s', response.statusCode, response.body);
 
-              var responseBody, updaterScriptLog, updaterScriptRunning;
-
-              if (response && response.statusCode === 200) {
-                responseBody = JSON.parse(response.body);
-                updaterScriptLog = (responseBody.latest_run && responseBody.latest_run.output_url) ? responseBody.latest_run.output_url : '';
-                updaterScriptRunning = (updaterScriptLog) ? true : false;
-              } else {
-                console.log('No 200');
-              }
-
-              getWebjobLog(updaterScriptLog, function (err, response) {
+              triggerWebJob('sailsdeploy.ps1', webjobOptions, function (err, response) {
                 if (err) {
                   return console.log(err);
                 }
 
-                console.log(response);
-              })
+                getWebjobInfo('sailsdeploy.ps1', webjobOptions, function (err, response) {
+                  if (err) {
+                    return console.log(err);
+                  }
+
+                  var responseBody, updaterScriptLog, updaterScriptRunning;
+
+                  if (response && response.statusCode === 200) {
+                    responseBody = JSON.parse(response.body);
+                    updaterScriptLog = (responseBody.latest_run && responseBody.latest_run.output_url) ? responseBody.latest_run.output_url : '';
+                    updaterScriptRunning = (updaterScriptLog) ? true : false;
+                  } else {
+                    console.log('No 200, got %d and body: %s', response.statusCode, response.body);
+                  }
+
+                  getWebjobLog(updaterScriptLog, function (err, response) {
+                    if (err) {
+                      return console.log(err);
+                    }
+
+                    console.log(response);
+                  })
+                });
+              });
             });
-          });
-        });
-      })
-    })
+          })
+        })
+      });
+    }
   });
+
+
 };
