@@ -50,16 +50,6 @@ function checkForError(response) {
 
 module.exports = function () {
 
-    /* Test: Flow */
-
-    // Step 1: Zip local folder
-    
-    // Step 2: Create Website
-    
-    // Step 3: Upload zip
-        
-    // Step 4: Backup, unzip, npm install
-
     /* Helpers */
 
     var createWebsite = function (options, cb) {
@@ -73,7 +63,7 @@ module.exports = function () {
 
         _.defaults(options, defaults);
 
-        command = 'azure site create --location "' + location + '" "' + name + '"';
+        command = 'azure site create --location "' + options.location + '" "' + options.name + '"';
 
         child_process.exec(command, function (err, stdout) {
 
@@ -122,14 +112,11 @@ module.exports = function () {
     var uploadFile = function (fileStream, options, cb) {
         var targetUrl, auth, errorCheck;
 
-        if (!fileStream || !options.name || !options.website) {
-            cb(new Error('Filestream, website or job name not provided!'));
-        } else if (!config || !config.username || !config.password) {
-            cb(new Error('Azure deployment credentials do not exist!'));
+        if (!fileStream || !options.path || !options.website) {
+            cb(new Error('Filestream, website or file name not provided!'));
         }
 
-        targetUrl = options.website + '/api/vfs/' + options.name;
-
+        targetUrl = 'https://' + options.website + '.scm.azurewebsites.net/api/vfs/' + options.path;
 
         request.del(targetUrl, {
             'auth': config.auth()
@@ -161,13 +148,13 @@ module.exports = function () {
 
         if (!options || !options.website) {
             return cb(new Error('No website given'));
-        } else if (!options.fileStream) {
+        } else if (!fileStream) {
             return cb(new Error('No filestream given!'));
         } else if (!options.name) {
             return cb(new Error('No name given!'));
         }
 
-        targetUrl = options.website + '/api/triggeredwebjobs/' + options.name;
+        targetUrl = 'https://' + options.website + '.scm.azurewebsites.net/api/triggeredwebjobs/' + options.name;
 
         request.del(targetUrl, {
             'auth': config.auth()
@@ -204,24 +191,24 @@ module.exports = function () {
             return cb(new Error('No website given'));
         }
 
-        targetUrl = options.website + '/api/triggeredwebjobs/' + name + '/run',
+        targetUrl = 'https://' + options.website + '.scm.azurewebsites.net/api/triggeredwebjobs/' + name + '/run',
 
-        request.post(targetUrl, {
-                'auth': config.auth()
-            },
-            function (err, response, body) {
-                if (err) {
-                    return cb(err);
+            request.post(targetUrl, {
+                    'auth': config.auth()
+                },
+                function (err, response, body) {
+                    if (err) {
+                        return cb(err);
+                    }
+
+                    errorCheck = checkForError(response);
+                    if (errorCheck) {
+                        return cb(errorCheck);
+                    }
+
+                    return cb(null, errorCheck);
                 }
-
-                errorCheck = checkForError(response);
-                if (errorCheck) {
-                    return cb(errorCheck);
-                }
-
-                return cb(null, errorCheck);
-            }
-        );
+            );
     };
 
     var getWebjobInfo = function (name, options, cb) {
@@ -231,9 +218,11 @@ module.exports = function () {
             return cb(new Error('No name or no website given'));
         }
 
-        targetUrl = options.website + '/api/triggeredwebjobs/' + name;
+        targetUrl = 'https://' + options.website + '.scm.azurewebsites.net/api/triggeredwebjobs/' + name;
 
-        request.get(targetUrl, {'auth': config.auth()},
+        request.get(targetUrl, {
+                'auth': config.auth()
+            },
             function (err, response) {
                 if (err) {
                     return cb(err);
@@ -242,8 +231,8 @@ module.exports = function () {
                 errorCheck = checkForError(response);
                 if (errorCheck) {
                     return cb(new Error(errorCheck));
-                } 
-                
+                }
+
                 return cb(null, response);
             }
         );
@@ -252,7 +241,9 @@ module.exports = function () {
     var getWebjobLog = function (targetUrl, options, cb) {
         var errorCheck;
 
-        request.get(targetUrl, {'auth': config.auth()},
+        request.get(targetUrl, {
+                'auth': config.auth()
+            },
             function (err, response) {
                 if (err) {
                     return cb(err);
@@ -261,10 +252,86 @@ module.exports = function () {
                 errorCheck = checkForError(response);
                 if (errorCheck) {
                     return cb(new Error(errorCheck));
-                } 
+                }
 
                 return cb(response);
             }
         );
-    };  
-};
+    };
+
+        /* Test: Flow */
+
+    var sitename = 'sailsdeploytest',
+        uploadOptions = {
+            website: sitename,
+            path: 'site/temp/sailsdeploy.zip'
+        },
+        webjobOptions = {
+            website: sitename,
+            name: 'sailsdeploy.ps1'
+        };
+
+    // Step 1: Zip local folder
+
+    // Step 2: Create Website
+    createWebsite({
+        name: sitename
+    }, function (err, response) {
+        if (err) {
+            return console.log(err);
+        }
+
+        // Step 3: Set Deployment Credentials
+        setDeploymentCredentials({}, function (err, response) {
+            if (err) {
+                return console.log(err);
+            }
+
+            // Step 4: Upload Zip
+
+            uploadFile(fs.createReadStream('./sails.zip'), uploadOptions, function (err, response) {
+                if (err) {
+                    return console.log(err);
+                }
+
+                // Step 5: Backup, unzip, npm install
+                uploadWebJob(fs.createReadStream('./azure/sailsdeploy.ps1'), webjobOptions, function (err, response) {
+                    if (err) {
+                        return console.log(err);
+                    }
+
+                    triggerWebJob('sailsdeploy.ps1', webjobOptions, function (err, response) {
+                        if (err) {
+                            return console.log(err);
+                        }
+
+                        getWebjobInfo('sailsdeploy.ps1', function (err, response) {
+                            if (err) {
+                                return console.log(err);
+                            }
+
+                            var responseBody, updaterScriptLog, updaterScriptRunning;
+
+                            if (result && result.statusCode === 200) {
+                                responseBody = JSON.parse(result.body);
+                                updaterScriptLog = (responseBody.latest_run && responseBody.latest_run.output_url) ? responseBody.latest_run.output_url : '';
+                                updaterScriptRunning = (updaterScriptLog) ? true : false;
+                            } else {
+                                return console.log('No 200');
+
+                                getWebjobLog(updaterScriptLog, function (err, response) {
+                                    if (err) {
+                                        return console.log(err);
+                                    }
+
+                                    console.log(response);
+                                })
+                            }
+                        });
+                    });
+                });
+            })
+        })
+    });
+
+}
