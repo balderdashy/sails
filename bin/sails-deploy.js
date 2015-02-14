@@ -311,12 +311,27 @@ module.exports = function () {
       var Zip = require('machinepack-zip');
       var path = require('path');
 
-      var appPath = path.resolve(inputs.dir);
+      var appPath = path.resolve(process.cwd(), inputs.dir||'./');
+
+      // TODO ensure output folder exists
+      // TODO ensure src folders exist??
 
       // Zip up the specified source files or directories and write a .zip file to disk.
-      Zip.unzip({
-        source: inputs.whatever,
-        destination: '/Users/mikermcneil/tmp-contents.zip',
+      Zip.zip({
+        // TODO: get all the things, not just the conventional things
+        sources: [
+          path.resolve(appPath, 'README.md'),
+          path.resolve(appPath, 'app.js'),
+          path.resolve(appPath, '.sailsrc'),
+          path.resolve(appPath, 'tasks'),
+          path.resolve(appPath, 'Gruntfile.js'),
+          path.resolve(appPath, 'package.json'),
+          path.resolve(appPath, 'assets'),
+          path.resolve(appPath, 'views'),
+          path.resolve(appPath, 'config'),
+          path.resolve(appPath, 'api')
+        ],
+        destination: getPathToDeploymentArchive(),
       }).exec({
         // An unexpected error occurred.
         error: exits.error,
@@ -326,6 +341,12 @@ module.exports = function () {
         }
       });
     }
+
+    // To test zipping, uncomment:
+    // zipSailsApp({},{
+    //   error: function (err){ console.error('fuck: ',err); },
+    //   success: function (){ console.log('ok!'); }
+    // });
 
 
 };

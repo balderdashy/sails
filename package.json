@@ -78,7 +78,7 @@
     "skipper": "~0.5.5",
     "uid-safe": "^1.0.1",
     "waterline": "~0.10.17",
-    "machinepack-zip": "^0.2.1"
+    "machinepack-zip": "^0.2.3"
   },
   "devDependencies": {
     "azure-cli": "^0.8.14",
