@@ -369,6 +369,7 @@ module.exports = function () {
 
         // Eventually:
         // Link to the "Reset deployment credentials button"on Azure dashboard
+        // 'https://manage.windowsazure.com/@%s.onmicrosoft.com#Workspaces/WebsiteExtension/Website/%s/dashboard', 'opstreeline', 'sailsazuredeploymenttest'
         // allow those credentials to be specified as opts
 
         //return console.log(err);
