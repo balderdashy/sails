@@ -117,7 +117,7 @@ Sails is actively built and maintained by [Balderdash](http://balderdash.co) ([@
 
 ## License
 
-[MIT License](http://sails.mit-license.org/)  Copyright © 2012-2014 Mike McNeil
+[MIT License](http://sails.mit-license.org/)  Copyright © 2012-2015 Mike McNeil
 
 > Sails is built around so many great open-source technologies that it would never have crossed our minds to keep it proprietary.  We owe huge gratitude and props to TJ Holowaychuk ([@visionmedia](https://github.com/visionmedia)) and Guillermo Rauch ([@guille](https://github.com/guille)) for the work they did, as well as the stewards of all the other open-source modules we use.  Sails could never have been developed without your tremendous contributions to the node community.
 
