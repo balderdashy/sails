@@ -33,6 +33,8 @@ module.exports = function () {
   var sitenameCli = (cliArguments.length > 0) ? cliArguments[0] : require(path.resolve('./package.json')).name,
       usernameCli = (cliArguments.length > 1) ? cliArguments[1] : null,
       passwordCli = (cliArguments.length > 2) ? cliArguments[2] : null;
+
+  console.log('Let\'s deploy this sails app! Checking app & environment.');
   
   if (sitenameCli && usernameCli && passwordCli) {
     // All three parameters given, assume that website already exists
@@ -175,6 +177,7 @@ module.exports = function () {
     // (5) Get Latest Webjob Log --------------------------------------------------------
                     var scriptDone = false;
                     var spinner = Spinner();
+                    var retryCounter = 0;
 
                     var spinnerInterval = setInterval(function(){
                         process.stdout.write('\r \033[36mcomputing\033[m ' + spinner.next());
@@ -183,7 +186,13 @@ module.exports = function () {
                     var getLog = function () {
                       Azure.logWebjob(jobOptions).exec({
                         error: function (err) {
-                          console.error('Getting webjob log failed: ', err);
+                          // Retry 5 times before we fail
+                          if (retryCounter <= 5) {
+                            retryCounter = retryCounter + 1;
+                            setTimeout(getLog, 800);
+                          } else {
+                            console.error('Failed to fetch script status');
+                          }
                         },
                         success: function (scriptOutput) {
                           if (scriptOutput.body && scriptOutput.body.indexOf('All done!') > -1) {
