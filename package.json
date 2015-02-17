@@ -85,7 +85,6 @@
     "waterline": "~0.10.17"
   },
   "devDependencies": {
-    "azure-cli": "^0.8.14",
     "benchmark": "~1.0.0",
     "checksum": "~0.1.1",
     "coffee-script": "~1.7.1",
