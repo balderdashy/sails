@@ -1,8 +1,10 @@
 # Create full site backup --------------------------------------
-"Running"
-cd "D:\home\site\wwwroot"
-"Removing old site"
-Remove-Item -Path ./* -Recurse
+"Cleaning folder"
+Get-ChildItem -Path 'D:\home\site\wwwroot' -Recurse |
+Select -ExpandProperty FullName |
+Where {$_ -notlike 'D:\home\site\wwwroot\app_data'} |
+sort length -Descending |
+Remove-Item -Verbose
 
 # Unzip --------------------------------------------------------
 "Unzipping folder"

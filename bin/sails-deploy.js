@@ -78,6 +78,32 @@ module.exports = function () {
             success: function (result) {
               if (result) {
                 console.log('Website already exists in account, moving on...');
+
+                var credentialsLink = 'https://manage.windowsazure.com/#Workspaces/WebsiteExtension/Website/' + sitename + '/dashboard';
+                    credentialsLink = credentialsLink.underline.green;
+                    
+                console.log('You need to use deployment credentials. For security reasons, this step is manual.\n If not known, open ' + credentialsLink + ' and click "Set Deployment Credentials".'.red);
+                prompt.start();
+
+                prompt.get({
+                  properties: {
+                    username: {
+                      description: "What is the deployment username?"
+                    },
+                    password: {
+                      description: "What is the deployment password?"
+                    }
+                  }
+                }, function (err, userInput) {
+                  if (err) {
+                    return console.error('Error prompting for deployment credentials: ', err);
+                  }
+
+                  usernameCli = userInput.username;
+                  passwordCli = userInput.password;
+
+                  return cb();
+                });
               } else {
                 console.log('Website does not exists in account, trying to create...');
                 Azure.createWebsite(createOptions).exec({
@@ -89,7 +115,7 @@ module.exports = function () {
                     credentialsLink = credentialsLink.underline.green;
 
                     console.log('Website ' + sitename + 'created.');
-                    console.log('You need to set deployment credentials. For security reasons, this step is manual.\n Open ' + credentialsLink + ' and click "Set Deployment Credentials".'.red)
+                    console.log('You need to use deployment credentials. For security reasons, this step is manual.\n If not known, open ' + credentialsLink + ' and click "Set Deployment Credentials".'.red);
                     prompt.start();
 
                     prompt.get({
