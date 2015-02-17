@@ -1,0 +1,3 @@
+node_env: production
+loggingEnabled: true
+logDirectory: iisnode
