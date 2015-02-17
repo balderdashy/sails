@@ -14,6 +14,8 @@ var request = require('request');
 var fs = require('fs');
 var Azure = require('machinepack-azure');
 var Spinner = require('node-spinner');
+var log = require('single-line-log').stdout;
+var prompt = require('prompt');
 
 /**
  * `sails deploy [site] [username] [password]`
@@ -27,13 +29,75 @@ module.exports = function () {
   var cliArguments = Array.prototype.slice.call(arguments);
   cliArguments.pop();
 
-  var sitename = (cliArguments.length > 0) ? cliArguments[0] : null,
-      username = (cliArguments.length > 1) ? cliArguments[1] : null,
-      password = (cliArguments.length > 2) ? cliArguments[2] : null;
+  var sitenameCli = (cliArguments.length > 0) ? cliArguments[0] : require(path.resolve('./package.json')).name,
+      usernameCli = (cliArguments.length > 1) ? cliArguments[1] : null,
+      passwordCli = (cliArguments.length > 2) ? cliArguments[2] : null;
   
-  if (sitename && username && password) {
+  if (sitenameCli && usernameCli && passwordCli) {
     // All three parameters given, assume that website already exists
-    
+    deployToSite(sitenameCli, usernameCli, passwordCli);
+  } else if (sitenameCli) {
+    // Only sitename given, check if it exists
+    createSite(sitenameCli, deployToSite)
+  } else {
+    // Something went wrong
+    return console.error('Deployment failed. Usage: sails deploy [sitename] [username] [password]');
+  }
+
+  function createSite(sitename, cb) {
+    Azure.checkActiveSubscription().exec({
+      error: function (err){
+        return console.error('Error checking for active subscription: ', err);
+      },
+      success: function (isActive){
+        (function (next){
+          if (isActive) {
+            return next();
+          }
+
+          Azure.registerAzureAccount({}, {
+            error: function (err) {next(err);},
+            success: function (result) {
+              next();
+            }
+          });
+        })(function afterwards(err){
+          if (err) {
+            return console.error('Error registering Azure account: ', err);
+          }
+
+          var createOptions = sitename ? {name: sitename} : {};
+
+          Azure.existsWebsite(createOptions).exec({
+            error: function (err) {
+              return console.error('Error creating Website: ', err);
+            },
+            success: function (result) {
+              if (result) {
+                console.log('Website already exists in account, moving on...');
+              } else {
+                console.log('Website does not exists in account, trying to create...');
+                Azure.createWebsite(createOptions).exec({
+                  error: function (err) {
+                    return console.error('Error creating Website: ', err);
+                  },
+                  success: function () {
+                    console.log('Website ' + sitename + 'created');
+                  }
+                })
+              }
+            }
+          })
+        });
+      }
+    });
+  }
+
+  function deployToSite(sitename, username, password) {
+    sitename = sitename || sitenameCli;
+    username = username || usernameCli;
+    password = password || passwordCli;
+
     var jobOptions = {
       deploymentUser: username,
       deploymentPassword: password,
@@ -48,7 +112,7 @@ module.exports = function () {
       },
       success: function () { 
         console.error('ZIP package created.');
-    // (1) Upload File ------------------------------------------------------------------
+    // (2) Upload File ------------------------------------------------------------------
         Azure.uploadFile({
           deploymentUser: username,
           deploymentPassword: password,
@@ -61,7 +125,7 @@ module.exports = function () {
           },
           success: function () {
             console.log('Deployment package uploaded');
-    // (2) Upload Webjob ----------------------------------------------------------------  
+    // (3) Upload Webjob ----------------------------------------------------------------  
             Azure.uploadWebjob({
               deploymentUser: username,
               deploymentPassword: password,
@@ -73,14 +137,14 @@ module.exports = function () {
               },
               success: function (result) {
                 console.log('Deployment script uploaded');
-    // (3) Trigger Webjob ---------------------------------------------------------------
+    // (4) Trigger Webjob ---------------------------------------------------------------
                 Azure.triggerWebjob(jobOptions).exec({
                   error: function (err) {
                     console.error('Triggering webjob failed: ', err);
                   },
                   success: function () {
                     console.log('Deployment script started');
-    // (4) Get Latest Webjob Log --------------------------------------------------------
+    // (5) Get Latest Webjob Log --------------------------------------------------------
                     var scriptDone = false;
                     var spinner = Spinner();
 
@@ -99,7 +163,11 @@ module.exports = function () {
                             console.log('The site should be available at ' + sitename + '.azurewebsites.net.');
                             return clearInterval(spinnerInterval);
                           } else {
-                            getLog();
+                            if (scriptOutput.body) {
+                              log(scriptOutput.body);
+                              process.stdout.write('\r \033[36mcomputing\033[m ' + spinner.next());
+                            }
+                            setTimeout(getLog, 400);
                           }
                         }
                       })
@@ -114,55 +182,7 @@ module.exports = function () {
         })
       }
     });
-  } else if (sitename) {
-    // Only sitename given, check if it exists
-  } else {
-    // Nothing given, let's create something!
   }
-
-  // TODO: check if active
-/*  Azure.checkActiveSubscription().exec({
-    error: function (err){
-      console.error('Error', err);
-    },
-    success: function (isActive){
-      (function (next){
-        if (isActive) {
-          return next();
-        }
-
-        Azure.registerAzureAccount({}, {
-          error: function (err) {next(err);},
-          success: function (result) {
-            next();
-          }
-        });
-      })(function afterwards(err){
-        if (err) {
-          console.error('eRROR:',err);
-          return;
-        }
-
-        zipSailsApp({},{
-          error: function (err){ console.error('fuck: ',err); },
-          success: function (){
-
-            // TODO: pull this out and make it set by the user
-            var sitename = require(path.resolve('./package.json')).name,
-            uploadOptions = {
-              website: sitename,
-              path: pathToDeploymentArchive
-            },
-            webjobOptions = {
-              website: sitename,
-              name: 'sailsdeploy.ps1'
-            }
-          }
-        });
-      });
-    }
-  });*/
-
 
   /* Helper Methods */
 
@@ -217,6 +237,10 @@ module.exports = function () {
     Zip.zip({
       // TODO: get all the things, not just the conventional things
       sources: [
+        // Inject Azure Node Config
+        path.resolve(__dirname, './azure/iisnode.yml'),
+        path.resolve(__dirname, './azure/web.config'),
+        // Other Stuff
         path.resolve(appPath, 'README.md'),
         path.resolve(appPath, 'app.js'),
         path.resolve(appPath, '.sailsrc'),

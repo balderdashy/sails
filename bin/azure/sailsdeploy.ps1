@@ -1,6 +1,6 @@
 # Create full site backup --------------------------------------
 "Running"
-cd "D:\home\site\"
+<#cd "D:\home\site\"
 If (Test-Path ./wwwroot-backup/){
     "Removing old backup"
     Remove-Item -Path ./wwwroot-backup -Recurse
@@ -13,7 +13,7 @@ If (Test-Path ./wwwroot-backup/){
 }
 Else {
     "WARNING Backup not created"
-}
+}#>
 
 # Unzip --------------------------------------------------------
 "Unzipping folder"

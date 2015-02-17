@@ -79,6 +79,7 @@
     "sails-util": "~0.10.3",
     "semver": "~2.2.1",
     "simple-spinner": "0.0.2",
+    "single-line-log": "^0.4.1",
     "skipper": "~0.5.5",
     "uid-safe": "^1.0.1",
     "waterline": "~0.10.17"
