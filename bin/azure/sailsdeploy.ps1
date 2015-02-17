@@ -1,5 +1,5 @@
 # Create full site backup --------------------------------------
-
+"Running"
 cd "D:\home\site\"
 If (Test-Path ./wwwroot-backup/){
     "Removing old backup"
@@ -7,7 +7,6 @@ If (Test-Path ./wwwroot-backup/){
 }
 
 "Creating Full Site Backup"
-Stop-Process -processname node
 Rename-Item -path D:\home\site\wwwroot -newName wwwroot-backup
 If (Test-Path ./wwwroot-backup/){
     "Backup done"
@@ -19,18 +18,17 @@ Else {
 # Unzip --------------------------------------------------------
 "Unzipping folder"
 cd "D:\home\site\temp"
-unzip -d D:\home\site\wwwroot sailsdeploy.zip
+unzip -d D:\home\site\wwwroot deployment.zip
 
 # NPM
 cd "D:\home\site\wwwroot"
 "Running npm install (production)"
-Stop-Process -processname node
 npm install --production
 
 # Cleanup ------------------------------------------------------
 "We're done, cleaning up!"
 cd "D:\home\site\temp\"
-Remove-Item -Path ./sailsdeploy.zip
+Remove-Item -Path ./deployment.zip
 
 # Done ---------------------------------------------------------
 "All done!"
