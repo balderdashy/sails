@@ -16,6 +16,7 @@ var Azure = require('machinepack-azure');
 var Spinner = require('node-spinner');
 var log = require('single-line-log').stdout;
 var prompt = require('prompt');
+var colors = require('colors');
 
 /**
  * `sails deploy [site] [username] [password]`
@@ -82,7 +83,32 @@ module.exports = function () {
                     return console.error('Error creating Website: ', err);
                   },
                   success: function () {
-                    console.log('Website ' + sitename + 'created');
+                    var credentialsLink = 'https://manage.windowsazure.com/#Workspaces/WebsiteExtension/Website/' + sitename + '/dashboard';
+                    credentialsLink = credentialsLink.underline.green;
+
+                    console.log('Website ' + sitename + 'created.');
+                    console.log('You need to set deployment credentials. For security reasons, this step is manual.\n Open ' + credentialsLink + ' and click "Set Deployment Credentials".'.red)
+                    prompt.start();
+
+                    prompt.get({
+                      properties: {
+                        username: {
+                          description: "What is the deployment username?"
+                        },
+                        password: {
+                          description: "What is the deployment password?"
+                        }
+                      }
+                    }, function (err, userInput) {
+                      if (err) {
+                        return console.error('Error prompting for deployment credentials: ', err);
+                      }
+
+                      usernameCli = userInput.username;
+                      passwordCli = userInput.password;
+
+                      return cb();
+                    });
                   }
                 })
               }
@@ -104,6 +130,8 @@ module.exports = function () {
       name: 'sailsdeploy.ps1',
       website: sitename
     }
+
+    console.log('Starting Deployment');
 
     // (1) Create ZIP package -----------------------------------------------------------
     zipSailsApp({}, {
