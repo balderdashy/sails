@@ -84,7 +84,7 @@ module.exports = function () {
                     var scriptDone = false;
                     var spinner = Spinner();
 
-                    setInterval(function(){
+                    var spinnerInterval = setInterval(function(){
                         process.stdout.write('\r \033[36mcomputing\033[m ' + spinner.next());
                     }, 250);
 
@@ -97,7 +97,7 @@ module.exports = function () {
                           if (scriptOutput.body && scriptOutput.body.indexOf('All done!') > -1) {
                             console.log('Deployment finished.')
                             console.log('The site should be available at ' + sitename + '.azurewebsites.net.');
-                            return spinner.stop();
+                            return clearInterval(spinnerInterval);
                           } else {
                             getLog();
                           }
