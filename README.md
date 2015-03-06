@@ -89,7 +89,7 @@ Need help or have a question?
 
 - [Tutorials](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#where-do-i-get-help)
 - [Stackoverflow](http://stackoverflow.com/questions/tagged/sails.js)
-- [#sailsjs on Freenode](http://webchat.freenode.net/) (IRC channel)
+- [#sailsjs on Freenode](https://webchat.freenode.net/?channels=sailsjs) (IRC channel)
 - [Professional/Enterprise Options](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#are-there-professional-support-options)
 
 _Please don't use the issue tracker for support/questions._
