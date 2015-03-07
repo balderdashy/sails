@@ -131,6 +131,7 @@ Below, you'll find an overview of the modules maintained by the core team and co
 | [sails-generate-gulpfile](https://github.com/Karnith/sails-generate-gulpfile) |          |
 | [sails-generate-bower-gulp](https://github.com/Karnith/sails-generate-bower-gulp) |          |
 | [sails-generate-angular-gulp](https://github.com/Karnith/sails-generate-angular-gulp) |          |
+| [sails-generate-ember-blueprints](https://github.com/mphasize/sails-generate-ember-blueprints) |          |
 
 
 #### Socket Client SDKs
