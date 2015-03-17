@@ -76,6 +76,13 @@ cmd.description('');
 cmd.usage('[something]');
 cmd.action(require('./sails-generate'));
 
+// $ sails deploy
+cmd = program.command('deploy');
+// cmd.option('--dry');
+cmd.unknownOption = NOOP;
+cmd.description('');
+cmd.usage('');
+cmd.action(require('./sails-deploy'));
 
 
 // $ sails console

@@ -37,7 +37,7 @@ If you need a special event in your hook, you *will* want to namespace it.  For 
 
 In my hook's initialize method, I might have the following:
 
-```javscript
+```javascript
 
 // Wait until all the middleware from this app's controllers have loaded
 sails.after('hook:controllers:loaded', function () {
