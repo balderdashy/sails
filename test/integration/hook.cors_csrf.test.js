@@ -45,6 +45,7 @@ describe('CORS and CSRF ::', function() {
         var routeConfig = {
           'GET /test/find': {controller: 'TestController', action: 'find', cors: false},
           'GET /test/update': {controller: 'TestController', action: 'update', cors: 'http://www.example.com'},
+          'GET /test2': {controller: 'TestController', action: 'find', cors: {'exposeHeaders': 'x-custom-header'}},
           'PUT /test': {controller: 'TestController', action: 'update', cors: 'http://www.example.com'},
           'POST /test': {controller: 'TestController', action: 'create', cors: 'http://www.different.com'},
           'DELETE /test': {controller: 'TestController', action: 'delete', cors: false},
@@ -53,14 +54,14 @@ describe('CORS and CSRF ::', function() {
           'PUT /test2': {controller: 'TestController', action: 'update'},
           'GET /test/patch': {controller: 'TestController', action: 'update', cors: 'http://www.example.com:1338'},
           'GET /test/create': {controller: 'TestController', action: 'create', cors: 'http://www.different.com'},
-          'GET /test/destroy': {controller: 'TestController', action: 'destroy', cors: {origin: 'http://www.example.com', credentials: false}}
+          'GET /test/destroy': {controller: 'TestController', action: 'destroy', cors: {origin: 'http://www.example.com', credentials: false}},
         };
         fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), "module.exports.routes = " + JSON.stringify(routeConfig));
       });
 
       describe('an OPTIONS request with origin "http://www.example.com"', function() {
 
-        it('for a PUT route with {cors: http://example.com} and an Access-Control-Request-Method header set to "PUT" should respond with correct Access-Control-Allow-Origin and Access-Control-Allow-Method headers', function(done) {
+        it('for a PUT route with {cors: http://example.com} and an Access-Control-Request-Method header set to "PUT" should respond with correct Access-Control-Allow-* headers', function(done) {
 
           httpHelper.testRoute('options', {
             url: 'test',
@@ -73,6 +74,7 @@ describe('CORS and CSRF ::', function() {
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
             assert.equal(response.headers['access-control-allow-methods'], 'put');
+            assert.equal(response.headers['access-control-allow-headers'], 'content-type');
             done();
           });
 
@@ -180,7 +182,7 @@ describe('CORS and CSRF ::', function() {
 
       describe('a GET request with origin "http://www.example.com"', function() {
 
-        it('to a route without a CORS config should result in a 200 response with a correct Access-Control-Allow-Origin header', function(done) {
+        it('to a route without a CORS config should result in a 200 response with a correct Access-Control-Allow-Origin and Access-Control-Expose-Headers header', function(done) {
           httpHelper.testRoute('get', {
             url: 'test',
             headers: {
@@ -190,10 +192,25 @@ describe('CORS and CSRF ::', function() {
             if (err) return done(new Error(err));
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
+            assert.equal(response.headers['access-control-expose-headers'], '');
             done();
           });
         });
 
+        it('to a route with "exposeHeaders" configured should result in a 200 response with a correct Access-Control-Allow-Origin and Access-Control-Expose-Headers header', function(done) {
+          httpHelper.testRoute('get', {
+            url: 'test2',
+            headers: {
+              'Origin': 'http://www.example.com'
+            },
+          }, function(err, response) {
+            if (err) return done(new Error(err));
+            assert.equal(response.statusCode, 200);
+            assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
+            assert.equal(response.headers['access-control-expose-headers'], 'x-custom-header');
+            done();
+          });
+        });
         it('to a route configured with {cors: false} should result in a 200 response with an empty Access-Control-Allow-Origin header', function(done) {
           httpHelper.testRoute('get', {
             url: 'test/find',
