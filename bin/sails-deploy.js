@@ -40,7 +40,26 @@ module.exports = function() {
     console.error("Could not require module at path: " + modulePath + ".  Please check the path and try again.");
   }
 
-  module({config: {}}, console.log);
+  try {
+    // Attempt to run the deploy command
+    module({config: {}}, function(err, result) {
+      // If there were any issues, log them to the console.
+      if (err) {
+        console.error("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+        console.error("Deployed failed!  Details below:");
+        console.error("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+        console.error(err);
+      }
+    });
+  }
+  // Chances are we won't catch any errors internal to the deploy command here;
+  // this would probably be an error at the top level of the deploy script.
+  catch(e) {
+    console.error("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+    console.error("Could not run deploy!  Details below:");
+    console.error("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+    console.error(e);
+  }
 
 
 };
