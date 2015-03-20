@@ -8,6 +8,7 @@
   "browser": true,
   "wsh": true,
   "sub": true,
+  "maxlen": 80,
 
   // Suppress warnings about mixed tabs and spaces
   "smarttabs": true,
