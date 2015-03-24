@@ -117,5 +117,3 @@ Sails is actively built and maintained by [Balderdash](http://balderdash.co) ([@
 
 
 ![image_squidhome@2x.png](http://sailsjs.org/images/bkgd_squiddy.png)
-
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/8acf2fc2ca0aca8a3018e355ad776ed7 "githalytics.com")](http://githalytics.com/balderdashy/sails)
