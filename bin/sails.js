@@ -12,6 +12,7 @@ var NOOP = function() {};
 
 
 
+
 program
   .version(package.version, '-v, --version');
 
@@ -151,7 +152,7 @@ cmd.action(program.usageMinusWildcard);
 // Mask the '*' in `help`.
 program
   .command('*')
-  .action(program.usageMinusWildcard);
+  .action(require('./sails-command-hook.js'));
 
 
 
