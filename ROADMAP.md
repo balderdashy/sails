@@ -28,6 +28,7 @@ Our short-to-medium-term roadmap items, in order of descending priority:
 
  Feature                                                  | Owner                                                                            | Details
  :------------------------------------------------------- | :------------------------------------------------------------------------------- | :------
+ Log key configuration info on lift                       | [@mikermcneil](https://github.com/mikermcneil)     | For example, if `config/local.js` is present, log a message explaining that it will be used.  See also https://github.com/dominictarr/rc/issues/23#issuecomment-33875197
  Lock + unlock app in dev env                             | [@mikermcneil](https://github.com/mikermcneil)     | Capability for a hook to "lock" and/or "unlock" the app (in a development env only).  When "locked" all requests are intercepted by an endpoint which responds with either a page or JSON payload communicating a custom message.  e.g. so the grunt hook can let us know as it syncs.  e.g. `sails.emit('lock')`
  Hook dependency/load order mgmt                          | [@mikermcneil](https://github.com/mikermcneil)                                   | rebase the hook dependency+optional depenency system originally proposed by @ragulka
  Standalone router                                        | [@mikermcneil](https://github.com/mikermcneil)                                   | replace express dependency in `lib/router` with standalone router- either routification or @dougwilson's new project.  See https://github.com/balderdashy/sails/pull/2351#issuecomment-71855236 for more information.
@@ -45,7 +46,7 @@ _(feel free to suggest things)_
 
  Feature                                         | Owner                                              | Details
  :---------------------------------------------- | :------------------------------------------------- | :------
- SPDY protocol support                           | [@mikermcneil](https://github.com/mikermcneil)     | https://github.com/balderdashy/sails/issues/80
+ SPDY/HTTP2 protocol support                     | [@mikermcneil](https://github.com/mikermcneil)     | https://github.com/balderdashy/sails/issues/80
  Have a `sails migrate` or `sails create-db` command | [@globegitter](https://github.com/Globegitter) | For production environments it would be nice to have a save/secure command that creates the db automatically for you
  `sails generate test`  | [@jedd-ahyoung](https://github.com/jedd-ahyoung) | Generate *.test.js following [Sails recommended directory structure](http://sailsjs.org/#/documentation/concepts/Testing). Example usage: `sails generate test User:Model` creates prepopulated file '/test/unit/models/UserModel.test.js'. See https://github.com/balderdashy/sails/pull/2499 for discussion |
  Wildcard action policies | [@ProLoser](https://github.com/ProLoser)| Instead of only having one global action policy `'*'` it would be nice if we could define policies for a specific action in all controllers: `'*/destroy': ['isOwner']` or something similar.

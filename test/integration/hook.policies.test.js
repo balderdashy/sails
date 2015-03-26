@@ -306,7 +306,7 @@ describe('router :: ', function() {
     describe('policies added inline to custom routes', function() {
 
       before(function() {
-        var config = 'module.exports.routes = {"get /testPol": [{policy: "error_policy"}]}';
+        var config = 'module.exports.routes = {"get /*": [{policy: "error_policy", skipRegex: /^\\/foo.*$/}], "get /foobar": function(req, res){return res.send("ok!");}}';
         fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), config);
       });
 
@@ -335,6 +335,33 @@ describe('router :: ', function() {
           return done();
         });
       });
+
+      it ('should respect options', function(done) {
+        httpHelper.testRoute('get', {
+          url: 'foobar',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          json: true
+        }, function(err, response) {
+          if (err) return done(err);
+
+          try {
+            // Assert HTTP status code is correct
+            assert.equal(response.statusCode, 200);
+
+            // Assert that response has the proper error message
+            assert.equal(response.body, 'ok!');
+
+          }
+          catch (e) {
+            return done(e);
+          }
+
+          return done();
+        });
+      });
+
 
     });
 

@@ -117,6 +117,7 @@ Below, you'll find an overview of the modules maintained by the core team and co
 | [sails-nedb](https://github.com/balderdashy/sails-riak) | | | NeDB |
 | [sails-parse](https://github.com/tskaggs/sails-parse) | | | Parse |
 | [sails-tingo](https://github.com/andyhu/sails-tingo) | | | TingoDB |
+| [waterline-orientdb](https://github.com/appscot/waterline-orientdb) | [![Build Status](https://travis-ci.org/appscot/waterline-orientdb.svg?branch=master)](https://travis-ci.org/appscot/waterline-orientdb) | [![npm version](https://badge.fury.io/js/waterline-orientdb.svg)](http://badge.fury.io/js/waterline-orientdb) | OrientDB |
 
 
 #### Generators
@@ -131,6 +132,7 @@ Below, you'll find an overview of the modules maintained by the core team and co
 | [sails-generate-gulpfile](https://github.com/Karnith/sails-generate-gulpfile) |          |
 | [sails-generate-bower-gulp](https://github.com/Karnith/sails-generate-bower-gulp) |          |
 | [sails-generate-angular-gulp](https://github.com/Karnith/sails-generate-angular-gulp) |          |
+| [sails-generate-ember-blueprints](https://github.com/mphasize/sails-generate-ember-blueprints) |          |
 
 
 #### Socket Client SDKs
