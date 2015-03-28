@@ -38,7 +38,7 @@ describe('hooks :: ', function() {
 
         it("should merge config options regardless of file structure", function(done) {
 
-          Sails().load({hooks:{grunt:false}}, function(err, sails) {
+          Sails().load(function(err, sails) {
             if (err) return callback(err);
             assert.equal(sails.config.foo, "bar");
             assert.equal(sails.config.abc, 123);
@@ -54,7 +54,7 @@ describe('hooks :: ', function() {
 
         it("should use filenames in subfolders as keys", function(done) {
 
-          Sails().load({hooks:{grunt:false}, dontFlattenConfig: true}, function(err, sails) {
+          Sails().load({dontFlattenConfig: true}, function(err, sails) {
             if (err) return callback(err);
             assert.equal(sails.config.foo, "goo");
             assert.equal(sails.config.bar.foo, "bar");
