@@ -117,7 +117,7 @@ Below, you'll find an overview of the modules maintained by the core team and co
 | [sails-nedb](https://github.com/balderdashy/sails-riak) | | | NeDB |
 | [sails-parse](https://github.com/tskaggs/sails-parse) | | | Parse |
 | [sails-tingo](https://github.com/andyhu/sails-tingo) | | | TingoDB |
-| [waterline-orientdb](https://github.com/appscot/waterline-orientdb) | [![Build Status](https://travis-ci.org/appscot/waterline-orientdb.svg?branch=master)](https://travis-ci.org/appscot/waterline-orientdb) | [![npm version](https://badge.fury.io/js/waterline-orientdb.svg)](http://badge.fury.io/js/waterline-orientdb) | OrientDB |
+| [sails-orientdb](https://github.com/appscot/sails-orientdb) | [![Build Status](https://travis-ci.org/appscot/sails-orientdb.svg?branch=master)](https://travis-ci.org/appscot/sails-orientdb) | [![npm version](https://badge.fury.io/js/sails-orientdb.svg)](http://badge.fury.io/js/sails-orientdb) | OrientDB |
 
 
 #### Generators
