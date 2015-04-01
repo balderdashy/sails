@@ -88,7 +88,7 @@ describe('CORS and CSRF ::', function() {
             if (err) return done(new Error(err));
             body = response.body.split(',').sort().join(',');
             assert.equal(response.statusCode, 200);
-            assert.equal(body, 'CHECKOUT,CONNECT,COPY,DELETE,GET,HEAD,LOCK,M-SEARCH,MERGE,MKACTIVITY,MKCOL,MOVE,NOTIFY,PATCH,POST,PROPFIND,PROPPATCH,PURGE,PUT,REPORT,SEARCH,SUBSCRIBE,TRACE,UNLOCK,UNSUBSCRIBE', require('util').format('Unexpected HTTP methods:  "%s"', response.body));
+            assert.equal(response.body, 'CHECKOUT,CONNECT,COPY,DELETE,GET,HEAD,LOCK,M-SEARCH,MERGE,MKACTIVITY,MKCOL,MOVE,NOTIFY,PATCH,POST,PROPFIND,PROPPATCH,PURGE,PUT,REPORT,SEARCH,SUBSCRIBE,TRACE,UNLOCK,UNSUBSCRIBE', require('util').format('Unexpected HTTP methods:  "%s"', response.body));
             done();
           });
 
