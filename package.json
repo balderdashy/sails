@@ -87,7 +87,6 @@
     "wrench": "~1.5.8",
     "benchmark": "~1.0.0",
     "microtime": "~1.2.0",
-    "colors": "~1.0.3",
     "expect.js": "~0.3.1",
     "should": "~5.2.0",
     "supertest": "~0.15.0",
