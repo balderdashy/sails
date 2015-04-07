@@ -86,7 +86,7 @@
     "istanbul": "*",
     "wrench": "~1.5.1",
     "benchmark": "~1.0.0",
-    "microtime": "~0.6.0",
+    "microtime": "~1.2.0",
     "colors": "~0.6.2",
     "expect.js": "~0.2.0",
     "should": "~2.1.1",
