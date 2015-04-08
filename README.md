@@ -66,37 +66,32 @@ The ORM, [Waterline](https://github.com/balderdashy/waterline), has a well-defin
 
 
 ## Issue Submission
-Make sure you've read the [issue submission guidelines](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#opening-issues) before opening a new issue.
+Please read the [issue submission guidelines](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#opening-issues) before opening a new issue.
 
-Sails is composed of a [number of different sub-projects](https://github.com/balderdashy/sails/blob/master/MODULES.md), many of which have [their own dedicated repository](https://github.com/search?q=sails+user%3Amikermcneil+user%3Abalderdashy+user%3Aparticlebanana&type=Repositories&ref=advsearch&l=). If you suspect an issue in one of Sails sub-modules, you'll usually find its repo on the [organization](https://github.com/balderdashy) page.  Click [here](https://github.com/balderdashy/sails/search?q=&type=Issues) to search/post issues in this repository.
+Sails is composed of a [number of different sub-projects](https://github.com/balderdashy/sails/blob/master/MODULES.md), many of which have their own dedicated repository. If you suspect an issue in one of Sails sub-modules, you can find its repo on the [organization](https://github.com/balderdashy) page.  Click [here](https://github.com/balderdashy/sails/search?q=&type=Issues) to search/post issues in this repository.
 
 ## Feature Requests
-See the [Trello board](https://trello.com/b/cGzNVE0b/sails-js-feature-requests) to view/discuss our roadmap and [request features](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#requesting-features).
+Feel free to submit ideas for a new feature in the sails.js [issue tracker](https://github.com/balderdashy/sails/search?q=&type=Issues).
 
 ## Contribute
-See the [contribution guide](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md).
+We love pull requests! See the [contribution guide](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md) to get started.
 
 
 ## Support
 Need help or have a question?
 
 - [Tutorials](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#where-do-i-get-help)
-- [Stackoverflow](http://stackoverflow.com/questions/tagged/sails.js)
-- [#sailsjs on Freenode](https://webchat.freenode.net/?channels=sailsjs) (IRC channel)
+- [StackOverflow](http://stackoverflow.com/questions/tagged/sails.js)
+- [Gitter Chat Room](https://gitter.im/balderdashy/sails)
 - [Professional/Enterprise Options](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#are-there-professional-support-options)
-
-_Please don't use the issue tracker for support/questions._
 
 ## Links
 - [Website](http://sailsjs.org/)
 - [Official Documentation](http://sailsjs.org/#!documentation)
 - [Changelog](https://github.com/balderdashy/sails-docs/blob/0.9/changelog.md)
 - [Roadmap](https://github.com/balderdashy/sails-wiki/blob/0.9/roadmap.md)
-- [Google Group](https://groups.google.com/forum/?fromgroups#!forum/sailsjs)
 - [Twitter](https://twitter.com/sailsjs)
 - [SailsCasts](http://irlnathan.github.io/sailscasts/)
-
-
 
 ## Team
 Sails is actively built and maintained by [Balderdash](http://balderdash.co) ([@balderdashy](http://twitter.com/balderdashy)), a realtime web & mobile studio, with the help of these [contributors](https://github.com/balderdashy/sails/graphs/contributors):
