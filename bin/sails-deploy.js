@@ -42,7 +42,7 @@ module.exports = function() {
 
   try {
     // Attempt to run the deploy command
-    module({config: {}}, function(err, result) {
+    module({config: rconf}, function(err, result) {
       // If there were any issues, log them to the console.
       if (err) {
         console.error("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
