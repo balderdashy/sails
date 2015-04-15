@@ -7,7 +7,9 @@
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/balderdashy/sails?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
-Sails.js is a web framework that makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development. It's especially good for building realtime features like chat.
+Sails.js is a web framework that makes it easy to build customize enterprise-grade Node.js applications. 
+
+It is designed to resemble the MVC architecture from frameworks like Ruby on Rails. But also to support a more modern data-oriented style of web app development. It's especially good for building realtime features like chat.
 
 
 ## Installation &nbsp;  [![NPM version](https://badge.fury.io/js/sails.svg)](http://badge.fury.io/js/sails)
@@ -48,10 +50,10 @@ $ sails lift
 
 Sails is built on [Node.js](http://nodejs.org/), [Connect](http://www.senchalabs.org/connect/), [Express](http://expressjs.com/), and [Socket.io](http://socket.io/).
 
-Sails [controllers](http://sailsjs.org/#!documentation/controllers) are compatible with Connect middleware, so in most cases, you can paste code into Sails from an existing Express project and everything will work-- plus you'll be able to use WebSockets to talk to your API, and vice versa.
+Sails [controllers](http://sailsjs.org/#!documentation/controllers) are compatible with Connect middleware. In most cases you can paste code into Sails from an existing Express project and everything will work. Plus you'll be able to use WebSockets to talk to your API, and vice versa.
 
 
-The ORM, [Waterline](https://github.com/balderdashy/waterline), has a well-defined adapter system for supporting all kinds of datastores.  Officially supported databases include [MySQL](https://github.com/balderdashy/sails-mysql), [PostgreSQL](https://github.com/balderdashy/sails-postgresql), [MongoDB](https://github.com/balderdashy/sails-mongo), [Redis](https://github.com/balderdashy/sails-redis), local [disk](https://github.com/balderdashy/sails-disk), and local [memory](https://github.com/balderdashy/sails-memory).  [Community adapters](https://github.com/balderdashy/sails-docs/blob/master/intro-to-custom-adapters.md#notable-community-adapters) exist for [CouchDB](https://github.com/search?q=sails+couch&nwo=codeswarm%2Fsails-couchdb-orm&search_target=global&ref=cmdform), [neDB](https://github.com/adityamukho/sails-nedb), [TingoDB](https://github.com/andyhu/sails-tingo), [SQLite](https://github.com/AndrewJo/sails-sqlite3/tree/0.10), [Oracle](https://github.com/search?q=sails+oracle&type=Repositories&ref=searchresults), [MSSQL](https://github.com/cnect/sails-mssql), [DB2](https://github.com/search?q=sails+db2&type=Repositories&ref=searchresults), [ElasticSearch](https://github.com/search?q=%28elasticsearch+AND+sails%29+OR+%28elasticsearch+AND+waterline%29+&type=Repositories&ref=searchresults), [Riak](https://github.com/search?q=sails+riak&type=Repositories&ref=searchresults),
+Sails uses [Waterline](https://github.com/balderdashy/waterline) as an ORM. Officially supported databases include [MySQL](https://github.com/balderdashy/sails-mysql), [PostgreSQL](https://github.com/balderdashy/sails-postgresql), [MongoDB](https://github.com/balderdashy/sails-mongo), [Redis](https://github.com/balderdashy/sails-redis), local [disk](https://github.com/balderdashy/sails-disk), and local [memory](https://github.com/balderdashy/sails-memory).  [Community adapters](https://github.com/balderdashy/sails-docs/blob/master/intro-to-custom-adapters.md#notable-community-adapters) exist for [CouchDB](https://github.com/search?q=sails+couch&nwo=codeswarm%2Fsails-couchdb-orm&search_target=global&ref=cmdform), [neDB](https://github.com/adityamukho/sails-nedb), [TingoDB](https://github.com/andyhu/sails-tingo), [SQLite](https://github.com/AndrewJo/sails-sqlite3/tree/0.10), [Oracle](https://github.com/search?q=sails+oracle&type=Repositories&ref=searchresults), [MSSQL](https://github.com/cnect/sails-mssql), [DB2](https://github.com/search?q=sails+db2&type=Repositories&ref=searchresults), [ElasticSearch](https://github.com/search?q=%28elasticsearch+AND+sails%29+OR+%28elasticsearch+AND+waterline%29+&type=Repositories&ref=searchresults), [Riak](https://github.com/search?q=sails+riak&type=Repositories&ref=searchresults),
 [neo4j](https://www.npmjs.org/package/sails-neo4j), [OrientDB](https://github.com/appscot/sails-orientdb),
 [Amazon RDS](https://github.com/TakenPilot/sails-rds), [DynamoDB](https://github.com/TakenPilot/sails-dynamodb), [Azure Tables](https://github.com/azuqua/sails-azuretables), and [RethinkDB](https://github.com/search?q=%28%28sails+rethinkdb+in%3Aname%29+OR+%28waterline+rethinkdb+in%3Aname%29%29&type=Repositories&ref=searchresults); for various 3rd-party REST APIs like Quickbooks, Yelp, and Twitter, including a configurable generic [REST API adapter](https://github.com/zohararad/sails-rest); plus some [eclectic projects](https://www.youtube.com/watch?v=OmcQZD_LIAE).
 
@@ -68,7 +70,7 @@ The ORM, [Waterline](https://github.com/balderdashy/waterline), has a well-defin
 ## Issue Submission
 Make sure you've read the [issue submission guidelines](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#opening-issues) before opening a new issue.
 
-Sails is composed of a [number of different sub-projects](https://github.com/balderdashy/sails/blob/master/MODULES.md), many of which have [their own dedicated repository](https://github.com/search?q=sails+user%3Amikermcneil+user%3Abalderdashy+user%3Aparticlebanana&type=Repositories&ref=advsearch&l=). If you suspect an issue in one of Sails sub-modules, you'll usually find its repo on the [organization](https://github.com/balderdashy) page.  Click [here](https://github.com/balderdashy/sails/search?q=&type=Issues) to search/post issues in this repository.
+Sails is composed of a [number of different sub-projects](https://github.com/balderdashy/sails/blob/master/MODULES.md). Many of these projects have [their own dedicated repository](https://github.com/search?q=sails+user%3Amikermcneil+user%3Abalderdashy+user%3Aparticlebanana&type=Repositories&ref=advsearch&l=). If you suspect an issue in one of Sails sub-modules you'll usually find its repo on the [organization](https://github.com/balderdashy) page.  Click [here](https://github.com/balderdashy/sails/search?q=&type=Issues) to search/post issues in this repository.
 
 ## Feature Requests
 See the [Trello board](https://trello.com/b/cGzNVE0b/sails-js-feature-requests) to view/discuss our roadmap and [request features](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#requesting-features).
@@ -105,7 +107,7 @@ Sails is actively built and maintained by [Balderdash](http://balderdash.co) ([@
 :---:|:---:|:---:|:---:|:---:
 [Mike McNeil](http://michaelmcneil.com) | [Cody Stoltman](https://github.com/particlebanana) | [Scott Gress](https://github.com/sgress454) | [Irl Nathan](https://github.com/irlnathan) | [Rachael Shaw](https://github.com/rachaelshaw)
 
-[Balderdash](http://balderdash.co) designs/builds scalable Node.js apps for startups and enterprise customers.  After building a few apps and taking them into production, we realized that the Node.js development landscape was very much still the Wild West.  Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  [I](http://twitter.com/mikermcneil) hope it saves you some time :)
+[Balderdash](http://balderdash.co) designs/builds scalable Node.js apps for startups and enterprise customers.  After building a few apps and taking them into production we realized that the Node.js development landscape was very much still the Wild West.  After trying lots of different methodologies we decided to crystallize all of our best practices into this framework.  [I](http://twitter.com/mikermcneil) We hope it saves you some time :)
 
 
 ## License
