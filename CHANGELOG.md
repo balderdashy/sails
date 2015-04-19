@@ -9,6 +9,7 @@
 
 ### 0.11.0
 
+* [BUGFIX] Blueprint ignoring defaultLimit from controller's _config
 * [ENHANCEMENT] Allow hooks to be installed in node_modules and dynamic changing of hook name
 * [ENHANCEMENT] Pull out the `sockets` hook to its own repository
 * [ENHANCEMENT] Allow hooks to have individual timeouts, and a global `sails.config.hookTimeout`
