@@ -11,7 +11,7 @@ var CaptainsLog = require('captains-log');
 var Sails = require('../lib/app');
 var rconf = require('../lib/app/configuration/rc');
 var __Grunt = require('../lib/hooks/grunt');
-
+var Err = require('../errors');
 
 /**
  * `sails www`
@@ -23,7 +23,7 @@ module.exports = function() {
   var log = CaptainsLog(rconf.log);
 
   var wwwPath = nodepath.resolve(process.cwd(), './www'),
-    GRUNT_TASK_NAME = 'build';
+    GRUNT_TASK_NAME = 'build',
     GRUNT_TASK_PROD_NAME = 'buildProd';
 
   var sails = Sails();
@@ -36,7 +36,7 @@ module.exports = function() {
     if (err) return Err.fatal.failedToLoadSails(err);
 
     var overrideGruntTask = (sails.config.environment == 'production' ? GRUNT_TASK_PROD_NAME : GRUNT_TASK_NAME)
-  
+
     // Run Grunt task
     var Grunt = __Grunt(sails);
 

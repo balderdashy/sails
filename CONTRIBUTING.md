@@ -39,7 +39,7 @@ When submitting an issue, please follow these simple instructions:
 > New feature requests should be made as pull requests to the `backlog` section of [ROADMAP.MD](https://github.com/balderdashy/sails/blob/master/ROADMAP.md).  We will monitor community discussion on these PRs and if they are wanted by the community/sails devs, they will be merged.  Further discussion is welcome even after a PR has been merged. 
 
 ##### Submitting a new feature request
-1. First, look at the `backlog` table in [ROADMAP.MD](https://github.com/balderdashy/sails/blob/master/ROADMAP.MD) and also search open pull requests in that file to make sure your change hasn't already been proposed.  If it has, join the discussion.
+1. First, look at the `backlog` table in [ROADMAP.MD](https://github.com/balderdashy/sails/blob/master/ROADMAP.md) and also search open pull requests in that file to make sure your change hasn't already been proposed.  If it has, join the discussion.
 2. If it doesn't already exist, create a pull request editing the `backlog` table of [ROADMAP.MD](https://github.com/balderdashy/sails/blob/master/ROADMAP.md).
 3. Start a discussion about why your feature should be built (or better yet, build it).  Get feedback in the #sailjs on IRC.  The more feedback we get from you guys, the better we are able to build the framework of your dreams :boat: 
 
@@ -105,7 +105,8 @@ The custom generator API is very new, and still experimental.  If you are seriou
 1. Fork the repo.
 2. Add a test for your change. Only refactoring and documentation changes require no new tests. If you are adding functionality or fixing a bug, we need a test!
 4. Make the tests pass and make sure you follow [our syntax guidelines](https://github.com/balderdashy/sails/blob/master/.jshintrc).
-5. Push to your fork and submit a pull request to the appropriate branch:
+5. Add a line of what you did to CHANGELOG.md (right under `master`).
+6. Push to your fork and submit a pull request to the appropriate branch:
   + [master](https://github.com/balderdashy/sails/tree/master)
     + corresponds with the "edge" version-- the latest, not-yet-released version of Sails. Most pull requests should be sent here
   + [stable](https://github.com/balderdashy/sails/tree/stable)

@@ -16,8 +16,8 @@ Below, you'll find an overview of the modules maintained by the core team and co
 | [**waterline**](http://github.com/balderdashy/waterline) | [![Build Status](https://travis-ci.org/balderdashy/waterline.png?branch=master)](https://travis-ci.org/balderdashy/waterline) | [![NPM version](https://badge.fury.io/js/waterline.png)](http://badge.fury.io/js/waterline) |
 | [**anchor**](http://github.com/balderdashy/anchor) | [![Build Status](https://travis-ci.org/balderdashy/anchor.png?branch=master)](https://travis-ci.org/balderdashy/anchor) | [![NPM version](https://badge.fury.io/js/anchor.png)](http://badge.fury.io/js/anchor) |
 | [**waterline-criteria**](http://github.com/balderdashy/waterline-criteria) | [![Build Status](https://travis-ci.org/balderdashy/waterline-criteria.png?branch=master)](https://travis-ci.org/balderdashy/waterline-criteria) | [![NPM version](https://badge.fury.io/js/waterline-criteria.png)](http://badge.fury.io/js/waterline-criteria) |
-| [**waterline-errors**](http://github.com/balderdashy/waterline-errors) | NEEDS_TRAVIS_SETUP | [![NPM version](https://badge.fury.io/js/waterline-errors.png)](http://badge.fury.io/js/waterline-errors) |
-| [**waterline-schema**](http://github.com/balderdashy/waterline-schema) | NEEDS_TRAVIS_SETUP | [![NPM version](https://badge.fury.io/js/waterline-schema.png)](http://badge.fury.io/js/waterline-schema) |
+| [**waterline-errors**](http://github.com/vanetix/waterline-errors) | [![Build Status](https://travis-ci.org/vanetix/waterline-errors.svg?branch=master)](https://travis-ci.org/vanetix/waterline-errors) | [![NPM version](https://badge.fury.io/js/waterline-errors.png)](http://badge.fury.io/js/waterline-errors) |
+| [**waterline-schema**](http://github.com/balderdashy/waterline-schema) | [![Build Status](https://travis-ci.org/balderdashy/waterline-schema.svg?branch=master)](https://travis-ci.org/balderdashy/waterline-schema) | [![NPM version](https://badge.fury.io/js/waterline-schema.png)](http://badge.fury.io/js/waterline-schema) |
 | [**sails-generate**](http://github.com/balderdashy/sails-generate) | [![Build Status](https://travis-ci.org/balderdashy/sails-generate.png?branch=master)](https://travis-ci.org/balderdashy/sails-generate) | [![NPM version](https://badge.fury.io/js/sails-generate.png)](http://badge.fury.io/js/sails-generate) |
 | [**sails-build-dictionary**](http://github.com/balderdashy/sails-build-dictionary) | N/A | [![NPM version](https://badge.fury.io/js/sails-build-dictionary.png)](http://badge.fury.io/js/sails-build-dictionary) |
 | [**captains-log**](http://github.com/balderdashy/captains-log) | [![Build Status](https://travis-ci.org/balderdashy/captains-log.png?branch=master)](https://travis-ci.org/balderdashy/captains-log) | [![NPM version](https://badge.fury.io/js/captains-log.png)](http://badge.fury.io/js/captains-log) |
@@ -59,13 +59,13 @@ Below, you'll find an overview of the modules maintained by the core team and co
 
 ### Officially-supported adapters
 
-| Repo          |  Build Status (edge)  |  Latest Stable Version   |
-|---------------|---------------------------------------|-----------
-| [Local Disk](https://github.com/balderdashy/sails-disk)    | [![Build Status](https://travis-ci.org/balderdashy/sails-disk.png?branch=master)](https://travis-ci.org/balderdashy/sails-disk)   | [![NPM version](https://badge.fury.io/js/sails-disk.png)](http://badge.fury.io/js/sails-disk)    |
-| [MySQL](https://github.com/balderdashy/sails-mysql)         | [![Build Status](https://travis-ci.org/balderdashy/sails-mysql.png?branch=master)](https://travis-ci.org/balderdashy/sails-mysql)   | [![NPM version](https://badge.fury.io/js/sails-mysql.png)](http://badge.fury.io/js/sails-mysql)    |
-| [PostgreSQL](https://github.com/balderdashy/sails-postgresql)    | [![Build Status](https://travis-ci.org/balderdashy/sails-postgresql.png?branch=master)](https://travis-ci.org/balderdashy/sails-postgresql)   | [![NPM version](https://badge.fury.io/js/sails-postgresql.png)](http://badge.fury.io/js/sails-postgresql)    |
-| [Mongo](https://github.com/balderdashy/sails-mongo)        | [![Build Status](https://travis-ci.org/balderdashy/sails-mongo.png?branch=master)](https://travis-ci.org/balderdashy/sails-mongo)   | [![NPM version](https://badge.fury.io/js/sails-mongo.png)](http://badge.fury.io/js/sails-mongo)    |
-| [Redis](https://github.com/balderdashy/sails-redis)         | [![Build Status](https://travis-ci.org/balderdashy/sails-redis.png?branch=master)](https://travis-ci.org/balderdashy/sails-redis)   | [![NPM version](https://badge.fury.io/js/sails-redis.png)](http://badge.fury.io/js/sails-redis)    |
+| Repo            |  Build Status (edge)                    |  Latest Stable Version   | Platform       |
+| --------------- | --------------------------------------- | ------------------------ | -------------- |
+| [Local Disk](https://github.com/balderdashy/sails-disk)    | [![Build Status](https://travis-ci.org/balderdashy/sails-disk.png?branch=master)](https://travis-ci.org/balderdashy/sails-disk)   | [![NPM version](https://badge.fury.io/js/sails-disk.png)](http://badge.fury.io/js/sails-disk)    | Local disk (`.tmp`) |
+| [MySQL](https://github.com/balderdashy/sails-mysql)         | [![Build Status](https://travis-ci.org/balderdashy/sails-mysql.png?branch=master)](https://travis-ci.org/balderdashy/sails-mysql)   | [![NPM version](https://badge.fury.io/js/sails-mysql.png)](http://badge.fury.io/js/sails-mysql)    | MySQL |
+| [PostgreSQL](https://github.com/balderdashy/sails-postgresql)    | [![Build Status](https://travis-ci.org/balderdashy/sails-postgresql.png?branch=master)](https://travis-ci.org/balderdashy/sails-postgresql)   | [![NPM version](https://badge.fury.io/js/sails-postgresql.png)](http://badge.fury.io/js/sails-postgresql)    | PostgreSQL |
+| [Mongo](https://github.com/balderdashy/sails-mongo)        | [![Build Status](https://travis-ci.org/balderdashy/sails-mongo.png?branch=master)](https://travis-ci.org/balderdashy/sails-mongo)   | [![NPM version](https://badge.fury.io/js/sails-mongo.png)](http://badge.fury.io/js/sails-mongo)    | MongoDB |
+| [Redis](https://github.com/balderdashy/sails-redis)         | [![Build Status](https://travis-ci.org/balderdashy/sails-redis.png?branch=master)](https://travis-ci.org/balderdashy/sails-redis)   | [![NPM version](https://badge.fury.io/js/sails-redis.png)](http://badge.fury.io/js/sails-redis)    | Redis |
 
 
 ### Officially-supported hooks
@@ -98,10 +98,26 @@ Below, you'll find an overview of the modules maintained by the core team and co
 
 #### Adapters
 
-| Repo          |  Build Status (edge)  |  Latest Stable Version   | Interfaces |
+| Repo          |  Build Status (edge)  |  Latest Stable Version   | Platform |
 |---------------|---------------------------------------|--------------------------|------------|
 | [sails-rest](https://github.com/zohararad/sails-rest) |  |  | REST |
+| [sails-oracle](https://github.com/mayconheerdt/sails-oracle) | | | Oracle |
 | [sails-mssql](https://github.com/swelham/sails-mssql) | | | MSSQL |
+| [sails-neo4j](https://github.com/natgeo/sails-neo4j) | | | Neo4j |
+| [sails-sqlite3](https://github.com/AndrewJo/sails-sqlite3) | | | SQLite3 |
+| [sails-dynamodb](https://github.com/dohzoh/sails-dynamodb) | | | DynamoDB |
+| [sails-elasticsearch](https://github.com/DarthHater/sails-elasticsearch) | | | Elasticsearch |
+| [sails-couchdb](https://github.com/shmakes/sails-couchdb) | | | CouchDB |
+| [sails-couchbase](https://github.com/CaseyJones-/sails-couchbase) | | | Couchbase |
+| [sails-odata](https://github.com/TheSharpieOne/sails-odata) | | | OData |
+| [sails-db2](https://github.com/IbuildingsItaly/sails-db2) | | | DB2 |
+| [sails-rethinkdb](https://github.com/dsincl12/sails-rethinkdb) | | | RethinkDB |
+| [sails-azuretables](https://github.com/azuqua/sails-azuretables) | | | Windows Azure Tables |
+| [sails-riak](https://github.com/balderdashy/sails-riak) | | | Riak |
+| [sails-nedb](https://github.com/balderdashy/sails-riak) | | | NeDB |
+| [sails-parse](https://github.com/tskaggs/sails-parse) | | | Parse |
+| [sails-tingo](https://github.com/andyhu/sails-tingo) | | | TingoDB |
+| [sails-orientdb](https://github.com/appscot/sails-orientdb) | [![Build Status](https://travis-ci.org/appscot/sails-orientdb.svg?branch=master)](https://travis-ci.org/appscot/sails-orientdb) | [![npm version](https://badge.fury.io/js/sails-orientdb.svg)](http://badge.fury.io/js/sails-orientdb) | OrientDB |
 
 
 #### Generators
@@ -116,6 +132,7 @@ Below, you'll find an overview of the modules maintained by the core team and co
 | [sails-generate-gulpfile](https://github.com/Karnith/sails-generate-gulpfile) |          |
 | [sails-generate-bower-gulp](https://github.com/Karnith/sails-generate-bower-gulp) |          |
 | [sails-generate-angular-gulp](https://github.com/Karnith/sails-generate-angular-gulp) |          |
+| [sails-generate-ember-blueprints](https://github.com/mphasize/sails-generate-ember-blueprints) |          |
 
 
 #### Socket Client SDKs

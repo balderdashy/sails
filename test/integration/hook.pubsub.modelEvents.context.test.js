@@ -4,8 +4,8 @@
 var assert = require('assert');
 var socketHelper = require('./helpers/socketHelper.js');
 var appHelper = require('./helpers/appHelper');
+var httpHelper = require('./helpers/httpHelper');
 var util = require('util');
-
 /**
  * Errors
  */
@@ -23,50 +23,54 @@ describe('pubsub :: ', function() {
   var socket2;
   var appName = 'testApp';
 
-  describe('Model events (i.e. not the firehose)', function() {
+  describe('Model events', function() {
 
-
-    describe('when a model no default autosubscribe contexts ', function() {
-
-      before(function(done) {
-        this.timeout(5000);
-        appHelper.build(appName, function(err) {
+    before(function(done) {
+      this.timeout(5000);
+      appHelper.build(appName, function(err) {
+        if (err) {
+          throw new Error(err);
+        }
+        socketHelper.writeModelConfig();
+        appHelper.liftWithTwoSockets({
+          silly: false
+        }, function(err, sails, _socket1, _socket2) {
           if (err) {
             throw new Error(err);
           }
-          socketHelper.writeModelConfig();
-          appHelper.liftWithTwoSockets({
-            verbose: false
-          }, function(err, sails, _socket1, _socket2) {
-            if (err) {
-              throw new Error(err);
-            }
-            sailsprocess = sails;
+          sailsprocess = sails;
+          socket1 = _socket1;
+          socket2 = _socket2;
 
-            socket1 = _socket1;
-            socket2 = _socket2;
-
-            socket2.get('/user/create?name=joe', function() {
-              socket2.get('/user/create?name=abby', function() {
-                done();
-              });
+          httpHelper.testRoute('get', 'user/create?name=joe', function(err) {
+            if (err) {return done(err);}
+            httpHelper.testRoute('get', 'user/create?name=abby', function(err) {
+              if (err) {return done(err);}
+              done();
             });
           });
+
         });
       });
+    });
 
-      after(function() {
+    after(function() {
 
+      if (sailsprocess) {
+        sailsprocess.kill();
+      }
+      // console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
+      process.chdir('../');
+      // console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
+      appHelper.teardown();
+    });
+
+    describe('when a model no default autosubscribe contexts ', function() {
+
+      after(function(done) {
         socket1.disconnect();
         socket2.disconnect();
-
-        if (sailsprocess) {
-          sailsprocess.kill();
-        }
-        // console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
-        process.chdir('../');
-        // console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
-        appHelper.teardown();
+        done();
       });
 
       afterEach(function(done) {
@@ -90,9 +94,7 @@ describe('pubsub :: ', function() {
 
       describe('after subscribing to the update context', function() {
         before(function(done) {
-          socket2.get('/user/subscribe?id=1&context=update', function() {
-            done();
-          });
+            socket2.get('/user/subscribe?id=1&context=update', done);
         });
         it('updating an instance via put should result in the correct socket messages being received', function(done) {
           var TIME_TO_WAIT = 1500;

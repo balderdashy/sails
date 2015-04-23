@@ -157,7 +157,7 @@ module.exports = {
       probableAdapterModuleName = 'sails-' + probableAdapterModuleName;
     }
     log.error('Otherwise, if you\'re trying to use an adapter named `' + adapterId + '`, please run ' +
-      '`npm install ' + probableAdapterModuleName + '@' + sailsMajorV + '.' + sailsMinorV + '.x`');
+      '`npm install ' + probableAdapterModuleName + ' --save'/*'@' + sailsMajorV + '.' + sailsMinorV + '.x`'*/);
     return _terminateProcess(1);
   },
 

@@ -32,7 +32,7 @@ describe('pubsub :: ', function() {
   var socket2;
   var appName = 'testApp';
 
-  describe('Model events (i.e. not the firehose)', function() {
+  describe('Model events', function() {
 
 
     describe('when a socket is watching Users ', function() {
