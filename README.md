@@ -80,7 +80,7 @@ See the [contribution guide](https://github.com/balderdashy/sails/blob/master/CO
 ## Support
 Need help or have a question?
 
-- [Tutorials](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#where-do-i-get-help)
+- [Tutorials](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#what-are-some-good-community-tutorials)
 - [Stackoverflow](http://stackoverflow.com/questions/tagged/sails.js)
 - [#sailsjs on Freenode](https://webchat.freenode.net/?channels=sailsjs) (IRC channel)
 - [Professional/Enterprise Options](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#are-there-professional-support-options)
