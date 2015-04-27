@@ -77,7 +77,7 @@
     "semver": "~2.2.1",
     "skipper": "~0.5.5",
     "uid-safe": "^1.0.1",
-    "waterline": "0.10.19"
+    "waterline": "tl"
   },
   "devDependencies": {
     "root-require": "~0.2.0",
