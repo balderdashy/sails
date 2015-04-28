@@ -71,7 +71,7 @@
     "sails-build-dictionary": "~0.10.1",
     "sails-disk": "~0.10.0",
     "sails-generate": "~0.12.0",
-    "sails-hook-sockets": "^0.11.13",
+    "sails-hook-sockets": "Karnith/sails-hook-sockets",
     "sails-stringfile": "~0.3.0",
     "sails-util": "~0.10.6",
     "semver": "~4.3.3",
@@ -95,7 +95,7 @@
     "mocha": "~1.17.1",
     "portfinder": "~0.2.1",
     "coffee-script": "~1.7.1",
-    "socket.io-client": "^1.2.1"
+    "socket.io-client": "Karnith/socket.io-client"
   },
   "repository": {
     "type": "git",
