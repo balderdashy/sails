@@ -64,22 +64,31 @@ describe('Services ::', function() {
 
 			done();
 		});
+		// this can't be avoided since there's no difference between classes and functions
+		it('should not have member class\'s prototypes overwritten', function(done) {
+			assert(!BasicService.MyClass.prototype.getFoo, "MyClass inside of basic service still has the same prototype");
+			done();
+		});
 	});
-	describe('services containing classes', function() {
+	describe('services with noBind enabled', function() {
+		it('should exist', function(done) {
+			assert.notEqual(typeof NoBindService, "undefined", "Example service was not found!");
+			done();
+		});
 		it('should not have their prototypes overwritten', function(done) {
-			assert(BasicService.MyClass.hasOwnProperty('prototype'), "MyClass does not have its own prototype");
-			assert(BasicService.MyClass.prototype.getFoo, "MyClass inside of basic service doesn't the same prototype");
+			assert(NoBindService.MyClass.hasOwnProperty('prototype'), "MyClass does not have its own prototype");
+			assert(NoBindService.MyClass.prototype.getFoo, "MyClass inside of basic service doesn't the same prototype");
 			done();
 		});
 		it('should be able to instantiate an instance', function(done) {
-			var instance = new BasicService.MyClass();
+			var instance = new NoBindService.MyClass();
 			assert.equal(instance.getFoo(), "Bar", "getFoo method returned bad data");
 
 			done();
 		});
 		it('should be able to use instanceof', function(done) {
-			assert((new Error("sadf")) instanceof BasicService.Error, "Cannot use instanceof to compare against Error in my service");
-			assert((new BasicService.MyClass("sadf")) instanceof BasicService.MyClass, "Instance of MyClass is not instanceof MyClass");
+			assert((new Error("sadf")) instanceof NoBindService.Error, "Cannot use instanceof to compare against Error in my service");
+			assert((new NoBindService.MyClass("sadf")) instanceof NoBindService.MyClass, "Instance of MyClass is not instanceof MyClass");
 			done();
 		});
 	});
