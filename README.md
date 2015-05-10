@@ -5,7 +5,6 @@
 ### [Website](http://sailsjs.org/)  &nbsp; [Getting Started](http://sailsjs.org/#!/getStarted) &nbsp;  [Docs](http://sailsjs.org/#!/documentation)  &nbsp; [Submit Issue](https://github.com/balderdashy/sails/blob/master/README.md#issue-submission)
 
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/balderdashy/sails?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Code Climate](https://codeclimate.com/github/balderdashy/sails/badges/gpa.svg)](https://codeclimate.com/github/balderdashy/sails)
 [![NPM version](https://badge.fury.io/js/sails.svg)](http://badge.fury.io/js/sails)
 
 
