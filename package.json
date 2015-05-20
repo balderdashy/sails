@@ -100,12 +100,7 @@
     "type": "git",
     "url": "git://github.com/balderdashy/sails.git"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://links.sailsjs.org/license/mit"
-    }
-  ],
+  "license": "MIT",
   "bugs": {
     "url": "http://github.com/balderdashy/sails/issues"
   },
