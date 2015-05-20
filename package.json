@@ -35,6 +35,7 @@
     "colors": "~1.0.3",
     "commander": "~2.7.1",
     "connect-flash": "~0.1.1",
+    "consolidate": "^0.12.1",
     "cookie": "0.1.2",
     "cookie-signature": "1.0.6",
     "ejs": "~0.8.4",
