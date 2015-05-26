@@ -19,7 +19,7 @@ $ sudo npm install sails -g
 ```
 
 > ######New release available
-> The v0.11 release of Sails (with support for Socket.io v1.0) is here!  To read the v0.11 migration guide, click [here](http://sailsjs.org/#!/documentation/concepts/Upgrading).
+> The v0.11 release of Sails (with support for Socket.io v1.0) is here!  To read the v0.11 migration guide, click [here](http://sailsjs.org/#!/documentation/changelog/0.11).
 
 
 ## Your First Sails Project
