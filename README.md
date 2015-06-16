@@ -5,13 +5,13 @@
 ### [Website](http://sailsjs.org/)  &nbsp; [Getting Started](http://sailsjs.org/#!/getStarted) &nbsp;  [Docs](http://sailsjs.org/#!/documentation)  &nbsp; [Submit Issue](https://github.com/balderdashy/sails/blob/master/README.md#issue-submission)
 
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/balderdashy/sails?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![NPM version](https://badge.fury.io/js/sails.svg)](http://badge.fury.io/js/sails)
 
 
 Sails.js is a web framework that makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development. It's especially good for building realtime features like chat.
 
 
-## Installation &nbsp;  [![NPM version](https://badge.fury.io/js/sails.svg)](http://badge.fury.io/js/sails)
-
+## Installation &nbsp;
 **With [node](http://nodejs.org) [installed](http://sailsjs.org/#!documentation/new-to-nodejs):**
 ```sh
 # Get the latest stable release of Sails
@@ -19,7 +19,7 @@ $ sudo npm install sails -g
 ```
 
 > ######New release available
-> The v0.11 release of Sails (with support for Socket.io v1.0) is here!  To read the v0.11 migration guide, click [here](http://sailsjs.org/#!/documentation/concepts/Upgrading).
+> The v0.11 release of Sails (with support for Socket.io v1.0) is here!  To read the v0.11 migration guide, click [here](http://sailsjs.org/#!/documentation/changelog/0.11).
 
 
 ## Your First Sails Project

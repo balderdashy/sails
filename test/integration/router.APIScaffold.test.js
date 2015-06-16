@@ -137,7 +137,7 @@ describe('router :: ', function() {
 
       it('should return JSON for the updated instance of the test model', function(done) {
 
-        httpHelper.testRoute('put', {
+        httpHelper.testRoute('post', {
           url: 'empty/1?foo=baz',
           json: true
         }, function(err, response) {
@@ -148,6 +148,24 @@ describe('router :: ', function() {
         });
       });
     });
+
+    describe('a put request to /:controller/:id attempting to change the primary key', function() {
+
+      it('should return JSON for the updated instance of the test model, but should not update the primary key', function(done) {
+
+        httpHelper.testRoute('post', {
+          url: 'empty/1?foo=blap&id=5',
+          json: true
+        }, function(err, response) {
+          if (err) return done(new Error(err));
+
+          assert(response.body.foo === 'blap', Err.badResponse(response));
+          assert(response.body.id === 1, Err.badResponse(response));
+          done();
+        });
+      });
+    });
+
 
     describe('a delete request to /:controller/:id', function() {
 
