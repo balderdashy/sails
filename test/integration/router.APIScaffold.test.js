@@ -360,4 +360,115 @@ describe('router :: ', function() {
 
   });
 
+  describe('API scaffold routes', function() {
+    var appName = 'testApp';
+
+    before(function(done) {
+      this.timeout(5000);
+      appHelper.build(function() {
+        appHelper.lift(function(err, sails) {
+          if (err) {throw new Error(err);}
+          sailsprocess = sails;
+          setTimeout(done, 100);
+        });
+      });
+    });
+
+    after(function() {
+      sailsprocess.kill();
+      // console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
+      process.chdir('../');
+      // console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
+      appHelper.teardown();
+    });
+
+    describe('sorting via query params', function() {
+
+      before(function(done) {
+
+        User.create([
+          {name:'scott'},
+          {name:'abby'},
+          {name:'joe'},
+          {name:'scott'}
+        ]).exec(done);
+
+      });
+
+      it('using a string like "name DESC" should return values sorted in descending order by name', function(done) {
+
+        httpHelper.testRoute('get', {
+          url: 'user?sort=name DESC',
+          json: true
+        }, function (err, response, body) {
+          if (err) return done(new Error(err));
+
+          assert(response.body instanceof Array);
+          assert.equal(response.body[0].name, "scott");
+          assert.equal(response.body[1].name, "scott");
+          assert.equal(response.body[2].name, "joe");
+          assert.equal(response.body[3].name, "abby");
+          done();
+        });
+
+      });
+
+      it('using a string like "name ASC" should return values sorted in ascending order by name', function(done) {
+
+        httpHelper.testRoute('get', {
+          url: 'user?sort=name ASC',
+          json: true
+        }, function (err, response, body) {
+          if (err) return done(new Error(err));
+
+          assert(response.body instanceof Array);
+          assert.equal(response.body[0].name, "abby");
+          assert.equal(response.body[1].name, "joe");
+          assert.equal(response.body[2].name, "scott");
+          assert.equal(response.body[3].name, "scott");
+          done();
+        });
+
+      });
+
+      it('using a string like {"name":1} should return values sorted in ascending order by name', function(done) {
+
+        httpHelper.testRoute('get', {
+          url: 'user?sort={"name":1}',
+          json: true
+        }, function (err, response, body) {
+          if (err) return done(new Error(err));
+
+          assert(response.body instanceof Array);
+          assert.equal(response.body[0].name, "abby");
+          assert.equal(response.body[1].name, "joe");
+          assert.equal(response.body[2].name, "scott");
+          assert.equal(response.body[3].name, "scott");
+          done();
+        });
+
+      });
+
+      it('using a string like {"name":1, "id"-1} should return values sorted in ascending order by name, then descending order by id', function(done) {
+
+        httpHelper.testRoute('get', {
+          url: 'user?sort={"name":1, "user_id":-1}',
+          json: true
+        }, function (err, response, body) {
+          if (err) return done(new Error(err));
+          assert(response.body instanceof Array);
+          assert.equal(response.body[0].name, "abby");
+          assert.equal(response.body[1].name, "joe");
+          assert.equal(response.body[2].name, "scott");
+          assert.equal(response.body[2].user_id, 4);
+          assert.equal(response.body[3].name, "scott");
+          assert.equal(response.body[3].user_id, 1);
+          done();
+        });
+
+      });
+
+    });
+  });
+
 });
