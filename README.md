@@ -90,8 +90,8 @@ _Please don't use the issue tracker for support/questions._
 ## Links
 - [Website](http://sailsjs.org/)
 - [Official Documentation](http://sailsjs.org/documentation)
-- [Changelog](https://github.com/balderdashy/sails-docs/blob/0.9/changelog.md)
-- [Roadmap](https://github.com/balderdashy/sails-wiki/blob/0.9/roadmap.md)
+- [Changelog](https://github.com/balderdashy/sails/blob/master/CHANGELOG.md)
+- [Roadmap](https://github.com/balderdashy/sails/blob/master/ROADMAP.md)
 - [Google Group](https://groups.google.com/forum/?fromgroups#!forum/sailsjs)
 - [Twitter](https://twitter.com/sailsjs)
 - [SailsCasts](http://irlnathan.github.io/sailscasts/)
