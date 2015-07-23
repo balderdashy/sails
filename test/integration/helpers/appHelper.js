@@ -15,11 +15,17 @@ var exec = require('child_process').exec;
 var path = require('path');
 var sailsBin = path.resolve('./bin/sails.js');
 var spawn = require('child_process').spawn;
-var _ioClient = require('./sails.io')(require('socket.io-client'));
 var Sails = require('../../../lib/app');
+var io = require('./sails.io.js')(require('socket.io-client'));
+io.sails.environment = "production";
 
 // Make existsSync not crash on older versions of Node
 fs.existsSync = fs.existsSync || path.existsSync;
+
+
+// var _ioClient = require('./sails.io')(require('socket.io-client'));
+
+
 
 /**
  * Uses the Sails binary to create a namespaced test app
@@ -43,15 +49,18 @@ module.exports.build = function( /* [appName], done */ ) {
 		wrench.rmdirSyncRecursive(path.resolve('./', appName));
 	}
 
-	exec(sailsBin + ' new ' + appName, function(err) {
-		if (err) return done(err);
+  fs.mkdirSync(path.resolve('./', appName));
 
-		var fixtures = wrench.readdirSyncRecursive('./test/integration/fixtures/sampleapp');
+  process.chdir(appName);
+
+	exec(sailsBin + ' new', function(err) {
+		if (err) return done(err);
+		var fixtures = wrench.readdirSyncRecursive('../test/integration/fixtures/sampleapp');
 		if (fixtures.length < 1) return done();
 
 		// If fixtures copy them to the test app
 		fixtures.forEach(function(file) {
-			var filePath = path.resolve('./test/integration/fixtures/sampleapp', file);
+			var filePath = path.resolve('../test/integration/fixtures/sampleapp', file);
 
 			// Check if file is a directory
 			var stat = fs.statSync(filePath);
@@ -63,11 +72,11 @@ module.exports.build = function( /* [appName], done */ ) {
 			var data = fs.readFileSync(filePath);
 
 			// Create file and any missing parent directories in its path
-			fs.createFileSync(path.resolve('./', appName, file), data);
-			fs.writeFileSync(path.resolve('./', appName, file), data);
+			fs.createFileSync(path.resolve(file), data);
+			fs.writeFileSync(path.resolve(file), data);
 		});
 
-		process.chdir(appName);
+		// process.chdir(appName);
 		return done();
 	});
 };
@@ -82,6 +91,24 @@ module.exports.teardown = function(appName) {
 	if (fs.existsSync(dir)) {
 		wrench.rmdirSyncRecursive(dir);
 	}
+};
+
+module.exports.liftQuiet = function(options, callback) {
+
+  if (typeof options == 'function') {
+    callback = options;
+    options = null;
+  }
+
+  options = options || {};
+  _.defaults(options, {
+    log: {
+      level: 'silent'
+    }
+  });
+
+  return module.exports.lift(options, callback);
+
 };
 
 module.exports.lift = function(options, callback) {
@@ -127,13 +154,18 @@ module.exports.liftWithTwoSockets = function(options, callback) {
 	}
 	module.exports.lift(options, function(err, sails) {
 		if (err) {return callback(err);}
-		var socket1 = _ioClient.connect('http://localhost:1342',{'force new connection': true});
-		socket1.on('connect', function() {
-			var socket2 = _ioClient.connect('http://localhost:1342',{'force new connection': true});
-			socket2.on('connect', function() {
-				callback(null, sails, socket1, socket2);
-			});
-		});
+
+    var socket1 = io.sails.connect('http://localhost:1342', {
+      multiplex: false,
+    });
+    socket1.on('connect', function() {
+      var socket2 = io.sails.connect('http://localhost:1342', {
+        multiplex: false,
+      });
+      socket2.on('connect', function() {
+        return callback(null, sails, socket1, socket2);
+      });
+    });
 	});
 };
 

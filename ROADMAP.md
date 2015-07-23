@@ -25,29 +25,27 @@ The current build status, immediate-term plans, and future goals of this reposit
 
 Our short-to-medium-term roadmap items, in order of descending priority:
 
-_(feel free to suggest things)_
-
 
  Feature                                                  | Owner                                                                            | Details
  :------------------------------------------------------- | :------------------------------------------------------------------------------- | :------
- Socket.io 1.0                                            | [@mikermcneil](https://github.com/mikermcneil)                                   | upgrade to Socket.io 1.0
  Lock + unlock app in dev env                             | [@mikermcneil](https://github.com/mikermcneil)     | Capability for a hook to "lock" and/or "unlock" the app (in a development env only).  When "locked" all requests are intercepted by an endpoint which responds with either a page or JSON payload communicating a custom message.  e.g. so the grunt hook can let us know as it syncs.  e.g. `sails.emit('lock')`
  Hook dependency/load order mgmt                          | [@mikermcneil](https://github.com/mikermcneil)                                   | rebase the hook dependency+optional depenency system originally proposed by @ragulka
- Standalone router                                        | [@mikermcneil](https://github.com/mikermcneil)                                   | replace express dependency in `lib/router` with standalone router- either routification or @dougwilson's new project
- Standalone view renderer                                 | [@mikermcneil](https://github.com/mikermcneil)                                   | Use @fishrock123's standalone views module (enables views over sockets)
- Standalone static middleware                             | [@mikermcneil](https://github.com/mikermcneil)                                   | use static middleware directly in `lib/router` (enables static files over sockets)
- Request interpreter: Full stream support                 | [@mikermcneil](https://github.com/mikermcneil)                                   | Use new manufactured req/res streams in lib/hooks/sockets (this adds full streams2 compatibility to our socket.io integration, or more generally for any type of attached server)
- Break out core hooks into separate modules               | [@mikermcneil](https://github.com/mikermcneil)                                   | Makes Sails more composable, and removes most of its dependencies in core. Also allows for easier sharing of responsibility w/ the community, controls issue flow
+ Standalone router                                        | [@mikermcneil](https://github.com/mikermcneil)                                   | replace express dependency in `lib/router` with standalone router- either routification or @dougwilson's new project.  See https://github.com/balderdashy/sails/pull/2351#issuecomment-71855236 for more information.
+ Standalone view renderer                                 | [@mikermcneil](https://github.com/mikermcneil)                                   | Use @fishrock123's standalone views module (enables views over sockets).  See https://github.com/balderdashy/sails/pull/2351#issuecomment-71855236 for more information.
+ Standalone static middleware                             | [@mikermcneil](https://github.com/mikermcneil)                                   | use static middleware directly in `lib/router` (enables static files over sockets)  See https://github.com/balderdashy/sails/pull/2351#issuecomment-71855236 for more information.
+ Break out core hooks into separate modules               | [@mikermcneil](https://github.com/mikermcneil)                                   | Makes Sails more composable, and removes most of its dependencies in core. Also allows for easier sharing of responsibility w/ the community, controls issue flow.  Started with github.com/balderdashy/sails-hook-sockets
+
 
 
 #### Backlog
 
 The backlog consists of features which are not currently in the immediate-term roadmap above, but are useful.  We would exuberantly accept a pull request implementing any of the items below, so long as it was accompanied with reasonable tests that prove it, and it doesn't break other core functionality.
 
+_(feel free to suggest things)_
+
  Feature                                         | Owner                                              | Details
  :---------------------------------------------- | :------------------------------------------------- | :------
- Watch+reload controllers, models, etc. w/o re-lifting  | [@jbielick](https://github.com/jbielick)    | Reload controllers/models/config/services/etc. without restarting the server. Show a "rebuilding" page while re-bootstrapping.
- Support for multiple blueprint prefixes         | [@mnaughto](https://github.com/mnaughto)           | https://github.com/balderdashy/sails/issues/2031
  SPDY protocol support                           | [@mikermcneil](https://github.com/mikermcneil)     | https://github.com/balderdashy/sails/issues/80
- Sockets hook: drop-in Primus alternative        | [@alejandroiglesias](https://github.com/alejandroiglesias) | https://github.com/balderdashy/sails/issues/945
-
+ Have a `sails migrate` or `sails create-db` command | [@globegitter](https://github.com/Globegitter) | For production environments it would be nice to have a save/secure command that creates the db automatically for you
+ `sails generate test`  | [@jedd-ahyoung](https://github.com/jedd-ahyoung) | Generate *.test.js following [Sails recommended directory structure](http://sailsjs.org/#/documentation/concepts/Testing). Example usage: `sails generate test User:Model` creates prepopulated file '/test/unit/models/UserModel.test.js'. See https://github.com/balderdashy/sails/pull/2499 for discussion |
+ Wildcard action policies | [@ProLoser](https://github.com/ProLoser)| Instead of only having one global action policy `'*'` it would be nice if we could define policies for a specific action in all controllers: `'*/destroy': ['isOwner']` or something similar.
