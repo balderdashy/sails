@@ -143,6 +143,14 @@ Below, you'll find an overview of the modules maintained by the core team and co
 | [sails.io.objective-c](https://github.com/fishrod-interactive/sails-io.objective-c) | NEEDS_TRAVIS_SETUP |
 | [backbone-to-sails](https://github.com/balderdashy/backbone-to-sails)  | [![Build Status](https://travis-ci.org/balderdashy/backbone-to-sails.png?branch=master)](https://travis-ci.org/balderdashy/backbone-to-sails) |
 
+#### Hooks
+
+| Repo          |  Build Status (edge)  |  Latest Stable Version   |
+|---------------|---------------------------------------|--------------------------|------------|
+| [sails-hook-eslint](https://github.com/Globegitter/sails-hook-eslint) | | [![npm version](https://badge.fury.io/js/sails-hook-eslint.svg)](http://badge.fury.io/js/sails-hook-eslint) |
+| [sails-hook-babel](https://github.com/artificialio/sails-hook-babel) | | [![npm version](https://badge.fury.io/js/sails-hook-babel.svg)](http://badge.fury.io/js/sails-hook-babel) |
+| [sails-hook-sentry](https://github.com/listepo/sails-hook-sentry) | | [![npm version](https://badge.fury.io/js/sails-hook-sentry.svg)](http://badge.fury.io/js/sails-hook-sentry) |
+| [sails-hook-newrelic](https://github.com/Kikobeats/sails-hook-newrelic) | | [![npm version](https://badge.fury.io/js/sails-hook-newrelic.svg)](http://badge.fury.io/js/sails-hook-newrelic) |
 
 #### Misc. Projects
 
