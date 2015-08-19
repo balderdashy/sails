@@ -74,6 +74,9 @@ Feel free to submit ideas for a new feature in the sails.js [issue tracker](http
 ## Contribute
 We love pull requests! See the [contribution guide](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md) to get started.
 
+## Books
+- [Sails.js in Action](http://www.manning.com/mcneil/) by Michael R. McNeil and Irl I. Nathan (Manning Publications). [Chapter 1](http://www.manning.com/mcneil/SailsjsiA_MEAP_ch1.pdf)
+
 ## Support
 Need help or have a question?
 
