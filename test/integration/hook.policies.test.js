@@ -4,10 +4,11 @@
 
 var util = require('util');
 var assert = require('assert');
-var httpHelper = require('./helpers/httpHelper.js');
+var httpHelper = require('./helpers/httpHelper');
 var appHelper = require('./helpers/appHelper');
 var path = require('path');
-var fs = require('fs');
+var fs = require('fs-extra');
+var wrench = require('wrench');
 
 
 
@@ -22,6 +23,8 @@ var fs = require('fs');
 
 
 describe('router :: ', function() {
+
+  var sailsprocess;
 
   describe('Policies', function() {
     var appName = 'testApp';
@@ -367,5 +370,130 @@ describe('router :: ', function() {
 
   });
 
+
+  describe('Test adding hooks from another hooks', function() {
+    var appName = 'testApp';
+
+    before(function(done) {
+      this.timeout(5000);
+      appHelper.build(done);
+    });
+
+    before(function(done) {
+      this.timeout(5000);
+      fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules"), function(err) {
+        if (err) {return done(err);}
+
+        wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/add-policy'),
+            path.resolve(__dirname,'../../testApp/node_modules/sails-hook-add-policy'));
+
+        process.chdir(path.resolve(__dirname, "../..", appName));
+        done();
+      });
+    });
+
+    after(function() {
+      // console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
+      process.chdir('../');
+      // console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
+      appHelper.teardown();
+    });
+
+
+    describe('with default settings', function() {
+
+      var sails;
+
+      before(function(done) {
+        appHelper.liftQuiet(function(err, _sails) {
+          if (err) {return done(err);}
+          sails = _sails;
+          return done();
+        });
+      });
+
+      after(function(done) {
+        sails.lower(done);
+      });
+
+      it('should install a hook into `sails.hooks.add-policy`', function() {
+        assert(sails.hooks['add-policy']);
+      });
+
+      it('should add policy `forbidden` to app', function() {
+        assert(sails.hooks.policies.middleware.forbidden);
+      });
+
+    });
+
+    describe('with policy usage', function() {
+
+      var sails;
+
+      var policy = {
+        '*': 'error_policy',
+
+        'test': {
+          'index': 'forbidden'
+        }
+      };
+
+      before(function(done) {
+        appHelper.lift({
+          policies: policy
+        }, function(err, _sails) {
+          if (err) {return done(err);}
+          sails = _sails;
+          return done();
+        });
+      });
+
+      after(function(done) {
+        sails.lower(done);
+      });
+
+      it('should return `statusCode` 403 ', function(done) {
+
+        httpHelper.testRoute('get', {
+          url: 'test/index',
+          json: true
+        }, function(err, response) {
+          if (err) return done(err);
+
+          assert.equal(response.statusCode, 403);
+          done();
+        });
+      });
+
+      it('default policies should also work', function(done) {
+        httpHelper.testRoute('get', {
+          url: 'test/1',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          json: true
+        }, function(err, response) {
+          if (err) return done(err);
+
+          try {
+            assert.equal(response.statusCode, 500);
+            assert.equal(
+              typeof response.body, 'string',
+              util.format('response.body should be a string, instead it is "%s", a %s', response.body, typeof response.body)
+            );
+            assert.equal(response.body, 'Test Error',
+              util.format('`response.body` should === "Test Error" but instead it is "%s"', response.body.error)
+            );
+          }
+          catch (e) {
+            return done(e);
+          }
+          return done();
+        });
+      });
+
+    });
+
+  });
 
 });
