@@ -6,6 +6,7 @@
 
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/balderdashy/sails?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![NPM version](https://badge.fury.io/js/sails.svg)](http://badge.fury.io/js/sails)
+[![Dependency Status](https://david-dm.org/balderdashy/sails.svg)](https://david-dm.org/balderdashy/sails)
 
 
 Sails.js is a web framework that makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development. It's especially good for building realtime features like chat.
@@ -73,6 +74,9 @@ Feel free to submit ideas for a new feature in the sails.js [issue tracker](http
 
 ## Contribute
 We love pull requests! See the [contribution guide](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md) to get started.
+
+## Books
+- [Sails.js in Action](http://www.manning.com/mcneil/) by Michael R. McNeil and Irl I. Nathan (Manning Publications). [Chapter 1](http://www.manning.com/mcneil/SailsjsiA_MEAP_ch1.pdf)
 
 ## Support
 Need help or have a question?

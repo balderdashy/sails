@@ -1,0 +1,7 @@
+{
+  "name": "sails-hook-add-policy",
+  "main": "index.js",
+  "sails": {
+    "isHook": true
+  }
+}
