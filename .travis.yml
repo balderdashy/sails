@@ -6,6 +6,12 @@ node_js:
 
 sudo: false
 
+before_script:
+  - "npm install -g jsinspect"
+
+script:
+  - "jsinspect -t 30 -i ./lib"
+
 notifications:
   irc:
     channels:
