@@ -10,7 +10,7 @@ before_script:
   - "npm install -g jsinspect"
 
 script:
-  - "jsinspect -t 30 -i ./lib"
+  - "jsinspect -t 30 -i ./lib || true"
 
 notifications:
   irc:
