@@ -37,48 +37,48 @@ fs.existsSync = fs.existsSync || path.existsSync;
  */
 
 module.exports.build = function( /* [appName], done */ ) {
-	var args = Array.prototype.slice.call(arguments),
-		done = args.pop(),
-		appName = 'testApp';
+  var args = Array.prototype.slice.call(arguments),
+    done = args.pop(),
+    appName = 'testApp';
 
-	// Allow App Name to be optional
-	if (args.length > 0) appName = args[0];
+  // Allow App Name to be optional
+  if (args.length > 0) appName = args[0];
 
-	// Cleanup old test fixtures
-	if (fs.existsSync(appName)) {
-		wrench.rmdirSyncRecursive(path.resolve('./', appName));
-	}
+  // Cleanup old test fixtures
+  if (fs.existsSync(appName)) {
+    wrench.rmdirSyncRecursive(path.resolve('./', appName));
+  }
 
   fs.mkdirSync(path.resolve('./', appName));
 
   process.chdir(appName);
 
-	exec(sailsBin + ' new', function(err) {
-		if (err) return done(err);
-		var fixtures = wrench.readdirSyncRecursive('../test/integration/fixtures/sampleapp');
-		if (fixtures.length < 1) return done();
+  exec(sailsBin + ' new', function(err) {
+    if (err) return done(err);
+    var fixtures = wrench.readdirSyncRecursive('../test/integration/fixtures/sampleapp');
+    if (fixtures.length < 1) return done();
 
-		// If fixtures copy them to the test app
-		fixtures.forEach(function(file) {
-			var filePath = path.resolve('../test/integration/fixtures/sampleapp', file);
+    // If fixtures copy them to the test app
+    fixtures.forEach(function(file) {
+      var filePath = path.resolve('../test/integration/fixtures/sampleapp', file);
 
-			// Check if file is a directory
-			var stat = fs.statSync(filePath);
+      // Check if file is a directory
+      var stat = fs.statSync(filePath);
 
-			// Ignore directories
-			if (stat.isDirectory()) return;
+      // Ignore directories
+      if (stat.isDirectory()) return;
 
-			// Copy File to Test App
-			var data = fs.readFileSync(filePath);
+      // Copy File to Test App
+      var data = fs.readFileSync(filePath);
 
-			// Create file and any missing parent directories in its path
-			fs.createFileSync(path.resolve(file), data);
-			fs.writeFileSync(path.resolve(file), data);
-		});
+      // Create file and any missing parent directories in its path
+      fs.createFileSync(path.resolve(file), data);
+      fs.writeFileSync(path.resolve(file), data);
+    });
 
-		// process.chdir(appName);
-		return done();
-	});
+    // process.chdir(appName);
+    return done();
+  });
 };
 
 /**
@@ -86,11 +86,11 @@ module.exports.build = function( /* [appName], done */ ) {
  */
 
 module.exports.teardown = function(appName) {
-	appName = appName ? appName : 'testApp';
-	var dir = path.resolve('./', appName);
-	if (fs.existsSync(dir)) {
-		wrench.rmdirSyncRecursive(dir);
-	}
+  appName = appName ? appName : 'testApp';
+  var dir = path.resolve('./', appName);
+  if (fs.existsSync(dir)) {
+    wrench.rmdirSyncRecursive(dir);
+  }
 };
 
 module.exports.liftQuiet = function(options, callback) {
@@ -113,47 +113,47 @@ module.exports.liftQuiet = function(options, callback) {
 
 module.exports.lift = function(options, callback) {
 
-	delete process.env.NODE_ENV;
+  delete process.env.NODE_ENV;
 
-	if (typeof options == 'function') {
-		callback = options;
-		options = null;
-	}
+  if (typeof options == 'function') {
+    callback = options;
+    options = null;
+  }
 
-	options = options || {};
-	_.defaults(options, {
-		port: 1342,
+  options = options || {};
+  _.defaults(options, {
+    port: 1342,
     environment: process.env.TEST_ENV,
     process: {
       removeAllListeners: true
     }
-	});
+  });
 
-	Sails().lift(options, function(err, sails) {
-		if (err) return callback(err);
-		sails.kill = sails.lower;
-		return callback(null, sails);
-	});
+  Sails().lift(options, function(err, sails) {
+    if (err) return callback(err);
+    sails.kill = sails.lower;
+    return callback(null, sails);
+  });
 
 };
 
 module.exports.buildAndLift = function(appName, options, callback) {
-	if (typeof options == 'function') {
-		callback = options;
-		options = null;
-	}
-	module.exports.build(appName, function() {
-		module.exports.lift(options, callback);
-	});
+  if (typeof options == 'function') {
+    callback = options;
+    options = null;
+  }
+  module.exports.build(appName, function() {
+    module.exports.lift(options, callback);
+  });
 };
 
 module.exports.liftWithTwoSockets = function(options, callback) {
-	if (typeof options == 'function') {
-		callback = options;
-		options = null;
-	}
-	module.exports.lift(options, function(err, sails) {
-		if (err) {return callback(err);}
+  if (typeof options == 'function') {
+    callback = options;
+    options = null;
+  }
+  module.exports.lift(options, function(err, sails) {
+    if (err) {return callback(err);}
 
     var socket1 = io.sails.connect('http://localhost:1342', {
       multiplex: false,
@@ -166,15 +166,15 @@ module.exports.liftWithTwoSockets = function(options, callback) {
         return callback(null, sails, socket1, socket2);
       });
     });
-	});
+  });
 };
 
 module.exports.buildAndLiftWithTwoSockets = function(appName, options, callback) {
-	if (typeof options == 'function') {
-		callback = options;
-		options = null;
-	}
-	module.exports.build(appName, function() {
-		module.exports.liftWithTwoSockets(options, callback);
-	});
+  if (typeof options == 'function') {
+    callback = options;
+    options = null;
+  }
+  module.exports.build(appName, function() {
+    module.exports.liftWithTwoSockets(options, callback);
+  });
 };

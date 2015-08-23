@@ -177,5 +177,3 @@ function _with (description, sailsOpts, msThreshold) {
 
   return sails;
 }
-
-
