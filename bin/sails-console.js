@@ -47,7 +47,7 @@ module.exports = function() {
     log.info(('( to exit, type ' + '<CTRL>+<C>' + ' )').grey);
     console.log();
 
-    var repl = REPL.start('sails> ');
+    var repl = REPL.start({prompt: 'sails> ', useGlobal: true});
     try {
       history(repl, nodepath.join(sails.config.paths.tmp, '.node_history'));
     } catch (e) {
