@@ -39,6 +39,7 @@ describe('router :: ', function() {
 					if (err) return done(new Error(err));
 
 					assert(response.body.indexOf('not found') < 0);
+					assert(response.body.indexOf('<!-- Default home page -->') > -1);
 					done();
 				});
 			});
