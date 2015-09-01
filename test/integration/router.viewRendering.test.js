@@ -42,6 +42,16 @@ describe('router :: ', function() {
 					done();
 				});
 			});
+
+			it('should wrap the view in the default layout', function(done) {
+
+				httpHelper.testRoute('get', '', function(err, response) {
+					if (err) return done(new Error(err));
+					assert(response.body.indexOf('<html>') > -1);
+					done();
+				});
+			});
+
 		});
 
 		describe('with no specified routing', function() {
