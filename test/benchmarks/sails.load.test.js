@@ -24,7 +24,7 @@ describe('benchmarks', function () {
 			var sails = new Sails();
 			return cb();
 		});
-		
+
 
 		//
 		// Load
@@ -135,30 +135,32 @@ describe('benchmarks', function () {
 
 /**
  * Run the specified function, capturing time elapsed.
- * 
+ *
  * @param  {[type]}   description [description]
  * @param  {Function} fn          [description]
  * @return {[type]}               [description]
  */
 function benchmark (description, fn) {
-	
+
 	it (description, function (cb) {
 		var self = this;
 
-		var startedAt = self.microtime.now();
-		// console.time(description);
+    var t1 = process.hrtime()
 
 		fn.apply(this, [function _callback () {
-			
+
 			var _result = {};
 
 			// If a `comment` or `expected` was provided, harvest it
 			_result.expected = self.expected;
 			self.expected = null;
+
 			_result.comment = self.comment;
 			self.comment = null;
-			var finishedAt = self.microtime.now();
-			_result.duration = finishedAt - startedAt;
+
+      var diff = process.hrtime(t1);
+
+      _.result.duration = (diff[0] * 1e6) + (diff[1] / 1e3)
 			_result.benchmark = description;
 
 			// console.log('finished ',_result);
@@ -171,21 +173,18 @@ function benchmark (description, fn) {
 
 /**
  * Use in mocha's `before`
- * 
+ *
  * @this {Array} benchmarks
- * @this {Object} microtime
  */
 function setupBenchmarks() {
-	this.microtime = require('microtime');
 	this.benchmarks = [];
 }
 
 
 /**
  * Use in mocha's `after`
- * 
+ *
  * @this {Array} benchmarks
- * @this {Object} microtime
  */
 function reportBenchmarks () {
 	var _ = require('lodash');
@@ -214,7 +213,7 @@ function reportBenchmarks () {
 			(ms < 1*expected/10) ? 'green' :
 			(ms < 3*expected/10) ? 'green' :
 			(ms < 6*expected/10) ? 'cyan' :
-			(ms < threshold) ? 'yellow' : 
+			(ms < threshold) ? 'yellow' :
 			'red';
 
 		ms += 'ms';
@@ -223,7 +222,7 @@ function reportBenchmarks () {
 		// Whether to show expected ms
 		var showExpected = true; // ms >= threshold;
 
-		return memo + '\n ' + 
+		return memo + '\n ' +
 			(result.benchmark+'') + ' :: '.grey + ms +
 
 			// Expected ms provided, and the test took quite a while
