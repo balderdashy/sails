@@ -1,5 +1,5 @@
 var async = require('async');
-module.exports = function(cb) {
+module.exports = function(sails, cb) {
 
   var users = [];
   for (var userId = 1; userId <= 11; userId++) {
@@ -15,6 +15,6 @@ module.exports = function(cb) {
       users.push(user);
   }
 
-  async.forEach(users, function create(user, cb) {User.create(user).exec(cb)}, cb);
+  async.forEach(users, function create(user, cb) {sails.models.user.create(user).exec(cb)}, cb);
 
 };

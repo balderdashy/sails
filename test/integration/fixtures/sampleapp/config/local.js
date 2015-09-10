@@ -12,5 +12,6 @@ module.exports = {
   },
   models: {
     migrate: 'alter'
-  }
+  },
+  globals: false
 };

@@ -386,7 +386,7 @@ describe('router :: ', function() {
 
       before(function(done) {
 
-        User.create([
+        sailsprocess.models.user.create([
           {name:'scott'},
           {name:'abby'},
           {name:'joe'},

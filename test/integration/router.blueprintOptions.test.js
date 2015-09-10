@@ -7,6 +7,7 @@ var appHelper = require('./helpers/appHelper');
 var util = require('util');
 var async = require('async');
 var fixture = require('./fixtures/users.js');
+var _ = require('lodash');
 
 /**
  * Errors
@@ -75,7 +76,7 @@ describe('router :: ', function() {
           sailsprocess = sails;
 
           // Add 31 users with 31 pets each
-          fixture(done);
+          fixture(sails, done);
 
         });
 
