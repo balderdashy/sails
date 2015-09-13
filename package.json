@@ -38,7 +38,7 @@
     "consolidate": "^0.12.1",
     "cookie": "0.1.2",
     "cookie-signature": "1.0.6",
-    "ejs": "~0.8.4",
+    "ejs": "^2.3.3",
     "ejs-locals": "~1.0.2",
     "express": "3.20.2",
     "express-handlebars": "~2.0.0",
