@@ -689,7 +689,7 @@ describe('CORS and CSRF ::', function() {
       it("no CSRF token should be present in view locals", function(done) {
         httpHelper.testRoute("get", 'viewtest/csrf', function (err, response) {
           if (err) return done(new Error(err));
-          assert(response.body.indexOf('csrf=null') !== -1, response.body);
+          assert(response.body.indexOf('csrf=no_token') !== -1, response.body);
           done();
         });
       });
@@ -1018,7 +1018,7 @@ describe('CORS and CSRF ::', function() {
               }
             }, function (err, response) {
             if (err) return done(new Error(err));
-            assert(response.body.indexOf('csrf=null') !== -1, response.body);
+            assert(response.body.indexOf('csrf=no_token') !== -1, response.body);
             done();
           });
         });

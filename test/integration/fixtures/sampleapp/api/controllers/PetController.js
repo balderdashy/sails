@@ -1,7 +1,7 @@
 module.exports = {
 
   watch: function(req, res) {
-    Pet.watch(req);
+    req._sails.models.pet.watch(req);
     res.send(200);
   }
 
