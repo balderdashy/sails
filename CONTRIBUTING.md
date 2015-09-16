@@ -28,6 +28,7 @@ When submitting an issue, please follow these simple instructions:
   - The sails version (find this with ````sails -v````).
   - Detailed explanation of how to recreate the issue
 7. If you are experiencing more than one problem, create a separate issue for each one. If you think they might be related, please reference the other issues you've created.
+8. If you have found a security vulnerability in Sails, _please do not report it in a public issue_. You can find instructions for alerting us in the [security policy](https://github.com/balderdashy/sails-docs/blob/master/security/SAILS-SECURITY-POLICY.md).
 
 
 
