@@ -1,7 +1,7 @@
 {
   "name": "sails",
   "author": "Mike McNeil <@mikermcneil>",
-  "version": "0.11.0",
+  "version": "0.11.0a",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
   "homepage": "http://sailsjs.org",
   "keywords": [
@@ -71,7 +71,7 @@
     "sails-build-dictionary": "~0.10.1",
     "sails-disk": "~0.10.0",
     "sails-generate": "~0.12.0",
-    "sails-hook-sockets": "^0.11.13",
+    "sails-hook-sockets": "AnyPresence/sails-hook-sockets#0.11.24g",
     "sails-stringfile": "~0.3.0",
     "sails-util": "~0.10.3",
     "semver": "~2.2.1",
