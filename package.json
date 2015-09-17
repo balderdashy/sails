@@ -70,7 +70,7 @@
     "sails-build-dictionary": "~0.10.1",
     "sails-disk": "~0.10.7",
     "sails-generate": "~0.12.3",
-    "sails-hook-sockets": "~0.11.23",
+    "sails-hook-sockets": "pmq20/sails-hook-sockets#873c052",
     "sails-stringfile": "~0.3.2",
     "sails-util": "~0.10.6",
     "semver": "~4.3.3",
@@ -92,7 +92,7 @@
     "mocha": "~2.2.1",
     "portfinder": "~0.4.0",
     "coffee-script": "~1.9.1",
-    "socket.io-client": "^1.3.5"
+    "socket.io-client": "automattic/socket.io-client#4c22f33"
   },
   "repository": {
     "type": "git",
