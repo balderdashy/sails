@@ -226,6 +226,18 @@ describe('router :: ', function() {
           done();
         });
       });
+
+      it('should not bind blueprint actions to singular controller names (quiz)', function(done) {
+        httpHelper.testRoute('get', {
+          url: 'quiz',
+          json: true
+        }, function(err, response) {
+          if (err) done(new Error(err));
+
+          assert(response.statusCode === 404);
+          done();
+        });
+      });
     });
 
     describe('with `prefix` option set :: ', function() {
