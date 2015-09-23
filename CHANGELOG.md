@@ -4,6 +4,13 @@
 
 * [ENHANCEMENT] Support layout for Ractive template engine
 
+### 0.11.2
+
+* [BUGFIX] Fixes to allow proper installation / execution in environments using Node 4 and/or NPM 3.
+
+### 0.11.1
+
+* Shhhh nothing to see here (version skipped)
 
 ### 0.11.0
 
