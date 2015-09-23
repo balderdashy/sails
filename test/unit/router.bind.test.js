@@ -95,7 +95,11 @@ describe('Router.bind', function() {
       it('should send expected response (options /bar)', function(done) {
         supertest(this.sails.router._privateRouter)
           .options('/bar')
-          .expect(200, 'GET,POST,PUT,DELETE,PATCH')
+          .expect(200, /GET/)
+          .expect(200, /POST/)
+          .expect(200, /PUT/)
+          .expect(200, /DELETE/)
+          .expect(200, /PATCH/)
           .end(done);
       });
     })
