@@ -70,8 +70,11 @@ Below, you'll find an overview of the modules maintained by the core team and co
 
 ### Officially-supported hooks
 
-> Currently contained in core Sails repo.
+| Hook           | Repo       |  Build Status (edge)             | Purpose                                               | Depends on... |
+|----------------|------------|----------------------------------|-------------------------------------------------------|
+| `sockets`      | [sails-hook-sockets](https://github.com/balderdashy/sails-hook-sockets)  | [![Build Status](https://travis-ci.org/balderdashy/sails-hook-sockets?branch=master)](https://travis-ci.org/balderdashy/sails-hook-sockets)  | Implemments Socket.io support in Sails.  | `http`  |
 
+> The rest of the officially supported hooks are currently contained in the same repo as Sails core.  See [`lib/hooks/`](https://github.com/balderdashy/sails/tree/master/lib/hooks)
 
 ### Socket Client SDKs
 
