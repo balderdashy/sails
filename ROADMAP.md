@@ -28,6 +28,7 @@ Our short-to-medium-term roadmap items, in order of descending priority:
 
  Feature                                                  | Owner                                                                            | Details
  :------------------------------------------------------- | :------------------------------------------------------------------------------- | :------
+ Improve performance and stability of `update` queries in SQL adapters |  _your name here_   | See [this issue](https://github.com/balderdashy/sails-mysql/issues/253) for details |
  Log key configuration info on lift                       | [@mikermcneil](https://github.com/mikermcneil)     | For example, if `config/local.js` is present, log a message explaining that it will be used.  See also https://github.com/dominictarr/rc/issues/23#issuecomment-33875197
  Lock + unlock app in dev env                             | [@mikermcneil](https://github.com/mikermcneil)     | Capability for a hook to "lock" and/or "unlock" the app (in a development env only).  When "locked" all requests are intercepted by an endpoint which responds with either a page or JSON payload communicating a custom message.  e.g. so the grunt hook can let us know as it syncs.  e.g. `sails.emit('lock')`
  Hook dependency/load order mgmt                          | [@mikermcneil](https://github.com/mikermcneil)                                   | rebase the hook dependency+optional depenency system originally proposed by @ragulka
