@@ -17,6 +17,7 @@
 * [ENHANCEMENT] Support CSRF hook route configuration [#2366](https://github.com/balderdashy/sails/issues/2366)
 * [BUGFIX] Fix [RangeError: Maximum call stack size exceeded] error in PubSub hook
 * [ENHANCEMENT] Support layout for Ractive template engine
+* [ENHANCEMENT] added support for cassandra session store
 
 
 ### 0.11.0
