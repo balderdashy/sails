@@ -84,7 +84,7 @@ Need help or have a question?
 - [Tutorials](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#what-are-some-good-community-tutorials)
 - [StackOverflow](http://stackoverflow.com/questions/tagged/sails.js)
 - [Gitter Chat Room](https://gitter.im/balderdashy/sails)
-- [Professional/Enterprise Support](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#are-there-professional-support-options)
+- [Professional/Enterprise Support](http://balderdash.io)
 
 ## Links
 - [Website](http://sailsjs.org/)
@@ -96,21 +96,18 @@ Need help or have a question?
 - [SailsCasts](http://irlnathan.github.io/sailscasts/)
 
 ## Team
-Sails is actively built and maintained by [Balderdash](http://balderdash.co) ([@balderdashy](http://twitter.com/balderdashy)), a realtime web & mobile studio, with the help of these [contributors](https://github.com/balderdashy/sails/graphs/contributors):
+Sails is actively built and maintained by [Balderdash](http://balderdash.io) ([@balderdashy](http://twitter.com/balderdashy)), a realtime web & mobile studio, with the help of these [contributors](https://github.com/balderdashy/sails/graphs/contributors):
 
 [![Mike McNeil](http://gravatar.com/avatar/199046437b76e6ca73e00b4cc182a1c5?s=144)](http://michaelmcneil.com) |  [![Cody Stoltman](https://1.gravatar.com/avatar/368567acca0c5dfb9a4ff512c5c0c3fa?s=144)](http://particlebanana.com) | [![Scott Gress](https://0.gravatar.com/avatar/b74e07aa543552709bf546ca279c9c67?s=144)](http://www.pigandcow.com/) | [![Irl Nathan](https://avatars0.githubusercontent.com/u/1598650?v=3&s=144)](http://irlnathan.github.io/sailscasts/) | [![Rachael Shaw](https://avatars0.githubusercontent.com/u/3065949?v=3&s=144)](http://twitter.com/fancydoilies)
 :---:|:---:|:---:|:---:|:---:
 [Mike McNeil](http://michaelmcneil.com) | [Cody Stoltman](https://github.com/particlebanana) | [Scott Gress](https://github.com/sgress454) | [Irl Nathan](https://github.com/irlnathan) | [Rachael Shaw](https://github.com/rachaelshaw)
 
-[Balderdash](http://balderdash.co) designs/builds scalable Node.js apps for startups and enterprise customers.  After building a few apps and taking them into production, we realized that the Node.js development landscape was very much still the Wild West.  Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  [I](http://twitter.com/mikermcneil) hope it saves you some time :)
-
+[Balderdash](http://balderdash.io) designs/builds scalable Node.js apps for startups and enterprise customers.  After building a few apps and taking them into production, we realized that the Node.js development landscape was very much still the Wild West.  Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  We hope it saves you some time! :)
 
 ## License
 
 [MIT License](http://sails.mit-license.org/)  Copyright © 2012-2015 Mike McNeil
 
 > Sails is built around so many great open-source technologies that it would never have crossed our minds to keep it proprietary.  We owe huge gratitude and props to TJ Holowaychuk ([@visionmedia](https://github.com/visionmedia)) and Guillermo Rauch ([@rauchg](https://github.com/rauchg)) for the work they did, as well as the stewards of all the other open-source modules we use.  Sails could never have been developed without your tremendous contributions to the node community.
-
-
 
 ![image_squidhome@2x.png](http://sailsjs.org/images/bkgd_squiddy.png)
