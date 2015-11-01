@@ -92,7 +92,7 @@ cmd.description('');
 cmd.action(require('./sails-console'));
 
 // some quick aliases (TODO do something more intelligent when we get around to upgrading commander)
-cmd = program.command('consle');
+cmd = program.command('console');
 cmd.unknownOption = NOOP;
 cmd.description('');
 cmd.action(require('./sails-console'));
