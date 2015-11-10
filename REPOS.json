@@ -1,0 +1,190 @@
+[
+
+
+  {
+  	"repoName": "sails",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "sails-hook-sockets",
+  	"owner": "balderdashy"
+  },
+
+
+
+  {
+  	"repoName": "waterline",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "anchor",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "waterline-schema",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "waterline-sequel",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "waterline-criteria",
+  	"owner": "balderdashy"
+  },
+
+
+
+  {
+  	"repoName": "sails-disk",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "sails-mysql",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "sails-postgresql",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "sails-mongo",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "sails-redis",
+  	"owner": "balderdashy"
+  },
+
+
+
+  {
+  	"repoName": "skipper",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "skipper-disk",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "skipper-s3",
+  	"owner": "balderdashy"
+  },
+
+
+
+  {
+  	"repoName": "sails-generate",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "sails-build-dictionary",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "captains-log",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "sails-stringfile",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "enpeem",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "fixture-stdout",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "merge-defaults",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "reportback",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "include-all",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "merge-context",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "sails-util",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "switchback",
+  	"owner": "node-machine"
+  },
+
+
+
+  {
+  	"repoName": "sails.io.js",
+  	"owner": "balderdashy"
+  },
+
+
+
+  {
+    "repoName": "sails-generate-new",
+    "owner": "balderdashy"
+  },
+  {
+  	"repoName": "sails-generate-backend",
+  	"owner": "balderdashy"
+  },
+  {
+  	"repoName": "sails-generate-frontend",
+  	"owner": "balderdashy"
+  },
+  {
+    "repoName": "sails-generate-views",
+    "owner": "balderdashy"
+  },
+  {
+    "repoName": "sails-generate-api",
+    "owner": "balderdashy"
+  },
+  {
+    "repoName": "sails-generate-controller",
+    "owner": "balderdashy"
+  },
+  {
+    "repoName": "sails-generate-model",
+    "owner": "balderdashy"
+  },
+  {
+    "repoName": "sails-generate-generator",
+    "owner": "balderdashy"
+  },
+  {
+    "repoName": "sails-generate-hook",
+    "owner": "balderdashy"
+  },
+  {
+    "repoName": "sails-generate-adapter",
+    "owner": "balderdashy"
+  },
+  {
+    "repoName": "sails-generate-test",
+    "owner": "balderdashy"
+  },
+
+
+
+  {
+    "repoName": "www.sailsjs.org",
+    "owner": "balderdashy"
+  },
+  {
+    "repoName": "sails-docs",
+    "owner": "balderdashy"
+  }
+
+]
