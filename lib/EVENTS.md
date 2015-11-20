@@ -96,7 +96,8 @@ Should receive a single argument, "routeObj", which looks like:
 {
   path: 'String',
   target: function theFnBoundtoTheRoute (req, res, next) {},
-  verb: 'String'
+  verb: 'String',
+  options: 'Object'
 }
 ```
 
