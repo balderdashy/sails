@@ -38,14 +38,12 @@ describe('CORS and CSRF ::', function() {
       appHelper.teardown();
     });
 
-    describe('with "allRoutes: true" and origin "*"', function () {
-
+    describe('with "allRoutes: true", origin "*", and "exposeHeaders: Origin, Access-Control-Request-Method"', function () {
       before(function() {
-        fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': '*', 'allRoutes': true};");
+        fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': '*', 'allRoutes': true, 'exposeHeaders': 'Origin, Access-Control-Request-Method'};");
         var routeConfig = {
           'GET /test/find': {controller: 'TestController', action: 'find', cors: false},
           'GET /test/update': {controller: 'TestController', action: 'update', cors: 'http://www.example.com'},
-          'GET /test2': {controller: 'TestController', action: 'find', cors: {'exposeHeaders': 'x-custom-header'}},
           'PUT /test': {controller: 'TestController', action: 'update', cors: 'http://www.example.com'},
           'POST /test': {controller: 'TestController', action: 'create', cors: 'http://www.different.com'},
           'DELETE /test': {controller: 'TestController', action: 'delete', cors: false},
@@ -54,27 +52,28 @@ describe('CORS and CSRF ::', function() {
           'PUT /test2': {controller: 'TestController', action: 'update'},
           'GET /test/patch': {controller: 'TestController', action: 'update', cors: 'http://www.example.com:1338'},
           'GET /test/create': {controller: 'TestController', action: 'create', cors: 'http://www.different.com'},
-          'GET /test/destroy': {controller: 'TestController', action: 'destroy', cors: {origin: 'http://www.example.com', credentials: false}},
+          'GET /test/destroy': {controller: 'TestController', action: 'destroy', cors: {origin: 'http://www.example.com', credentials: false}}
         };
         fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), "module.exports.routes = " + JSON.stringify(routeConfig));
       });
 
       describe('an OPTIONS request with origin "http://www.example.com"', function() {
 
-        it('for a PUT route with {cors: http://example.com} and an Access-Control-Request-Method header set to "PUT" should respond with correct Access-Control-Allow-* headers', function(done) {
+        it('for a PUT route with {cors: http://example.com} and an Access-Control-Request-Method header set to "PUT" should respond with correct Access-Control-Allow-Origin, Access-Control-Allow-Method, and Access-Control-Expose-Headers headers', function(done) {
 
           httpHelper.testRoute('options', {
             url: 'test',
             headers: {
               'Access-Control-Request-Method': 'PUT',
-              'Origin': 'http://www.example.com'
+              'Origin': 'http://www.example.com',
+              'Browser-Accessible': 'false'
             },
           }, function(err, response) {
             if (err) return done(new Error(err));
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
             assert.equal(response.headers['access-control-allow-methods'], 'put');
-            assert.equal(response.headers['access-control-allow-headers'], 'content-type');
+            assert.equal(response.headers['access-control-expose-headers'], 'Origin, Access-Control-Request-Method');
             done();
           });
 
@@ -86,9 +85,13 @@ describe('CORS and CSRF ::', function() {
             url: 'test',
           }, function(err, response) {
             if (err) return done(new Error(err));
-            var body = response.body.split(',').sort().join(',');
             assert.equal(response.statusCode, 200);
-            assert.equal(body, 'CHECKOUT,CONNECT,COPY,DELETE,GET,HEAD,LOCK,M-SEARCH,MERGE,MKACTIVITY,MKCOL,MOVE,NOTIFY,PATCH,POST,PROPFIND,PROPPATCH,PURGE,PUT,REPORT,SEARCH,SUBSCRIBE,TRACE,UNLOCK,UNSUBSCRIBE', require('util').format('Unexpected HTTP methods:  "%s"', response.body));
+            // Should be a string with some methods in it
+            assert(response.body.match(/GET/));
+            assert(response.body.match(/POST/));
+            assert(response.body.match(/PUT/));
+            assert(response.body.match(/DELETE/));
+            assert(response.body.match(/HEAD/));
             done();
           });
 
@@ -183,7 +186,7 @@ describe('CORS and CSRF ::', function() {
 
       describe('a GET request with origin "http://www.example.com"', function() {
 
-        it('to a route without a CORS config should result in a 200 response with a correct Access-Control-Allow-Origin and Access-Control-Expose-Headers header', function(done) {
+        it('to a route without a CORS config should result in a 200 response with a correct Access-Control-Allow-Origin header', function(done) {
           httpHelper.testRoute('get', {
             url: 'test',
             headers: {
@@ -193,25 +196,10 @@ describe('CORS and CSRF ::', function() {
             if (err) return done(new Error(err));
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
-            assert.equal(response.headers['access-control-expose-headers'], '');
             done();
           });
         });
 
-        it('to a route with "exposeHeaders" configured should result in a 200 response with a correct Access-Control-Allow-Origin and Access-Control-Expose-Headers header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test2',
-            headers: {
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) return done(new Error(err));
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
-            assert.equal(response.headers['access-control-expose-headers'], 'x-custom-header');
-            done();
-          });
-        });
         it('to a route configured with {cors: false} should result in a 200 response with an empty Access-Control-Allow-Origin header', function(done) {
           httpHelper.testRoute('get', {
             url: 'test/find',
@@ -770,75 +758,6 @@ describe('CORS and CSRF ::', function() {
         });
 
       });
-    });
-
-    describe("with CSRF set to {route: '/anotherCsrf'}", function() {
-      before(function() {
-        fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = {route: '/anotherCsrf'};");
-      });
-
-      it("a request to /csrfToken should respond with a 404", function(done) {
-        httpHelper.testRoute("get", 'csrftoken', function (err, response) {
-          if (err) return done(new Error(err));
-          assert.equal(response.statusCode, 404);
-          done();
-        });
-
-      });
-
-      it("a request to /anotherCsrf should respond with a _csrf token", function(done) {
-        httpHelper.testRoute("get", 'anotherCsrf', function (err, response) {
-          if (err) return done(new Error(err));
-          try {
-            var body = JSON.parse(response.body);
-            assert(body._csrf, response.body);
-            done();
-          } catch (e) {
-            done(new Error('Unexpected response: '+response.body));
-          }
-        });
-      });
-
-      it("a POST request without a CSRF token should result in a 403 response", function (done) {
-
-        httpHelper.testRoute("post", 'user', function (err, response) {
-
-          if (err) return done(new Error(err));
-          assert.equal(response.statusCode, 403);
-          done();
-
-        });
-
-      });
-
-      it("a POST request with a valid CSRF token should result in a 201 response", function (done) {
-
-        httpHelper.testRoute("get", 'anotherCsrf', function (err, response) {
-          if (err) return done(new Error(err));
-          try {
-            var body = JSON.parse(response.body);
-            var sid = response.headers['set-cookie'][0].split(';')[0].substr(10);
-            httpHelper.testRoute("post", {
-              url: 'user',
-              headers: {
-                'Content-type': 'application/json',
-                'cookie': 'sails.sid='+sid
-              },
-              body: '{"_csrf":"'+body._csrf+'"}'
-            }, function (err, response) {
-
-              if (err) return done(new Error(err));
-
-              assert.equal(response.statusCode, 201);
-              done();
-
-            });
-          } catch (e) {
-            done(e);
-          }
-        });
-      });
-
     });
 
     describe("with CSRF set to {protectionEnabled: true, grantTokenViaAjax: false}", function() {
