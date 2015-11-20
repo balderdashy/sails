@@ -6,7 +6,6 @@
 
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/balderdashy/sails?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![NPM version](https://badge.fury.io/js/sails.svg)](http://badge.fury.io/js/sails)
-[![Build Status](https://api.travis-ci.org/balderdashy/sails.png?branch=master)](https://travis-ci.org/balderdashy/sails)
 
 
 Sails.js is a web framework that makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app development. It's especially good for building realtime features like chat.
@@ -19,7 +18,7 @@ Sails.js is a web framework that makes it easy to build custom, enterprise-grade
 $ sudo npm install sails -g
 ```
 
-> ######New release available
+> ######Upgrading from 0.9 or 0.10?
 > The v0.11 release of Sails (with support for Socket.io v1.0) is here!  To read the v0.11 migration guide, click [here](http://sailsjs.org/version-notes/0point10-to-0point11-migration-guide).
 
 
@@ -80,11 +79,13 @@ We love pull requests! See the [contribution guide](https://github.com/balderdas
 
 ## Support
 Need help or have a question?
-
-- [Tutorials](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#what-are-some-good-community-tutorials)
 - [StackOverflow](http://stackoverflow.com/questions/tagged/sails.js)
+- [Sails.js in Action](https://www.manning.com/books/sails-js-in-action) (book by Mike McNeil and Irl Nathan)
+- [Develop Web Apps in Node.js and Sails.js](https://courses.platzi.com/courses/develop-apps-sails-js/) (video course on Platzi)
+- [Sails.js from Scratch](http://code.tutsplus.com/courses/sailsjs-from-scratch) (video course on Tuts+)
 - [Gitter Chat Room](https://gitter.im/balderdashy/sails)
-- [Professional/Enterprise Support](http://balderdash.io)
+- [Tutorials](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#what-are-some-good-community-tutorials)
+- [Professional/Enterprise Support](http://balderdash.co)
 
 ## Links
 - [Website](http://sailsjs.org/)
@@ -96,13 +97,13 @@ Need help or have a question?
 - [SailsCasts](http://irlnathan.github.io/sailscasts/)
 
 ## Team
-Sails is actively built and maintained by [Balderdash](http://balderdash.io) ([@balderdashy](http://twitter.com/balderdashy)), a realtime web & mobile studio, with the help of these [contributors](https://github.com/balderdashy/sails/graphs/contributors):
+Sails was built and is actively and maintained by [Balderdash](http://balderdash.co) ([@balderdashy](http://twitter.com/balderdashy)), a realtime web & mobile studio, with the help of many other amazing [contributors](https://github.com/balderdashy/sails/graphs/contributors).  Our core team consists of:
 
 [![Mike McNeil](http://gravatar.com/avatar/199046437b76e6ca73e00b4cc182a1c5?s=144)](http://michaelmcneil.com) |  [![Cody Stoltman](https://1.gravatar.com/avatar/368567acca0c5dfb9a4ff512c5c0c3fa?s=144)](http://particlebanana.com) | [![Scott Gress](https://0.gravatar.com/avatar/b74e07aa543552709bf546ca279c9c67?s=144)](http://www.pigandcow.com/) | [![Irl Nathan](https://avatars0.githubusercontent.com/u/1598650?v=3&s=144)](http://irlnathan.github.io/sailscasts/) | [![Rachael Shaw](https://avatars0.githubusercontent.com/u/3065949?v=3&s=144)](http://twitter.com/fancydoilies)
 :---:|:---:|:---:|:---:|:---:
 [Mike McNeil](http://michaelmcneil.com) | [Cody Stoltman](https://github.com/particlebanana) | [Scott Gress](https://github.com/sgress454) | [Irl Nathan](https://github.com/irlnathan) | [Rachael Shaw](https://github.com/rachaelshaw)
 
-[Balderdash](http://balderdash.io) designs/builds scalable Node.js apps for startups and enterprise customers.  After building a few apps and taking them into production, we realized that the Node.js development landscape was very much still the Wild West.  Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  We hope it saves you some time! :)
+[Balderdash](http://balderdash.co) designs/builds scalable Node.js apps for startups and enterprise customers.  After building a few apps and taking them into production, we realized that the Node.js development landscape was very much still the Wild West.  Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  We hope it saves you some time! :)
 
 ## License
 
