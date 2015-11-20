@@ -83,6 +83,7 @@ Need help or have a question?
 - [Sails.js in Action](https://www.manning.com/books/sails-js-in-action) (book by Mike McNeil and Irl Nathan)
 - [Develop Web Apps in Node.js and Sails.js](https://courses.platzi.com/courses/develop-apps-sails-js/) (video course on Platzi)
 - [Sails.js from Scratch](http://code.tutsplus.com/courses/sailsjs-from-scratch) (video course on Tuts+)
+- [Up and Running in Node.js](http://www.lynda.com/Node.js-tutorials/Up-Running-Node.js/370605-2.html) (Sails basics are covered towards the end of this video course on Lynda)
 - [Gitter Chat Room](https://gitter.im/balderdashy/sails)
 - [Tutorials](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#what-are-some-good-community-tutorials)
 - [Professional/Enterprise Support](http://balderdash.co)
