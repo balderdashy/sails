@@ -35,7 +35,7 @@ module.exports = function() {
   }), function sailsReady(err) {
     if (err) return Err.fatal.failedToLoadSails(err);
 
-    var overrideGruntTask = (sails.config.environment == 'production' ? GRUNT_TASK_PROD_NAME : GRUNT_TASK_NAME)
+    var overrideGruntTask = (sails.config.environment == 'production' ? GRUNT_TASK_PROD_NAME : GRUNT_TASK_NAME);
 
     // Run Grunt task
     var Grunt = __Grunt(sails);
