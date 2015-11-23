@@ -1,10 +1,11 @@
 # Sails Changelog
 
-### master
+### 0.11.3
 
+* [BUGFIX] Fix [RangeError: Maximum call stack size exceeded] error in PubSub hook (https://github.com/balderdashy/sails/issues/2636)
+* [ENHANCEMENT] Allow custom route options in policy target syntax (https://github.com/balderdashy/sails/commit/0990fc10709520a9f6c55923b991708d5eaf8aa0)
 * [ENHANCEMENT] Support CSRF hook route configuration [#2366](https://github.com/balderdashy/sails/issues/2366)
-* [BUGFIX] Fix [RangeError: Maximum call stack size exceeded] error in PubSub hook
-* [ENHANCEMENT] Support layout for Ractive template engine
+* [ENHANCEMENT] Added "exposeHeaders" option in CORS configuration (https://github.com/balderdashy/sails/pull/2712)
 
 ### 0.11.2
 
