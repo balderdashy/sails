@@ -12,7 +12,7 @@ module.exports = function(sails) {
 
   function forbiddenPolicy(req, res, next) {
     return res.forbidden();
-  };
+  }
 
   return {
 

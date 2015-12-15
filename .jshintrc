@@ -30,7 +30,13 @@
   "supernew": true,
   
   // Allow backwards, node-dependency-style commas
-  "laxcomma": true
+  "laxcomma": true,
+
+  // Allow linebreak before operators
+  "laxbreak": true,
+
+  // Allow `== null`
+  "eqnull": true
 
   // "bitwise": true,
   // "camelcase": true,

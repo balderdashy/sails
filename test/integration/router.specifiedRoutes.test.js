@@ -241,7 +241,7 @@ describe('router :: ', function() {
 					assert(response.body === 'get', Err.badResponse(response));
 					done();
 				});
-			})
+			});
 		});
 
 		describe('should accept case-insensitive controller key', function() {

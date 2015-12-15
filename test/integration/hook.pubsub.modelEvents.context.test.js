@@ -133,9 +133,9 @@ describe('pubsub :: ', function() {
           socket2.on('user', function(message) {
             assert(message.id == 1 && message.verb == 'messaged' && message.data.greeting == 'hello', Err.badResponse(message));
             done();
-          })
+          });
           socket1.get('/user/message');
-        })
+        });
       });
 
       it('adding a pet to the user should not result in any socket messages being received', function(done) {
@@ -143,7 +143,7 @@ describe('pubsub :: ', function() {
         this.slow(3000);
         socket2.on('user', function(message) {
           assert(false, 'User event received by socket 2 when it should not have been!');
-        })
+        });
         socket1.post('/pet', {
           name: 'rex',
           owner: 1
@@ -162,12 +162,12 @@ describe('pubsub :: ', function() {
           socket2.on('user', function(message) {
             assert(message.id == 1 && message.verb == 'addedTo' && message.attribute == 'pets' && message.addedId == 2, Err.badResponse(message));
             done();
-          })
+          });
           socket1.post('/pet', {
             name: 'alice',
             owner: 1
           });
-        })
+        });
       });
 
       it('removing a pet from the user should not result in any socket messages being received', function(done) {
@@ -175,7 +175,7 @@ describe('pubsub :: ', function() {
         this.slow(3000);
         socket2.on('user', function(message) {
           assert(false, 'User event received by socket 2 when it should not have been!');
-        })
+        });
         socket1.delete('/pet', {
           id: 1
         });
@@ -193,11 +193,11 @@ describe('pubsub :: ', function() {
           socket2.on('user', function(message) {
             assert(message.id == 1 && message.verb == 'removedFrom' && message.attribute == 'pets' && message.removedId == 2, Err.badResponse(message));
             done();
-          })
+          });
           socket1.delete('/pet', {
             id: 2
           });
-        })
+        });
       });
 
       it('deleting a user should not result in any socket messages being received', function(done) {
@@ -205,7 +205,7 @@ describe('pubsub :: ', function() {
         this.slow(3000);
         socket2.on('user', function(message) {
           assert(false, 'User event received by socket 2 when it should not have been!');
-        })
+        });
         socket1.delete('/user', {
           id: 2
         });
@@ -223,11 +223,11 @@ describe('pubsub :: ', function() {
           socket2.on('user', function(message) {
             assert(message.id == 1 && message.verb == 'destroyed', Err.badResponse(message));
             done();
-          })
+          });
           socket1.delete('/user', {
             id: 1
           });
-        })
+        });
       });
     });
 

@@ -192,7 +192,7 @@ describe('pubsub :: ', function() {
             && message.data.owner == null
             , Err.badResponse(message));
           done();
-        })
+        });
 
         // Avoiding this case temporarily:
         // socket2.delete('/user/1/pets', {pet_id:1});
@@ -213,7 +213,7 @@ describe('pubsub :: ', function() {
             && message.verb == 'updated'
             && message.data.profile == null, Err.badResponse(message));
           done();
-        })
+        });
 
         socket1.delete('/userprofile/1');
 
@@ -228,7 +228,7 @@ describe('pubsub :: ', function() {
             && message.data.owner == 1
             , Err.badResponse(message));
           done();
-        })
+        });
 
         socket2.post('/user/1/pets', {pet_id:1});
 
@@ -242,7 +242,7 @@ describe('pubsub :: ', function() {
             && message.attribute == 'pets'
             && message.removedId == 1, Err.badResponse(message));
           done();
-        })
+        });
 
         socket1.delete('/pet/1');
 

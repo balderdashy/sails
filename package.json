@@ -22,6 +22,7 @@
   },
   "scripts": {
     "test": "mocha -b",
+    "lint": "jshint lib test bin errors",
     "prepublish": "npm prune",
     "preinstall": "node ./lib/preinstall_npmcheck.js"
   },
@@ -82,19 +83,20 @@
     "waterline": "~0.10.26"
   },
   "devDependencies": {
-    "root-require": "~0.3.1",
-    "checksum": "~0.1.1",
-    "request": "*",
-    "istanbul": "*",
-    "wrench": "~1.5.8",
     "benchmark": "~1.0.0",
+    "checksum": "~0.1.1",
+    "coffee-script": "~1.9.1",
     "expect.js": "~0.3.1",
-    "should": "~5.2.0",
-    "supertest": "~0.15.0",
+    "istanbul": "*",
+    "jshint": "~2.8.0",
     "mocha": "~2.2.1",
     "portfinder": "~0.4.0",
-    "coffee-script": "~1.9.1",
-    "socket.io-client": "^1.3.5"
+    "request": "*",
+    "root-require": "~0.3.1",
+    "should": "~5.2.0",
+    "socket.io-client": "^1.3.5",
+    "supertest": "~0.15.0",
+    "wrench": "~1.5.8"
   },
   "repository": {
     "type": "git",

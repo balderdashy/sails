@@ -15,6 +15,6 @@ module.exports = function(sails, cb) {
       users.push(user);
   }
 
-  async.forEach(users, function create(user, cb) {sails.models.user.create(user).exec(cb)}, cb);
+  async.forEach(users, function create(user, cb) {sails.models.user.create(user).exec(cb);}, cb);
 
 };
