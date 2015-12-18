@@ -6,9 +6,6 @@ node_js:
 
 sudo: false
 
-before_script:
-  - "npm install -g jsinspect"
-
 script:
   - "npm test"
 
