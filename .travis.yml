@@ -10,7 +10,6 @@ before_script:
   - "npm install -g jsinspect"
 
 script:
-  - "jsinspect -t 30 -i ./lib"
   - "npm test"
 
 notifications:
