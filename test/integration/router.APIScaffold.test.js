@@ -191,8 +191,9 @@ describe('router :: ', function() {
           body: [{stuff: "bad"}, {stuff: "ghuud"}]
         }, function (err, response) {
           if (err) return done(new Error(err));
-
-          assert(response.body instanceof Array && response.body[1].stuff === "ghuud", Err.badResponse(response));
+          assert(response.body instanceof Array,  Err.badResponse(response));
+          assert.equal(response.body.length, 2,  Err.badResponse(response));
+          assert.equal(response.body[1].stuff, "ghuud", Err.badResponse(response));
           done();
         });
       });
