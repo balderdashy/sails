@@ -274,6 +274,40 @@ describe('pubsub :: ', function() {
 
       });
 
+      it('updating the user again via PUT /user/1 should result in a correct `user` event being received by all subscribers, with previous pets populated', function(done) {
+
+        socket2.on('user', function(message) {
+          assert(message.id == 1 && message.verb == 'updated' && message.data.name == 'ron' && message.previous.name == 'joe' && message.previous.pets.length == 1, Err.badResponse(message));
+          done();
+        });
+
+        socket1.put('/user/1', {name:'ron'});
+
+      });
+
+      it('updating the user again via PUT /user/1 with "populate=false" should result in a correct `user` event being received by all subscribers, with no previous pets populated', function(done) {
+
+        socket2.on('user', function(message) {
+          assert(message.id == 1 && message.verb == 'updated' && message.data.name == 'larry' && message.previous.name == 'ron' && !message.previous.pets, Err.badResponse(message));
+          done();
+        });
+
+        socket1.put('/user/1?populate=false', {name:'larry'});
+
+      });
+
+      it('destroying a user via DELETE /user/1 should result in a `user` event being received by all subscribers', function(done) {
+
+        socket2.on('user', function(message) {
+          assert(message.id == 1 && message.verb == 'destroyed', Err.badResponse(message));
+          return done();
+        });
+
+
+        socket1.delete('/user/1');
+
+      });
+
     });
 
   });
