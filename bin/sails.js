@@ -96,7 +96,7 @@ cmd = program.command('consle');
 cmd.unknownOption = NOOP;
 cmd.description('');
 cmd.action(require('./sails-console'));
-cmd = program.command('consloe');
+cmd = program.command('console');
 cmd.unknownOption = NOOP;
 cmd.description('');
 cmd.action(require('./sails-console'));
