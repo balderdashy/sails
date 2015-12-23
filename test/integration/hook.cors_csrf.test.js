@@ -87,8 +87,26 @@ describe('CORS and CSRF ::', function() {
           }, function(err, response) {
             if (err) return done(new Error(err));
             var body = response.body.split(',').sort().join(',');
+
+            // Get the expected methods, either from Node herself (if available) or else from
+            // what we know Express will get from the "methods" dependency
+            var expected = (function() {
+              var methods;
+              if (require('http').METHODS) {
+                methods = require('http').METHODS.reduce(function(memo, method){
+                  if (method.toUpperCase() != 'OPTIONS') {
+                    memo.push(method.toUpperCase());
+                  }
+                  return memo;
+                }, []).sort().join(',');
+              } else {
+                methods = 'CHECKOUT,CONNECT,COPY,DELETE,GET,HEAD,LOCK,M-SEARCH,MERGE,MKACTIVITY,MKCOL,MOVE,NOTIFY,PATCH,POST,PROPFIND,PROPPATCH,PURGE,PUT,REPORT,SEARCH,SUBSCRIBE,TRACE,UNLOCK,UNSUBSCRIBE';
+              }
+              return methods;
+            })();
+
             assert.equal(response.statusCode, 200);
-            assert.equal(body, 'CHECKOUT,CONNECT,COPY,DELETE,GET,HEAD,LOCK,M-SEARCH,MERGE,MKACTIVITY,MKCOL,MOVE,NOTIFY,PATCH,POST,PROPFIND,PROPPATCH,PURGE,PUT,REPORT,SEARCH,SUBSCRIBE,TRACE,UNLOCK,UNSUBSCRIBE', require('util').format('Unexpected HTTP methods:  "%s"', response.body));
+            assert.equal(body, expected, require('util').format('\nExpected methods: %s\nActual methods:  ', expected, response.body));
             done();
           });
 
