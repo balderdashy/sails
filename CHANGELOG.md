@@ -17,9 +17,12 @@
 * [ENHANCEMENT] Support CSRF hook route configuration [#2366](https://github.com/balderdashy/sails/issues/2366)
 * [BUGFIX] Fix [RangeError: Maximum call stack size exceeded] error in PubSub hook
 * [ENHANCEMENT] Support layout for Ractive template engine
-* [ENHANCEMENT] Body parser error logs no longer outputted in production, unless `sails.config.keepResponseErrors` is set
+* [ENHANCEMENT] Body parser error logs no longer outputted in production, unless `sails.config.keepResponseErrors` is set [#3347](https://github.com/balderdashy/sails/pull/3347)
 * [BUGFIX] Pluralize option works correctly for all routes [#3223](https://github.com/balderdashy/sails/pull/3223)
-
+* [BUGFIX] Blueprint create now works when POSTing arrays [#3228](https://github.com/balderdashy/sails/pull/3228)
+* [ENHANCEMENT] Updated `sails-hook-sockets` to `^0.12.0`, which uses an updated socket.io-client module and has some bugfixes
+* [BUGFIX] Default responses now work correctly when views hook is disabled [#2770](https://github.com/balderdashy/sails/pull/2770)
+* [BUGFIX] Restored troubleshooting messages in console when Sails server fails to lift
 
 ### 0.11.0
 
