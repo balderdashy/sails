@@ -219,9 +219,33 @@ describe('router :: ', function() {
         });
       });
 
+      it('should bind blueprint actions to plural controller names (quiz => quizzes)', function(done) {
+        httpHelper.testRoute('get', {
+          url: 'quizzes',
+          json: true
+        }, function(err, response) {
+          if (err) done(new Error(err));
+
+          assert(response.body instanceof Array);
+          done();
+        });
+      });
+
       it('should not bind blueprint actions to singular controller names', function(done) {
         httpHelper.testRoute('get', {
           url: 'empty',
+          json: true
+        }, function(err, response) {
+          if (err) done(new Error(err));
+
+          assert(response.statusCode === 404);
+          done();
+        });
+      });
+
+      it('should not bind blueprint actions to singular controller names (quiz)', function(done) {
+        httpHelper.testRoute('get', {
+          url: 'quiz',
           json: true
         }, function(err, response) {
           if (err) done(new Error(err));
