@@ -1,37 +1,37 @@
 module.exports = {
-	verb: function(req, res) {
-		res.send(req.route.method);
-	},
+  verb: function(req, res) {
+    res.send(req.route.stack[0].method);
+  },
 
-	dynamic: function(req, res) {
-		res.send(req.route.keys);
-	},
+  dynamic: function(req, res) {
+    res.send(req.route.stack[0].keys);
+  },
 
-	index: function(req, res) {
-		res.send('index');
-	},
+  index: function(req, res) {
+    res.send('index');
+  },
 
-	find: function(req, res) {
-		res.send('find');
-	},
+  find: function(req, res) {
+    res.send('find');
+  },
 
   findOne: function(req, res) {
     res.send('findOne');
   },
 
-	create: function(req, res) {
-		res.send('create');
-	},
+  create: function(req, res) {
+    res.send('create');
+  },
 
-	update: function(req, res) {
-		res.send('update');
-	},
+  update: function(req, res) {
+    res.send('update');
+  },
 
-	destroy: function(req, res) {
-		res.send('destroy');
-	},
+  destroy: function(req, res) {
+    res.send('destroy');
+  },
 
-	CapitalLetters: function(req, res) {
-		res.send('CapitalLetters');
-	}
+  CapitalLetters: function(req, res) {
+    res.send('CapitalLetters');
+  }
 };

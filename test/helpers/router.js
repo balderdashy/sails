@@ -34,11 +34,22 @@ var $Router = {
       this.sails.router.bind.apply(this.sails.router, args);
     });
 
+    it('unbinds the given route', function() {
+      this.sails.router.unbind.should.be.ok;
+      var route = {verb: args[0].split(' ')[0], path: args[0].split(' ')[1]};
+      this.sails.router.unbind.call(this.sails.router, route);
+    });
+
     var Chainable = {
       shouldDelete: function(expected) {
         it('should delete route in _privateRouter', function() {
-          var boundRoutes = this.sails.router._privateRouter.routes[expected.method];
-          _.some(boundRoutes, expected).should.be.false;
+          var routeFound = false;
+          _.each(this.sails.router._privateRouter.stack, function(stack){
+            var samePath = stack.route.path === expected.path;
+            var sameMethod = stack.route.methods[expected.method] || stack.route.methods['_all'];
+            if(samePath && sameMethod) routeFound = true;
+          });
+          routeFound.should.be.false;
         });
 
         return Chainable;
@@ -68,8 +79,13 @@ var $Router = {
         var readableRoute = expected.method + ' ' + expected.path;
 
         it('should create ' + readableRoute + ' in _privateRouter router', function() {
-          var boundRoutes = this.sails.router._privateRouter.routes[expected.method];
-          _.some(boundRoutes, expected).should.be.true;
+          var routeFound = false;
+          _.each(this.sails.router._privateRouter.stack, function(stack){
+            var samePath = stack.route.path === expected.path;
+            var sameMethod = stack.route.methods[expected.method] || stack.route.methods['_all'];
+            if(samePath && sameMethod) routeFound = true;
+          });
+          routeFound.should.be.true;
         });
         return Chainable;
       },
