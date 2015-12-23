@@ -55,7 +55,7 @@ sails.hooks.grunt.runTask(taskName);
 ```
 
 _Or:_
-+ `sails.sockets.blast(taskName, cb);`
++ `sails.hooks.grunt.runTask(taskName, cb);`
 
 
 ###### Usage
@@ -63,8 +63,8 @@ _Or:_
 
 |     |          Argument           | Type                | Details                           
 | --- | --------------------------- | ------------------- | ------------------------------------------------------------------------
-| 1   |        taskName             | ((string))          | The name of the Grunt task(list) to run.
-| 2   |        cb                   | ((function))        | Optional. Fires when the Grunt task has been started (non-production) or finished (production).
+| 1   |        *taskName**          | ((string))          | The name of the Grunt task(list) to run.
+| 2   |        **cb**               | ((function))        | Optional. Fires when the Grunt task has been started (non-production) or finished (production).
 
 
 > API: private
