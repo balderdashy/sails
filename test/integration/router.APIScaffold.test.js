@@ -183,6 +183,21 @@ describe('router :: ', function() {
       });
     });
 
+    describe('a post of JSON array request to /:controller/create', function() {
+      it('should return JSON array for a newly created instances of the test model', function (done) {
+        httpHelper.testRoute('post', {
+          url: 'empty/create',
+          json: true,
+          body: [{stuff: "bad"}, {stuff: "ghuud"}]
+        }, function (err, response) {
+          if (err) return done(new Error(err));
+
+          assert(response.body instanceof Array && response.body[1].stuff === "ghuud", Err.badResponse(response));
+          done();
+        });
+      });
+    });
+
     describe('with pluralize turned on', function() {
 
       before(function() {
@@ -323,6 +338,7 @@ describe('router :: ', function() {
 
     });
 
+
     describe('`prefix` and `restPrefix` config options set together :: ', function() {
 
       before(function() {
@@ -357,6 +373,7 @@ describe('router :: ', function() {
       });
 
     });
+
 
   });
 
