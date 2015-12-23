@@ -18,6 +18,7 @@
 * [BUGFIX] Fix [RangeError: Maximum call stack size exceeded] error in PubSub hook
 * [ENHANCEMENT] Support layout for Ractive template engine
 * [ENHANCEMENT] Body parser error logs no longer outputted in production, unless `sails.config.keepResponseErrors` is set
+* [BUGFIX] Pluralize option works correctly for all routes [#3223](https://github.com/balderdashy/sails/pull/3223)
 
 
 ### 0.11.0
