@@ -86,9 +86,17 @@ describe('CORS and CSRF ::', function() {
             url: 'test',
           }, function(err, response) {
             if (err) return done(new Error(err));
-            var body = response.body.split(',').sort().join(',');
+            var methods = response.body.split(',');
+            var expectedMethods = [
+              'CHECKOUT', 'CONNECT', 'COPY', 'DELETE', 'GET', 'HEAD', 'LOCK',
+              'M-SEARCH', 'MERGE', 'MKACTIVITY', 'MKCOL', 'MOVE', 'NOTIFY',
+              'PATCH', 'POST', 'PROPFIND', 'PROPPATCH', 'PURGE', 'PUT', 'REPORT',
+              'SEARCH', 'SUBSCRIBE', 'TRACE', 'UNLOCK', 'UNSUBSCRIBE'
+            ];
             assert.equal(response.statusCode, 200);
-            assert.equal(body, 'CHECKOUT,CONNECT,COPY,DELETE,GET,HEAD,LOCK,M-SEARCH,MERGE,MKACTIVITY,MKCOL,MOVE,NOTIFY,PATCH,POST,PROPFIND,PROPPATCH,PURGE,PUT,REPORT,SEARCH,SUBSCRIBE,TRACE,UNLOCK,UNSUBSCRIBE', require('util').format('Unexpected HTTP methods:  "%s"', response.body));
+            for (var i in expectedMethods) {
+              assert(methods.indexOf(expectedMethods[i]) !== -1, require('util').format('HTTP method not found:  "%s" in "%s"', expectedMethods[i], response.body));
+            }
             done();
           });
 
