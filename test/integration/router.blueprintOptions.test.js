@@ -419,7 +419,7 @@ describe('router :: ', function() {
       })
     })
 
-    describe("a get request to /users5, with options {blueprint: 'find', model: 'user', associations: ['pets']}", function() {
+    describe("a get request to /users5, with options {blueprint: 'find', model: 'user', associations: ['profile']}", function() {
 
       var users;
       before(function(done) {
@@ -451,7 +451,7 @@ describe('router :: ', function() {
 
     });
 
-    describe("a get request to /users6, with options {blueprint: 'find', model: 'user', associations: ['profile']}", function() {
+    describe("a get request to /users6, with options {blueprint: 'find', model: 'user', associations: ['pets']}", function() {
 
       var users;
       before(function(done) {
@@ -479,6 +479,71 @@ describe('router :: ', function() {
         users.forEach(function(user) {
           assert(_.isFinite(user.profile), "Expected an ID for 'profile' attribute of user " + user.name + "; got " + JSON.stringify(user.profile));
         });
+      });
+
+    });
+
+    describe("a put request to /user/1 should return the updated user with profile and pets populated", function() {
+
+      var users;
+      before(function(done) {
+        httpHelper.testRoute('put', {
+          url: 'user/1',
+          json: true,
+          body: {
+            name: 'bart'
+          }
+        }, function(err, response) {
+          if (err) return done(new Error(err));
+          user = response.body;
+          return done();
+        });
+      });
+
+      it('should return a single user with the updated name', function() {
+        assert(user);
+        assert.equal(user.name, 'bart');
+      });
+
+      it('...which should have 10 populated pets', function() {
+        assert(user.pets.length === 10, "Expected 10 pets for user " + user.name + "; got " + user.pets.length);
+      });
+
+      it('...and a populated user profile.', function() {
+        assert(_.isObject(user.profile), "Expected an object for 'profile' attribute of user " + user.name + "; got " + JSON.stringify(user.profile));
+      });
+
+    });
+
+    describe("a put request to /user/1 with 'populate=false' should return the updated user with just a profile ID and no pets", function() {
+
+      var users;
+      before(function(done) {
+        httpHelper.testRoute('put', {
+          url: 'user/1',
+          json: true,
+          body: {
+            name: 'ron'
+          },
+          qs: {populate: "false"},
+        }, function(err, response) {
+          if (err) return done(new Error(err));
+          user = response.body;
+          return done();
+        });
+      });
+
+      it('should return a single user with the updated name', function() {
+        assert(user);
+        assert.equal(user.name, 'ron');
+      });
+
+      it('...which should have no pets', function() {
+        assert(!user.pets);
+      });
+
+      it('...and just a profile ID.', function() {
+        assert(_.isFinite(user.profile), "Expected an ID for 'profile' attribute of user " + user.name + "; got " + JSON.stringify(user.profile));
       });
 
     });
