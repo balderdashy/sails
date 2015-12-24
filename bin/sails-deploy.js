@@ -14,6 +14,8 @@ var rconf = require('../lib/app/configuration/rc');
  * `sails deploy`
  *
  * Deploy the Sails app in the current directory to a hosting provider.
+ *
+ * @stability 1
  */
 
 module.exports = function() {

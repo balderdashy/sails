@@ -122,13 +122,6 @@ cmd.description('');
 cmd.action(require('./sails-debug'));
 
 
-// $ sails configure
-cmd = program.command('configure');
-cmd.unknownOption = NOOP;
-cmd.description('');
-cmd.action(require('./sails-configure'));
-
-
 
 //
 // Normalize help argument, i.e.

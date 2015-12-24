@@ -5,19 +5,21 @@
  * Module dependencies
  */
 
-var Sails = require('../lib/app');
 var path = require('path');
 var Womb = require('child_process');
 var CaptainsLog = require('captains-log');
+var Sails = require('../lib/app');
 
 
-/*
-
-# This is here for backwards compatibility.
-node --debug `which sails` $@
-*/
-
-
+/**
+ * `sails debug`
+ *
+ * Attach the Node debugger and lift a Sails app.
+ * You can then use Node inspector to debug your app as it runs.
+ *
+ * @stability 2
+ * @see http://sailsjs.org/documentation/reference/command-line-interface/sails-debug
+ */
 module.exports = function() {
   var log = CaptainsLog();
 

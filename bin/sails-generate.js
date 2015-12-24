@@ -18,8 +18,11 @@ var rconf = require('../lib/app/configuration/rc');
 /**
  * `sails generate`
  *
- * Generate module(s) for the app in our working directory.
- * Internally, uses ejs for rendering the various module templates.
+ * Generate one or more file(s) in our working directory.
+ * This runs an appropriate generator.
+ *
+ * @stability 2
+ * @see http://sailsjs.org/documentation/reference/command-line-interface/sails-generate
  */
 
 module.exports = function() {

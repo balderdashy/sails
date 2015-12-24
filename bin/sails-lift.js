@@ -19,6 +19,9 @@ var Sails = require('../lib/app');
  *
  * Expose method which lifts the appropriate instance of Sails.
  * (Fire up the Sails app in our working directory.)
+ *
+ * @stability 3
+ * @see http://sailsjs.org/documentation/reference/command-line-interface/sails-lift
  */
 
 module.exports = function() {

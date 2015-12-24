@@ -21,7 +21,17 @@ var Err = require('../errors');
  * `sails console`
  *
  * Enter the interactive console (aka REPL) for the app
- * in our working directory.
+ * in our working directory.  This is just like the default
+ * Node REPL except that it starts with the Sails app in the
+ * current directory lifted, and with console history enabled
+ * (i.e. so you can press up arrow to browse and potentially
+ *  replay commands from past runs)
+ *
+ * @stability 3
+ * @see http://sailsjs.org/documentation/reference/command-line-interface/sails-console
+ * ------------------------------------------------------------------------
+ * This lifts the Sails app in the current working directory, then uses
+ * the `repl` package to spin up an interactive console.
  */
 
 module.exports = function() {
@@ -41,7 +51,9 @@ module.exports = function() {
       noShip: true
     }
   }), function(err) {
-    if (err) return Err.fatal.failedToLoadSails(err);
+    if (err) {
+      return Err.fatal.failedToLoadSails(err);
+    }
 
     log.info('Welcome to the Sails console.');
     log.info(('( to exit, type ' + '<CTRL>+<C>' + ' )').grey);
@@ -51,7 +63,7 @@ module.exports = function() {
     try {
       history(repl, nodepath.join(sails.config.paths.tmp, '.node_history'));
     } catch (e) {
-      log.verbose('Error finding console history:', e);
+      log.verbose('Console history cannot be found.  Proceeding without it. This is due to error:', e);
     }
     repl.on('exit', function(err) {
       if (err) {
