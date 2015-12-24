@@ -61,7 +61,7 @@ _Or:_
 ###### Usage
 
 
-|     |          Argument           | Type                | Details                           
+|     |          Argument           | Type                | Details
 | --- | --------------------------- | ------------------- | ------------------------------------------------------------------------
 | 1   |        **taskName**         | ((string))          | The name of the Grunt task(list) to run.
 | 2   |        **cb**               | ((function))        | Optional. Fires when the Grunt task has been started (non-production) or finished (production).
