@@ -18,6 +18,7 @@ var spawn = require('child_process').spawn;
 var Sails = require('../../../lib/app');
 var io = require('./sails.io.js')(require('socket.io-client'));
 io.sails.environment = "production";
+io.sails.autoConnect = false;
 
 // Make existsSync not crash on older versions of Node
 fs.existsSync = fs.existsSync || path.existsSync;
