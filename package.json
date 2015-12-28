@@ -79,7 +79,7 @@
     "skipper": "~0.5.8",
     "uid-safe": "1.1.0",
     "walk": "2.3.9",
-    "waterline": "~0.10.28"
+    "waterline": "~0.10.29"
   },
   "devDependencies": {
     "root-require": "0.3.1",
