@@ -19,7 +19,7 @@ $ sudo npm install sails -g
 ```
 
 > ######Upgrading from 0.9 or 0.10?
-> The v0.11 release of Sails (with support for Socket.io v1.0) is here!  To read the v0.11 migration guide, click [here](http://sailsjs.org/version-notes/0point10-to-0point11-migration-guide).
+> The v0.11 release of Sails includes support for Socket.io v1, and contains a few breaking changes which affect userland. To read the v0.11 migration guide, click [here](http://sailsjs.org/version-notes/0point10-to-0point11-migration-guide).
 
 
 ## Your First Sails Project
@@ -50,7 +50,7 @@ Sails is built on [Node.js](http://nodejs.org/), [Connect](http://www.senchalabs
 
 Sails [controllers](http://sailsjs.org/documentation/concepts/controllers) are compatible with Connect middleware, so in most cases, you can paste code into Sails from an existing Express project and everything will work-- plus you'll be able to use WebSockets to talk to your API, and vice versa.
 
-The ORM, [Waterline](https://github.com/balderdashy/waterline), has a well-defined adapter system for supporting all kinds of datastores.  Officially supported databases include [MySQL](https://github.com/balderdashy/sails-mysql), [PostgreSQL](https://github.com/balderdashy/sails-postgresql), [MongoDB](https://github.com/balderdashy/sails-mongo), [SQLite3](https://github.com/waterlinejs/sqlite3-adapter), [Redis](https://github.com/balderdashy/sails-redis), local [disk](https://github.com/balderdashy/sails-disk), and local [memory](https://github.com/balderdashy/sails-memory).  [Community adapters](https://github.com/balderdashy/sails-docs/blob/master/contributing/intro-to-custom-adapters.md#notable-community-adapters) exist for [CouchDB](https://github.com/search?q=sails+couch&nwo=codeswarm%2Fsails-couchdb-orm&search_target=global&ref=cmdform), [neDB](https://github.com/adityamukho/sails-nedb), [TingoDB](https://github.com/andyhu/sails-tingo), [SQLite](https://github.com/AndrewJo/sails-sqlite3/tree/0.10), [Oracle](https://github.com/search?q=sails+oracle&type=Repositories&ref=searchresults), [MSSQL](https://github.com/cnect/sails-mssql), [DB2](https://github.com/search?q=sails+db2&type=Repositories&ref=searchresults), [ElasticSearch](https://github.com/search?q=%28elasticsearch+AND+sails%29+OR+%28elasticsearch+AND+waterline%29+&type=Repositories&ref=searchresults), [Riak](https://github.com/search?q=sails+riak&type=Repositories&ref=searchresults),
+The ORM, [Waterline](https://github.com/balderdashy/waterline), has a well-defined adapter system for supporting all kinds of datastores.  Officially supported databases include [MySQL](https://github.com/balderdashy/sails-mysql), [PostgreSQL](https://github.com/balderdashy/sails-postgresql), [MongoDB](https://github.com/balderdashy/sails-mongo), [SQLite3](https://github.com/AndrewJo/sails-sqlite3), [Redis](https://github.com/balderdashy/sails-redis), local [disk](https://github.com/balderdashy/sails-disk), and local [memory](https://github.com/balderdashy/sails-memory).  [Community adapters](https://github.com/balderdashy/sails-docs/blob/master/contributing/intro-to-custom-adapters.md#notable-community-adapters) exist for [CouchDB](https://github.com/search?q=sails+couch&nwo=codeswarm%2Fsails-couchdb-orm&search_target=global&ref=cmdform), [neDB](https://github.com/adityamukho/sails-nedb), [TingoDB](https://github.com/andyhu/sails-tingo), [SQLite](https://github.com/AndrewJo/sails-sqlite3/tree/0.10), [Oracle](https://github.com/search?q=sails+oracle&type=Repositories&ref=searchresults), [MSSQL](https://github.com/cnect/sails-mssql), [DB2](https://github.com/search?q=sails+db2&type=Repositories&ref=searchresults), [ElasticSearch](https://github.com/search?q=%28elasticsearch+AND+sails%29+OR+%28elasticsearch+AND+waterline%29+&type=Repositories&ref=searchresults), [Riak](https://github.com/search?q=sails+riak&type=Repositories&ref=searchresults),
 [neo4j](https://www.npmjs.org/package/sails-neo4j), [OrientDB](https://github.com/appscot/sails-orientdb),
 [Amazon RDS](https://github.com/TakenPilot/sails-rds), [DynamoDB](https://github.com/TakenPilot/sails-dynamodb), [Azure Tables](https://github.com/azuqua/sails-azuretables), and [RethinkDB](https://github.com/search?q=%28%28sails+rethinkdb+in%3Aname%29+OR+%28waterline+rethinkdb+in%3Aname%29%29&type=Repositories&ref=searchresults); for various 3rd-party REST APIs like Quickbooks, Yelp, and Twitter, including a configurable generic [REST API adapter](https://github.com/zohararad/sails-rest); plus some [eclectic projects](https://www.youtube.com/watch?v=OmcQZD_LIAE).
 
@@ -69,13 +69,13 @@ Please read the [issue submission guidelines](https://github.com/balderdashy/sai
 Sails is composed of a [number of different sub-projects](https://github.com/balderdashy/sails/blob/master/MODULES.md), many of which have their own dedicated repository. If you suspect an issue in one of Sails sub-modules, you can find its repo on the [organization](https://github.com/balderdashy) page.  Click [here](https://github.com/balderdashy/sails/search?q=&type=Issues) to search/post issues in this repository.
 
 ## Feature Requests
-Feel free to submit ideas for a new feature in the sails.js [issue tracker](https://github.com/balderdashy/sails/search?q=&type=Issues).
+If you have an idea for a new feature, please feel free to submit it as a pull request to the backlog section of the [ROADMAP.md](https://github.com/balderdashy/sails/blob/master/ROADMAP.md#feature-requests) file in this repository.
 
 ## Contribute
 We love pull requests! See the [contribution guide](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md) to get started.
 
 ## Books
-- [Sails.js in Action](http://www.manning.com/mcneil/) by Michael R. McNeil and Irl I. Nathan (Manning Publications). [Chapter 1](http://www.manning.com/mcneil/SailsjsiA_MEAP_ch1.pdf)
+- [Sails.js in Action](http://www.manning.com/mcneil/) by Mike McNeil and Irl I. Nathan (Manning Publications). [Chapter 1](https://www.manning.com/books/sails-js-in-action)
 
 ## Support
 Need help or have a question?
@@ -98,18 +98,18 @@ Need help or have a question?
 - [SailsCasts](http://irlnathan.github.io/sailscasts/)
 
 ## Team
-Sails was built and is actively and maintained by [Balderdash](http://balderdash.co) ([@balderdashy](http://twitter.com/balderdashy)), a realtime web & mobile studio, with the help of many other amazing [contributors](https://github.com/balderdashy/sails/graphs/contributors).  Our core team consists of:
+Sails was built and is actively maintained by [Balderdash Design Company](http://balderdash.co) ([@balderdashy](http://twitter.com/balderdashy)) and [The Treeline Company](http://treeline.io) ([@treelinehq](http://twitter.com/treelinehq)), with the help of many other amazing [contributors](https://github.com/balderdashy/sails/graphs/contributors).  Our core team consists of:
 
-[![Mike McNeil](http://gravatar.com/avatar/199046437b76e6ca73e00b4cc182a1c5?s=144)](http://michaelmcneil.com) |  [![Cody Stoltman](https://1.gravatar.com/avatar/368567acca0c5dfb9a4ff512c5c0c3fa?s=144)](http://particlebanana.com) | [![Scott Gress](https://0.gravatar.com/avatar/b74e07aa543552709bf546ca279c9c67?s=144)](http://www.pigandcow.com/) | [![Irl Nathan](https://avatars0.githubusercontent.com/u/1598650?v=3&s=144)](http://irlnathan.github.io/sailscasts/) | [![Rachael Shaw](https://avatars0.githubusercontent.com/u/3065949?v=3&s=144)](http://twitter.com/fancydoilies)
+[![Mike McNeil](http://gravatar.com/avatar/199046437b76e6ca73e00b4cc182a1c5?s=144)](http://twitter.com/mikermcneil) |  [![Cody Stoltman](https://1.gravatar.com/avatar/368567acca0c5dfb9a4ff512c5c0c3fa?s=144)](http://twitter.com/particlebanana) | [![Scott Gress](https://0.gravatar.com/avatar/b74e07aa543552709bf546ca279c9c67?s=144)](http://twitter.com/sgress454) | [![Irl Nathan](https://avatars0.githubusercontent.com/u/1598650?v=3&s=144)](http://twitter.com/irlnathan) | [![Rachael Shaw](https://avatars0.githubusercontent.com/u/3065949?v=3&s=144)](http://twitter.com/fancydoilies)
 :---:|:---:|:---:|:---:|:---:
-[Mike McNeil](http://michaelmcneil.com) | [Cody Stoltman](https://github.com/particlebanana) | [Scott Gress](https://github.com/sgress454) | [Irl Nathan](https://github.com/irlnathan) | [Rachael Shaw](https://github.com/rachaelshaw)
+[Mike McNeil](http://github.com/mikermcneil) | [Cody Stoltman](https://github.com/particlebanana) | [Scott Gress](https://github.com/sgress454) | [Irl Nathan](https://github.com/irlnathan) | [Rachael Shaw](https://github.com/rachaelshaw)
 
-[Balderdash](http://balderdash.co) designs/builds scalable Node.js apps for startups and enterprise customers.  After building a few apps and taking them into production, we realized that the Node.js development landscape was very much still the Wild West.  Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  We hope it saves you some time! :)
+Back in 2012, we were designing/builing scalable Node.js apps for startups and enterprise customers.  After building a few apps and taking them into production, we realized that the Node.js development landscape was very much still the Wild West.  Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  Four years later, Sails is now one of the most widely-used web application frameworks in the world. We hope it saves you some time! :)
 
 ## License
 
-[MIT License](http://sails.mit-license.org/)  Copyright © 2012-2015 Mike McNeil
+[MIT License](http://sails.mit-license.org/)  Copyright © 2012-2016 Mike McNeil
 
-> Sails is built around so many great open-source technologies that it would never have crossed our minds to keep it proprietary.  We owe huge gratitude and props to TJ Holowaychuk ([@visionmedia](https://github.com/visionmedia)) and Guillermo Rauch ([@rauchg](https://github.com/rauchg)) for the work they did, as well as the stewards of all the other open-source modules we use.  Sails could never have been developed without your tremendous contributions to the node community.
+> Sails is built around so many great open-source technologies that it would never have crossed our minds to keep it proprietary.  We owe huge gratitude and props to TJ Holowaychuk ([@visionmedia](https://github.com/visionmedia)) and Guillermo Rauch ([@rauchg](https://github.com/rauchg)) for the work they've done, as well as the stewards of all the other open-source modules we use.  Sails could never have been developed without your tremendous contributions to the node community.
 
 ![image_squidhome@2x.png](http://sailsjs.org/images/bkgd_squiddy.png)
