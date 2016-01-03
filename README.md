@@ -80,22 +80,21 @@ We love pull requests! See the [contribution guide](https://github.com/balderdas
 ## Support
 Need help or have a question?
 - [StackOverflow](http://stackoverflow.com/questions/tagged/sails.js)
-- [Sails.js in Action](https://www.manning.com/books/sails-js-in-action) (book by Mike McNeil and Irl Nathan)
-- [Develop Web Apps in Node.js and Sails.js](https://courses.platzi.com/courses/develop-apps-sails-js/) (video course on Platzi)
+- [Develop Web Apps in Node.js and Sails.js](https://courses.platzi.com/courses/develop-apps-sails-js/) (free video course on [Platzi](platzi.com))
+- [SailsCasts](http://irlnathan.github.io/sailscasts/)
+- [What are the best video tutorials for Node.js or Sails.js?](https://www.quora.com/What-are-the-best-video-tutorials-for-Node-js-or-Sails-js) (Quora)
 - [Sails.js from Scratch](http://code.tutsplus.com/courses/sailsjs-from-scratch) (video course on Tuts+)
 - [Up and Running in Node.js](http://www.lynda.com/Node.js-tutorials/Up-Running-Node.js/370605-2.html) (Sails basics are covered towards the end of this video course on Lynda)
 - [Gitter Chat Room](https://gitter.im/balderdashy/sails)
-- [Tutorials](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#what-are-some-good-community-tutorials)
 - [Professional/Enterprise Support](http://balderdash.co)
 
 ## Links
 - [Website](http://sailsjs.org/)
 - [Official Documentation](http://sailsjs.org/documentation)
-- [Changelog](https://github.com/balderdashy/sails/blob/master/CHANGELOG.md)
 - [Roadmap](https://github.com/balderdashy/sails/blob/master/ROADMAP.md#roadmap)
-- [Google Group](https://groups.google.com/forum/#!forum/sailsjs)
+- [Blog](http://blog.sailsjs.org)
 - [Twitter](https://twitter.com/sailsjs)
-- [SailsCasts](http://irlnathan.github.io/sailscasts/)
+- [Google Group](https://groups.google.com/forum/#!forum/sailsjs)
 
 ## Team
 Sails was built and is actively maintained by [Balderdash Design Company](http://balderdash.co) ([@balderdashy](http://twitter.com/balderdashy)) and [The Treeline Company](http://treeline.io) ([@treelinehq](http://twitter.com/treelinehq)), with the help of many other amazing [contributors](https://github.com/balderdashy/sails/graphs/contributors).  Our core team consists of:
@@ -104,7 +103,7 @@ Sails was built and is actively maintained by [Balderdash Design Company](http:/
 :---:|:---:|:---:|:---:|:---:
 [Mike McNeil](http://github.com/mikermcneil) | [Cody Stoltman](https://github.com/particlebanana) | [Scott Gress](https://github.com/sgress454) | [Irl Nathan](https://github.com/irlnathan) | [Rachael Shaw](https://github.com/rachaelshaw)
 
-Back in 2012, we were designing/builing scalable Node.js apps for startups and enterprise customers.  After building a few apps and taking them into production, we realized that the Node.js development landscape was very much still the Wild West.  Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  Four years later, Sails is now one of the most widely-used web application frameworks in the world. We hope it saves you some time! :)
+Back in 2012, we were designing/builing scalable Node.js apps for startups and enterprise customers.  After building a few applications and taking them into production, we realized that the Node.js development landscape was very much still the Wild West.  Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  Four years later, Sails is now one of the most widely-used web application frameworks in the world. We hope it saves you some time! :)
 
 ## License
 
