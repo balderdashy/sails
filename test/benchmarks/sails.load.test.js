@@ -145,7 +145,7 @@ function benchmark (description, fn) {
 	it (description, function (cb) {
 		var self = this;
 
-    var t1 = process.hrtime()
+    var t1 = process.hrtime();
 
 		fn.apply(this, [function _callback () {
 
@@ -160,7 +160,7 @@ function benchmark (description, fn) {
 
       var diff = process.hrtime(t1);
 
-      _.result.duration = (diff[0] * 1e6) + (diff[1] / 1e3)
+      _.result.duration = (diff[0] * 1e6) + (diff[1] / 1e3);
 			_result.benchmark = description;
 
 			// console.log('finished ',_result);

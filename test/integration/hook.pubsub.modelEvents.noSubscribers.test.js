@@ -59,7 +59,7 @@ describe('pubsub :: ', function() {
 
 				socket2.on('user', function(message) {
 					assert(false, 'User event received by socket 2 when it should not have been!');
-				})
+				});
 				socket1.post('/user', {name:'scott'});
 				setTimeout(done, 1000);
 
@@ -69,7 +69,7 @@ describe('pubsub :: ', function() {
 
 				socket2.on('user', function(message) {
 					assert(false, 'User event received by socket 2 when it should not have been!');
-				})
+				});
 
 				socket1.put('/user/1', {name:'joe'});
 				setTimeout(done, 1000);
@@ -80,7 +80,7 @@ describe('pubsub :: ', function() {
 
 				socket2.on('user', function(message) {
 					assert(false, 'User event received by socket 2 when it should not have been!');
-				})
+				});
 
 				socket1.post('/pet', {name:'rex', owner: 1});
 				setTimeout(done, 1000);
@@ -91,7 +91,7 @@ describe('pubsub :: ', function() {
 
 				socket2.on('user', function(message) {
 					assert(false, 'User event received by socket 2 when it should not have been!');
-				})
+				});
 
 				socket1.delete('/pet/1');
 				setTimeout(done, 1000);
@@ -102,7 +102,7 @@ describe('pubsub :: ', function() {
 
 				socket2.on('user', function(message) {
 					assert(false, 'User event received by socket 2 when it should not have been!');
-				})
+				});
 
 				socket1.delete('/user/1');
 				setTimeout(done, 1000);
