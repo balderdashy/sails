@@ -4,7 +4,7 @@ var request = require('request');
 var appHelper = require('./helpers/appHelper');
 var path = require('path');
 
-describe.only('Starting HTTPS sails server with lift', function() {
+describe('Starting HTTPS sails server with lift', function() {
 
   var appName = 'testApp';
 
