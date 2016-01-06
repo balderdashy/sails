@@ -296,13 +296,13 @@ describe('router :: ', function() {
           users.forEach(function(user) {
             assert(!user.hasOwnProperty("pets"), "Expected pets not to be populated for user " + user.name + "; got " + JSON.stringify(user.pets));
           });
-        })
+        });
         it("...and have only a profile ID", function() {
           users.forEach(function(user) {
             assert(typeof user.profile == "number", "Expected profile not to be populated for user '" + user.name + "'; got " + JSON.stringify(user.profile));
           });
-        })
-      })
+        });
+      });
 
       describe("with query param populate=[pets]", function() {
         var users;
@@ -330,8 +330,8 @@ describe('router :: ', function() {
           users.forEach(function(user) {
             assert(typeof user.profile == "number", "Expected profile not to be populated for user '" + user.name + "'; got " + JSON.stringify(user.profile));
           });
-        })
-      })
+        });
+      });
       describe("with query param populate=[pets,profile]", function() {
         var users;
         before(function(done) {
@@ -359,7 +359,7 @@ describe('router :: ', function() {
             assert(user.profile.zodiac == (user.name + "_zodiac"), "Expected profile zodiac '" + user.name + "_zodiac" + "' for user " + user.name + "; got " + user.profile.zodiac);
           });
         });
-      })
+      });
       describe("with query param populate=pets", function() {
         var users;
         before(function(done) {
@@ -386,8 +386,8 @@ describe('router :: ', function() {
           users.forEach(function(user) {
             assert(typeof user.profile == "number", "Expected profile not to be populated for user '" + user.name + "'; got " + JSON.stringify(user.profile));
           });
-        })
-      })
+        });
+      });
 
       describe("with query param populate=pets,profile", function() {
         var users;
@@ -416,8 +416,8 @@ describe('router :: ', function() {
             assert(user.profile.zodiac == (user.name + "_zodiac"), "Expected profile zodiac '" + user.name + "_zodiac" + "' for user " + user.name + "; got " + user.profile.zodiac);
           });
         });
-      })
-    })
+      });
+    });
 
     describe("a get request to /users5, with options {blueprint: 'find', model: 'user', associations: ['profile']}", function() {
 
@@ -447,7 +447,7 @@ describe('router :: ', function() {
         users.forEach(function(user) {
           assert(user.profile.zodiac == (user.name + '_zodiac'), "Expected profile zodiac '" + user.name + '_zodiac' + "' for user " + user.name + "; got " + user.profile.zodiac);
         });
-      })
+      });
 
     });
 

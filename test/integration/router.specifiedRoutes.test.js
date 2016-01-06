@@ -49,9 +49,9 @@ describe('router :: ', function() {
 						controller: 'test',
 						action: 'verb'
 					}
-				});				
+				});
 			});
-			
+
 			it('should respond to get requests', function(done) {
 
 
@@ -102,7 +102,7 @@ describe('router :: ', function() {
 						controller: 'test',
 						action: 'verb'
 					}
-				});				
+				});
 			});
 
 			it('should respond to get requests', function(done) {
@@ -178,7 +178,7 @@ describe('router :: ', function() {
 						controller: 'test',
 						action: 'verb'
 					}
-				});				
+				});
 			});
 
 			it('should respond to delete requests', function(done) {
@@ -241,7 +241,7 @@ describe('router :: ', function() {
 					assert(response.body === 'get', Err.badResponse(response));
 					done();
 				});
-			})
+			});
 		});
 
 		describe('should accept case-insensitive controller key', function() {

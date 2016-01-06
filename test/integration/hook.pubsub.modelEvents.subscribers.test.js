@@ -103,10 +103,10 @@ describe('pubsub :: ', function() {
       it ('adding a pet to the user via POST /pet should result a correct `user` event being received by all subscribers', function(done) {
 
         socket2.on('user', function(message) {
-          assert(message.id == 1
-            && message.verb == 'addedTo'
-            && message.attribute == 'pets'
-            && message.addedId == 1, Err.badResponse(message));
+          assert(message.id == 1 &&
+            message.verb == 'addedTo' &&
+            message.attribute == 'pets' &&
+            message.addedId == 1, Err.badResponse(message));
           done();
         });
 
@@ -117,9 +117,9 @@ describe('pubsub :: ', function() {
       it ('adding a profile to the user via POST /userprofile should result a correct `user` event being received by all subscribers', function(done) {
 
         socket2.on('user', function(message) {
-          assert(message.id == 1
-            && message.verb == 'updated'
-            && message.data.profile == 1, Err.badResponse(message));
+          assert(message.id == 1 &&
+            message.verb == 'updated' &&
+            message.data.profile == 1, Err.badResponse(message));
           done();
         });
 
@@ -130,10 +130,10 @@ describe('pubsub :: ', function() {
       it ('removing a pet from the user via PUT /pet/1 should result a correct `user` event being received by all subscribers', function(done) {
 
         socket2.on('user', function(message) {
-          assert(message.id == 1
-            && message.verb == 'removedFrom'
-            && message.attribute == 'pets'
-            && message.removedId == 1, Err.badResponse(message));
+          assert(message.id == 1 &&
+            message.verb == 'removedFrom' &&
+            message.attribute == 'pets' &&
+            message.removedId == 1, Err.badResponse(message));
           done();
         });
 
@@ -153,8 +153,8 @@ describe('pubsub :: ', function() {
             // Ignore the "create" message if we happen to get it
             if (message.verb == 'created' && message.data.name == 'Sandy') {return;}
             assert(
-              (message.id == 1 && message.verb == 'updated' && message.data.profile == null)
-              || (message.id == 2 && message.verb == 'updated' && message.data.profile == 1)
+              (message.id == 1 && message.verb == 'updated' && message.data.profile === null) ||
+              (message.id == 2 && message.verb == 'updated' && message.data.profile == 1)
             , Err.badResponse(message));
             msgsReceived++;
             if (msgsReceived == 2) {done();}
@@ -170,10 +170,10 @@ describe('pubsub :: ', function() {
       it ('adding a pet from the user via PUT /pet/1 should result a correct `user` event being received by all subscribers', function(done) {
 
         socket2.on('user', function(message) {
-          assert(message.id == 1
-            && message.verb == 'addedTo'
-            && message.attribute == 'pets'
-            && message.addedId == 1, Err.badResponse(message));
+          assert(message.id == 1 &&
+            message.verb == 'addedTo' &&
+            message.attribute == 'pets' &&
+            message.addedId == 1, Err.badResponse(message));
           done();
         });
 
@@ -187,12 +187,12 @@ describe('pubsub :: ', function() {
       it ('removing the user from the pet via DELETE /user/1/pets should result a correct `pet` event being received by all subscribers', function(done) {
 
         socket1.on('pet', function(message) {
-          assert(message.id == 1
-            && message.verb == 'updated'
-            && message.data.owner == null
+          assert(message.id == 1 &&
+            message.verb == 'updated' &&
+            message.data.owner === null
             , Err.badResponse(message));
           done();
-        })
+        });
 
         // Avoiding this case temporarily:
         // socket2.delete('/user/1/pets', {pet_id:1});
@@ -209,11 +209,11 @@ describe('pubsub :: ', function() {
       it ('removing a profile from the user via DELETE /userprofile/1 should result a correct `user` event being received by all subscribers', function(done) {
 
         socket2.on('user', function(message) {
-          assert(message.id == 2
-            && message.verb == 'updated'
-            && message.data.profile == null, Err.badResponse(message));
+          assert(message.id == 2 &&
+            message.verb == 'updated' &&
+            message.data.profile === null, Err.badResponse(message));
           done();
-        })
+        });
 
         socket1.delete('/userprofile/1');
 
@@ -223,12 +223,12 @@ describe('pubsub :: ', function() {
       it ('adding a user to the pet via POST /user/1/pets should result in a correct `pet` event being received by all subscribers', function(done) {
 
         socket1.on('pet', function(message) {
-          assert(message.id == 1
-            && message.verb == 'updated'
-            && message.data.owner == 1
+          assert(message.id == 1 &&
+            message.verb == 'updated' &&
+            message.data.owner == 1
             , Err.badResponse(message));
           done();
-        })
+        });
 
         socket2.post('/user/1/pets', {pet_id:1});
 
@@ -237,12 +237,12 @@ describe('pubsub :: ', function() {
       it ('removing a pet from the user via DELETE /pet/1 should result a correct `user` event being received by all subscribers', function(done) {
 
         socket2.on('user', function(message) {
-          assert(message.id == 1
-            && message.verb == 'removedFrom'
-            && message.attribute == 'pets'
-            && message.removedId == 1, Err.badResponse(message));
+          assert(message.id == 1 &&
+            message.verb == 'removedFrom' &&
+            message.attribute == 'pets' &&
+            message.removedId == 1, Err.badResponse(message));
           done();
-        })
+        });
 
         socket1.delete('/pet/1');
 
