@@ -1,5 +1,9 @@
 # Sails Changelog
 
+### 0.11.4
+
+* [SECURITY] Updated several dependencies due to security vulnerabilities (https://github.com/balderdashy/sails/issues/3464#issuecomment-169255559)
+
 ### 0.11.3
 
 * [BUGFIX] Fix [RangeError: Maximum call stack size exceeded] error in PubSub hook (https://github.com/balderdashy/sails/issues/2636)
