@@ -67,9 +67,11 @@ _Or:_
 | 2   |        **cb**               | ((function))        | Optional. Fires when the Grunt task has been started (non-production) or finished (production).
 
 
-> API: private
-> _(however, note that this is called directly by `sails www` in the CLI)_
-
+> ##### API: Private
+> Please do not use this method in userland (i.e. in your app).
+> This method is private. If you use it method in your code, it may stop working or change without warning, at any time.
+>
+> _(internally in core, note that this is called directly by `sails www` in the CLI)_
 
 ## FAQ
 

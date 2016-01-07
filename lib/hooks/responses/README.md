@@ -45,7 +45,30 @@ Emitted when this hook has been automatically loaded by Sails core, and triggere
 
 ## Methods
 
-N/A
+
+#### sails.hooks.responses.loadModules()
+
+Load custom responses modules from the responses directory in the current app (conventionally this is `api/responses/`).
+
+```javascript
+sails.hooks.responses.loadModules(cb);
+```
+
+
+###### Usage
+
+
+|     |          Argument           | Type                | Details
+| --- | --------------------------- | ------------------- | ----------------------------------------------------------------------------------
+| 1   |        **cb**               | ((function))        | Fires when the custom response modules have been loaded or if an error occurs.
+
+
+> ##### API: Private
+> Please do not use this method in userland (i.e. in your app).
+> This method is private. If you use it method in your code, it may stop working or change without warning, at any time.
+>
+> _(internally in core, note that this is called by the `moduleloader` hook)_
+
 
 
 ## FAQ
