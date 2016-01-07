@@ -80,7 +80,7 @@ We love pull requests! See the [contribution guide](https://github.com/balderdas
 ## Support
 Need help or have a question?
 - [StackOverflow](http://stackoverflow.com/questions/tagged/sails.js)
-- [Develop Web Apps in Node.js and Sails.js](https://courses.platzi.com/courses/develop-apps-sails-js/) (free video course on [Platzi](platzi.com))
+- [Develop Web Apps in Node.js and Sails.js](https://courses.platzi.com/courses/develop-apps-sails-js/) (free video course on [Platzi](http://platzi.com))
 - [SailsCasts](http://irlnathan.github.io/sailscasts/)
 - [What are the best video tutorials for Node.js or Sails.js?](https://www.quora.com/What-are-the-best-video-tutorials-for-Node-js-or-Sails-js) (Quora)
 - [Sails.js from Scratch](http://code.tutsplus.com/courses/sailsjs-from-scratch) (video course on Tuts+)
