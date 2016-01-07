@@ -10,16 +10,30 @@
 This hook's responsibilities are:
 
 
-##### Load custom responses (`api/responses/*.js`) and merge them with built-in defaults
+##### Support `response` route target syntax
 
-> TODO
->
-> When Sails loads...
+This hook listens for the `route:typeUnknown` event, and if the unknown route target syntax contains a `response` key, it binds the route address to a middleware function that does nothing except send that response.
+
+For example:
+
+```
+'post /foo': {
+  response: 'ok'
+}
+```
+
+...would run `res.ok()` whenever a POST request to `/foo` is received.
+
+
+##### Load custom responses
+
+When Sails loads, this hook loads custom response files from the app's responses folder and merges them with built-in defaults, storing them in-memory as "outlet functions".  Conventionally this is `api/responses/*.js`, but it can be configured in `sails.config.paths`.
 
 
 ##### Bind shadow route that exposes response functions as `res.*`
 
-> TODO
+This hook binds a shadow route that intercepts all incoming requests and attaches a method to `res` for each of the outlet functions (representing custom responses) that were prepared when the hook was initialized.
+
 
 ## Events
 
@@ -31,7 +45,7 @@ Emitted when this hook has been automatically loaded by Sails core, and triggere
 
 ## Methods
 
-> TODO?
+N/A
 
 
 ## FAQ
