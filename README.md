@@ -86,7 +86,7 @@ Need help or have a question?
 - [Sails.js from Scratch](http://code.tutsplus.com/courses/sailsjs-from-scratch) (video course on Tuts+)
 - [Up and Running in Node.js](http://www.lynda.com/Node.js-tutorials/Up-Running-Node.js/370605-2.html) (Sails basics are covered towards the end of this video course on Lynda)
 - [Gitter Chat Room](https://gitter.im/balderdashy/sails)
-- [Professional/Enterprise Support](http://balderdash.co)
+- [Professional/Enterprise Support](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#are-there-professional-support-options)
 
 ## Links
 - [Website](http://sailsjs.org/)
