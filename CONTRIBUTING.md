@@ -142,8 +142,12 @@ This is useful for testing/installing hot-fixes, and just a good thing to know h
 
 ## Financial Support
 
-+ Sails is sponsored by [Balderdash](http://balderdash.co), a small development and design studio in Austin, TX.  If you have a mutually beneficial opportunity to work together, or want to fund us to accelerate the development of a feature in Sails for a real-world use case, please [contact us](http://balderdash.co).
-+ [Donate](https://www.gittip.com/mikermcneil/) to help me (@mikermcneil) stop paying myself, and instead use that money to expand the core team, improve docs, etc.
+Sails.js is supported and maintained by [Mike McNeil](http://twitter.com/mikermcneil) and the team from [Treeline](http://techcrunch.com/2015/03/11/treeline-wants-to-take-the-coding-out-of-building-a-backend/) (YC W15), a code automation platform built on Sails.  Please feel free to [contact us directly](inquiries@treeline.io) with questions about the company, our team, or our mission.
+
+
+## History
+
+Sails.js was developed by [Mike McNeil](http://twitter.com/mikermcneil) with the help of his company [Balderdash](http://balderdash.co), a small development and design studio in Austin, TX.  The first stable version of Sails was released in 2012.  Today, it is still actively maintained by the same core team ([@mikermcneil](https://github.com/mikermcneil), [@particlebanana](https://github.com/particlebanana), [@sgress454](https://github.com/sgress454), [@irlnathan](https://github.com/irlnathan), and [@rachaelshaw](https://github.com/rachaelshaw)), along with the support of our [contributors](https://github.com/balderdashy/sails/network/members).
 
 
 ## Additional Resources
