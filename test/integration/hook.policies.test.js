@@ -51,9 +51,7 @@ describe('router :: ', function() {
     });
 
     after(function() {
-      // console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
       process.chdir('../');
-      // console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
       appHelper.teardown();
     });
 
@@ -75,13 +73,6 @@ describe('router :: ', function() {
           if (err) return done(err);
 
           try {
-            // console.log('----------------');
-            // console.log('Response.body ===> ');
-            // console.log(response.body);
-            // console.log(response.body.length + ' characters');
-            // console.log(response.body.split(''));
-            // console.log('----------------');
-
             assert.equal(response.statusCode, 500);
             assert.equal(
               typeof response.body, 'string',
@@ -393,9 +384,7 @@ describe('router :: ', function() {
     });
 
     after(function() {
-      // console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
       process.chdir('../');
-      // console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
       appHelper.teardown();
     });
 

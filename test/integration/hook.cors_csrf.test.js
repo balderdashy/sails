@@ -32,9 +32,7 @@ describe('CORS and CSRF ::', function() {
     });
 
     after(function() {
-      // console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
       process.chdir('../');
-      // console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
       appHelper.teardown();
     });
 
@@ -695,9 +693,7 @@ describe('CORS and CSRF ::', function() {
     });
 
     after(function() {
-      // console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
       process.chdir('../');
-      // console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
       appHelper.teardown();
     });
 
@@ -917,9 +913,7 @@ describe('CORS and CSRF ::', function() {
     });
 
     after(function() {
-      // console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
       process.chdir('../');
-      // console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
       appHelper.teardown();
     });
 

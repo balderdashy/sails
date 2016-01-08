@@ -42,9 +42,7 @@ describe('router :: ', function() {
     });
 
     after(function() {
-      // console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
       process.chdir('../');
-      // console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
       appHelper.teardown();
     });
 
@@ -418,9 +416,7 @@ describe('router :: ', function() {
 
     after(function() {
       sailsprocess.kill();
-      // console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
       process.chdir('../');
-      // console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
       appHelper.teardown();
     });
 

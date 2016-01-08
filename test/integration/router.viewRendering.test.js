@@ -25,9 +25,7 @@ describe('router :: ', function() {
 		});
 
 		after(function() {
-			// console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
 			process.chdir('../');
-			// console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
 			appHelper.teardown();
 		});
 
@@ -64,7 +62,7 @@ describe('router :: ', function() {
 			it('should respond to get request to :controller with the template at views/:controller/index.ejs', function(done) {
 
 				// Empty router file
-				
+
 				httpHelper.testRoute('get', 'viewTest', function(err, response) {
 					if (err) return done(new Error(err));
 

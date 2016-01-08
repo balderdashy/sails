@@ -59,9 +59,7 @@ describe('pubsub :: ', function() {
       if (sailsprocess) {
         sailsprocess.kill();
       }
-      // console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
       process.chdir('../');
-      // console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
       appHelper.teardown();
     });
 

@@ -30,9 +30,7 @@ describe('i18n ::', function() {
   });
 
   after(function() {
-    // console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
     process.chdir('../');
-    // console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
     appHelper.teardown();
   });
 
@@ -105,25 +103,23 @@ describe('i18n Config ::', function() {
   });
 
   after(function() {
-    // console.log('before `chdir ../`' + ', cwd was :: ' + process.cwd());
     process.chdir('../');
-    // console.log('after `chdir ../`' + ', cwd was :: ' + process.cwd());
     appHelper.teardown();
   });
- 
+
   describe('with locales generate by config', function () {
-    
+
     before(function() {
       var config = "module.exports.i18n = { defaultLocale: 'de',updateFiles : true };";
       fs.writeFileSync(path.resolve('../', appName, 'config/i18n.js'), config);
     });
-    
+
     it('should say "Willkommen" by defaultLocale', function(done) {
       //see https://github.com/balderdashy/sails-generate-backend/pull/10
-      assert(sailsprocess.__('Welcome') == 'Willkommen' || sailsprocess.__('Welcome') == 'Wilkommen'); 
+      assert(sailsprocess.__('Welcome') == 'Willkommen' || sailsprocess.__('Welcome') == 'Wilkommen');
       done();
     });
-    
+
     it('should autoupdate the file', function(done) {
       sailsprocess.__('Login');
       fs.readFile(path.resolve('../', appName, 'config/locales/de.json'),'utf8', function read(err, data) {

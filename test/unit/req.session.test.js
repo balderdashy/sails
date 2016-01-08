@@ -39,7 +39,6 @@ describe('req.session', function (){
 
     before(function setupTestRoute(){
       app.post('/sessionTest', function (req, res){
-        // console.log('RAN POST /sessionTest route...');
         doesSessionExist = !!req.session;
         isSessionAnObject = _.isObject(req.session);
         req.session.something = 'some string';
@@ -47,7 +46,6 @@ describe('req.session', function (){
       });
 
       app.get('/sessionTest', function (req, res){
-        // console.log('RAN GET /sessionTest route...');
         doesSessionExist = !!req.session;
         isSessionAnObject = _.isObject(req.session);
         doesTestPropertyStillExist = req.session.something === 'some string';
@@ -86,12 +84,10 @@ describe('req.session', function (){
         headers: {}
       }, function (err, clientRes, body){
         if (err) return done(err);
-        // console.log('\n* * *\nclientRes.headers:\n',clientRes.headers,'\n');
         if (clientRes.statusCode !== 200) return done(new Error('Expected 200 status code'));
         if (!doesSessionExist) return done(new Error('req.session should exist.'));
         if (!isSessionAnObject) return done(new Error('req.session should be an object.'));
 
-        // console.log('Cookie:',clientRes.headers['set-cookie']);
         app.request({
           url: '/sessionTest',
           method: 'GET',
@@ -101,10 +97,6 @@ describe('req.session', function (){
           }
         }, function (err, clientRes, body){
           if (err) return done(err);
-          // console.log('\n\n\n----------callback-------\n');
-          // console.log('err', err);
-          // console.log('clientRes', clientRes);
-          // console.log('body', body);
           if (clientRes.statusCode !== 200) return done(new Error('Expected 200 status code'));
           if (!doesSessionExist) return done(new Error('req.session should exist.'));
           if (!isSessionAnObject) return done(new Error('req.session should be an object.'));
