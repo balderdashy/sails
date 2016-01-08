@@ -1,6 +1,7 @@
 # Sails Changelog
 
 ### master
+* [ENHANCEMENT] Support for newer versions of connect-redis session adapter (and other session adapters using express-session)
 * [ENHANCEMENT] Set the useGlobal config option for REPL while using sails console, allows autoreload hook to reflect changes on global models and services
 * [ENHANCEMENT] Support JSON sorting syntax in blueprints [#2449](https://github.com/balderdashy/sails/issues/2449)
 * [ENHANCEMENT] Support private modules as hooks [#3022](https://github.com/balderdashy/sails/issues/3022)
