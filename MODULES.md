@@ -104,6 +104,7 @@ Below, you'll find an overview of the modules maintained by the core team and co
 
 | Repo          |  Build Status (edge)  |  Latest Stable Version   | Platform |
 |---------------|---------------------------------------|--------------------------|------------|
+| [sails-orientdb](https://github.com/appscot/sails-orientdb) | [![Build Status](https://travis-ci.org/appscot/sails-orientdb.svg?branch=master)](https://travis-ci.org/appscot/sails-orientdb) | [![npm version](https://badge.fury.io/js/sails-orientdb.svg)](http://badge.fury.io/js/sails-orientdb) | OrientDB |
 | [sails-rest](https://github.com/zohararad/sails-rest) |  |  | REST |
 | [sails-oracle](https://github.com/mayconheerdt/sails-oracle) | | | Oracle |
 | [sails-mssql](https://github.com/swelham/sails-mssql) | | | MSSQL |
@@ -121,7 +122,6 @@ Below, you'll find an overview of the modules maintained by the core team and co
 | [sails-nedb](https://github.com/balderdashy/sails-riak) | | | NeDB |
 | [sails-parse](https://github.com/tskaggs/sails-parse) | | | Parse |
 | [sails-tingo](https://github.com/andyhu/sails-tingo) | | | TingoDB |
-| [sails-orientdb](https://github.com/appscot/sails-orientdb) | [![Build Status](https://travis-ci.org/appscot/sails-orientdb.svg?branch=master)](https://travis-ci.org/appscot/sails-orientdb) | [![npm version](https://badge.fury.io/js/sails-orientdb.svg)](http://badge.fury.io/js/sails-orientdb) | OrientDB |
 
 
 #### Generators
