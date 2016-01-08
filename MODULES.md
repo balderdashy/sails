@@ -4,7 +4,6 @@ Sails is a large project, with many modular components.  Each module is located 
 
 Below, you'll find an overview of the modules maintained by the core team and community members.
 
-## Balderdash team
 
 ### Core modules
 
@@ -126,6 +125,8 @@ Below, you'll find an overview of the modules maintained by the core team and co
 
 
 #### Generators
+
+> Note that this section will be migrating to https://github.com/balderdashy/sails-docs/concepts/extending-sails/Generators/generatorList.md for consistency.
 
 | Repo                   | Build Status (edge)  |
 |------------------------|----------------------|
