@@ -75,7 +75,7 @@
     "sails-generate": "~0.12.4",
     "sails-hook-sockets": "~0.12.0",
     "sails-stringfile": "~0.3.2",
-    "sails-util": "~0.10.6",
+    "sails-util": "~0.11.0",
     "semver": "5.1.0",
     "skipper": "~0.5.8",
     "uid-safe": "1.1.0",
