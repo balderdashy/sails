@@ -16,7 +16,7 @@ describe('sails being lifted and lowered (e.g in a test framework)', function() 
     };
 
     // Lift and lower 15 Sails apps in a row, to simulate a testing environment
-    async.forEachOfSeries(Array(1), function(undef, i, cb) {
+    async.forEachOfSeries(Array(15), function(undef, i, cb) {
       var sailsServer = null;
       Sails().lift({
         port: 1342,
