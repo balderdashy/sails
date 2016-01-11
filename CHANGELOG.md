@@ -1,6 +1,8 @@
 # Sails Changelog
 
 ### master
+* [BUGFIX] Properly remove process listeners on sails.lower() to avoid EventEmitter leaks when lifting/lowering multiple apps (e.g. in tests) [#2693](https://github.com/balderdashy/sails/issues/2693)
+* [UPGRADE] Updated versions of Lodash (v3.10.1) and Async (v1.5.0) used in Sails (and globalized in Sails apps by default)
 * [ENHANCEMENT] Support for newer versions of connect-redis session adapter (and other session adapters using express-session)
 * [ENHANCEMENT] Set the useGlobal config option for REPL while using sails console, allows autoreload hook to reflect changes on global models and services
 * [ENHANCEMENT] Support JSON sorting syntax in blueprints [#2449](https://github.com/balderdashy/sails/issues/2449)
@@ -21,9 +23,28 @@
 * [ENHANCEMENT] Body parser error logs no longer outputted in production, unless `sails.config.keepResponseErrors` is set [#3347](https://github.com/balderdashy/sails/pull/3347)
 * [BUGFIX] Pluralize option works correctly for all routes [#3223](https://github.com/balderdashy/sails/pull/3223)
 * [BUGFIX] Blueprint create now works when POSTing arrays [#3228](https://github.com/balderdashy/sails/pull/3228)
-* [ENHANCEMENT] Updated `sails-hook-sockets` to `^0.12.0`, which uses an updated socket.io-client module and has some bugfixes
+* [UPGRADE] Updated `sails-hook-sockets` to `^0.12.0`, which uses an updated socket.io-client module and has some bugfixes
 * [BUGFIX] Default responses now work correctly when views hook is disabled [#2770](https://github.com/balderdashy/sails/pull/2770)
 * [BUGFIX] Restored troubleshooting messages in console when Sails server fails to lift
+
+### 0.11.4
+
+* [SECURITY] Updated several dependencies due to security vulnerabilities (https://github.com/balderdashy/sails/issues/3464#issuecomment-169255559)
+
+### 0.11.3
+
+* [BUGFIX] Fix [RangeError: Maximum call stack size exceeded] error in PubSub hook (https://github.com/balderdashy/sails/issues/2636)
+* [ENHANCEMENT] Allow custom route options in policy target syntax (https://github.com/balderdashy/sails/commit/0990fc10709520a9f6c55923b991708d5eaf8aa0)
+* [ENHANCEMENT] Support CSRF hook route configuration [#2366](https://github.com/balderdashy/sails/issues/2366)
+* [ENHANCEMENT] Added "exposeHeaders" option in CORS configuration (https://github.com/balderdashy/sails/pull/2712)
+
+### 0.11.2
+
+* [BUGFIX] Fixes to allow proper installation / execution in environments using Node 4 and/or NPM 3.
+
+### 0.11.1
+
+* Shhhh nothing to see here (version skipped)
 
 ### 0.11.0
 
