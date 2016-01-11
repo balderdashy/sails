@@ -4,12 +4,13 @@ var wrench = require('wrench');
 var request = require('request');
 var exec = require('child_process').exec;
 var spawn = require('child_process').spawn;
+var path = require('path');
 
 // Make existsSync not crash on older versions of Node
 fs.existsSync = fs.existsSync || require('path').existsSync;
 
 describe('Starting sails server with lift', function() {
-	var sailsBin = './bin/sails.js';
+	var sailsBin = path.resolve('./bin/sails.js');
 	var appName = 'testApp';
 	var sailsServer;
 
@@ -31,14 +32,14 @@ describe('Starting sails server with lift', function() {
 			// Make empty folder and move into it
 			fs.mkdirSync('empty');
 			process.chdir('empty');
-			sailsBin = '.' + sailsBin;
+			sailsBin = path.resolve('..', sailsBin);
 		});
 
 		after(function() {
 			// Delete empty folder and move out of it
 			process.chdir('../');
 			fs.rmdirSync('empty');
-			sailsBin = sailsBin.substr(1);
+			sailsBin = path.resolve('./bin/sails.js');
 		});
 
 		// TODO: make this test more useful
@@ -60,14 +61,14 @@ describe('Starting sails server with lift', function() {
 
 		it('should start server without error', function(done) {
 
-			exec(sailsBin + ' new ' + appName, function(err) {
+			exec('node ' + sailsBin + ' new ' + appName, function(err) {
 				if (err) done(new Error(err));
 
 				// Move into app directory
 				process.chdir(appName);
-				sailsBin = '.' + sailsBin;
+				sailsBin = path.resolve('..', sailsBin);
 
-				sailsServer = spawn(sailsBin, ['lift', '--port=1342']);
+				sailsServer = spawn('node', [sailsBin, 'lift', '--port=1342']);
 
 				sailsServer.stdout.on('data', function(data) {
 					var dataString = data + '';
@@ -83,7 +84,7 @@ describe('Starting sails server with lift', function() {
 
 		it('should respond to a request to port 1342 with a 200 status code', function(done) {
 			process.chdir(appName);
-			sailsServer = spawn(sailsBin, ['lift', '--port=1342']);
+			sailsServer = spawn('node', [sailsBin, 'lift', '--port=1342']);
 			sailsServer.stdout.on('data', function(data){
 				var dataString = data + '';
 				// Server has finished starting up

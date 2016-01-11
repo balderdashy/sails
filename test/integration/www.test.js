@@ -3,13 +3,14 @@ var fs = require('fs');
 var wrench = require('wrench');
 var request = require('request');
 var exec = require('child_process').exec;
+var path = require('path');
 var spawn = require('child_process').spawn;
 
 // Make existsSync not crash on older versions of Node
 fs.existsSync = fs.existsSync || require('path').existsSync;
 
 describe('Running sails www', function() {
-	var sailsBin = './bin/sails.js';
+	var sailsBin = path.resolve('./bin/sails.js');
 	var appName = 'testApp';
 	var sailsServer;
 
@@ -31,14 +32,14 @@ describe('Running sails www', function() {
 			// Make empty folder and move into it
 			fs.mkdirSync('empty');
 			process.chdir('empty');
-			sailsBin = '.' + sailsBin;
+			sailsBin = path.resolve('..', sailsBin);
 		});
 
 		after(function() {
 			// Delete empty folder and move out of it
 			process.chdir('../');
 			fs.rmdirSync('empty');
-			sailsBin = sailsBin.substr(1);
+			sailsBin = path.resolve(sailsBin);
 		});
 
 	});
@@ -47,13 +48,13 @@ describe('Running sails www', function() {
 
 		it('should start server without error', function(done) {
 
-			exec(sailsBin + ' new ' + appName, function(err) {
+			exec('node ' + sailsBin + ' new ' + appName, function(err) {
 				if (err) done(new Error(err));
 				// Move into app directory
 				process.chdir(appName);
-				sailsBin = '.' + sailsBin;
+				sailsBin = path.resolve('..', sailsBin);
 
-				sailsServer = spawn(sailsBin, ['www']);
+				sailsServer = spawn('node', [sailsBin, 'www']);
 
         sailsServer.stderr.on('data', function (data) {
           return done(data);
@@ -95,7 +96,7 @@ describe('Running sails www', function() {
 				}
 			}));
 
-			sailsServer = spawn(sailsBin, ['www', '--dev']);
+			sailsServer = spawn('node', [sailsBin, 'www', '--dev']);
 
 			sailsServer.stdout.on('data', function(data) {
 				var dataString = data + '';
@@ -115,7 +116,7 @@ describe('Running sails www', function() {
 			// to set session adapter:null ( to prevent warning message from appearing on command line )
 			fs.writeFileSync('config/session.js', 'module.exports.session = { adapter: null }');
 
-			sailsServer = spawn(sailsBin, ['www', '--prod']);
+			sailsServer = spawn('node', [sailsBin, 'www', '--prod']);
 
 			sailsServer.stdout.on('data', function(data) {
 				var dataString = data + '';
