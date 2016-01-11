@@ -54,7 +54,7 @@ module.exports.build = function( /* [appName], done */ ) {
 
   process.chdir(appName);
 
-	exec(sailsBin + ' new', function(err) {
+	exec('node ' + sailsBin + ' new', function(err) {
 		if (err) return done(err);
 		var fixtures = wrench.readdirSyncRecursive('../test/integration/fixtures/sampleapp');
 		if (fixtures.length < 1) return done();
