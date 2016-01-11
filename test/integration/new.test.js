@@ -57,9 +57,9 @@ describe('New app generator', function() {
     });
 
     it('should not overwrite a folder', function(done) {
-      exec('mkdir ' + appName, function(err) {
+      fs.mkdir(appName, function(err) {
         if (err) { return done(new Error(err)); }
-        exec('touch '+appName+'/test', function(err) {
+        fs.writeFile(path.resolve(appName, 'test'), '', function(err) {
           if (err) { return done(new Error(err)); }
           exec('node '+ sailsbin + ' new ' + appName, function(err, dumb, result) {
             assert.notEqual(result.indexOf('error'), -1);
