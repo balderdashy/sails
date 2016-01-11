@@ -34,7 +34,10 @@ describe('hooks :: ', function() {
 
       after(function() {
         process.chdir('../');
-        appHelper.teardown();
+        // Sleep for 500ms--otherwise we get timing errors for this test on Windows
+        setTimeout(function() {
+          appHelper.teardown();
+        }, 500);
       });
 
       describe('with default settings', function() {
@@ -190,7 +193,10 @@ describe('hooks :: ', function() {
 
       after(function() {
         process.chdir('../');
-        appHelper.teardown();
+        // Sleep for 500ms--otherwise we get timing errors for this test on Windows
+        setTimeout(function() {
+          appHelper.teardown();
+        });
       });
 
       describe('with default settings', function() {
