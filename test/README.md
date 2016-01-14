@@ -3,9 +3,9 @@
 
 ## Run the tests
 
-From the root directory of this module:
+From the root directory of Sails core, run:
 
-```
+```bash
 npm test
 ```
 
@@ -17,6 +17,22 @@ npm test
 4. Prevent regression.
 5. Make merging pull requests easier by removing me (@mikermcneil) as the bottleneck for merging pull requests. (we can just run the tests to see if a change broke anything)
 6. Make it easier for folks to contribute more tests, and help unify the style and structure of our existing tests.
+
+
+## What To Test
+In an ideal world, anything possible action you could peform with Sails as a user, whether programatically or via the command-line tool, would have a test. However the combinatoric scale of configuration variations in Sails, along with the fact that userland code can override just about any key piece of core, means we'll never _quite_ get to this point.  And that's ok.
+
+Instead, the Sails project's goal is for any _feature of Sails_ you would use as a user, either programatically or via the command-line tool, to have a test.  In many cases, where these features are implemented within a dependency, the only tests for that feature exist within that dependency (e.g. [Waterline](https://github.com/balderdashy/waterline/tree/master/test), [Skipper](https://github.com/balderdashy/skipper/tree/master/test), and [Captains Log](https://github.com/balderdashy/captains-log/tree/master/test)).  But even in these cases, tests in Sails inevitably end up retesting certain features that are already verified by Sails' dependencies-- and there is nothing wrong with that.
+
+## What _Not_ To Test
+We should strive to avoid tests which verify exclusivity-- it cripples our ability to develop quickly.  In other words, tests should not fail with the introduction of additive features.
+
+For instance, if you're writing a test to check that the appropriate files have been created with `sails new`, it would make sense to check for those files, but it would _not_ make sense to ensure that ONLY those files were created. (i.e. adding a new file should not break the tests)
+
+Another example is a test which verifies the correctness of blueprint configuration, e.g. `sails.config.blueprints.rest`.  The test should check that blueprints behave properly with the `rest` config enabled and disabled.  We could change the configuration, add more controller-specific options, etc., and we'd only need to write new tests.
+
+If, on the other hand, our strategy for testing the behavior of the blueprints involved evaluating the behavior AND THEN making a judgement on what the config "_should_" look like, we'd have to modify the tests when we add new options.  This may not sound like a big deal, but it can grow out of proportion quickly!
+
 
 
 
