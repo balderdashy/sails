@@ -7,7 +7,7 @@ This file contains the development roadmap for the upcoming release of Sails, as
 
 ## v0.12
 
-This section includes the main features, enhancements, and other improvements tentatively planned or already implemented for the v0.12 of Sails.  Note that this is by no means a comprehensive changelog or release plan and may exclude important additions, bug fixes, and documentation tasks; it is just a reference point.  Please also realize that the following notes may be slightly out of date-- until the release is finalized, API changes, deprecation announcements, additions, etc. are all tentative.
+This section includes the main features, enhancements, and other improvements tentatively planned or already implemented for the v0.12 release of Sails.  Note that this is by no means a comprehensive changelog or release plan and may exclude important additions, bug fixes, and documentation tasks; it is just a reference point.  Please also realize that the following notes may be slightly out of date-- until the release is finalized, API changes, deprecation announcements, additions, etc. are all tentative.
 
  + Documentation / Meta
    + New guide for contributing to Sails docs, as well as a few tweaks to the process for starting or contributing to translation projects (see http://blog.sailsjs.org/post/137189916152/updates-to-how-we-contribute-to-the-sails-docs)
