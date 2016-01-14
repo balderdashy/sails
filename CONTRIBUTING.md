@@ -26,7 +26,7 @@ If you are working on a pull request, **please carefully read this file from top
 
 ## I. Code of Conduct
 
-The Code of Conduct explains the *bare minimum* behavior expectations the Sails project requires of its contributors. [Please read it before participating.](./CODE_OF_CONDUCT.md)
+The Code of Conduct explains the *bare minimum* behavior expectations the Sails project requires of its contributors. [Please read it before participating.](./CODE-OF-CONDUCT.md)
 
   
 ## II. Issue Contributions
