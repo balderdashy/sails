@@ -1,9 +1,11 @@
-# Roadmap
+# Sails Roadmap
 
 This file contains the development roadmap for the upcoming release of Sails, as well as the project backlog.
 
+&nbsp;
+&nbsp;
 
-### v0.12
+## v0.12
 
 This section includes the main features, enhancements, and other improvements tentatively planned or already implemented for the v0.12 of Sails.  Note that this is by no means a comprehensive changelog or release plan and may exclude important additions, bug fixes, and documentation tasks; it is just a reference point.  Please also realize that the following notes may be slightly out of date-- until the release is finalized, API changes, deprecation announcements, additions, etc. are all tentative.
 
@@ -32,8 +34,11 @@ This section includes the main features, enhancements, and other improvements te
  + See also https://github.com/balderdashy/sails/blob/master/CHANGELOG.md#master
 
 
+&nbsp;
+&nbsp;
 
-### Backlog
+
+## Backlog
 
 The backlog consists of approved proposals for useful features which are not currently in the immediate-term roadmap above, but would be excellent places to contribute code to the Sails framework. We would exuberantly accept a pull request implementing any of the items below, so long as it was accompanied with reasonable tests that prove it, and it doesn't break other core functionality. Please see the Sails [contribution guide](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md) to get started.
 
@@ -48,7 +53,13 @@ Feature                                          | Proposal                     
  `sails.getRouteAddress()`                       | [Proposal](https://github.com/balderdashy/sails/issues/3402#issuecomment-167137610)   | Given a route target, return the route address configured in the app's explicit routes.
 
 
-### Pending Proposals
+
+&nbsp;
+&nbsp;
+
+
+
+## Pending Proposals
 
 The backlog items below are from before the recent change to the Sails project's contribution guidelines, and are suggestions for features or enhancements, but are not yet accompanied by a complete proposal.  Before any of the following backlog items can be implemented or a pull request can be merged, a detailed proposal needs to be submitted, discussed and signed off on by the project maintainers.  For information on writing a proposal, see the [Sails contribution guide](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md).  **Please do not submit a pull request _adding_ to this section.**
 
