@@ -4,17 +4,6 @@ The goal of these tests is to run Sails just like you or I would, and verify tha
 
 This is a great place to jump in if you're interested in contributing code to Sails core!
 
-
-## What _Not_ To Test
-We should strive to avoid integration tests which test exclusivity-- it cripples our ability to develop quickly.  In other words, integration tests should not fail with the introduction of additive features.
-
-For instance, if you're writing a test to check that the appropriate files have been created with `sails new`, it would make sense to check for those files, but it would _not_ make sense to ensure that ONLY those files were created. (i.e. adding a new file should not break the tests)
-
-Another example is a test which verifies the correctness of blueprint configuration, e.g. `sails.config.blueprints.rest`.  The test should check that blueprints behave properly with the `rest` config enabled and disabled.  We could change the configuration, add more controller-specific options, etc., and we'd only need to write new tests.
-
-If, on the other hand, our strategy for testing the behavior of the blueprints involved evaluating the behavior AND THEN making a judgement on what the config "_should_" look like, we'd have to modify the tests when we add new options.  This may not sound like a lot, but it can grow out of proportion quickly!
-
-
 ## How Can I Help?
 
 We could use your help writing more integration tests that test Sails under specific conditions.
