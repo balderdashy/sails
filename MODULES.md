@@ -107,7 +107,8 @@ Below, you'll find an overview of the modules maintained by the core team and co
 | [sails-orientdb](https://github.com/appscot/sails-orientdb) | [![Build Status](https://travis-ci.org/appscot/sails-orientdb.svg?branch=master)](https://travis-ci.org/appscot/sails-orientdb) | [![npm version](https://badge.fury.io/js/sails-orientdb.svg)](http://badge.fury.io/js/sails-orientdb) | OrientDB |
 | [sails-rest](https://github.com/zohararad/sails-rest) |  |  | REST |
 | [sails-oracle](https://github.com/mayconheerdt/sails-oracle) | | | Oracle |
-| [sails-mssql](https://github.com/swelham/sails-mssql) | | | MSSQL |
+| [sails-mssql](https://github.com/swelham/sails-mssql) | | | MSSQL (for sails@<=0.9.x) |
+| [sails-sqlserver](https://github.com/cnect/sails-sqlserver) | | | SQL Server |
 | [sails-neo4j](https://github.com/natgeo/sails-neo4j) | | | Neo4j |
 | [sails-sqlite3](https://github.com/AndrewJo/sails-sqlite3) | | | SQLite3 |
 | [sails-dynamodb](https://github.com/dohzoh/sails-dynamodb) | | | DynamoDB |
