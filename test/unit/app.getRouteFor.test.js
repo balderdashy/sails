@@ -18,7 +18,11 @@ describe.skip('app.getRouteFor()', function (){
       routes: {
         'get /signup': 'PageController.signup',
         'post /signup': 'UserController.signup',
-        'post /*': 'UserController.signup'
+        'post /*': 'UserController.signup',
+        'get /': { controller: 'PageController', action: 'homepage' },
+        'get /about': { target: 'PageController.about' },
+        'get /admin': { target: 'PageController.adminDashboard' },
+        'get /badmin': { target: 'PageController.admndashboard' },
       }
     }, done);
   });
@@ -41,6 +45,11 @@ describe.skip('app.getRouteFor()', function (){
     assert.equal(route.method, 'post');
     assert.equal(route.url, '/signup');
   });
+
+  // TODO: if target to search for not specified or is invalid, should throw usage error (i.e. `e.code==='E_USAGE'`)
+  // TODO: if specified target string to search for has no dot, should throw usage error (i.e. `e.code==='E_USAGE'`)
+  // TODO: Should be able to match different syntaxes (routes that specify separate controller+action, or specifically specify a target)
+  // TODO: test case-sensitivity in action names
 
 });
 
