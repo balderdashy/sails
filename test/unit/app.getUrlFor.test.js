@@ -7,7 +7,7 @@ var util = require('util');
 var Sails = require('../../lib').constructor;
 
 
-describe.skip('app.getUrlFor()', function (){
+describe('app.getUrlFor()', function (){
 
   var app;
   before(function (done){

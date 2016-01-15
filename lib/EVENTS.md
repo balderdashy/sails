@@ -188,7 +188,7 @@ sails.after(['hook:yourHookID:someEvent', 'hook:someOtherHookID:someOtherEvent']
 
 <!--
 
-This can be omitted for now-- it really shouldn't be used in userspace.
+This can be omitted for now- it really shouldn't be used in userspace.
 May be deprecated, API may change.  Please do not use.
 
 

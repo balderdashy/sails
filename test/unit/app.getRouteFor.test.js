@@ -7,7 +7,7 @@ var util = require('util');
 var Sails = require('../../lib').constructor;
 
 
-describe.skip('app.getRouteFor()', function (){
+describe('app.getRouteFor()', function (){
 
   var app;
   before(function (done){
