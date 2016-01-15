@@ -172,7 +172,7 @@ There are two types of code contributions we can accept in Sails core:  patches 
 
 **New features** are TODOs summarized in the ROADMAP.md file, with more information in an accompanying pull request.  Anything that is not specifically in the ROADMAP.md file should not be submitted as a new feature.
 
-As stated at the top of this file, in case of doubt about whether a change you would like to make would be considered a "patch", open an issue in the issue tracker or contact someone from our [core team](https://github.com/balderdashy/sails#team) on Twitter. Especially do so if you plan to work on something big. Nothing is more frustrating than seeing your hard work go to waste because your vision does not align with planned or ongoing development efforts of the project's maintainers.
+As stated at the top of this file, in case of doubt about whether a change you would like to make would be considered a "patch", please open an issue in the issue tracker or contact someone from our [core team](https://github.com/balderdashy/sails#team) on Twitter _before_ you begin work on the pull request. Especially do so if you plan to work on something big. Nothing is more frustrating than seeing your hard work go to waste because your vision does not align with planned or ongoing development efforts of the project's maintainers.
 
 
 
