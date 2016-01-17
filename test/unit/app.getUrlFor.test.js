@@ -18,6 +18,7 @@ describe('app.getUrlFor()', function (){
       routes: {
         'get /signup': 'PageController.signup',
         'post /login': 'UserController.login',
+        'get /login': 'PageController.login',
         'post /*': 'UserController.login'
       }
     }, done);
@@ -29,7 +30,7 @@ describe('app.getUrlFor()', function (){
   });
 
   it('should return appropriate route URL with expanded usage', function () {
-    assert.equal( app.getUrlFor({ target: 'PageController.login' }), '/signup' );
+    assert.equal( app.getUrlFor({ target: 'PageController.login' }), '/login' );
   });
 
   it('should return the _first_ matching route URL for the given target', function () {
