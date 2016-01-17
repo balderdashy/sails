@@ -12,6 +12,15 @@ In order for this hook to load, the following other hooks must have already fini
 - moduleloader
 
 
+
+## Dependents
+
+If this hook is disabled, in order for Sails to load, the following other core hooks must also be disabled:
+
+- blueprints
+
+
+
 ## Purpose
 
 This hook's responsibilities are:

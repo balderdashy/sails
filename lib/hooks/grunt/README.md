@@ -11,6 +11,12 @@ In order for this hook to load, the following other hooks must have already fini
 
 _N/A_
 
+## Dependents
+
+If this hook is disabled, in order for Sails to load, the following other core hooks must also be disabled:
+
+_N/A_
+
 
 ## Purpose
 
