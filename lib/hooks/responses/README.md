@@ -2,7 +2,14 @@
 
 ## Status
 
-> ##### Stability: [2](http://nodejs.org/api/documentation.html#documentation_stability_index) - Unstable
+> ##### Stability: [2](https://github.com/balderdashy/sails-docs/blob/master/contributing/stability-index.md) - Stable
+
+
+## Dependencies
+
+In order for this hook to load, the following other hooks must have already finished loading:
+
+_N/A_
 
 
 ## Purpose
@@ -35,6 +42,15 @@ When Sails loads, this hook loads custom response files from the app's responses
 This hook binds a shadow route that intercepts all incoming requests and attaches a method to `res` for each of the outlet functions (representing custom responses) that were prepared when the hook was initialized.
 
 
+
+## Implicit Defaults
+
+This hook sets the following implicit defaults configuration on `sails.config`:
+
+_N/A_
+
+
+
 ## Events
 
 ##### `hook:responses:loaded`
@@ -43,7 +59,7 @@ Emitted when this hook has been automatically loaded by Sails core, and triggere
 
 
 
-## Methods
+## Protected Methods
 
 
 #### sails.hooks.responses.loadModules()
@@ -64,8 +80,9 @@ sails.hooks.responses.loadModules(cb);
 
 
 > ##### API: Private
-> Please do not use this method in userland (i.e. in your app).
-> This method is private. If you use it method in your code, it may stop working or change without warning, at any time.
+> - Please do not use this method in userland (i.e. in your app or even in a custom hook or other type of Sails plugin).
+> - Because it is a private API of a core hook, if you use this method in your code it may stop working or change without warning, at any time.
+> - If you would like to see a version of this method made public and its API stabilized, please open a [proposal](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#v-proposing-features-and-enhancements).
 >
 > _(internally in core, note that this is called by the `moduleloader` hook)_
 
@@ -73,4 +90,4 @@ sails.hooks.responses.loadModules(cb);
 
 ## FAQ
 
-> If you have a question that isn't covered here, please feel free to send a PR adding it to this section (even if you don't have the answer!)
+> If you have a question about this hook that isn't covered here, please feel free to send a PR adding it to this section (even if you don't have the answer, a core maintainer will merge your PR and add an answer as soon as possible)
