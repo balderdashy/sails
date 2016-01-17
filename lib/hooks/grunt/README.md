@@ -37,7 +37,7 @@ To prevent proc leaks, Sails keeps track of the Grunt child process on `sails.ch
 
 ## Implicit Defaults
 
-This hook sets the following implicit defaults configuration on `sails.config`:
+This hook sets the following implicit default configuration on `sails.config`:
 
 _N/A_
 
@@ -55,10 +55,16 @@ Emitted when the Grunt hook has been automatically loaded by Sails core, and tri
 
 Emitted when the Grunt child process exits with a normal status code. (in development, this will not fire until the app is lowered, since grunt-contrib-watch keeps the child process active)
 
+> This event is experimental.  It is very possible that it will change in a future release.
+
 
 ##### `hook:grunt:error`
 
 Emitted when the Grunt child process exits with a non-zero status code.
+
+> This event is experimental.  It is very possible that it will change in a future release.
+
+
 
 
 

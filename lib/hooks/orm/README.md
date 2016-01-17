@@ -10,33 +10,85 @@
 
 In order for this hook to load, the following other hooks must have already finished loading:
 
-> TODO
+- moduleloader
+- userconfig
 
 
 ## Purpose
 
 This hook's responsibilities are:
 
+
+##### Load adapters
+
+When Sails loads, this hook calls out to `sails.modules.loadAdapters()` (exposed by the `moduleloader`), loading any custom adapters defined within the app.  It also loads adapters which are installed as dependencies of the app itself (i.e. in its `node_modules/` folder).  These adapters are used when instantiating Waterline.
+
+
 ##### Load and hydrate models, then expose them as `sails.models.*`
-When Sails loads, this hook loads model files from the app's models folder, passes them to Waterline to turn them into Model instances with all the expected methods like `.create()`, and then exposes them as `sails.models`.  Conventionally this models folder is `api/models/`, but it can be configured in `sails.config.paths`.
+When Sails loads, this hook calls out to `sails.modules.loadModels()` (exposed by the `moduleloader`), loading model files from the app's models folder.
+
+##### Prompt about auto-migration
+Since instantiating Waterline currently has the effect of auto-migrating existing data (dependending on the `migrate` configuration), the orm hook shows a prompt before instantiating Waterline if no `migrate` setting is explicitly configured.
+
+
+##### Instantiate Waterline
+As mentioned above, since all configuration, models, and adapters are loaded, this hook can safely instantiate Waterline.
+
+
+##### Expose hydrated models as `sails.models`
+It then passes them to Waterline to turn them into Model instances with all the expected methods like `.create()`, and then exposes them as `sails.models`.  Conventionally this models folder is `api/models/`, but it can be configured in `sails.config.paths`.
 
 - Note that the set of hydrated models in the `sails.models` also includes Waterline models which were implicitly created as junctors (i.e. for any `collection` associations whose `via` does not point at a `model` association).
 - Also note that models are exposed on `sails.models` are keyed by their identities.  That is, if you have a model file `Wolf.js`, it will be available as `sails.models.wolf`.
 
 
-##### Load and hydrate adapters, then expose them as `sails.adapters.*`
-
-> TODO
-
+##### Expose global variable for each model
+If enabled (`sails.config.globals.models` set to true), use the inferred `globalId` of each model to expose it as a global variable.
 
 
 
 ## Implicit Defaults
-This hook sets the following implicit defaults configuration on `sails.config`:
-
-> TODO
+This hook sets the following implicit default configuration on `sails.config`:
 
 
+| Property                                       | Type          | Default         |
+|------------------------------------------------|:-------------:|-----------------|
+| `sails.config.globals.adapters`                | ((boolean))   | `true`          |
+| `sails.config.globals.models`                  | ((boolean))   | `true`          |
+| `sails.config.models.connection`               | ((string))    | `localDiskDb`   |
+| `sails.config.connections.localDiskDb.adapter` | ((string))    | `sails-disk`    |
+
+
+i.e.
+
+```javascript
+{
+  globals: {
+    adapters: true,
+    models: true
+  },
+
+  // Default model properties
+  models: {
+
+    // This default connection (i.e. datasource) for the app
+    // will be used for each model unless otherwise specified.
+    connection: 'localDiskDb'
+  },
+
+
+  // Connections to data sources, web services, and external APIs.
+  // Can be attached to models and/or accessed directly.
+  connections: {
+
+    // Built-in disk persistence
+    // (by default, creates the file: `.tmp/localDiskDb.db`)
+    localDiskDb: {
+      adapter: 'sails-disk'
+    }
+  }
+}
+```
 
 
 ## Events

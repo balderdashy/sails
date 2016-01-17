@@ -9,7 +9,7 @@
 
 In order for this hook to load, the following other hooks must have already finished loading:
 
-_N/A_
+- moduleloader
 
 
 ## Purpose
@@ -45,7 +45,7 @@ This hook binds a shadow route that intercepts all incoming requests and attache
 
 ## Implicit Defaults
 
-This hook sets the following implicit defaults configuration on `sails.config`:
+This hook sets the following implicit default configuration on `sails.config`:
 
 _N/A_
 
