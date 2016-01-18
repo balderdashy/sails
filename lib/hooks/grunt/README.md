@@ -74,7 +74,7 @@ Emitted when the Grunt child process exits with a non-zero status code.
 
 
 
-## Protected Methods
+## Methods
 
 #### sails.hooks.grunt.runTask()
 

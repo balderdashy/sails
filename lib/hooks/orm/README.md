@@ -61,7 +61,6 @@ This hook sets the following implicit default configuration on `sails.config`:
 
 | Property                                       | Type          | Default         |
 |------------------------------------------------|:-------------:|-----------------|
-| `sails.config.globals.adapters`                | ((boolean))   | `true`          |
 | `sails.config.globals.models`                  | ((boolean))   | `true`          |
 | `sails.config.models.connection`               | ((string))    | `localDiskDb`   |
 | `sails.config.connections.localDiskDb.adapter` | ((string))    | `sails-disk`    |
@@ -122,7 +121,7 @@ Emitted when a reload is complete.  This event will likely be replaced by expect
 
 
 
-## Protected Methods
+## Methods
 
 #### sails.hooks.orm.reload()
 
@@ -168,7 +167,38 @@ sails.hooks.orm.teardown(cb);
 
 
 
-
 ## FAQ
 
 > If you have a question about this hook that isn't covered here, please feel free to send a PR adding it to this section (even if you don't have the answer, a core maintainer will merge your PR and add an answer as soon as possible)
+
+#### What is this?
+
+This repo contains a hook, one of the building blocks Sails is made out of.
+
+#### What version of Sails is this for?
+
+This hook is a dependency of Sails core as of v0.12.
+
+
+#### Can I disable this hook?
+
+Yes.  To disable this hook, merge the following JSON into your project's `.sailsrc` file:
+
+```json
+{
+  "hooks": {
+    "orm": false
+  }
+}
+```
+
+#### Can I override this hook to use a different ORM like Mongoose or Bookshelf instead of Waterline?
+
+Yes.  To override this hook, define your replacement hook with `identity: orm` in your `.sailsrc` file or your app's `api/hooks/` directory.
+
+
+
+
+## License
+
+MIT

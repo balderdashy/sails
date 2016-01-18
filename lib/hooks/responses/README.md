@@ -68,7 +68,7 @@ Emitted when this hook has been automatically loaded by Sails core, and triggere
 
 
 
-## Protected Methods
+## Methods
 
 
 #### sails.hooks.responses.loadModules()
