@@ -898,6 +898,33 @@ describe('CORS and CSRF ::', function() {
 
     });
 
+    describe("with CSRF set to true and sessions disabled", function() {
+
+      before(function() {
+        fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = true;");
+        fs.writeFileSync(path.resolve('../', appName, 'config/killsession.js'), "module.exports.http = {middleware: {session: function(req, res, next) {return next();}}};");
+      });
+
+      it("a POST request on /user without a CSRF token should result in a 201 response", function (done) {
+        httpHelper.testRoute("post", 'user', function (err, response) {
+          if (err) return done(new Error(err));
+          assert.equal(response.statusCode, 201);
+          done();
+        });
+
+      });
+
+      it("a POST request on /test without a CSRF token should result in a 200 response", function (done) {
+        httpHelper.testRoute("post", 'test', function (err, response) {
+          if (err) return done(new Error(err));
+          assert.equal(response.statusCode, 200);
+          done();
+        });
+
+      });
+
+    });
+
   });
 
   describe("CORS+CSRF ::", function () {

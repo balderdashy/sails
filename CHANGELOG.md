@@ -1,6 +1,7 @@
 # Sails Changelog
 
 ### master
+* [BUGFIX] Don't attempt to run CSRF protection methods if session is not available
 * [BUGFIX] Properly remove process listeners on sails.lower() to avoid EventEmitter leaks when lifting/lowering multiple apps (e.g. in tests) [#2693](https://github.com/balderdashy/sails/issues/2693)
 * [UPGRADE] Updated versions of Lodash (v3.10.1) and Async (v1.5.0) used in Sails (and globalized in Sails apps by default)
 * [ENHANCEMENT] Support for newer versions of connect-redis session adapter (and other session adapters using express-session)
