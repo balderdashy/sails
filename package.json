@@ -45,6 +45,7 @@
     "express-session": "1.12.1",
     "fs-extra": "0.18.4",
     "glob": "5.0.15",
+    "glob-watcher": "^2.0.0",
     "grunt": "0.4.5",
     "grunt-cli": "0.1.13",
     "grunt-contrib-clean": "0.6.0",

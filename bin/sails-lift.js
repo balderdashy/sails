@@ -10,6 +10,7 @@ var _ = require('lodash');
 var captains = require('captains-log');
 var package = require('../package.json');
 var rconf = require('../lib/app/configuration/rc');
+var watch = require('./_watcher');
 var Sails = require('../lib/app');
 
 
@@ -30,12 +31,17 @@ module.exports = function() {
   // console.time('cli_prelift');
 
   // console.time('cli_rc');
-  var log = captains(rconf.log);
+  var log = captains(rconf.log),
+      watching = watch();
   // console.timeEnd('cli_rc');
+
+  if (watching === null) {
+    return;
+  }
 
   console.log();
   require('colors');
-  log.info('Starting app...'.grey);
+  log.info((watching ? 'Restarting app...' : 'Starting app...').grey);
   console.log();
 
   // Build initial scope, mixing-in rc config
