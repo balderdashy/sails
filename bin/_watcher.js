@@ -19,12 +19,13 @@ module.exports = function() {
     var child = fork(process.argv[1], process.argv.slice(2, process.argv.length));
 
     watch(["api/**/*.js", "config/**/*.js", "tasks/**/*.js"], _.debounce(function() {
+      process.env.SAILS_RESTARTED = true;
       child.kill('SIGINT');
       child = fork(process.argv[1], process.argv.slice(2, process.argv.length));
     }), 200);
 
-    return true;
+    return null;
   }
 
-  return false;
+  return process.env.SAILS_RESTARTED;
 };
