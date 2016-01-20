@@ -14,7 +14,7 @@ var fork  = require('child_process').fork;
 
 module.exports = function() {
 
-  if (!process.connected && process.env.NODE_ENV !== "production") {
+  if (!process.connected && process.env.NODE_ENV != "production") {
 
     var child = fork(process.argv[1], process.argv.slice(2, process.argv.length));
 
