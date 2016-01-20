@@ -18,7 +18,7 @@ module.exports = function() {
 
     var child = fork(process.argv[1], process.argv.slice(2, process.argv.length));
 
-    watch(["api/**/*.js", "config/**/*.js", "tasks/**/*.js"], _.debounce(() => {
+    watch(["api/**/*.js", "config/**/*.js", "tasks/**/*.js"], _.debounce(function() {
       child.kill('SIGINT');
       child = fork(process.argv[1], process.argv.slice(2, process.argv.length));
     }), 200);
