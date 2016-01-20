@@ -10,7 +10,7 @@ var _ = require('lodash');
 var captains = require('captains-log');
 var package = require('../package.json');
 var rconf = require('../lib/app/configuration/rc');
-var watch = require('./watcher');
+var watch = require('./_watcher');
 var Sails = require('../lib/app');
 
 
