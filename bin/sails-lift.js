@@ -10,6 +10,7 @@ var _ = require('lodash');
 var captains = require('captains-log');
 var package = require('../package.json');
 var rconf = require('../lib/app/configuration/rc');
+var watch = require('./watcher');
 var Sails = require('../lib/app');
 
 
@@ -35,7 +36,7 @@ module.exports = function() {
 
   console.log();
   require('colors');
-  log.info('Starting app...'.grey);
+  log.info((watch() ? 'Starting app...' : 'Restarting app...').grey);
   console.log();
 
   // Build initial scope, mixing-in rc config
