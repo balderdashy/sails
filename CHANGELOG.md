@@ -27,6 +27,7 @@
 * [UPGRADE] Updated `sails-hook-sockets` to `^0.12.0`, which uses an updated socket.io-client module and has some bugfixes
 * [BUGFIX] Default responses now work correctly when views hook is disabled [#2770](https://github.com/balderdashy/sails/pull/2770)
 * [BUGFIX] Restored troubleshooting messages in console when Sails server fails to lift
+* [BUGFIX] app-wide locals (sails.config.views.locals) are combined using a shallow merge (`_.extend()` instead of `_.merge()`) [3500](https://github.com/balderdashy/sails/issues/3500)
 
 ### 0.11.4
 
