@@ -1,6 +1,6 @@
 module.exports = {
 	schema: false,
 	attributes: {
-    bar: 'string'
-  }
+        bar: 'string'
+    }
 };
