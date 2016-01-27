@@ -14,7 +14,7 @@ describe('globals :: ', function() {
 
     before(function(done) {
       this.timeout(15000);
-      // Build the app
+      // Build the app and begin lifting it with default settings.
       appHelper.buildAndLift(appName, {globals: null}, function(err, sails) {
 
         sailsprocess = sails;
@@ -31,6 +31,7 @@ describe('globals :: ', function() {
       process.chdir('../');
       appHelper.teardown();
     });
+
 
     it('lodash should be globalized', function() {
       assert(_);
