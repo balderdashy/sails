@@ -11,7 +11,6 @@ describe('globals :: ', function() {
 
     var sailsprocess;
     var appName = 'testApp';
-
     before(function(done) {
       this.timeout(15000);
       // Build the app and begin lifting it with default settings.
@@ -21,17 +20,21 @@ describe('globals :: ', function() {
         return done(err);
 
       });
-
-
     });
 
     after(function() {
-
       sailsprocess.kill();
       process.chdir('../');
       appHelper.teardown();
     });
 
+
+
+
+
+
+    // Once app has loaded and initialized...
+    //////////////////////////////////////////////////////////////////////
 
     it('lodash should be globalized', function() {
       assert(_);
