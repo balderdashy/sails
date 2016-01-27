@@ -31,7 +31,7 @@ describe('Request hook', function (){
     var opts;
     before(function(done) {
       var ROUTEADDRESS = '/route';
-      sails.router.bind(ROUTEADDRESS, function (req,res,next) {
+      sails.router.bind(ROUTEADDRESS, function (req, res, next) {
         req.options[req.param('opt')] = true;
         return res.send(200, JSON.stringify(req.options));
       });
@@ -48,7 +48,9 @@ describe('Request hook', function (){
         }
       }, {
         send: function (_statusCode, body) {
-          opts = JSON.parse(body);
+          try {
+            opts = JSON.parse(body);
+          } catch (e) {}
           return done();
         }
       });

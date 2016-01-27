@@ -72,7 +72,7 @@ describe('app.initializeHooks()', function() {
         // This forced failure is only temporary--
         // very hard to test right now as things stand.
         whadga: function(sails) {
-          throw 'temporary forced failure to simulate dependency issue';
+          throw new Error('temporary forced failure to simulate dependency issue');
         },
 
         noop2: customHooks.NOOP2

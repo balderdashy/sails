@@ -45,7 +45,7 @@ describe('bootstrap', function (){
       loadHooks: false,
       bootstrap: function (cb) {
         bootstrapWasFired = true;
-        throw ERROR;
+        throw new Error(ERROR);
       }
     }, function (err) {
       if (!bootstrapWasFired) {
