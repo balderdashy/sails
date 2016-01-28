@@ -165,13 +165,22 @@ describe('hooks :: ', function() {
 
       });
 
-      xdescribe('setting the hook name to `views` (an existing hook)', function(){
+      describe('setting the hook name to `csrf` (an existing hook)', function(){
 
-          it ('should throw an error', function(done) {
-            appHelper.liftQuiet({installedHooks: {'sails-hook-shout': {name: 'views'}}}, function(err, _sails) {
-              assert(err && err.code == 'E_INVALID_HOOK_NAME');
-              done();
+          var sails;
+          before(function(done) {
+            appHelper.liftQuiet({installedHooks: {'sails-hook-shout': {name: 'csrf'}}}, function(err, _sails) {
+              sails = _sails;
+              done(err);
             });
+          });
+
+          after(function(done) {
+            sails.lower(done);
+          });
+
+          it('should replace the core `csrf` hook', function() {
+            assert(sails.hooks.csrf.isShoutyHook);
           });
 
       });
@@ -191,12 +200,13 @@ describe('hooks :: ', function() {
         });
       });
 
-      after(function() {
+      after(function(done) {
         process.chdir('../');
         // Sleep for 500ms--otherwise we get timing errors for this test on Windows
         setTimeout(function() {
           appHelper.teardown();
-        });
+          return done();
+        }, 500);
       });
 
       describe('with default settings', function() {
@@ -236,61 +246,195 @@ describe('hooks :: ', function() {
 
       });
 
-    });
-
-    xdescribe('into node_modules/sails-hook-views', function(){
-
-      before(function(done) {
-        this.timeout(5000);
-        fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules"), function(err) {
-          if (err) {return done(err);}
-          wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/sails-hook-views'));
-          process.chdir(path.resolve(__dirname, "../..", appName));
-          done();
+      describe('with `hookName` set to `csrf` in the package.json', function() {
+        var sails;
+        before(function(done) {
+          var packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../testApp/node_modules/shouty','package.json')));
+          packageJson.sails.hookName = 'csrf';
+          fs.writeFileSync(path.resolve(__dirname,'../../testApp/node_modules/shouty','package.json'), JSON.stringify(packageJson));
+          appHelper.liftQuiet(function(err, _sails) {
+            if (err) {return done(err);}
+            sails = _sails;
+            return done();
+          });
         });
-      });
 
-      after(function() {
-        process.chdir('../');
-        appHelper.teardown();
-      });
+        after(function(done) {
+          sails.lower(done);
+        });
 
-      it ('should throw an error', function(done) {
-        appHelper.liftQuiet(function(err, _sails) {
-          assert(err && err.code == 'E_INVALID_HOOK_NAME');
-          done();
+        it('should replace the core `csrf` hook', function() {
+          assert(sails.hooks.csrf.isShoutyHook);
         });
       });
 
     });
 
+    describe('into node_modules/sails-hook-csrf', function(){
 
-    xdescribe('into node_modules/views', function(){
-
+      var sails;
       before(function(done) {
         this.timeout(5000);
         fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules"), function(err) {
           if (err) {return done(err);}
-          wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/views'));
+          wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/sails-hook-csrf'));
           process.chdir(path.resolve(__dirname, "../..", appName));
-          done();
+          appHelper.liftQuiet(function(err, _sails) {
+            if (err) {return done(err);}
+            sails = _sails;
+            return done();
+          });
         });
       });
 
-      after(function() {
-        process.chdir('../');
-        appHelper.teardown();
+      after(function(done) {
+        sails.lower(function(err) {
+          process.chdir('../');
+          appHelper.teardown();
+          return done(err);
+        });
       });
 
-      it ('should throw an error', function(done) {
-        appHelper.liftQuiet(function(err, _sails) {
-          assert(err && err.code == 'E_INVALID_HOOK_NAME');
-          done();
+      it('should replace the core `csrf` hook', function() {
+        assert(sails.hooks.csrf.isShoutyHook);
+      });
+
+    });
+
+
+    describe('into node_modules/csrf', function(){
+
+      var sails;
+      before(function(done) {
+        this.timeout(5000);
+        fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules"), function(err) {
+          if (err) {return done(err);}
+          wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/csrf'));
+          process.chdir(path.resolve(__dirname, "../..", appName));
+          appHelper.liftQuiet(function(err, _sails) {
+            if (err) {return done(err);}
+            sails = _sails;
+            return done();
+          });
         });
+      });
+
+      after(function(done) {
+        sails.lower(function(err) {
+          process.chdir('../');
+          appHelper.teardown();
+          return done(err);
+        });
+      });
+
+      it('should replace the core `csrf` hook', function() {
+        assert(sails.hooks.csrf.isShoutyHook);
+      });
+
+    });
+
+    describe('into node_modules/@my-modules/shouty', function(){
+
+      describe('with default settings', function() {
+
+        var sails;
+        before(function(done) {
+          this.timeout(5000);
+          fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules", "@my-modules"), function(err) {
+            if (err) {return done(err);}
+            wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty'));
+            process.chdir(path.resolve(__dirname, "../..", appName));
+            appHelper.liftQuiet(function(err, _sails) {
+              if (err) {return done(err);}
+              sails = _sails;
+              return done();
+            });
+          });
+        });
+
+        after(function(done) {
+          sails.lower(function(err) {
+            process.chdir('../');
+            appHelper.teardown();
+            return done(err);
+          });
+        });
+
+        it('should install a hook into `sails.hooks.shouty`', function() {
+          assert(sails.hooks.shouty);
+        });
+
+      });
+
+      describe('with `hookName` set to `csrf` in the package.json', function() {
+
+        var sails;
+        before(function(done) {
+          this.timeout(5000);
+          fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules", "@my-modules"), function(err) {
+            if (err) {return done(err);}
+            wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty'));
+            var packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty','package.json')));
+            packageJson.sails.hookName = 'csrf';
+            fs.writeFileSync(path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty','package.json'), JSON.stringify(packageJson));
+            process.chdir(path.resolve(__dirname, "../..", appName));
+            appHelper.liftQuiet(function(err, _sails) {
+              if (err) {return done(err);}
+              sails = _sails;
+              return done();
+            });
+          });
+        });
+
+        after(function(done) {
+          sails.lower(function(err) {
+            process.chdir('../');
+            appHelper.teardown();
+            return done(err);
+          });
+        });
+
+        it('should replace the core `csrf` hook', function() {
+          assert(sails.hooks.csrf.isShoutyHook);
+        });
+
+      });
+
+    });
+
+    describe('into node_modules/@my-modules/sails-hook-csrf', function(){
+
+      var sails;
+      before(function(done) {
+        this.timeout(5000);
+        fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules", "@my-modules"), function(err) {
+          if (err) {return done(err);}
+          wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-csrf'));
+          process.chdir(path.resolve(__dirname, "../..", appName));
+          appHelper.liftQuiet(function(err, _sails) {
+            if (err) {return done(err);}
+            sails = _sails;
+            return done();
+          });
+        });
+      });
+
+      after(function(done) {
+        sails.lower(function(err) {
+          process.chdir('../');
+          appHelper.teardown();
+          return done(err);
+        });
+      });
+
+      it('should replace the core `csrf` hook', function() {
+        assert(sails.hooks.csrf.isShoutyHook);
       });
 
     });
 
   });
+
+
 
 });
