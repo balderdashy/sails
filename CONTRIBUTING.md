@@ -41,7 +41,7 @@ Finally, discussion of a non-technical nature, including subjects like team memb
 
 #### Opening an issue
 
-> Sails is composed of a number of different sub-projects, many of which have their [own dedicated repository](https://github.com/balderdashy/sails/blob/master/MODULES.md).  Please open suspected issues with Waterline, various adapters, various generators, etc. in the relevant repository.  When in doubt, or if your issue spans multiple repositories, plese use this repository (Sails core) as a catchall. This helps us stay on top of issues and keep organized.
+> Sails is composed of a number of different sub-projects, many of which have their [own dedicated repository](https://github.com/balderdashy/sails/blob/master/MODULES.md).  Please open suspected issues with Waterline, various adapters, various generators, etc. in the relevant repository.  When in doubt, or if your issue spans multiple repositories, please use this repository (Sails core) as a catchall. This helps us stay on top of issues and keep organized.
 
 Before submitting an issue, please follow these simple instructions:
 
