@@ -41,7 +41,7 @@
     "ejs": "2.3.4",
     "ejs-locals": "1.0.2",
     "express": "3.21.2",
-    "express-handlebars": "2.0.1",
+    "express-handlebars": "3.0.0",
     "express-session": "1.12.1",
     "fs-extra": "0.18.4",
     "glob": "5.0.15",
