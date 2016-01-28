@@ -11,6 +11,7 @@ module.exports = function(sails) {
 
     initialize: function(cb) {
       phrase = sails.config[this.configKey].phrase;
+      this.isShoutyHook = true;
       cb();
     },
 
