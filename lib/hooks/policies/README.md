@@ -2,11 +2,7 @@
 
 ## Status
 
-> ##### Stability: [2](http://nodejs.org/api/documentation.html#documentation_stability_index) - Unstable
->
-> The API is in the process of settling, but has not yet had sufficient real-world testing to be considered stable.  
->
-> Backwards-compatibility will be maintained if reasonable.
+> ##### Stability: [2](https://github.com/balderdashy/sails-docs/blob/master/contributing/stability-index.md) - Stable
 
 
 ## Purpose
