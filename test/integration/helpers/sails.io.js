@@ -52,7 +52,7 @@
   // Current version of this SDK (sailsDK?!?!) and other metadata
   // that will be sent along w/ the initial connection request.
   var SDK_INFO = {
-    version: '0.11.0', // TODO: pull this automatically from package.json during build.
+    version: '0.13.4', // <-- pulled automatically from package.json, do not change!
     platform: typeof module === 'undefined' ? 'browser' : 'node',
     language: 'javascript'
   };
@@ -168,13 +168,15 @@
         // (e.g. Ember does this. See https://github.com/balderdashy/sails.io.js/pull/5)
         var isSafeToDereference = ({}).hasOwnProperty.call(queue, i);
         if (isSafeToDereference) {
-          // Emit the request.
-          _emitFrom(socket, queue[i]);
+          // Get the arguments that were originally made to the "request" method
+          var requestArgs = queue[i];
+          // Call the request method again in the context of the socket, with the original args
+          socket.request.apply(socket, requestArgs);
         }
       }
 
       // Now empty the queue to remove it as a source of additional complexity.
-      queue = null;
+      socket.requestQueue = null;
     }
 
 
@@ -296,6 +298,22 @@
     // ```
 
 
+    var SOCKET_OPTIONS = [
+      'useCORSRouteToGetCookie',
+      'url',
+      'multiplex',
+      'transports',
+      'query',
+      'path',
+      'headers',
+      'initialConnectionHeaders',
+      'reconnection',
+      'reconnectionAttempts',
+      'reconnectionDelay',
+      'reconnectionDelayMax',
+      'randomizationFactor',
+      'timeout'
+    ];
 
     /**
      * SailsSocket
@@ -315,12 +333,39 @@
       var self = this;
       opts = opts||{};
 
-      // Absorb opts
-      self.useCORSRouteToGetCookie = opts.useCORSRouteToGetCookie;
-      self.url = opts.url;
-      self.multiplex = opts.multiplex;
-      self.transports = opts.transports;
-      self.query = opts.query;
+      // Set up connection options so that they can only be changed when socket is disconnected.
+      var _opts = {};
+      SOCKET_OPTIONS.forEach(function(option) {
+        // Okay to change global headers while socket is connected
+        if (option == 'headers') {return;}
+        Object.defineProperty(self, option, {
+          get: function() {
+            if (option == 'url') {
+              return _opts[option] || (self._raw && self._raw.io && self._raw.io.uri);
+            }
+            return _opts[option];
+          },
+          set: function(value) {
+            // Don't allow value to be changed while socket is connected
+            if (self.isConnected() && io.sails.strict !== false && value != _opts[option]) {
+              throw new Error('Cannot change value of `' + option + '` while socket is connected.');
+            }
+            // If socket is attempting to reconnect, stop it.
+            if (self._raw && self._raw.io && self._raw.io.reconnecting && !self._raw.io.skipReconnect) {
+              self._raw.io.skipReconnect = true;
+              consolog("Stopping reconnect; use .reconnect() to connect socket after changing options.");
+            }
+            _opts[option] = value;
+          }
+        });
+      });
+
+      // Absorb opts into SailsSocket instance
+      // See https://sailsjs.org/reference/websockets/sails.io.js/SailsSocket/properties.md
+      // for description of options
+      SOCKET_OPTIONS.forEach(function(option) {
+        self[option] = opts[option];
+      });
 
       // Set up "eventQueue" to hold event handlers which have not been set on the actual raw socket yet.
       self.eventQueue = {};
@@ -350,12 +395,24 @@
     SailsSocket.prototype._connect = function (){
       var self = this;
 
+      self.isConnecting = true;
+
       // Apply `io.sails` config as defaults
       // (now that at least one tick has elapsed)
-      self.useCORSRouteToGetCookie = self.useCORSRouteToGetCookie||io.sails.useCORSRouteToGetCookie;
-      self.url = self.url||io.sails.url;
-      self.transports = self.transports || io.sails.transports;
-      self.query = self.query || io.sails.query;
+      // See https://sailsjs.org/reference/websockets/sails.io.js/SailsSocket/properties.md
+      // for description of options and default values
+      SOCKET_OPTIONS.forEach(function(option) {
+        if ('undefined' == typeof self[option]) {
+          self[option] = io.sails[option];
+        }
+      });
+
+      // Headers that will be sent with the initial request to /socket.io (Node.js only)
+      self.extraHeaders = self.initialConnectionHeaders || {};
+
+      if (!(typeof module === 'object' && typeof module.exports !== 'undefined') && self.initialConnectionHeaders) {
+        console.warn("initialConnectionHeaders option available in Node.js only!");
+      }
 
       // Ensure URL has no trailing slash
       self.url = self.url ? self.url.replace(/(\/)$/, '') : undefined;
@@ -466,6 +523,7 @@
         var mikealsReq = require('request');
         mikealsReq.get(xOriginCookieURL, function(err, httpResponse, body) {
           if (err) {
+            self.isConnecting = false;
             consolog(
               'Failed to connect socket (failed to get cookie)',
               'Error:', err
@@ -490,7 +548,7 @@
          *  successfully.
          */
         self.on('connect', function socketConnected() {
-
+          self.isConnecting = false;
           consolog.noPrefix(
             '\n' +
             '\n' +
@@ -499,7 +557,7 @@
             // '\n'+
              '  |>    Now connected to Sails.' + '\n' +
             '\\___/   For help, see: http://bit.ly/1DmTvgK' + '\n' +
-             '        (using '+io.sails.sdk.platform+' SDK @v'+io.sails.sdk.version+')'+ '\n' +
+             '        (using sails.io.js '+io.sails.sdk.platform+' SDK @v'+io.sails.sdk.version+')'+ '\n' +
             '\n'+
             '\n'+
             // '\n'+
@@ -530,6 +588,9 @@
         });
 
         self.on('reconnect', function(transport, numAttempts) {
+          if (!self.isConnecting) {
+            self.on('connect', runRequestQueue.bind(self, self));
+          }
           var msSinceConnectionLost = ((new Date()).getTime() - self.connectionLostTimestamp);
           var numSecsOffline = (msSinceConnectionLost / 1000);
           consolog(
@@ -544,7 +605,7 @@
         // (usually because of a failed authorization, which is in turn
         // usually due to a missing or invalid cookie)
         self.on('error', function failedToConnect(err) {
-
+          self.isConnecting = false;
           // TODO:
           // handle failed connections due to failed authorization
           // in a smarter way (probably can listen for a different event)
@@ -569,6 +630,20 @@
 
     };
 
+    /**
+     * Reconnect the underlying socket.
+     *
+     * @api public
+     */
+    SailsSocket.prototype.reconnect = function (){
+      if (this.isConnecting) {
+        throw new Error('Cannot connect- socket is already connecting');
+      }
+      if (this.isConnected()) {
+        throw new Error('Cannot connect- socket is already connected');
+      }
+      return this._connect();
+    };
 
     /**
      * Disconnect the underlying socket.
@@ -576,7 +651,8 @@
      * @api public
      */
     SailsSocket.prototype.disconnect = function (){
-      if (!this._raw) {
+      this.isConnecting = false;
+      if (!this.isConnected()) {
         throw new Error('Cannot disconnect- socket is already disconnected');
       }
       return this._raw.disconnect();
@@ -620,12 +696,7 @@
       // Bind a one-time function to run the request queue
       // when the self._raw connects.
       if ( !self.isConnected() ) {
-        var alreadyRanRequestQueue = false;
-        self._raw.on('connect', function whenRawSocketConnects() {
-          if (alreadyRanRequestQueue) return;
-          runRequestQueue(self);
-          alreadyRanRequestQueue = true;
-        });
+        self._raw.once('connect', runRequestQueue.bind(self, self));
       }
       // Or run it immediately if self._raw is already connected
       else {
@@ -712,7 +783,7 @@
      *
      * @api public
      * @param {String} url    ::    destination URL
-     * @param {Object} params ::    parameters to send with the request [optional]
+     * @param {Object} data   ::    parameters to send with the request [optional]
      * @param {Function} cb   ::    callback function to call when finished [optional]
      */
 
@@ -740,7 +811,7 @@
      *
      * @api public
      * @param {String} url    ::    destination URL
-     * @param {Object} params ::    parameters to send with the request [optional]
+     * @param {Object} data   ::    parameters to send with the request [optional]
      * @param {Function} cb   ::    callback function to call when finished [optional]
      */
 
@@ -768,7 +839,7 @@
      *
      * @api public
      * @param {String} url    ::    destination URL
-     * @param {Object} params ::    parameters to send with the request [optional]
+     * @param {Object} data   ::    parameters to send with the request [optional]
      * @param {Function} cb   ::    callback function to call when finished [optional]
      */
 
@@ -796,7 +867,7 @@
      *
      * @api public
      * @param {String} url    ::    destination URL
-     * @param {Object} params ::    parameters to send with the request [optional]
+     * @param {Object} data   ::    parameters to send with the request [optional]
      * @param {Function} cb   ::    callback function to call when finished [optional]
      */
 
@@ -861,15 +932,44 @@
         throw new Error('Invalid `method` provided (should be a string like "post" or "put")\n' + usage);
       }
       if (options.headers && typeof options.headers !== 'object') {
-        throw new Error('Invalid `headers` provided (should be an object with string values)\n' + usage);
+        throw new Error('Invalid `headers` provided (should be a dictionary with string values)\n' + usage);
       }
       if (options.params && typeof options.params !== 'object') {
-        throw new Error('Invalid `params` provided (should be an object with string values)\n' + usage);
+        throw new Error('Invalid `params` provided (should be a dictionary with JSON-serializable values)\n' + usage);
+      }
+      if (options.data && typeof options.data !== 'object') {
+        throw new Error('Invalid `data` provided (should be a dictionary with JSON-serializable values)\n' + usage);
       }
       if (cb && typeof cb !== 'function') {
         throw new Error('Invalid callback function!\n' + usage);
       }
 
+      // Accept either `params` or `data` for backwards compatibility (but not both!)
+      if (options.data && options.params) {
+        throw new Error('Cannot specify both `params` and `data`!  They are aliases of each other.\n' + usage);
+      }
+      else if (options.data) {
+        options.params = options.data;
+        delete options.data;
+      }
+
+
+      // If this socket is not connected yet, queue up this request
+      // instead of sending it.
+      // (so it can be replayed when the socket comes online.)
+      if ( ! this.isConnected() ) {
+
+        // If no queue array exists for this socket yet, create it.
+        this.requestQueue = this.requestQueue || [];
+        this.requestQueue.push([options, cb]);
+        return;
+      }
+
+      // Otherwise, our socket is connected, so continue prepping
+      // the request.
+
+      // Default headers to an empty object
+      options.headers = options.headers || {};
 
       // Build a simulated request object
       // (and sanitize/marshal options along the way)
@@ -877,7 +977,7 @@
 
         method: options.method.toLowerCase() || 'get',
 
-        headers: options.headers || {},
+        headers: options.headers,
 
         data: options.params || options.data || {},
 
@@ -887,19 +987,15 @@
         cb: cb
       };
 
-      // If this socket is not connected yet, queue up this request
-      // instead of sending it.
-      // (so it can be replayed when the socket comes online.)
-      if ( ! this.isConnected() ) {
-
-        // If no queue array exists for this socket yet, create it.
-        this.requestQueue = this.requestQueue || [];
-        this.requestQueue.push(requestCtx);
-        return;
+      // Merge global headers in
+      if (this.headers && 'object' == typeof this.headers) {
+        for (var header in this.headers) {
+          if (!options.headers.hasOwnProperty(header)) {
+            options.headers[header] = this.headers[header];
+          }
+        }
       }
 
-
-      // Otherwise, our socket is ok!
       // Send the request.
       _emitFrom(this, requestCtx);
     };
@@ -960,6 +1056,14 @@
      * @return {Socket}
      */
     io.sails.connect = function(url, opts) {
+
+      // Make URL optional
+      if ('object' == typeof url) {
+        opts = url;
+        url = null;
+      }
+
+      // Default opts to empty object
       opts = opts || {};
 
       // If explicit connection url is specified, save it to options
@@ -997,7 +1101,7 @@
     setTimeout(function() {
 
       // If autoConnect is disabled, delete the eager socket (io.socket) and bail out.
-      if (!io.sails.autoConnect) {
+      if (io.sails.autoConnect === false || io.sails.autoconnect === false) {
         delete io.socket;
         return;
       }
