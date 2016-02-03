@@ -89,20 +89,7 @@ cmd.action(require('./sails-deploy'));
 cmd = program.command('console');
 cmd.unknownOption = NOOP;
 cmd.description('');
-cmd.action(require('./sails-console'));
-
-// some quick aliases (TODO do something more intelligent when we get around to upgrading commander)
-cmd = program.command('consle');
-cmd.unknownOption = NOOP;
-cmd.description('');
-cmd.action(require('./sails-console'));
-cmd = program.command('consloe');
-cmd.unknownOption = NOOP;
-cmd.description('');
-cmd.action(require('./sails-console'));
-cmd = program.command('c');
-cmd.unknownOption = NOOP;
-cmd.description('');
+cmd.alias('c');
 cmd.action(require('./sails-console'));
 
 
