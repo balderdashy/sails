@@ -24,13 +24,7 @@ describe('Starting HTTPS sails server with lift', function() {
     var sailsServer;
 
     before(function() {
-      var opts = {
-        ssl: {
-          key: require('fs').readFileSync(require('path').resolve(__dirname, 'cert','sailstest-key.pem')).toString(),
-          cert: require('fs').readFileSync(require('path').resolve(__dirname, 'cert','sailstest-cert.pem')).toString()
-        }
-      };
-      fs.writeFileSync(path.resolve('../', appName, 'config/ssl.js'), "module.exports = " + JSON.stringify(opts) + ";");
+      fs.writeFileSync(path.resolve('../', appName, 'config/env/development.js'), "module.exports = {ssl: {key: require('fs').readFileSync('"+require('path').resolve(__dirname, 'cert','sailstest-key.pem')+"'), cert: require('fs').readFileSync('"+require('path').resolve(__dirname, 'cert','sailstest-cert.pem')+"')}};");
     });
 
     after(function(done) {
@@ -69,16 +63,7 @@ describe('Starting HTTPS sails server with lift', function() {
     var sailsServer;
 
     before(function() {
-      var opts = {
-        ssl: true,
-        http: {
-          serverOptions: {
-            key: require('fs').readFileSync(require('path').resolve(__dirname, 'cert','sailstest-key.pem')).toString(),
-            cert: require('fs').readFileSync(require('path').resolve(__dirname, 'cert','sailstest-cert.pem')).toString()
-          }
-        }
-      };
-      fs.writeFileSync(path.resolve('../', appName, 'config/ssl.js'), "module.exports = " + JSON.stringify(opts) + ";");
+      fs.writeFileSync(path.resolve('../', appName, 'config/env/development.js'), "module.exports = {ssl: true, http: {serverOptions: { key: require('fs').readFileSync('"+require('path').resolve(__dirname, 'cert','sailstest-key.pem')+"'), cert: require('fs').readFileSync('"+require('path').resolve(__dirname, 'cert','sailstest-cert.pem')+"')}}};");
     });
 
     after(function(done) {
