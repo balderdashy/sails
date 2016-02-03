@@ -55,7 +55,7 @@
     "grunt-contrib-jst": "0.6.0",
     "grunt-contrib-less": "1.1.0",
     "grunt-contrib-uglify": "0.7.0",
-    "grunt-contrib-watch": "0.6.1",
+    "grunt-contrib-watch": "0.5.3",
     "grunt-sails-linker": "~0.10.1",
     "grunt-sync": "0.2.4",
     "i18n": "0.5.0",
