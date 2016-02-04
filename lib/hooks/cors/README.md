@@ -41,6 +41,7 @@ This hook sets the following implicit default configuration on `sails.config`:
 | Property                                      | Type          | Default         |
 |-----------------------------------------------|:-------------:|-----------------|
 | `sails.config.cors.origin`                    | ((string))    | `'*'`
+| `sails.config.cors.allRoutes`                 | ((boolean))   | `false`
 | `sails.config.cors.credentials`               | ((boolean))   | `true`
 | `sails.config.cors.methods`                   | ((string))    | `'GET, POST, PUT, DELETE, OPTIONS, HEAD'`
 | `sails.config.cors.headers`                   | ((string))    | `'content-type'`
