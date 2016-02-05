@@ -16,6 +16,7 @@
 * [ENHANCEMENT] Set the useGlobal config option for REPL while using sails console, allows autoreload hook to reflect changes on global models and services
 * [ENHANCEMENT] Support JSON sorting syntax in blueprints [#2449](https://github.com/balderdashy/sails/issues/2449)
 * [ENHANCEMENT] Support namespaced modules as hooks [#3022](https://github.com/balderdashy/sails/issues/3022), [#3514](https://github.com/balderdashy/sails/pull/3514)
+* [ENHANCEMENT] Allow installable hooks to override their default names [#3168](https://github.com/balderdashy/sails/pull/3168)
 * [BUGFIX] Fixed issues with subscribing sockets to new model instances in a clustered environment [#2990](https://github.com/balderdashy/sails/issues/2990), [#3008](https://github.com/balderdashy/sails/issues/3008)
 * [UPGRADE] Update `consolidate` to `^0.12.1`
 * [BUGFIX] Don't allow changing a model's primary key via blueprints
