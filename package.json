@@ -71,7 +71,7 @@
     "rc": "1.0.1",
     "reportback": "~0.1.9",
     "sails-build-dictionary": "~0.10.1",
-    "sails-disk": "~0.10.8",
+    "sails-disk": "~0.10.9",
     "sails-generate": "~0.13.0",
     "sails-hook-sockets": "~0.13.0",
     "sails-stringfile": "~0.3.2",
@@ -80,7 +80,7 @@
     "skipper": "~0.5.8",
     "uid-safe": "1.1.0",
     "walk": "2.3.9",
-    "waterline": "~0.10.29"
+    "waterline": "~0.11.0"
   },
   "devDependencies": {
     "root-require": "0.3.1",
