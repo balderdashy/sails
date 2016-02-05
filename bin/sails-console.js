@@ -14,7 +14,7 @@ var CaptainsLog = require('captains-log');
 var Sails = require('../lib/app');
 var rconf = require('../lib/app/configuration/rc');
 var Err = require('../errors');
-
+var package = require('../package.json');
 
 
 /**
@@ -36,21 +36,45 @@ var Err = require('../errors');
 
 module.exports = function() {
 
+  // Get a logger
   var log = CaptainsLog(rconf.log);
 
-  console.log();
-  log.info('Starting app in interactive mode...'.debug);
-  console.log();
-
-  // Now load up sails for real
-  var sails = Sails();
-  sails.lift(_.merge({}, rconf, {
+  // Build initial scope, mixing-in rc config
+  var scope = _.merge({
+    rootPath: process.cwd(),
+    sailsPackageJSON: package
+  }, rconf, {
 
     // Disable ASCII ship to keep from dirtying things up
     log: {
       noShip: true
     }
-  }), function(err) {
+  });
+
+  // Assume the current working directory to be the root of the app
+  var appPath = process.cwd();
+
+  // Determine whether to use the local or global Sails install
+  var sailsToLift = (function(){
+    // Use the app's local Sails in `node_modules` if it's extant and valid
+    var localSailsPath = nodepath.resolve(appPath, 'node_modules/sails');
+    if (Sails.isLocalSailsValid(localSailsPath, appPath)) {
+      return require(localSailsPath);
+    } else {
+      // Otherwise, if no workable local Sails exists, run the app
+      // using the currently running version of Sails.  This is
+      // probably always the global install.
+      log.info('No local Sails install detected; using globally-installed Sails.');
+      return Sails();
+    }
+  })();
+
+  console.log();
+  log.info('Starting app in interactive mode...'.debug);
+  console.log();
+
+  // Lift Sails
+  sailsToLift.lift(scope, function(err) {
     if (err) {
       return Err.fatal.failedToLoadSails(err);
     }
@@ -59,6 +83,7 @@ module.exports = function() {
     log.info(('( to exit, type ' + '<CTRL>+<C>' + ' )').grey);
     console.log();
 
+    // Start a REPL
     var repl = REPL.start({prompt: 'sails> ', useGlobal: true});
     try {
       history(repl, nodepath.join(sails.config.paths.tmp, '.node_history'));
