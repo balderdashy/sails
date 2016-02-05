@@ -1,6 +1,7 @@
 # Sails Changelog
 
 ### master
+
 * [UPGRADE] Bump Waterline dependency to `0.11.0` and Sails-Disk to `0.10.9`
 * [ENHANCEMENT] More core hooks are now fully documented ([controllers](https://github.com/balderdashy/sails/tree/master/lib/hooks/controllers)|[grunt](https://github.com/balderdashy/sails/tree/master/lib/hooks/grunt)|[logger](https://github.com/balderdashy/sails/tree/master/lib/hooks/logger)|[cors](https://github.com/balderdashy/sails/tree/master/lib/hooks/cors)|[responses](https://github.com/balderdashy/sails/tree/master/lib/hooks/responses)|[orm](https://github.com/balderdashy/sails/tree/master/lib/hooks/orm))
 * [ENHANCEMENT] Improve `sails --help` output (note that this removes support for common misspellings) [#3539](https://github.com/balderdashy/sails/issues/3539)
@@ -39,6 +40,12 @@
 * [BUGFIX] Improve interoperability of virtual requests to provide a more consistent API to Socket.io and `sails.request()` (e.g. for tests)  [121f3feb8702d44420e86707ef05e3282461d136](https://github.com/balderdashy/sails/commit/121f3feb8702d44420e86707ef05e3282461d136)
 * [INTERNAL] Use shallow merge in services hook when loading modules (37eceee9b0ff0a20a285ac2889f4a5e96f3f5b30)
 * [INTERNAL] Don't expose sails.services until `loadModules` is called in the services hook (37eceee9b0ff0a20a285ac2889f4a5e96f3f5b30)
+
+### 0.11.5
+
+* [BUGFIX] Allow disabling of installed hooks [#3550](https://github.com/balderdashy/sails/pull/3550)
+* [ENHANCEMENT] Support namespaced modules as hooks (hotfix from [#3022](https://github.com/balderdashy/sails/issues/3022), [#3514](https://github.com/balderdashy/sails/pull/3514))
+* [ENHANCEMENT] Allow installable hooks to override their default names (hotfix from [#3168](https://github.com/balderdashy/sails/pull/3168))
 
 ### 0.11.4
 
