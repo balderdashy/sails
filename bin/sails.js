@@ -55,6 +55,7 @@ cmd.option('--prod');
 cmd.option('--port [port]');
 cmd.unknownOption = NOOP;
 cmd.description('');
+cmd.alias('l');
 cmd.action(require('./sails-lift'));
 
 

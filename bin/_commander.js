@@ -22,10 +22,7 @@ program.Command.prototype.usageMinusWildcard = program.usageMinusWildcard = func
 
 // Force commander to display version information.
 program.Command.prototype.versionInformation = program.versionInformation = function() {
-  console.log('eahhahghaghhg!!!');
-  console.log('eahhahghaghhg!!!');
-  console.error('eahhahghaghhg!!!');
-  // program.emit('version');
+  program.emit('version');
 };
 
 module.exports = program;
