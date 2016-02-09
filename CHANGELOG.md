@@ -1,6 +1,10 @@
 # Sails Changelog
 
-### master
+### Master
+
+* [BUGFIX] Allow passing in non-model instances to `publishCreate` [3558](https://github.com/balderdashy/sails/issues/3558)
+
+### 0.12.0
 
 * [UPGRADE] Bump Waterline dependency to `0.11.0` and Sails-Disk to `0.10.9`
 * [ENHANCEMENT] More core hooks are now fully documented ([controllers](https://github.com/balderdashy/sails/tree/master/lib/hooks/controllers)|[grunt](https://github.com/balderdashy/sails/tree/master/lib/hooks/grunt)|[logger](https://github.com/balderdashy/sails/tree/master/lib/hooks/logger)|[cors](https://github.com/balderdashy/sails/tree/master/lib/hooks/cors)|[responses](https://github.com/balderdashy/sails/tree/master/lib/hooks/responses)|[orm](https://github.com/balderdashy/sails/tree/master/lib/hooks/orm))
