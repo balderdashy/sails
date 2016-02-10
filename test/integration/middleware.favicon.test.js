@@ -55,40 +55,6 @@ describe('middleware :: ', function() {
 
     });
 
-    describe('with a favicon file in the assets folder', function() {
-
-      var customFaviconPath = path.resolve(__dirname, 'fixtures/favicon.ico');
-      before(function(done) {
-        console.log(customFaviconPath);
-        fs.copySync(customFaviconPath, path.resolve('../', appName, '.tmp/public/favicon.ico'));
-        appHelper.lift(function(err, _sailsServer) {
-          assert(!err);
-          sailsServer = _sailsServer;
-          return done();
-        });
-      });
-
-      after(function(done) {
-        sailsServer.lower(done);
-      });
-
-      it('the default sailboat favicon should be provided', function(done) {
-        var custom_favicon = fs.readFileSync(customFaviconPath);
-        request(
-          {
-            method: 'GET',
-            uri: 'http://localhost:1342/favicon.ico',
-          },
-          function(err, response, body) {
-            assert.equal(custom_favicon.toString('utf-8'), body);
-            return done();
-          }
-        );
-
-      });
-
-    });
-
   });
 
 });
