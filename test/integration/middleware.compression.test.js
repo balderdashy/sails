@@ -45,7 +45,7 @@ describe('middleware :: ', function() {
         .on('data', function(data) {
           // decompressed data as it is received
           res += data;
-        })      
+        })
         .on('response', function(response) {
           // unmodified http.IncomingMessage object
           response.on('data', function(data) {
@@ -59,7 +59,7 @@ describe('middleware :: ', function() {
         });
 
       });
-      
+
     });
 
     describe('In the development environment', function() {
@@ -97,12 +97,12 @@ describe('middleware :: ', function() {
         .on('data', function(data) {
           // decompressed data as it is received
           res += data;
-        })      
+        })
         .on('response', function(response) {
           // unmodified http.IncomingMessage object
           response.on('data', function(data) {
             rawLen += data.length;
-          })
+          });
         })
         .on('end', function(err) {
           assert.equal(res, lipsum);
@@ -111,7 +111,7 @@ describe('middleware :: ', function() {
         });
 
       });
-      
+
     });
 
   });
