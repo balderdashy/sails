@@ -12,6 +12,7 @@ describe('middleware :: ', function() {
   describe('favicon :: ', function() {
 
     var appName = 'testApp';
+    var sailsServer;
 
     before(function(done) {
       this.timeout(5000);
