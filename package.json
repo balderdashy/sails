@@ -33,7 +33,7 @@
     "captains-log": "~0.11.11",
     "colors": "1.1.2",
     "commander": "2.9.0",
-    "compression": "^1.5.2",
+    "compression": "1.5.2",
     "connect": "2.30.0",
     "connect-flash": "0.1.1",
     "consolidate": "0.12.1",
