@@ -74,10 +74,10 @@ describe('Starting sails server with lift', function() {
 					var dataString = data + '';
 					assert(dataString.indexOf('error') === -1);
 					sailsServer.stdout.removeAllListeners('data');
+          // Move out of app directory
+          process.chdir('../');
 					sailsServer.kill();
-					// Move out of app directory
-					process.chdir('../');
-					done();
+          return done();
 				});
 			});
 		});
@@ -98,9 +98,9 @@ describe('Starting sails server with lift', function() {
 							}
 
 							assert(response.statusCode === 200);
+              process.chdir('../');
 							sailsServer.kill();
-							process.chdir('../');
-							return done();
+              return done();
 						});
 					},1000);
 				}

@@ -30,7 +30,7 @@ describe('middleware :: ', function() {
       });
 
       after(function(done) {
-        app.lower(done);
+        app.lower(function(){setTimeout(done, 100);});
       });
 
       it('responses should be compressed', function(done) {
@@ -82,7 +82,7 @@ describe('middleware :: ', function() {
       });
 
       after(function(done) {
-        app.lower(done);
+        app.lower(function(){setTimeout(done, 100);});
       });
 
       it('responses should not be compressed', function(done) {

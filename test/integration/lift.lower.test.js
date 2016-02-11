@@ -33,7 +33,7 @@ describe('sails being lifted and lowered (e.g in a test framework)', function() 
           return cb(err);
         }
         setTimeout(function() {
-          sails.lower(cb);
+          sails.lower(function(){setTimeout(cb, 100);});
         });
 
       });

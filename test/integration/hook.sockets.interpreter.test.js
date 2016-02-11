@@ -35,14 +35,15 @@ describe('hook:sockets :: ', function() {
       });
     });
 
-    after(function() {
+    after(function(done) {
       socket1.disconnect();
       socket2.disconnect();
-      if (sailsprocess) {
-        sailsprocess.kill();
-      }
       process.chdir('../');
       appHelper.teardown();
+      if (sailsprocess) {
+        return sailsprocess.kill(function(){setTimeout(done, 100);});
+      }
+      return done();
     });
 
     afterEach(function(done) {

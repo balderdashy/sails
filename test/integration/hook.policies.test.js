@@ -47,7 +47,7 @@ describe('router :: ', function() {
     });
 
     afterEach(function(done) {
-      sailsprocess.kill(done);
+      sailsprocess.kill(function(){setTimeout(done, 100);});
     });
 
     after(function() {
@@ -402,7 +402,7 @@ describe('router :: ', function() {
       });
 
       after(function(done) {
-        sails.lower(done);
+        sails.lower(function(){setTimeout(done, 100);});
       });
 
       it('should install a hook into `sails.hooks.add-policy`', function() {
@@ -438,7 +438,7 @@ describe('router :: ', function() {
       });
 
       after(function(done) {
-        sails.lower(done);
+        sails.lower(function(){setTimeout(done, 100);});
       });
 
       it('should return `statusCode` 403 ', function(done) {

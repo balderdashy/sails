@@ -54,13 +54,14 @@ describe('pubsub :: ', function() {
       });
     });
 
-    after(function() {
+    after(function(done) {
 
-      if (sailsprocess) {
-        sailsprocess.kill();
-      }
       process.chdir('../');
       appHelper.teardown();
+      if (sailsprocess) {
+        return sailsprocess.kill(function(){setTimeout(done, 100);});
+      }
+      return done();
     });
 
     describe('when a model no default autosubscribe contexts ', function() {

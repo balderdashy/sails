@@ -37,8 +37,7 @@ describe('router :: ', function() {
     });
 
     afterEach(function(done) {
-      sailsprocess.kill();
-      done();
+      sailsprocess.kill(function(){setTimeout(done, 100);});
     });
 
     after(function() {
@@ -414,10 +413,10 @@ describe('router :: ', function() {
       });
     });
 
-    after(function() {
-      sailsprocess.kill();
+    after(function(done) {
       process.chdir('../');
       appHelper.teardown();
+      sailsprocess.kill(function(){setTimeout(done, 100);});
     });
 
     describe('sorting via query params', function() {

@@ -38,14 +38,15 @@ describe('pubsub :: ', function() {
 				});
 			});
 
-			after(function() {
+			after(function(done) {
 				socket1.disconnect();
 				socket2.disconnect();
+        process.chdir('../');
+        appHelper.teardown();
 				if (sailsprocess) {
-					sailsprocess.kill();
+					return sailsprocess.kill(function(){setTimeout(done, 100);});
 				}
-				process.chdir('../');
-				appHelper.teardown();
+        return done();
 			});
 
 			this.slow(3000);

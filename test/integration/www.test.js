@@ -64,10 +64,10 @@ describe('Running sails www', function() {
 					var dataString = data + '';
 					assert(dataString.indexOf('error') === -1);
 					sailsServer.stdout.removeAllListeners('data');
+          // Move out of app directory
+          process.chdir('../');
 					sailsServer.kill();
-					// Move out of app directory
-					process.chdir('../');
-					done();
+          return done();
 				});
 			});
 		});
@@ -75,10 +75,11 @@ describe('Running sails www', function() {
 	});
 
 	describe('with command line arguments', function() {
-		afterEach(function() {
+		afterEach(function(done) {
 			sailsServer.stderr.removeAllListeners('data');
-			sailsServer.kill();
-			process.chdir('../');
+      process.chdir('../');
+      sailsServer.kill();
+      return done();
 		});
 
 		it('--dev should execute grunt build', function(done) {

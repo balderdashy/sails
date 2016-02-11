@@ -22,10 +22,10 @@ describe('globals :: ', function() {
       });
     });
 
-    after(function() {
-      sailsprocess.kill();
+    after(function(done) {
       process.chdir('../');
       appHelper.teardown();
+      sailsprocess.kill(function(){setTimeout(done, 100);});
     });
 
 

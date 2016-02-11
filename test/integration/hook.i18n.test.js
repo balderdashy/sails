@@ -21,7 +21,7 @@ describe('i18n ::', function() {
   });
 
   afterEach(function(done) {
-    sailsprocess.kill(done);
+    sailsprocess.kill(function(){setTimeout(done, 100);});
   });
 
   before(function(done) {
@@ -94,7 +94,7 @@ describe('i18n Config ::', function() {
   });
 
   afterEach(function(done) {
-    sailsprocess.kill(done);
+    sailsprocess.kill(function(){setTimeout(done, 100);});
   });
 
   before(function(done) {
