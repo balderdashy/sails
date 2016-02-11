@@ -53,7 +53,7 @@ describe('hooks :: ', function() {
         });
 
         after(function(done) {
-          sails.lower(done);
+          sails.lower(function(){setTimeout(done, 100);});
         });
 
         it('should install a hook into `sails.hooks.shout`', function() {
@@ -90,7 +90,7 @@ describe('hooks :: ', function() {
         });
 
         after(function(done) {
-          sails.lower(done);
+          sails.lower(function(){setTimeout(done, 100);});
         });
 
         it('should bind a /shout route that responds with the configured phrase', function(done) {
@@ -115,7 +115,7 @@ describe('hooks :: ', function() {
         });
 
         after(function(done) {
-          sails.lower(done);
+          sails.lower(function(){setTimeout(done, 100);});
         });
 
 
@@ -141,7 +141,7 @@ describe('hooks :: ', function() {
           });
 
           after(function(done) {
-            sails.lower(done);
+            sails.lower(function(){setTimeout(done, 100);});
           });
 
           it('should install a hook into `sails.hooks.foobar`', function() {
@@ -176,7 +176,7 @@ describe('hooks :: ', function() {
           });
 
           after(function(done) {
-            sails.lower(done);
+            sails.lower(function(){setTimeout(done, 100);});
           });
 
           it('should replace the core `csrf` hook', function() {
@@ -222,7 +222,7 @@ describe('hooks :: ', function() {
         });
 
         after(function(done) {
-          sails.lower(done);
+          sails.lower(function(){setTimeout(done, 100);});
         });
 
 
@@ -260,7 +260,7 @@ describe('hooks :: ', function() {
         });
 
         after(function(done) {
-          sails.lower(done);
+          sails.lower(function(){setTimeout(done, 100);});
         });
 
         it('should replace the core `csrf` hook', function() {

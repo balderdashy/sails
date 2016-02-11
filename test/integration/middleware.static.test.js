@@ -46,9 +46,7 @@ describe('middleware :: ', function() {
       });
 
       after(function(done) {
-        sailsServer.lower(function() {
-          setTimeout(done, 100);
-        });
+        sailsServer.lower(function(){setTimeout(done, 100);});
       });
 
       it('a request to /test.txt should provide the file with the correct content-type header', function(done) {
@@ -118,7 +116,7 @@ describe('middleware :: ', function() {
       });
 
       after(function(done) {
-        sailsServer.lower(done);
+        sailsServer.lower(function(){setTimeout(done, 100);});
       });
 
       it('a request to /test.txt should provide the file and a correct cache-control header', function(done) {

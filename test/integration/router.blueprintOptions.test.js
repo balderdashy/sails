@@ -84,11 +84,10 @@ describe('router :: ', function() {
       });
     });
 
-    after(function() {
-
-      sailsprocess.kill();
+    after(function(done) {
       process.chdir('../');
       appHelper.teardown();
+      sailsprocess.kill(function(){setTimeout(done, 100);});
     });
 
     describe('a get request to /user', function() {

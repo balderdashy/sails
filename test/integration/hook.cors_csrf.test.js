@@ -21,7 +21,7 @@ describe('CORS and CSRF ::', function() {
   });
 
   afterEach(function(done) {
-    sailsprocess.kill(done);
+    sailsprocess.kill(function(){setTimeout(done, 100);});
   });
 
   describe('CORS config ::', function() {

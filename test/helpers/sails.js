@@ -172,7 +172,7 @@ function _with (description, sailsOpts, msThreshold) {
 
   after(function teardown(done) {
     // Make sure the app is done
-    sails.lower(done);
+    sails.lower(function(){setTimeout(done, 100);});
   });
 
   return sails;

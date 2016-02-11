@@ -49,7 +49,7 @@ describe('New app generator', function() {
         if (err) { return done(new Error(err)); }
         appHelper.lift({log:{level:'silent'}}, function(err, sailsprocess) {
           if (err) {return done(err);}
-          sailsprocess.once('hook:http:listening', function(){sailsprocess.kill(done);});
+          sailsprocess.once('hook:http:listening', function(){sailsprocess.kill(function(){setTimeout(done, 100);});});
           // sailsprocess.kill(done);
           // setTimeout(done, function(){sailsprocess.kill(done)});
         });
@@ -77,7 +77,7 @@ describe('New app generator', function() {
         if (err) { return done(new Error(err)); }
         appHelper.lift({log:{level:'silent'}}, function(err, sailsprocess) {
           if (err) {return done(err);}
-          sailsprocess.once('hook:http:listening', function(){sailsprocess.kill(done);});
+          sailsprocess.once('hook:http:listening', function(){sailsprocess.kill(function(){setTimeout(done, 100);});});
         });
       });
     });

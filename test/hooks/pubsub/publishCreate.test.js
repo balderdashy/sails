@@ -116,7 +116,7 @@ describe('Pubsub hook', function (){
 
     // Shut down the app
     after(function (done){
-      app.lower(done);
+      app.lower(function(){setTimeout(done, 100);});
     });
 
 

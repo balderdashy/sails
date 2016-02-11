@@ -56,10 +56,9 @@ describe('pubsub :: ', function() {
         // Add a delay before killing the app to account for any queries that
         // haven't been run by the blueprints yet; otherwise they might casue an error
         setTimeout(function() {
-          sailsprocess.kill();
           process.chdir('../');
           appHelper.teardown();
-          done();
+          sailsprocess.kill(function(){setTimeout(done, 100);});
         }, 500);
 
       });

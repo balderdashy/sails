@@ -29,7 +29,7 @@ describe('Starting HTTPS sails server with lift', function() {
 
     after(function(done) {
       if (sailsServer) {
-        return sailsServer.lower(done);
+        return sailsServer.lower(function(){setTimeout(done, 100);});
       }
       return done();
     });
@@ -68,7 +68,7 @@ describe('Starting HTTPS sails server with lift', function() {
 
     after(function(done) {
       if (sailsServer) {
-        return sailsServer.lower(done);
+        return sailsServer.lower(function(){setTimeout(done, 100);});
       }
       return done();
     });

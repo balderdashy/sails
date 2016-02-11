@@ -35,7 +35,7 @@ describe('middleware :: ', function() {
       });
 
       after(function(done) {
-        sailsServer.lower(done);
+        sailsServer.lower(function(){setTimeout(done, 100);});
       });
 
       it('the default sailboat favicon should be provided', function(done) {
