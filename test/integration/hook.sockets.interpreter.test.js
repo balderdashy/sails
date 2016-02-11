@@ -19,7 +19,6 @@ describe('hook:sockets :: ', function() {
   describe('interpreter', function() {
 
     before(function(done) {
-      this.timeout(10000);
       appHelper.buildAndLiftWithTwoSockets(appName, {
         silly: false
       }, function(err, sails, _socket1, _socket2) {

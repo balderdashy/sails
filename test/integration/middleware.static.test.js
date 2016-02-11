@@ -17,7 +17,6 @@ describe('middleware :: ', function() {
     var test_file;
 
     before(function(done) {
-      this.timeout(5000);
       appHelper.build(function(err) {
         if (err) {return done(err);}
         fs.copySync(customFaviconPath, path.resolve('../', appName, '.tmp/public/test.txt'));

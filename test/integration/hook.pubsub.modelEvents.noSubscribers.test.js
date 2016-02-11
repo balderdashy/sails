@@ -28,7 +28,6 @@ describe('pubsub :: ', function() {
 		describe('when no one is subscribed to user #1 and User has no watchers ', function() {
 
 			before(function(done) {
-				this.timeout(5000);
 				appHelper.buildAndLiftWithTwoSockets(appName, function(err, sails, _socket1, _socket2) {
 					if (err) {throw new Error(err);}
 					sailsprocess = sails;

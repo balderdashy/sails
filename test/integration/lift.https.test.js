@@ -9,7 +9,6 @@ describe('Starting HTTPS sails server with lift', function() {
   var appName = 'testApp';
 
   before(function(done) {
-    this.timeout(5000);
     appHelper.build(done);
   });
 

@@ -38,7 +38,6 @@ describe('pubsub :: ', function() {
     describe('when a socket is watching Users ', function() {
 
       before(function(done) {
-        this.timeout(10000);
         appHelper.buildAndLiftWithTwoSockets(appName, {silly: false /*, sockets: {'backwardsCompatibilityFor0.9SocketClients':false} */}, function(err, sails, _socket1, _socket2) {
           if (err) {throw new Error(err);}
           sailsprocess = sails;

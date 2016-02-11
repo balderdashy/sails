@@ -30,7 +30,6 @@ describe('router :: ', function() {
     var appName = 'testApp';
 
     before(function(done) {
-      this.timeout(5000);
       appHelper.build(done);
     });
 
@@ -366,12 +365,10 @@ describe('router :: ', function() {
     var appName = 'testApp';
 
     before(function(done) {
-      this.timeout(5000);
       appHelper.build(done);
     });
 
     before(function(done) {
-      this.timeout(5000);
       fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules"), function(err) {
         if (err) {return done(err);}
 

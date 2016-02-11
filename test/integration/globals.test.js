@@ -12,7 +12,6 @@ describe('globals :: ', function() {
     var sailsprocess;
     var appName = 'testApp';
     before(function(done) {
-      this.timeout(15000);
       // Build the app and begin lifting it with default settings.
       appHelper.buildAndLift(appName, {globals: null}, function(err, sails) {
 

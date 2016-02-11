@@ -20,7 +20,6 @@ describe('hooks :: ', function() {
 
       before(function(done) {
         appHelper.teardown();
-        this.timeout(5000);
         async.series([
           function(cb) {fs.outputFile(path.resolve(__dirname,'../../testApp/config/abc.js'), 'module.exports = {"foo":"goo"};', cb);},
           function(cb) {fs.outputFile(path.resolve(__dirname,'../../testApp/config/foo/bar.js'), 'module.exports = {"foo":"bar", "abc":123};', cb);},

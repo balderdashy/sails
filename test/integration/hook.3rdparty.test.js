@@ -23,7 +23,6 @@ describe('hooks :: ', function() {
     describe('into node_modules/sails-hook-shout', function(){
 
       before(function(done) {
-        this.timeout(5000);
         fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules"), function(err) {
           if (err) {return done(err);}
           wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/sails-hook-shout'));
@@ -191,7 +190,6 @@ describe('hooks :: ', function() {
     describe('into node_modules/shouty', function(){
 
       before(function(done) {
-        this.timeout(5000);
         fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules"), function(err) {
           if (err) {return done(err);}
           wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/shouty'));
@@ -274,7 +272,6 @@ describe('hooks :: ', function() {
 
       var sails;
       before(function(done) {
-        this.timeout(5000);
         fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules"), function(err) {
           if (err) {return done(err);}
           wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/sails-hook-csrf'));
@@ -306,7 +303,6 @@ describe('hooks :: ', function() {
 
       var sails;
       before(function(done) {
-        this.timeout(5000);
         fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules"), function(err) {
           if (err) {return done(err);}
           wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/csrf'));
@@ -339,7 +335,6 @@ describe('hooks :: ', function() {
 
         var sails;
         before(function(done) {
-          this.timeout(5000);
           fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules", "@my-modules"), function(err) {
             if (err) {return done(err);}
             wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty'));
@@ -370,7 +365,6 @@ describe('hooks :: ', function() {
 
         var sails;
         before(function(done) {
-          this.timeout(5000);
           fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules", "@my-modules"), function(err) {
             if (err) {return done(err);}
             wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty'));
@@ -406,7 +400,6 @@ describe('hooks :: ', function() {
 
       var sails;
       before(function(done) {
-        this.timeout(5000);
         fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules", "@my-modules"), function(err) {
           if (err) {return done(err);}
           wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-csrf'));
