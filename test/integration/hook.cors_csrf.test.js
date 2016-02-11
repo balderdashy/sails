@@ -27,7 +27,6 @@ describe('CORS and CSRF ::', function() {
   describe('CORS config ::', function() {
 
     before(function(done) {
-      this.timeout(15000);
       appHelper.build(done);
     });
 
@@ -688,7 +687,6 @@ describe('CORS and CSRF ::', function() {
   describe("CSRF config ::", function () {
 
     before(function(done) {
-      this.timeout(15000);
       appHelper.build(done);
     });
 
@@ -930,7 +928,6 @@ describe('CORS and CSRF ::', function() {
   describe("CORS+CSRF ::", function () {
 
     before(function(done) {
-      this.timeout(15000);
       appHelper.build(function() {
         // Add a CORS config that should be IGNORED by the CSRF hook, which does its own CORS handling
         // If this isn't being ignored properly, then errors should occur when requesting /csrfToken from a different origin

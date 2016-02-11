@@ -15,7 +15,6 @@ describe('middleware :: ', function() {
     var sailsServer;
 
     before(function(done) {
-      this.timeout(5000);
       appHelper.build(done);
     });
 

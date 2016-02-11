@@ -26,7 +26,6 @@ describe('pubsub :: ', function() {
   describe('Model events', function() {
 
     before(function(done) {
-      this.timeout(5000);
       appHelper.build(appName, function(err) {
         if (err) {
           throw new Error(err);

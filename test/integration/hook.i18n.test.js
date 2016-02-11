@@ -25,7 +25,6 @@ describe('i18n ::', function() {
   });
 
   before(function(done) {
-    this.timeout(5000);
     appHelper.build(done);
   });
 
@@ -98,7 +97,6 @@ describe('i18n Config ::', function() {
   });
 
   before(function(done) {
-    this.timeout(5000);
     appHelper.build(done);
   });
 

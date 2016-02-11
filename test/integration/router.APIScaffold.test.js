@@ -24,7 +24,6 @@ describe('router :: ', function() {
     var appName = 'testApp';
 
     before(function(done) {
-      this.timeout(5000);
       appHelper.build(done);
     });
 
@@ -403,7 +402,6 @@ describe('router :: ', function() {
     var appName = 'testApp';
 
     before(function(done) {
-      this.timeout(5000);
       appHelper.build(function() {
         appHelper.lift(function(err, sails) {
           if (err) {throw new Error(err);}

@@ -27,7 +27,6 @@ describe('router :: ', function() {
     var appName = 'testApp';
 
     before(function(done) {
-      this.timeout(15000);
       // Build the app
       appHelper.build(function() {
 
