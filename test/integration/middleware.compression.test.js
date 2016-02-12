@@ -20,7 +20,7 @@ describe('middleware :: ', function() {
           port: 1535,
           environment: 'production',
           log: {level: 'silent'},
-          hooks: {session: false},
+          hooks: {session: false, grunt: false},
           routes: {
             '/test': function(req, res) {
               res.send(lipsum);
@@ -50,7 +50,7 @@ describe('middleware :: ', function() {
           // unmodified http.IncomingMessage object
           response.on('data', function(data) {
             rawLen += data.length;
-          })
+          });
         })
         .on('end', function(err) {
           assert.equal(res, lipsum);
@@ -72,7 +72,7 @@ describe('middleware :: ', function() {
           port: 1535,
           environment: 'development',
           log: {level: 'silent'},
-          hooks: {session: false},
+          hooks: {session: false, grunt: false},
           routes: {
             '/test': function(req, res) {
               res.send(lipsum);
