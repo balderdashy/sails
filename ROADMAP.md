@@ -5,35 +5,16 @@ This file contains the development roadmap for the upcoming release of Sails, as
 &nbsp;
 &nbsp;
 
-## v0.12
+## v1.0
 
-This section includes the main features, enhancements, and other improvements tentatively planned or already implemented for the v0.12 release of Sails.  Note that this is by no means a comprehensive changelog or release plan and may exclude important additions, bug fixes, and documentation tasks; it is just a reference point.  Please also realize that the following notes may be slightly out of date-- until the release is finalized, API changes, deprecation announcements, additions, etc. are all tentative.
+This section includes the a **very early list** of some of the features, enhancements, and other improvements tentatively planned or already implemented for the v1.0 release of Sails.  Note that this is by no means a comprehensive changelog or release plan and may exclude important additions, bug fixes, and documentation tasks; it is just a reference point.  Please also realize that the following notes may be slightly out of date-- until the release is finalized, API changes, deprecation announcements, additions, etc. are all tentative.
 
- + Documentation / Meta
-   + New guide for contributing to Sails docs, as well as a few tweaks to the process for starting or contributing to translation projects (see http://blog.sailsjs.org/post/137189916152/updates-to-how-we-contribute-to-the-sails-docs)
-   + [Improved docs](https://github.com/balderdashy/sails-docs/pull/615) for log configuration (thanks @kevinob11 and @felixmc)
-   + Contributor documentation for more of Sails' core hooks
-     + [Grunt hook](https://github.com/balderdashy/sails/tree/master/lib/hooks/grunt)
-     + [Responses hook](https://github.com/balderdashy/sails/tree/master/lib/hooks/responses)
-     + ORM hook _(esp. example documentation for implementing a custom override)_
-     + Blueprints hook
-   + Added [Code of Conduct](https://github.com/balderdashy/sails/blob/master/CODE-OF-CONDUCT.md)
-   + Created updated contribution guide with a streamlined process for feature/enhancement proposals (also added much more extensive guide to issue and code contributions)
-   + Set up http://blog.sailsjs.org
- + Sockets hook
-   + Clean up the API for `sails.socket.*` methods, normalizing overloaded functions and deprecating methods which cause problems in a multi-node setting.
-   + Generally improve multi-node support (and therefore scalability) of low-level `sails.socket.*` methods, and make additional adjustments and improvements related to latest sio upgrade.  Add additional custom logic for when socket.io-redis is being used, using a redis client to implement the admin bus, instead of an additional socket client.
-   + Add a few brand new sails.sockets methods: `.leaveAllRooms()`, `.union()`, and `.difference()`
-   + `id()` -> `parseSocketId()` (backwards compatible w/ deprecation message)
- + Generators
-   + Upgrade sails.io.js dependency in new generators (includes sio upgrades and the ability to specify common headers for socket requests from `sails.io.js`)
-   + Deal with copying vs. symlinking dependencies in new projects for NPM 3
-   + Upgrade to latest trusted versions of `grunt-contrib-*` dependencies (eliminates many NPM deprecation warnings and provides better error messages from NPM)
- + Waterline improvements (see https://github.com/balderdashy/waterline)
- + Skipper improvements (see https://github.com/balderdashy/skipper)
- + Captains Log improvements (see https://github.com/balderdashy/captains-log)
- + See also https://github.com/balderdashy/sails/blob/master/CHANGELOG.md#master
-
++ **`sails.config.environment` and the `NODE_ENV` environment variable**
+  + Sails will no longer set the `NODE_ENV` environment variable automatically by default.
+  + Apps will need to set `NODE_ENV` themselves in addition to `sails.config.environment`.
+  + If `NODE_ENV` is set to "production but `sails.config.environment` is _not specified_, then `sails.config.environment` will still be set to "production" automatically.
+  + But if _both_ `NODE_ENV` and `sails.config.environment` are specified, then no changes will be made to either.
+  + If `sails.config.environment` is set to "production" and the `NODE_ENV` environment variable is not also set to production, Sails will log a warning.
 
 &nbsp;
 &nbsp;
