@@ -32,7 +32,6 @@ The backlog consists of approved proposals for useful features which are not cur
 Feature                                          | Proposal                                                                              | Summary
  :---------------------------------------------- | :------------------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------
  Generate `test/` folder in new Sails apps       | [#2499](https://github.com/balderdashy/sails/pull/2499#issuecomment-171556544)        | Generate a generic setup for mocha tests in all new Sails apps.  Originally suggested by [@jedd-ahyoung](https://github.com/jedd-ahyoung).
- `sails.getRouteAddress()`                       | [#3402](https://github.com/balderdashy/sails/issues/3402#issuecomment-167137610)   | Given a route target, return the route address configured in the app's explicit routes.
 
 
 
