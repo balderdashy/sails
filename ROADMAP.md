@@ -52,6 +52,9 @@ Feature                                          | Proposal                     
  :---------------------------------------------- | :------------------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------
  Generate `test/` folder in new Sails apps       | [#2499](https://github.com/balderdashy/sails/pull/2499#issuecomment-171556544)        | Generate a generic setup for mocha tests in all new Sails apps.  Originally suggested by [@jedd-ahyoung](https://github.com/jedd-ahyoung).
  `sails.getRouteAddress()`                       | [#3402](https://github.com/balderdashy/sails/issues/3402#issuecomment-167137610)   | Given a route target, return the route address configured in the app's explicit routes.
+Keep error data on production | [#3568] (https://github.com/balderdashy/sails/pull/3568)  | Never send error data in production for res.serverError() or res.negotiate(), but always send for res.ok(), res.forbidden(), res.badRequest(), res.notFound(), and have default error handler in Sails to call res.serverError()
+
+
 
 
 
@@ -82,6 +85,6 @@ Feature                                          | Summary
  Manual migrations in Sails CLI                  | For production environments it would be nice to have a save/secure command that creates the db automatically for you; e.g. a `sails migrate` or `sails create-db` command.  See [sails-migrations](https://github.com/BlueHotDog/sails-migrations) and [sails-db-migrate](https://github.com/building5/sails-db-migrate) for inspiration.  We should begin by contributing and using one or both of these modules in production in order to refine them further into a full fledged proposal (the Sails core team is using sails-migrations currently).  Originally suggested by [@globegitter](https://github.com/Globegitter).
  Wildcard action policies                        | Instead of only having one global action policy `'*'` it would be nice if we could define policies for a specific action in all controllers: `'*/destroy': ['isOwner']` or something similar.  Originally suggested by [@ProLoser](https://github.com/ProLoser).
  SPDY/HTTP2 protocol support                     | See https://github.com/balderdashy/sails/issues/80 for background.
-  Keep error data on production using an argument | In order to keep the "data" argument of sails preconfigured response in production, one must change the config "keepResponseErrors" to true. Instead, it should be passed as an argument, so that we can keep the response data on production only on selected responses. It would prevent security flaws and add flexibility, particularly when we want to add custom error message designed for the end user.
+
 
 
