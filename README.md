@@ -66,6 +66,7 @@ The ORM, [Waterline](https://github.com/balderdashy/waterline), has a well-defin
 ## Books
 - [Sails.js in Action](http://www.manning.com/mcneil/) by Mike McNeil and Irl I. Nathan (Manning Publications). [Chapter 1](https://www.manning.com/books/sails-js-in-action)
 - [Pro Express.js: Part 3](http://link.springer.com/chapter/10.1007%2F978-1-4842-0037-7_18) by Azat Mardan (Apress).
+- [Sails.js Essentials](https://www.packtpub.com/web-development/sailsjs-essentials) by Shaikh Shahid (Packt)
 
 ## Support
 Need help or have a question?
