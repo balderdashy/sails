@@ -45,7 +45,9 @@ Finally, discussion of a non-technical nature, including subjects like team memb
 
 Before submitting an issue, please follow these simple instructions:
 
-<a name="issue-instructions"></a>0. Search for issues similar to yours in [GitHub search](https://github.com/balderdashy/sails/search?type=Issues) within the appropriate repository,
+<a name="issue-instructions"></a>
+
+0. Search for issues similar to yours in [GitHub search](https://github.com/balderdashy/sails/search?type=Issues) within the appropriate repository,
   - If your original bug report is covered by an existing open issue, then add a comment to that issue instead of opening a new one.
   - If all clearly related issues are closed, then open a new issue and paste links to the URLs of the already closed issue(s) at the bottom.
   - Otherwise, if you cannot find any related issues, double-check that you are searching the most relevant repository, and try using different search keywords if appropriate (in case this affects how you search, at the time of this writing, GitHub uses ElasticSearch, which is based on Lucene, to index content).  If you still cannot find any relevant existing issues, then create a new one.
@@ -144,7 +146,9 @@ The core maintainers of Sails review all feature proposals, and we do our best t
 
 With that in mind, to submit a proposal for a new feature, or an extension to an existing feature, please take the following steps:
 
-<a name="pr-instructions"></a>0. First, look at the `backlog` table in [ROADMAP.MD](https://github.com/balderdashy/sails/blob/master/ROADMAP.md) and also search open pull requests in that file to make sure your change hasn't already been proposed.
+<a name="pr-instructions"></a>
+
+0. First, look at the `backlog` table in [ROADMAP.MD](https://github.com/balderdashy/sails/blob/master/ROADMAP.md) and also search open pull requests in that file to make sure your change hasn't already been proposed.
   - If the PR (pull request) has been merged, it means that a core maintainer has (A) looked over the proposal and discussion in the pull request, (B) personally agreed to him or herself that the feature would be a good fit for Sails core, and (C) confirmed the decision with [@mikermcneil](https://github.com/mikermcneil).  It also means that the proposal is now in the backlog in ROADMAP.md, which means that the core team would be willing to merge a pull request with code changes adding the feature to Sails core (assuming that pull request follows our coding style conventions and the guidelines in this document).
   - If the PR has been closed without being merged, it means that the core team has decided that the feature request should not be a part of Sails core.  Just because the proposal is closed does not mean the feature will never be achievable in Sails, it just means that (A) it would need to be specced differently to be merged or (B) it would need to be implemented as a plugin (i.e. a hook, adapter, generator, view engine, grunt/gulp task, etc.)
   - If the PR is _open_, it means that either (A) it was recently posted, (B) there is still an active discussion in progress, (C) that a core maintainer has not had time to look into it yet, or most commonly (D) that one or more core maintainers have looked at and potentially even responded to the proposal, but the team decided there wasn't enough information to make a firm "yes" or "no" judgement call.  This fourth scenario is quite common, since it sometimes takes a great deal of time to develop a specification that is thorough enough to merge into the backlog.  The core maintainers review and contribute to proposals as much as time allows, but ultimately it is the responsibility of the developers requesting a feature to do the work of fully speccing it out.
