@@ -2,7 +2,8 @@
 
 ### Master
 
-* [ENHANCEMENT] Allow Allow hooks to be turned off by setting their environment var to the string "false"
+* [ENHANCEMENT] Allow Allow hooks to be turned off by setting their environment var to the string "false" [3618](https://github.com/balderdashy/sails/issues/3618)
+* [BUGFIX] Allow view target syntax for routes to specify deeply-nested views [3604](https://github.com/balderdashy/sails/issues/3604)
 * [BUGFIX] Allow custom bodyParser middleware config [3592](https://github.com/balderdashy/sails/issues/3592)
 
 ### 0.12.1

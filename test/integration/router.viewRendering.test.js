@@ -1,13 +1,27 @@
 var assert = require('assert');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
-
+var _ = require('lodash');
+var fs = require('fs');
 describe('router :: ', function() {
   describe('View routes', function() {
     var appName = 'testApp';
 
     before(function(done) {
-      appHelper.build(done);
+      appHelper.build(function() {
+        fs.writeFileSync('config/extraroutes.js', 'module.exports.routes = ' + JSON.stringify({
+          '/testView': {
+            view: 'viewtest/index'
+          },
+          '/app': {
+            view: 'app'
+          },
+          '/user': {
+            view: 'app/user/homepage'
+          }
+        }));
+        return done();
+      });
     });
 
     beforeEach(function(done) {
@@ -48,6 +62,41 @@ describe('router :: ', function() {
           done();
         });
       });
+
+    });
+
+    describe('with specified routing using the "view:" syntax', function() {
+
+      it('route with config {view: "app"} should respond to a get request with the "app/index.ejs" view if "app.ejs" does not exist', function(done) {
+
+        httpHelper.testRoute('get', 'app', function(err, response) {
+          if (err) {return done(new Error(err));}
+          assert(response.body.indexOf('not found') < 0);
+          assert(response.body.indexOf('App index file') > -1);
+          done();
+        });
+      });
+
+      it('route with config {view: "viewtest/index"} should respond to a get request with "viewtest/index.ejs"', function(done) {
+
+        httpHelper.testRoute('get', 'testView', function(err, response) {
+          if (err) {return done(new Error(err));}
+          assert(response.body.indexOf('not found') < 0);
+          assert(response.body.indexOf('indexView') > -1);
+          done();
+        });
+      });
+
+      it('route with config {view: "app/user/homepage"} should respond to a get request with "app/user/homepage.ejs"', function(done) {
+
+        httpHelper.testRoute('get', 'user', function(err, response) {
+          if (err) {return done(new Error(err));}
+          assert(response.body.indexOf('not found') < 0);
+          assert(response.body.indexOf('I\'m deeply nested!') > -1);
+          done();
+        });
+      });
+
 
     });
 
