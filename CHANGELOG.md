@@ -2,6 +2,7 @@
 
 ### Master
 
+* [BUGFIX] Allow view target syntax for routes to specify deeply-nested views [3604](https://github.com/balderdashy/sails/issues/3604)
 * [BUGFIX] Allow custom bodyParser middleware config [3592](https://github.com/balderdashy/sails/issues/3592)
 
 ### 0.12.1
