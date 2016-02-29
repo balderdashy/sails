@@ -1,9 +1,6 @@
 # request (Core Hook)
 
-## Status
-
-> ##### Stability: [2](http://nodejs.org/api/documentation.html#documentation_stability_index) - Unstable
-
+> In future releases, the various responsibilities of this hook will likely be farmed out to other hooks and/or pulled into core.
 
 ## Purpose
 
@@ -17,10 +14,6 @@ This hook's responsibilities are:
 + req.port
 + req._sails (access to the app's `sails` object in case it's not global)
 
-##### Flash Middleware
-+ req.flash('keyToGet')
-+ req.flash('keyToSet','valueToSetOnKey')
-
 ##### Set default view locals (i.e. `app.locals`)
 + `_` (lodash)
 + `session`
@@ -28,18 +21,8 @@ This hook's responsibilities are:
 + `res`
 + `sails`
 
+> Note that this will likely move into the `views` hook in the future.
 
-
-##### Future: JSONP/Blueprint config
-
-> This feature is not implemented yet.
-> Keep in mind-- JSONP is always accessible using res.jsonp(), thanks to TJ & express.
-
-1. Check `req.options`.
-2. If `jsonp` is enabled for a route/middleware, `req.options.jsonp` should be truthy.
-3. If `res.jsonp()` is called, but `req.options.jsonp` is false, jsonp will NOT be sent.
-4. Configured jsonp callback parameter will be pruned from `req.params.all()`.
-5. Wrap calls to `res.jsonp` in function that disables/enables JSONP according to `req.options`.
 
 
 ## FAQ
