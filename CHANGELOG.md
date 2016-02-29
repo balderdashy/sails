@@ -2,6 +2,7 @@
 
 ### Master
 
+* [ENHANCEMENT] Allow Allow hooks to be turned off by setting their environment var to the string "false"
 * [BUGFIX] Allow custom bodyParser middleware config [3592](https://github.com/balderdashy/sails/issues/3592)
 
 ### 0.12.1
