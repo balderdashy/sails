@@ -76,6 +76,55 @@ describe('hooks :: ', function() {
 
       });
 
+      describe('with hooks.shout set to boolean false', function() {
+
+        var sails;
+
+        before(function(done) {
+          appHelper.liftQuiet({hooks: {shout: false}}, function(err, _sails) {
+            if (err) {return done(err);}
+            sails = _sails;
+            return done();
+          });
+        });
+
+        after(function(done) {
+          sails.lower(function(){setTimeout(done, 100);});
+        });
+
+        it('should not install a hook into `sails.hooks.shout`', function() {
+
+          assert(_.isUndefined(sails.hooks.shout));
+
+        });
+
+      });
+
+
+      describe('with hooks.shout set to the string "false"', function() {
+
+        var sails;
+
+        before(function(done) {
+          appHelper.liftQuiet({hooks: {shout: "false"}}, function(err, _sails) {
+            if (err) {return done(err);}
+            sails = _sails;
+            return done();
+          });
+        });
+
+        after(function(done) {
+          sails.lower(function(){setTimeout(done, 100);});
+        });
+
+        it('should not install a hook into `sails.hooks.shout`', function() {
+
+          assert(_.isUndefined(sails.hooks.shout));
+
+        });
+
+      });
+
       describe('with hook-level config options', function() {
 
         var sails;
