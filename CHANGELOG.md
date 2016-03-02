@@ -10,7 +10,7 @@
 
 * [INTERNAL] Expose private `loadAndRegisterControllers` method for now, since certain apps are relying on it [0ba7829](https://github.com/balderdashy/sails/commit/0ba78296047874debd33ce62588e97c371b7138c)
 * [BUGFIX] Updated default HTTP cache config property to match what's documented [750d434](https://github.com/balderdashy/sails/commit/750d434a5592b422686ef0217ecab6cc2abcce7a)
-* [BUGFIX] Check for `sails.io` before checking for `sails.io.httpServer` when lowering [92c4b19](Sails https://github.com/balderdashy/sails/commit/92c4b1907073336b879c7c6abf57d5d34b3fca46)
+* [BUGFIX] Check for `sails.io` before checking for `sails.io.httpServer` when lowering [92c4b19](https://github.com/balderdashy/sails/commit/92c4b1907073336b879c7c6abf57d5d34b3fca46)
 * [ENHANCEMENT] Keep cookie middleware even if session middleware is deactivated [d21ae2d](https://github.com/balderdashy/sails/commit/d21ae2d8cf16df1169187392c9f522f99d556a85)
 * [BUGFIX] Reset process.env.NODE_ENV after Sails lowers to whatever it was originally (to make it non-sticky when lifting/lowering multiple apps) [f9db888](https://github.com/balderdashy/sails/commit/f9db888a4fd39d43138bad4b279ad86046c27482)
 * [BUGFIX] Use correct extension config for Handlebars [3559](https://github.com/balderdashy/sails/issues/3559)
