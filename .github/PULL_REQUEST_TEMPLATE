@@ -1,0 +1,33 @@
+<!-- 
+======================================================
+HELLO, and welcome to the (experimental) Sailsbot
+pr-submission system.  If you encounter any
+problems with this system, please contact
+sgress454@treeline.io
+
+IMPORTANT - Read Carefully (Sailsbot will know if you don't)!  
+======================================================
+
+Before submitting a pull request for a new feature request, pretty-please read the Sails contribution guide section on proposing features and enhancements: http://bit.ly/sails-feature-guide.
+Before submitting a pull request with code, please read the section on contributing code: http://bit.ly/sails-code-guide.
+
+They're a little long, but that's because we're serious about keeping Sails lean, stable and secure.
+
+If after all that, you're still ready to make a pull request, make sure that your PR title starts with one of the following:
+
+[proposal]
+[patch]
+[implements #<another PR number>]
+[fixes #<an issue number>]
+
+For example: 
+[proposal] Add a Kraken to the `sails lift` sailboat image
+[implements #123] Adds Kraken to sailboat
+[patch] Fix the shading on the Kraken's tentacles
+[fixes #423] Removes pesky "throw new Error('yolo');" added when Kraken is displayed
+
+If you don't use one of those prefixes, Sailsbot will bring the hammer down.  You have been warned!
+
+Ok, that's all.  Please put the description of your pull request below (after the arrow).
+-->
+
