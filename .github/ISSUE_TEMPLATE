@@ -8,6 +8,7 @@ sgress454@treeline.io
 FIRST THINGS FIRST: please fill out the following info 
 (Don't change text between **) 
 ======================================================
+### BEGIN VERSION INFO ###
 -->
 
 **Sails version**:
@@ -15,8 +16,8 @@ FIRST THINGS FIRST: please fill out the following info
 **NPM version**:
 **Operating system**:
 
-<hr/>
 <!-- 
+### END VERSION INFO ###
 ======================================================
 GREAT! - Now read carefully 
 (Sailsbot will know if you don't)!  
@@ -50,3 +51,4 @@ Ideally, this involves creating a new repo that demonstrates the problem (see in
 ### END PLEDGE ###
 
 OKAY--THANKS FOR READING!  Continue posting details of your issue below. -->
+<hr/>
