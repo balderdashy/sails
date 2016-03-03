@@ -44,7 +44,7 @@ describe('hooks :: ', function() {
         var sails;
 
         before(function(done) {
-          appHelper.lift(function(err, _sails) {
+          appHelper.liftQuiet(function(err, _sails) {
             if (err) {return done(err);}
             sails = _sails;
             return done();
