@@ -5,7 +5,13 @@ issue-submission system.  If you encounter any
 problems with this system, please contact
 sgress454@treeline.io
 
-FIRST THINGS FIRST: please fill out the following info 
+FIRST THINGS FIRST: before posting, please carefully 
+read the contribution guide (http://bit.ly/sails-issue-guide), 
+particularly if this is a security issue or an issue of a 
+non-technical nature (Github org issues, code of conduct
+issues, etc.).  Those should be sent directly to inquiries@treeline.io.
+
+NOW THEN: please fill out the following info 
 (Don't change text between **) 
 ======================================================
 ### BEGIN VERSION INFO ###
