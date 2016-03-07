@@ -32,6 +32,7 @@ The backlog consists of approved proposals for useful features which are not cur
 Feature                                          | Proposal                                                                              | Summary
  :---------------------------------------------- | :------------------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------
  Generate `test/` folder in new Sails apps       | [#2499](https://github.com/balderdashy/sails/pull/2499#issuecomment-171556544)        | Generate a generic setup for mocha tests in all new Sails apps.  Originally suggested by [@jedd-ahyoung](https://github.com/jedd-ahyoung).
+ Call `res.serverError` if a controller returns a rejected Promise       | [#3642](https://github.com/balderdashy/sails/pull/3642)        | If a controller function returns a rejected Promise without sending a response, automatically call `res.serverError` with the rejection reason.
 
 
 
