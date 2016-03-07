@@ -15,7 +15,7 @@
   Conduct](http://citizencodeofconduct.org/); if you have any lack of
   clarity about what might be included in that concept, please read
   their definition, or ask one of the project maintainers first.
-  In particular, we don't tolerate behavior that
+  In particular, we don't tolerate defamatory remarks or behavior that
   excludes people in socially marginalized groups, or for whom English
   is not a native language.
 - Private harassment is also unacceptable. No matter who you are, if
@@ -27,9 +27,4 @@
   a newcomer, we care about making this community a safe, comfortable
   place for you and we've got your back.
 - Likewise any spamming, trolling, flaming, baiting or other attention-stealing behavior is not welcome,
-  and will result in your exclusion. This includes abusing support channels such as GitHub issues or social
-  media to link to off-topic discussions or promote a personal fork or rival project.  Sharing links to relevant
-  tutorials, plugins, or issue workarounds is encouraged.
-- Do not make untrue or misleading claims about the project, the core team, or any of its users.  No matter who
-you are, if you feel that our support channels are being used as an echochamber for defamatory remarks, please contact
-  one of the core maintainers immediately via private message on Twitter or by emailing [inquiries@treeline.io](inquiries@treeline.io). Please include a screen capture if possible.
+  and will result in your exclusion.
