@@ -475,6 +475,38 @@ describe('hooks :: ', function() {
 
     });
 
+    describe('with an invalid package.json file', function(){
+
+      var sails;
+      before(function(done) {
+        fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules", "@my-modules"), function(err) {
+          if (err) {return done(err);}
+          wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-csrf'));
+          fs.outputFileSync(path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-csrf/package.json'), '{"foo":<%=bar%>}');
+          process.chdir(path.resolve(__dirname, "../..", appName));
+          return done();
+        });
+      });
+
+      after(function(done) {
+        sails ? sails.lower(function(err) {
+          process.chdir('../');
+          appHelper.teardown();
+          return done(err);
+        }): done();
+      });
+
+      it('should lift without crashing', function(done) {
+        appHelper.liftQuiet(function(err, _sails) {
+          if (err) {return done(err);}
+          sails = _sails;
+          assert(!sails.hooks.csrf.isShoutyHook);
+          return done();
+        });
+      });
+
+    });
+
   });
 
 
