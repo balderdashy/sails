@@ -18,6 +18,15 @@ describe('request that causes an error', function (){
       'responses'
     ]
   });
+  var saveServerError;
+
+  // Restore the default error handler after tests that change it
+  afterEach(function () {
+    if (saveServerError) {
+      sails.registry.responses.serverError = saveServerError;
+      saveServerError = undefined;
+    }
+  });
 
   it('should return the expected error when something throws', function (done) {
 
@@ -40,6 +49,7 @@ describe('request that causes an error', function (){
     var ERROR = 'oh no I forgot my keys';
     var CHECKPOINT = 'made it';
 
+    saveServerError = sails.registry.responses.serverError;
     sails.registry.responses.serverError = function (err) {
       assert.deepEqual(ERROR, err);
       this.res.send(500, CHECKPOINT);
@@ -51,6 +61,24 @@ describe('request that causes an error', function (){
 
     sails.request('GET /errors/2', {}, function (err) {
       assert.deepEqual(CHECKPOINT, err.body);
+      done();
+    });
+
+  });
+
+  it('should return the expected error when something throws an Error object', function (done) {
+
+    var MESSAGE = 'oh no I forgot my keys again';
+    var ERROR = new Error(MESSAGE);
+
+    sails.get('/errors/3', function (req, res) {
+      throw ERROR;
+    });
+
+    sails.request('GET /errors/3', {}, function (err) {
+      assert.deepEqual(err.status, 500);
+      assert.deepEqual(typeof(err.body), 'object');
+      assert.deepEqual(err.body.message, MESSAGE);
       done();
     });
 
