@@ -50,6 +50,9 @@ module.exports = function() {
     if (sails.config.environment === 'production') {
       overrideGruntTask = 'buildProd';
     }
+    else if (sails.config.environment === 'staging') {
+      overrideGruntTask = 'buildStaging';
+    }
     else {
       overrideGruntTask = 'build';
     }
