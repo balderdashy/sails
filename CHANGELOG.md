@@ -2,6 +2,7 @@
 
 ### Master
 
+* [ENHANCEMENT] Added the ability to use --staging and have the application use config/env/staging.js
 * [BUGFIX] Add blacklist to "update" blueprint action so that it can be used with primary keys that are not "id" [3625](https://github.com/balderdashy/sails/issues/3625)
 * [ENHANCEMENT] Allow hooks to be turned off by setting their environment var to the string "false" [3618](https://github.com/balderdashy/sails/issues/3618)
 * [BUGFIX] Allow view target syntax for routes to specify deeply-nested views [3604](https://github.com/balderdashy/sails/issues/3604)

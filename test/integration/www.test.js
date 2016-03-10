@@ -127,25 +127,5 @@ describe('Running sails www', function() {
 				}
 			});
 		});
-
-		it('--staging should execute grunt buildStaging', function(done) {
-
-			// Move into app directory
-			process.chdir(appName);
-
-			// Overrwrite session config file
-			// to set session adapter:null ( to prevent warning message from appearing on command line )
-			fs.writeFileSync('config/session.js', 'module.exports.session = { adapter: null }');
-
-			sailsServer = spawn('node', [sailsBin, 'www', '--staging']);
-
-			sailsServer.stdout.on('data', function(data) {
-				var dataString = data + '';
-				if (dataString.indexOf("`grunt buildStaging`") !== -1) {
-					done();
-				}
-			});
-		});
-
 	});
 });
