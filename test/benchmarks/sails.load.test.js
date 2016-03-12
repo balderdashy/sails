@@ -37,7 +37,7 @@ describe('benchmarks', function() {
         },
         globals: false,
         loadHooks: []
-      }, cb);
+      }, _getTestCleanupCallback(sails, cb));
     });
 
     benchmark('sails.load  [again, no hooks]', function(cb) {
@@ -52,7 +52,7 @@ describe('benchmarks', function() {
         },
         globals: false,
         loadHooks: []
-      }, cb);
+      }, _getTestCleanupCallback(sails, cb));
     });
 
     benchmark('sails.load  [with moduleloader hook]', function(cb) {
@@ -68,7 +68,7 @@ describe('benchmarks', function() {
         },
         globals: false,
         loadHooks: ['moduleloader']
-      }, cb);
+      }, _getTestCleanupCallback(sails, cb));
 
     });
 
@@ -79,10 +79,10 @@ describe('benchmarks', function() {
       var sails = new Sails();
       sails.load({
         log: {
-          level: 'verbose'
+          level: 'error'
         },
         globals: false
-      }, cb);
+      }, _getTestCleanupCallback(sails, cb));
     });
 
     benchmark('sails.load  [again, all core hooks]', function(cb) {
@@ -95,7 +95,7 @@ describe('benchmarks', function() {
           level: 'error'
         },
         globals: false
-      }, cb);
+      }, _getTestCleanupCallback(sails, cb));
     });
 
 
@@ -109,7 +109,7 @@ describe('benchmarks', function() {
       var Sails = require('../../lib/app');
       var sails = new Sails();
       portfinder.getPort(function(err, port) {
-        if (err) throw err;
+        if (err) { throw err; }
 
         sails.lift({
           log: {
@@ -117,7 +117,7 @@ describe('benchmarks', function() {
           },
           port: port,
           globals: false
-        }, cb);
+        }, _getTestCleanupCallback(sails, cb));
       });
     });
 
@@ -127,7 +127,7 @@ describe('benchmarks', function() {
       var Sails = require('../../lib/app');
       var sails = new Sails();
       portfinder.getPort(function(err, port) {
-        if (err) throw err;
+        if (err) { throw err; }
 
         sails.lift({
           log: {
@@ -135,7 +135,7 @@ describe('benchmarks', function() {
           },
           port: port,
           globals: false
-        }, cb);
+        }, _getTestCleanupCallback(sails, cb));
       });
     });
 
@@ -150,7 +150,7 @@ describe('benchmarks', function() {
  *
  * @param  {[type]}   description [description]
  * @param  {Function} fn          [description]
- * @return {[type]}               [description]
+ * @param  {Function} afterwards
  */
 function benchmark(description, fn) {
 
@@ -256,4 +256,29 @@ function reportBenchmarks() {
   if (SHOW_VERBOSE_BENCHMARK_REPORT) {
     console.log(output);
   }
+}
+
+
+
+
+/**
+ *
+ * @param  {Function} cb [description]
+ * @return {Function}
+ */
+function _getTestCleanupCallback(app, cb) {
+  return function afterLoadingSails (err) {
+    app.lower(function (errLowering){
+      if (errLowering) {
+        if(err) {
+          return cb(new Error('Failed with error: '+err.stack+'\n\nAlso, failed to `.lower()` app:\n' + errLowering.stack));
+        }
+        else {
+          return cb(new Error('Everything was otherwise ok, but failed to `.lower()` app. Details:' + errLowering.stack));
+        }
+      }
+      if (err) { return cb(err); }
+      return cb();
+    });
+  };
 }
