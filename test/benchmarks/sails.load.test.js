@@ -160,7 +160,7 @@ function benchmark(description, fn) {
     var t1 = process.hrtime();
 
     fn.apply(self, [
-      function _callback(err) {
+      function _callbackFromFn(err) {
         if (err) {
           return cb(err);
         }
