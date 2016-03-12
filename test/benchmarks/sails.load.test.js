@@ -79,7 +79,7 @@ describe('benchmarks', function() {
       var sails = new Sails();
       sails.load({
         log: {
-          level: 'error'
+          level: 'verbose'
         },
         globals: false
       }, cb);
@@ -154,35 +154,37 @@ describe('benchmarks', function() {
  */
 function benchmark(description, fn) {
 
-  it(description, function(cb) {
+  it(description, function (cb) {
     var self = this;
 
     var t1 = process.hrtime();
 
-    fn.apply(this, [function _callback(err) {
-      if (err) {
-        return cb(err);
-      }
+    fn.apply(self, [
+      function _callback(err) {
+        if (err) {
+          return cb(err);
+        }
 
-      var _result = {};
+        var _result = {};
 
-      // If a `comment` or `expected` was provided, harvest it
-      _result.expected = self.expected;
-      self.expected = null;
+        // If a `comment` or `expected` was provided, harvest it
+        _result.expected = self.expected;
+        self.expected = null;
 
-      _result.comment = self.comment;
-      self.comment = null;
+        _result.comment = self.comment;
+        self.comment = null;
 
-      var diff = process.hrtime(t1);
+        var diff = process.hrtime(t1);
 
-      _.result.duration = (diff[0] * 1e6) + (diff[1] / 1e3);
-      _result.benchmark = description;
+        _.result.duration = (diff[0] * 1e6) + (diff[1] / 1e3);
+        _result.benchmark = description;
 
-      // console.log('finished ',_result);
-      self.benchmarks.push(_result);
-      cb.apply(Array.prototype.slice.call(arguments));
-    }]);
-  });
+        // console.log('finished ',_result);
+        self.benchmarks.push(_result);
+        return cb.apply(Array.prototype.slice.call(arguments));
+     }
+    ]);
+  });//</it>
 }
 
 
