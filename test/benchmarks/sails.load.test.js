@@ -92,7 +92,7 @@ describe('benchmarks', function() {
       var sails = new Sails();
       sails.load({
         log: {
-          level: 'error'
+          level: 'silly'
         },
         globals: false
       }, _getTestCleanupCallback(sails, cb));
