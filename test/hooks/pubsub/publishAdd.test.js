@@ -26,7 +26,7 @@ describe('Pubsub hook', function (){
         globals: false,
         port: 1535,
         models: { migrate: 'safe' },
-        log: {level: 'error'},
+        log: {level: 'silent'},
         loadHooks: ['moduleloader','userconfig','orm', 'http', 'sockets', 'pubsub'],
         routes: {
           'PUT /dock/:id/subscribe': function (req, res){

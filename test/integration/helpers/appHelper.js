@@ -1,91 +1,107 @@
-//
-//
-// TODO
-// =================
-// Merge with appHelper.js!
-//
-//
+/**
+ * Module dependencies
+ */
 
-
-
+var path = require('path');
+var child_process = require('child_process');
+var exec = child_process.exec;
 var fs = require('fs-extra');
 var wrench = require('wrench');
 var _ = require('lodash');
-var exec = require('child_process').exec;
-var path = require('path');
-var sailsBin = path.resolve('./bin/sails.js');
-var spawn = require('child_process').spawn;
+var SocketIOClient = require('socket.io-client');
+var SailsIOClient = require('./sails.io.js');
 var Sails = require('../../../lib/app');
-var io = require('./sails.io.js')(require('socket.io-client'));
-io.sails.environment = "production";
+
+// Build a Sails socket client instance.
+var io = SailsIOClient(SocketIOClient);
+io.sails.environment = 'production';
 io.sails.autoConnect = false;
 
 // Make existsSync not crash on older versions of Node
 fs.existsSync = fs.existsSync || path.existsSync;
-
-
-// var _ioClient = require('./sails.io')(require('socket.io-client'));
-
+// ^ probably not necessary anymore, I think this was back pre-Node-0.8
 
 
 /**
- * Uses the Sails binary to create a namespaced test app
- * If no appName is given use 'testApp'
+ * Spin up a child process and use the `sails` CLI to create a namespaced
+ * test app. If no appName is given use: 'testApp'.
  *
  * It copies all the files in the fixtures folder into their
  * respective place in the test app so you don't need to worry
  * about setting up the fixtures.
  */
 
-module.exports.build = function( /* [appName], done */ ) {
-	var args = Array.prototype.slice.call(arguments),
-		done = args.pop(),
-		appName = 'testApp';
+module.exports.build = function(appName, done) {
 
-	// Allow App Name to be optional
-	if (args.length > 0) appName = args[0];
+  // `appName` is optional.
+  if (_.isFunction(appName)) {
+    done = appName;
+    appName = appName || 'testApp';
+  }
+
+  // But `done` callback is required.
+  if (!_.isFunction(done)) {
+    throw new Error('When using the appHelper\'s `build()` method, a callback argument is required');
+  }
+
+
+  var pathToLocalSailsCLI = path.resolve('./bin/sails.js');
+
 
 	// Cleanup old test fixtures
 	if (fs.existsSync(appName)) {
 		wrench.rmdirSyncRecursive(path.resolve('./', appName));
 	}
+  // TODO: remove this (^) and instead always clean up at the end.
 
+  // Create an empty directory for the test app.
   fs.mkdirSync(path.resolve('./', appName));
 
+  //
   process.chdir(appName);
+	child_process.exec('node ' + pathToLocalSailsCLI + ' new', function(err) {
+    if (err) {
+      return done(err);
+    }
 
-	exec('node ' + sailsBin + ' new', function(err) {
-		if (err) return done(err);
-		var fixtures = wrench.readdirSyncRecursive('../test/integration/fixtures/sampleapp');
-		if (fixtures.length < 1) return done();
-
-		// If fixtures copy them to the test app
-		fixtures.forEach(function(file) {
+		// Copy test fixtures to the test app.
+    ////////////////////////////////////////////////////////////////////////////////////
+    // TODO: replace all of this w/ one line via `fsx.copy()`.
+    var fixtures = wrench.readdirSyncRecursive('../test/integration/fixtures/sampleapp');
+    if (fixtures.length === 0) {
+      return done(new Error('Fixtures are missing.'));
+    }
+		fixtures.forEach(function _eachFixtureFile(file) {
 			var filePath = path.resolve('../test/integration/fixtures/sampleapp', file);
 
 			// Check if file is a directory
 			var stat = fs.statSync(filePath);
 
 			// Ignore directories
-			if (stat.isDirectory()) return;
+			if (stat.isDirectory()) { return; }
 
-			// Copy File to Test App
+			// Copy file to test app.
 			var data = fs.readFileSync(filePath);
 
 			// Create file and any missing parent directories in its path
 			fs.createFileSync(path.resolve(file), data);
 			fs.writeFileSync(path.resolve(file), data);
 		});
+    ////////////////////////////////////////////////////////////////////////////////////
 
-		// process.chdir(appName);
 		return done();
 	});
 };
 
-/**
- * Remove a Test App
- */
 
+
+
+
+/**
+ * Remove a test app
+ *
+ * @sync (because it sync filesystem methods)
+ */
 module.exports.teardown = function(appName) {
 	appName = appName ? appName : 'testApp';
 	var dir = path.resolve('./', appName);
@@ -96,7 +112,7 @@ module.exports.teardown = function(appName) {
 
 module.exports.liftQuiet = function(options, callback) {
 
-  if (typeof options == 'function') {
+  if (_.isFunction(options)) {
     callback = options;
     options = null;
   }
@@ -112,11 +128,13 @@ module.exports.liftQuiet = function(options, callback) {
 
 };
 
+
 module.exports.lift = function(options, callback) {
 
+  // Clear NODE_ENV to avoid unintended consequences.
 	delete process.env.NODE_ENV;
 
-	if (typeof options == 'function') {
+	if (_.isFunction(options)) {
 		callback = options;
 		options = null;
 	}
@@ -130,15 +148,14 @@ module.exports.lift = function(options, callback) {
   options.hooks.grunt = options.hooks.grunt || false;
 
 	Sails().lift(options, function(err, sails) {
-		if (err) return callback(err);
-		sails.kill = sails.lower;
+		if (err) { return callback(err); }
 		return callback(null, sails);
 	});
 
 };
 
 module.exports.buildAndLift = function(appName, options, callback) {
-	if (typeof options == 'function') {
+	if (_.isFunction(options)) {
 		callback = options;
 		options = null;
 	}
@@ -148,7 +165,7 @@ module.exports.buildAndLift = function(appName, options, callback) {
 };
 
 module.exports.liftWithTwoSockets = function(options, callback) {
-	if (typeof options == 'function') {
+	if (_.isFunction(options)) {
 		callback = options;
 		options = null;
 	}
@@ -170,7 +187,7 @@ module.exports.liftWithTwoSockets = function(options, callback) {
 };
 
 module.exports.buildAndLiftWithTwoSockets = function(appName, options, callback) {
-	if (typeof options == 'function') {
+	if (_.isFunction(options)) {
 		callback = options;
 		options = null;
 	}
