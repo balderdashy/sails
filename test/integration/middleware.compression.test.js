@@ -2,6 +2,15 @@ var _ = require('lodash');
 var request = require('request');
 var Sails = require('../../lib').Sails;
 var assert = require('assert');
+
+
+
+
+
+
+
+
+
 describe('middleware :: ', function() {
 
   describe('compression :: ', function() {
@@ -112,10 +121,10 @@ describe('middleware :: ', function() {
 
       });
 
-    });
+      after(function(done) {
+        app.lower(done);
+      });
 
-    after(function(done) {
-      app.lower(done);
     });
 
   });

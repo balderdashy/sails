@@ -30,7 +30,7 @@ describe('middleware :: ', function() {
 
       it('the default sailboat favicon should be provided', function(done) {
 
-        var default_favicon = fs.readFileSync(path.resolve(__dirname, '../../lib/hooks/http/public/favicon.ico'));
+        var default_favicon = fs.readFileSync(path.resolve(__dirname, '../../lib/hooks/http/default-favicon.ico'));
         request(
           {
             method: 'GET',
