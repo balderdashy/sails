@@ -4,6 +4,12 @@
 
 var path = require('path');
 var util = require('util');
+var _ = {
+  isString: require('lodash.isstring'),
+  isUndefined: require('lodash.isundefined'),
+  isFunction: require('lodash.isfunction'),
+  isArray: require('lodash.isarray')
+};
 var request = require('request');
 var MProcess = require('machinepack-process');
 var MFilesystem = require('machinepack-fs');
@@ -175,10 +181,10 @@ describe('Starting sails server with `sails lift`', function() {
  */
 function testSpawningSailsLiftChildProcessInCwd (opts){
 
-  if (!util.isArray(opts.liftCliArgs)){
+  if (!_.isArray(opts.liftCliArgs)){
     throw new Error('Consistency violation: Missing or invalid option (`liftCliArgs` should be an array)  in `testSpawningSailsLiftChildProcessInCwd()`. I may just be a test helper, but I\'m serious about assertions!!!');
   }
-  if (!util.isString(opts.pathToSailsCLI)){
+  if (!_.isString(opts.pathToSailsCLI)){
     throw new Error('Consistency violation: Missing or invalid option (`pathToSailsCLI` should be a string) in `testSpawningSailsLiftChildProcessInCwd()`. I may just be a test helper, but I\'m serious about assertions!!!');
   }
 
@@ -239,7 +245,7 @@ function testSpawningSailsLiftChildProcessInCwd (opts){
 
     // Now if httpRequestInstructions were provided, we ping to the server to see whether this puppy
     // is ready to handle all those hot hot HTTP requests we have planned for it.
-    if (!util.isUndefined(opts.httpRequestInstructions)){
+    if (!_.isUndefined(opts.httpRequestInstructions)){
       it('should respond with a 200 status code when a `'+opts.httpRequestInstructions.method+'` request is sent to `'+opts.httpRequestInstructions.uri+'`', function(done) {
         request(opts.httpRequestInstructions, function(err, response, body) {
           if (err) {
@@ -261,7 +267,7 @@ function testSpawningSailsLiftChildProcessInCwd (opts){
 
     // Now run any additional tests.
     // (i.e. this function contains `it` blocks)
-    if (util.isFunction(opts.fnWithAdditionalTests)) {
+    if (_.isFunction(opts.fnWithAdditionalTests)) {
       opts.fnWithAdditionalTests();
     }
 

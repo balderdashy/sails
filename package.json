@@ -85,7 +85,14 @@
     "skipper": "~0.5.8",
     "uid-safe": "1.1.0",
     "walk": "2.3.9",
-    "waterline": "~0.11.0"
+    "waterline": "~0.11.0",
+    "lodash.isarray": "3.0.4",
+    "lodash.iserror": "3.1.1",
+    "lodash.isfunction": "3.0.8",
+    "lodash.isnull": "3.0.0",
+    "lodash.isregexp": "3.0.5",
+    "lodash.isstring": "3.0.1",
+    "lodash.isundefined": "3.0.1"
   },
   "devDependencies": {
     "benchmark": "1.0.0",
