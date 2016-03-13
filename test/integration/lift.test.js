@@ -51,22 +51,6 @@ describe('Starting sails server with `sails lift`', function() {
     });
 
 
-    // TODO: this part:  (it was a TODO before the great refactor too)
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // describe('using the `--port` CLI option', function() {
-
-    //   it.skip('should start server without errors', function(done){
-    //     return done();
-    //   });
-
-    //   it.skip('should respond to a request to `GET /` at the indicated port with a 200 status code', function(done) {
-    //     return done();
-    //   });
-
-    // });//</using the `--port` CLI option>
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
     // Finally clean up the Sails app we created earlier.
     after(function (done) {
       MFilesystem.rmrf({path: pathToTestApp}).exec(done);
