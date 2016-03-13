@@ -274,12 +274,7 @@ function _getTestCleanupCallback(app, cb) {
     }
     app.lower(function (errLowering){
       if (errLowering) {
-        if(err) {
-          return cb(new Error('Failed with error: '+err.stack+'\n\nAlso, failed to `.lower()` app:\n' + errLowering.stack));
-        }
-        else {
-          return cb(new Error('Everything was otherwise ok, but failed to `.lower()` app. Details:' + errLowering.stack));
-        }
+        return cb(new Error('Everything was otherwise ok, but failed to `.lower()` app. Details:' + errLowering.stack));
       }
       if (err) { return cb(err); }
       return cb();
