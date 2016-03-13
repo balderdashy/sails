@@ -13,90 +13,90 @@ describe('benchmarks', function() {
     after(reportBenchmarks);
 
 
-    // //
-    // // Instantiate
-    // //
+    //
+    // Instantiate
+    //
 
-    // benchmark('require("sails")', function(cb) {
-    //   var Sails = require('../../lib/app');
-    //   var sails = new Sails();
-    //   return cb();
-    // });
+    benchmark('require("sails")', function(cb) {
+      var Sails = require('../../lib/app');
+      var sails = new Sails();
+      return cb();
+    });
 
 
-    // //
-    // // Load
-    // //
+    //
+    // Load
+    //
 
-    // benchmark('sails.load  [first time, no hooks]', function(cb) {
-    //   var Sails = require('../../lib/app');
-    //   var sails = new Sails();
-    //   sails.load({
-    //     log: {
-    //       level: 'error'
-    //     },
-    //     globals: false,
-    //     loadHooks: []
-    //   }, _getTestCleanupCallback(sails, cb));
-    // });
+    benchmark('sails.load  [first time, no hooks]', function(cb) {
+      var Sails = require('../../lib/app');
+      var sails = new Sails();
+      sails.load({
+        log: {
+          level: 'error'
+        },
+        globals: false,
+        loadHooks: []
+      }, _getTestCleanupCallback(sails, cb));
+    });
 
-    // benchmark('sails.load  [again, no hooks]', function(cb) {
-    //   this.expected = 25;
-    //   this.comment = 'faster b/c of require cache';
+    benchmark('sails.load  [again, no hooks]', function(cb) {
+      this.expected = 25;
+      this.comment = 'faster b/c of require cache';
 
-    //   var Sails = require('../../lib/app');
-    //   var sails = new Sails();
-    //   sails.load({
-    //     log: {
-    //       level: 'error'
-    //     },
-    //     globals: false,
-    //     loadHooks: []
-    //   }, _getTestCleanupCallback(sails, cb));
-    // });
+      var Sails = require('../../lib/app');
+      var sails = new Sails();
+      sails.load({
+        log: {
+          level: 'error'
+        },
+        globals: false,
+        loadHooks: []
+      }, _getTestCleanupCallback(sails, cb));
+    });
 
-    // benchmark('sails.load  [with moduleloader hook]', function(cb) {
-    //   this.expected = 25;
-    //   this.comment = 'faster b/c of require cache';
+    benchmark('sails.load  [with moduleloader hook]', function(cb) {
+      this.expected = 25;
+      this.comment = 'faster b/c of require cache';
 
-    //   var Sails = require('../../lib/app');
-    //   var sails = new Sails();
+      var Sails = require('../../lib/app');
+      var sails = new Sails();
 
-    //   sails.load({
-    //     log: {
-    //       level: 'error'
-    //     },
-    //     globals: false,
-    //     loadHooks: ['moduleloader']
-    //   }, _getTestCleanupCallback(sails, cb));
+      sails.load({
+        log: {
+          level: 'error'
+        },
+        globals: false,
+        loadHooks: ['moduleloader']
+      }, _getTestCleanupCallback(sails, cb));
 
-    // });
+    });
 
-    // benchmark('sails.load  [all core hooks]', function(cb) {
-    //   this.expected = 3000;
+    benchmark('sails.load  [all core hooks]', function(cb) {
+      this.expected = 3000;
 
-    //   var Sails = require('../../lib/app');
-    //   var sails = new Sails();
-    //   sails.load({
-    //     log: {
-    //       level: 'error'
-    //     },
-    //     globals: false
-    //   }, _getTestCleanupCallback(sails, cb));
-    // });
+      var Sails = require('../../lib/app');
+      var sails = new Sails();
+      sails.load({
+        log: {
+          level: 'error'
+        },
+        globals: false
+      }, _getTestCleanupCallback(sails, cb));
+    });
 
-    // benchmark('sails.load  [again, all core hooks]', function(cb) {
-    //   this.expected = 3000;
+    benchmark('sails.load  [again, all core hooks]', function(cb) {
+      this.expected = 3000;
 
-    //   var Sails = require('../../lib/app');
-    //   var sails = new Sails();
-    //   sails.load({
-    //     log: {
-    //       level: 'silly'
-    //     },
-    //     globals: false
-    //   }, _getTestCleanupCallback(sails, cb));
-    // });
+      var Sails = require('../../lib/app');
+      var sails = new Sails();
+      sails.load({
+        log: {
+          level: 'error'
+        },
+        globals: false
+      }, _getTestCleanupCallback(sails, cb));
+    });
 
 
     //
@@ -121,23 +121,23 @@ describe('benchmarks', function() {
       });
     });
 
-    // benchmark('sails.lift  [again, w/ a hot require cache]', function(cb) {
-    //   this.expected = 3000;
+    benchmark('sails.lift  [again, w/ a hot require cache]', function(cb) {
+      this.expected = 3000;
 
-    //   var Sails = require('../../lib/app');
-    //   var sails = new Sails();
-    //   portfinder.getPort(function(err, port) {
-    //     if (err) { throw err; }
+      var Sails = require('../../lib/app');
+      var sails = new Sails();
+      portfinder.getPort(function(err, port) {
+        if (err) { throw err; }
 
-    //     sails.lift({
-    //       log: {
-    //         level: 'error'
-    //       },
-    //       port: port,
-    //       globals: false
-    //     }, _getTestCleanupCallback(sails, cb));
-    //   });
-    // });
+        sails.lift({
+          log: {
+            level: 'error'
+          },
+          port: port,
+          globals: false
+        }, _getTestCleanupCallback(sails, cb));
+      });
+    });
 
   });
 
