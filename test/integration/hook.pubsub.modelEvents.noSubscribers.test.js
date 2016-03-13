@@ -1,10 +1,12 @@
 /**
  * Test dependencies
  */
+var util = require('util');
 var assert = require('assert');
 var socketHelper = require('./helpers/socketHelper.js');
 var appHelper = require('./helpers/appHelper');
-var util = require('util');
+
+
 
 /**
  * Errors
@@ -14,6 +16,8 @@ var Err = {
     return 'Wrong server response!  Response :::\n' + util.inspect(response);
   }
 };
+
+
 
 
 describe('pubsub :: ', function() {

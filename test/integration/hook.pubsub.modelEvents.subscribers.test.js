@@ -2,10 +2,10 @@
  * Test dependencies
  */
 
+var util = require('util');
 var assert = require('assert');
 var socketHelper = require('./helpers/socketHelper.js');
 var appHelper = require('./helpers/appHelper');
-var util = require('util');
 
 
 
@@ -30,47 +30,28 @@ var Err = {
 
 describe('pubsub :: ', function() {
 
-  var sailsprocess;
-  var socket1;
-  var socket2;
-  var appName = 'testApp';
-
   describe('Model events', function() {
 
-
     describe('when a socket is watching Users ', function() {
+      var socket1;
+      var socket2;
+      var appName = 'testApp';
+      var sailsApp;
 
       before(function(done) {
         appHelper.buildAndLiftWithTwoSockets(appName, {
-          silly: false /*, sockets: {'backwardsCompatibilityFor0.9SocketClients':false} */
+          log: {level: 'silent'}, /*, sockets: {'backwardsCompatibilityFor0.9SocketClients':false} */
         }, function(err, sails, _socket1, _socket2) {
           if (err) {
-            throw new Error(err);
+            return done(err);
           }
-          sailsprocess = sails;
+          sailsApp = sails;
           socket1 = _socket1;
           socket2 = _socket2;
           socket2.get('/user/watch', function() {
             done();
           });
         });
-      });
-
-      after(function(done) {
-
-        socket1.disconnect();
-        socket2.disconnect();
-
-        // Add a delay before killing the app to account for any queries that
-        // haven't been run by the blueprints yet; otherwise they might casue an error
-        setTimeout(function() {
-          process.chdir('../');
-          appHelper.teardown();
-          sailsprocess.lower(function() {
-            setTimeout(done, 100);
-          });
-        }, 500);
-
       });
 
       afterEach(function(done) {
@@ -133,15 +114,22 @@ describe('pubsub :: ', function() {
       it('adding a profile to the user via POST /userprofile should result a correct `user` event being received by all subscribers', function(done) {
 
         socket2.on('user', function(message) {
-          assert(message.id == 1 &&
-            message.verb == 'updated' &&
-            message.data.profile == 1, Err.badResponse(message));
-          done();
+          try {
+            assert(message.id == 1 &&
+              message.verb == 'updated' &&
+              message.data.profile == 1, Err.badResponse(message));
+            return done();
+          }
+          catch (e) {
+            return done(e);
+          }
         });
 
         socket1.post('/userprofile', {
           user: 1,
           zodiac: 'taurus'
+        }, function (body, jwr) {
+          if (jwr.error) { return done(jwr.error); }
         });
 
       });
@@ -167,7 +155,8 @@ describe('pubsub :: ', function() {
         // Create a new user to attach the profile to
         socket1.post('/user', {
           name: 'Sandy'
-        }, function() {
+        }, function (body, jwr){
+          if (jwr.error) { return done(jwr.error); }
 
           var msgsReceived = 0;
           // We should receive two 'user' updates: one from user #1 telling us they no longer have a profile, one
@@ -188,6 +177,9 @@ describe('pubsub :: ', function() {
 
           socket1.put('/userprofile/1', {
             user: 2
+          }, function (body, jwr){
+            if (jwr.error) { return done(jwr.error); }
+            // Otherwise the socket message above should fire.
           });
 
         });
@@ -207,6 +199,9 @@ describe('pubsub :: ', function() {
 
         socket1.put('/pet/1', {
           owner: 1
+        }, function(body, jwr) {
+          if (jwr.error) { return done(jwr.error); }
+          // Otherwise, the event handler above should fire (or this test will time out and fail).
         });
 
       });
@@ -214,7 +209,7 @@ describe('pubsub :: ', function() {
 
       // TODO: make this test work without relying on previous tests.
       // (i.e. bootstrap some data in a `before()`)
-      it('removing the user from the pet via DELETE /user/1/pets should result a correct `pet` event being received by all subscribers', function(done) {
+      it('removing the user from the pet via DELETE /user/1/pets/1 should result a correct `pet` event being received by all subscribers', function(done) {
 
         socket1.on('pet', function(message) {
           assert(message.id == 1 &&
@@ -223,14 +218,9 @@ describe('pubsub :: ', function() {
           done();
         });
 
-        // Avoiding this case temporarily:
-        // socket2.delete('/user/1/pets', {pet_id:1});
-
-        // Instead, use:
         socket2.delete('/user/1/pets/1', {}, function(body, jwr) {
-          // TODO:
-          // when new sails.io.js client is being used in tests,
-          // ensure that a valid response came back from the server here.
+          if (jwr.error) { return done(jwr.error); }
+          // Otherwise, the event handler above should fire (or this test will time out and fail).
         });
 
       });
@@ -244,7 +234,10 @@ describe('pubsub :: ', function() {
           done();
         });
 
-        socket1.delete('/userprofile/1');
+        socket1.delete('/userprofile/1',function(body, jwr) {
+          if (jwr.error) { return done(jwr.error); }
+          // Otherwise, the event handler above should fire (or this test will time out and fail).
+        });
 
       });
 
@@ -260,6 +253,9 @@ describe('pubsub :: ', function() {
 
         socket2.post('/user/1/pets', {
           pet_id: 1
+        },function(body, jwr) {
+          if (jwr.error) { return done(jwr.error); }
+          // Otherwise, the event handler above should fire (or this test will time out and fail).
         });
 
       });
@@ -274,7 +270,10 @@ describe('pubsub :: ', function() {
           done();
         });
 
-        socket1.delete('/pet/1');
+        socket1.delete('/pet/1', function(body, jwr) {
+          if (jwr.error) { return done(jwr.error); }
+          // Otherwise, the event handler above should fire (or this test will time out and fail).
+        });
 
       });
 
@@ -288,7 +287,10 @@ describe('pubsub :: ', function() {
             (message.id === 2 && message.verb == 'created' && message.data.name == 'alice'), Err.badResponse(message));
           msgsReceived++;
           if (msgsReceived == 2) {
-            done();
+            return done();
+          }
+          if (msgsReceived > 2) {
+            throw new Error('Extra, unexpected socket message received in test!');
           }
         });
 
@@ -296,7 +298,10 @@ describe('pubsub :: ', function() {
           assert(message.id === 1 && message.verb == 'addedTo' && message.attribute == 'pets' && message.addedId == 2, Err.badResponse(message));
           msgsReceived++;
           if (msgsReceived == 2) {
-            done();
+            return done();
+          }
+          if (msgsReceived > 2) {
+            throw new Error('Extra, unexpected socket message received in test!');
           }
         });
 
@@ -304,7 +309,13 @@ describe('pubsub :: ', function() {
         socket1.get('/pet/watch', function() {
           socket2.post('/user/1/pets', {
             name: 'alice'
+          },function(body, jwr) {
+            if (jwr.error) { return done(jwr.error); }
+            // Otherwise, the event handler above should fire (or this test will time out and fail).
           });
+        },function(body, jwr) {
+          if (jwr.error) { return done(jwr.error); }
+          // Otherwise, the event handler above should fire (or this test will time out and fail).
         });
 
       });
@@ -347,7 +358,22 @@ describe('pubsub :: ', function() {
 
       });
 
-    });
 
+      after(function(done) {
+
+        socket1.disconnect();
+        socket2.disconnect();
+
+        // Add a delay before killing the app to account for any queries that
+        // haven't been run by the blueprints yet; otherwise they might casue an error
+        setTimeout(function() {
+          process.chdir('../');
+          appHelper.teardown();
+          sailsApp.lower(done);
+        }, 500);
+
+      });
+
+    });
   });
 });
