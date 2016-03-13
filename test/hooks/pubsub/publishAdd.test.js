@@ -20,24 +20,6 @@ describe('Pubsub hook', function (){
     // Setup
     ////////////////////////////////////////////////////////////////////////////////
 
-    // Provide the app w/ a couple of models
-    before(function (){
-      app.models = {
-        vessel: {
-          attributes: {
-            name: {type: 'string'},
-            dockedAt: {model: 'Dock'}
-          }
-        },
-        dock: {
-          attributes: {
-            location: {type: 'string'},
-            vessels: {collection:'Vessel', via: 'dockedAt'}
-          }
-        }
-      };
-    });
-
     // Lift the app
     before(function (done){
       app.lift({
@@ -48,10 +30,6 @@ describe('Pubsub hook', function (){
         loadHooks: ['moduleloader','userconfig','orm', 'http', 'sockets', 'pubsub'],
         routes: {
           'PUT /dock/:id/subscribe': function (req, res){
-            console.log('app.config.environment',app.config.environment);
-            console.log('process.env.NODE_ENV',process.env.NODE_ENV);
-            console.log('app.models', app.models);
-            console.log('req._sails.models', req._sails.models);
             app.models.dock.subscribe(req, req.param('id'));
             return res.send();
           },
@@ -60,6 +38,25 @@ describe('Pubsub hook', function (){
             //  this is just testing publishAdd)
             app.models.dock.publishAdd(req.param('id'), 'vessels', req.param('vessel'));
             return res.send();
+          }
+        },
+        // Provide the app w/ a couple of models
+        orm: {
+          moduleDefinitions: {
+            models: {
+              vessel: {
+                attributes: {
+                  name: {type: 'string'},
+                  dockedAt: {model: 'Dock'}
+                }
+              },
+              dock: {
+                attributes: {
+                  location: {type: 'string'},
+                  vessels: {collection:'Vessel', via: 'dockedAt'}
+                }
+              }
+            }
           }
         }
       }, function (err){
@@ -126,7 +123,8 @@ describe('Pubsub hook', function (){
 
     // Shut down the app
     after(function (done){
-      app.lower(function(){setTimeout(done, 100);});
+      // app.lower(function(){setTimeout(done, 100);});
+      app.lower(done);
     });
 
 

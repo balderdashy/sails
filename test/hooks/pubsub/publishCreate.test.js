@@ -19,17 +19,6 @@ describe('Pubsub hook', function (){
     // Setup
     ////////////////////////////////////////////////////////////////////////////////
 
-    // Provide the app w/ a model
-    before(function (){
-      app.models = {
-        pet: {
-          attributes: {
-            name: {type: 'string'}
-          }
-        }
-      };
-    });
-
     // Lift the app
     before(function (done){
       app.lift({
@@ -38,6 +27,18 @@ describe('Pubsub hook', function (){
         models: { migrate: 'safe' },
         log: {level: 'silent'},
         loadHooks: ['moduleloader','userconfig','orm', 'http', 'sockets', 'pubsub'],
+        // Provide the app w/ a model
+        orm: {
+          moduleDefinitions: {
+            models: {
+              pet: {
+                attributes: {
+                  name: {type: 'string'}
+                }
+              }
+            }
+          }
+        },
         routes: {
           'POST /pet': function (req, res){
             // (notice we're not actually doing anything to the database-
