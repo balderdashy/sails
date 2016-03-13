@@ -48,7 +48,8 @@ describe('pubsub :: ', function() {
           sailsApp = sails;
           socket1 = _socket1;
           socket2 = _socket2;
-          socket2.get('/user/watch', function() {
+          socket2.get('/user/watch', function(body, jwr) {
+            if (jwr.error) { return done(jwr.error); }
             done();
           });
         });
@@ -68,6 +69,9 @@ describe('pubsub :: ', function() {
         });
         socket1.post('/user', {
           name: 'scott'
+        }, function (body, jwr) {
+          if (jwr.error) { return done(jwr.error); }
+          // Otherwise, the event handler above should fire (or this test will time out and fail).
         });
 
       });
@@ -77,7 +81,10 @@ describe('pubsub :: ', function() {
           assert(message.id === 1 && message.verb == 'messaged' && message.data.greeting == 'hello', Err.badResponse(message));
           done();
         });
-        socket1.get('/user/message', function() {});
+        socket1.get('/user/message', function (body, jwr) {
+          if (jwr.error) { return done(jwr.error); }
+          // Otherwise, the event handler above should fire (or this test will time out and fail).
+        });
 
       });
 
@@ -90,6 +97,9 @@ describe('pubsub :: ', function() {
 
         socket1.put('/user/1', {
           name: 'joe'
+        }, function (body, jwr) {
+          if (jwr.error) { return done(jwr.error); }
+          // Otherwise, the event handler above should fire (or this test will time out and fail).
         });
 
       });
@@ -107,6 +117,9 @@ describe('pubsub :: ', function() {
         socket1.post('/pet', {
           name: 'rex',
           owner: 1
+        }, function (body, jwr) {
+          if (jwr.error) { return done(jwr.error); }
+          // Otherwise, the event handler above should fire (or this test will time out and fail).
         });
 
       });
@@ -130,6 +143,7 @@ describe('pubsub :: ', function() {
           zodiac: 'taurus'
         }, function (body, jwr) {
           if (jwr.error) { return done(jwr.error); }
+          // Otherwise, the event handler above should fire (or this test will time out and fail).
         });
 
       });
@@ -146,6 +160,9 @@ describe('pubsub :: ', function() {
 
         socket1.put('/pet/1', {
           owner: null
+        }, function(body, jwr) {
+          if (jwr.error) { return done(jwr.error); }
+          // Otherwise, the event handler above should fire (or this test will time out and fail).
         });
 
       });
@@ -329,6 +346,9 @@ describe('pubsub :: ', function() {
 
         socket1.put('/user/1', {
           name: 'ron'
+        }, function (body, jwr) {
+          if (jwr.error) { return done(jwr.error); }
+          // Otherwise, the event handler above should fire (or this test will time out and fail).
         });
 
       });
@@ -342,6 +362,9 @@ describe('pubsub :: ', function() {
 
         socket1.put('/user/1?populate=false', {
           name: 'larry'
+        }, function (body, jwr) {
+          if (jwr.error) { return done(jwr.error); }
+          // Otherwise, the event handler above should fire (or this test will time out and fail).
         });
 
       });
@@ -354,7 +377,10 @@ describe('pubsub :: ', function() {
         });
 
 
-        socket1.delete('/user/1');
+        socket1.delete('/user/1', function (body, jwr) {
+          if (jwr.error) { return done(jwr.error); }
+          // Otherwise, the event handler above should fire (or this test will time out and fail).
+        });
 
       });
 
