@@ -16,15 +16,8 @@ fs.existsSync = fs.existsSync || require('path').existsSync;
 describe('Running sails www', function() {
   var sailsBin = path.resolve('./bin/sails.js');
   var appName = 'testApp';
-  var sailsServer;
 
   before(function() {
-    if (fs.existsSync(appName)) {
-      wrench.rmdirSyncRecursive(appName);
-    }
-  });
-
-  after(function() {
     if (fs.existsSync(appName)) {
       wrench.rmdirSyncRecursive(appName);
     }
@@ -39,6 +32,8 @@ describe('Running sails www', function() {
       sailsBin = path.resolve('..', sailsBin);
     });
 
+    // TODO: run tests in here
+
     after(function() {
       // Delete empty folder and move out of it
       process.chdir('../');
@@ -50,27 +45,32 @@ describe('Running sails www', function() {
 
   describe('in a sails app directory', function() {
 
+    var sailsChildProc;
+
+
     it('should start server without error', function(done) {
 
       exec('node ' + sailsBin + ' new ' + appName, function(err) {
-        if (err) done(new Error(err));
+        if (err) { done(new Error(err)); }
+
         // Move into app directory
         process.chdir(appName);
         sailsBin = path.resolve('..', sailsBin);
 
-        sailsServer = spawn('node', [sailsBin, 'www']);
+        sailsChildProc = spawn('node', [sailsBin, 'www']);
 
-        sailsServer.stderr.on('data', function(data) {
+        // Any output from stderr is considered an error by this test.
+        sailsChildProc.stderr.on('data', function(data) {
           return done(data);
         });
 
-        sailsServer.stdout.on('data', function(data) {
+        sailsChildProc.stdout.on('data', function(data) {
           var dataString = data + '';
           assert(dataString.indexOf('error') === -1);
-          sailsServer.stdout.removeAllListeners('data');
+          sailsChildProc.stdout.removeAllListeners('data');
           // Move out of app directory
           process.chdir('../');
-          sailsServer.lower();
+          sailsChildProc.kill();
           return done();
         });
       });
@@ -80,9 +80,9 @@ describe('Running sails www', function() {
 
   describe('with command line arguments', function() {
     afterEach(function(done) {
-      sailsServer.stderr.removeAllListeners('data');
+      sailsChildProc.stderr.removeAllListeners('data');
       process.chdir('../');
-      sailsServer.lower();
+      sailsChildProc.kill();
       return done();
     });
 
@@ -101,16 +101,16 @@ describe('Running sails www', function() {
         }
       }));
 
-      sailsServer = spawn('node', [sailsBin, 'www', '--dev']);
+      sailsChildProc = spawn('node', [sailsBin, 'www', '--dev']);
 
-      sailsServer.stdout.on('data', function(data) {
+      sailsChildProc.stdout.on('data', function(data) {
         var dataString = data + '';
-        if (dataString.indexOf("`grunt build`") !== -1) {
-
+        if (dataString.indexOf('`grunt build`') !== -1) {
           done();
         }
       });
     });
+
 
     it('--prod should execute grunt buildProd', function(done) {
 
@@ -121,16 +121,22 @@ describe('Running sails www', function() {
       // to set session adapter:null ( to prevent warning message from appearing on command line )
       fs.writeFileSync('config/session.js', 'module.exports.session = { adapter: null }');
 
-      sailsServer = spawn('node', [sailsBin, 'www', '--prod']);
+      sailsChildProc = spawn('node', [sailsBin, 'www', '--prod']);
 
-      sailsServer.stdout.on('data', function(data) {
+      sailsChildProc.stdout.on('data', function(data) {
         var dataString = data + '';
-        if (dataString.indexOf("`grunt buildProd`") !== -1) {
+        if (dataString.indexOf('`grunt buildProd`') !== -1) {
 
           done();
         }
       });
     });
 
+  });
+
+  after(function() {
+    if (fs.existsSync(appName)) {
+      wrench.rmdirSyncRecursive(appName);
+    }
   });
 });

@@ -15,94 +15,96 @@ fs.existsSync = fs.existsSync || require('path').existsSync;
 
 
 
+// TODO: redo the tests in this file using machinepack-process
 
 
-// describe.skip('Starting sails server with lift', function() {
 
-//   var sailsBin = path.resolve('./bin/sails.js');
-//   var appName = 'testApp';
-//   var sailsChildProc;
+describe('Starting sails server with lift', function() {
 
-//   before(function() {
-//     if (fs.existsSync(appName)) {
-//       wrench.rmdirSyncRecursive(appName);
-//     }
-//   });
+  var sailsBin = path.resolve('./bin/sails.js');
+  var appName = 'testApp';
+  var sailsChildProc;
 
-//   describe('in an empty directory', function() {
+  before(function() {
+    if (fs.existsSync(appName)) {
+      wrench.rmdirSyncRecursive(appName);
+    }
+  });
 
-//     before(function() {
-//       // Make empty folder and move into it
-//       fs.mkdirSync('empty');
-//       process.chdir('empty');
-//       sailsBin = path.resolve('..', sailsBin);
-//     });
+  describe('in an empty directory', function() {
 
-//     after(function() {
-//       // Delete empty folder and move out of it
-//       process.chdir('../');
-//       fs.rmdirSync('empty');
-//       sailsBin = path.resolve('./bin/sails.js');
-//     });
+    before(function() {
+      // Make empty folder and move into it
+      fs.mkdirSync('empty');
+      process.chdir('empty');
+      sailsBin = path.resolve('..', sailsBin);
+    });
 
-//   });
+    after(function() {
+      // Delete empty folder and move out of it
+      process.chdir('../');
+      fs.rmdirSync('empty');
+      sailsBin = path.resolve('./bin/sails.js');
+    });
 
-//   describe('in an sails app directory', function() {
+  });
 
-//     it('should start server without error', function(done) {
+  describe('in an sails app directory', function() {
 
-//       exec('node ' + sailsBin + ' new ' + appName, function(err) {
-//         if (err) { return done(err); }
+    it('should start server without error', function(done) {
 
-//         // Move into app directory
-//         process.chdir(appName);
-//         sailsBin = path.resolve('..', sailsBin);
+      exec('node ' + sailsBin + ' new ' + appName, function(err) {
+        if (err) { return done(err); }
 
-//         sailsChildProc = spawn('node', [sailsBin, 'lift', '--port=1342']);
+        // Move into app directory
+        process.chdir(appName);
+        sailsBin = path.resolve('..', sailsBin);
 
-//         sailsChildProc.stdout.on('data', function(data) {
-//           var dataString = data + '';
-//           assert(dataString.indexOf('error') === -1);
-//           sailsChildProc.stdout.removeAllListeners('data');
-//           // Move out of app directory
-//           process.chdir('../');
-//           sailsChildProc.lower(); // << ??? what?
-//           return done();
-//         });
-//       });
-//     });
+        sailsChildProc = spawn('node', [sailsBin, 'lift', '--port=1342']);
 
-//     it('should respond to a request to port 1342 with a 200 status code', function(done) {
-//       process.chdir(appName);
-//       sailsChildProc = spawn('node', [sailsBin, 'lift', '--port=1342']);
-//       sailsChildProc.stdout.on('data', function(data) {
-//         var dataString = data + '';
-//         // Server has finished starting up
-//         if (dataString.match(/Server lifted/)) {
-//           sailsChildProc.stdout.removeAllListeners('data');
-//           setTimeout(function() {
-//             request('http://localhost:1342/', function(err, response) {
-//               if (err) {
-//                 sailsChildProc.lower();
-//                 done(new Error(err));
-//               }
+        sailsChildProc.stdout.on('data', function(data) {
+          var dataString = data + '';
+          assert(dataString.indexOf('error') === -1);
+          sailsChildProc.stdout.removeAllListeners('data');
+          // Move out of app directory
+          process.chdir('../');
+          sailsChildProc.kill();
+          return done();
+        });
+      });
+    });
 
-//               assert(response.statusCode === 200);
-//               process.chdir('../');
-//               sailsChildProc.lower(); // << ??? what?
-//               return done();
-//             });
-//           }, 1000);
-//         }
-//       });
-//     });
-//   });
+    it('should respond to a request to port 1342 with a 200 status code', function(done) {
+      process.chdir(appName);
+      sailsChildProc = spawn('node', [sailsBin, 'lift', '--port=1342']);
+      sailsChildProc.stdout.on('data', function(data) {
+        var dataString = data + '';
+        // Server has finished starting up
+        if (dataString.match(/Server lifted/)) {
+          sailsChildProc.stdout.removeAllListeners('data');
+          setTimeout(function() {
+            request('http://localhost:1342/', function(err, response) {
+              if (err) {
+                sailsChildProc.kill();
+                done(new Error(err));
+              }
 
-//   after(function() {
-//     if (fs.existsSync(appName)) {
-//       wrench.rmdirSyncRecursive(appName);
-//     }
-//   });
+              assert(response.statusCode === 200);
+              process.chdir('../');
+              sailsChildProc.kill();
+              return done();
+            });
+          }, 1000);
+        }
+      });
+    });
+  });
+
+  after(function() {
+    if (fs.existsSync(appName)) {
+      wrench.rmdirSyncRecursive(appName);
+    }
+  });
 
 
 
@@ -121,7 +123,7 @@ fs.existsSync = fs.existsSync || require('path').existsSync;
   // describe('with command line arguments', function() {
   //  afterEach(function() {
   //    sailsServer.stderr.removeAllListeners('data');
-  //    sailsServer.lower();
+  //    sailsServer.kill();
   //    process.chdir('../');
   //  });
 
@@ -175,4 +177,4 @@ fs.existsSync = fs.existsSync || require('path').existsSync;
   //    });
   //  });
   // });
-// });
+});
