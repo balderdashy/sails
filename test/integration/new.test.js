@@ -48,11 +48,9 @@ describe('New app generator', function() {
     it('should create new, liftable app in new folder', function(done) {
       exec('node '+ sailsbin + ' new ' + appName, function(err) {
         if (err) { return done(new Error(err)); }
-        appHelper.lift({log:{level:'silent'}}, function(err, sailsprocess) {
+        appHelper.lift({log:{level:'silent'}}, function(err, sailsApp) {
           if (err) {return done(err);}
-          sailsprocess.once('hook:http:listening', function(){sailsprocess.lower(function(){setTimeout(done, 100);});});
-          // sailsprocess.lower(done);
-          // setTimeout(done, function(){sailsprocess.lower(done)});
+          sailsApp.lower(done);
         });
       });
     });
@@ -76,9 +74,9 @@ describe('New app generator', function() {
     it('should create new app', function(done) {
       exec('node '+ sailsbin + ' generate new ' + appName, function(err) {
         if (err) { return done(new Error(err)); }
-        appHelper.lift({log:{level:'silent'}}, function(err, sailsprocess) {
+        appHelper.lift({log:{level:'silent'}}, function(err, sailsApp) {
           if (err) {return done(err);}
-          sailsprocess.once('hook:http:listening', function(){sailsprocess.lower(function(){setTimeout(done, 100);});});
+          sailsApp.lower(done);
         });
       });
     });

@@ -162,7 +162,10 @@ module.exports.buildAndLift = function(appName, options, callback) {
     callback = options;
     options = null;
   }
-  module.exports.build(appName, function() {
+  module.exports.build(appName, function(err) {
+    if (err) {
+      return callback(err);
+    }
     module.exports.lift(options, callback);
   });
 };
@@ -196,7 +199,10 @@ module.exports.buildAndLiftWithTwoSockets = function(appName, options, callback)
     callback = options;
     options = null;
   }
-  module.exports.build(appName, function() {
+  module.exports.build(appName, function(err) {
+    if (err) {
+      return callback(err);
+    }
     module.exports.liftWithTwoSockets(options, callback);
   });
 };

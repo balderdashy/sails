@@ -37,14 +37,20 @@ describe('HTTP hook', function (){
         port: 1342
       }, done);
     });
-    after(function(done) {
-      app.lower(done);
-    });
+
     it('should be able to respond to requests using the custom bodyparser', function(done) {
       request.get('http://localhost:1342', function(err, res, body) {
-        assert.equal(body, 'bar');
+        if (err) { return done(err); }
+        try {
+          assert.equal(body, 'bar');
+        }
+        catch (e) {return done(e);}
         return done();
       });
+    });
+
+    after(function(done) {
+      app.lower(done);
     });
   });
 
