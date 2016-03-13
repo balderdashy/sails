@@ -2,10 +2,10 @@
  * Test dependencies
  */
 
+var util = require('util');
 var assert = require('assert');
 var socketHelper = require('./helpers/socketHelper.js');
 var appHelper = require('./helpers/appHelper');
-var util = require('util');
 
 
 
@@ -40,7 +40,9 @@ describe('hook:sockets :: ', function() {
       process.chdir('../');
       appHelper.teardown();
       if (sailsprocess) {
-        return sailsprocess.kill(function(){setTimeout(done, 100);});
+        return sailsprocess.lower(function() {
+          setTimeout(done, 100);
+        });
       }
       return done();
     });

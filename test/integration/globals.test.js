@@ -1,6 +1,7 @@
 /**
  * Test dependencies
  */
+
 var assert = require('assert');
 var appHelper = require('./helpers/appHelper');
 
@@ -13,7 +14,7 @@ describe('globals :: ', function() {
     var sailsApp;
     before(function(done) {
       // Build the app and begin lifting it with default settings.
-      appHelper.buildAndLift('testApp', {globals: undefined}, function(err, sails) {
+      appHelper.buildAndLift('testApp', {globals: null}, function(err, sails) {
         if (err) { return done(err); }
         sailsApp = sails;
         return done();

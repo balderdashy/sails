@@ -1,6 +1,7 @@
 /**
  * Test dependencies
  */
+
 var assert = require('assert');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');

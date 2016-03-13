@@ -1,10 +1,14 @@
 /**
  * Test dependencies
  */
+
 var assert = require('assert');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
 var util = require('util');
+
+
+
 
 /**
  * Errors
@@ -29,14 +33,18 @@ describe('router :: ', function() {
 
     beforeEach(function(done) {
       appHelper.lift(function(err, sails) {
-        if (err) {throw new Error(err);}
+        if (err) {
+          throw new Error(err);
+        }
         sailsprocess = sails;
         setTimeout(done, 100);
       });
     });
 
     afterEach(function(done) {
-      sailsprocess.kill(function(){setTimeout(done, 100);});
+      sailsprocess.lower(function() {
+        setTimeout(done, 100);
+      });
     });
 
     after(function() {
@@ -87,7 +95,7 @@ describe('router :: ', function() {
         }, function(err, response) {
           if (err) return done(new Error(err));
           if (typeof response.body !== 'object' || !response.body.length) {
-            return done(new Error('Invalid response body: '+util.format(response.body)));
+            return done(new Error('Invalid response body: ' + util.format(response.body)));
           }
 
           assert(response.body[0] && response.body[0].id === 1, Err.badResponse(response));
@@ -180,15 +188,19 @@ describe('router :: ', function() {
     });
 
     describe('a post of JSON array request to /:controller/create', function() {
-      it('should return JSON array for a newly created instances of the test model', function (done) {
+      it('should return JSON array for a newly created instances of the test model', function(done) {
         httpHelper.testRoute('post', {
           url: 'empty/create',
           json: true,
-          body: [{stuff: "bad"}, {stuff: "ghuud"}]
-        }, function (err, response) {
+          body: [{
+            stuff: "bad"
+          }, {
+            stuff: "ghuud"
+          }]
+        }, function(err, response) {
           if (err) return done(new Error(err));
-          assert(response.body instanceof Array,  Err.badResponse(response));
-          assert.equal(response.body.length, 2,  Err.badResponse(response));
+          assert(response.body instanceof Array, Err.badResponse(response));
+          assert.equal(response.body.length, 2, Err.badResponse(response));
           assert.equal(response.body[1].stuff, "ghuud", Err.badResponse(response));
           done();
         });
@@ -277,7 +289,7 @@ describe('router :: ', function() {
         httpHelper.testRoute('get', {
           url: 'api/empty/create',
           json: true
-        }, function (err, response, body) {
+        }, function(err, response, body) {
           if (err) return done(new Error(err));
 
           assert((response.statusCode === 201 || response.statusCode === 200));
@@ -312,7 +324,7 @@ describe('router :: ', function() {
         httpHelper.testRoute('get', {
           url: 'empty/create',
           json: true
-        }, function (err, response, body) {
+        }, function(err, response, body) {
           if (err) return done(new Error(err));
 
           assert(response.statusCode === 201);
@@ -325,7 +337,7 @@ describe('router :: ', function() {
         httpHelper.testRoute('get', {
           url: 'api/empty/create',
           json: true
-        }, function (err, response, body) {
+        }, function(err, response, body) {
           if (err) return done(new Error(err));
 
           assert(response.statusCode === 404);
@@ -337,7 +349,7 @@ describe('router :: ', function() {
         httpHelper.testRoute('get', {
           url: 'api/empty',
           json: true
-        }, function (err, response, body) {
+        }, function(err, response, body) {
           if (err) return done(new Error(err));
 
           assert(response.body instanceof Array);
@@ -349,7 +361,7 @@ describe('router :: ', function() {
         httpHelper.testRoute('get', {
           url: 'empty',
           json: true
-        }, function (err, response, body) {
+        }, function(err, response, body) {
           if (err) return done(new Error(err));
 
           assert(response.statusCode === 404);
@@ -373,7 +385,7 @@ describe('router :: ', function() {
         httpHelper.testRoute('get', {
           url: 'api/empty/create',
           json: true
-        }, function (err, response, body) {
+        }, function(err, response, body) {
           if (err) return done(new Error(err));
 
           assert(response.statusCode === 201);
@@ -385,7 +397,7 @@ describe('router :: ', function() {
         httpHelper.testRoute('get', {
           url: 'api/rest/empty',
           json: true
-        }, function (err, response, body) {
+        }, function(err, response, body) {
           if (err) return done(new Error(err));
 
           assert(response.body instanceof Array);
@@ -404,7 +416,9 @@ describe('router :: ', function() {
     before(function(done) {
       appHelper.build(function() {
         appHelper.lift(function(err, sails) {
-          if (err) {throw new Error(err);}
+          if (err) {
+            throw new Error(err);
+          }
           sailsprocess = sails;
           setTimeout(done, 100);
         });
@@ -414,19 +428,24 @@ describe('router :: ', function() {
     after(function(done) {
       process.chdir('../');
       appHelper.teardown();
-      sailsprocess.kill(function(){setTimeout(done, 100);});
+      sailsprocess.lower(function() {
+        setTimeout(done, 100);
+      });
     });
 
     describe('sorting via query params', function() {
 
       before(function(done) {
 
-        sailsprocess.models.user.create([
-          {name:'scott'},
-          {name:'abby'},
-          {name:'joe'},
-          {name:'scott'}
-        ]).exec(done);
+        sailsprocess.models.user.create([{
+          name: 'scott'
+        }, {
+          name: 'abby'
+        }, {
+          name: 'joe'
+        }, {
+          name: 'scott'
+        }]).exec(done);
 
       });
 
@@ -435,7 +454,7 @@ describe('router :: ', function() {
         httpHelper.testRoute('get', {
           url: 'user?sort=name DESC',
           json: true
-        }, function (err, response, body) {
+        }, function(err, response, body) {
           if (err) return done(new Error(err));
 
           assert(response.body instanceof Array);
@@ -453,7 +472,7 @@ describe('router :: ', function() {
         httpHelper.testRoute('get', {
           url: 'user?sort=name ASC',
           json: true
-        }, function (err, response, body) {
+        }, function(err, response, body) {
           if (err) return done(new Error(err));
 
           assert(response.body instanceof Array);
@@ -471,7 +490,7 @@ describe('router :: ', function() {
         httpHelper.testRoute('get', {
           url: 'user?sort={"name":1}',
           json: true
-        }, function (err, response, body) {
+        }, function(err, response, body) {
           if (err) return done(new Error(err));
 
           assert(response.body instanceof Array);
@@ -489,7 +508,7 @@ describe('router :: ', function() {
         httpHelper.testRoute('get', {
           url: 'user?sort={"name":1, "user_id":-1}',
           json: true
-        }, function (err, response, body) {
+        }, function(err, response, body) {
           if (err) return done(new Error(err));
           assert(response.body instanceof Array);
           assert.equal(response.body[0].name, "abby");

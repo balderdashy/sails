@@ -1,16 +1,23 @@
+/**
+ * Module dependencies
+ */
+
+var util = require('util');
 var assert = require('assert');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
-var util = require('util');
 
-/**
- * Errors
- */
+
+
+
 var Err = {
 	badResponse: function(response) {
 		return 'Wrong server response!  Response :::\n' + util.inspect(response.body);
 	}
 };
+
+
+
 
 describe('router :: ', function() {
 	describe('Specified routes', function() {
@@ -29,7 +36,7 @@ describe('router :: ', function() {
 		});
 
 		afterEach(function(done) {
-			sailsprocess.kill(function(){setTimeout(done, 100);});
+			sailsprocess.lower(function(){setTimeout(done, 100);});
 		});
 
 		after(function() {

@@ -1,14 +1,15 @@
 /**
  * Module dependencies
  */
-var assert  = require('assert'),
-  fs    = require('fs'),
-  wrench  = require('wrench'),
-  exec  = require('child_process').exec,
-  _   = require('lodash'),
-  appHelper = require('./helpers/appHelper'),
-  path = require('path'),
-  util  = require('util');
+
+var assert  = require('assert');
+var fs    = require('fs');
+var wrench  = require('wrench');
+var exec  = require('child_process').exec;
+var _   = require('lodash');
+var appHelper = require('./helpers/appHelper');
+var path = require('path');
+var util  = require('util');
 
 
 
@@ -49,9 +50,9 @@ describe('New app generator', function() {
         if (err) { return done(new Error(err)); }
         appHelper.lift({log:{level:'silent'}}, function(err, sailsprocess) {
           if (err) {return done(err);}
-          sailsprocess.once('hook:http:listening', function(){sailsprocess.kill(function(){setTimeout(done, 100);});});
-          // sailsprocess.kill(done);
-          // setTimeout(done, function(){sailsprocess.kill(done)});
+          sailsprocess.once('hook:http:listening', function(){sailsprocess.lower(function(){setTimeout(done, 100);});});
+          // sailsprocess.lower(done);
+          // setTimeout(done, function(){sailsprocess.lower(done)});
         });
       });
     });
@@ -77,7 +78,7 @@ describe('New app generator', function() {
         if (err) { return done(new Error(err)); }
         appHelper.lift({log:{level:'silent'}}, function(err, sailsprocess) {
           if (err) {return done(err);}
-          sailsprocess.once('hook:http:listening', function(){sailsprocess.kill(function(){setTimeout(done, 100);});});
+          sailsprocess.once('hook:http:listening', function(){sailsprocess.lower(function(){setTimeout(done, 100);});});
         });
       });
     });
