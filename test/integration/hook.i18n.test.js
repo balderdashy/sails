@@ -43,10 +43,7 @@ describe('i18n ::', function() {
   });
 
   afterEach(function(done) {
-    sailsApp.lower(function(err) {
-      if (err) { return done(err); }
-      setTimeout(done, 100);
-    });
+    sailsApp.lower(done);
   });
 
 

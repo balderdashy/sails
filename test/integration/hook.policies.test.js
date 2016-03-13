@@ -2,11 +2,11 @@
  * Module dependencies
  */
 
+var path = require('path');
 var util = require('util');
 var assert = require('assert');
 var httpHelper = require('./helpers/httpHelper');
 var appHelper = require('./helpers/appHelper');
-var path = require('path');
 var fs = require('fs-extra');
 var wrench = require('wrench');
 
@@ -23,36 +23,30 @@ var wrench = require('wrench');
 
 describe('router :: ', function() {
 
-  var sailsprocess;
 
   describe('Policies', function() {
     var appName = 'testApp';
 
-    before(function(done) {
-      appHelper.build(done);
-    });
-
+    var sailsApp;
     beforeEach(function(done) {
       appHelper.lift({
-        verbose: false
+        log: { level: 'silent' }
       }, function(err, sails) {
-        if (err) {
-          throw new Error(err);
-        }
-        sailsprocess = sails;
-        sailsprocess.once('hook:http:listening', done);
+        if (err) { return done(err); }
+        sailsApp = sails;
+        return done();
       });
     });
 
     afterEach(function(done) {
-      sailsprocess.lower(function() {
-        setTimeout(done, 100);
-      });
+      sailsApp.lower(done);
     });
 
-    after(function() {
-      process.chdir('../');
-      appHelper.teardown();
+
+
+
+    before(function(done) {
+      appHelper.build(done);
     });
 
     describe('an error in the policy callback', function() {
@@ -351,14 +345,17 @@ describe('router :: ', function() {
           return done();
         });
       });
-
-
     });
 
+    after(function() {
+      process.chdir('../');
+      appHelper.teardown();
+    });
   });
 
 
-  describe('Test adding hooks from another hooks', function() {
+
+  describe('Test adding policies from another hooks', function() {
     var appName = 'testApp';
 
     before(function(done) {
@@ -379,11 +376,6 @@ describe('router :: ', function() {
       });
     });
 
-    after(function() {
-      process.chdir('../');
-      appHelper.teardown();
-    });
-
 
     describe('with default settings', function() {
 
@@ -399,18 +391,16 @@ describe('router :: ', function() {
         });
       });
 
-      after(function(done) {
-        sails.lower(function() {
-          setTimeout(done, 100);
-        });
-      });
-
       it('should install a hook into `sails.hooks.add-policy`', function() {
         assert(sails.hooks['add-policy']);
       });
 
       it('should add policy `forbidden` to app', function() {
         assert(sails.hooks.policies.middleware.forbidden);
+      });
+
+      after(function(done) {
+        sails.lower(done);
       });
 
     });
@@ -439,12 +429,6 @@ describe('router :: ', function() {
         });
       });
 
-      after(function(done) {
-        sails.lower(function() {
-          setTimeout(done, 100);
-        });
-      });
-
       it('should return `statusCode` 403 ', function(done) {
 
         httpHelper.testRoute('get', {
@@ -466,7 +450,7 @@ describe('router :: ', function() {
           },
           json: true
         }, function(err, response) {
-          if (err) return done(err);
+          if (err) { return done(err); }
 
           try {
             assert.equal(response.statusCode, 500);
@@ -484,8 +468,16 @@ describe('router :: ', function() {
         });
       });
 
+      after(function(done) {
+        sails.lower(done);
+      });
     });
 
+
+    after(function() {
+      process.chdir('../');
+      appHelper.teardown();
+    });
   });
 
 });
