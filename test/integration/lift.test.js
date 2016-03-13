@@ -11,13 +11,14 @@ var MFilesystem = require('machinepack-fs');
 
 describe('Starting sails server with `sails lift`', function() {
 
+  // Track the location of the Sails CLI, as well as the current working directory
+  // before we stop hopping about all over the place.
   var originalCwd = process.cwd();
   var pathToSailsCLI = path.resolve(__dirname, '../../bin/sails.js');
-  var pathToTestApp = path.resolve('testApp');
-
 
 
   describe('in the directory of a newly-generated sails app', function() {
+    var pathToTestApp = path.resolve('testApp');
 
     // Ensure test app does not already exist.
     before(function (done) {
@@ -37,17 +38,40 @@ describe('Starting sails server with `sails lift`', function() {
     });
 
     // Test `sails lift` in the CWD.
-    testSpawningSailsLiftChildProcessInCwd({
-      pathToSailsCLI: pathToSailsCLI,
-      liftCliArgs: []
+    describe('running `sails lift`', function (){
+      testSpawningSailsLiftChildProcessInCwd({
+        pathToSailsCLI: pathToSailsCLI,
+        liftCliArgs: [],
+        httpRequestInstructions: {
+          method: 'GET',
+          uri: 'http://localhost:1337',
+        }
+      });
     });
 
     // Test `sails lift --port=1492` in the CWD.
-    testSpawningSailsLiftChildProcessInCwd({
-      pathToSailsCLI: pathToSailsCLI,
-      liftCliArgs: [
-        '--port=1492'
-      ]
+    describe('running `sails lift --port=1492`', function (){
+      testSpawningSailsLiftChildProcessInCwd({
+        pathToSailsCLI: pathToSailsCLI,
+        liftCliArgs: [
+          '--port=1492'
+        ],
+        httpRequestInstructions: {
+          method: 'GET',
+          uri: 'http://localhost:1492',
+        },
+        fnWithAdditionalTests: function (){
+          it('should NOT be able to contact localhost:1337 anymore', function (done){
+            request({
+              method: 'GET',
+              uri: 'http://localhost:1337',
+            }, function(err, response, body) {
+              if (err) { return done(); }
+              return done(new Error('Should not be able to communicate with locahost:1337 anymore.... Here is the response we received:'+util.inspect(response,{depth:null})+'\n\n* * Troublehooting * *\n Perhaps the Sails app running in the child process was not properly cleaned up when it received SIGTERM?  Or could be a problem with the tests.  Find out all this and more after you fix it.'));
+            });
+          });
+        }
+      });
     });
 
 
@@ -86,10 +110,18 @@ describe('Starting sails server with `sails lift`', function() {
       process.chdir(pathToEmptyDirectory);
     });
 
-    // Inject describe block that tests lifing Sails in the CWD
-    // by using our concisely-named helper: "testSpawningSailsLiftChildProcessInCwd()".
-    testSpawningSailsLiftChildProcessInCwd({
-      pathToSailsCLI: pathToSailsCLI
+    // Now inject a describe block that tests lifing Sails in the CWD using
+    // our wonderful little helper: "testSpawningSailsLiftChildProcessInCwd()".
+    describe('running `sails lift`', function (){
+      testSpawningSailsLiftChildProcessInCwd({
+        pathToSailsCLI: pathToSailsCLI,
+        liftCliArgs: [],
+        httpRequestInstructions: {
+          method: 'GET',
+          uri: 'http://localhost:1337',
+        },
+        expectFailedLift: true
+      });
     });
 
     // Finally clean up the empty directory we've been using.
@@ -125,17 +157,32 @@ describe('Starting sails server with `sails lift`', function() {
  * @required {Array} liftCliArgs
  *           an array of additional string CLI args/opts to pass to `sails lift`
  *           (e.g. `['--prod', '--port=\'your butt\'']`)
+ *
+ * @optional {Dictionary} httpRequestInstructions
+ *           A dictionary that gets passed in to `request()` when this helper attempts
+ *           to contact the Sails server running in the child process.
+ *           If provided at all, this must contain at least:
+ *             @property {String} method
+ *             @property {String} uri
+ *
+ * @optional {Function} fnWithAdditionalTests
+ *           A function with additional custom tests; that is, it has one or more `it()` blocks inside.
+ *
+ * @optional {Boolean} expectFailedLift
+ *           A flag which, if enabled, causes this test helper to _expect_ the lift to fail.
+ *           Also if it is set AND `httpRequestInstructions` are set, then the HTTP request
+ *           will still be sent-- but just to _make sure_ it fails too.
  */
 function testSpawningSailsLiftChildProcessInCwd (opts){
 
   if (!util.isArray(opts.liftCliArgs)){
-    throw new Error('Consistency violation: Missing or invalid `liftCliArgs` option in `testSpawningSailsLiftChildProcessInCwd()`. I may just be a test helper, but I\'m serious about parameter assertions!!!');
+    throw new Error('Consistency violation: Missing or invalid option (`liftCliArgs` should be an array)  in `testSpawningSailsLiftChildProcessInCwd()`. I may just be a test helper, but I\'m serious about assertions!!!');
   }
-  if (!util.isArray(opts.pathToSailsCLI)){
-    throw new Error('Consistency violation: Missing or invalid `pathToSailsCLI` option in `testSpawningSailsLiftChildProcessInCwd()`. I may just be a test helper, but I\'m serious about parameter assertions!!!');
+  if (!util.isString(opts.pathToSailsCLI)){
+    throw new Error('Consistency violation: Missing or invalid option (`pathToSailsCLI` should be a string) in `testSpawningSailsLiftChildProcessInCwd()`. I may just be a test helper, but I\'m serious about assertions!!!');
   }
 
-  describe('running `sails lift` and then waiting for a bit', function() {
+  describe('and then waiting for a bit', function() {
 
     // We can't use HTTP or ws:// requests for IPC for these tests, beause we're trying
     // to determine whether the Sails app has _actually loaded_, not just whether HTTP
@@ -153,9 +200,13 @@ function testSpawningSailsLiftChildProcessInCwd (opts){
     // Anyway, it's unnecessary since this works so... daintily.
     var N_SECONDS = 4;
 
+    // The max # of seconds to wait for graceful shutdown is used below.
+    // It's the other piece of how we know the app must have successfully lifted vs not.
+    // In addition to the N_SECONDS, this extra time gets tacked on at the very end below.
+    var MAX_SECONDS_TO_WAIT_FOR_GRACEFUL_SHUTDOWN = 1;
 
     // Tell mocha not to look red and angry, since we totally planned for it to take this long.
-    this.slow((N_SECONDS*1000)+1500);
+    this.slow((N_SECONDS*1000)+(MAX_SECONDS_TO_WAIT_FOR_GRACEFUL_SHUTDOWN*1000)+1500);
 
 
     // This variable will hold the reference to the child process.
@@ -186,32 +237,55 @@ function testSpawningSailsLiftChildProcessInCwd (opts){
     });//</it>
 
 
-    // Now we check to see whether this thing is ready to handle those hot hot HTTP requests.
-    it('should respond with a 200 status code when a request is sent to `GET /` at the default port (1337)', function(done) {
-      request({
-        method: 'GET',
-        uri: 'http://localhost:1337',
-      }, function(err, response, body) {
-        if (err) { return done(err); }
-        if (response.statusCode !== 200) {
-          return done(new Error('Expected to get a 200 status code from the server, but instead all we got was this lousy status code: `' + response.statusCode + '`'));
-        }
-        return done();
-      });
-    });//</it>
+    // Now if httpRequestInstructions were provided, we ping to the server to see whether this puppy
+    // is ready to handle all those hot hot HTTP requests we have planned for it.
+    if (!util.isUndefined(opts.httpRequestInstructions)){
+      it('should respond with a 200 status code when a `'+opts.httpRequestInstructions.method+'` request is sent to `'+opts.httpRequestInstructions.uri+'`', function(done) {
+        request(opts.httpRequestInstructions, function(err, response, body) {
+          if (err) {
+            // If the `opts.expectFailedLift` flag was provided, we're actually expecting an error here.
+            if (opts.expectFailedLift) {
+              return done();
+            }
+            // But normally this kind of "omg server is not online" error is rather bad.
+            return done(err);
+          }
+          if (response.statusCode !== 200) {
+            return done(new Error('Expected to get a 200 status code from the server, but instead all we got was this lousy status code: `' + response.statusCode + '`'));
+          }
+          return done();
+        });
+      });//</it>
+    }
+
+
+    // Now run any additional tests.
+    // (i.e. this function contains `it` blocks)
+    if (util.isFunction(opts.fnWithAdditionalTests)) {
+      opts.fnWithAdditionalTests();
+    }
 
 
     // Now send a SIGTERM signal.
     after(function (done){
       MProcess.killChildProcess({
         childProcess: sailsLiftProc,
-        maxMsToWait: 750
+        maxMsToWait: MAX_SECONDS_TO_WAIT_FOR_GRACEFUL_SHUTDOWN*1000
       }).exec(function (err){
         // If it worked, that means our child process was
         // still alive N seconds after it began lifting, and
         // that it was able to shut down gracefully in a
         // reasonable amount of time (see `maxMsToWait` above).
-        if (!err) { return done(); }
+        if (!err) {
+          // The one exception is if the `opts.expectFailedLift` flag was provided, in which case this
+          // is actually bad: In that case, it means the server clearly must have been lifted (since we
+          // just finished SIGTERMing it to death)
+          if (opts.expectFailedLift) {
+            return done(new Error('Hmm... But the Sails app should not have been lifted (the graceful shutdown should have failed).'));
+          }
+          // But otherwise in the general case, this means we're good.
+          return done();
+        }
 
         // Otherwise it didn't work, which means our child process never lifted
         // properly, or it was still lifting after N seconds.
@@ -222,10 +296,19 @@ function testSpawningSailsLiftChildProcessInCwd (opts){
           childProcess: sailsLiftProc,
           force: true
         }).exec(function (_forceKillErr){
+          // Now, if the `opts.expectFailedLift` flag was provided, this is actually what we want.
+          if (opts.expectFailedLift) {
+            return done();
+          }
+
+          // But normally it's totally bad news that we're having to SIGKILL this thing,
+          // so we send back an error whether or not the SIGKILL worked.
           if (_forceKillErr) {
             return done(new Error('So there was a problem:\n'+err.stack+'\nBut hey, also force-killing the child process didn\'t work.  So something weird is going on, I\'d say.  Check out the deets on that force kill error:\n' + _forceKillErr.stack));
           }
-          return done(err);
+          else {
+            return done(new Error('Should have been able to gracefully shut down child process, because it should have been lifted. Heres the error that came back when attempting the graceful shutdown (although honestly it prbly doesn\'t matter-- it\'s more likely the app just didn\'t successfully lift).  Graceful shutdown error:\n'+err.stack));
+          }
         });
       });
     });//</after>
