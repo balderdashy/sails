@@ -269,7 +269,6 @@ function reportBenchmarks() {
  */
 function _getTestCleanupCallback(app, cb) {
   return function afterLoadingSails (err) {
-    console.log('AFTER LOADING SAILS!',err);
     if(err) {
       return cb(new Error('Failed with error: '+err.stack));
     }
