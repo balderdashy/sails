@@ -130,9 +130,9 @@ describe('pubsub :: ', function() {
 
         socket2.on('user', function(message) {
           try {
-            assert(message.id == 1 &&
-              message.verb == 'updated' &&
-              message.data.profile == 1, Err.badResponse(message));
+            assert(+message.id === 1 &&
+              message.verb === 'updated' &&
+              +message.data.profile === 1, Err.badResponse(message));
             return done();
           }
           catch (e) {
@@ -185,14 +185,17 @@ describe('pubsub :: ', function() {
           // from user #2 telling us they are now attached to profile #1
           socket2.on('user', function(message) {
             // Ignore the "create" message if we happen to get it
-            if (message.verb == 'created' && message.data.name == 'Sandy') {
+            if (message.verb === 'created' && message.data.name === 'Sandy') {
               return;
             }
-            assert(
-              (message.id == 1 && message.verb == 'updated' && message.data.profile === null) ||
-              (message.id == 2 && message.verb == 'updated' && message.data.profile == 1), Err.badResponse(message));
+            try {
+              assert(
+                (+message.id === 1 && message.verb === 'updated' && util.isNull(message.data.profile)) ||
+                (+message.id === 2 && message.verb === 'updated' && +message.data.profile === 1), Err.badResponse(message));
+            }
+            catch (e) { return done(e); }
             msgsReceived++;
-            if (msgsReceived == 2) {
+            if (msgsReceived === 2) {
               done();
             }
           });
@@ -233,9 +236,10 @@ describe('pubsub :: ', function() {
       it('removing the user from the pet via DELETE /user/1/pets/1 should result a correct `pet` event being received by all subscribers', function(done) {
 
         socket1.on('pet', function(message) {
-          assert(message.id == 1 &&
-            message.verb == 'updated' &&
-            message.data.owner === null, Err.badResponse(message));
+          try {
+            assert(+message.id === 1 && message.verb === 'updated' && util.isNull(message.data.owner), Err.badResponse(message));
+          }
+          catch (e) { return done(e); }
           done();
         });
 
@@ -253,9 +257,10 @@ describe('pubsub :: ', function() {
       it.skip('removing a profile from the user via DELETE /userprofile/1 should result a correct `user` event being received by all subscribers', function(done) {
 
         socket2.on('user', function(message) {
-          assert(message.id == 2 &&
-            message.verb == 'updated' &&
-            message.data.profile === null, Err.badResponse(message));
+          try {
+            assert(+message.id === 2 && message.verb === 'updated' && util.isNull(message.data.profile), Err.badResponse(message));
+          }
+          catch (e) { return done(e); }
           done();
         });
 
