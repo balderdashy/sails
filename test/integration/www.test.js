@@ -126,6 +126,6 @@ describe('Running sails www', function() {
 					done();
 				}
 			});
-		});
+		})	;
 	});
 });
