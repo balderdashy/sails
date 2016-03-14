@@ -3,6 +3,7 @@
  */
 
 var util = require('util');
+var _ = require('lodash');
 var assert = require('assert');
 var socketHelper = require('./helpers/socketHelper.js');
 var appHelper = require('./helpers/appHelper');
@@ -169,7 +170,7 @@ describe('pubsub :: ', function() {
 
         socket1.on('pet', function(message) {
           try {
-            assert(+message.id === 1 && message.verb === 'updated' && util.isNull(message.data.owner), Err.badResponse(message));
+            assert(+message.id === 1 && message.verb === 'updated' && _.isNull(message.data.owner), Err.badResponse(message));
           }
           catch (e) { return done(e); }
           done();
