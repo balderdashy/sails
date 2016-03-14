@@ -4,6 +4,8 @@ var Sails = require('../../lib').Sails;
 var assert = require('assert');
 var cookie = require('cookie');
 
+
+
 describe('middleware :: ', function() {
 
   describe('session :: ', function() {
@@ -30,14 +32,10 @@ describe('middleware :: ', function() {
               '/test': function(req, res) {
                 var count = req.session.count || 1;
                 req.session.count = count + 1;
-                res.send("Count is " + count);
+                return res.send('Count is ' + count);
               }
             }
           }, done);
-        });
-
-        after(function(done) {
-          return app.lower(function(){setTimeout(done, 100);});
         });
 
         it('a server responses should supply a cookie with a session ID', function(done) {
@@ -65,7 +63,7 @@ describe('middleware :: ', function() {
               method: 'GET',
               uri: 'http://localhost:1535/test',
               headers: {
-                Cookie: "sails.sid=" + sid
+                Cookie: 'sails.sid=' + sid
               }
             },
             function(err, response, body) {
@@ -76,7 +74,15 @@ describe('middleware :: ', function() {
 
         });
 
+        after(function(done) {
+          return app.lower(done);
+        });
+
       });
+
+
+
+
 
       describe('with an invalid session secret', function() {
 
@@ -109,7 +115,7 @@ describe('middleware :: ', function() {
         });
 
         after(function(done) {
-          return app.lower(function(){setTimeout(done, 100);});
+          return app.lower(done);
         });
 
       });
@@ -136,15 +142,12 @@ describe('middleware :: ', function() {
               '/test': function(req, res) {
                 var count = req.session.count || 1;
                 req.session.count = count + 1;
-                res.send("Count is " + count);
+                res.send('Count is ' + count);
               }
             }
           }, done);
         });
 
-        after(function(done) {
-          return app.lower(function(){setTimeout(done, 100);});
-        });
 
         it('a server responses should supply a cookie with a session ID', function(done) {
 
@@ -171,7 +174,7 @@ describe('middleware :: ', function() {
               method: 'GET',
               url: '/test',
               headers: {
-                Cookie: "sails.sid=" + sid
+                Cookie: 'sails.sid=' + sid
               }
             },
             function(err, response, body) {
@@ -180,6 +183,10 @@ describe('middleware :: ', function() {
             }
           );
 
+        });
+
+        after(function(done) {
+          return app.lower(done);
         });
 
       });

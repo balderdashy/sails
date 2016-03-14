@@ -2,6 +2,7 @@
  * Module dependencies
  */
 
+var util = require('util');
 var assert = require('assert');
 var _ = require('lodash');
 var async = require('async');
@@ -18,24 +19,6 @@ describe('Pubsub hook', function (){
 
     // Setup
     ////////////////////////////////////////////////////////////////////////////////
-
-    // Provide the app w/ a couple of models
-    before(function (){
-      app.models = {
-        vessel: {
-          attributes: {
-            name: {type: 'string'},
-            dockedAt: {model: 'Dock'}
-          }
-        },
-        dock: {
-          attributes: {
-            location: {type: 'string'},
-            vessels: {collection:'Vessel', via: 'dockedAt'}
-          }
-        }
-      };
-    });
 
     // Lift the app
     before(function (done){
@@ -56,9 +39,28 @@ describe('Pubsub hook', function (){
             app.models.dock.publishAdd(req.param('id'), 'vessels', req.param('vessel'));
             return res.send();
           }
+        },
+        // Provide the app w/ a couple of models
+        orm: {
+          moduleDefinitions: {
+            models: {
+              vessel: {
+                attributes: {
+                  name: {type: 'string'},
+                  dockedAt: {model: 'Dock'}
+                }
+              },
+              dock: {
+                attributes: {
+                  location: {type: 'string'},
+                  vessels: {collection:'Vessel', via: 'dockedAt'}
+                }
+              }
+            }
+          }
         }
       }, function (err){
-        if (err) return done(err);
+        if (err) { return done(err); }
         return done();
       });
     });
@@ -87,8 +89,10 @@ describe('Pubsub hook', function (){
     before(function (done){
       async.each(_.keys(clientSocks), function (key, next){
         clientSocks[key].put('/dock/1/subscribe', function(body, jwr) {
-          if (jwr.error) return next(err);
-          next();
+          if (jwr.error) {
+            return next(new Error('Error received on jwr.  JWR:'+util.inspect(jwr, {depth: null}) ));
+          }
+          return next();
         });
       }, done);
     });
@@ -119,7 +123,10 @@ describe('Pubsub hook', function (){
 
     // Shut down the app
     after(function (done){
-      app.lower(function(){setTimeout(done, 100);});
+      app.lower(done);
+
+      // If we ever find ourselves needing this again, we can bring it back:
+      // app.lower(function(){setTimeout(done, 100);});
     });
 
 
@@ -133,7 +140,7 @@ describe('Pubsub hook', function (){
         clientSocks.lenny.post('/dock/1/addVessel', {
           vessel: 47
         }, function (body, jwr){
-          if (jwr.error) return done(jwr.error);
+          if (jwr.error) { return done(jwr.error); }
           return done();
         });
       });
@@ -158,7 +165,7 @@ describe('Pubsub hook', function (){
             name: 'The Silver Goose'
           }
         }, function (body, jwr){
-          if (jwr.error) return done(jwr.error);
+          if (jwr.error) { return done(jwr.error); }
           return done();
         });
       });
@@ -184,7 +191,7 @@ describe('Pubsub hook', function (){
             name: 'The Silver Goose'
           }
         }, function (body, jwr){
-          if (jwr.error) return done(jwr.error);
+          if (jwr.error) { return done(jwr.error); }
           //
           // NOTE:
           // publishAdd does not currently throw an error, in keeping with

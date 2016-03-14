@@ -25,9 +25,9 @@ This hook's responsibilities are:
 
 ##### Run a Grunt tasklist when Sails is loaded
 
-When Sails is loaded, this hook spins up a Grunt child process and runs the conventional tasklist.  The tasklist to run depends on the environment (`NODE_ENV`).
+When Sails is loaded, this hook spins up a Grunt child process and runs the conventional tasklist.  The tasklist to run depends on the environment (`sails.config.environment`).
 
-This hook will first look for a file in `tasks/register/` that corresponds with the environment name (e.g. `jessa-staging.js`).  If no such tasklist file is found (the default case), but environment is `production`, then the `prod` tasklist is used.  Otherwise, the `default` Grunt tasklist is used.
+This hook will first look for a file in `tasks/register/` that corresponds with the environment name (e.g. if your environment is set to `'staging'`, then Sails will look for a tasklist file named `staging.js`).  If no such tasklist file is found, but environment is `production`, then the `prod` tasklist is used (a special case for compatibility).  Otherwise, the `default` Grunt tasklist is used.
 
 
 ##### Parse and log output

@@ -1,133 +1,145 @@
-
-
 var _ = require('lodash');
 var portfinder = require('portfinder');
 portfinder.basePort = 2001;
 
 var SHOW_VERBOSE_BENCHMARK_REPORT = _.any(process.argv, function(arg) {
-	return arg.match(/-v/);
+  return arg.match(/-v/);
 });
 
-describe('benchmarks', function () {
+describe('benchmarks', function() {
 
-	describe('sails.load()', function() {
-		before(setupBenchmarks);
-		after(reportBenchmarks);
-
-
-		//
-		// Instantiate
-		//
-
-		benchmark('require("sails")', function(cb) {
-			var Sails = require('../../lib/app');
-			var sails = new Sails();
-			return cb();
-		});
+  describe('sails.load()', function() {
+    before(setupBenchmarks);
+    after(reportBenchmarks);
 
 
-		//
-		// Load
-		//
+    //
+    // Instantiate
+    //
 
-		benchmark('sails.load  [first time, no hooks]', function(cb) {
-			var Sails = require('../../lib/app');
-			var sails = new Sails();
-			sails.load({
-				log: { level: 'error' },
-				globals: false,
-				loadHooks: []
-			}, cb);
-		});
-
-		benchmark('sails.load  [again, no hooks]', function(cb) {
-			this.expected = 25;
-			this.comment = 'faster b/c of require cache';
-
-			var Sails = require('../../lib/app');
-			var sails = new Sails();
-			sails.load({
-				log: { level: 'error' },
-				globals: false,
-				loadHooks: []
-			}, cb);
-		});
-
-		benchmark('sails.load  [with moduleloader hook]', function(cb) {
-			this.expected = 25;
-			this.comment = 'faster b/c of require cache';
-
-			var Sails = require('../../lib/app');
-			var sails = new Sails();
-
-			sails.load({
-				log: { level: 'error' },
-				globals: false,
-				loadHooks: ['moduleloader']
-			}, cb);
-
-		});
-
-		benchmark('sails.load  [all core hooks]', function(cb) {
-			this.expected = 3000;
-
-			var Sails = require('../../lib/app');
-			var sails = new Sails();
-			sails.load({
-				log: { level: 'error' },
-				globals: false
-			}, cb);
-		});
-
-		benchmark('sails.load  [again, all core hooks]', function(cb) {
-			this.expected = 3000;
-
-			var Sails = require('../../lib/app');
-			var sails = new Sails();
-			sails.load({
-				log: { level: 'error' },
-				globals: false
-			}, cb);
-		});
+    benchmark('require("sails")', function(cb) {
+      var Sails = require('../../lib/app');
+      var sails = new Sails();
+      return cb();
+    });
 
 
-		//
-		// Lift
-		//
+    //
+    // Load
+    //
 
-		benchmark('sails.lift  [w/ a hot require cache]', function(cb) {
-			this.expected = 3000;
+    benchmark('sails.load  [first time, no hooks]', function(cb) {
+      var Sails = require('../../lib/app');
+      var sails = new Sails();
+      sails.load({
+        log: {
+          level: 'error'
+        },
+        globals: false,
+        loadHooks: []
+      }, _getTestCleanupCallback(sails, cb));
+    });
 
-			var Sails = require('../../lib/app');
-			var sails = new Sails();
-			portfinder.getPort(function (err, port) {
-				if (err) throw err;
+    benchmark('sails.load  [again, no hooks]', function(cb) {
+      this.expected = 25;
+      this.comment = 'faster b/c of require cache';
 
-				sails.lift({
-					log: { level: 'error' },
-					port: port,
-					globals: false
-				}, cb);
-			});
-		});
+      var Sails = require('../../lib/app');
+      var sails = new Sails();
+      sails.load({
+        log: {
+          level: 'error'
+        },
+        globals: false,
+        loadHooks: []
+      }, _getTestCleanupCallback(sails, cb));
+    });
 
-		benchmark('sails.lift  [again, w/ a hot require cache]', function(cb) {
-			this.expected = 3000;
+    benchmark('sails.load  [with moduleloader hook]', function(cb) {
+      this.expected = 25;
+      this.comment = 'faster b/c of require cache';
 
-			var Sails = require('../../lib/app');
-			var sails = new Sails();
-			portfinder.getPort(function (err, port) {
-				if (err) throw err;
+      var Sails = require('../../lib/app');
+      var sails = new Sails();
 
-				sails.lift({
-					log: { level: 'error' },
-					port: port,
-					globals: false
-				}, cb);
-			});
-		});
+      sails.load({
+        log: {
+          level: 'error'
+        },
+        globals: false,
+        loadHooks: ['moduleloader']
+      }, _getTestCleanupCallback(sails, cb));
 
-	});
+    });
+
+    benchmark('sails.load  [all core hooks]', function(cb) {
+      this.expected = 3000;
+
+      var Sails = require('../../lib/app');
+      var sails = new Sails();
+      sails.load({
+        log: {
+          level: 'error'
+        },
+        globals: false
+      }, _getTestCleanupCallback(sails, cb));
+    });
+
+    benchmark('sails.load  [again, all core hooks]', function(cb) {
+      this.expected = 3000;
+
+      var Sails = require('../../lib/app');
+      var sails = new Sails();
+      sails.load({
+        log: {
+          level: 'error'
+        },
+        globals: false
+      }, _getTestCleanupCallback(sails, cb));
+    });
+
+
+    //
+    // Lift
+    //
+
+    benchmark('sails.lift  [w/ a hot require cache]', function(cb) {
+      this.expected = 3000;
+
+      var Sails = require('../../lib/app');
+      var sails = new Sails();
+      portfinder.getPort(function(err, port) {
+        if (err) { throw err; }
+
+        sails.lift({
+          log: {
+            level: 'error'
+          },
+          port: port,
+          globals: false
+        }, _getTestCleanupCallback(sails, cb));
+      });
+    });
+
+    benchmark('sails.lift  [again, w/ a hot require cache]', function(cb) {
+      this.expected = 3000;
+
+      var Sails = require('../../lib/app');
+      var sails = new Sails();
+      portfinder.getPort(function(err, port) {
+        if (err) { throw err; }
+
+        sails.lift({
+          log: {
+            level: 'error'
+          },
+          port: port,
+          globals: false
+        }, _getTestCleanupCallback(sails, cb));
+      });
+    });
+
+  });
 
 
 });
@@ -138,36 +150,42 @@ describe('benchmarks', function () {
  *
  * @param  {[type]}   description [description]
  * @param  {Function} fn          [description]
- * @return {[type]}               [description]
+ * @param  {Function} afterwards
  */
-function benchmark (description, fn) {
+function benchmark(description, fn) {
 
-	it (description, function (cb) {
-		var self = this;
+  it(description, function (cb) {
+    var self = this;
 
     var t1 = process.hrtime();
 
-		fn.apply(this, [function _callback () {
+    fn.apply(self, [
+      function _callbackFromFn(err) {
+        var _result = {};
 
-			var _result = {};
+        // If a `comment` or `expected` was provided, harvest it
+        _result.expected = self.expected;
+        self.expected = null;
 
-			// If a `comment` or `expected` was provided, harvest it
-			_result.expected = self.expected;
-			self.expected = null;
+        _result.comment = self.comment;
+        self.comment = null;
 
-			_result.comment = self.comment;
-			self.comment = null;
+        var diff = process.hrtime(t1);
 
-      var diff = process.hrtime(t1);
+        _.result.duration = (diff[0] * 1e6) + (diff[1] / 1e3);
+        _result.benchmark = description;
 
-      _.result.duration = (diff[0] * 1e6) + (diff[1] / 1e3);
-			_result.benchmark = description;
+        // console.log('finished ',_result);
+        self.benchmarks.push(_result);
 
-			// console.log('finished ',_result);
-			self.benchmarks.push(_result);
-			cb.apply(Array.prototype.slice.call(arguments));
-		}]);
-	});
+        if (err) {
+          return cb(err);
+        }
+
+        return cb.apply(Array.prototype.slice.call(arguments));
+     }
+    ]);
+  });//</it>
 }
 
 
@@ -177,7 +195,7 @@ function benchmark (description, fn) {
  * @this {Array} benchmarks
  */
 function setupBenchmarks() {
-	this.benchmarks = [];
+  this.benchmarks = [];
 }
 
 
@@ -186,57 +204,80 @@ function setupBenchmarks() {
  *
  * @this {Array} benchmarks
  */
-function reportBenchmarks () {
-	var _ = require('lodash');
+function reportBenchmarks() {
+  var _ = require('lodash');
 
-	require('colors');
+  require('colors');
 
-	var output = '\n\nBenchmark Report ::\n';
-	output += _.reduce(this.benchmarks, function (memo, result) {
+  var output = '\n\nBenchmark Report ::\n';
+  output += _.reduce(this.benchmarks, function(memo, result) {
 
-		// Convert to ms-
-		var ms = (result.duration / 1000.0);
+    // Convert to ms-
+    var ms = (result.duration / 1000.0);
 
-		// round to 0 decimal places
-		function _roundDecimalTo (num, numPlaces) {
-			return +(Math.round(num + ('e+'+numPlaces))  + ('e-'+numPlaces));
-		}
-		ms = _roundDecimalTo(ms, 2);
+    // round to 0 decimal places
+    function _roundDecimalTo(num, numPlaces) {
+      return +(Math.round(num + ('e+' + numPlaces)) + ('e-' + numPlaces));
+    }
+    ms = _roundDecimalTo(ms, 2);
 
 
-		var expected = result.expected || 1000;
+    var expected = result.expected || 1000;
 
-		// threshold: the "failure" threshold
-		var threshold = result.expected;
+    // threshold: the "failure" threshold
+    var threshold = result.expected;
 
-		var color =
-			(ms < 1*expected/10) ? 'green' :
-			(ms < 3*expected/10) ? 'green' :
-			(ms < 6*expected/10) ? 'cyan' :
-			(ms < threshold) ? 'yellow' :
-			'red';
+    var color =
+      (ms < 1 * expected / 10) ? 'green' :
+      (ms < 3 * expected / 10) ? 'green' :
+      (ms < 6 * expected / 10) ? 'cyan' :
+      (ms < threshold) ? 'yellow' :
+      'red';
 
-		ms += 'ms';
-		ms = ms[color];
+    ms += 'ms';
+    ms = ms[color];
 
-		// Whether to show expected ms
-		var showExpected = true; // ms >= threshold;
+    // Whether to show expected ms
+    var showExpected = true; // ms >= threshold;
 
-		return memo + '\n ' +
-			(result.benchmark+'') + ' :: '.grey + ms +
+    return memo + '\n ' +
+      (result.benchmark + '') + ' :: '.grey + ms +
 
-			// Expected ms provided, and the test took quite a while
-			(result.expected && showExpected ? '\n   (expected '+expected+'ms' +
-				(result.comment ? ' --' + result.comment : '') +
-			')' :
+      // Expected ms provided, and the test took quite a while
+      (result.expected && showExpected ? '\n   (expected ' + expected + 'ms' +
+        (result.comment ? ' --' + result.comment : '') +
+        ')' :
 
-			// Comment provided - but no expected ms
-			(result.comment ? '\n   (' + result.comment +')\n' : '')
-			).grey;
-	},'');
+        // Comment provided - but no expected ms
+        (result.comment ? '\n   (' + result.comment + ')\n' : '')
+      ).grey;
+  }, '');
 
-	// Log output (optional)
-	if (SHOW_VERBOSE_BENCHMARK_REPORT) {
-		console.log( output );
-	}
+  // Log output (optional)
+  if (SHOW_VERBOSE_BENCHMARK_REPORT) {
+    console.log(output);
+  }
+}
+
+
+
+
+/**
+ *
+ * @param  {Function} cb [description]
+ * @return {Function}
+ */
+function _getTestCleanupCallback(app, cb) {
+  return function afterLoadingSails (err) {
+    if(err) {
+      return cb(new Error('Failed with error: '+err.stack));
+    }
+    app.lower(function (errLowering){
+      if (errLowering) {
+        return cb(new Error('Everything was otherwise ok, but failed to `.lower()` app. Details:' + errLowering.stack));
+      }
+      if (err) { return cb(err); }
+      return cb();
+    });
+  };
 }

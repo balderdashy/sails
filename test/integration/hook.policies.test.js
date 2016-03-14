@@ -2,14 +2,13 @@
  * Module dependencies
  */
 
+var path = require('path');
 var util = require('util');
 var assert = require('assert');
 var httpHelper = require('./helpers/httpHelper');
 var appHelper = require('./helpers/appHelper');
-var path = require('path');
 var fs = require('fs-extra');
 var wrench = require('wrench');
-
 
 
 
@@ -24,34 +23,30 @@ var wrench = require('wrench');
 
 describe('router :: ', function() {
 
-  var sailsprocess;
 
   describe('Policies', function() {
     var appName = 'testApp';
 
-    before(function(done) {
-      appHelper.build(done);
-    });
-
+    var sailsApp;
     beforeEach(function(done) {
       appHelper.lift({
-        verbose: false
+        log: { level: 'silent' }
       }, function(err, sails) {
-        if (err) {
-          throw new Error(err);
-        }
-        sailsprocess = sails;
-        sailsprocess.once('hook:http:listening', done);
+        if (err) { return done(err); }
+        sailsApp = sails;
+        return done();
       });
     });
 
     afterEach(function(done) {
-      sailsprocess.kill(function(){setTimeout(done, 100);});
+      sailsApp.lower(done);
     });
 
-    after(function() {
-      process.chdir('../');
-      appHelper.teardown();
+
+
+
+    before(function(done) {
+      appHelper.build(done);
     });
 
     describe('an error in the policy callback', function() {
@@ -80,8 +75,7 @@ describe('router :: ', function() {
             assert.equal(response.body, 'Test Error',
               util.format('`response.body` should === "Test Error" but instead it is "%s"', response.body.error)
             );
-          }
-          catch (e) {
+          } catch (e) {
             return done(e);
           }
           return done();
@@ -122,8 +116,9 @@ describe('router :: ', function() {
 
               // Assert that response has the proper error message
               assert.equal(response.body, 'Test Error');
+            } catch (e) {
+              return done(e);
             }
-            catch (e) { return done(e); }
             return done();
           });
         });
@@ -159,8 +154,7 @@ describe('router :: ', function() {
 
             try {
               assert.equal(response.body, 'findOne');
-            }
-            catch (e) {
+            } catch (e) {
               return done(e);
             }
             return done();
@@ -191,8 +185,7 @@ describe('router :: ', function() {
                 // Assert that response has the proper error message
                 assert.equal(response.body, 'Test Error');
 
-              }
-              catch (e) {
+              } catch (e) {
                 return done(e);
               }
 
@@ -303,7 +296,7 @@ describe('router :: ', function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), config);
       });
 
-      it ('should be applied', function(done) {
+      it('should be applied', function(done) {
         httpHelper.testRoute('get', {
           url: 'testPol',
           headers: {
@@ -320,8 +313,7 @@ describe('router :: ', function() {
             // Assert that response has the proper error message
             assert.equal(response.body, 'Test Error');
 
-          }
-          catch (e) {
+          } catch (e) {
             return done(e);
           }
 
@@ -329,7 +321,7 @@ describe('router :: ', function() {
         });
       });
 
-      it ('should respect options', function(done) {
+      it('should respect options', function(done) {
         httpHelper.testRoute('get', {
           url: 'foobar',
           headers: {
@@ -346,22 +338,24 @@ describe('router :: ', function() {
             // Assert that response has the proper error message
             assert.equal(response.body, 'ok!');
 
-          }
-          catch (e) {
+          } catch (e) {
             return done(e);
           }
 
           return done();
         });
       });
-
-
     });
 
+    after(function() {
+      process.chdir('../');
+      appHelper.teardown();
+    });
   });
 
 
-  describe('Test adding hooks from another hooks', function() {
+
+  describe('Test adding policies from another hooks', function() {
     var appName = 'testApp';
 
     before(function(done) {
@@ -370,19 +364,16 @@ describe('router :: ', function() {
 
     before(function(done) {
       fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules"), function(err) {
-        if (err) {return done(err);}
+        if (err) {
+          return done(err);
+        }
 
         wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/add-policy'),
-            path.resolve(__dirname,'../../testApp/node_modules/sails-hook-add-policy'));
+          path.resolve(__dirname, '../../testApp/node_modules/sails-hook-add-policy'));
 
         process.chdir(path.resolve(__dirname, "../..", appName));
         done();
       });
-    });
-
-    after(function() {
-      process.chdir('../');
-      appHelper.teardown();
     });
 
 
@@ -392,14 +383,12 @@ describe('router :: ', function() {
 
       before(function(done) {
         appHelper.liftQuiet(function(err, _sails) {
-          if (err) {return done(err);}
+          if (err) {
+            return done(err);
+          }
           sails = _sails;
           return done();
         });
-      });
-
-      after(function(done) {
-        sails.lower(function(){setTimeout(done, 100);});
       });
 
       it('should install a hook into `sails.hooks.add-policy`', function() {
@@ -408,6 +397,10 @@ describe('router :: ', function() {
 
       it('should add policy `forbidden` to app', function() {
         assert(sails.hooks.policies.middleware.forbidden);
+      });
+
+      after(function(done) {
+        sails.lower(done);
       });
 
     });
@@ -428,14 +421,12 @@ describe('router :: ', function() {
         appHelper.lift({
           policies: policy
         }, function(err, _sails) {
-          if (err) {return done(err);}
+          if (err) {
+            return done(err);
+          }
           sails = _sails;
           return done();
         });
-      });
-
-      after(function(done) {
-        sails.lower(function(){setTimeout(done, 100);});
       });
 
       it('should return `statusCode` 403 ', function(done) {
@@ -459,7 +450,7 @@ describe('router :: ', function() {
           },
           json: true
         }, function(err, response) {
-          if (err) return done(err);
+          if (err) { return done(err); }
 
           try {
             assert.equal(response.statusCode, 500);
@@ -470,16 +461,23 @@ describe('router :: ', function() {
             assert.equal(response.body, 'Test Error',
               util.format('`response.body` should === "Test Error" but instead it is "%s"', response.body.error)
             );
-          }
-          catch (e) {
+          } catch (e) {
             return done(e);
           }
           return done();
         });
       });
 
+      after(function(done) {
+        sails.lower(done);
+      });
     });
 
+
+    after(function() {
+      process.chdir('../');
+      appHelper.teardown();
+    });
   });
 
 });

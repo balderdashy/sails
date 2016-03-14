@@ -123,9 +123,16 @@ describe('Running sails www', function() {
 				var dataString = data + '';
 				if (dataString.indexOf("`grunt buildProd`") !== -1) {
 
-					done();
-				}
-			});
-		})	;
-	});
+          done();
+        }
+      });
+    });
+
+  });
+
+  after(function() {
+    if (fs.existsSync(appName)) {
+      wrench.rmdirSyncRecursive(appName);
+    }
+  });
 });

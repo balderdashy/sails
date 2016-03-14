@@ -12,45 +12,47 @@ describe('middleware :: ', function() {
   describe('favicon :: ', function() {
 
     var appName = 'testApp';
-    var sailsServer;
-
-    before(function(done) {
-      appHelper.build(done);
-    });
-
-    after(function() {
-      process.chdir('../');
-      // appHelper.teardown();
-    });
+    var sailsApp;
 
     describe('with no favicon file in the assets folder', function() {
 
       before(function(done) {
-        appHelper.lift(function(err, _sailsServer) {
-          assert(!err);
-          sailsServer = _sailsServer;
+        appHelper.build(done);
+      });
+
+      before(function(done) {
+        appHelper.lift(function(err, _sailsApp) {
+          if (err) { return done(err); }
+          sailsApp = _sailsApp;
           return done();
         });
       });
 
-      after(function(done) {
-        sailsServer.lower(function(){setTimeout(done, 100);});
-      });
-
       it('the default sailboat favicon should be provided', function(done) {
 
-        var default_favicon = fs.readFileSync(path.resolve(__dirname, '../../lib/hooks/http/public/favicon.ico'));
+        var default_favicon = fs.readFileSync(path.resolve(__dirname, '../../lib/hooks/http/default-favicon.ico'));
         request(
           {
             method: 'GET',
             uri: 'http://localhost:1342/favicon.ico',
           },
           function(err, response, body) {
+            if (err) { return done(err); }
+            assert.equal(response.statusCode, 200);
             assert.equal(default_favicon.toString('utf-8'), body);
             return done();
           }
         );
 
+      });
+
+      after(function() {
+        process.chdir('../');
+        appHelper.teardown();
+      });
+
+      after(function(done) {
+        sailsApp.lower(done);
       });
 
     });

@@ -16,10 +16,11 @@ describe('Pubsub hook', function (){
           log: {level: 'silent'},
           loadHooks: ['moduleloader','userconfig','pubsub']
         }, function (err){
-          if (err) return done();
+          if (err) { return done(); }
           return done(new Error('Should have failed to load the pubsub hook w/o the `orm` hook.'));
         });
       });
+      after(app.lower);
     });
 
     describe('without sockets hook', function (){
@@ -30,10 +31,11 @@ describe('Pubsub hook', function (){
           log: {level: 'silent'},
           loadHooks: ['moduleloader','userconfig','orm', 'pubsub']
         }, function (err){
-          if (err) return done();
+          if (err) { return done(); }
           return done(new Error('Should have failed to load the pubsub hook w/o the `sockets` hook.'));
         });
       });
+      after(app.lower);
     });
 
     describe('without http hook', function (){
@@ -44,10 +46,11 @@ describe('Pubsub hook', function (){
           log: {level: 'silent'},
           loadHooks: ['moduleloader','userconfig','orm', 'sockets', 'pubsub']
         }, function (err){
-          if (err) return done();
+          if (err) { return done(); }
           return done(new Error('Should have failed to load the pubsub hook w/o the `http` hook.'));
         });
       });
+      after(app.lower);
     });
 
     describe('with `orm` and `sockets` hooks', function (){
@@ -58,12 +61,12 @@ describe('Pubsub hook', function (){
           log: {level: 'warn'},
           loadHooks: ['moduleloader','userconfig','orm', 'http', 'sockets', 'pubsub']
         }, function (err){
-          if (err) return done(err);
+          if (err) { return done(err); }
           return done();
         });
       });
+      after(app.lower);
     });
   });
 
 });
-

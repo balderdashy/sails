@@ -1,7 +1,17 @@
+/**
+ * Module dependencies
+ */
+
 var _ = require('lodash');
 var request = require('request');
 var Sails = require('../../lib').Sails;
 var assert = require('assert');
+
+
+
+
+
+
 
 describe('middleware :: ', function() {
 
@@ -34,10 +44,6 @@ describe('middleware :: ', function() {
           }, done);
         });
 
-        after(function(done) {
-          return app.lower(function(){setTimeout(done, 100);});
-        });
-
         it('when sending a request with a Cookie: header, req.cookies and req.signedCookies should be populated', function(done) {
           var rawLen = 0, res = '';
           request(
@@ -49,6 +55,7 @@ describe('middleware :: ', function() {
               }
             },
             function(err, response, body) {
+              if(err){ return done(err); }
               body = JSON.parse(body);
               assert(body.cookies);
               assert(body.signedCookies);
@@ -61,6 +68,9 @@ describe('middleware :: ', function() {
           );
         });
 
+        after(function(done) {
+          app.lower(done);
+        });
       });
 
       describe('with no session secret and session hook disabled', function() {
@@ -91,10 +101,6 @@ describe('middleware :: ', function() {
           }, done);
         });
 
-        after(function(done) {
-          return app.lower(function(){setTimeout(done, 100);});
-        });
-
         it('when sending a request with a Cookie: header, req.cookies and req.signedCookies should be populated', function(done) {
           var rawLen = 0, res = '';
           request(
@@ -106,6 +112,7 @@ describe('middleware :: ', function() {
               }
             },
             function(err, response, body) {
+              if(err){ return done(err); }
               body = JSON.parse(body);
               assert(body.cookies);
               assert(body.signedCookies);
@@ -116,6 +123,10 @@ describe('middleware :: ', function() {
               return done();
             }
           );
+        });
+
+        after(function(done) {
+          app.lower(done);
         });
 
       });
@@ -154,7 +165,7 @@ describe('middleware :: ', function() {
         });
 
         after(function(done) {
-          return app.lower(function(){setTimeout(done, 100);});
+          app.lower(done);
         });
 
       });
@@ -192,10 +203,6 @@ describe('middleware :: ', function() {
           }, done);
         });
 
-        after(function(done) {
-          return app.lower(function(){setTimeout(done, 100);});
-        });
-
         it('when sending a request with a Cookie: header, req.cookies and req.signedCookies should be populated', function(done) {
           var rawLen = 0, res = '';
           app.request(
@@ -207,6 +214,7 @@ describe('middleware :: ', function() {
               }
             },
             function(err, response, body) {
+              if(err){ return done(err); }
               assert(body.cookies);
               assert(body.signedCookies);
               assert.equal(body.cookies.foo, 'bar');
@@ -216,6 +224,10 @@ describe('middleware :: ', function() {
               return done();
             }
           );
+        });
+
+        after(function(done) {
+          app.lower(done);
         });
 
       });
@@ -241,7 +253,7 @@ describe('middleware :: ', function() {
             },
             routes: {
               '/test': function(req, res) {
-                res.json({
+                return res.json({
                   cookies: req.cookies,
                   signedCookies: req.signedCookies
                 });
@@ -250,9 +262,6 @@ describe('middleware :: ', function() {
           }, done);
         });
 
-        after(function(done) {
-          return app.lower(function(){setTimeout(done, 100);});
-        });
 
         it('when sending a request with a Cookie: header, req.cookies and req.signedCookies should be populated', function(done) {
           var rawLen = 0, res = '';
@@ -265,6 +274,7 @@ describe('middleware :: ', function() {
               }
             },
             function(err, response, body) {
+              if(err){ return done(err); }
               assert(body.cookies);
               assert(body.signedCookies);
               assert.equal(body.cookies.foo, 'bar');
@@ -274,6 +284,10 @@ describe('middleware :: ', function() {
               return done();
             }
           );
+        });
+
+        after(function(done) {
+          app.lower(done);
         });
 
       });
@@ -314,7 +328,7 @@ describe('middleware :: ', function() {
         });
 
         after(function(done) {
-          return app.lower(function(){setTimeout(done, 100);});
+          app.lower(done);
         });
 
       });

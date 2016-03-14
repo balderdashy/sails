@@ -1,3 +1,7 @@
+/**
+ * Module dependencies
+ */
+
 var _ = require('lodash');
 var request = require('request');
 var Sails = require('../../lib').Sails;
@@ -7,12 +11,15 @@ var request = require('request');
 var appHelper = require('./helpers/appHelper');
 var path = require('path');
 
+
+
+
+
 describe('middleware :: ', function() {
 
   describe('static :: ', function() {
 
     var appName = 'testApp';
-    var sailsServer;
     var customFaviconPath = path.resolve(__dirname, 'fixtures/favicon.ico');
     var test_file;
 
@@ -27,25 +34,20 @@ describe('middleware :: ', function() {
       });
     });
 
-    after(function() {
-      process.chdir('../');
-      appHelper.teardown();
-    });
+
+
 
 
     describe('with a test.txt, test.png and test.woff file in the .tmp/public folder', function() {
 
+      var sailsApp;
       before(function(done) {
 
-        appHelper.lift(function(err, _sailsServer) {
+        appHelper.lift(function(err, _sailsApp) {
           assert(!err);
-          sailsServer = _sailsServer;
+          sailsApp = _sailsApp;
           return done();
         });
-      });
-
-      after(function(done) {
-        sailsServer.lower(function(){setTimeout(done, 100);});
       });
 
       it('a request to /test.txt should provide the file with the correct content-type header', function(done) {
@@ -96,10 +98,18 @@ describe('middleware :: ', function() {
 
       });
 
+      after(function(done) {
+        sailsApp.lower(done);
+      });
+
     });
+
+
+
 
     describe('with cache time set to 5000 ms', function() {
 
+      var sailsApp;
       before(function(done) {
 
         appHelper.lift({
@@ -107,15 +117,11 @@ describe('middleware :: ', function() {
             cache: 5000
           }
         },
-        function(err, _sailsServer) {
+        function(err, _sailsApp) {
           assert(!err);
-          sailsServer = _sailsServer;
+          sailsApp = _sailsApp;
           return done();
         });
-      });
-
-      after(function(done) {
-        sailsServer.lower(function(){setTimeout(done, 100);});
       });
 
       it('a request to /test.txt should provide the file and a correct cache-control header', function(done) {
@@ -133,6 +139,15 @@ describe('middleware :: ', function() {
         );
       });
 
+      after(function(done) {
+        sailsApp.lower(done);
+      });
+
+    });
+
+    after(function() {
+      process.chdir('../');
+      appHelper.teardown();
     });
 
   });

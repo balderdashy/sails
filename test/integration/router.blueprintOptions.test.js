@@ -1,13 +1,17 @@
 /**
- * Test dependencies
+ * Module dependencies
  */
+
+var util = require('util');
 var assert = require('assert');
+var _ = require('lodash');
+var async = require('async');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
-var util = require('util');
-var async = require('async');
 var fixture = require('./fixtures/users.js');
-var _ = require('lodash');
+
+
+
 
 /**
  * Errors
@@ -17,6 +21,10 @@ var Err = {
     return 'Wrong server response!  Response :::\n' + util.inspect(response.body);
   }
 };
+
+
+
+
 
 
 describe('router :: ', function() {
@@ -86,7 +94,7 @@ describe('router :: ', function() {
     after(function(done) {
       process.chdir('../');
       appHelper.teardown();
-      sailsprocess.kill(function(){setTimeout(done, 100);});
+      sailsprocess.lower(function(){setTimeout(done, 100);});
     });
 
     describe('a get request to /user', function() {

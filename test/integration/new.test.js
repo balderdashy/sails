@@ -1,14 +1,15 @@
 /**
  * Module dependencies
  */
-var assert  = require('assert'),
-  fs    = require('fs'),
-  wrench  = require('wrench'),
-  exec  = require('child_process').exec,
-  _   = require('lodash'),
-  appHelper = require('./helpers/appHelper'),
-  path = require('path'),
-  util  = require('util');
+
+var assert  = require('assert');
+var fs    = require('fs');
+var wrench  = require('wrench');
+var exec  = require('child_process').exec;
+var _   = require('lodash');
+var appHelper = require('./helpers/appHelper');
+var path = require('path');
+var util  = require('util');
 
 
 
@@ -47,11 +48,9 @@ describe('New app generator', function() {
     it('should create new, liftable app in new folder', function(done) {
       exec('node '+ sailsbin + ' new ' + appName, function(err) {
         if (err) { return done(new Error(err)); }
-        appHelper.lift({log:{level:'silent'}}, function(err, sailsprocess) {
+        appHelper.lift({log:{level:'silent'}}, function(err, sailsApp) {
           if (err) {return done(err);}
-          sailsprocess.once('hook:http:listening', function(){sailsprocess.kill(function(){setTimeout(done, 100);});});
-          // sailsprocess.kill(done);
-          // setTimeout(done, function(){sailsprocess.kill(done)});
+          sailsApp.lower(done);
         });
       });
     });
@@ -75,9 +74,9 @@ describe('New app generator', function() {
     it('should create new app', function(done) {
       exec('node '+ sailsbin + ' generate new ' + appName, function(err) {
         if (err) { return done(new Error(err)); }
-        appHelper.lift({log:{level:'silent'}}, function(err, sailsprocess) {
+        appHelper.lift({log:{level:'silent'}}, function(err, sailsApp) {
           if (err) {return done(err);}
-          sailsprocess.once('hook:http:listening', function(){sailsprocess.kill(function(){setTimeout(done, 100);});});
+          sailsApp.lower(done);
         });
       });
     });
