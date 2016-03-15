@@ -3,6 +3,7 @@
  */
 
 var util = require('util');
+var _ = require('lodash');
 var assert = require('assert');
 var socketHelper = require('./helpers/socketHelper.js');
 var appHelper = require('./helpers/appHelper');
@@ -124,33 +125,6 @@ describe('pubsub :: ', function() {
 
       });
 
-      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      // TODO: fix this test (-mm, sun mar 13, 2016)
-      it.skip('adding a profile to the user via POST /userprofile should result a correct `user` event being received by all subscribers', function(done) {
-
-        socket2.on('user', function(message) {
-          try {
-            assert(+message.id === 1 &&
-              message.verb === 'updated' &&
-              +message.data.profile === 1, Err.badResponse(message));
-            return done();
-          }
-          catch (e) {
-            return done(e);
-          }
-        });
-
-        socket1.post('/userprofile', {
-          user: 1,
-          zodiac: 'taurus'
-        }, function (body, jwr) {
-          if (jwr.error) { return done(jwr.error); }
-          // Otherwise, the event handler above should fire (or this test will time out and fail).
-        });
-
-      });
-      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
       it('removing a pet from the user via PUT /pet/1 should result a correct `user` event being received by all subscribers', function(done) {
 
         socket2.on('user', function(message) {
@@ -170,48 +144,7 @@ describe('pubsub :: ', function() {
 
       });
 
-      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      // TODO: fix this test (-mm, sun mar 13, 2016)
-      it.skip('changing a profile\'s user via PUT /userprofile/1 should result in two correct `user` events being received by all subscribers', function(done) {
-
-        // Create a new user to attach the profile to
-        socket1.post('/user', {
-          name: 'Sandy'
-        }, function (body, jwr){
-          if (jwr.error) { return done(jwr.error); }
-
-          var msgsReceived = 0;
-          // We should receive two 'user' updates: one from user #1 telling us they no longer have a profile, one
-          // from user #2 telling us they are now attached to profile #1
-          socket2.on('user', function(message) {
-            // Ignore the "create" message if we happen to get it
-            if (message.verb === 'created' && message.data.name === 'Sandy') {
-              return;
-            }
-            try {
-              assert(
-                (+message.id === 1 && message.verb === 'updated' && util.isNull(message.data.profile)) ||
-                (+message.id === 2 && message.verb === 'updated' && +message.data.profile === 1), Err.badResponse(message));
-            }
-            catch (e) { return done(e); }
-            msgsReceived++;
-            if (msgsReceived === 2) {
-              done();
-            }
-          });
-
-          socket1.put('/userprofile/1', {
-            user: 2
-          }, function (body, jwr){
-            if (jwr.error) { return done(jwr.error); }
-            // Otherwise the socket message above should fire.
-          });
-
-        });
-      });
-      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-      it('adding a pet from the user via PUT /pet/1 should result a correct `user` event being received by all subscribers', function(done) {
+    it('adding a pet from the user via PUT /pet/1 should result a correct `user` event being received by all subscribers', function(done) {
 
         socket2.on('user', function(message) {
           assert(message.id == 1 &&
@@ -237,7 +170,7 @@ describe('pubsub :: ', function() {
 
         socket1.on('pet', function(message) {
           try {
-            assert(+message.id === 1 && message.verb === 'updated' && util.isNull(message.data.owner), Err.badResponse(message));
+            assert(+message.id === 1 && message.verb === 'updated' && _.isNull(message.data.owner), Err.badResponse(message));
           }
           catch (e) { return done(e); }
           done();
@@ -249,29 +182,6 @@ describe('pubsub :: ', function() {
         });
 
       });
-
-
-      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      // TODO: fix this test (-mm, sun mar 13, 2016)
-      // (it seems to break when the other two above are being skipped)
-      it.skip('removing a profile from the user via DELETE /userprofile/1 should result a correct `user` event being received by all subscribers', function(done) {
-
-        socket2.on('user', function(message) {
-          try {
-            assert(+message.id === 2 && message.verb === 'updated' && util.isNull(message.data.profile), Err.badResponse(message));
-          }
-          catch (e) { return done(e); }
-          done();
-        });
-
-        socket1.delete('/userprofile/1',function(body, jwr) {
-          if (jwr.error) { return done(jwr.error); }
-          // Otherwise, the event handler above should fire (or this test will time out and fail).
-        });
-
-      });
-      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
       it('adding a user to the pet via POST /user/1/pets should result in a correct `pet` event being received by all subscribers', function(done) {
 
