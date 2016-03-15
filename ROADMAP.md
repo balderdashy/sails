@@ -15,6 +15,9 @@ This section includes the a **very early list** of some of the features, enhance
   + If `NODE_ENV` is set to "production but `sails.config.environment` is _not specified_, then `sails.config.environment` will still be set to "production" automatically.
   + But if _both_ `NODE_ENV` and `sails.config.environment` are specified, then no changes will be made to either.
   + If `sails.config.environment` is set to "production" and the `NODE_ENV` environment variable is not also set to production, Sails will log a warning.
+    + ^^needs tests.
+
++ More v1.0 info to come as it is finalized.
 
 &nbsp;
 &nbsp;
@@ -47,13 +50,13 @@ The backlog items below are from before the recent change to the Sails project's
 > - If you are the original proposer of one of these items, someone from the core team has contacted you in the linked issue or PR, if one was provided. Thank you for your help!
 > - If you are interested in seeing one of the features or enhancements below in Sails core, please create a new pull request moving the relevant item(s) to the backlog table with additional details about your use case (see the updated contribution guide for more information).
 
- 
+
 Feature                                          | Summary
  :---------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- Atomic `update`                                 | See [this issue](https://github.com/balderdashy/sails-mysql/issues/253) for details.  Originally suggested by [@leedm777](https://github.com/leedm777). 
+ Atomic `update`                                 | See [this issue](https://github.com/balderdashy/sails-mysql/issues/253) for details.  Originally suggested by [@leedm777](https://github.com/leedm777).
  Log key configuration info on lift              | For example, if `config/local.js` is present, log a message explaining that it will be used.  See also https://github.com/dominictarr/rc/issues/23#issuecomment-33875197. Originally suggested by [@mikermcneil](https://github.com/mikermcneil).
  Lock + unlock app in dev env                    | Capability for a hook to "lock" and/or "unlock" the app (in a development env only).  When "locked" all requests are intercepted by an endpoint which responds with either a page or JSON payload communicating a custom message.  e.g. so the grunt hook can let us know as it syncs.  e.g. `sails.emit('lock')`. Originally suggested by [@mikermcneil](https://github.com/mikermcneil).
- Hook dependency/load order mgmt                 | Rebase the hook dependency+optional depenency system.  A detailed spec was originally proposed by @ragulka, but since then, custom hooks have complicated the equation.  
+ Hook dependency/load order mgmt                 | Rebase the hook dependency+optional depenency system.  A detailed spec was originally proposed by @ragulka, but since then, custom hooks have complicated the equation.
  Standalone router                               | replace express dependency in `lib/router` with standalone router- either routification or @dougwilson's new project.  See https://github.com/balderdashy/sails/pull/2351#issuecomment-71855236 for more information.
  Standalone view renderer                        | Use @fishrock123's standalone views module (enables views over sockets).  See https://github.com/balderdashy/sails/pull/2351#issuecomment-71855236 for more information.
  Standalone static middleware                    | use static middleware directly in `lib/router` (enables static files over sockets)  See https://github.com/balderdashy/sails/pull/2351#issuecomment-71855236 for more information.

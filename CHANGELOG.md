@@ -14,6 +14,8 @@
 * [INTERNAL] Massive overhaul of tests.  See [b033f2d thru e85810a](https://github.com/balderdashy/sails/compare/71aa56db59129da58825b22f32030234a4f5ae2c...b033f2d9af4953fd65c3e1bbb44ed4df15da1f68).
 * [INTERNAL] Extrapolate ORM hook into sails-hook-orm.
 * [INTERNAL] Force asynchronicity in the optional third argument of `res.view()`/`res.render()` to pave the way for better, request-agnostic view rendering methods.  This prevents double-calling of the callback if userland code throws an error.  Thanks [@lennym](https://github.com/lennym)! [cd413e15435947aa855e27aab16d9cd9e65ad493](https://github.com/balderdashy/sails/commit/cd413e15435947aa855e27aab16d9cd9e65ad493)
+* [ENHANCEMENT] Improve auto-migrate prompt, and skip the prompt and log an info message instead if `sails.config.models.migrate` is being automatically set to production anyways.  [sails-hook-orm/commit/3161c34edbe0aa07055f8665493734dda1688c2a](https://github.com/balderdashy/sails-hook-orm/commit/3161c34edbe0aa07055f8665493734dda1688c2a)
+* [ENHANCEMENT] Add production check in case sails-disk is being used, and experimental `sails.config.orm.skipProductionWarnings` flag for preventing the warning. [sails-hook-orm/commit/9a0d46e135dadf00bc4576341624a31e50b12838](https://github.com/balderdashy/sails-hook-orm/commit/9a0d46e135dadf00bc4576341624a31e50b12838)
 
 
 ### 0.12.1
