@@ -30,6 +30,34 @@ describe('Router.bind', function() {
       });
     });
 
+  $Router.bind('get /footarg', {target: RESPOND.HELLO})
+    .expectBoundRoute({
+      path: '/footarg',
+      method: 'get'
+    })
+    .test(function() {
+      it('should send expected response (get /footarg)', function(done) {
+        supertest(this.sails.router._privateRouter)
+          .get('/foo')
+          .expect(200, 'hello world!')
+          .end(done);
+      });
+    });
+
+  $Router.bind('get /foofn', {fn: RESPOND.HELLO})
+    .expectBoundRoute({
+      path: '/foofn',
+      method: 'get'
+    })
+    .test(function() {
+      it('should send expected response (get /foofn)', function(done) {
+        supertest(this.sails.router._privateRouter)
+          .get('/foo')
+          .expect(200, 'hello world!')
+          .end(done);
+      });
+    });
+
   $Router.bind('/bar', RESPOND.HELLO)
     .expectBoundRoute({
       path: '/bar',
