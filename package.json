@@ -102,7 +102,7 @@
     "expect.js": "0.3.1",
     "istanbul": "0.4.1",
     "machinepack-fs": "~8.0.2",
-    "machinepack-process": "~2.0.1",
+    "machinepack-process": "~2.0.2",
     "mocha": "2.3.4",
     "portfinder": "0.4.0",
     "request": "2.67.0",
