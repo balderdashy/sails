@@ -44,6 +44,34 @@ describe('router :: ', function() {
 			appHelper.teardown();
 		});
 
+    describe('an options request', function() {
+      before(function() {
+        httpHelper.writeRoutes({
+          '/*': {
+            cors: true,
+          },
+          '/testRoute': {
+            controller: 'test',
+            action: 'verb',
+          },
+        });
+      });
+
+      it('should respond to OPTIONS requests', function(done) {
+        httpHelper.testRoute('options', {
+          url: 'testRoute',
+          headers: {
+            'Access-Control-Request-Method': 'post',
+            Origin: 'https://foo.shyp.com'
+          },
+        }, function(err, response, body) {
+          assert.equal(response.statusCode, 200);
+          assert.equal(response.headers['access-control-allow-origin'], 'https://foo.shyp.com');
+          done();
+        });
+      });
+    });
+
 		describe('with an unspecified http method', function() {
 
 			before(function() {

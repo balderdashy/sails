@@ -11,6 +11,7 @@
 * [BUGFIX] Update validation rules from anchor [3649](https://github.com/balderdashy/sails/issues/3649)
 * [BUGFIX] Respond with an error if attempting to use `req.file()` from a virtual request (i.e. when Skipper is not available).  And don't pass in `res` when building the mock request, since it is not available yet. [3656](https://github.com/balderdashy/sails/issues/3656)
 * [BUGFIX] Fix incorrect handling of errors in responses hook.  Thanks [@tapuzzo-fsi](https://github.com/tapuzzo-fsi)! [3645](https://github.com/balderdashy/sails/pull/3645)
+* [BUGFIX] Fix error from `routeCorsConfig` sometimes being undefined [3662](https://github.com/balderdashy/sails/issues/3662)
 * [INTERNAL] Replace `ready` event with an async `handleLift` lifecycle callback in order to simplify the behavior of `sails lift` and ensure the timing of the "done" callback is correct when using it programmatically.
 * [INTERNAL] Massive overhaul of tests.  See [b033f2d thru e85810a](https://github.com/balderdashy/sails/compare/71aa56db59129da58825b22f32030234a4f5ae2c...b033f2d9af4953fd65c3e1bbb44ed4df15da1f68).
 * [INTERNAL] Extrapolate ORM hook into sails-hook-orm.
