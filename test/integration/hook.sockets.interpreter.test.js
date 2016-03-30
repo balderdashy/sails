@@ -2,16 +2,16 @@
  * Test dependencies
  */
 
+var util = require('util');
 var assert = require('assert');
 var socketHelper = require('./helpers/socketHelper.js');
 var appHelper = require('./helpers/appHelper');
-var util = require('util');
 
 
 
 describe('hook:sockets :: ', function() {
 
-  var sailsprocess;
+  var sailsApp;
   var socket1;
   var socket2;
   var appName = 'testApp';
@@ -19,30 +19,28 @@ describe('hook:sockets :: ', function() {
   describe('interpreter', function() {
 
     before(function(done) {
-      this.timeout(10000);
       appHelper.buildAndLiftWithTwoSockets(appName, {
         silly: false
       }, function(err, sails, _socket1, _socket2) {
-        if (err) return done(err);
+        if (err) { return done(err); }
 
         if (!_socket1 || !_socket2) {
           return done(new Error('Failed to connect test sockets'));
         }
-        sailsprocess = sails;
+        sailsApp = sails;
         socket1 = _socket1;
         socket2 = _socket2;
         done();
       });
     });
 
-    after(function() {
+    after(function(done) {
       socket1.disconnect();
       socket2.disconnect();
-      if (sailsprocess) {
-        sailsprocess.kill();
-      }
       process.chdir('../');
       appHelper.teardown();
+
+      sailsApp.lower(done);
     });
 
     afterEach(function(done) {

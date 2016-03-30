@@ -27,8 +27,8 @@ module.exports = function() {
 
   // If no module path was specified, bail out
   if (!modulePath) {
-    console.error("No module specified for the `deploy` command.");
-    console.error("To use `sails deploy`, set a `commands.deploy.module` setting in your .sailsrc file");
+    console.error('No module specified for the `deploy` command.');
+    console.error('To use `sails deploy`, set a `commands.deploy.module` setting in your .sailsrc file');
     return;
   }
 
@@ -39,7 +39,7 @@ module.exports = function() {
 
   // If the module couldn't be required, bail out
   catch (e) {
-    console.error("Could not require module at path: " + modulePath + ".  Please check the path and try again.");
+    console.error('Could not require module at path: ' + modulePath + '.  Please check the path and try again.');
   }
 
   try {
@@ -47,9 +47,9 @@ module.exports = function() {
     module({config: rconf}, function(err, result) {
       // If there were any issues, log them to the console.
       if (err) {
-        console.error("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-        console.error("Deployed failed!  Details below:");
-        console.error("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+        console.error('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-');
+        console.error('Deployment failed!  Details below:');
+        console.error('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-');
         console.error(err);
       }
     });
@@ -57,9 +57,9 @@ module.exports = function() {
   // Chances are we won't catch any errors internal to the deploy command here;
   // this would probably be an error at the top level of the deploy script.
   catch(e) {
-    console.error("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
-    console.error("Could not run deploy!  Details below:");
-    console.error("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+    console.error('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-');
+    console.error('Could not run deploy!  Details below:');
+    console.error('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-');
     console.error(e);
   }
 

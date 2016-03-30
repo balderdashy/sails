@@ -1,56 +1,59 @@
 /**
  * Test dependencies
  */
+
 var assert = require('assert');
-var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
+
+
 
 describe('globals :: ', function() {
 
   describe('with default settings', function() {
 
-    var sailsprocess;
-    var appName = 'testApp';
-
+    var sailsApp;
     before(function(done) {
-      this.timeout(15000);
-      // Build the app
-      appHelper.buildAndLift(appName, {globals: null}, function(err, sails) {
-
-        sailsprocess = sails;
-        return done(err);
-
+      // Build the app and begin lifting it with default settings.
+      appHelper.buildAndLift('testApp', {globals: null}, function(err, sails) {
+        if (err) { return done(err); }
+        sailsApp = sails;
+        return done();
       });
-
-
     });
 
-    after(function() {
 
-      sailsprocess.kill();
-      process.chdir('../');
-      appHelper.teardown();
-    });
+
 
     it('lodash should be globalized', function() {
-      assert(_);
-      assert.equal(_.name, 'lodash');
+      assert(typeof _ !== 'undefined');
     });
 
     it('async should be globalized', function() {
-      assert(async);
+      assert(typeof async !== 'undefined');
     });
 
     it('sails should be globalized', function() {
-      assert(sails);
+      assert(typeof sails !== 'undefined');
     });
 
     it('services should be globalized', function() {
-      assert(TestService);
+      assert(typeof TestService !== 'undefined');
     });
 
     it('models should be globalized', function() {
-      assert(User);
+      assert(typeof User !== 'undefined');
+    });
+
+
+
+
+    after(function(done) {
+      process.chdir('../');
+      appHelper.teardown();
+      sailsApp.lower(function(err) {
+        if (err) { return done(err); }
+        setTimeout(done, 100);
+      });
     });
 
 

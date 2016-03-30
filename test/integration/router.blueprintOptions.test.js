@@ -1,13 +1,17 @@
 /**
- * Test dependencies
+ * Module dependencies
  */
+
+var util = require('util');
 var assert = require('assert');
+var _ = require('lodash');
+var async = require('async');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
-var util = require('util');
-var async = require('async');
 var fixture = require('./fixtures/users.js');
-var _ = require('lodash');
+
+
+
 
 /**
  * Errors
@@ -19,6 +23,10 @@ var Err = {
 };
 
 
+
+
+
+
 describe('router :: ', function() {
 
   var sailsprocess;
@@ -27,7 +35,6 @@ describe('router :: ', function() {
     var appName = 'testApp';
 
     before(function(done) {
-      this.timeout(15000);
       // Build the app
       appHelper.build(function() {
 
@@ -84,11 +91,10 @@ describe('router :: ', function() {
       });
     });
 
-    after(function() {
-
-      sailsprocess.kill();
+    after(function(done) {
       process.chdir('../');
       appHelper.teardown();
+      sailsprocess.lower(function(){setTimeout(done, 100);});
     });
 
     describe('a get request to /user', function() {

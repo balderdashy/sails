@@ -2,11 +2,10 @@
  * Module dependencies
  */
 
+var util = require('util');
 var assert = require('assert');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
-var util = require('util');
-
 
 
 
@@ -31,7 +30,6 @@ describe('router :: ', function() {
     var appName = 'testApp';
 
     before(function(done) {
-      this.timeout(5000);
       appHelper.build(done);
     });
 
@@ -46,8 +44,9 @@ describe('router :: ', function() {
     });
 
     afterEach(function(done) {
-      sailsprocess.kill();
-      done();
+      sailsprocess.lower(function() {
+        setTimeout(done, 100);
+      });
     });
 
     after(function() {

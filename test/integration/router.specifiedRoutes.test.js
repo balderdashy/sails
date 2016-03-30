@@ -1,23 +1,29 @@
+/**
+ * Module dependencies
+ */
+
+var util = require('util');
 var assert = require('assert');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
-var util = require('util');
 
-/**
- * Errors
- */
+
+
+
 var Err = {
 	badResponse: function(response) {
 		return 'Wrong server response!  Response :::\n' + util.inspect(response.body);
 	}
 };
 
+
+
+
 describe('router :: ', function() {
 	describe('Specified routes', function() {
 		var appName = 'testApp';
 
 		before(function(done) {
-			this.timeout(5000);
 			appHelper.build(done);
 		});
 
@@ -30,14 +36,41 @@ describe('router :: ', function() {
 		});
 
 		afterEach(function(done) {
-			sailsprocess.kill();
-			done();
+			sailsprocess.lower(function(){setTimeout(done, 100);});
 		});
 
 		after(function() {
 			process.chdir('../');
 			appHelper.teardown();
 		});
+
+    describe('an options request', function() {
+      before(function() {
+        httpHelper.writeRoutes({
+          '/*': {
+            cors: true,
+          },
+          '/testRoute': {
+            controller: 'test',
+            action: 'verb',
+          },
+        });
+      });
+
+      it('should respond to OPTIONS requests', function(done) {
+        httpHelper.testRoute('options', {
+          url: 'testRoute',
+          headers: {
+            'Access-Control-Request-Method': 'post',
+            Origin: 'https://foo.shyp.com'
+          },
+        }, function(err, response, body) {
+          assert.equal(response.statusCode, 200);
+          assert.equal(response.headers['access-control-allow-origin'], 'https://foo.shyp.com');
+          done();
+        });
+      });
+    });
 
 		describe('with an unspecified http method', function() {
 

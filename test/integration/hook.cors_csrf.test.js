@@ -1,60 +1,130 @@
+/**
+ * Module dependencies
+ */
+
 var assert = require('assert');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
 var path = require('path');
 var fs = require('fs');
 
+
+
 describe('CORS and CSRF ::', function() {
 
   var appName = 'testApp';
 
+
+  var sailsApp;
   beforeEach(function(done) {
     appHelper.lift({
-      silly: false
+      log: {
+        level: 'silent'
+      }
     }, function(err, sails) {
       if (err) {
-        throw new Error(err);
+        return done(err);
       }
-      sailsprocess = sails;
-      sailsprocess.once('hook:http:listening', done);
+      sailsApp = sails;
+      return done();
     });
   });
 
   afterEach(function(done) {
-    sailsprocess.kill(done);
+    sailsApp.lower(function(err) {
+      if (err) {
+        return done(err);
+      }
+      setTimeout(done, 100);
+    });
   });
+
+
+
+  //   ██████╗ ██████╗ ██████╗ ███████╗     ██████╗ ██████╗ ███╗   ██╗███████╗██╗ ██████╗
+  //  ██╔════╝██╔═══██╗██╔══██╗██╔════╝    ██╔════╝██╔═══██╗████╗  ██║██╔════╝██║██╔════╝
+  //  ██║     ██║   ██║██████╔╝███████╗    ██║     ██║   ██║██╔██╗ ██║█████╗  ██║██║  ███╗
+  //  ██║     ██║   ██║██╔══██╗╚════██║    ██║     ██║   ██║██║╚██╗██║██╔══╝  ██║██║   ██║
+  //  ╚██████╗╚██████╔╝██║  ██║███████║    ╚██████╗╚██████╔╝██║ ╚████║██║     ██║╚██████╔╝
+  //   ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝     ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝
+  //
 
   describe('CORS config ::', function() {
 
     before(function(done) {
-      this.timeout(15000);
       appHelper.build(done);
     });
 
-    after(function() {
-      process.chdir('../');
-      appHelper.teardown();
-    });
-
-    describe('with "allRoutes: true" and origin "*"', function () {
+    describe('with "allRoutes: true" and origin "*"', function() {
 
       before(function() {
-        fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': '*', 'allRoutes': true};");
+        fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), 'module.exports.cors = { origin: \'*\', allRoutes: true};');
         var routeConfig = {
-          'GET /test/find': {controller: 'TestController', action: 'find', cors: false},
-          'GET /test/update': {controller: 'TestController', action: 'update', cors: 'http://www.example.com'},
-          'GET /test2': {controller: 'TestController', action: 'find', cors: {'exposeHeaders': 'x-custom-header'}},
-          'PUT /test': {controller: 'TestController', action: 'update', cors: 'http://www.example.com'},
-          'POST /test': {controller: 'TestController', action: 'create', cors: 'http://www.different.com'},
-          'DELETE /test': {controller: 'TestController', action: 'delete', cors: false},
-          'POST /test2': {controller: 'TestController', action: 'create', cors: true},
-          'OPTIONS /test2': {controller: 'TestController', action: 'index'},
-          'PUT /test2': {controller: 'TestController', action: 'update'},
-          'GET /test/patch': {controller: 'TestController', action: 'update', cors: 'http://www.example.com:1338'},
-          'GET /test/create': {controller: 'TestController', action: 'create', cors: 'http://www.different.com'},
-          'GET /test/destroy': {controller: 'TestController', action: 'destroy', cors: {origin: 'http://www.example.com', credentials: false}},
+          'GET /test/find': {
+            controller: 'TestController',
+            action: 'find',
+            cors: false
+          },
+          'GET /test/update': {
+            controller: 'TestController',
+            action: 'update',
+            cors: 'http://www.example.com'
+          },
+          'GET /test2': {
+            controller: 'TestController',
+            action: 'find',
+            cors: {
+              'exposeHeaders': 'x-custom-header'
+            }
+          },
+          'PUT /test': {
+            controller: 'TestController',
+            action: 'update',
+            cors: 'http://www.example.com'
+          },
+          'POST /test': {
+            controller: 'TestController',
+            action: 'create',
+            cors: 'http://www.different.com'
+          },
+          'DELETE /test': {
+            controller: 'TestController',
+            action: 'delete',
+            cors: false
+          },
+          'POST /test2': {
+            controller: 'TestController',
+            action: 'create',
+            cors: true
+          },
+          'OPTIONS /test2': {
+            controller: 'TestController',
+            action: 'index'
+          },
+          'PUT /test2': {
+            controller: 'TestController',
+            action: 'update'
+          },
+          'GET /test/patch': {
+            controller: 'TestController',
+            action: 'update',
+            cors: 'http://www.example.com:1338'
+          },
+          'GET /test/create': {
+            controller: 'TestController',
+            action: 'create',
+            cors: 'http://www.different.com'
+          },
+          'GET /test/destroy': {
+            controller: 'TestController',
+            action: 'destroy',
+            cors: {
+              origin: 'http://www.example.com',
+              credentials: false
+            }
+          },
         };
-        fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), "module.exports.routes = " + JSON.stringify(routeConfig));
+        fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), 'module.exports.routes = ' + JSON.stringify(routeConfig));
       });
 
       describe('an OPTIONS request with origin "http://www.example.com"', function() {
@@ -68,7 +138,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(new Error(err));
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
             assert.equal(response.headers['access-control-allow-methods'], 'put');
@@ -83,7 +155,9 @@ describe('CORS and CSRF ::', function() {
           httpHelper.testRoute('options', {
             url: 'test',
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(new Error(err));
+            }
             var body = response.body.split(',').sort().join(',');
 
             // Get the expected methods, either from Node herself (if available) or else from
@@ -91,8 +165,8 @@ describe('CORS and CSRF ::', function() {
             var expected = (function() {
               var methods;
               if (require('http').METHODS) {
-                methods = require('http').METHODS.reduce(function(memo, method){
-                  if (method.toUpperCase() != 'OPTIONS') {
+                methods = require('http').METHODS.reduce(function(memo, method) {
+                  if (method.toUpperCase() !== 'OPTIONS') {
                     memo.push(method.toUpperCase());
                   }
                   return memo;
@@ -115,9 +189,11 @@ describe('CORS and CSRF ::', function() {
           httpHelper.testRoute('options', {
             url: 'test2',
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
-            assert.equal(response.body, "index");
+            assert.equal(response.body, 'index');
             done();
           });
 
@@ -132,7 +208,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], '');
             assert.equal(response.headers['access-control-allow-methods'], 'post');
@@ -150,7 +228,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], '');
             assert.equal(response.headers['access-control-allow-methods'], '');
@@ -168,7 +248,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
             assert.equal(response.headers['access-control-allow-methods'].toLowerCase(), 'get, post, put, delete, options, head');
@@ -186,7 +268,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
             assert.equal(response.headers['access-control-allow-methods'].toLowerCase(), 'get, post, put, delete, options, head');
@@ -206,7 +290,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
             assert.equal(response.headers['access-control-expose-headers'], '');
@@ -221,7 +307,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
             assert.equal(response.headers['access-control-expose-headers'], 'x-custom-header');
@@ -235,7 +323,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], '');
             done();
@@ -249,7 +339,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
             done();
@@ -263,7 +355,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], '');
             done();
@@ -277,7 +371,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
             done();
@@ -291,7 +387,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], '');
             done();
@@ -309,7 +407,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com:1338'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com:1338');
             done();
@@ -323,7 +423,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com:1338'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], '');
             done();
@@ -341,7 +443,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://localhost:1342'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], '');
             done();
@@ -355,7 +459,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://localhost:1342'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], '');
             done();
@@ -368,15 +474,33 @@ describe('CORS and CSRF ::', function() {
     });
 
 
-    describe('with "allRoutes: false" and origin "*"', function () {
+    describe('with "allRoutes: false" and origin "*"', function() {
 
       before(function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': '*', 'allRoutes': false };");
         var routeConfig = {
-          'GET /test/find': {controller: 'TestController', action: 'find', cors: true},
-          'GET /test/update': {controller: 'TestController', action: 'update', cors: 'http://www.example.com'},
-          'GET /test/create': {controller: 'TestController', action: 'create', cors: 'http://www.different.com'},
-          'GET /test/destroy': {controller: 'TestController', action: 'destroy', cors: {origin: 'http://www.example.com'}}
+          'GET /test/find': {
+            controller: 'TestController',
+            action: 'find',
+            cors: true
+          },
+          'GET /test/update': {
+            controller: 'TestController',
+            action: 'update',
+            cors: 'http://www.example.com'
+          },
+          'GET /test/create': {
+            controller: 'TestController',
+            action: 'create',
+            cors: 'http://www.different.com'
+          },
+          'GET /test/destroy': {
+            controller: 'TestController',
+            action: 'destroy',
+            cors: {
+              origin: 'http://www.example.com'
+            }
+          }
         };
         fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), "module.exports.routes = " + JSON.stringify(routeConfig));
       });
@@ -390,7 +514,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], '');
             done();
@@ -404,7 +530,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
             done();
@@ -418,7 +546,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
             done();
@@ -432,7 +562,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
             done();
@@ -446,7 +578,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], '');
             done();
@@ -458,7 +592,9 @@ describe('CORS and CSRF ::', function() {
         httpHelper.testRoute('get', {
           url: 'test',
         }, function(err, response) {
-          if (err) return done(new Error(err));
+          if (err) {
+            return done(err);
+          }
           assert.equal(response.statusCode, 200);
           done();
         });
@@ -472,7 +608,9 @@ describe('CORS and CSRF ::', function() {
           },
 
         }, function(err, response) {
-          if (err) return done(new Error(err));
+          if (err) {
+            return done(err);
+          }
           assert.equal(response.statusCode, 200);
           done();
         });
@@ -480,15 +618,33 @@ describe('CORS and CSRF ::', function() {
 
     });
 
-    describe('with "allRoutes: true" and origin "http://www.example.com", a request', function () {
+    describe('with "allRoutes: true" and origin "http://www.example.com", a request', function() {
 
       before(function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': 'http://www.example.com', 'allRoutes': true };");
         var routeConfig = {
-          'GET /test/find': {controller: 'TestController', action: 'find', cors: false},
-          'GET /test/update': {controller: 'TestController', action: 'update', cors: 'http://www.example.com'},
-          'GET /test/create': {controller: 'TestController', action: 'create', cors: 'http://www.different.com'},
-          'GET /test/destroy': {controller: 'TestController', action: 'destroy', cors: {origin: 'http://www.example.com'}}
+          'GET /test/find': {
+            controller: 'TestController',
+            action: 'find',
+            cors: false
+          },
+          'GET /test/update': {
+            controller: 'TestController',
+            action: 'update',
+            cors: 'http://www.example.com'
+          },
+          'GET /test/create': {
+            controller: 'TestController',
+            action: 'create',
+            cors: 'http://www.different.com'
+          },
+          'GET /test/destroy': {
+            controller: 'TestController',
+            action: 'destroy',
+            cors: {
+              origin: 'http://www.example.com'
+            }
+          }
         };
         fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), "module.exports.routes = " + JSON.stringify(routeConfig));
       });
@@ -502,7 +658,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
             done();
@@ -516,7 +674,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], '');
             done();
@@ -530,7 +690,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
             done();
@@ -544,7 +706,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.example.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], '');
             done();
@@ -562,7 +726,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.different.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], '');
             done();
@@ -576,7 +742,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.different.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.different.com');
             done();
@@ -590,7 +758,9 @@ describe('CORS and CSRF ::', function() {
               'Origin': 'http://www.different.com'
             },
           }, function(err, response) {
-            if (err) return done(new Error(err));
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.statusCode, 200);
             assert.equal(response.headers['access-control-allow-origin'], '');
             done();
@@ -606,7 +776,14 @@ describe('CORS and CSRF ::', function() {
       before(function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': '*', 'allRoutes': true, 'credentials': true};");
         var routeConfig = {
-          'GET /test/destroy': {controller: 'TestController', action: 'destroy', cors: {origin: 'http://www.example.com', credentials: false}}
+          'GET /test/destroy': {
+            controller: 'TestController',
+            action: 'destroy',
+            cors: {
+              origin: 'http://www.example.com',
+              credentials: false
+            }
+          }
         };
         fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), "module.exports.routes = " + JSON.stringify(routeConfig));
       });
@@ -618,7 +795,9 @@ describe('CORS and CSRF ::', function() {
             'Origin': 'http://www.example.com'
           },
         }, function(err, response) {
-          if (err) return done(new Error(err));
+          if (err) {
+            return done(err);
+          }
           assert.equal(response.statusCode, 200);
           assert.equal(response.headers['access-control-allow-credentials'], 'true');
           done();
@@ -632,7 +811,9 @@ describe('CORS and CSRF ::', function() {
             'Origin': 'http://www.example.com'
           },
         }, function(err, response) {
-          if (err) return done(new Error(err));
+          if (err) {
+            return done(err);
+          }
           assert.equal(response.statusCode, 200);
           assert.equal(response.headers['access-control-allow-credentials'], 'false');
           done();
@@ -644,11 +825,18 @@ describe('CORS and CSRF ::', function() {
     describe('with "credentials: false", a request', function() {
 
       before(function() {
-        fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': '*', 'allRoutes': true, 'credentials': false};");
+        fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), 'module.exports.cors = { origin: \'*\', allRoutes: true, credentials: false};');
         var routeConfig = {
-          'GET /test/destroy': {controller: 'TestController', action: 'destroy', cors: {origin: 'http://www.example.com', credentials: true}}
+          'GET /test/destroy': {
+            controller: 'TestController',
+            action: 'destroy',
+            cors: {
+              origin: 'http://www.example.com',
+              credentials: true
+            }
+          }
         };
-        fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), "module.exports.routes = " + JSON.stringify(routeConfig));
+        fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), 'module.exports.routes = ' + JSON.stringify(routeConfig));
       });
 
       it('to a route without a CORS config should result in a 200 response with an Access-Control-Allow-Credentials header with value "false"', function(done) {
@@ -658,7 +846,9 @@ describe('CORS and CSRF ::', function() {
             'Origin': 'http://www.example.com'
           },
         }, function(err, response) {
-          if (err) return done(new Error(err));
+          if (err) {
+            return done(err);
+          }
           assert.equal(response.statusCode, 200);
           assert.equal(response.headers['access-control-allow-credentials'], 'false');
           done();
@@ -672,7 +862,9 @@ describe('CORS and CSRF ::', function() {
             'Origin': 'http://www.example.com'
           },
         }, function(err, response) {
-          if (err) return done(new Error(err));
+          if (err) {
+            return done(err);
+          }
           assert.equal(response.statusCode, 200);
           assert.equal(response.headers['access-control-allow-credentials'], 'true');
           done();
@@ -682,73 +874,94 @@ describe('CORS and CSRF ::', function() {
     });
 
 
-  });
-
-
-  describe("CSRF config ::", function () {
-
-    before(function(done) {
-      this.timeout(15000);
-      appHelper.build(done);
-    });
-
+    // Delete app directory.
     after(function() {
       process.chdir('../');
       appHelper.teardown();
     });
 
-    describe("with CSRF set to 'false'", function() {
 
-      it("no CSRF token should be present in view locals", function(done) {
-        httpHelper.testRoute("get", 'viewtest/csrf', function (err, response) {
-          if (err) return done(new Error(err));
+  }); //</describe('CORS config ::')>
+
+
+
+  //   ██████╗███████╗██████╗ ███████╗     ██████╗ ██████╗ ███╗   ██╗███████╗██╗ ██████╗
+  //  ██╔════╝██╔════╝██╔══██╗██╔════╝    ██╔════╝██╔═══██╗████╗  ██║██╔════╝██║██╔════╝
+  //  ██║     ███████╗██████╔╝█████╗      ██║     ██║   ██║██╔██╗ ██║█████╗  ██║██║  ███╗
+  //  ██║     ╚════██║██╔══██╗██╔══╝      ██║     ██║   ██║██║╚██╗██║██╔══╝  ██║██║   ██║
+  //  ╚██████╗███████║██║  ██║██║         ╚██████╗╚██████╔╝██║ ╚████║██║     ██║╚██████╔╝
+  //   ╚═════╝╚══════╝╚═╝  ╚═╝╚═╝          ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝
+  //
+
+  describe('CSRF config ::', function() {
+
+    before(function(done) {
+      appHelper.build(done);
+    });
+
+
+    describe('with CSRF set to `false`', function() {
+
+      it('no CSRF token should be present in view locals', function(done) {
+        httpHelper.testRoute('get', 'viewtest/csrf', function(err, response) {
+          if (err) {
+            return done(err);
+          }
           assert(response.body.indexOf('csrf=null') !== -1, response.body);
           done();
         });
       });
 
-      it("a request to /csrfToken should result in a 404 error", function(done) {
-        httpHelper.testRoute("get", '/csrfToken', function (err, response) {
-          if (err) return done(new Error(err));
-          assert(response.statusCode == 404);
+      it('a request to /csrfToken should result in a 404 error', function(done) {
+        httpHelper.testRoute('get', '/csrfToken', function(err, response) {
+          if (err) {
+            return done(err);
+          }
+          assert(response.statusCode === 404);
           done();
         });
       });
 
     });
 
-    describe("with CSRF set to 'true'", function() {
+    describe('with CSRF set to `true`', function() {
 
       before(function() {
-        fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = true;");
+        fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), 'module.exports.csrf = true;');
       });
 
       it("a CSRF token should be present in view locals", function(done) {
-        httpHelper.testRoute("get", 'viewtest/csrf', function (err, response) {
-          if (err) return done(new Error(err));
+        httpHelper.testRoute("get", 'viewtest/csrf', function(err, response) {
+          if (err) {
+            return done(err);
+          }
           assert(response.body.match(/csrf=.{36}(?!.)/), response.body);
           done();
         });
       });
 
       it("a request to /csrfToken should respond with a _csrf token", function(done) {
-        httpHelper.testRoute("get", 'csrftoken', function (err, response) {
-          if (err) return done(new Error(err));
+        httpHelper.testRoute("get", 'csrftoken', function(err, response) {
+          if (err) {
+            return done(err);
+          }
           try {
             var body = JSON.parse(response.body);
             assert(body._csrf, response.body);
             done();
           } catch (e) {
-            done(new Error('Unexpected response: '+response.body));
+            done(new Error('Unexpected response: ' + response.body));
           }
         });
       });
 
-      it("a POST request without a CSRF token should result in a 403 response", function (done) {
+      it("a POST request without a CSRF token should result in a 403 response", function(done) {
 
-        httpHelper.testRoute("post", 'user', function (err, response) {
+        httpHelper.testRoute("post", 'user', function(err, response) {
 
-          if (err) return done(new Error(err));
+          if (err) {
+            return done(err);
+          }
           assert.equal(response.statusCode, 403);
           done();
 
@@ -756,23 +969,27 @@ describe('CORS and CSRF ::', function() {
 
       });
 
-      it("a POST request with a valid CSRF token should result in a 201 response", function (done) {
+      it("a POST request with a valid CSRF token should result in a 201 response", function(done) {
 
-        httpHelper.testRoute("get", 'csrftoken', function (err, response) {
-          if (err) return done(new Error(err));
+        httpHelper.testRoute("get", 'csrftoken', function(err, response) {
+          if (err) {
+            return done(err);
+          }
           try {
             var body = JSON.parse(response.body);
             var sid = response.headers['set-cookie'][0].split(';')[0].substr(10);
             httpHelper.testRoute("post", {
-                url: 'user',
-                headers: {
-                  'Content-type': 'application/json',
-                  'cookie': 'sails.sid='+sid
-                },
-                body: '{"_csrf":"'+body._csrf+'"}'
-              }, function (err, response) {
+              url: 'user',
+              headers: {
+                'Content-type': 'application/json',
+                'cookie': 'sails.sid=' + sid
+              },
+              body: '{"_csrf":"' + body._csrf + '"}'
+            }, function(err, response) {
 
-              if (err) return done(new Error(err));
+              if (err) {
+                return done(err);
+              }
 
               assert.equal(response.statusCode, 201);
               done();
@@ -792,8 +1009,10 @@ describe('CORS and CSRF ::', function() {
       });
 
       it("a request to /csrfToken should respond with a 404", function(done) {
-        httpHelper.testRoute("get", 'csrftoken', function (err, response) {
-          if (err) return done(new Error(err));
+        httpHelper.testRoute("get", 'csrftoken', function(err, response) {
+          if (err) {
+            return done(err);
+          }
           assert.equal(response.statusCode, 404);
           done();
         });
@@ -801,23 +1020,27 @@ describe('CORS and CSRF ::', function() {
       });
 
       it("a request to /anotherCsrf should respond with a _csrf token", function(done) {
-        httpHelper.testRoute("get", 'anotherCsrf', function (err, response) {
-          if (err) return done(new Error(err));
+        httpHelper.testRoute("get", 'anotherCsrf', function(err, response) {
+          if (err) {
+            return done(err);
+          }
           try {
             var body = JSON.parse(response.body);
             assert(body._csrf, response.body);
             done();
           } catch (e) {
-            done(new Error('Unexpected response: '+response.body));
+            done(new Error('Unexpected response: ' + response.body));
           }
         });
       });
 
-      it("a POST request without a CSRF token should result in a 403 response", function (done) {
+      it("a POST request without a CSRF token should result in a 403 response", function(done) {
 
-        httpHelper.testRoute("post", 'user', function (err, response) {
+        httpHelper.testRoute("post", 'user', function(err, response) {
 
-          if (err) return done(new Error(err));
+          if (err) {
+            return done(err);
+          }
           assert.equal(response.statusCode, 403);
           done();
 
@@ -825,10 +1048,12 @@ describe('CORS and CSRF ::', function() {
 
       });
 
-      it("a POST request with a valid CSRF token should result in a 201 response", function (done) {
+      it("a POST request with a valid CSRF token should result in a 201 response", function(done) {
 
-        httpHelper.testRoute("get", 'anotherCsrf', function (err, response) {
-          if (err) return done(new Error(err));
+        httpHelper.testRoute("get", 'anotherCsrf', function(err, response) {
+          if (err) {
+            return done(err);
+          }
           try {
             var body = JSON.parse(response.body);
             var sid = response.headers['set-cookie'][0].split(';')[0].substr(10);
@@ -836,12 +1061,14 @@ describe('CORS and CSRF ::', function() {
               url: 'user',
               headers: {
                 'Content-type': 'application/json',
-                'cookie': 'sails.sid='+sid
+                'cookie': 'sails.sid=' + sid
               },
-              body: '{"_csrf":"'+body._csrf+'"}'
-            }, function (err, response) {
+              body: '{"_csrf":"' + body._csrf + '"}'
+            }, function(err, response) {
 
-              if (err) return done(new Error(err));
+              if (err) {
+                return done(err);
+              }
 
               assert.equal(response.statusCode, 201);
               done();
@@ -862,8 +1089,10 @@ describe('CORS and CSRF ::', function() {
       });
 
       it("a request to /csrfToken should respond with a 404", function(done) {
-        httpHelper.testRoute("get", 'csrftoken', function (err, response) {
-          if (err) return done(new Error(err));
+        httpHelper.testRoute("get", 'csrftoken', function(err, response) {
+          if (err) {
+            return done(err);
+          }
           assert.equal(response.statusCode, 404);
           done();
         });
@@ -878,18 +1107,22 @@ describe('CORS and CSRF ::', function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = {protectionEnabled: true, routesDisabled: '/user'};");
       });
 
-      it("a POST request on /user without a CSRF token should result in a 201 response", function (done) {
-        httpHelper.testRoute("post", 'user', function (err, response) {
-          if (err) return done(new Error(err));
+      it("a POST request on /user without a CSRF token should result in a 201 response", function(done) {
+        httpHelper.testRoute("post", 'user', function(err, response) {
+          if (err) {
+            return done(err);
+          }
           assert.equal(response.statusCode, 201);
           done();
         });
 
       });
 
-      it("a POST request on /test without a CSRF token should result in a 403 response", function (done) {
-        httpHelper.testRoute("post", 'test', function (err, response) {
-          if (err) return done(new Error(err));
+      it("a POST request on /test without a CSRF token should result in a 403 response", function(done) {
+        httpHelper.testRoute("post", 'test', function(err, response) {
+          if (err) {
+            return done(err);
+          }
           assert.equal(response.statusCode, 403);
           done();
         });
@@ -905,18 +1138,22 @@ describe('CORS and CSRF ::', function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/killsession.js'), "module.exports.http = {middleware: {session: function(req, res, next) {return next();}}};");
       });
 
-      it("a POST request on /user without a CSRF token should result in a 201 response", function (done) {
-        httpHelper.testRoute("post", 'user', function (err, response) {
-          if (err) return done(new Error(err));
+      it("a POST request on /user without a CSRF token should result in a 201 response", function(done) {
+        httpHelper.testRoute("post", 'user', function(err, response) {
+          if (err) {
+            return done(err);
+          }
           assert.equal(response.statusCode, 201);
           done();
         });
 
       });
 
-      it("a POST request on /test without a CSRF token should result in a 200 response", function (done) {
-        httpHelper.testRoute("post", 'test', function (err, response) {
-          if (err) return done(new Error(err));
+      it("a POST request on /test without a CSRF token should result in a 200 response", function(done) {
+        httpHelper.testRoute("post", 'test', function(err, response) {
+          if (err) {
+            return done(err);
+          }
           assert.equal(response.statusCode, 200);
           done();
         });
@@ -925,23 +1162,43 @@ describe('CORS and CSRF ::', function() {
 
     });
 
-  });
+    // Remove test app files/directories.
+    after(function() {
+      process.chdir('../');
+      appHelper.teardown();
+    });
 
-  describe("CORS+CSRF ::", function () {
+  }); //</describe('CSRF config ::')>
+
+
+
+  //   ██████╗ ██████╗ ██████╗ ███████╗       ██╗        ██████╗███████╗██████╗ ███████╗
+  //  ██╔════╝██╔═══██╗██╔══██╗██╔════╝       ██║       ██╔════╝██╔════╝██╔══██╗██╔════╝
+  //  ██║     ██║   ██║██████╔╝███████╗    ████████╗    ██║     ███████╗██████╔╝█████╗
+  //  ██║     ██║   ██║██╔══██╗╚════██║    ██╔═██╔═╝    ██║     ╚════██║██╔══██╗██╔══╝
+  //  ╚██████╗╚██████╔╝██║  ██║███████║    ██████║      ╚██████╗███████║██║  ██║██║
+  //   ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝    ╚═════╝       ╚═════╝╚══════╝╚═╝  ╚═╝╚═╝
+  //
+  //   ██╗████████╗ ██████╗  ██████╗ ███████╗████████╗██╗  ██╗███████╗██████╗      █████╗ ████████╗    ██╗      █████╗ ███████╗████████╗██╗
+  //  ██╔╝╚══██╔══╝██╔═══██╗██╔════╝ ██╔════╝╚══██╔══╝██║  ██║██╔════╝██╔══██╗    ██╔══██╗╚══██╔══╝    ██║     ██╔══██╗██╔════╝╚══██╔══╝╚██╗
+  //  ██║    ██║   ██║   ██║██║  ███╗█████╗     ██║   ███████║█████╗  ██████╔╝    ███████║   ██║       ██║     ███████║███████╗   ██║    ██║
+  //  ██║    ██║   ██║   ██║██║   ██║██╔══╝     ██║   ██╔══██║██╔══╝  ██╔══██╗    ██╔══██║   ██║       ██║     ██╔══██║╚════██║   ██║    ██║
+  //  ╚██╗   ██║   ╚██████╔╝╚██████╔╝███████╗   ██║   ██║  ██║███████╗██║  ██║    ██║  ██║   ██║       ███████╗██║  ██║███████║   ██║   ██╔╝
+  //   ╚═╝   ╚═╝    ╚═════╝  ╚═════╝ ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝    ╚═╝  ╚═╝   ╚═╝       ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝
+  //
+
+  describe('CORS+CSRF ::', function() {
 
     before(function(done) {
-      this.timeout(15000);
-      appHelper.build(function() {
+      appHelper.build(function(err) {
+        if (err) {
+          return done(err);
+        }
         // Add a CORS config that should be IGNORED by the CSRF hook, which does its own CORS handling
         // If this isn't being ignored properly, then errors should occur when requesting /csrfToken from a different origin
         fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': 'http://www.example.com,http://www.someplace.com,http://www.different.com', 'allRoutes': true, 'credentials': false};");
         done();
       });
-    });
-
-    after(function() {
-      process.chdir('../');
-      appHelper.teardown();
     });
 
     describe("with CSRF set to true (no origin set)", function() {
@@ -952,12 +1209,14 @@ describe('CORS and CSRF ::', function() {
 
       it("a request to /csrfToken should result in a 200 response and a null token", function(done) {
         httpHelper.testRoute("get", {
-            url: 'csrfToken',
-            headers: {
-              origin: "http://www.example.com"
-            }
-          }, function (err, response) {
-          if (err) return done(new Error(err));
+          url: 'csrfToken',
+          headers: {
+            origin: "http://www.example.com"
+          }
+        }, function(err, response) {
+          if (err) {
+            return done(err);
+          }
           assert(response.statusCode == 200);
           assert(JSON.parse(response.body)._csrf === null, response.body);
           done();
@@ -978,12 +1237,14 @@ describe('CORS and CSRF ::', function() {
 
         it("a CSRF token should be present in view locals", function(done) {
           httpHelper.testRoute("get", {
-              url: 'viewtest/csrf',
-              headers: {
-                origin: "http://www.someplace.com"
-              }
-            }, function (err, response) {
-            if (err) return done(new Error(err));
+            url: 'viewtest/csrf',
+            headers: {
+              origin: "http://www.someplace.com"
+            }
+          }, function(err, response) {
+            if (err) {
+              return done(err);
+            }
             assert(response.body.match(/csrf=.{36}(?!.)/));
             done();
           });
@@ -991,12 +1252,14 @@ describe('CORS and CSRF ::', function() {
 
         it("a request to /csrfToken should respond with a _csrf token", function(done) {
           httpHelper.testRoute("get", {
-              url: 'csrfToken',
-              headers: {
-                origin: "http://www.example.com"
-              }
-            }, function (err, response) {
-            if (err) return done(new Error(err));
+            url: 'csrfToken',
+            headers: {
+              origin: "http://www.example.com"
+            }
+          }, function(err, response) {
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
             assert.equal(response.headers['access-control-allow-credentials'], 'true');
             try {
@@ -1004,7 +1267,7 @@ describe('CORS and CSRF ::', function() {
               assert(body._csrf, response.body);
               done();
             } catch (e) {
-              done(new Error('Unexpected response: '+response.body));
+              done(new Error('Unexpected response: ' + response.body));
             }
           });
         });
@@ -1015,12 +1278,14 @@ describe('CORS and CSRF ::', function() {
 
         it("a CSRF token should be present in view locals", function(done) {
           httpHelper.testRoute("get", {
-              url: 'viewtest/csrf',
-              headers: {
-                origin: "http://www.someplace.com"
-              }
-            }, function (err, response) {
-            if (err) return done(new Error(err));
+            url: 'viewtest/csrf',
+            headers: {
+              origin: "http://www.someplace.com"
+            }
+          }, function(err, response) {
+            if (err) {
+              return done(err);
+            }
             assert(response.body.match(/csrf=.{36}(?!.)/));
             done();
           });
@@ -1028,19 +1293,21 @@ describe('CORS and CSRF ::', function() {
 
         it("a request to /csrfToken should respond with a _csrf token", function(done) {
           httpHelper.testRoute("get", {
-              url: 'csrfToken',
-              headers: {
-                origin: "http://www.someplace.com"
-              }
-            }, function (err, response) {
-            if (err) return done(new Error(err));
+            url: 'csrfToken',
+            headers: {
+              origin: "http://www.someplace.com"
+            }
+          }, function(err, response) {
+            if (err) {
+              return done(err);
+            }
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.someplace.com');
             try {
               var body = JSON.parse(response.body);
               assert(body._csrf, response.body);
               done();
             } catch (e) {
-              done(new Error('Unexpected response: '+response.body));
+              done(new Error('Unexpected response: ' + response.body));
             }
           });
         });
@@ -1051,12 +1318,14 @@ describe('CORS and CSRF ::', function() {
 
         it("no CSRF token should be present in view locals", function(done) {
           httpHelper.testRoute("get", {
-              url: 'viewtest/csrf',
-              headers: {
-                origin: "http://www.different.com"
-              }
-            }, function (err, response) {
-            if (err) return done(new Error(err));
+            url: 'viewtest/csrf',
+            headers: {
+              origin: "http://www.different.com"
+            }
+          }, function(err, response) {
+            if (err) {
+              return done(err);
+            }
             assert(response.body.indexOf('csrf=null') !== -1, response.body);
             done();
           });
@@ -1064,12 +1333,14 @@ describe('CORS and CSRF ::', function() {
 
         it("a request to /csrfToken should result in a 200 response and a null token", function(done) {
           httpHelper.testRoute("get", {
-              url: 'csrfToken',
-              headers: {
-                origin: "http://www.different.com"
-              }
-            }, function (err, response) {
-            if (err) return done(new Error(err));
+            url: 'csrfToken',
+            headers: {
+              origin: "http://www.different.com"
+            }
+          }, function(err, response) {
+            if (err) {
+              return done(err);
+            }
             assert(JSON.parse(response.body)._csrf === null, response.body);
             assert(response.statusCode == 200);
             done();
@@ -1082,12 +1353,14 @@ describe('CORS and CSRF ::', function() {
 
         it("a CSRF token should be present in view locals", function(done) {
           httpHelper.testRoute("get", {
-              url: 'viewtest/csrf',
-              headers: {
-                origin: "chrome-extension://postman"
-              }
-            }, function (err, response) {
-            if (err) return done(new Error(err));
+            url: 'viewtest/csrf',
+            headers: {
+              origin: "chrome-extension://postman"
+            }
+          }, function(err, response) {
+            if (err) {
+              return done(err);
+            }
             assert(response.body.match(/csrf=.{36}(?!.)/));
             done();
           });
@@ -1095,18 +1368,20 @@ describe('CORS and CSRF ::', function() {
 
         it("a request to /csrfToken should respond with a _csrf token", function(done) {
           httpHelper.testRoute("get", {
-              url: 'csrfToken',
-              headers: {
-                origin: "chrome-extension://postman"
-              }
-            }, function (err, response) {
-            if (err) return done(new Error(err));
+            url: 'csrfToken',
+            headers: {
+              origin: "chrome-extension://postman"
+            }
+          }, function(err, response) {
+            if (err) {
+              return done(err);
+            }
             try {
               var body = JSON.parse(response.body);
               assert(body._csrf, response.body);
               done();
             } catch (e) {
-              done(new Error('Unexpected response: '+response.body));
+              done(new Error('Unexpected response: ' + response.body));
             }
           });
         });
@@ -1117,12 +1392,14 @@ describe('CORS and CSRF ::', function() {
 
         it("a CSRF token should be present in view locals", function(done) {
           httpHelper.testRoute("get", {
-              url: 'viewtest/csrf',
-              headers: {
-                origin: "http://localhost:1342"
-              }
-            }, function (err, response) {
-            if (err) return done(new Error(err));
+            url: 'viewtest/csrf',
+            headers: {
+              origin: "http://localhost:1342"
+            }
+          }, function(err, response) {
+            if (err) {
+              return done(err);
+            }
             assert(response.body.match(/csrf=.{36}(?!.)/));
             done();
           });
@@ -1130,27 +1407,41 @@ describe('CORS and CSRF ::', function() {
 
         it("a request to /csrfToken should respond with a _csrf token", function(done) {
           httpHelper.testRoute("get", {
-              url: 'csrfToken',
-              headers: {
-                origin: "http://localhost:1342"
-              }
-            }, function (err, response) {
-            if (err) return done(new Error(err));
-            try {
-              var body = JSON.parse(response.body);
-              assert(body._csrf, response.body);
-              done();
-            } catch (e) {
-              done(new Error('Unexpected response: '+response.body));
+            url: 'csrfToken',
+            headers: {
+              origin: "http://localhost:1342"
             }
+          }, function(err, response) {
+            if (err) {
+              return done(err);
+            }
+
+            var body;
+            try {
+              body = JSON.parse(response.body);
+            } catch (e) {
+              return done(new Error('Error parsing response: ' + response.body + '\nError details:\n' + e.stack));
+            }
+            try {
+              assert(body._csrf, response.body);
+            } catch (e) {
+              return done(new Error('Unexpected response: ' + response.body));
+            }
+            return done();
           });
         });
 
       });
-
-
     });
 
-  });
+
+
+    // Remove test app files/directories.
+    after(function() {
+      process.chdir('../');
+      appHelper.teardown();
+    });
+
+  }); //</describe('CORS+CSRF ::')>
 
 });

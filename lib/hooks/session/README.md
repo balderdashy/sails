@@ -12,4 +12,4 @@ It includes methods for:
 
 
 ##### Contributing to this hook
-It would be great to see a generic connect session adapter with support for the existing 'connections' in sails (ie. waterline adapters).
+It would be great to see a generic connect session adapter with support for the existing 'connections' in sails (ie. waterline adapters).  See [connect-waterline](https://www.npmjs.com/package/connect-waterline).

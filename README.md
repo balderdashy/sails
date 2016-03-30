@@ -18,8 +18,8 @@ Sails.js is a web framework that makes it easy to build custom, enterprise-grade
 $ sudo npm install sails -g
 ```
 
-> ######Upgrading from 0.9 or 0.10?
-> The v0.11 release of Sails includes support for Socket.io v1, and contains a few breaking changes which affect userland. To read the v0.11 migration guide, click [here](http://sailsjs.org/version-notes/0point10-to-0point11-migration-guide).
+> ######Upgrading from 0.10 or 0.11?
+> The v0.12 release of Sails contains a few breaking changes which affect userland. To read the v0.12 migration guide, click [here](http://sailsjs.org/version-notes/0point12-migration-guide).
 
 
 ## Your First Sails Project
@@ -64,8 +64,9 @@ The ORM, [Waterline](https://github.com/balderdashy/waterline), has a well-defin
 <!-- /core adapter logos -->
 
 ## Books
-- [Sails.js in Action](http://www.manning.com/mcneil/) by Mike McNeil and Irl I. Nathan (Manning Publications). [Chapter 1](https://www.manning.com/books/sails-js-in-action)
+- [Sails.js in Action](http://www.manning.com/mcneil/) by Mike McNeil and Irl Nathan (Manning Publications). [Chapter 1](https://www.manning.com/books/sails-js-in-action)
 - [Pro Express.js: Part 3](http://link.springer.com/chapter/10.1007%2F978-1-4842-0037-7_18) by Azat Mardan (Apress).
+- [Sails.js Essentials](https://www.packtpub.com/web-development/sailsjs-essentials) by Shaikh Shahid (Packt)
 
 ## Support
 Need help or have a question?

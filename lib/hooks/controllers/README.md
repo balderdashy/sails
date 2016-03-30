@@ -1,20 +1,53 @@
-# Controllers (Core Hook)
+# controllers (Core Hook)
+
 
 ## Status
 
-> ##### Stability: [2](http://nodejs.org/api/documentation.html#documentation_stability_index) - Unstable
->
-> The API is in the process of settling, but has not yet had sufficient real-world testing to be considered stable.  
->
-> Backwards-compatibility will be maintained if reasonable.
+> ##### Stability: [2](https://github.com/balderdashy/sails-docs/blob/master/contributing/stability-index.md) - Stable
+
+
+
+## Dependencies
+
+In order for this hook to load, the following other hooks must have already finished loading:
+
+- moduleloader
+- userconfig
+
+
+## Dependents
+
+If this hook is disabled, in order for Sails to load, the following other core hooks must also be disabled:
+
+- blueprints
 
 
 ## Purpose
 
 This hook's responsibilities are:
 
-1. Use `sails.modules` to read controllers from the user's app into `self.middleware`.
-2. Listen for `route:typeUnknown` on `sails`, interpret route syntax which should match a controller, and bind the appropriate middleware (this will happen later, when the Router is loaded, after all the hooks.)
+
+##### Load adapters
+
+When Sails loads, this hook calls out to `sails.modules.loadControllers()` (exposed by the `moduleloader`), loading all of this app's controllers into `sails.hooks.controllers.middleware`.
+
+
+
+##### Handle controller/action route target syntax
+
+This hook listens for `route:typeUnknown` events which are emitted on the `sails` app instance when explicit routes are bound (when `Router` is loaded after all the hooks).  This hook attempts to interpret the target syntax as pointing specifically at one of the app's controller and action pairs.  Then, if it can, it binds the route for the controller/action controller.
+
+
+## Implicit Defaults
+_N/A_
+
+
+## Events
+
+##### `hook:controllers:loaded`
+
+Emitted when this hook has been automatically loaded by Sails core, and triggered the callback in its `initialize` function.
+
 
 
 

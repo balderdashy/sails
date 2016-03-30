@@ -41,9 +41,11 @@ Finally, discussion of a non-technical nature, including subjects like team memb
 
 #### Opening an issue
 
-> Sails is composed of a number of different sub-projects, many of which have their [own dedicated repository](https://github.com/balderdashy/sails/blob/master/MODULES.md).  Please open suspected issues with Waterline, various adapters, various generators, etc. in the relevant repository.  When in doubt, or if your issue spans multiple repositories, plese use this repository (Sails core) as a catchall. This helps us stay on top of issues and keep organized.
+> Sails is composed of a number of different sub-projects, many of which have their [own dedicated repository](https://github.com/balderdashy/sails/blob/master/MODULES.md).  Please open suspected issues with Waterline, various adapters, various generators, etc. in the relevant repository.  When in doubt, or if your issue spans multiple repositories, please use this repository (Sails core) as a catchall. This helps us stay on top of issues and keep organized.
 
 Before submitting an issue, please follow these simple instructions:
+
+<a name="issue-instructions"></a>
 
 0. Search for issues similar to yours in [GitHub search](https://github.com/balderdashy/sails/search?type=Issues) within the appropriate repository,
   - If your original bug report is covered by an existing open issue, then add a comment to that issue instead of opening a new one.
@@ -144,6 +146,8 @@ The core maintainers of Sails review all feature proposals, and we do our best t
 
 With that in mind, to submit a proposal for a new feature, or an extension to an existing feature, please take the following steps:
 
+<a name="pr-instructions"></a>
+
 0. First, look at the `backlog` table in [ROADMAP.MD](https://github.com/balderdashy/sails/blob/master/ROADMAP.md) and also search open pull requests in that file to make sure your change hasn't already been proposed.
   - If the PR (pull request) has been merged, it means that a core maintainer has (A) looked over the proposal and discussion in the pull request, (B) personally agreed to him or herself that the feature would be a good fit for Sails core, and (C) confirmed the decision with [@mikermcneil](https://github.com/mikermcneil).  It also means that the proposal is now in the backlog in ROADMAP.md, which means that the core team would be willing to merge a pull request with code changes adding the feature to Sails core (assuming that pull request follows our coding style conventions and the guidelines in this document).
   - If the PR has been closed without being merged, it means that the core team has decided that the feature request should not be a part of Sails core.  Just because the proposal is closed does not mean the feature will never be achievable in Sails, it just means that (A) it would need to be specced differently to be merged or (B) it would need to be implemented as a plugin (i.e. a hook, adapter, generator, view engine, grunt/gulp task, etc.)
@@ -233,9 +237,9 @@ The best way to work with Sails core is to fork the repository, `git clone` it t
 
 | Release               | Install Command          | Build Status      |
 |-----------------------|--------------------------|-------------------|
-| [stable](https://github.com/balderdashy/sails/tree/stable)                | `npm install sails`      | [![Build Status](https://travis-ci.org/balderdashy/sails.png?branch=stable)](https://travis-ci.org/balderdashy/sails) |
-| [beta](https://github.com/balderdashy/sails/tree/beta)                  | `npm install sails@beta` | [![Build Status](https://travis-ci.org/balderdashy/sails.png?branch=beta)](https://travis-ci.org/balderdashy/sails) |
-| [edge](https://github.com/balderdashy/sails/tree/master)                  | `npm install sails@git://github.com/balderdashy/sails.git` | [![Build Status](https://travis-ci.org/balderdashy/sails.png?branch=master)](https://travis-ci.org/balderdashy/sails) |
+| [stable](https://github.com/balderdashy/sails/tree/stable)                | `npm install sails`      | [![Build Status](https://travis-ci.org/balderdashy/sails.png?branch=stable)](https://travis-ci.org/balderdashy/sails/branches) |
+| [beta](https://github.com/balderdashy/sails/tree/beta)                  | `npm install sails@beta` | [![Build Status](https://travis-ci.org/balderdashy/sails.png?branch=beta)](https://travis-ci.org/balderdashy/sails/branches) |
+| [edge](https://github.com/balderdashy/sails/tree/master)                  | `npm install sails@git://github.com/balderdashy/sails.git` | [![Build Status](https://travis-ci.org/balderdashy/sails.png?branch=master)](https://travis-ci.org/balderdashy/sails/branches) |
 
 
 

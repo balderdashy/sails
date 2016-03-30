@@ -44,6 +44,29 @@ describe('app.initializeHooks()', function() {
     });
   });
 
+  describe('with the grunt hook set to boolen false', function() {
+    var sails = $Sails.load({hooks: {grunt: false}});
+    it('should expose hooks on the `sails` global', function() {
+      sails.hooks.should.be.an.Object;
+    });
+    it('should expose all the core hooks except for Grunt', function() {
+      var intersection = _.intersection(_.keys(sails.hooks), _.keys(constants.EXPECTED_DEFAULT_HOOKS));
+      assert.deepEqual(intersection, _.without(_.keys(constants.EXPECTED_DEFAULT_HOOKS), 'grunt'),  'Missing expected default hooks');
+    });
+  });
+
+  describe('with the grunt hook set to the string "false"', function() {
+    var sails = $Sails.load({hooks: {grunt: "false"}});
+    it('should expose hooks on the `sails` global', function() {
+      sails.hooks.should.be.an.Object;
+    });
+    it('should expose all the core hooks except for Grunt', function() {
+      var intersection = _.intersection(_.keys(sails.hooks), _.keys(constants.EXPECTED_DEFAULT_HOOKS));
+      assert.deepEqual(intersection, _.without(_.keys(constants.EXPECTED_DEFAULT_HOOKS), 'grunt'),  'Missing expected default hooks');
+    });
+  });
+
+
 
 
   describe('configured with a custom hook called `noop`', function() {
