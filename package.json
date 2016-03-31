@@ -80,7 +80,7 @@
     "prompt": "0.2.14",
     "rc": "1.0.1",
     "reportback": "~0.1.9",
-    "rttc": "9.3.0",
+    "rttc": "9.3.3",
     "sails-build-dictionary": "~0.10.1",
     "sails-disk": "~0.10.9",
     "sails-generate": "~0.13.0",
