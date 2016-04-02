@@ -123,8 +123,8 @@ describe('Starting sails server with `sails lift`', function() {
         httpRequestInstructions: {
           method: 'GET',
           uri: 'http://localhost:1337',
-        },
-        expectFailedLift: true
+          expectedStatusCode: 404
+        }
       });
     });
 
@@ -165,9 +165,10 @@ describe('Starting sails server with `sails lift`', function() {
  * @optional {Dictionary} httpRequestInstructions
  *           A dictionary that gets passed in to `request()` when this helper attempts
  *           to contact the Sails server running in the child process.
- *           If provided at all, this must contain at least:
- *             @property {String} method
- *             @property {String} uri
+ *           If provided at all, this can/must contain:
+ *             @required {String} method
+ *             @required {String} uri
+ *             @optional {String} expectedStatusCode  [defaults to 200]
  *
  * @optional {Function} fnWithAdditionalTests
  *           A function with additional custom tests; that is, it has one or more `it()` blocks inside.
@@ -266,8 +267,8 @@ function testSpawningSailsLiftChildProcessInCwd (opts){
               // This kind of "omg server is not online" error is generally rather bad.
               return done(err);
             }
-            if (response.statusCode !== 200) {
-              return done(new Error('Expected to get a 200 status code from the server, but instead all we got was this lousy status code: `' + response.statusCode + '`'));
+            if (response.statusCode !== (opts.httpRequestInstructions.expectedStatusCode||200)) {
+              return done(new Error('Expected to get a '+(opts.httpRequestInstructions.expectedStatusCode||200)+' status code from the server, but instead all we got was this lousy status code: `' + response.statusCode + '`'));
             }
             return done();
           });
