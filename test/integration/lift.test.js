@@ -241,26 +241,39 @@ function testSpawningSailsLiftChildProcessInCwd (opts){
     });//</it>
 
 
+
     // Now if httpRequestInstructions were provided, we ping to the server to see whether this puppy
     // is ready to handle all those hot hot HTTP requests we have planned for it.
+    // (expectations of response vary based on options passed to this helper)
     if (!isUndefined(opts.httpRequestInstructions)){
-      it('should respond with a 200 status code when a `'+opts.httpRequestInstructions.method+'` request is sent to `'+opts.httpRequestInstructions.uri+'`', function(done) {
-        request(opts.httpRequestInstructions, function(err, response, body) {
-          if (err) {
-            // If the `opts.expectFailedLift` flag was provided, we're actually expecting an error here.
-            if (opts.expectFailedLift) {
+      // If the `opts.expectFailedLift` flag was provided, we're actually expecting an error here.
+      if (opts.expectFailedLift) {
+        it('should FAIL when a `'+opts.httpRequestInstructions.method+'` request is sent to `'+opts.httpRequestInstructions.uri+', because we\'re expecting Sails to have failed when attempting to lift`', function(done) {
+          request(opts.httpRequestInstructions, function(err, response, body) {
+            if (err) {
+              // Since the `opts.expectFailedLift` flag was provided, we're actually expecting an error here.
               return done();
             }
-            // But normally this kind of "omg server is not online" error is rather bad.
-            return done(err);
-          }
-          if (response.statusCode !== 200) {
-            return done(new Error('Expected to get a 200 status code from the server, but instead all we got was this lousy status code: `' + response.statusCode + '`'));
-          }
-          return done();
-        });
-      });//</it>
-    }
+            return done(new Error('Expected request to fail, since Sails should not have lifted successfully'));
+          });
+        });//</it>
+      }
+      // Normal case (expecting sails to have lifted)
+      else {
+        it('should respond with a 200 status code when a `'+opts.httpRequestInstructions.method+'` request is sent to `'+opts.httpRequestInstructions.uri+'`', function(done) {
+          request(opts.httpRequestInstructions, function(err, response, body) {
+            if (err) {
+              // This kind of "omg server is not online" error is generally rather bad.
+              return done(err);
+            }
+            if (response.statusCode !== 200) {
+              return done(new Error('Expected to get a 200 status code from the server, but instead all we got was this lousy status code: `' + response.statusCode + '`'));
+            }
+            return done();
+          });
+        });//</it>
+      }
+    }//</httpRequestInstructions were provided>
 
 
     // Now run any additional tests.
