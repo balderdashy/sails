@@ -5,6 +5,13 @@
 _A blank slate, as of 1459549711072.  Just imagine all the possibilities._
 
 
+### 0.12.3
+
+* [BUGFIX] Allow `skipAssets` and `skipRegex` to be used with direct/static view route target syntax [3682](https://github.com/balderdashy/sails/issues/3682).  Thanks [@dottodot](https://github.com/dottodot), [@nikhilbedi](https://github.com/nikhilbedi), and [@AlexanderKozhevin](https://github.com/AlexanderKozhevin)!
+* [BUGFIX] Automatically route to `index/` in deeply nested views when using direct/static view route target syntax
+* [BUGFIX] Add assertion about views which contain extra dots (`.`) in their paths when using direct/static view route target syntax
+
+
 ### 0.12.2
 
 * [ENHANCEMENT] Allow use of `fn` in expanded route targets [e1790b7](https://github.com/balderdashy/sails/commit/e1790b70b35cd7dc50743a63bb169585f8a927f2)
