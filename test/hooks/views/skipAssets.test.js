@@ -10,40 +10,85 @@ var MFilesystem = require('machinepack-fs');
 var testSpawningSailsLiftChildProcessInCwd = require('../../helpers/test-spawning-sails-lift-child-process-in-cwd');
 
 
-// // Test `sails lift` in the CWD.
-// describe('running `sails lift`', function (){
-//   testSpawningSailsLiftChildProcessInCwd({
-//     pathToSailsCLI: pathToSailsCLI,
-//     liftCliArgs: [],
-//     httpRequestInstructions: {
-//       method: 'GET',
-//       uri: 'http://localhost:1337',
-//     }
-//   });
-// });
 
 
-// // Test `sails lift --port=1492` in the CWD.
-// describe('running `sails lift --port=1492`', function (){
-//   testSpawningSailsLiftChildProcessInCwd({
-//     pathToSailsCLI: pathToSailsCLI,
-//     liftCliArgs: [
-//       '--port=1492'
-//     ],
-//     httpRequestInstructions: {
-//       method: 'GET',
-//       uri: 'http://localhost:1492',
-//     },
-//     fnWithAdditionalTests: function (){
-//       it('should NOT be able to contact localhost:1337 anymore', function (done){
-//         request({
-//           method: 'GET',
-//           uri: 'http://localhost:1337',
-//         }, function(err, response, body) {
-//           if (err) { return done(); }
-//           return done(new Error('Should not be able to communicate with locahost:1337 anymore.... Here is the response we received:'+util.inspect(response,{depth:null})+'\n\n* * Troublehooting * *\n Perhaps the Sails app running in the child process was not properly cleaned up when it received SIGTERM?  Or could be a problem with the tests.  Find out all this and more after you fix it.'));
-//         });
-//       });
-//     }
-//   });
-// });
+describe('skipAssets', function() {
+
+  describe('Generate and lift a sails app which has a wildcard route using skipAssets', function() {
+
+    // Track the location of the Sails CLI, as well as the current working directory
+    // before we stop hopping about all over the place.
+    var originalCwd = process.cwd();
+    var pathToSailsCLI = path.resolve(__dirname, '../../../bin/sails.js');
+
+    // Track the location of the test app.
+    var pathToTestApp = path.resolve('testApp');
+
+    // Ensure test app does not already exist.
+    before(function (done) {
+      MFilesystem.rmrf({path: pathToTestApp}).exec(done);
+    });
+
+    // Create a Sails app on disk.
+    before(function (done){
+      MProcess.executeCommand({
+        command: util.format('node %s new %s', pathToSailsCLI, pathToTestApp),
+      }).exec(done);
+    });
+
+    // Change its routes file to use `skipAssets`.
+    before(function (done){
+      MFilesystem.write({
+        destination: path.join(pathToTestApp, 'config/routes.js'),
+        string: 'module.exports.routes = { \'get /*\': { view: \'homepage\', skipAssets: true } };',
+        force: true,
+      }).exec(done);
+    });
+
+    // And CD in.
+    before(function (){
+      process.chdir(pathToTestApp);
+    });
+
+    // Lift the app using `sails lift` in the CWD,
+    // ensuring everything works as expected.
+    describe('running `sails lift', function (){
+      testSpawningSailsLiftChildProcessInCwd({
+        pathToSailsCLI: pathToSailsCLI,
+        liftCliArgs: [],
+        httpRequestInstructions: {
+          method: 'GET',
+          uri: 'http://localhost:1337',
+        },
+        fnWithAdditionalTests: function (){
+          it('should return a JavaScript file when requesting `http://localhost:1337/js/dependencies/sails.io.js`', function (done){
+            request({
+              method: 'GET',
+              uri: 'http://localhost:1337/js/dependencies/sails.io.js',
+            }, function(err, response, body) {
+              if (err) { return done(err); }
+              // console.log('-----\n',response.headers,'\n----------');
+              if (response.headers['content-type'].match(/text\/html/)) {
+                return done(new Error('Expected javascript content-type header when requesting an asset. `skipAssets` seems to be failing silently!'));
+              }
+              return done();
+            });
+          });
+        }
+      });
+    });
+
+    // Finally clean up the Sails app we created earlier.
+    after(function (done) {
+      MFilesystem.rmrf({path: pathToTestApp}).exec(done);
+    });
+    // And CD back to where we were before.
+    after(function () {
+      process.chdir(originalCwd);
+    });
+
+
+  });//</Generate and lift a sails app which has a wildcard route using skipAssets>
+});
+
+
