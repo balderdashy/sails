@@ -52,7 +52,7 @@ module.exports.build = function(appName, done) {
   if (fs.existsSync(appName)) {
     wrench.rmdirSyncRecursive(path.resolve('./', appName));
   }
-  // TODO: remove this (^) and instead always clean up at the end.
+  // TODO: replace this (^) with fsx.remove or mp-fs/rmrf
 
   // Create an empty directory for the test app.
   var appDirPath = path.resolve('./', appName);
