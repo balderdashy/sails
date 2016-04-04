@@ -405,6 +405,36 @@ describe('router :: ', function() {
 
       });
 
+      it('should not match /js/dependencies/pretend.js', function(done) {
+
+        httpHelper.testRoute('get', 'js/dependencies/pretend.js', function(err, response) {
+          if (err) { return done(err); }
+          assert(response.statusCode === 404, Err.badResponse(response));
+          done();
+        });
+
+      });
+
+      it('should not match /js/dependencies/pretend.io.js', function(done) {
+
+        httpHelper.testRoute('get', 'js/dependencies/pretend.io.js', function(err, response) {
+          if (err) { return done(err); }
+          assert(response.statusCode === 404, Err.badResponse(response));
+          done();
+        });
+
+      });
+
+      it('should not match /styles/pretendporter.css', function(done) {
+
+        httpHelper.testRoute('get', 'styles/pretendporter.css', function(err, response) {
+          if (err) { return done(err); }
+          assert(response.statusCode === 404, Err.badResponse(response));
+          done();
+        });
+
+      });
+
       it('should not match /foo.bar/foo.js', function(done) {
 
         httpHelper.testRoute('get', 'foo.js', function(err, response) {
