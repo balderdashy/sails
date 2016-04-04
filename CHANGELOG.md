@@ -2,7 +2,11 @@
 
 ### Master
 
+* [BUGFIX] Fix typo which could cause crashing when attempting to serialize non-json-compatible output in the response to a socket request.
+
+<!--
 _A blank slate, as of 1459549711072.  Just imagine all the possibilities._
+-->
 
 
 ### 0.12.3
@@ -10,7 +14,7 @@ _A blank slate, as of 1459549711072.  Just imagine all the possibilities._
 * [BUGFIX] Allow `skipAssets` and `skipRegex` to be used with direct/static view route target syntax [3682](https://github.com/balderdashy/sails/issues/3682).  Thanks [@dottodot](https://github.com/dottodot), [@nikhilbedi](https://github.com/nikhilbedi), and [@AlexanderKozhevin](https://github.com/AlexanderKozhevin)!
 * [BUGFIX] Automatically route to `index/` in deeply nested views when using direct/static view route target syntax
 * [BUGFIX] Add assertion about views which contain extra dots (`.`) in their paths when using direct/static view route target syntax
-
+* [INTERNAL] Use `chalk` instead of `colors` for console output. Thanks [@markelog](https://github.com/markelog)! [3680](https://github.com/balderdashy/sails/pull/3680)
 
 ### 0.12.2
 
@@ -35,6 +39,7 @@ _A blank slate, as of 1459549711072.  Just imagine all the possibilities._
 * [BUGFIX] Replace naughty code in implicit default res.forbidden() response; relevant when api/responses/ is deleted. See #3667 for more info. Thanks [@Biktop](https://github.com/biktop)!  [4767585994c45e7a7040402a057f0e41660d3419](https://github.com/balderdashy/sails/commit/4767585994c45e7a7040402a057f0e41660d34)19
 * [INCONSISTENCY] Fix embarassing old link that was being shown when you `console.log` the `sails` app instance.  Thanks [@wulfsolter](https://github.com/wulfsolter) [52d45688fcfb6c4437348115f3e9c91595a8d379](https://github.com/balderdashy/sails/commit/52d45688fcfb6c4437348115f3e9c91595a8d379)!
 * [INTERNAL] Get rid of a whimsical little `--require` in mocha.opts that must have gotten lost.  Don't ask us how it ended up there. Thanks [@markelog](https://github.com/markelog)! [06837a53b48352de7c46a1be84e87e28a084ffe2](https://github.com/balderdashy/sails/commit/06837a53b48352de7c46a1be84e87e28a084ffe2)
+* [INTERNAL] Remove needless require from mocha opts. Thanks [@markelog](https://github.com/markelog)! [3681](https://github.com/balderdashy/sails/pull/3681)
 
 
 ### 0.12.1
