@@ -3,6 +3,7 @@
  */
 var nodeutil = require('util');
 var nodepath = require('path');
+var chalk = require('chalk');
 
 // Build logger using best-available information
 // when this module is initially required.
@@ -90,7 +91,7 @@ module.exports = {
     log.error('Or if you\'re stuck, check out the troubleshooting tips below.');
     log.blank();
 
-    log.error('Troubleshooting tips:'.underline);
+    log.error(chalk.underline('Troubleshooting tips:'));
     var relativePublicPath = (nodepath.resolve(process.cwd(), './.tmp'));
     var uid = process.getuid && process.getuid() || 'YOUR_COMPUTER_USER_NAME';
     log.error();

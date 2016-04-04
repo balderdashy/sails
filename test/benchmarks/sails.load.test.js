@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var chalk = require('chalk');
 var portfinder = require('portfinder');
 portfinder.basePort = 2001;
 
@@ -205,10 +206,6 @@ function setupBenchmarks() {
  * @this {Array} benchmarks
  */
 function reportBenchmarks() {
-  var _ = require('lodash');
-
-  require('colors');
-
   var output = '\n\nBenchmark Report ::\n';
   output += _.reduce(this.benchmarks, function(memo, result) {
 
@@ -241,16 +238,16 @@ function reportBenchmarks() {
     var showExpected = true; // ms >= threshold;
 
     return memo + '\n ' +
-      (result.benchmark + '') + ' :: '.grey + ms +
+      chalk.grey((result.benchmark + '') + ' :: ') + ms +
 
       // Expected ms provided, and the test took quite a while
-      (result.expected && showExpected ? '\n   (expected ' + expected + 'ms' +
+      chalk.grey(result.expected && showExpected ? '\n   (expected ' + expected + 'ms' +
         (result.comment ? ' --' + result.comment : '') +
         ')' :
 
         // Comment provided - but no expected ms
         (result.comment ? '\n   (' + result.comment + ')\n' : '')
-      ).grey;
+      );
   }, '');
 
   // Log output (optional)
