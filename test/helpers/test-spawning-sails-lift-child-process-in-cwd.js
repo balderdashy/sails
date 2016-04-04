@@ -86,6 +86,14 @@ module.exports = function testSpawningSailsLiftChildProcessInCwd (opts){
         cliArgs: [opts.pathToSailsCLI, 'lift'].concat(opts.liftCliArgs)
       }).execSync();
 
+      // // For debugging, as needed:
+      // sailsLiftProc.stdout.on('data', function (data){
+      //   console.log('stdout:',''+data);
+      // });
+      // sailsLiftProc.stderr.on('data', function (data){
+      //   console.log('stderr:',''+data);
+      // });
+
       // After N seconds, continue to the test.
       setTimeout(function (){
         return done();
