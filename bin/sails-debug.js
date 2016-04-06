@@ -8,6 +8,7 @@
 var path = require('path');
 var Womb = require('child_process');
 var CaptainsLog = require('captains-log');
+var chalk = require('chalk');
 var Sails = require('../lib/app');
 
 
@@ -45,7 +46,7 @@ module.exports = function() {
       console.log();
     }
 
-    log.info(('( to exit, type ' + '<CTRL>+<C>' + ' )').grey);
+    log.info(chalk.grey('( to exit, type ' + '<CTRL>+<C>' + ' )'));
     console.log();
 
     // Spin up child process for Sails

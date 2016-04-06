@@ -28,10 +28,10 @@ module.exports = {
       options.url = 'http://localhost:1342/' + options.url;
     }
 
-    options.method = method == 'del' ? 'delete' : method;
+    options.method = (method === 'del') ? 'delete' : method;
 
     request(options, function(err, response, body) {
-      if (err) return callback(err, response, body);
+      if (err) { return callback(err, response, body); }
       callback(null, response, body);
     });
 
