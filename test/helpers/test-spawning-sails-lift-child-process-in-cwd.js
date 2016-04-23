@@ -22,7 +22,7 @@ var MProcess = require('machinepack-process');
  *
  * @required {Array} liftCliArgs
  *           an array of additional string CLI args/opts to pass to `sails lift`
- *           (e.g. `['--prod', '--port=\'your butt\'']`)
+ *           (e.g. `['--prod', '--port=1331']`)
  *
  * @optional {Dictionary} httpRequestInstructions
  *           A dictionary that gets passed in to `request()` when this helper attempts
