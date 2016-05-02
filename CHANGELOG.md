@@ -3,6 +3,8 @@
 ### Master
 
 * [BUGFIX] Fix typo which could cause crashing when attempting to serialize non-json-compatible output in the response to a socket request.
+* [UPGRADE] Upgraded version of Consolidate to `0.14.1` [a70623c](https://github.com/balderdashy/sails/commit/a70623ce2809d497b3581268354f06904d862268)
+
 
 <!--
 _A blank slate, as of 1459549711072.  Just imagine all the possibilities._
