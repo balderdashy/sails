@@ -19,7 +19,7 @@ var Err = require('../errors');
 /**
  * `sails www`
  *
- * Run the `build` or `buildProd` Grunt task (depending on whether this is the production environment)
+ * Run the `build`, `buildStaging` or `buildProd` Grunt task (depending on whether this is the development, staging or production environment)
  * for the Sails app in the current working directory.
  *
  * @stability 2
@@ -49,6 +49,9 @@ module.exports = function() {
     var overrideGruntTask;
     if (sails.config.environment === 'production') {
       overrideGruntTask = 'buildProd';
+    }
+    else if (sails.config.environment === 'staging'){
+      overrideGruntTask = 'buildStaging';
     }
     else {
       overrideGruntTask = 'build';

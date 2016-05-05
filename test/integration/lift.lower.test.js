@@ -58,12 +58,6 @@ describe('sails being lifted and lowered (e.g in a test framework)', function() 
 
   }); //</should clean up event listeners>
 
-
-
-
-
-
-
   it('should revert NODE_ENV env variable if it was set automatically on load/lift', function(done) {
 
     // Save reference to original NODE_ENV.
@@ -83,7 +77,7 @@ describe('sails being lifted and lowered (e.g in a test framework)', function() 
       if (err) { return done(err); }
 
       // Assert that NODE_ENV was set automatically.
-      assert.equal('cenote', process.env.NODE_ENV);
+      assert.equal('development', process.env.NODE_ENV);
 
       // Lower `app0`
       app0.lower(function (){
@@ -105,7 +99,7 @@ describe('sails being lifted and lowered (e.g in a test framework)', function() 
           if (err) { return done(err); }
 
           // Assert that NODE_ENV was set automatically.
-          assert.equal('savanna', process.env.NODE_ENV);
+          assert.equal('development', process.env.NODE_ENV);
 
           // Lower `app1`
           app1.lower(function (){
@@ -121,6 +115,56 @@ describe('sails being lifted and lowered (e.g in a test framework)', function() 
 
   });
 
+  it('should not set the NODE_ENV env variable if it was not explicity set on load/lift', function(done) {
+    // Save reference to original NODE_ENV.
+    var originalNodeEnv = process.env.NODE_ENV;
 
+    // Load `app0` deep in the `'cenote'`
+    Sails().load({
+      log: {
+        level: 'error'
+      },
+      globals: false,
+      hooks: {
+        grunt: false,
+      }
+    }, function(err, app) {
+      if (err) { return done(err); }
 
+      // Assert that NODE_ENV was not set automatically.
+      assert.equal(originalNodeEnv, process.env.NODE_ENV);
+
+      // Lower `app`
+      app.lower(function (){
+        return done();
+      });
+    });
+  });
+
+  it('should set the NODE_ENV env variable if it was explicity set and a different configuration mode was specified on load/lift', function(done) {
+    // Save reference to original NODE_ENV.
+    var originalNodeEnv = process.env.NODE_ENV;
+
+    process.env.NODE_ENV = 'staging'
+    Sails().load({
+      environment: 'production',
+      log: {
+        level: 'error'
+      },
+      globals: false,
+      hooks: {
+        grunt: false,
+      }
+    }, function(err, app) {
+      if (err) { return done(err); }
+
+      // Assert that NODE_ENV was not set automatically.
+      assert.equal('staging', process.env.NODE_ENV);
+
+      // Lower `app`
+      app.lower(function (){
+        return done();
+      });
+    });
+  });
 });

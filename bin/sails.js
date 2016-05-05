@@ -52,6 +52,7 @@ program.usage('[command]');
 var cmd;
 cmd = program.command('lift');
 cmd.option('--prod');
+cmd.option('--staging');
 cmd.option('--port [port]');
 cmd.unknownOption = NOOP;
 cmd.description('');
