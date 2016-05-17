@@ -159,7 +159,7 @@ describe('Blueprints hook', function (){
 		//			+ controller.*()
 		//			+ controller.index()
 		//			+ CRUD methods (find(),create(),etc.)
-		//				+ RESTful (GET,POST,PUT,DELETE)
+		//				+ RESTful (GET,POST,PUT,PATCH,DELETE)
 		//				+ URL-bar shortcuts (/find, /create, etc.)
 
 	});
