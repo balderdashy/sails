@@ -15,7 +15,7 @@ var fs = require('fs');
 
 describe('hooks :: ', function() {
 
-  describe.only('views hook', function() {
+  describe('views hook', function() {
 
     var appName = 'testApp';
 
