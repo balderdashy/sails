@@ -5,6 +5,7 @@ var supertest = require('supertest');
 
 var $Sails = require('../helpers/sails');
 var $Router = require('../helpers/router');
+var assert = require('assert');
 
 // Middleware fixtures
 var RESPOND = require('../fixtures/middleware');
@@ -14,6 +15,10 @@ describe('Router.bind', function() {
 
   var sails = $Sails.load.withAllHooksDisabled();
 
+  it('Should not allow routes with :length as a parameter', function() {
+    assert.throws(function(){this.sails.router.bind('get /foo/:length', RESPOND.HELLO);});
+    assert.throws(function(){this.sails.router.bind('get /foo/:length/foo', RESPOND.HELLO);});
+  });
 
 
   $Router.bind('get /foo', RESPOND.HELLO)
