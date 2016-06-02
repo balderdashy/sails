@@ -2,6 +2,7 @@
 
 ### Master
 
+* [ENHANCEMENT] Allow use Express style path and RegExp in `sails.config.csrf.routesDisabled` [d3f634c](https://github.com/balderdashy/sails/commit/d3f634c9ac0c5e2172710fe27ab3f61f8303d840)
 * [BUGFIX] Fix typo which could cause crashing when attempting to serialize non-json-compatible output in the response to a socket request.
 * [UPGRADE] Upgraded version of Consolidate to `0.14.1` [a70623c](https://github.com/balderdashy/sails/commit/a70623ce2809d497b3581268354f06904d862268)
 * [UPGRADE] Upgraded version of grunt-contrib-watch to `1.0.0` [3678](https://github.com/balderdashy/sails/issues/3678)

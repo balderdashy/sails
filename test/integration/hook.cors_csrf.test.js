@@ -1101,10 +1101,10 @@ describe('CORS and CSRF ::', function() {
 
     });
 
-    describe("with CSRF set to {protectionEnabled: true, routesDisabled: '/foo, /user'}", function() {
+    describe("with CSRF set to {protectionEnabled: true, routesDisabled: '/foo/:id, /user'}", function() {
 
       before(function() {
-        fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = {protectionEnabled: true, routesDisabled: '/user'};");
+        fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = {protectionEnabled: true, routesDisabled: '/foo/:id, /user'};");
       });
 
       it("a POST request on /user without a CSRF token should result in a 201 response", function(done) {
@@ -1115,7 +1115,16 @@ describe('CORS and CSRF ::', function() {
           assert.equal(response.statusCode, 201);
           done();
         });
+      });
 
+      it("a POST request on /foo/12 without a CSRF token should result in a 404 response", function(done) {
+        httpHelper.testRoute("post", 'foo/12', function(err, response) {
+          if (err) {
+            return done(err);
+          }
+          assert.equal(response.statusCode, 404);
+          done();
+        });
       });
 
       it("a POST request on /test without a CSRF token should result in a 403 response", function(done) {
@@ -1126,7 +1135,132 @@ describe('CORS and CSRF ::', function() {
           assert.equal(response.statusCode, 403);
           done();
         });
+      });
 
+      it("a POST request on /foo without a CSRF token should result in a 403 response", function(done) {
+        httpHelper.testRoute("post", 'foo', function(err, response) {
+          if (err) {
+            return done(err);
+          }
+          assert.equal(response.statusCode, 403);
+          done();
+        });
+      });
+
+    });
+
+    describe("with CSRF set to {protectionEnabled: true, routesDisabled: /user\\/\\d+/}", function() {
+
+      before(function() {
+        fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = {protectionEnabled: true, routesDisabled: /user\\/\\d+/};");
+      });
+
+      it("a POST request on /user/1 without a CSRF token should result in a 200 response", function(done) {
+        httpHelper.testRoute("post", 'user/1', function(err, response) {
+          if (err) {
+            return done(err);
+          }
+          assert.equal(response.statusCode, 200);
+          done();
+        });
+      });
+
+      it("a POST request on /user/a without a CSRF token should result in a 403 response", function(done) {
+        httpHelper.testRoute("post", 'user/a', function(err, response) {
+          if (err) {
+            return done(err);
+          }
+          assert.equal(response.statusCode, 403);
+          done();
+        });
+      });
+
+      it("a POST request on /user without a CSRF token should result in a 403 response", function(done) {
+        httpHelper.testRoute("post", 'user', function(err, response) {
+          if (err) {
+            return done(err);
+          }
+          assert.equal(response.statusCode, 403);
+          done();
+        });
+      });
+
+    });
+
+    describe("with CSRF set to {protectionEnabled: true, routesDisabled: ['/foo/:id', '/bar/foo', /user\\/\\d+/]}", function() {
+
+      before(function() {
+        fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = {protectionEnabled: true, routesDisabled: ['/foo/:id', '/bar/foo', /user\\/\\d+/]};");
+      });
+
+      it("a POST request on /foo/12 without a CSRF token should result in a 404 response", function(done) {
+        httpHelper.testRoute("post", 'foo/12', function(err, response) {
+          if (err) {
+            return done(err);
+          }
+          assert.equal(response.statusCode, 404);
+          done();
+        });
+      });
+
+      it("a POST request on /bar/foo without a CSRF token should result in a 404 response", function(done) {
+        httpHelper.testRoute("post", 'bar/foo', function(err, response) {
+          if (err) {
+            return done(err);
+          }
+          assert.equal(response.statusCode, 404);
+          done();
+        });
+      });
+
+      it("a POST request on /user/1 without a CSRF token should result in a 200 response", function(done) {
+        httpHelper.testRoute("post", 'user/1', function(err, response) {
+          if (err) {
+            return done(err);
+          }
+          assert.equal(response.statusCode, 200);
+          done();
+        });
+      });
+
+      it("a POST request on /user/a without a CSRF token should result in a 403 response", function(done) {
+        httpHelper.testRoute("post", 'user/a', function(err, response) {
+          if (err) {
+            return done(err);
+          }
+          assert.equal(response.statusCode, 403);
+          done();
+        });
+      });
+
+      it("a POST request on /foo without a CSRF token should result in a 403 response", function(done) {
+        httpHelper.testRoute("post", 'foo', function(err, response) {
+          if (err) {
+            return done(err);
+          }
+          assert.equal(response.statusCode, 403);
+          done();
+        });
+      });
+
+      it("a POST request on /user without a CSRF token should result in a 403 response", function(done) {
+        httpHelper.testRoute("post", 'user', function(err, response) {
+          if (err) {
+            return done(err);
+          }
+          assert.equal(response.statusCode, 403);
+          done();
+        });
+      });
+
+      it("a POST request on /test without a CSRF token should result in a 403 response", function(done) {
+        httpHelper.testRoute("post", 'test', function(err, response) {
+          if (err) {
+            return done(err);
+          }
+          assert.equal(response.statusCode, 403);
+          done();
+        });
       });
 
     });
