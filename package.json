@@ -108,7 +108,7 @@
     "machinepack-process": "~2.0.2",
     "mocha": "2.3.4",
     "portfinder": "0.4.0",
-    "request": "2.67.0",
+    "request": "2.68.0",
     "root-require": "0.3.1",
     "should": "5.2.0",
     "socket.io-client": "1.4.3",
