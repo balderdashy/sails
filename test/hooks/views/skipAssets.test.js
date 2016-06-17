@@ -68,7 +68,6 @@ describe('skipAssets', function() {
             }, function(err, response, body) {
               if (err) { return done(err); }
               try {
-                console.log('-----\n',response.headers,'\n----------');
                 if (response.headers['content-type'].match(/text\/html/)) {
                   return done(new Error('Expected javascript content-type header when requesting an asset. `skipAssets` seems to be failing silently!'));
                 }
