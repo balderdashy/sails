@@ -14,7 +14,7 @@ Sails.js is a web framework that makes it easy to build custom, enterprise-grade
 **With [node](http://nodejs.org) [installed](http://sailsjs.org/#!documentation/new-to-nodejs):**
 ```sh
 # Get the latest stable release of Sails
-$ sudo npm install sails -g
+$ npm install sails -g
 ```
 
 > ######Upgrading from 0.10 or 0.11?
