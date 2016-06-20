@@ -65,6 +65,7 @@
     "mock-req": "0.1.0",
     "mock-res": "0.1.0",
     "node-uuid": "~1.4.0",
+    "path-to-regexp": "1.5.3",
     "pluralize": "~0.0.5",
     "prompt": "~0.2.13",
     "rc": "~0.5.0",
