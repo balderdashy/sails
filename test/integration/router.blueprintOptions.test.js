@@ -8,7 +8,7 @@ var _ = require('lodash');
 var async = require('async');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
-var fixture = require('./fixtures/users.js');
+var bootstrap31FakeUsers = require('./fixtures/users.js');
 
 
 
@@ -28,16 +28,17 @@ var Err = {
 
 
 describe('router :: ', function() {
-
-  var sailsprocess;
-
   describe('Blueprint option routes ::', function() {
-    var appName = 'testApp';
 
-    before(function(done) {
-      // Build the app
-      appHelper.build(function() {
 
+    var sailsAppInstance;
+    before(function (done) {
+
+      // Build the `testApp` directory
+      appHelper.build(function(err) {
+        if (err) { return done(err); }
+
+        // Rebuild the `config/routes.js` file.
         httpHelper.writeRoutes({
           'POST /pet': {
             blueprint: 'find'
@@ -75,27 +76,35 @@ describe('router :: ', function() {
           }
         });
 
-        appHelper.lift(function(err, sails) {
+        // Fire it up.
+        appHelper.lift(function (err, sails) {
+          if (err) { return done(err); }
 
-          if (err) {
-            throw new Error(err);
-          }
-          sailsprocess = sails;
+          // Expose Sails app instance via closure so it can be lowered in the `after()` Mocha callback.
+          sailsAppInstance = sails;
 
           // Add 31 users with 31 pets each
-          fixture(sails, done);
+          bootstrap31FakeUsers(sails, done);
 
-        });
-
-
-      });
-    });
+        });//</after lifting>
+      });//</after building testApp>
+    });//</before>
 
     after(function(done) {
       process.chdir('../');
       appHelper.teardown();
-      sailsprocess.lower(function(){setTimeout(done, 100);});
-    });
+      sailsAppInstance.lower(function (err) {
+        if (err) { return done(err); }
+
+        // This setTimeout is just here to create entropy and try to hunt down race conditions.
+        setTimeout(function(){
+          return done();
+        }, 100);
+
+      });//</sailsAppInstance.lower()>
+    });//</after>
+
+
 
     describe('a get request to /user', function() {
 
@@ -554,6 +563,5 @@ describe('router :: ', function() {
 
     });
 
-  });
-
-});
+  });//</describe (Blueprint option routes)>
+});//</describe (router :: )>

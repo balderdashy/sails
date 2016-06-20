@@ -119,12 +119,13 @@ module.exports = {
 
 
   /**
-   * Remove a test app
+   * Remove a test app (clean up files on disk.)
    *
    * @sync (because it sync filesystem methods)
    */
   teardown: function(appName) {
     appName = appName ? appName : 'testApp';
+
     var dir = path.resolve('./', appName);
     if (fs.existsSync(dir)) {
       wrench.rmdirSyncRecursive(dir);
