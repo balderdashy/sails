@@ -90,11 +90,14 @@ describe('router :: ', function() {
       });//</after building testApp>
     });//</before>
 
-    after(function(done) {
-      process.chdir('../');
-      appHelper.teardown();
+    after(function (done) {
       sailsAppInstance.lower(function (err) {
         if (err) { return done(err); }
+
+        // cd up (out of testApp) into the top-level directory of the Sails repo.
+        process.chdir('../');
+        // Then rm -rf `testApp/`.
+        appHelper.teardown();
 
         // This setTimeout is just here to create entropy and try to hunt down race conditions.
         setTimeout(function(){
@@ -136,9 +139,9 @@ describe('router :: ', function() {
         });
       });
 
-
-
     });
+
+
 
     describe('a post request to /pet with option {blueprint: "find"}', function() {
 
