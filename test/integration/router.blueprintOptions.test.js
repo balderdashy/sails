@@ -519,7 +519,7 @@ describe('router :: ', function() {
 
     });
 
-    describe('a put request to /user/1 with `populate=false` should return the updated user with just a profile ID and no pets', function() {
+    describe('a put request to /user/1 with `populate=false` should return the updated user with just a profile ID and no `pets` property', function() {
 
       var users;
       before(function(done) {
@@ -542,12 +542,14 @@ describe('router :: ', function() {
         assert.equal(user.name, 'ron');
       });
 
-      it('...which should have no pets', function() {
+      it('...which should have no pets property', function() {
         assert(!user.pets);
       });
 
       it('...and just a profile ID.', function() {
-        assert(_.isFinite(user.profile), 'Expected an ID for `profile` attribute of user ' + user.name + '; got ' + JSON.stringify(user.profile));
+        assert(
+          _.isFinite(user.profile),
+          'Expected an ID for `profile` attribute of user ' + user.name + '; got ' + user.profile);
       });
 
     });
