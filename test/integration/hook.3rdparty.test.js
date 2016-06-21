@@ -5,7 +5,6 @@ var assert = require('assert');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
 var util = require('util');
-var wrench = require('wrench');
 var path = require('path');
 var fs = require('fs-extra');
 
@@ -25,7 +24,7 @@ describe('hooks :: ', function() {
       before(function(done) {
         fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules"), function(err) {
           if (err) {return done(err);}
-          wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/sails-hook-shout'));
+          fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/sails-hook-shout'));
           process.chdir(path.resolve(__dirname, "../..", appName));
           done();
         });
@@ -241,7 +240,7 @@ describe('hooks :: ', function() {
       before(function(done) {
         fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules"), function(err) {
           if (err) {return done(err);}
-          wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/shouty'));
+          fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/shouty'));
           process.chdir(path.resolve(__dirname, "../..", appName));
           done();
         });
@@ -323,7 +322,7 @@ describe('hooks :: ', function() {
       before(function(done) {
         fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules"), function(err) {
           if (err) {return done(err);}
-          wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/sails-hook-csrf'));
+          fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/sails-hook-csrf'));
           process.chdir(path.resolve(__dirname, "../..", appName));
           appHelper.liftQuiet(function(err, _sails) {
             if (err) {return done(err);}
@@ -354,7 +353,7 @@ describe('hooks :: ', function() {
       before(function(done) {
         fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules"), function(err) {
           if (err) {return done(err);}
-          wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/csrf'));
+          fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/csrf'));
           process.chdir(path.resolve(__dirname, "../..", appName));
           appHelper.liftQuiet(function(err, _sails) {
             if (err) {return done(err);}
@@ -386,7 +385,7 @@ describe('hooks :: ', function() {
         before(function(done) {
           fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules", "@my-modules"), function(err) {
             if (err) {return done(err);}
-            wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty'));
+            fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty'));
             process.chdir(path.resolve(__dirname, "../..", appName));
             appHelper.liftQuiet(function(err, _sails) {
               if (err) {return done(err);}
@@ -416,7 +415,7 @@ describe('hooks :: ', function() {
         before(function(done) {
           fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules", "@my-modules"), function(err) {
             if (err) {return done(err);}
-            wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty'));
+            fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty'));
             var packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty','package.json')));
             packageJson.sails.hookName = 'csrf';
             fs.writeFileSync(path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty','package.json'), JSON.stringify(packageJson));
@@ -451,7 +450,7 @@ describe('hooks :: ', function() {
       before(function(done) {
         fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules", "@my-modules"), function(err) {
           if (err) {return done(err);}
-          wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-csrf'));
+          fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-csrf'));
           process.chdir(path.resolve(__dirname, "../..", appName));
           appHelper.liftQuiet(function(err, _sails) {
             if (err) {return done(err);}
@@ -481,7 +480,7 @@ describe('hooks :: ', function() {
       before(function(done) {
         fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules", "@my-modules"), function(err) {
           if (err) {return done(err);}
-          wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-csrf'));
+          fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-csrf'));
           fs.outputFileSync(path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-csrf/package.json'), '{"foo":<%=bar%>}');
           process.chdir(path.resolve(__dirname, "../..", appName));
           return done();

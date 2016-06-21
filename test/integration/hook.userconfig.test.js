@@ -5,7 +5,6 @@ var assert = require('assert');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
 var util = require('util');
-var wrench = require('wrench');
 var path = require('path');
 var fs = require('fs-extra');
 var Sails = require('../../lib/app');
