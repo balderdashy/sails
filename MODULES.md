@@ -69,13 +69,13 @@ Below, you'll find an overview of the modules maintained by the core team and co
 
 ### Officially-supported hooks
 
-| Hook           | Repo       |  Build Status (edge)             | Purpose                  | Depends on...   |
-|----------------|------------|----------------------------------|--------------------------|-----------------|
-| `sockets`      | [sails-hook-sockets](https://github.com/balderdashy/sails-hook-sockets)  | [![Build Status](https://travis-ci.org/balderdashy/sails-hook-sockets.png?branch=master)](https://travis-ci.org/balderdashy/sails-hook-sockets)  | Implemments Socket.io support in Sails.  | `http`  |
-| `http`         | [`/lib/hooks/http`](https://github.com/balderdashy/sails/tree/master/lib/hooks/http)      | [![Build Status](https://travis-ci.org/balderdashy/sails.png?branch=master)](https://travis-ci.org/balderdashy/sails) | Implements basic HTTP server functionality. |  _n/a_ |
-| TODO: list other hooks currently contained in Sails core | _n/a_ | TODO | TODO | TODO |
+| Hook           | Repo       |  Build Status (edge)             | Purpose                  |
+|:---------------|------------|----------------------------------|:-------------------------|
+| `orm`          | [sails-hook-orm](https://github.com/balderdashy/sails-hook-orm)  | [![Build Status](https://travis-ci.org/balderdashy/sails-hook-orm.png?branch=master)](https://travis-ci.org/balderdashy/sails-hook-orm)  | Implements support for Waterline ORM in Sails.  |
+| `sockets`      | [sails-hook-sockets](https://github.com/balderdashy/sails-hook-sockets)  | [![Build Status](https://travis-ci.org/balderdashy/sails-hook-sockets.png?branch=master)](https://travis-ci.org/balderdashy/sails-hook-sockets)  | Implements Socket.io support in Sails.  |
 
-> The code for the hooks listed above without specific repos is currently contained in sub-folders within Sails core.  See [`lib/hooks/`](https://github.com/balderdashy/sails/tree/master/lib/hooks)
+> The code for other hooks not listed above without specific repos is currently contained in sub-folders within Sails core.  See [`lib/hooks/`](https://github.com/balderdashy/sails/tree/master/lib/hooks)
+
 
 ### Socket Client SDKs
 
@@ -88,10 +88,10 @@ Below, you'll find an overview of the modules maintained by the core team and co
 
 ### Documentation
 
-| Repo       |
-|------------|
-| [sails-docs](https://github.com/balderdashy/sails-docs)  |
-| [www.sailsjs.org](https://github.com/balderdashy/www.sailsjs.org) |
+| Repo       | Purpose                           |
+|------------|:----------------------------------|
+| [sails-docs](https://github.com/balderdashy/sails-docs)  | Raw content for reference, conceptual, anatomical, and other documentation on the Sails website (in Markdown).
+| [www.sailsjs.org](https://github.com/balderdashy/www.sailsjs.org) | The Sails app that powers [sailsjs.org](http://sailsjs.org).  HTML content is automatically compiled from [`sails-docs`](https://github.com/balderdashy/sails-docs).
 
 
 
@@ -153,9 +153,10 @@ Below, you'll find an overview of the modules maintained by the core team and co
 
 #### Misc. Projects
 
-| Repo                   | Build Status (edge)  |
-|------------------------|----------------------|
-| [sails-migrations](https://github.com/BlueHotDog/sails-migrations) |           |
+| Repo                          |
+|-------------------------------|
+| [sails-migrations](https://github.com/BlueHotDog/sails-migrations) |
+| [sails-mysql-transactions](https://github.com/postmanlabs/sails-mysql-transactions) |
 
 
 
