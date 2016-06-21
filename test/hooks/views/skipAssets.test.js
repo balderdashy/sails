@@ -71,7 +71,7 @@ describe('skipAssets', function() {
                 if (!_.isString(response.headers['content-type'])) {
                   return done(new Error('Expected a response content-type header when requesting an asset. `skipAssets` seems to be failing silently!'));
                 }
-                if (response.headers['content-type'].match(/text\/javascript/)) {
+                if (!response.headers['content-type'].match(/text\/javascript/)) {
                   return done(new Error('Expected javascript response content-type header when requesting an asset (but got `'+response.headers['content-type']+'`). `skipAssets` seems to be failing silently!'));
                 }
               }
