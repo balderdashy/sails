@@ -117,11 +117,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/balderdashy/sails.git"
+    "url": "git://github.com/marrouchi/sails.git#gatous"
   },
   "license": "MIT",
   "bugs": {
-    "url": "http://github.com/balderdashy/sails/issues"
+    "url": "http://github.com/marrouchi/sails/issues"
   },
   "engines": {
     "node": ">= 0.10.0",
