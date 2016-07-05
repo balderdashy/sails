@@ -2,16 +2,25 @@
 
 ### Master
 
-* [ENHANCEMENT] Allow use Express style path and RegExp in `sails.config.csrf.routesDisabled` [d3f634c](https://github.com/balderdashy/sails/commit/d3f634c9ac0c5e2172710fe27ab3f61f8303d840)
+<!--
+_A blank slate, as of 1467754262139.  Just imagine all the possibilities._
+-->
+
+### 0.12.4
+
+* [ENHANCEMENT] Add `sails.config.session.routesDisabled` config option to specify routes that should not use session middleware [c712acf](https://github.com/balderdashy/sails/commit/c712acf29de257d438b422b2c47e67a4d5126ddc)
+* [ENHANCEMENT] Use `res.forbidden()` when denying access to a route via a policy.  Thanks [@wulfsolter](https://github.com/wulfsolter)!  [3764](https://github.com/balderdashy/sails/pull/3764)
+* [ENHANCEMENT] Use standalone CSRF package instead of using the one (formerly) bundled with Connect.  Sails should be using all standalone middleware now. [1d3c9e6](https://github.com/balderdashy/sails/commit/1d3c9e6459253261e0f763d133c559641bcbfa33)
+* [ENHANCEMENT] Update "connect" dependency to 3.4.1 [1d3c9e6](https://github.com/balderdashy/sails/commit/1d3c9e6459253261e0f763d133c559641bcbfa33)
+* [ENHANCEMENT] Update "compression" dependency to version 1.6.2 [98861ef](https://github.com/balderdashy/sails/commit/98861ef12ddca0ff6d57cf7ea6d4bb9f8bca9656)
+* [INTERNAL] Add some assertions to ensure custom hooks don't use reserved properties [2e76dac](https://github.com/balderdashy/sails/commit/2e76dac2f961a1f20c591fb0a5d7ea6556d2ab70)
+* [BUGFIX] Fix for query / body params called `length` [3738](https://github.com/balderdashy/sails/issues/3738)
+* [BUGFIX] Fix view rendering when i18n hook is disabled.  Thanks [@mordred](https://github.com/Mordred)! [3741](https://github.com/balderdashy/sails/pull/3741)
+* [BUGFIX] Allow `sails.renderView` to work with globals turned off [3753](https://github.com/balderdashy/sails/issues/3753)
+* [ENHANCEMENT] Allow use of Express style path and RegExp in `sails.config.csrf.routesDisabled`.  Thanks [@bolasblack](https://github.com/bolasblack)! [d3f634c](https://github.com/balderdashy/sails/commit/d3f634c9ac0c5e2172710fe27ab3f61f8303d840)
 * [BUGFIX] Fix typo which could cause crashing when attempting to serialize non-json-compatible output in the response to a socket request.
 * [UPGRADE] Upgraded version of Consolidate to `0.14.1` [a70623c](https://github.com/balderdashy/sails/commit/a70623ce2809d497b3581268354f06904d862268)
 * [UPGRADE] Upgraded version of grunt-contrib-watch to `1.0.0` [3678](https://github.com/balderdashy/sails/issues/3678)
-
-
-<!--
-_A blank slate, as of 1459549711072.  Just imagine all the possibilities._
--->
-
 
 ### 0.12.3
 
