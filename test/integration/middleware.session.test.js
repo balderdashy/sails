@@ -120,6 +120,84 @@ describe('middleware :: ', function() {
 
       });
 
+
+      describe('requesting a route listed in sails.config.session.routesDisabled', function() {
+
+        // Lift a Sails instance in production mode
+        var app = Sails();
+        before(function (done){
+          app.lift({
+            globals: false,
+            port: 1535,
+            environment: 'development',
+            log: {level: 'silent'},
+            session: {
+              secret: 'abc123',
+              routesDisabled: ['/test', '/foo/:id/bar/']
+            },
+            hooks: {grunt: false},
+            routes: {
+              '/test': function(req, res) {
+                if (_.isUndefined(req.session)) {
+                  return res.send(200);
+                }
+                res.send(500);
+              },
+              '/foo/123/bar': function(req, res) {
+                if (_.isUndefined(req.session)) {
+                  return res.send(200);
+                }
+                res.send(500);
+              }
+
+            }
+          }, done);
+        });
+
+        describe('static path', function() {
+
+          it('there should be no `set-cookie` header in the response', function(done) {
+
+            request(
+              {
+                method: 'GET',
+                uri: 'http://localhost:1535/test',
+              },
+              function(err, response, body) {
+                assert.equal(response.statusCode, 200);
+                assert(_.isUndefined(response.headers['set-cookie']));
+                return done();
+              }
+            );
+          });
+
+        });
+
+        describe('dynamic path', function() {
+
+          it('there should be no `set-cookie` header in the response', function(done) {
+
+            request(
+              {
+                method: 'GET',
+                uri: 'http://localhost:1535/foo/123/bar',
+              },
+              function(err, response, body) {
+                assert.equal(response.statusCode, 200);
+                assert(_.isUndefined(response.headers['set-cookie']));
+                return done();
+              }
+            );
+          });
+
+        });
+
+        after(function(done) {
+          return app.lower(done);
+        });
+
+      });
+
     });
 
     describe('virtual requests :: ', function() {
@@ -190,6 +268,54 @@ describe('middleware :: ', function() {
         });
 
       });
+
+      describe('requesting a route listed in sails.config.session.routesDisabled', function() {
+
+        // Lift a Sails instance in production mode
+        var app = Sails();
+        before(function (done){
+          app.lift({
+            globals: false,
+            port: 1535,
+            environment: 'development',
+            log: {level: 'silent'},
+            session: {
+              secret: 'abc123',
+              routesDisabled: ['/test']
+            },
+            hooks: {grunt: false},
+            routes: {
+              '/test': function(req, res) {
+                if (_.isUndefined(req.session)) {
+                  return res.send(200);
+                }
+                res.send(500);
+              }
+            }
+          }, done);
+        });
+
+        it('there should be no `set-cookie` header in the response', function(done) {
+
+          request(
+            {
+              method: 'GET',
+              uri: 'http://localhost:1535/test',
+            },
+            function(err, response, body) {
+              assert.equal(response.statusCode, 200);
+              assert(_.isUndefined(response.headers['set-cookie']));
+              return done();
+            }
+          );
+        });
+
+        after(function(done) {
+          return app.lower(done);
+        });
+
+      });
+
 
     });
 
