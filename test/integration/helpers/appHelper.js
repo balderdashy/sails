@@ -6,7 +6,6 @@ var path = require('path');
 var child_process = require('child_process');
 var exec = child_process.exec;
 var fs = require('fs-extra');
-var wrench = require('wrench');
 var _ = require('lodash');
 var SocketIOClient = require('socket.io-client');
 var SailsIOClient = require('./sails.io.js');
@@ -70,9 +69,8 @@ module.exports = {
 
     // Cleanup old test fixtures
     if (fs.existsSync(appName)) {
-      wrench.rmdirSyncRecursive(path.resolve('./', appName));
+      fs.removeSync(path.resolve('./', appName));
     }
-    // TODO: replace this (^) with fsx.remove or mp-fs/rmrf
 
     // Create an empty directory for the test app.
     var appDirPath = path.resolve('./', appName);
@@ -86,33 +84,7 @@ module.exports = {
       }
 
       // Copy test fixtures to the test app.
-      ////////////////////////////////////////////////////////////////////////////////////
-      // TODO: replace all of this w/ one line via `fsx.copy()`.
-      var fixtures = wrench.readdirSyncRecursive('../test/integration/fixtures/sampleapp');
-      if (fixtures.length === 0) {
-        return done(new Error('Fixtures are missing.'));
-      }
-      fixtures.forEach(function _eachFixtureFile(file) {
-        var filePath = path.resolve('../test/integration/fixtures/sampleapp', file);
-
-        // Check if file is a directory
-        var stat = fs.statSync(filePath);
-
-        // Ignore directories
-        if (stat.isDirectory()) {
-          return;
-        }
-
-        // Copy file to test app.
-        var data = fs.readFileSync(filePath);
-
-        // Create file and any missing parent directories in its path
-        fs.createFileSync(path.resolve(file), data);
-        fs.writeFileSync(path.resolve(file), data);
-      });
-      ////////////////////////////////////////////////////////////////////////////////////
-
-      return done();
+      fs.copy('../test/integration/fixtures/sampleapp', './', done);
     });
   },
 
@@ -128,7 +100,7 @@ module.exports = {
 
     var dir = path.resolve('./', appName);
     if (fs.existsSync(dir)) {
-      wrench.rmdirSyncRecursive(dir);
+      fs.removeSync(dir);
     }
   },
 

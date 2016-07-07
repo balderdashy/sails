@@ -3,8 +3,7 @@
  */
 
 var assert = require('assert');
-var fs = require('fs');
-var wrench = require('wrench');
+var fs = require('fs-extra');
 var request = require('request');
 var exec = require('child_process').exec;
 var path = require('path');
@@ -19,7 +18,7 @@ describe('Running sails www', function() {
 
   before(function() {
     if (fs.existsSync(appName)) {
-      wrench.rmdirSyncRecursive(appName);
+      fs.removeSync(appName);
     }
   });
 
@@ -136,7 +135,7 @@ describe('Running sails www', function() {
 
   after(function() {
     if (fs.existsSync(appName)) {
-      wrench.rmdirSyncRecursive(appName);
+      fs.removeSync(appName);
     }
   });
 });

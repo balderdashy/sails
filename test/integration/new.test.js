@@ -3,8 +3,7 @@
  */
 
 var assert  = require('assert');
-var fs    = require('fs');
-var wrench  = require('wrench');
+var fs    = require('fs-extra');
 var exec  = require('child_process').exec;
 var _   = require('lodash');
 var appHelper = require('./helpers/appHelper');
@@ -28,7 +27,7 @@ describe('New app generator', function() {
   beforeEach(function(done) {
     fs.exists(appName, function(exists) {
       if (exists) {
-        wrench.rmdirSyncRecursive(appName);
+        fs.removeSync(appName);
       }
       done();
     });
@@ -37,7 +36,7 @@ describe('New app generator', function() {
   afterEach(function(done) {
     fs.exists(appName, function(exists) {
       if (exists) {
-        wrench.rmdirSyncRecursive(appName);
+        fs.removeSync(appName);
       }
       done();
     });
@@ -169,4 +168,3 @@ describe('New app generator', function() {
     });
   });
 });
-

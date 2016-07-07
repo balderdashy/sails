@@ -1,8 +1,7 @@
 describe('API and adapter generators', function() {
 
   var assert = require('assert');
-  var fs = require('fs');
-  var wrench = require('wrench');
+  var fs = require('fs-extra');
   var exec = require('child_process').exec;
   var path = require('path');
 
@@ -20,7 +19,7 @@ describe('API and adapter generators', function() {
   before(function(done) {
 
     if (fs.existsSync(appName)) {
-      wrench.rmdirSyncRecursive(appName);
+      fs.removeSync(appName);
     }
 
     exec('node ' + sailsBin + ' new ' + appName, function(err) {
@@ -39,7 +38,7 @@ describe('API and adapter generators', function() {
     process.chdir('../');
 
     if (fs.existsSync(appName)) {
-      wrench.rmdirSyncRecursive(appName);
+      fs.removeSync(appName);
     }
 
     done();
