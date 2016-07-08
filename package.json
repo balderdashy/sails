@@ -59,7 +59,7 @@
     "grunt-contrib-uglify": "1.0.1",
     "grunt-contrib-watch": "1.0.0",
     "grunt-sails-linker": "~0.10.1",
-    "grunt-sync": "0.2.4",
+    "grunt-sync": "0.5.2",
     "i18n": "0.8.1",
     "include-all": "~0.1.6",
     "lodash": "3.10.1",
