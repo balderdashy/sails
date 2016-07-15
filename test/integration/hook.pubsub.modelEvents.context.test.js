@@ -115,7 +115,7 @@ describe('pubsub :: ', function() {
           socket2.on('user', function(message) {
             clearTimeout(timer);
             try {
-              assert(message.id === 1 && message.verb === 'updated' && message.data.name === 'bob', Err.badResponse(message));
+              assert(message.id == 1 && message.verb === 'updated' && message.data.name === 'bob', Err.badResponse(message));
             }
             catch (e) { return done(e); }
 
