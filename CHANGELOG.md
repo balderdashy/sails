@@ -8,6 +8,7 @@ _A blank slate, as of 1467754262139.  Just imagine all the possibilities._
 
 ### 0.12.4
 
+* [BUGFIX] Fix long-standing, low-priority (but super annoying) issue with logged dictionaries/arrays getting extra quote marks (due to a pecularity in the usage of util.format()) [d67e9c8e6775](https://github.com/balderdashy/captains-log/commit/d67e9c8e67759e8dda3a2d664c3607e9127d209c)
 * [ENHANCEMENT] Add `sails.config.session.routesDisabled` config option to specify routes that should not use session middleware [c712acf](https://github.com/balderdashy/sails/commit/c712acf29de257d438b422b2c47e67a4d5126ddc)
 * [ENHANCEMENT] Use `res.forbidden()` when denying access to a route via a policy.  Thanks [@wulfsolter](https://github.com/wulfsolter)!  [3764](https://github.com/balderdashy/sails/pull/3764)
 * [ENHANCEMENT] Allow use of Express style path and RegExp in `sails.config.csrf.routesDisabled`.  Thanks [@bolasblack](https://github.com/bolasblack)!
