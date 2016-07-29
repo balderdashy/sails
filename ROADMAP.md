@@ -9,6 +9,15 @@ This file contains the development roadmap for the upcoming release of Sails, as
 
 This section includes the a **very early list** of some of the features, enhancements, and other improvements tentatively planned or already implemented for the v1.0 release of Sails.  Note that this is by no means a comprehensive changelog or release plan and may exclude important additions, bug fixes, and documentation tasks; it is just a reference point.  Please also realize that the following notes may be slightly out of date-- until the release is finalized, API changes, deprecation announcements, additions, etc. are all tentative.
 
++ **Database Transactions**
+  + See https://github.com/postmanlabs/sails-mysql-transactions/issues/26#issuecomment-191225758)
++ **Validation errors in blueprints, `res.jsonx()`, & error handling in custom responses**
+  + Will be handled by calling res.badRequest() directly
+  + The toJSON() function of errors will be called (since res.json will be used instead of res.jsonx)
+  + https://github.com/balderdashy/sails/commit/b8c3813281a041c0b24db381b046fecfa81a14b7#commitcomment-18455430
++ **JSONP support in blueprints**
+  + Will be deprecated (along with res.jsonx, as mentioned above)
+  + CORS support is so widespread in browsers today (IE8 and up) that JSONP is rarely necessary-- and certainly isn't worth the complexity/weight in core.  After upgrading to v1, if you want to implement support for JSONP within the blueprint API, it is still achievable by modifying the relevant default responses (`api/responses/badRequest.js`, `api/responses/serverError.js`, and `api/responses/notFound.js`) to use `res.jsonp()` instead of `res.json()` (or to determine which to use based on the value of a request param).
 + **`sails.config.environment` and the `NODE_ENV` environment variable**
   + Sails will no longer set the `NODE_ENV` environment variable automatically by default.
   + Apps will need to set `NODE_ENV` themselves in addition to `sails.config.environment`.
@@ -17,7 +26,8 @@ This section includes the a **very early list** of some of the features, enhance
   + If `sails.config.environment` is set to "production" and the `NODE_ENV` environment variable is not also set to production, Sails will log a warning.
     + ^^needs tests.
 
-+ More v1.0 info to come as it is finalized.
+
+
 
 &nbsp;
 &nbsp;
