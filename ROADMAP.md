@@ -12,7 +12,7 @@ This section is an early list of some of the features, enhancements, and other i
 + **Built-in Support for Database Projections (i.e. `SELECT`)**
   + This is already implemented in Waterline, but not yet exposed in Sails.
   + We may do a minor release of Sails prior to v1.0 so that folks can take advantage of this today.
-  + If you want to use Waterline 0.12 in your Sails app in the mean time, fork sails-hook-orm, upgrade its waterline dependency, then NPM install your forked version as a dependency in your Sails app project, and it will take affect automatically.  (But be sure you are using the appropriate adapters-- tweet [@particlebanana](http://twitter.com/particlebanana) or [@sailsjs](http://twitter.com/sailsjs) if you have questions on that.)
+  + If you want to use Waterline 0.12 in your Sails app in the mean time, fork sails-hook-orm, upgrade its waterline dependency, then NPM install your forked version as a dependency in your Sails app project, and it will take effect automatically.  (But be sure you are using the appropriate adapters-- tweet [@particlebanana](http://twitter.com/particlebanana) or [@sailsjs](http://twitter.com/sailsjs) if you have questions on that.)
 + **Built-in Support for Dynamic Database Connections**
   + Implemented via `sails.hooks.orm.datastore()`
   + See https://github.com/node-machine/driver-interface and https://github.com/particlebanana/waterline-query-docs/issues/2
