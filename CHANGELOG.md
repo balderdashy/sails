@@ -8,6 +8,8 @@ _A blank slate, as of 1467754262139.  Just imagine all the possibilities._
 
 ### 0.12.4
 
+* [INTERNAL] Upgrade Mocha to 3.0.0 to remove more of the deprecation notices when installing dependencies (see [mocha:#2200](https://github.com/mochajs/mocha/issues/2200))
+* [INTERNAL] Simplify config-merging code in captains-log.  This also gets rid of more deprecation notices during install (see [captains-log:49f433eff348c05115a2caf292b4da0db9499887](https://github.com/balderdashy/captains-log/commit/49f433eff348c05115a2caf292b4da0db9499887))
 * [BUGFIX] Fix long-standing, low-priority (but super annoying) issue with logged dictionaries/arrays getting extra quote marks (due to a pecularity in the usage of util.format()) [d67e9c8e6775](https://github.com/balderdashy/captains-log/commit/d67e9c8e67759e8dda3a2d664c3607e9127d209c)
 * [ENHANCEMENT] Add `sails.config.session.routesDisabled` config option to specify routes that should not use session middleware [c712acf](https://github.com/balderdashy/sails/commit/c712acf29de257d438b422b2c47e67a4d5126ddc)
 * [ENHANCEMENT] Use `res.forbidden()` when denying access to a route via a policy.  Thanks [@wulfsolter](https://github.com/wulfsolter)!  [3764](https://github.com/balderdashy/sails/pull/3764)
