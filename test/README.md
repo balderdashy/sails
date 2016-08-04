@@ -20,7 +20,7 @@ npm test
 
 
 ## What To Test
-In an ideal world, any possible action you could perpform with Sails as a user, whether programatically or via the command-line tool, would have a test. However the combinatoric scale of configuration variations in Sails, along with the fact that userland code can override just about any key piece of core, means we'll never _quite_ get to this point.  And that's ok.
+In an ideal world, any possible action you could perform with Sails as a user, whether programatically or via the command-line tool, would have a test. However the combinatoric scale of configuration variations in Sails, along with the fact that userland code can override just about any key piece of core, means we'll never _quite_ get to this point.  And that's ok.
 
 Instead, the Sails project's goal is for any _feature of Sails_ you would use as a user, either programatically or via the command-line tool, to have a test.  In many cases, where these features are implemented within a dependency, the only tests for that feature exist within that dependency (e.g. [Waterline](https://github.com/balderdashy/waterline/tree/master/test), [Skipper](https://github.com/balderdashy/skipper/tree/master/test), and [Captains Log](https://github.com/balderdashy/captains-log/tree/master/test)).  But even in these cases, tests in Sails inevitably end up retesting certain features that are already verified by Sails' dependencies-- and there is nothing wrong with that.
 
