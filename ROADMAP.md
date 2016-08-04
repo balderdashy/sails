@@ -40,6 +40,10 @@ This section is an early list of some of the features, enhancements, and other i
   + See https://github.com/balderdashy/sails/pull/3522
 + **Federated hooks (custom builds)**
   + See https://github.com/balderdashy/sails/pull/3504
++ **Improved parsing of configuration that **
+  + This expands the possibilities of env vars and CLI opts for setting configuration.  The only reason this hasn't been implemented up until now is that it requires knowing where configuration exported by `rc` is coming from (see https://github.com/dominictarr/rc/pull/33)
+  + Instead of receiving JSON-encoded values (numbers/booleans/dictionaries/arrays/null) as strings, they'll be parsed.
+  + See [rttc.parseHuman()](https://github.com/node-machine/rttc#parsehumanstringfromhuman-typeschemaundefined-unsafemodefalse) for details
 + **Validation errors in blueprints, `res.jsonx()`, & error handling in custom responses**
   + Will be handled by calling res.badRequest() directly
   + The toJSON() function of errors will be called (since res.json will be used instead of res.jsonx)
