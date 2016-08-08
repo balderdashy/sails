@@ -17,6 +17,7 @@ var Err = require('../errors');
 var package = require('../package.json');
 
 
+
 /**
  * `sails console`
  *
@@ -32,6 +33,10 @@ var package = require('../package.json');
  * ------------------------------------------------------------------------
  * This lifts the Sails app in the current working directory, then uses
  * the `repl` package to spin up an interactive console.
+ *
+ * Note that, if `--dontLift` was set, then `sails.load()` will be used
+ * instead. (By default, the `sails console` cmd runs `sails.lift()`.)
+ * ------------------------------------------------------------------------
  */
 
 module.exports = function() {
@@ -54,8 +59,8 @@ module.exports = function() {
   // Assume the current working directory to be the root of the app
   var appPath = process.cwd();
 
-  // Determine whether to use the local or global Sails install
-  var sailsToLift = (function(){
+  // Determine whether to use the local or global Sails install.
+  var sailsApp = (function _determineAppropriateSailsAppInstance(){
     // Use the app's local Sails in `node_modules` if it's extant and valid
     var localSailsPath = nodepath.resolve(appPath, 'node_modules/sails');
     if (Sails.isLocalSailsValid(localSailsPath, appPath)) {
@@ -73,8 +78,18 @@ module.exports = function() {
   log.info(chalk.blue('Starting app in interactive mode...'));
   console.log();
 
-  // Lift Sails
-  sailsToLift.lift(scope, function(err) {
+
+  // Lift (or load) Sails
+  (function _ifThenFinally(done){
+    // If `--dontLift` was set, then use `.load()` instead.
+    if (!_.isUndefined(scope.dontLift)) {
+      sailsApp.load(scope, done);
+    }
+    // Otherwise, go with the default behavior (`.lift()`)
+    else {
+      sailsApp.lift(scope, done);
+    }
+  })(function afterwards(err){
     if (err) {
       return Err.fatal.failedToLoadSails(err);
     }
@@ -98,8 +113,11 @@ module.exports = function() {
       process.exit(0);
     });
 
-  });
+  });//</_ifThenFinally()>
 };
+
+
+
 
 
 
