@@ -39,7 +39,7 @@ describe('pubsub :: ', function() {
       var appName = 'testApp';
       var sailsApp;
 
-      before(function(done) {
+      before(function (done) {
         appHelper.buildAndLiftWithTwoSockets(appName, {
           log: {level: 'silent'}, /*, sockets: {'backwardsCompatibilityFor0.9SocketClients':false} */
         }, function(err, sails, _socket1, _socket2) {
@@ -50,7 +50,7 @@ describe('pubsub :: ', function() {
           socket1 = _socket1;
           socket2 = _socket2;
           socket2.get('/user/watch', function(body, jwr) {
-            if (jwr.error) { return done(jwr.error); }
+            if (jwr.error) { return done(new Error('Error in tests.  Details:' + JSON.stringify(jwr))); }
             done();
           });
         });
