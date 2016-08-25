@@ -89,12 +89,12 @@ Issues which do not meet these guidelines will usually be closed without being r
 
 ## III. Contributing to the Documentation
 
-The official documentation on the Sails website is compiled from markdown files in a separate repo. Read the [guide on contributing to the documentation](https://github.com/balderdashy/sails/tree/master/test) for more information about how you can help.
+The official documentation on the Sails website is compiled from markdown files in a separate repo. Read the [guide on contributing to the documentation](https://github.com/balderdashy/sails-docs/blob/master/README.md) for more information about how you can help.
 
 
 #### Translating the Documentation
 
-A great way to help the Sails project, especially if you speak a language other than English natively, is to volunteer to translate the Sails documentation. The documentation for Sails has been translated to a number of different languages including Japanese, Brazilian Portugese, Taiwanese Mandarin, Korean, and Spanish.  For an up-to-date list, or to learn more about contributing to an existing translation project or starting one for your language, refer to the [documentation contribution guide](https://github.com/balderdashy/sails/tree/master/test).
+A great way to help the Sails project, especially if you speak a language other than English natively, is to volunteer to translate the Sails documentation. The documentation for Sails has been translated to a number of different languages including Japanese, Brazilian Portugese, Taiwanese Mandarin, Korean, and Spanish.  For an up-to-date list, or to learn more about contributing to an existing translation project or starting one for your language, refer to the [documentation contribution guide](https://github.com/balderdashy/sails-docs/blob/master/README.md).
 
 
 #### Contributing to the Sails Website
