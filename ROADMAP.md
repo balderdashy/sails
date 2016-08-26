@@ -66,6 +66,9 @@ This section is an early list of some of the features, enhancements, and other i
   + But if _both_ `NODE_ENV` and `sails.config.environment` are specified, then no changes will be made to either.
   + If `sails.config.environment` is set to "production" and the `NODE_ENV` environment variable is not also set to production, Sails will log a warning.
     + ^^needs tests.
++ **`sails.config.dontFlattenConfig` will be deprecated.**
+  + The `dontFlattenConfig` setting was [originally added](http://sailsjs.org/documentation/concepts/upgrading/to-v-0-11#?config-files-in-subfolders) for backards-compatibility with what was essentially a bug.
+  + It will be completely removed in Sails v1.0 for simplicity.
 + **Better built-in support for command-line scripts that require access to the Sails app instance**
   + https://github.com/treelinehq/machine-as-script/commits/master
 + **sails-stdlib**
