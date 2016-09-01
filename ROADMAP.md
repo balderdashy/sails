@@ -7,8 +7,54 @@ This file contains the development roadmap for the upcoming release of Sails, as
 
 ## v1.0
 
-This section includes the a **very early list** of some of the features, enhancements, and other improvements tentatively planned or already implemented for the v1.0 release of Sails.  Note that this is by no means a comprehensive changelog or release plan and may exclude important additions, bug fixes, and documentation tasks; it is just a reference point.  Please also realize that the following notes may be slightly out of date-- until the release is finalized, API changes, deprecation announcements, additions, etc. are all tentative.
+This section is an early list of some of the features, enhancements, and other improvements tentatively planned or already implemented for the v1.0 release of Sails.  Note that this is by no means a comprehensive changelog or release plan, and may exclude important additions, bug fixes, and documentation tasks; it is just a reference point with the highlights.  Please also realize that the following notes may be slightly out of date from time to time.  Until the release is finalized, API changes, deprecation announcements, additions, etc. are all tentative.  (But we're getting close.)
 
++ **Built-in Support for Database Projections (i.e. `SELECT`)**
+  + This is already implemented in Waterline, but not yet exposed in Sails.
+  + We may do a minor release of Sails prior to v1.0 so that folks can take advantage of this today.
+  + If you want to use Waterline 0.12 in your Sails app in the mean time, fork sails-hook-orm, upgrade its waterline dependency, then NPM install your forked version as a dependency in your Sails app project, and it will take effect automatically.  (But be sure you are using the appropriate adapters-- tweet [@particlebanana](http://twitter.com/particlebanana) or [@sailsjs](http://twitter.com/sailsjs) if you have questions on that.)
++ **Built-in Support for Dynamic Database Connections**
+  + Implemented via `sails.hooks.orm.datastore()`
+  + See https://github.com/node-machine/driver-interface and https://github.com/particlebanana/waterline-query-docs/issues/2
+  + API: `sails.hooks.orm.datastore('foo').connect(during, afterDisconnecting)`
+  + Also: `User.find().usingConnection(mySQLConnectionObtainedFromUsingRawDriver).exec();`
++ **Advanced Joins (using compiled statements based on Knex)**
+  + This will be usable prior to Sails v1 (and is available for experimental use today)
+  + See https://github.com/particlebanana/waterline-query-docs/
++ **Built-in Support for Native Database Transactions (for databases that support it)**
+  + See https://github.com/postmanlabs/sails-mysql-transactions/issues/26#issuecomment-191225758)
+  + API is similar to above:  `sails.hooks.orm.datastore('foo').transaction(during, afterCommittingOrRollingBack)`
++ **Native Queries**
+  + Model-based usage like `User.native()` and `User.query()` will be deprecated.
+  + Instead, native queries (e.g. SQL or Mongo queries) will be performed by accessing the appropriate datastore.
+  + API is similar to above: `sails.hooks.orm.datastore('foo').query(nativeQuery, afterFinished)`
++ **Nested create / nested update**
+  + Will be disabled by default.
++ **Case sensitivity in criteria's `where` in Waterline find/findOne/count/update/destroy**
+  + Will be database-specific instead of normalized to be case-insensitive.
+  + This is primarily in order to improve performance on PostgreSQL and to allow for more customizability with character sets/collations across all databases.
++ **Automigrations**
+  + Will be moved out of Waterline and into sails-hook-orm.
+  + Usage is unlikely to change.
++ **Built-in XSS Prevention (`exposeLocalsToBrowser()` view helper)**
+  + See https://github.com/balderdashy/sails/pull/3522
++ **Federated hooks (custom builds)**
+  + See https://github.com/balderdashy/sails/pull/3504
++ **Validation errors in blueprints, `res.jsonx()`, & error handling in custom responses**
+  + Will be handled by calling res.badRequest() directly
+  + The toJSON() function of errors will be called (since res.json will be used instead of res.jsonx)
+  + https://github.com/balderdashy/sails/commit/b8c3813281a041c0b24db381b046fecfa81a14b7#commitcomment-18455430
++ **Error handling (in general)**
+  + Default implementation of res.serverError() will continue to never send error data in production
+  + But default impl of `res.ok()` and `res.badRequest()` will _always_ send the provided argument as response data, even in production.
+  + Default implementations of res.forbidden() and res.notFound() will no longer send a response body at all.
+  + The default error handler in Sails (i.e. `next(err)`) will call `res.serverError()` instead of `res.negotiate()`. 
+  + Support for `res.negotiate()` will likely still exist, but will log a warning.
+  + For more details, see https://github.com/balderdashy/sails/commit/b8c3813281a041c0b24db381b046fecfa81a14b7#commitcomment-18455430
+  + For historical context, see also [#3568] (https://github.com/balderdashy/sails/pull/3568)
++ **JSONP support in blueprints**
+  + Will be deprecated (along with res.jsonx, as mentioned above)
+  + CORS support is so widespread in browsers today (IE8 and up) that JSONP is rarely necessary-- and certainly isn't worth the complexity/weight in core.  After upgrading to v1, if you want to implement support for JSONP within the blueprint API, it is still achievable by modifying the relevant default responses (`api/responses/badRequest.js`, `api/responses/serverError.js`, and `api/responses/notFound.js`) to use `res.jsonp()` instead of `res.json()` (or to determine which to use based on the value of a request param).
 + **`sails.config.environment` and the `NODE_ENV` environment variable**
   + Sails will no longer set the `NODE_ENV` environment variable automatically by default.
   + Apps will need to set `NODE_ENV` themselves in addition to `sails.config.environment`.
@@ -16,8 +62,12 @@ This section includes the a **very early list** of some of the features, enhance
   + But if _both_ `NODE_ENV` and `sails.config.environment` are specified, then no changes will be made to either.
   + If `sails.config.environment` is set to "production" and the `NODE_ENV` environment variable is not also set to production, Sails will log a warning.
     + ^^needs tests.
++ **Better built-in support for command-line scripts that require access to the Sails app instance**
+  + https://github.com/treelinehq/machine-as-script/commits/master
++ **sails-stdlib**
+  + Library of well-tested, well-documented, and officially supported modules for the most common everyday tasks in apps (e.g. password encryption)
 
-+ More v1.0 info to come as it is finalized.
+
 
 &nbsp;
 &nbsp;
@@ -36,7 +86,8 @@ Feature                                          | Proposal                     
  :---------------------------------------------- | :------------------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------
  Generate `test/` folder in new Sails apps       | [#2499](https://github.com/balderdashy/sails/pull/2499#issuecomment-171556544)        | Generate a generic setup for mocha tests in all new Sails apps.  Originally suggested by [@jedd-ahyoung](https://github.com/jedd-ahyoung).
  View helper for bootstrapping script tags       | [#3522](https://github.com/balderdashy/sails/pull/3522)                               | Include a view helper for bootstrapping untrusted data from view locals onto the page via script tags in order to expose it to client-side JavaScript. The tricky part is ensuring protection from attempted XSS attacks.
-
+ Improve CORS implementation                     | [#3651](https://github.com/balderdashy/sails/pull/3651)                               | Minor changes to the current CORS hooks to better follow the specs/remove inconsistencies.
+ 
 
 &nbsp;
 &nbsp;

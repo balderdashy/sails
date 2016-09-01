@@ -9,7 +9,7 @@ var nodepath = require('path');
 var REPL = require('repl');
 var fs = require('fs');
 var _ = require('lodash');
-require('colors');
+var chalk = require('chalk');
 var CaptainsLog = require('captains-log');
 var Sails = require('../lib/app');
 var rconf = require('../lib/app/configuration/rc');
@@ -70,7 +70,7 @@ module.exports = function() {
   })();
 
   console.log();
-  log.info('Starting app in interactive mode...'.debug);
+  log.info(chalk.blue('Starting app in interactive mode...'));
   console.log();
 
   // Lift Sails
@@ -80,7 +80,7 @@ module.exports = function() {
     }
 
     log.info('Welcome to the Sails console.');
-    log.info(('( to exit, type ' + '<CTRL>+<C>' + ' )').grey);
+    log.info(chalk.grey('( to exit, type ' + '<CTRL>+<C>' + ' )'));
     console.log();
 
     // Start a REPL

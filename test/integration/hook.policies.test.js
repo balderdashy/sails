@@ -8,7 +8,6 @@ var assert = require('assert');
 var httpHelper = require('./helpers/httpHelper');
 var appHelper = require('./helpers/appHelper');
 var fs = require('fs-extra');
-var wrench = require('wrench');
 
 
 
@@ -368,7 +367,7 @@ describe('router :: ', function() {
           return done(err);
         }
 
-        wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/add-policy'),
+        fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/add-policy'),
           path.resolve(__dirname, '../../testApp/node_modules/sails-hook-add-policy'));
 
         process.chdir(path.resolve(__dirname, "../..", appName));

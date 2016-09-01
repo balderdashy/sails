@@ -7,6 +7,7 @@
 
 var nodepath = require('path');
 var _ = require('lodash');
+var chalk = require('chalk');
 var captains = require('captains-log');
 var package = require('../package.json');
 var rconf = require('../lib/app/configuration/rc');
@@ -34,8 +35,7 @@ module.exports = function() {
   // console.timeEnd('cli_rc');
 
   console.log();
-  require('colors');
-  log.info('Starting app...'.grey);
+  log.info(chalk.grey('Starting app...'));
   console.log();
 
   // Build initial scope, mixing-in rc config

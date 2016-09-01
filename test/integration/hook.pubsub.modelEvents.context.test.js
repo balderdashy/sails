@@ -103,15 +103,30 @@ describe('pubsub :: ', function() {
         before(function(done) {
           socket2.get('/user/subscribe?id=1&context=update', done);
         });
-        it('updating an instance via put should result in the correct socket messages being received', function(done) {
+        it('updating an record via put should result in the correct socket messages being received', function(done) {
+          var tookTooLong;
+          var triggeredSocketEvent;
+
           var TIME_TO_WAIT = 1500;
           var timer = setTimeout(function() {
+            tookTooLong = true;
             done(new Error('`update` event was not fired in a timely manner (probably was never going to happen.)  Waited ' + TIME_TO_WAIT + 'ms.'));
           }, TIME_TO_WAIT);
           socket2.on('user', function(message) {
             clearTimeout(timer);
-            assert(message.id == 1 && message.verb == 'updated' && message.data.name === 'bob', Err.badResponse(message));
-            done();
+            try {
+              assert(message.id == 1 && message.verb === 'updated' && message.data.name === 'bob', Err.badResponse(message));
+            }
+            catch (e) { return done(e); }
+
+            if (tookTooLong) { return; }
+            if (triggeredSocketEvent) {
+              return done(new Error('Socket event should not fire more than once!'));
+            }
+            else {
+              triggeredSocketEvent = true;
+              return done();
+            }
           });
           socket1.put('/user/1', {
             name: 'bob'
