@@ -24,7 +24,7 @@ describe('benchmarks', function () {
 			var sails = new Sails();
 			return cb();
 		});
-		
+
 
 		//
 		// Load
@@ -135,21 +135,21 @@ describe('benchmarks', function () {
 
 /**
  * Run the specified function, capturing time elapsed.
- * 
+ *
  * @param  {[type]}   description [description]
  * @param  {Function} fn          [description]
  * @return {[type]}               [description]
  */
 function benchmark (description, fn) {
-	
+
 	it (description, function (cb) {
 		var self = this;
 
-		var startedAt = self.microtime.now();
+		var startedAt = Date.now();
 		// console.time(description);
 
 		fn.apply(this, [function _callback () {
-			
+
 			var _result = {};
 
 			// If a `comment` or `expected` was provided, harvest it
@@ -157,7 +157,7 @@ function benchmark (description, fn) {
 			self.expected = null;
 			_result.comment = self.comment;
 			self.comment = null;
-			var finishedAt = self.microtime.now();
+			var finishedAt = Date.now();
 			_result.duration = finishedAt - startedAt;
 			_result.benchmark = description;
 
@@ -171,19 +171,19 @@ function benchmark (description, fn) {
 
 /**
  * Use in mocha's `before`
- * 
+ *
  * @this {Array} benchmarks
  * @this {Object} microtime
  */
 function setupBenchmarks() {
-	this.microtime = require('microtime');
+	// this.microtime = require('microtime');
 	this.benchmarks = [];
 }
 
 
 /**
  * Use in mocha's `after`
- * 
+ *
  * @this {Array} benchmarks
  * @this {Object} microtime
  */
@@ -214,7 +214,7 @@ function reportBenchmarks () {
 			(ms < 1*expected/10) ? 'green' :
 			(ms < 3*expected/10) ? 'green' :
 			(ms < 6*expected/10) ? 'cyan' :
-			(ms < threshold) ? 'yellow' : 
+			(ms < threshold) ? 'yellow' :
 			'red';
 
 		ms += 'ms';
@@ -223,7 +223,7 @@ function reportBenchmarks () {
 		// Whether to show expected ms
 		var showExpected = true; // ms >= threshold;
 
-		return memo + '\n ' + 
+		return memo + '\n ' +
 			(result.benchmark+'') + ' :: '.grey + ms +
 
 			// Expected ms provided, and the test took quite a while
