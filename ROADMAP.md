@@ -40,7 +40,32 @@ This section is an early list of some of the features, enhancements, and other i
   + See https://github.com/balderdashy/sails/pull/3522
 + **Federated hooks (custom builds)**
   + See https://github.com/balderdashy/sails/pull/3504
-+ **Improved parsing of configuration that **
++ **Upgrade to Express 5**
+  + See https://github.com/expressjs/express/pull/2237?_ga=1.217677078.1437564638.1468192018 and https://expressjs.com/en/guide/migrating-5.html
++ **Built-In Support For Request Parameter Validation & Response Coercion**
+  + Declaratively specify request parameters, whether they are required, and other data type validations.
+  + Assign default values for optional params
+  + Declare schemas for responses
++ **Standalone Actions**
+  + Not all actions (whether it's a microservice, or an endpoint to serve a one-off view) fit nicely into controllers, and pointless categorization wastes developers' time and mental energy.
+  + Run `sails generate action` to create a new standalone action file
++ **Deprecate Built-in EJS/HBS Layouts Support (and instead emphasize partials)**
+  + Change `sails-generate-new` to build partials instead of layout (e.g. `views/partials/head.ejs`)
+  + Update default EJS dep (see https://github.com/mde/ejs)
++ **Services & Helpers**
+  + Services will continue to work exactly as they today, but the folder will no longer be generated in new Sails apps by default.
+  + Instead, new Sails projects will include `api/helpers/`, a new type of Sails project module.
+    + `sails.helpers.fetchRecentFBMessages({ ... }).exec(function (err, fbMsgs) { ... });`
+    + `sails.helpers.computeAverage({ ... }).execSync();`
+    + `sails.helpers.foo.bar.baz.doSomething({ ... }).exec(...)`
+  + Running `sails generate helper` creates a new helper file
++ **Interalize Seldom-Used Resourceful Pubsub (RPS) Methods**
+  + RPS methods were originally internal to blueprints, and while a few of them are particularly useful (because they manage socket.io room names for you), the public exposure of other methods was more or less incidental.
+  + To support more intuitive use, Sails v1.0 trims down the RPS API to just three methods:
+    + `publish()`
+    + `subscribe()`
+    + `unsubscribe()`
++ **Improved parsing of configuration overrides**
   + This expands the possibilities of env vars and CLI opts for setting configuration.  The only reason this hasn't been implemented up until now is that it requires knowing where configuration exported by `rc` is coming from (see https://github.com/dominictarr/rc/pull/33)
   + Instead of receiving JSON-encoded values (numbers/booleans/dictionaries/arrays/null) as strings, they'll be parsed.
   + See [rttc.parseHuman()](https://github.com/node-machine/rttc#parsehumanstringfromhuman-typeschemaundefined-unsafemodefalse) for details
@@ -71,6 +96,11 @@ This section is an early list of some of the features, enhancements, and other i
   + It will be completely removed in Sails v1.0 for simplicity.
 + **Better built-in support for command-line scripts that require access to the Sails app instance**
   + https://github.com/treelinehq/machine-as-script/commits/master
++ **Normalize usage of `routesDisabled` config keys**
+  + Set up all route-disabling config keys (such as in sails.config.csrf and sails.config.session) to use the same route syntax (rather than disparate regexps vs. csv, etc)
++ **Strip Out Deprecated Sockets Methods**
+  + Remove the implementation of deprecated `sails.sockets.*` methods from Sails core.
+  + (These were deprecated, but left in place with warning messages, in Sails v0.12)
 + **sails-stdlib**
   + Library of well-tested, well-documented, and officially supported modules for the most common everyday tasks in apps (e.g. password encryption)
 
