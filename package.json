@@ -70,6 +70,7 @@
     "lodash.isregexp": "3.0.5",
     "lodash.isstring": "3.0.1",
     "lodash.isundefined": "3.0.1",
+    "machine-as-action": "^7.0.2",
     "merge-defaults": "~0.2.1",
     "method-override": "2.3.5",
     "mock-req": "0.2.0",
