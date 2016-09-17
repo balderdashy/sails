@@ -85,7 +85,6 @@
     "sails-generate": "~0.13.0",
     "sails-hook-orm": "~1.0.6",
     "sails-hook-sockets": "~0.13.0",
-    "sails-hook-actions": "^1.0.0",
     "sails-hook-helpers": "^1.0.0",
     "sails-stringfile": "~0.3.2",
     "sails-util": "~0.11.0",
