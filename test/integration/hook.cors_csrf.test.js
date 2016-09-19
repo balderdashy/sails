@@ -60,64 +60,55 @@ describe('CORS and CSRF ::', function() {
       before(function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), 'module.exports.cors = { origin: \'*\', allRoutes: true};');
         var routeConfig = {
+          'GET /test': {
+            action: 'test.index'
+          },
           'GET /test/find': {
-            controller: 'TestController',
-            action: 'find',
+            action: 'test.find',
             cors: false
           },
           'GET /test/update': {
-            controller: 'TestController',
-            action: 'update',
+            action: 'test.update',
             cors: 'http://www.example.com'
           },
           'GET /test2': {
-            controller: 'TestController',
-            action: 'find',
+            action: 'test.find',
             cors: {
               'exposeHeaders': 'x-custom-header'
             }
           },
           'PUT /test': {
-            controller: 'TestController',
-            action: 'update',
+            action: 'test.update',
             cors: 'http://www.example.com'
           },
           'POST /test': {
-            controller: 'TestController',
-            action: 'create',
+            action: 'test.create',
             cors: 'http://www.different.com'
           },
           'DELETE /test': {
-            controller: 'TestController',
-            action: 'delete',
+            action: 'test.delete',
             cors: false
           },
           'POST /test2': {
-            controller: 'TestController',
-            action: 'create',
+            action: 'test.create',
             cors: true
           },
           'OPTIONS /test2': {
-            controller: 'TestController',
-            action: 'index'
+            action: 'test.index'
           },
           'PUT /test2': {
-            controller: 'TestController',
-            action: 'update'
+            action: 'test.update'
           },
           'GET /test/patch': {
-            controller: 'TestController',
-            action: 'update',
+            action: 'test.update',
             cors: 'http://www.example.com:1338'
           },
           'GET /test/create': {
-            controller: 'TestController',
-            action: 'create',
+            action: 'test.create',
             cors: 'http://www.different.com'
           },
           'GET /test/destroy': {
-            controller: 'TestController',
-            action: 'destroy',
+            action: 'test.destroy',
             cors: {
               origin: 'http://www.example.com',
               credentials: false
@@ -479,24 +470,23 @@ describe('CORS and CSRF ::', function() {
       before(function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': '*', 'allRoutes': false };");
         var routeConfig = {
+          'GET /test': {
+            action: 'test.index'
+          },
           'GET /test/find': {
-            controller: 'TestController',
-            action: 'find',
+            action: 'test.find',
             cors: true
           },
           'GET /test/update': {
-            controller: 'TestController',
-            action: 'update',
+            action: 'test.update',
             cors: 'http://www.example.com'
           },
           'GET /test/create': {
-            controller: 'TestController',
-            action: 'create',
+            action: 'test.create',
             cors: 'http://www.different.com'
           },
           'GET /test/destroy': {
-            controller: 'TestController',
-            action: 'destroy',
+            action: 'test.destroy',
             cors: {
               origin: 'http://www.example.com'
             }
@@ -623,24 +613,23 @@ describe('CORS and CSRF ::', function() {
       before(function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': 'http://www.example.com', 'allRoutes': true };");
         var routeConfig = {
+          'GET /test': {
+            action: 'test.index'
+          },
           'GET /test/find': {
-            controller: 'TestController',
-            action: 'find',
+            action: 'test.find',
             cors: false
           },
           'GET /test/update': {
-            controller: 'TestController',
-            action: 'update',
+            action: 'test.update',
             cors: 'http://www.example.com'
           },
           'GET /test/create': {
-            controller: 'TestController',
-            action: 'create',
+            action: 'test.create',
             cors: 'http://www.different.com'
           },
           'GET /test/destroy': {
-            controller: 'TestController',
-            action: 'destroy',
+            action: 'test.destroy',
             cors: {
               origin: 'http://www.example.com'
             }
@@ -776,9 +765,11 @@ describe('CORS and CSRF ::', function() {
       before(function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': '*', 'allRoutes': true, 'credentials': true};");
         var routeConfig = {
+          'GET /test': {
+            action: 'test.index'
+          },
           'GET /test/destroy': {
-            controller: 'TestController',
-            action: 'destroy',
+            action: 'test.destroy',
             cors: {
               origin: 'http://www.example.com',
               credentials: false
@@ -827,9 +818,11 @@ describe('CORS and CSRF ::', function() {
       before(function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), 'module.exports.cors = { origin: \'*\', allRoutes: true, credentials: false};');
         var routeConfig = {
+          'GET /test': {
+            action: 'test.index'
+          },
           'GET /test/destroy': {
-            controller: 'TestController',
-            action: 'destroy',
+            action: 'test.destroy',
             cors: {
               origin: 'http://www.example.com',
               credentials: true
@@ -902,6 +895,15 @@ describe('CORS and CSRF ::', function() {
 
     describe('with CSRF set to `false`', function() {
 
+      before(function() {
+        var routeConfig = {
+          'GET /viewtest/csrf': {
+            action: 'viewtest.csrf'
+          }
+        };
+        fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), 'module.exports.routes = ' + JSON.stringify(routeConfig));
+      });
+
       it('no CSRF token should be present in view locals', function(done) {
         httpHelper.testRoute('get', 'viewtest/csrf', function(err, response) {
           if (err) {
@@ -928,6 +930,8 @@ describe('CORS and CSRF ::', function() {
 
       before(function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), 'module.exports.csrf = true;');
+        var routeConfig = "{'GET /viewtest/csrf': {action: 'viewtest.csrf'}, 'POST /user': function(req, res) {return res.send(201);}, 'POST /user/:id': function(req, res) {return res.send(200);}};";
+        fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), 'module.exports.routes = ' + routeConfig);
       });
 
       it("a CSRF token should be present in view locals", function(done) {
@@ -1006,6 +1010,8 @@ describe('CORS and CSRF ::', function() {
     describe("with CSRF set to {route: '/anotherCsrf'}", function() {
       before(function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = {route: '/anotherCsrf'};");
+        var routeConfig = "{'GET /viewtest/csrf': {action: 'viewtest.csrf'}, 'POST /user': function(req, res) {return res.send(201);}, 'POST /user/:id': function(req, res) {return res.send(200);}};";
+        fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), 'module.exports.routes = ' + routeConfig);
       });
 
       it("a request to /csrfToken should respond with a 404", function(done) {
@@ -1086,6 +1092,8 @@ describe('CORS and CSRF ::', function() {
 
       before(function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = {protectionEnabled: true, grantTokenViaAjax: false};");
+        var routeConfig = "{'GET /viewtest/csrf': {action: 'viewtest.csrf'}, 'POST /user': function(req, res) {return res.send(201);}, 'POST /user/:id': function(req, res) {return res.send(200);}};";
+        fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), 'module.exports.routes = ' + routeConfig);
       });
 
       it("a request to /csrfToken should respond with a 404", function(done) {
@@ -1153,6 +1161,8 @@ describe('CORS and CSRF ::', function() {
 
       before(function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = {protectionEnabled: true, routesDisabled: /user\\/\\d+/};");
+        var routeConfig = "{'GET /viewtest/csrf': {action: 'viewtest.csrf'}, 'POST /user': function(req, res) {return res.send(201);}, 'POST /user/:id': function(req, res) {return res.send(200);}};";
+        fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), 'module.exports.routes = ' + routeConfig);
       });
 
       it("a POST request on /user/1 without a CSRF token should result in a 200 response", function(done) {
@@ -1191,6 +1201,8 @@ describe('CORS and CSRF ::', function() {
 
       before(function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = {protectionEnabled: true, routesDisabled: ['/foo/:id', '/bar/foo', /user\\/\\d+/]};");
+        var routeConfig = "{'GET /viewtest/csrf': {action: 'viewtest.csrf'}, 'POST /user': function(req, res) {return res.send(201);}, 'POST /user/:id': function(req, res) {return res.send(200);}};";
+        fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), 'module.exports.routes = ' + routeConfig);
       });
 
       it("a POST request on /foo/12 without a CSRF token should result in a 404 response", function(done) {
@@ -1270,6 +1282,8 @@ describe('CORS and CSRF ::', function() {
       before(function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = true;");
         fs.writeFileSync(path.resolve('../', appName, 'config/killsession.js'), "module.exports.http = {middleware: {session: function(req, res, next) {return next();}}};");
+        var routeConfig = "{'POST /test': {action: 'test.create'}, 'GET /viewtest/csrf': {action: 'viewtest.csrf'}, 'POST /user': function(req, res) {return res.send(201);}, 'POST /user/:id': function(req, res) {return res.send(200);}};";
+        fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), 'module.exports.routes = ' + routeConfig);
       });
 
       it("a POST request on /user without a CSRF token should result in a 201 response", function(done) {
@@ -1365,6 +1379,12 @@ describe('CORS and CSRF ::', function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': '*', 'allRoutes': false, 'credentials': false};");
         fs.writeFileSync(path.resolve('../', appName, 'config/csrf.js'), "module.exports.csrf = {origin: ' http://www.example.com, http://www.someplace.com '};");
         fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), "module.exports.routes = {\"/viewtest/csrf\":{\"cors\":true}}");
+        var routeConfig = {
+          'GET /viewtest/csrf': {
+            action: 'viewtest.csrf'
+          }
+        };
+        fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), 'module.exports.routes = ' + JSON.stringify(routeConfig));
       });
 
       describe("when the request origin header is 'http://www.example.com'", function() {
