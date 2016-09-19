@@ -26,7 +26,7 @@ var Err = {
  */
 
 describe('router :: ', function() {
-  describe('Default controller routing', function() {
+  xdescribe('Default controller routing', function() {
     var appName = 'testApp';
 
     before(function(done) {

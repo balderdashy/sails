@@ -126,7 +126,7 @@ describe('router :: ', function() {
 
     });
 
-    describe('with no specified routing', function() {
+    xdescribe('with no specified routing', function() {
 
       before(function() {
         httpHelper.writeRoutes({});

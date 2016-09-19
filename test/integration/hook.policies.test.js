@@ -23,7 +23,7 @@ var fs = require('fs-extra');
 describe('router :: ', function() {
 
 
-  describe('Policies', function() {
+  xdescribe('Policies', function() {
     var appName = 'testApp';
 
     var sailsApp;
@@ -354,7 +354,7 @@ describe('router :: ', function() {
 
 
 
-  describe('Test adding policies from another hooks', function() {
+  xdescribe('Test adding policies from another hooks', function() {
     var appName = 'testApp';
 
     before(function(done) {

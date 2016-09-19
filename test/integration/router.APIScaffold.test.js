@@ -20,7 +20,7 @@ var Err = {
 };
 
 
-describe('router :: ', function() {
+xdescribe('router :: ', function() {
 
   var sailsprocess;
 

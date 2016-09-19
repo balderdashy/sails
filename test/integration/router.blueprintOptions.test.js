@@ -10,7 +10,7 @@ var bootstrap31FakeUsers = require('./fixtures/users.js');
 
 
 
-describe('router :: Blueprint option routes ::', function() {
+xdescribe('router :: Blueprint option routes ::', function() {
 
 
   //  ███████╗██╗██╗  ██╗████████╗██╗   ██╗██████╗ ███████╗███████╗

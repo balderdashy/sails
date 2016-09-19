@@ -20,7 +20,7 @@ var Err = {
 
 
 
-describe('pubsub :: ', function() {
+xdescribe('pubsub :: ', function() {
 
   var sailsprocess;
   var socket1;

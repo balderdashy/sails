@@ -16,7 +16,7 @@ var Sails = require('../../lib/app');
 
 
 
-describe('blueprints :: ', function() {
+xdescribe('blueprints :: ', function() {
 
   describe('using the values blacklist ::', function() {
 
