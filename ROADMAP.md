@@ -41,7 +41,10 @@ This section is an early list of some of the features, enhancements, and other i
 + **Federated hooks (custom builds)**
   + See https://github.com/balderdashy/sails/pull/3504
 + **Upgrade to Express 5**
-  + See https://github.com/expressjs/express/pull/2237?_ga=1.217677078.1437564638.1468192018 and https://expressjs.com/en/guide/migrating-5.html
+  + Move implementation of `req.param()` from Express core into Sails core
+  + Move most of the error handling from Sails' `res.view()` into Express's `res.render()` (via `.code`, messages are different)
+  + Replace on-lift view stat-ing w/ just-in-time view stat-ing from `res.render()`
+  + See also https://github.com/expressjs/express/pull/2237?_ga=1.217677078.1437564638.1468192018 and https://expressjs.com/en/guide/migrating-5.html
 + **Built-In Support For Request Parameter Validation & Response Coercion**
   + Declaratively specify request parameters, whether they are required, and other data type validations.
   + Assign default values for optional params
@@ -77,7 +80,7 @@ This section is an early list of some of the features, enhancements, and other i
   + Default implementation of res.serverError() will continue to never send error data in production
   + But default impl of `res.ok()` and `res.badRequest()` will _always_ send the provided argument as response data, even in production.
   + Default implementations of res.forbidden() and res.notFound() will no longer send a response body at all.
-  + The default error handler in Sails (i.e. `next(err)`) will call `res.serverError()` instead of `res.negotiate()`. 
+  + The default error handler in Sails (i.e. `next(err)`) will call `res.serverError()` instead of `res.negotiate()`.
   + Support for `res.negotiate()` will likely still exist, but will log a warning.
   + For more details, see https://github.com/balderdashy/sails/commit/b8c3813281a041c0b24db381b046fecfa81a14b7#commitcomment-18455430
   + For historical context, see also [#3568] (https://github.com/balderdashy/sails/pull/3568)
@@ -124,7 +127,7 @@ Feature                                          | Proposal                     
  Generate `test/` folder in new Sails apps       | [#2499](https://github.com/balderdashy/sails/pull/2499#issuecomment-171556544)        | Generate a generic setup for mocha tests in all new Sails apps.  Originally suggested by [@jedd-ahyoung](https://github.com/jedd-ahyoung).
  View helper for bootstrapping script tags       | [#3522](https://github.com/balderdashy/sails/pull/3522)                               | Include a view helper for bootstrapping untrusted data from view locals onto the page via script tags in order to expose it to client-side JavaScript. The tricky part is ensuring protection from attempted XSS attacks.
  Improve CORS implementation                     | [#3651](https://github.com/balderdashy/sails/pull/3651)                               | Minor changes to the current CORS hooks to better follow the specs/remove inconsistencies.
- 
+
 
 &nbsp;
 &nbsp;
