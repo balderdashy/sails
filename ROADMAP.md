@@ -44,6 +44,8 @@ This section is an early list of some of the features, enhancements, and other i
   + Move implementation of `req.param()` from Express core into Sails core
   + Move most of the error handling from Sails' `res.view()` into Express's `res.render()` (via `.code`, messages are different)
   + Replace on-lift view stat-ing w/ just-in-time view stat-ing from `res.render()`
+  + Use standalone Express router in virtual request interpreter, but continue using express core for handling HTTP requests
+  + Expose context-free view rendering API (replace experimental sails.renderView() and internally, use [`app.render()`](https://expressjs.com/en/4x/api.html#app.render) or better yet, standalone module)
   + See also https://github.com/expressjs/express/pull/2237?_ga=1.217677078.1437564638.1468192018 and https://expressjs.com/en/guide/migrating-5.html
 + **Built-In Support For Request Parameter Validation & Response Coercion**
   + Declaratively specify request parameters, whether they are required, and other data type validations.
