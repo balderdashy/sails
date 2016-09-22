@@ -243,6 +243,27 @@ describe('controllers :: ', function() {
       });
     });
 
+    it('should return a shallow clone of the actions dictionary when `sails.getActions` is called', function() {
+      var actions = sailsApp.getActions();
+      assert(actions !== sailsApp._actions, 'sails.getActions is supposed to return a shallow clone, but got an exact reference!');
+      var expectedActions = [
+        'toplevellegacy.fnaction',
+        'toplevellegacy.machineaction',
+        'top-level-standalone-fn',
+        'top-level-standalone-machine',
+        'somefolder.someotherfolder.nestedlegacy.fnaction',
+        'somefolder.someotherfolder.nestedlegacy.machineaction',
+        'somefolder.someotherfolder.nested-standalone-machine'
+      ];
+      var unexpectedActions = _.difference(_.keys(actions), expectedActions);
+      assert(!unexpectedActions.length, 'Loaded unexpected actions:\n' + util.inspect(unexpectedActions));
+      _.each(expectedActions, function(expectedAction) {
+        assert(actions[expectedAction], 'Did not load expected action `' + expectedAction + '`');
+        assert(_.isFunction(actions[expectedAction]), 'Expected action `' + expectedAction + '` loaded, but instead of a function it\'s a ' + typeof(actions[expectedAction]));
+      });
+
+    });
+
   });
 
 });
