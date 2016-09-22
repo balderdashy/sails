@@ -139,9 +139,10 @@ describe('controllers :: ', function() {
       });
     });
 
-    after(function() {
+    after(function(done) {
       sailsApp.lower(function() {
         process.chdir(curDir);
+        return done();
       });
     });
 
@@ -260,6 +261,57 @@ describe('controllers :: ', function() {
       _.each(expectedActions, function(expectedAction) {
         assert(actions[expectedAction], 'Did not load expected action `' + expectedAction + '`');
         assert(_.isFunction(actions[expectedAction]), 'Expected action `' + expectedAction + '` loaded, but instead of a function it\'s a ' + typeof(actions[expectedAction]));
+      });
+
+    });
+
+  });
+
+  describe.only('with conflicting actions in api/controllers', function() {
+
+    var curDir, tmpDir, sailsApp;
+    var warn;
+    var warnings = [];
+
+    before(function(done) {
+      // Cache the current working directory.
+      curDir = process.cwd();
+      // Create a temp directory.
+      tmpDir = tmp.dirSync({gracefulCleanup: true, unsafeCleanup: true});
+      // Switch to the temp directory.
+      process.chdir(tmpDir.name);
+      // Create a top-level legacy controller file.
+      Filesystem.writeSync({
+        force: true,
+        destination: 'api/controllers/TopLevelController.js',
+        string: 'module.exports = { fnAction: function (req, res) { res.send(\'fn controller action!\'); } };'
+      }).execSync();
+      // Create a top-level action file with a req/res function.
+      Filesystem.writeSync({
+        force: true,
+        destination: 'api/controllers/toplevel/fnaction.js',
+        string: 'module.exports = function (req, res) { res.send(\'standalone fn!\'); };'
+      }).execSync();
+
+      return done();
+
+    });
+
+    after(function() {
+      process.chdir(curDir);
+    });
+
+    it('should fail to load sails', function(done) {
+      // Load the Sails app.
+      appHelper.load({hooks: {views: false, grunt: false}, log: {level: 'error'}}, function(err, _sails) {
+        if (!err) {
+          _sails.lower(function() {
+            return done(new Error('Should have thrown an error!'));
+          });
+        }
+        assert.equal(err.code, 'E_CONFLICT');
+        assert.equal(err.identity, 'toplevel.fnaction');
+        return done();
       });
 
     });
