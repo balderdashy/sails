@@ -106,7 +106,7 @@
     "istanbul": "0.4.1",
     "machinepack-fs": "^8.0.2",
     "machinepack-process": "^2.0.2",
-    "mocha": "3.0.0",
+    "mocha": "^3.0.2",
     "portfinder": "0.4.0",
     "request": "2.68.0",
     "root-require": "0.3.1",
