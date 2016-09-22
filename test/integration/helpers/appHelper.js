@@ -155,6 +155,34 @@ module.exports = {
 
   },
 
+  load: function(options, callback) {
+
+    // Clear NODE_ENV to avoid unintended consequences.
+    delete process.env.NODE_ENV;
+
+    if (_.isFunction(options)) {
+      callback = options;
+      options = null;
+    }
+
+    options = options || {};
+    _.defaults(options, {
+      port: 1342,
+      environment: process.env.TEST_ENV
+    });
+    options.hooks = options.hooks || {};
+    options.hooks.grunt = options.hooks.grunt || false;
+
+    Sails().load(options, function(err, sails) {
+      if (err) {
+        return callback(err);
+      }
+      return callback(null, sails);
+    });
+
+  },
+
+
   buildAndLift: function(appName, options, callback) {
     if (_.isFunction(options)) {
       callback = options;

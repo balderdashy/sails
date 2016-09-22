@@ -112,7 +112,8 @@
     "root-require": "0.3.1",
     "should": "5.2.0",
     "socket.io-client": "1.4.6",
-    "supertest": "1.1.0"
+    "supertest": "1.1.0",
+    "tmp": "0.0.29"
   },
   "repository": {
     "type": "git",
