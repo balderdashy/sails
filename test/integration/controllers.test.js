@@ -265,9 +265,29 @@ describe('controllers :: ', function() {
 
     });
 
+    describe('sails.registerAction() :: ', function() {
+
+      it('should allow registering a new action at runtime, if it doesn\'t conflict with an existing action', function() {
+        sailsApp.registerAction(function(req, res) {return res.ok('ok!');}, 'new-action');
+        assert(_.isFunction(sailsApp._actions['new-action']), 'registerAction() succeeded, but could not find the registered action in the sails._actions dictionary!');
+      });
+
+      it('should allow not registering a new action at runtime, if it conflicts with an existing action', function() {
+        try {
+          sailsApp.registerAction(function(req, res) {return res.ok('ok!');}, 'top-level-standalone-fn');
+        } catch (err) {
+          assert.equal(err.code, 'E_CONFLICT');
+          assert.equal(err.identity, 'top-level-standalone-fn');
+          return;
+        }
+        throw new Error('Expected an E_CONFLICT error, but didn\'t get one!');
+      });
+
+    });
+
   });
 
-  describe.only('with conflicting actions in api/controllers', function() {
+  describe('with conflicting actions in api/controllers', function() {
 
     var curDir, tmpDir, sailsApp;
     var warn;
