@@ -8,8 +8,9 @@ var tmp = require('tmp');
 var _ = require('lodash');
 
 var Filesystem = require('machinepack-fs');
-var httpHelper = require('./helpers/httpHelper.js');
-var appHelper = require('./helpers/appHelper');
+
+var Sails = require('../../lib').constructor;
+
 tmp.setGracefulCleanup();
 
 /**
@@ -133,7 +134,7 @@ describe('controllers :: ', function() {
       }).execSync();
 
       // Load the Sails app.
-      appHelper.load({hooks: {grunt: false, views: false, blueprints: false, policies: false}, log: {level: 'error'}}, function(err, _sails) {
+      (new Sails()).load({hooks: {grunt: false, views: false, blueprints: false, policies: false}, log: {level: 'error'}}, function(err, _sails) {
         sailsApp = _sails;
         return done(err);
       });
@@ -265,26 +266,6 @@ describe('controllers :: ', function() {
 
     });
 
-    describe('sails.registerAction() :: ', function() {
-
-      it('should allow registering a new action at runtime, if it doesn\'t conflict with an existing action', function() {
-        sailsApp.registerAction(function(req, res) {return res.ok('ok!');}, 'new-action');
-        assert(_.isFunction(sailsApp._actions['new-action']), 'registerAction() succeeded, but could not find the registered action in the sails._actions dictionary!');
-      });
-
-      it('should allow not registering a new action at runtime, if it conflicts with an existing action', function() {
-        try {
-          sailsApp.registerAction(function(req, res) {return res.ok('ok!');}, 'top-level-standalone-fn');
-        } catch (err) {
-          assert.equal(err.code, 'E_CONFLICT');
-          assert.equal(err.identity, 'top-level-standalone-fn');
-          return;
-        }
-        throw new Error('Expected an E_CONFLICT error, but didn\'t get one!');
-      });
-
-    });
-
   });
 
   describe('with conflicting actions in api/controllers', function() {
@@ -323,7 +304,7 @@ describe('controllers :: ', function() {
 
     it('should fail to load sails', function(done) {
       // Load the Sails app.
-      appHelper.load({hooks: {grunt: false, views: false, blueprints: false, policies: false}, log: {level: 'error'}}, function(err, _sails) {
+      (new Sails()).load({hooks: {grunt: false, views: false, blueprints: false, policies: false}, log: {level: 'error'}}, function(err, _sails) {
         if (!err) {
           _sails.lower(function() {
             return done(new Error('Should have thrown an error!'));
@@ -361,7 +342,7 @@ describe('controllers :: ', function() {
         }).execSync();
 
         // Load the Sails app.
-        appHelper.load({hooks: {grunt: false, views: false, blueprints: false, policies: false}, log: {level: 'error'}}, function(err, _sails) {
+        (new Sails()).load({hooks: {grunt: false, views: false, blueprints: false, policies: false}, log: {level: 'error'}}, function(err, _sails) {
           sailsApp = _sails;
           assert(sailsApp._actions['toplevel.fnaction'], 'Expected to find a `toplevel.fnaction` action, but didn\'t.');
           assert(!sailsApp._actions['toplevel.machineaction'], 'Didn\'t expect `toplevel.machineaction` action to exist!');
