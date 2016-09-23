@@ -133,7 +133,7 @@ describe('controllers :: ', function() {
       }).execSync();
 
       // Load the Sails app.
-      appHelper.load({hooks: {views: false, grunt: false}, log: {level: 'error'}}, function(err, _sails) {
+      appHelper.load({hooks: {grunt: false, views: false, blueprints: false, policies: false}, log: {level: 'error'}}, function(err, _sails) {
         sailsApp = _sails;
         return done(err);
       });
@@ -323,7 +323,7 @@ describe('controllers :: ', function() {
 
     it('should fail to load sails', function(done) {
       // Load the Sails app.
-      appHelper.load({hooks: {views: false, grunt: false}, log: {level: 'error'}}, function(err, _sails) {
+      appHelper.load({hooks: {grunt: false, views: false, blueprints: false, policies: false}, log: {level: 'error'}}, function(err, _sails) {
         if (!err) {
           _sails.lower(function() {
             return done(new Error('Should have thrown an error!'));
@@ -332,6 +332,69 @@ describe('controllers :: ', function() {
         assert.equal(err.code, 'E_CONFLICT');
         assert.equal(err.identity, 'toplevel.fnaction');
         return done();
+      });
+
+    });
+
+  });
+
+  describe('sails.reloadModules ::', function() {
+
+    describe('basic usage ::', function() {
+
+      var curDir, tmpDir, sailsApp;
+      var warn;
+      var warnings = [];
+
+      before(function(done) {
+        // Cache the current working directory.
+        curDir = process.cwd();
+        // Create a temp directory.
+        tmpDir = tmp.dirSync({gracefulCleanup: true, unsafeCleanup: true});
+        // Switch to the temp directory.
+        process.chdir(tmpDir.name);
+        // Create a top-level legacy controller file.
+        Filesystem.writeSync({
+          force: true,
+          destination: 'api/controllers/TopLevelController.js',
+          string: 'module.exports = { fnAction: function (req, res) { res.send(\'fn controller action!\'); } };'
+        }).execSync();
+
+        // Load the Sails app.
+        appHelper.load({hooks: {grunt: false, views: false, blueprints: false, policies: false}, log: {level: 'error'}}, function(err, _sails) {
+          sailsApp = _sails;
+          assert(sailsApp._actions['toplevel.fnaction'], 'Expected to find a `toplevel.fnaction` action, but didn\'t.');
+          assert(!sailsApp._actions['toplevel.machineaction'], 'Didn\'t expect `toplevel.machineaction` action to exist!');
+          assert(!sailsApp._actions['nested.standalone-action'], 'Didn\'t expect `nested.standalone-action` action to exist!');
+          return done(err);
+        });
+      });
+
+      after(function(done) {
+        sailsApp.lower(function() {
+          process.chdir(curDir);
+          return done();
+        });
+      });
+
+      it('should load in new actions', function(done) {
+        Filesystem.writeSync({
+          force: true,
+          destination: 'api/controllers/TopLevelController.js',
+          string: 'module.exports = { fnAction: function (req, res) { res.send(\'fn controller action!\'); }, machineAction: { fn: function (inputs, exits) { exits.success(\'machine!\'); } } };'
+        }).execSync();
+        Filesystem.writeSync({
+          force: true,
+          destination: 'api/controllers/nested/standalone-action.js',
+          string: 'module.exports = function (req, res) { res.send(\'standalone action!\'); };'
+        }).execSync();
+        sailsApp.reloadModules(function(err) {
+          if (err) {return done(err);}
+          assert(sailsApp._actions['toplevel.fnaction'], 'Expected to find a `toplevel.fnaction` action, but didn\'t.');
+          assert(sailsApp._actions['toplevel.machineaction'], 'Expected to find a `toplevel.machineaction` action, but didn\'t.');
+          assert(sailsApp._actions['nested.standalone-action'], 'Expected to find a `nested.standalone-action` action, but didn\'t.');
+          return done();
+        });
       });
 
     });
