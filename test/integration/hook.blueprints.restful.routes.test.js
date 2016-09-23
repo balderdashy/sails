@@ -25,7 +25,7 @@ describe('blueprints :: ', function() {
 
   var extraSailsConfig = {};
 
-  describe.only('restful routes :: ', function() {
+  describe('restful routes :: ', function() {
 
     beforeEach(function(done) {
       // Cache the current working directory.
@@ -741,6 +741,45 @@ describe('blueprints :: ', function() {
           });
         });
       });
+
+    });
+
+    describe('overriding blueprints :: ', function() {
+
+      before(function() {
+        extraSailsConfig = {
+          orm: {
+            moduleDefinitions: {
+              models: {
+                user: {},
+              },
+            }
+          },
+          controllers: {
+            actions: {
+              'user.find': function(req, res) {
+                return res.send('find dem users!');
+              }
+            }
+          }
+        };
+      });
+
+      after(function() {
+        extraSailsConfig = {};
+      });
+
+      it('if a `:model.find` action is explicitly added, it should be used in response to `GET /:model`', function(done) {
+        sailsApp.models.user.create({name: 'al'}).exec(function(err) {
+          if (err) {return done (err);}
+          sailsApp.request('get /user', function (err, resp, data) {
+            assert(!err, err);
+            assert.equal(data, 'find dem users!');
+            done();
+          });
+        });
+      });
+
 
     });
 
