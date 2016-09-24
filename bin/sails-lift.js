@@ -32,10 +32,10 @@ module.exports = function() {
   // Get a temporary logger just for use in `sails lift`.
   // > This is so that logging levels are configurable, even when a
   // > Sails app hasn't been loaded yet.
-  var log = captains(rconf.log);
+  var cliLogger = captains(rconf.log);
 
   console.log();
-  log.info(chalk.grey('Starting app...'));
+  cliLogger.info(chalk.grey('Starting app...'));
   console.log();
 
   // Now grab our dictionary of configuration overrides to pass in
@@ -55,14 +55,14 @@ module.exports = function() {
     var appPath = process.cwd();
     var localSailsPath = nodepath.resolve(appPath, 'node_modules/sails');
     if (Sails.isLocalSailsValid(localSailsPath, appPath)) {
-      log.verbose('Using locally-installed Sails.');
+      cliLogger.verbose('Using locally-installed Sails.');
       return require(localSailsPath);
     }// --•
 
     // Otherwise, since no workable locally-installed Sails exists,
     // run the app using the currently running version of Sails.
     // > This is probably always the global install.
-    log.info('No local Sails install detected; using globally-installed Sails.');
+    cliLogger.info('No local Sails install detected; using globally-installed Sails.');
 
     return Sails();
 

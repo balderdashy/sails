@@ -42,7 +42,7 @@ module.exports = function() {
   // Get a temporary logger just for use in `sails console`.
   // > This is so that logging levels are configurable, even when a
   // > Sails app hasn't been loaded yet.
-  var log = CaptainsLog(rconf.log);
+  var cliLogger = CaptainsLog(rconf.log);
 
   // Now grab our dictionary of configuration overrides to pass in
   // momentarily when we lift (or load) our Sails app.  This is the
@@ -69,14 +69,14 @@ module.exports = function() {
     var appPath = process.cwd();
     var localSailsPath = nodepath.resolve(appPath, 'node_modules/sails');
     if (Sails.isLocalSailsValid(localSailsPath, appPath)) {
-      log.verbose('Using locally-installed Sails.');
+      cliLogger.verbose('Using locally-installed Sails.');
       return require(localSailsPath);
     }// --•
 
     // Otherwise, since no workable locally-installed Sails exists,
     // run the app using the currently running version of Sails.
     // > This is probably always the global install.
-    log.info('No local Sails install detected; using globally-installed Sails.');
+    cliLogger.info('No local Sails install detected; using globally-installed Sails.');
 
     return Sails();
 
@@ -84,12 +84,12 @@ module.exports = function() {
 
   console.log();
   if (configOverrides.dontLift) {
-    log.info(chalk.blue('Loading app in interactive mode...'));
-    log.info(chalk.gray('Sails is not listening for requests (since `dontLift` was enabled).'));
-    log.info(chalk.gray('You still have access to your models, helpers, and `sails`.'));
+    cliLogger.info(chalk.blue('Loading app in interactive mode...'));
+    cliLogger.info(chalk.gray('Sails is not listening for requests (since `dontLift` was enabled).'));
+    cliLogger.info(chalk.gray('You still have access to your models, helpers, and `sails`.'));
   }
   else {
-    log.info(chalk.blue('Starting app in interactive mode...'));
+    cliLogger.info(chalk.blue('Starting app in interactive mode...'));
   }
   console.log();
 
@@ -111,8 +111,8 @@ module.exports = function() {
       return SharedErrorHelpers.fatal.failedToLoadSails(err);
     }
 
-    log.info('Welcome to the Sails console.');
-    log.info(chalk.grey('( to exit, type ' + '<CTRL>+<C>' + ' )'));
+    cliLogger.info('Welcome to the Sails console.');
+    cliLogger.info(chalk.grey('( to exit, type ' + '<CTRL>+<C>' + ' )'));
     console.log();
 
     // Start a REPL.
@@ -132,9 +132,9 @@ module.exports = function() {
     }
     catch (e) {
 
-      log.verbose('Encountered an error attempting to access/interpret a `.node_history` file at `'+pathToReplHistoryFile+'`.');
-      log.verbose('(This session of `sails console` will still work, it just won\'t support REPL history.)');
-      log.verbose('Error details:\n',e);
+      cliLogger.verbose('Encountered an error attempting to access/interpret a `.node_history` file at `'+pathToReplHistoryFile+'`.');
+      cliLogger.verbose('(This session of `sails console` will still work, it just won\'t support REPL history.)');
+      cliLogger.verbose('Error details:\n',e);
 
     }//>-
 
@@ -143,7 +143,7 @@ module.exports = function() {
 
       // If an error occurred, log it, then terminate the process with an exit code of 1.
       if (err) {
-        log.error(err);
+        cliLogger.error(err);
         return process.exit(1);
       }// --•
 
