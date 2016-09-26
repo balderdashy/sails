@@ -25,7 +25,7 @@ describe('blueprints :: ', function() {
 
   var extraSailsConfig = {};
 
-  describe('restful routes :: ', function() {
+  describe('shortcut routes :: ', function() {
 
     beforeEach(function(done) {
       // Cache the current working directory.
@@ -44,7 +44,7 @@ describe('blueprints :: ', function() {
           schema: true
         },
         blueprints: {
-          shortcuts: false,
+          rest: false,
           actions: false
         },
         log: {level: 'error'}
@@ -96,12 +96,12 @@ describe('blueprints :: ', function() {
         extraSailsConfig = {};
       });
 
-      describe('a get request to /:model', function() {
+      describe('a get request to /:model/find', function() {
 
         it('should return JSON for all of the instances of the test model', function(done) {
           sailsApp.models.user.create({name: 'al'}).exec(function(err) {
             if (err) {return done (err);}
-            sailsApp.request('get /user', function (err, resp, data) {
+            sailsApp.request('get /user/find', function (err, resp, data) {
               assert(!err, err);
               assert.equal(data.length, 1);
               assert.equal(data[0].name, 'al');
@@ -113,12 +113,12 @@ describe('blueprints :: ', function() {
       });
 
 
-      describe('a get request to /:model/:id', function() {
+      describe('a get request to /:model/find/:id', function() {
 
         it('should return JSON for the requested instance of the test model', function(done) {
           sailsApp.models.user.create({name: 'ron'}).exec(function(err) {
             if (err) {return done (err);}
-            sailsApp.request('get /user/1', function (err, resp, data) {
+            sailsApp.request('get /user/find/1', function (err, resp, data) {
               assert(!err, err);
               assert.equal(data.name, 'ron');
               assert.equal(data.id, 1);
@@ -128,12 +128,12 @@ describe('blueprints :: ', function() {
         });
       });
 
-      describe('a put request to /:model/:id', function() {
+      describe('a get request to /:model/update/:id?name=foo', function() {
 
         it('should return JSON for an updated instance of the test model', function(done) {
           sailsApp.models.user.create({name: 'dave'}).exec(function(err) {
             if (err) {return done (err);}
-            sailsApp.request('put /user/1', {name: 'bob'}, function (err, resp, data) {
+            sailsApp.request('get /user/update/1?name=bob', function (err, resp, data) {
               if (err) {return done (err);}
               assert.equal(data.name, 'bob');
               assert.equal(data.id, 1);
@@ -148,10 +148,10 @@ describe('blueprints :: ', function() {
         });
       });
 
-      describe('a post request to /:model', function() {
+      describe('a get request to /:model/create?name=foo', function() {
 
         it('should return JSON for a newly created instance of the test model', function(done) {
-          sailsApp.request('post /user', {name: 'joe'}, function (err, resp, data) {
+          sailsApp.request('get /user/create?name=joe', function (err, resp, data) {
             assert(!err, err);
             assert.equal(data.name, 'joe');
             assert.equal(data.id, 1);
@@ -166,12 +166,12 @@ describe('blueprints :: ', function() {
       });
 
 
-      describe('a delete request to /:model', function() {
+      describe('a get request to /:model/destroy/1', function() {
 
         it('should return JSON for the deleted instance of the test model', function(done) {
           sailsApp.models.user.create({name: 'bubba'}).exec(function(err) {
             if (err) {return done (err);}
-            sailsApp.request('delete /user/1', function (err, resp, data) {
+            sailsApp.request('get /user/destroy/1', function (err, resp, data) {
               assert(!err, err);
               assert.equal(data.name, 'bubba');
               assert.equal(data.id, 1);
@@ -221,14 +221,14 @@ describe('blueprints :: ', function() {
           });
         });
 
-        describe('a post request to /:model/:parentid/:association/:id', function() {
+        describe('a get request to /:model/:parentid/:association/:id', function() {
 
           it('should return JSON for an instance of the test model, with its collection updated', function(done) {
             sailsApp.models.user.create({name: 'ira'}).exec(function(err) {
               if (err) {return done (err);}
               sailsApp.models.pet.create({name: 'flipper'}).exec(function(err) {
                 if (err) {return done (err);}
-                sailsApp.request('post /user/1/pets/1', function (err, resp, data) {
+                sailsApp.request('get /user/1/pets/add/1', function (err, resp, data) {
                   if (err) {return done (err);}
                   assert.equal(data.name, 'ira');
                   assert.equal(data.id, 1);
@@ -249,14 +249,14 @@ describe('blueprints :: ', function() {
           });
         });
 
-        describe('a post request to /:model/:parentid/:association (posting an existing model ID)', function() {
+        describe('a get request to /:model/:parentid/:association/add?id=1 (posting an existing model ID)', function() {
 
           it('should return JSON for an instance of the test model, with its collection updated', function(done) {
             sailsApp.models.user.create({name: 'ryan'}).exec(function(err) {
               if (err) {return done (err);}
               sailsApp.models.pet.create({name: 'bubbles'}).exec(function(err) {
                 if (err) {return done (err);}
-                sailsApp.request('post /user/1/pets', {id: 1}, function (err, resp, data) {
+                sailsApp.request('get /user/1/pets/add?id=1', function (err, resp, data) {
                   if (err) {return done (err);}
                   assert.equal(data.name, 'ryan');
                   assert.equal(data.id, 1);
@@ -277,12 +277,12 @@ describe('blueprints :: ', function() {
           });
         });
 
-        describe('a post request to /:model/:parentid/:association (posting a new model)', function() {
+        describe('a get request to /:model/:parentid/:association/add (posting a new model)', function() {
 
           it('should return JSON for an instance of the test model, with its collection updated', function(done) {
             sailsApp.models.user.create({name: 'kevin'}).exec(function(err) {
               if (err) {return done (err);}
-              sailsApp.request('post /user/1/pets', {name: 'rex'}, function (err, resp, data) {
+              sailsApp.request('get /user/1/pets/add?name=rex', function (err, resp, data) {
                 if (err) {return done (err);}
                 assert.equal(data.name, 'kevin');
                 assert.equal(data.id, 1);
@@ -302,12 +302,12 @@ describe('blueprints :: ', function() {
           });
         });
 
-        describe('a delete request to /:model/:parentid/:association/:id', function() {
+        describe('a get request to /:model/:parentid/:association/remove/:id', function() {
 
           it('should return JSON for an instance of the test model, with its collection updated', function(done) {
             sailsApp.models.user.create({name: 'larry', pets: [{name: 'alice'}]}).exec(function(err) {
               if (err) {return done (err);}
-              sailsApp.request('delete /user/1/pets/1', function (err, resp, data) {
+              sailsApp.request('get /user/1/pets/remove/1', function (err, resp, data) {
                 if (err) {return done (err);}
                 assert.equal(data.name, 'larry');
                 assert.equal(data.id, 1);
@@ -325,12 +325,12 @@ describe('blueprints :: ', function() {
           });
         });
 
-        describe('a delete request to /:model/:parentid/:association', function() {
+        describe('a get request to /:model/:parentid/:association/remove?id=1', function() {
 
           it('should return JSON for an instance of the test model, with its collection updated', function(done) {
             sailsApp.models.user.create({name: 'gary', pets: [{name: 'wilbur'}]}).exec(function(err) {
               if (err) {return done (err);}
-              sailsApp.request('delete /user/1/pets', {id: 1}, function (err, resp, data) {
+              sailsApp.request('get /user/1/pets/remove?id=1', function (err, resp, data) {
                 if (err) {return done (err);}
                 assert.equal(data.name, 'gary');
                 assert.equal(data.id, 1);
@@ -374,10 +374,10 @@ describe('blueprints :: ', function() {
         extraSailsConfig = {};
       });
 
-      it('a get request to /:model?name=scott should respond with the correctly filtered instances', function(done) {
+      it('a get request to /:model/find?name=scott should respond with the correctly filtered instances', function(done) {
         sailsApp.models.user.create([{name: 'scott'}, {name: 'mike'}]).exec(function(err) {
           if (err) {return done(err);}
-          sailsApp.request('get /user?name=scott', function (err, resp, data) {
+          sailsApp.request('get /user/find?name=scott', function (err, resp, data) {
             assert(!err, err);
             assert.equal(data.length, 1);
             assert.equal(data[0].name, 'scott');
@@ -386,9 +386,9 @@ describe('blueprints :: ', function() {
         });
       });
 
-      it('a get request to /:model?where={...} should respond with the correctly filtered instances', function(done) {
+      it('a get request to /:model/find?where={...} should respond with the correctly filtered instances', function(done) {
         sailsApp.models.user.create([{name: 'scott'}, {name: 'mike'}, {name: 'rachael'}, {name: 'cody'}, {name: 'irl'}]).exec(function(err) {        if (err) {return done(err);}
-          sailsApp.request('get /user?where={"name": {">": "irl"}}', function (err, resp, data) {
+          sailsApp.request('get /user/find?where={"name": {">": "irl"}}', function (err, resp, data) {
             assert(!err, err);
             assert.equal(data.length, 3);
             var names = _.pluck(data, 'name');
@@ -425,10 +425,10 @@ describe('blueprints :: ', function() {
         extraSailsConfig = {};
       });
 
-      it('a get request to /:model?sort=name&limit=2&skip=1 should respond with the correctly filtered instances', function(done) {
+      it('a get request to /:model/find?sort=name&limit=2&skip=1 should respond with the correctly filtered instances', function(done) {
         sailsApp.models.user.create([{name: 'scott'}, {name: 'mike'}, {name: 'rachael'}, {name: 'cody'}, {name: 'irl'}]).exec(function(err) {
           if (err) {return done(err);}
-          sailsApp.request('get /user?sort=name&limit=2&skip=1', function (err, resp, data) {
+          sailsApp.request('get /user/find?sort=name&limit=2&skip=1', function (err, resp, data) {
             assert(!err, err);
             assert.equal(data.length, 2);
             assert.equal(data[0].name, 'irl');
@@ -438,10 +438,10 @@ describe('blueprints :: ', function() {
         });
       });
 
-      it('a get request to /:model?sort=name%20desc&limit=2&skip=1 should respond with the correctly filtered instances', function(done) {
+      it('a get request to /:model/find?sort=name%20desc&limit=2&skip=1 should respond with the correctly filtered instances', function(done) {
         sailsApp.models.user.create([{name: 'scott'}, {name: 'mike'}, {name: 'rachael'}, {name: 'cody'}, {name: 'irl'}]).exec(function(err) {
           if (err) {return done(err);}
-          sailsApp.request('get /user?sort=name%20desc&limit=2&skip=1', function (err, resp, data) {
+          sailsApp.request('get /user/find?sort=name%20desc&limit=2&skip=1', function (err, resp, data) {
             assert(!err, err);
             assert.equal(data.length, 2);
             assert.equal(data[0].name, 'rachael');
@@ -451,10 +451,10 @@ describe('blueprints :: ', function() {
         });
       });
 
-      it('a get request to /:model?sort={"name":-1}&limit=2&skip=1 should respond with the correctly filtered instances', function(done) {
+      it('a get request to /:model/find?sort={"name":-1}&limit=2&skip=1 should respond with the correctly filtered instances', function(done) {
         sailsApp.models.user.create([{name: 'scott'}, {name: 'mike'}, {name: 'rachael'}, {name: 'cody'}, {name: 'irl'}]).exec(function(err) {
           if (err) {return done(err);}
-          sailsApp.request('get /user?sort={"name":-1}&limit=2&skip=1', function (err, resp, data) {
+          sailsApp.request('get /user/find?sort={"name":-1}&limit=2&skip=1', function (err, resp, data) {
             assert(!err, err);
             assert.equal(data.length, 2);
             assert.equal(data[0].name, 'rachael');
@@ -493,7 +493,7 @@ describe('blueprints :: ', function() {
           if (err) {return done(err);}
           sailsApp.reloadModules(function(err) {
             if (err) {return done(err);}
-            sailsApp.request('get /user', function (err, resp, data) {
+            sailsApp.request('get /user/find', function (err, resp, data) {
               assert(!err, err);
               assert.equal(data.length, 2);
               done();
@@ -529,7 +529,7 @@ describe('blueprints :: ', function() {
       it('should bind blueprint actions to plural controller names', function(done) {
         sailsApp.models.user.create({}).exec(function(err) {
           if (err) {return done (err);}
-          sailsApp.request('get /users', function (err, resp, data) {
+          sailsApp.request('get /users/find', function (err, resp, data) {
             assert(!err, err);
             assert.equal(data.length, 1);
             assert.equal(data[0].id, 1);
@@ -541,7 +541,7 @@ describe('blueprints :: ', function() {
       it('should bind blueprint actions to plural controller names (quiz => quizzes)', function(done) {
         sailsApp.models.quiz.create({}).exec(function(err) {
           if (err) {return done (err);}
-          sailsApp.request('get /quizzes', function (err, resp, data) {
+          sailsApp.request('get /quizzes/find', function (err, resp, data) {
             assert(!err, err);
             assert.equal(data.length, 1);
             assert.equal(data[0].id, 1);
@@ -553,7 +553,7 @@ describe('blueprints :: ', function() {
       it('should not bind blueprint actions to singular controller names', function(done) {
         sailsApp.models.user.create({}).exec(function(err) {
           if (err) {return done (err);}
-          sailsApp.request('get /user', function (err, resp, data) {
+          sailsApp.request('get /user/find', function (err, resp, data) {
             assert(err);
             assert.equal(err.status, 404);
             done();
@@ -588,12 +588,12 @@ describe('blueprints :: ', function() {
         extraSailsConfig = {};
       });
 
-      describe('a get request to /api/:model', function() {
+      describe('a get request to /api/:model/find', function() {
 
         it('should return JSON for all of the instances of the test model', function(done) {
           sailsApp.models.user.create({name: 'joy'}).exec(function(err) {
             if (err) {return done (err);}
-            sailsApp.request('get /api/user', function (err, resp, data) {
+            sailsApp.request('get /api/user/find', function (err, resp, data) {
               assert(!err, err);
               assert.equal(data.length, 1);
               assert.equal(data[0].name, 'joy');
@@ -604,10 +604,10 @@ describe('blueprints :: ', function() {
         });
       });
 
-      describe('a get request to /:model', function() {
+      describe('a get request to /:model/find', function() {
 
         it('should return a 404', function(done) {
-          sailsApp.request('get /user', function (err, resp, data) {
+          sailsApp.request('get /user/find', function (err, resp, data) {
             assert(err);
             assert.equal(err.status, 404);
             done();
@@ -642,106 +642,31 @@ describe('blueprints :: ', function() {
         extraSailsConfig = {};
       });
 
-      describe('a get request to /v1/:model', function() {
+      describe('a get request to /v1/:model/find', function() {
+
+        it('should return a 404 (rest prefix should have no effect on shortcut routes', function(done) {
+          sailsApp.request('get /v1/user/find', function (err, resp, data) {
+            assert(err);
+            assert.equal(err.status, 404);
+            done();
+          });
+        });
+
+
+      });
+
+      describe('a get request to /:model/find', function() {
 
         it('should return JSON for all of the instances of the test model', function(done) {
-          sailsApp.models.user.create({name: 'wanda'}).exec(function(err) {
+          sailsApp.models.user.create({name: 'al'}).exec(function(err) {
             if (err) {return done (err);}
-            sailsApp.request('get /v1/user', function (err, resp, data) {
+            sailsApp.request('get /user/find', function (err, resp, data) {
               assert(!err, err);
               assert.equal(data.length, 1);
-              assert.equal(data[0].name, 'wanda');
+              assert.equal(data[0].name, 'al');
               assert.equal(data[0].id, 1);
               done();
             });
-          });
-        });
-      });
-
-      describe('a get request to /:model', function() {
-
-        it('should return a 404', function(done) {
-          sailsApp.request('get /user', function (err, resp, data) {
-            assert(err);
-            assert.equal(err.status, 404);
-            done();
-          });
-        });
-      });
-
-    });
-
-    describe('with `prefix` option set to \'api\' and `restPrefix` option set to \'/v1\' :: ', function() {
-
-      before(function() {
-        extraSailsConfig = {
-          blueprints: {
-            prefix: '/api',
-            restPrefix: '/v1'
-          },
-          orm: {
-            moduleDefinitions: {
-              models: {
-                user: {
-                  attributes: {
-                    name: 'string'
-                  }
-                }
-              }
-            }
-          }
-        };
-      });
-
-      after(function() {
-        extraSailsConfig = {};
-      });
-
-      describe('a get request to /api/v1/:model', function() {
-
-        it('should return JSON for all of the instances of the test model', function(done) {
-          sailsApp.models.user.create({name: 'ron'}).exec(function(err) {
-            if (err) {return done (err);}
-            sailsApp.request('get /api/v1/user', function (err, resp, data) {
-              assert(!err, err);
-              assert.equal(data.length, 1);
-              assert.equal(data[0].name, 'ron');
-              assert.equal(data[0].id, 1);
-              done();
-            });
-          });
-        });
-      });
-
-      describe('a get request to /:model', function() {
-
-        it('should return a 404', function(done) {
-          sailsApp.request('get /user', function (err, resp, data) {
-            assert(err);
-            assert.equal(err.status, 404);
-            done();
-          });
-        });
-      });
-
-      describe('a get request to /api/:model', function() {
-
-        it('should return a 404', function(done) {
-          sailsApp.request('get /api/user', function (err, resp, data) {
-            assert(err);
-            assert.equal(err.status, 404);
-            done();
-          });
-        });
-      });
-
-      describe('a get request to /v1/:model', function() {
-
-        it('should return a 404', function(done) {
-          sailsApp.request('get /v1/user', function (err, resp, data) {
-            assert(err);
-            assert.equal(err.status, 404);
-            done();
           });
         });
       });
@@ -773,10 +698,10 @@ describe('blueprints :: ', function() {
         extraSailsConfig = {};
       });
 
-      it('if a `:model.find` action is explicitly added, it should be used in response to `GET /:model`', function(done) {
+      it('if a `:model.find` action is explicitly added, it should be used in response to `GET /:model/find`', function(done) {
         sailsApp.models.user.create({name: 'al'}).exec(function(err) {
           if (err) {return done (err);}
-          sailsApp.request('get /user', function (err, resp, data) {
+          sailsApp.request('get /user/find', function (err, resp, data) {
             assert(!err, err);
             assert.equal(data, 'find dem users!');
             done();
