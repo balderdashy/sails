@@ -29,7 +29,7 @@ var Err = {
  * Fortunately, this provides a great test suite to ensure consistent support.
  */
 
-xdescribe('pubsub :: ', function() {
+describe('pubsub :: ', function() {
 
   describe('Model events', function() {
 
