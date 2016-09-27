@@ -7,7 +7,7 @@ var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
 var path = require('path');
 var fs = require('fs');
-
+var _ = require('lodash');
 
 
 describe('CORS and CSRF ::', function() {
@@ -145,6 +145,7 @@ describe('CORS and CSRF ::', function() {
             assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
             assert.equal(response.headers['access-control-allow-methods'], 'put');
             assert.equal(response.headers['access-control-allow-headers'], 'content-type');
+            assert(_.isUndefined(response.headers['access-control-allow-credentials']));
             done();
           });
 
@@ -252,7 +253,7 @@ describe('CORS and CSRF ::', function() {
               return done(err);
             }
             assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
+            assert.equal(response.headers['access-control-allow-origin'], '*');
             assert.equal(response.headers['access-control-allow-methods'].toLowerCase(), 'get, post, put, delete, options, head');
             done();
           });
@@ -272,7 +273,7 @@ describe('CORS and CSRF ::', function() {
               return done(err);
             }
             assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
+            assert.equal(response.headers['access-control-allow-origin'], '*');
             assert.equal(response.headers['access-control-allow-methods'].toLowerCase(), 'get, post, put, delete, options, head');
             done();
           });
@@ -294,7 +295,7 @@ describe('CORS and CSRF ::', function() {
               return done(err);
             }
             assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
+            assert.equal(response.headers['access-control-allow-origin'], '*');
             assert.equal(response.headers['access-control-expose-headers'], '');
             done();
           });
@@ -311,7 +312,7 @@ describe('CORS and CSRF ::', function() {
               return done(err);
             }
             assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
+            assert.equal(response.headers['access-control-allow-origin'], '*');
             assert.equal(response.headers['access-control-expose-headers'], 'x-custom-header');
             done();
           });
@@ -534,7 +535,7 @@ describe('CORS and CSRF ::', function() {
               return done(err);
             }
             assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
+            assert.equal(response.headers['access-control-allow-origin'], '*');
             done();
           });
         });
@@ -776,6 +777,26 @@ describe('CORS and CSRF ::', function() {
       before(function() {
         fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': '*', 'allRoutes': true, 'credentials': true};");
         var routeConfig = {
+          'GET /default': {
+            controller: 'TestController',
+            action: 'index'
+          },
+          'GET /notallowed': {
+            controller: 'TestController',
+            action: 'index',
+            cors: {
+              origin: '*',
+              credentials: true
+            }
+          },
+          'GET /test': {
+            controller: 'TestController',
+            action: 'index',
+            cors: {
+              origin: 'http://www.example.com',
+              credentials: true
+            }
+          },
           'GET /test/destroy': {
             controller: 'TestController',
             action: 'destroy',
@@ -785,7 +806,42 @@ describe('CORS and CSRF ::', function() {
             }
           }
         };
+
         fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), "module.exports.routes = " + JSON.stringify(routeConfig));
+      });
+
+      it('should not allow origin: \'*\' in conjunction with \'credentials: true\' as the default (should force credentials: force and log a warning)', function(done) {
+        httpHelper.testRoute('get', {
+          url: 'default',
+          headers: {
+            'Origin': 'http://www.example.com'
+          },
+        }, function(err, response) {
+          if (err) {
+            return done(err);
+          }
+          assert.equal(response.statusCode, 200);
+          assert(_.isUndefined(response.headers['access-control-allow-credentials']));
+          assert.equal(sailsApp.config.cors.credentials, false);
+          done();
+        });
+      });
+
+      it('should not allow origin: \'*\' in conjunction with \'credentials: true\' set explicitly (should force credentials: false and log a warning)', function(done) {
+        httpHelper.testRoute('get', {
+          url: 'notallowed',
+          headers: {
+            'Origin': 'http://www.example.com'
+          },
+        }, function(err, response) {
+          if (err) {
+            return done(err);
+          }
+          assert.equal(response.statusCode, 200);
+          assert(_.isUndefined(response.headers['access-control-allow-credentials']));
+          done();
+        });
+
       });
 
       it('to a route without a CORS config should result in a 200 response with an Access-Control-Allow-Credentials header with value "true"', function(done) {
@@ -804,7 +860,7 @@ describe('CORS and CSRF ::', function() {
         });
       });
 
-      it('to a route with {cors: {credentials: false}} should result in a 200 response with an Access-Control-Allow-Credentials header with value "false"', function(done) {
+      it('to a route with {cors: {credentials: false}} should result in a 200 response with no Access-Control-Allow-Credentials header', function(done) {
         httpHelper.testRoute('get', {
           url: 'test/destroy',
           headers: {
@@ -815,7 +871,7 @@ describe('CORS and CSRF ::', function() {
             return done(err);
           }
           assert.equal(response.statusCode, 200);
-          assert.equal(response.headers['access-control-allow-credentials'], 'false');
+          assert(_.isUndefined(response.headers['access-control-allow-credentials']));
           done();
         });
       });
@@ -850,7 +906,7 @@ describe('CORS and CSRF ::', function() {
             return done(err);
           }
           assert.equal(response.statusCode, 200);
-          assert.equal(response.headers['access-control-allow-credentials'], 'false');
+          assert(_.isUndefined(response.headers['access-control-allow-credentials']));
           done();
         });
       });
