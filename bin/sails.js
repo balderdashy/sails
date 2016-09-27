@@ -6,14 +6,14 @@
  */
 
 var _ = require('lodash');
-var program = require('./_commander');
-var package = require('../package.json');
+var program = require('./private/patched-commander');
+var sailsPackageJson = require('../package.json');
 var NOOP = function() {};
 
 
 
 program
-  .version(package.version, '-v, --version');
+  .version(sailsPackageJson.version, '-v, --version');
 
 
 //

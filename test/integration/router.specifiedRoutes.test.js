@@ -65,7 +65,7 @@ describe('router :: ', function() {
           },
         }, function(err, response, body) {
           assert.equal(response.statusCode, 200);
-          assert.equal(response.headers['access-control-allow-origin'], 'https://foo.shyp.com');
+          assert.equal(response.headers['access-control-allow-origin'], '*');
           done();
         });
       });

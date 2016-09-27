@@ -17,7 +17,7 @@ module.exports = {
   // Lift-time and load-time errors
   failedToLoadSails: function(err) {
     log.error(err);
-    log.error('Could not load Sails.');
+    log.error('Could not load Sails app.');
     log.error('Are you using the latest stable version?');
     _terminateProcess(1);
   },
