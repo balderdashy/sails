@@ -466,7 +466,7 @@ describe('blueprints :: ', function() {
 
     });
 
-    describe('after reloading modules :: ', function() {
+    describe('after reloading actions :: ', function() {
 
       before(function() {
         extraSailsConfig = {
@@ -491,7 +491,7 @@ describe('blueprints :: ', function() {
       it('should still respond to RESTful blueprint requests correctly :: ', function(done) {
         sailsApp.models.user.create([{name: 'scott'}, {name: 'mike'}]).exec(function(err) {
           if (err) {return done(err);}
-          sailsApp.reloadModules(function(err) {
+          sailsApp.reloadActions(function(err) {
             if (err) {return done(err);}
             sailsApp.request('get /user', function (err, resp, data) {
               assert(!err, err);
