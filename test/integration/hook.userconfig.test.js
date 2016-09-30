@@ -56,29 +56,6 @@ describe('hooks :: ', function() {
 
     });
 
-    describe('with \'dontFlattenConfig\' true', function() {
-
-      var sailsApp;
-      it('should use filenames in subfolders as keys', function(done) {
-
-        sailsApp = Sails();
-        sailsApp.load({hooks:{grunt:false}, dontFlattenConfig: true}, function(err, sails) {
-          if (err) { return callback(err); }
-          assert.equal(sails.config.foo, 'goo');
-          assert.equal(sails.config.bar.foo, 'bar');
-          assert.equal(sails.config.bar.abc, 123);
-          assert.equal(typeof(sails.config.abc), 'undefined');
-          return done();
-        });
-
-      });
-
-      after(function (done){
-        sailsApp.lower(done);
-      });
-
-    });
-
     describe('in development environment', function() {
 
       var sails;
