@@ -12,7 +12,7 @@ var sailsIOClient = require('../../helpers/sails.io.js');
 
 describe('Pubsub hook', function (){
 
-  describe('publishCreate()', function (){
+  describe('_publishCreate()', function (){
 
     var app = Sails();
 
@@ -42,9 +42,9 @@ describe('Pubsub hook', function (){
         routes: {
           'POST /pet': function (req, res){
             // (notice we're not actually doing anything to the database-
-            //  this is just testing publishCreate)
+            //  this is just testing _publishCreate)
             try {
-              app.models.pet.publishCreate({id: 1, randomData: 'helloWorld!'});
+              app.models.pet._publishCreate({id: 1, randomData: 'helloWorld!'});
             } catch (e) {
               return res.json(500, {error: e.message});
             }
@@ -126,7 +126,7 @@ describe('Pubsub hook', function (){
     ////////////////////////////////////////////////////////////////////////////////
     describe('invoked with the id of the new record and some random data', function (){
 
-      // Lenny triggers publishCreate with a new pet
+      // Lenny triggers _publishCreate with a new pet
       before(function (done){
         clientSocks.lenny.post('/pet', {
           name: 'socks'

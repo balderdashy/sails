@@ -17,7 +17,7 @@ socket.on('debug', function (msg) { .. });
 ###### Server
 ```javascript
 // Any of the pubsub methods..
-User.publishUpdate()
+User._publishUpdate()
 sails.sockets.emit()
 ```
 

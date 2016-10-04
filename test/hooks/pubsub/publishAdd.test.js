@@ -13,7 +13,7 @@ var sailsIOClient = require('../../helpers/sails.io.js');
 
 describe('Pubsub hook', function (){
 
-  describe('publishAdd()', function (){
+  describe('_publishAdd()', function (){
 
     var app = Sails();
 
@@ -35,8 +35,8 @@ describe('Pubsub hook', function (){
           },
           'POST /dock/:id/addVessel': function (req, res){
             // (notice we're not actually doing anything to the database-
-            //  this is just testing publishAdd)
-            app.models.dock.publishAdd(req.param('id'), 'vessels', req.param('vessel'));
+            //  this is just testing _publishAdd)
+            app.models.dock._publishAdd(req.param('id'), 'vessels', req.param('vessel'));
             return res.send();
           }
         },
@@ -135,7 +135,7 @@ describe('Pubsub hook', function (){
     ////////////////////////////////////////////////////////////////////////////////
     describe('invoked with the id of the child record', function (){
 
-      // Lenny triggers publishAdd with a vessel id
+      // Lenny triggers _publishAdd with a vessel id
       before(function (done){
         clientSocks.lenny.post('/dock/1/addVessel', {
           vessel: 47
@@ -157,7 +157,7 @@ describe('Pubsub hook', function (){
 
     describe('invoked with an object representing the child record', function (){
 
-      // Lenny triggers publishAdd with an entire vessel object
+      // Lenny triggers _publishAdd with an entire vessel object
       before(function (done){
         clientSocks.lenny.post('/dock/1/addVessel', {
           vessel: {
@@ -184,7 +184,7 @@ describe('Pubsub hook', function (){
 
     describe('invoked with an object representing the child record, but missing the primary key value', function (){
 
-      // Larry triggers publishAdd with a vessel object with no PK value
+      // Larry triggers _publishAdd with a vessel object with no PK value
       before(function (done){
         clientSocks.larry.post('/dock/1/addVessel', {
           vessel: {
@@ -194,7 +194,7 @@ describe('Pubsub hook', function (){
           if (jwr.error) { return done(jwr.error); }
           //
           // NOTE:
-          // publishAdd does not currently throw an error, in keeping with
+          // _publishAdd does not currently throw an error, in keeping with
           // the approach taken by the other methods there.
           //
           // This could be changed in the future.
