@@ -35,7 +35,9 @@ This section is an early list of some of the features, enhancements, and other i
   + API is similar to above: `sails.hooks.orm.datastore('foo').query(nativeQuery, afterFinished)`
 <a name="nested-create-nested-update"></a>
 + **Nested create / nested update**
-  + Will be disabled by default.
+  + Will be disabled by default (and likely completely deferred to userland).
++ **Enhanced `.stream()` functionality**
+  + Simplify interface and remove reliance on emitters
 <a name="case-sensitivity-in-criteria-s-where-in-waterline-find-find-one-count-update-destroy"></a>
 + **Case sensitivity in criteria's `where` in Waterline find/findOne/count/update/destroy**
   + Will be database-specific instead of normalized to be case-insensitive.
