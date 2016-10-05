@@ -2,6 +2,7 @@
 
 ### 0.12.7
 
+* [ENHANCEMENT] Log warning when lifting in production with very permissive CORS settings (thanks [@ejcx](https://github.com/ejcx)).  See [this comment](https://github.com/balderdashy/sails/commit/f80252f66edc0bf00cf6ed317d9a3e68b4e8d948#commitcomment-19209724) for v1.0 plans.
 * [BUGFIX] Fix issue with multiple config files that have the same filename [3846](https://github.com/balderdashy/sails/issues/3846)
 
 ### 0.12.6
