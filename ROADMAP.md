@@ -12,7 +12,7 @@ This section is an early list of some of the features, enhancements, and other i
 + **Built-in Support for Database Projections (i.e. `SELECT`)**
   + This is already implemented in Waterline, but not yet exposed in Sails.
   + We may do a minor release of Sails prior to v1.0 so that folks can take advantage of this today.
-  + If you want to use Waterline 0.12 in your Sails app in the mean time, fork sails-hook-orm, upgrade its waterline dependency, then NPM install your forked version as a dependency in your Sails app project, and it will take effect automatically.  (But be sure you are using the appropriate adapters-- tweet [@particlebanana](http://twitter.com/particlebanana) or [@sailsjs](http://twitter.com/sailsjs) if you have questions on that.)
+  + If you want to use Waterline 0.12 in your Sails app in the mean time, fork sails-hook-orm, upgrade its waterline dependency, then NPM install your forked version as a dependency in your Sails app project, and it will take effect automatically (see [this comment](https://github.com/balderdashy/sails-hook-orm/pull/1#issuecomment-238656139) for more details).
 + **Built-in Support for Dynamic Database Connections**
   + Implemented via `sails.hooks.orm.datastore()`
   + See https://github.com/node-machine/driver-interface and https://github.com/particlebanana/waterline-query-docs/issues/2
@@ -40,6 +40,10 @@ This section is an early list of some of the features, enhancements, and other i
   + See https://github.com/balderdashy/sails/pull/3522
 + **Federated hooks (custom builds)**
   + See https://github.com/balderdashy/sails/pull/3504
++ **Improved parsing of configuration that **
+  + This expands the possibilities of env vars and CLI opts for setting configuration.  The only reason this hasn't been implemented up until now is that it requires knowing where configuration exported by `rc` is coming from (see https://github.com/dominictarr/rc/pull/33)
+  + Instead of receiving JSON-encoded values (numbers/booleans/dictionaries/arrays/null) as strings, they'll be parsed.
+  + See [rttc.parseHuman()](https://github.com/node-machine/rttc#parsehumanstringfromhuman-typeschemaundefined-unsafemodefalse) for details
 + **Validation errors in blueprints, `res.jsonx()`, & error handling in custom responses**
   + Will be handled by calling res.badRequest() directly
   + The toJSON() function of errors will be called (since res.json will be used instead of res.jsonx)
@@ -62,6 +66,9 @@ This section is an early list of some of the features, enhancements, and other i
   + But if _both_ `NODE_ENV` and `sails.config.environment` are specified, then no changes will be made to either.
   + If `sails.config.environment` is set to "production" and the `NODE_ENV` environment variable is not also set to production, Sails will log a warning.
     + ^^needs tests.
++ **`sails.config.dontFlattenConfig` will be deprecated.**
+  + The `dontFlattenConfig` setting was [originally added](http://sailsjs.org/documentation/concepts/upgrading/to-v-0-11#?config-files-in-subfolders) for backards-compatibility with what was essentially a bug.
+  + It will be completely removed in Sails v1.0 for simplicity.
 + **Better built-in support for command-line scripts that require access to the Sails app instance**
   + https://github.com/treelinehq/machine-as-script/commits/master
 + **sails-stdlib**
