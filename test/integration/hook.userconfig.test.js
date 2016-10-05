@@ -22,7 +22,8 @@ describe('hooks :: ', function() {
       appHelper.teardown();
       async.series([
         function(cb) {fs.outputFile(path.resolve(__dirname,'../../testApp/config/abc.js'), 'module.exports = {"foo":"goo"};', cb);},
-        function(cb) {fs.outputFile(path.resolve(__dirname,'../../testApp/config/foo/bar.js'), 'module.exports = {"foo":"bar", "abc":123};', cb);},
+        function(cb) {fs.outputFile(path.resolve(__dirname,'../../testApp/config/foo/bar.js'), 'module.exports = {"foo":"bar", "abc":123, "betty": "boop"};', cb);},
+        function(cb) {fs.outputFile(path.resolve(__dirname,'../../testApp/config/lara/bar.js'), 'module.exports = {"cat":"meow", "owl": "hoot", "betty": "spaghetti"};', cb);},
         function(cb) {fs.outputFile(path.resolve(__dirname,'../../testApp/config/env/development.js'), 'module.exports = {"cat":"meow"};', cb);},
         function(cb) {fs.outputFile(path.resolve(__dirname,'../../testApp/config/env/development/config.js'), 'module.exports = {"owl":"hoot"};', cb);},
         function(cb) {fs.outputFile(path.resolve(__dirname,'../../testApp/config/env/test-development.js'), 'module.exports = {"duck":"quack"};', cb);},
@@ -44,6 +45,9 @@ describe('hooks :: ', function() {
           if (err) { return callback(err); }
           assert.equal(sails.config.foo, 'bar');
           assert.equal(sails.config.abc, 123);
+          assert.equal(sails.config.owl, 'hoot');
+          assert.equal(sails.config.cat, 'meow');
+          assert.equal(sails.config.betty, 'spaghetti');
           assert.equal(typeof(sails.config.bar), 'undefined');
           return done();
         });
