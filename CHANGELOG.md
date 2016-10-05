@@ -1,10 +1,17 @@
 # Sails Changelog
 
-### Master
+### 0.12.7
 
-<!--
-_A blank slate, as of 1467754262139.  Just imagine all the possibilities._
--->
+* [BUGFIX] Fix issue with multiple config files that have the same filename [3846](https://github.com/balderdashy/sails/issues/3846)
+
+### 0.12.6
+
+* (revert a change to CORS config in 0.12.5, see [f80252f](https://github.com/balderdashy/sails/commit/f80252f66edc0bf00cf6ed317d9a3e68b4e8d948) for details)
+
+### 0.12.5
+
+* [INTERNAL] Upgrade version of `include-all` to ^1.0.0 [f6e8d32](https://github.com/balderdashy/sails/commit/f6e8d3243d7d695983a3816e6cf7c43ca4237948)
+* [ENHANCEMENT] Add `sails console --dontLift` option [029fe06](https://github.com/balderdashy/sails/commit/029fe0683ea4f01a962b91381b948136f5c18f63)
 
 ### 0.12.4
 
