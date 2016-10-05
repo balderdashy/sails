@@ -85,7 +85,7 @@
     "reportback": "~0.1.9",
     "rttc": "9.3.3",
     "sails-disk": "~0.10.9",
-    "sails-generate": "~0.13.0",
+    "sails-generate": "^1.0.0",
     "sails-hook-orm": "~1.0.6",
     "sails-hook-sockets": "~0.13.0",
     "sails-hook-helpers": "^1.0.0",
