@@ -20,9 +20,10 @@ This section is an early list of some of the features, enhancements, and other i
   + See https://github.com/node-machine/driver-interface and https://github.com/particlebanana/waterline-query-docs/issues/2
   + API: `sails.hooks.orm.datastore('foo').connect(during, afterDisconnecting)`
   + Also: `User.find().usingConnection(mySQLConnectionObtainedFromUsingRawDriver).exec();`
+  + This is currently implemented at the driver level, as of early Oct 2016.
 <a name="advanced-joins-using-compiled-statements-based-on-knex"></a>
 + **Advanced Joins (using compiled statements based on Knex)**
-  + This will be usable prior to Sails v1 (and is available for experimental use today)
+  + This is implemented at the driver layer, and will be exposed via `.datastore()` in Sails v1
   + See https://github.com/particlebanana/waterline-query-docs/
 <a name="built-in-support-for-native-database-transactions-for-databases-that-support-it"></a>
 + **Built-in Support for Native Database Transactions (for databases that support it)**
@@ -36,6 +37,16 @@ This section is an early list of some of the features, enhancements, and other i
 <a name="nested-create-nested-update"></a>
 + **Nested create / nested update**
   + Will be disabled by default (and likely completely deferred to userland).
++ **More granular `.save()`**
+  + Three new static model methods will be available:
+    + `addToCollection(3)`
+    + `removeFromCollection(12)`
+    + `.resetCollection([1,2,3])` / `.resetCollection([])`
+  + Out of the box, queries like the following will also be supported:
+    + `.update({...}).set({ pets: [3,5,6] }).exec(...)`
+    + `.update({...}).set({ pets: [] }).exec(...)`
+    + `.update({...}).set({ favoritePet: 5 }).exec(...)`
+    + `.update({...}).set({ favoritePet: null }).exec(...)`
 + **Enhanced `.stream()` functionality**
   + Simplify interface and remove reliance on emitters
 <a name="case-sensitivity-in-criteria-s-where-in-waterline-find-find-one-count-update-destroy"></a>
@@ -47,52 +58,53 @@ This section is an early list of some of the features, enhancements, and other i
   + Will be moved out of Waterline and into sails-hook-orm.
   + Usage is unlikely to change.
 <a name="built-in-xss-prevention-expose-locals-to-browser-view-helper"></a>
-+ **Built-in XSS Prevention (`exposeLocalsToBrowser()` view helper)**
-  + See https://github.com/balderdashy/sails/pull/3522
++ ✓ ~~**Built-in XSS Prevention (`exposeLocalsToBrowser()` view helper)**~~
+  + ~~See https://github.com/balderdashy/sails/pull/3522~~~
 <a name="federated-hooks-custom-builds"></a>
 + **Federated hooks (custom builds)**
   + See https://github.com/balderdashy/sails/pull/3504
 <a name="upgrade-to-express-5"></a>
 + **Upgrade to Express 5**
   + Move implementation of `req.param()` from Express core into Sails core
-  + Move most of the error handling from Sails' `res.view()` into Express's `res.render()` (via `.code`, messages are different)
-  + Replace on-lift view stat-ing w/ just-in-time view stat-ing from `res.render()`
+  + Improve error handling and simplify Sails' `res.view()` 
+  + ✓ ~~For performance reasons, on-lift view stat-ing will still be used to build handlers for `{view: 'foo'}` route target syntax.~~
   + Use standalone Express router in virtual request interpreter, but continue using express core for handling HTTP requests
-  + Expose context-free view rendering API (replace experimental sails.renderView() and internally, use [`app.render()`](https://expressjs.com/en/4x/api.html#app.render) or better yet, standalone module)
+  + **Possibly:** Expose context-free view rendering API (replace experimental sails.renderView() and internally, use [`app.render()`](https://expressjs.com/en/4x/api.html#app.render) or better yet, standalone module)
   + See also https://github.com/expressjs/express/pull/2237?_ga=1.217677078.1437564638.1468192018 and https://expressjs.com/en/guide/migrating-5.html
 <a name="built-in-support-for-request-parameter-validation-response-coercion"></a>
-+ **Built-In Support For Request Parameter Validation & Response Coercion**
-  + Declaratively specify request parameters, whether they are required, and other data type validations.
-  + Assign default values for optional params
-  + Declare schemas for responses
++ ✓ ~~**Built-In Support For Request Parameter Validation & Response Coercion**~~
+  + ~~Declaratively specify request parameters, whether they are required, and other data type validations.~~
+  + ~~Assign default values for optional params~~
+  + ~~Declare schemas for responses~~
+  + TODO: go ahead and branch v1 sails-docs and document request parameter validation, response standalone actions
 <a name="standalone-actions"></a>
-+ **Standalone Actions**
++ ✓ ~~**Standalone Actions**~~
   + Not all actions (whether it's a microservice, or an endpoint to serve a one-off view) fit nicely into controllers, and pointless categorization wastes developers' time and mental energy.
-  + Run `sails generate action` to create a new standalone action file
+  + ✓ Run `sails generate action` to create a new standalone action file
 <a name="deprecate-built-in-ejs-hbs-layouts-support-and-instead-emphasize-partials"></a>
 + **Deprecate Built-in EJS/HBS Layouts Support (and instead emphasize partials)**
   + Change `sails-generate-new` to build partials instead of layout (e.g. `views/partials/head.ejs`)
   + Update default EJS dep (see https://github.com/mde/ejs)
 <a name="services-helpers"></a>
-+ **Services & Helpers**
-  + Services will continue to work exactly as they today, but the folder will no longer be generated in new Sails apps by default.
-  + Instead, new Sails projects will include `api/helpers/`, a new type of Sails project module.
++ ✓ ~~**Services & Helpers**~~
+  + ✓ ~~Services will continue to work exactly as they today, but the folder will no longer be generated in new Sails apps by default.~~
+  + ✓ ~~Instead, new Sails projects will include `api/helpers/`, a new type of Sails project module.~~
     + `sails.helpers.fetchRecentFBMessages({ ... }).exec(function (err, fbMsgs) { ... });`
     + `sails.helpers.computeAverage({ ... }).execSync();`
     + `sails.helpers.foo.bar.baz.doSomething({ ... }).exec(...)`
-  + Running `sails generate helper` creates a new helper file
+  + ✓ ~~Running `sails generate helper` creates a new helper file~~
 <a name="interalize-seldom-used-resourceful-pubsub-rps-methods"></a>
-+ **Interalize Seldom-Used Resourceful Pubsub (RPS) Methods**
++ ✓ ~~**Interalize Seldom-Used Resourceful Pubsub (RPS) Methods**~~
   + RPS methods were originally internal to blueprints, and while a few of them are particularly useful (because they manage socket.io room names for you), the public exposure of other methods was more or less incidental.
   + To support more intuitive use, Sails v1.0 trims down the RPS API to just three methods:
     + `publish()`
     + `subscribe()`
     + `unsubscribe()`
 <a name="improved-parsing-of-configuration-overrides"></a>
-+ **Improved parsing of configuration overrides**
-  + This expands the possibilities of env vars and CLI opts for setting configuration.  The only reason this hasn't been implemented up until now is that it requires knowing where configuration exported by `rc` is coming from (see https://github.com/dominictarr/rc/pull/33)
-  + Instead of receiving JSON-encoded values (numbers/booleans/dictionaries/arrays/null) as strings, they'll be parsed.
-  + See [rttc.parseHuman()](https://github.com/node-machine/rttc#parsehumanstringfromhuman-typeschemaundefined-unsafemodefalse) for details
++ ✓ ~~**Improved parsing of configuration overrides**~~
+  + ~~This expands the possibilities of env vars for setting configuration.  The only reason this hasn't been implemented up until now is that it requires knowing where configuration exported by `rc` is coming from (see https://github.com/dominictarr/rc/pull/33)~~
+  + ~~Instead of receiving JSON-encoded values (numbers/booleans/dictionaries/arrays/null) as strings, they'll be parsed.~~
+  + ~~See [rttc.parseHuman()](https://github.com/node-machine/rttc#parsehumanstringfromhuman-typeschemaundefined-unsafemodefalse) for details~~
 <a name="validation-errors-in-blueprints-res-jsonx-error-handling-in-custom-responses"></a>
 + **Validation errors in blueprints, `res.jsonx()`, & error handling in custom responses**
   + Will be handled by calling res.badRequest() directly
@@ -120,17 +132,17 @@ This section is an early list of some of the features, enhancements, and other i
   + If `sails.config.environment` is set to "production" and the `NODE_ENV` environment variable is not also set to production, Sails will log a warning.
     + ^^needs tests.
 <a name="sails-config-dont-flatten-config-will-be-deprecated"></a>
-+ **`sails.config.dontFlattenConfig` will be deprecated.**
++ ✓ ~~**The deprecated `sails.config.dontFlattenConfig` will be removed.**~~  _BORN DEPRECATED_
   + The `dontFlattenConfig` setting was [originally added](http://sailsjs.org/documentation/concepts/upgrading/to-v-0-11#?config-files-in-subfolders) for backards-compatibility with what was essentially a bug.
   + It will be completely removed in Sails v1.0 for simplicity.
 <a name="better-built-in-support-for-command-line-scripts-that-require-access-to-the-sails-app-instance"></a>
-+ **Better built-in support for command-line scripts that require access to the Sails app instance**
++ ✓ ~~**Better built-in support for command-line scripts that require access to the Sails app instance**~~
   + https://github.com/treelinehq/machine-as-script/commits/master
 <a name="normalize-usage-of-routes-disabled-config-keys"></a>
 + **Normalize usage of `routesDisabled` config keys**
   + Set up all route-disabling config keys (such as in sails.config.csrf and sails.config.session) to use the same route syntax (rather than disparate regexps vs. csv, etc)
 <a name="strip-out-deprecated-sockets-methods"></a>
-+ **Strip Out Deprecated Sockets Methods**
++ ✓ ~~**Strip Out Deprecated Sockets Methods**
   + Remove the implementation of deprecated `sails.sockets.*` methods from Sails core.
   + (These were deprecated, but left in place with warning messages, in Sails v0.12)
 <a name="sails-stdlib"></a>
