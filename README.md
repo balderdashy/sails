@@ -63,9 +63,9 @@ The ORM, [Waterline](https://github.com/balderdashy/waterline), has a well-defin
 <!-- /core adapter logos -->
 
 ## Books
-- [Sails.js in Action](https://www.manning.com/books/sails-js-in-action) by Mike McNeil and Irl Nathan (Manning Publications).  Available October 2016 _([estimated](https://www.manning.com/meap-program#section-faq-10))_.
-- [Pro Express.js: Part 3](http://link.springer.com/chapter/10.1007%2F978-1-4842-0037-7_18) by Azat Mardan (Apress).
+- [Sails.js in Action](https://www.manning.com/books/sails-js-in-action) by Mike McNeil and Irl Nathan (Manning Publications).  Available December 2016 _([estimated](https://www.manning.com/meap-program#section-faq-10))_.
 - [Sails.js Essentials](https://www.packtpub.com/web-development/sailsjs-essentials) by Shaikh Shahid (Packt)
+- [Pro Express.js: Part 3](http://link.springer.com/chapter/10.1007%2F978-1-4842-0037-7_18) by Azat Mardan (Apress).
 
 ## Support
 Need help or have a question?
