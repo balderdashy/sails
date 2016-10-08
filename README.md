@@ -2,7 +2,7 @@
 <a href="http://sailsjs.org"><img alt="Sails.js logo" src="http://balderdashy.github.io/sails/images/logo.png" title="Sails.js"/></a>
 </h1>
 
-### [Website](http://sailsjs.org/)  &nbsp; [Getting Started](http://sailsjs.org/get-started) &nbsp;  [Docs](http://sailsjs.org/documentation)  &nbsp; [Blog](http://blog.sailsjs.org/) &nbsp; [Submit Issue](https://github.com/balderdashy/sails/blob/master/README.md#issue-submission)
+### [Website](http://sailsjs.org/)  &nbsp; [Getting Started](http://sailsjs.org/get-started) &nbsp;  [Docs](http://sailsjs.org/documentation)  &nbsp; [Blog](http://blog.sailsjs.org/) &nbsp; [Submit Issue](http://sailsjs.com/bugs)
 
 [![NPM version](https://badge.fury.io/js/sails.svg)](http://badge.fury.io/js/sails) &nbsp; [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/balderdashy/sails)  &nbsp; [![Twitter Follow](https://img.shields.io/twitter/follow/sailsjs.svg?style=social&maxAge=3600)](https://twitter.com/sailsjs)
 
@@ -11,7 +11,7 @@ Sails.js is a web framework that makes it easy to build custom, enterprise-grade
 
 
 ## Installation &nbsp;
-**With [node](http://nodejs.org) [installed](http://sailsjs.org/#!documentation/new-to-nodejs):**
+**With [node](http://nodejs.org) [installed](http://nodejs.org/en/download):**
 ```sh
 # Get the latest stable release of Sails
 $ npm install sails -g
@@ -40,8 +40,9 @@ $ sails lift
 
 **Generate a REST API:**
 
-[![ScreenShot](http://i.imgur.com/Ii88jlhl.png)](https://www.youtube.com/watch?v=GK-tFvpIR7c)
+[![Screenshot from the original Sails video](http://i.imgur.com/Ii88jlhl.png)](https://www.youtube.com/watch?v=GK-tFvpIR7c)
 
+_For a more up-to-date introduction to Sails, check out the [free Platzi course](https://courses.platzi.com/classes/develop-apps-sails-js/).  For a thorough walkthrough, see [Sails.js in Action](https://www.manning.com/books/sails-js-in-action) and the [conceptual documentation](http://sailsjs.com/documentation) on our website._
 
 ## Compatibility
 
@@ -82,10 +83,10 @@ Need help or have a question?
 ## Issue Submission
 Please read the [issue submission guidelines](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#opening-issues) before opening a new issue.
 
-Sails is composed of a [number of different sub-projects](https://github.com/balderdashy/sails/blob/master/MODULES.md), many of which have their own dedicated repository. If you suspect an issue in one of these sub-modules, you can find its repo on the [organization](https://github.com/balderdashy) page, or in [MODULES.md](https://github.com/balderdashy/sails/blob/master/MODULES.md).  Click [here](https://github.com/balderdashy/sails/search?q=&type=Issues) to search/post issues in this repository.
+Sails is composed of a [number of different sub-projects](http://sailsjs.com/architecture), many of which have their own dedicated repository. If you suspect an issue in one of these sub-modules, you can find its repo in [MODULES.md](./MODULES.md).  Click [here](https://github.com/balderdashy/sails/search?q=&type=Issues) to search/post issues in this repository.
 
 ## Feature Requests
-If you have an idea for a new feature, please feel free to submit it as a pull request to the backlog section of the [ROADMAP.md](https://github.com/balderdashy/sails/blob/master/ROADMAP.md#feature-requests) file in this repository.
+If you have an idea for a new feature, please feel free to submit it as a pull request to the [_Backlog_ section of the ROADMAP.md](./ROADMAP.md#backlog) file in this repository.
 
 ## Contribute
 There are many different ways you can contribute to Sails:
@@ -94,10 +95,10 @@ There are many different ways you can contribute to Sails:
 - translating the [documentation](https://github.com/balderdashy/sails-docs/issues/580) to your native language
 - writing [tests](https://github.com/balderdashy/sails/blob/master/test/README.md)
 - writing a [tutorial](https://github.com/sails101/contribute-to-sails101), giving a [talk](http://lanyrd.com/search/?q=sailsjs), or supporting [your local Sails meetup](http://www.meetup.com/find/?allMeetups=false&keywords=sails.js&radius=Infinity&sort=default)
-- troubleshooting [reported issues](https://github.com/balderdashy/sails/search?q=&type=Issues)
-- and [submitting patches](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md).
+- troubleshooting [reported issues](http://sailsjs.com/bugs)
+- and [submitting patches](http://sailsjs.com/contribute).
 
-Please carefully read our [contribution guide](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md) and check the [master branch build status](https://github.com/balderdashy/sails/blob/master/MODULES.md) before submitting a pull request with code changes.
+Please carefully read our [contribution guide](http://sailsjs.com/contribute) and check the [build status](./MODULES.md) for the relevant branch before submitting a pull request with code changes.
 
 
 ## Links
@@ -105,7 +106,7 @@ Please carefully read our [contribution guide](https://github.com/balderdashy/sa
 - [Official Documentation](http://sailsjs.org/documentation)
 - [Blog](http://blog.sailsjs.org)
 - [Twitter](https://twitter.com/sailsjs)
-- [Roadmap](https://github.com/balderdashy/sails/blob/master/ROADMAP.md#roadmap)
+- [Roadmap](http://sailsjs.com/roadmap)
 - [Google Group](https://groups.google.com/forum/#!forum/sailsjs)
 - [Facebook](https://www.facebook.com/sailsjs)
 
@@ -120,8 +121,8 @@ Back in 2012, we were designing/builing scalable Node.js apps for startups and e
 
 ## License
 
-[MIT License](http://sails.mit-license.org/)  Copyright © 2012-2016 Mike McNeil
+[MIT License](http://sailsjs.com/license)  Copyright © 2012-2016 Mike McNeil
 
-> Sails is built around so many great open-source technologies that it would never have crossed our minds to keep it proprietary.  We owe huge gratitude and props to TJ Holowaychuk ([@visionmedia](https://github.com/visionmedia)) and Guillermo Rauch ([@rauchg](https://github.com/rauchg)) for the work they've done, as well as the stewards of all the other open-source modules we use.  Sails could never have been developed without your tremendous contributions to the node community.
+> Sails is built around so many great open-source technologies that it would never have crossed our minds to keep it proprietary.  We owe huge gratitude and props to TJ Holowaychuk ([@tj](https://github.com/tj)) and Guillermo Rauch ([@rauchg](https://github.com/rauchg)) for the work they've done, as well as the stewards of all the other open-source modules we use.  Sails could never have been developed without your tremendous contributions to the node community.
 
 ![image_squidhome@2x.png](http://sailsjs.org/images/bkgd_squiddy.png)
