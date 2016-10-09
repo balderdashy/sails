@@ -46,6 +46,7 @@
     "express": "3.21.2",
     "express-handlebars": "3.0.0",
     "express-session": "1.12.1",
+    "flaverr": "^1.0.0",
     "glob": "5.0.15",
     "grunt": "1.0.1",
     "grunt-cli": "1.2.0",
