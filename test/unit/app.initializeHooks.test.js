@@ -10,9 +10,6 @@ var customHooks = require('../fixtures/customHooks');
 
 var $Sails = require('../helpers/sails');
 
-var supertest = require('supertest');
-
-
 // TIP:
 //
 // To get a hold of the `sails` instance as a closure variable
@@ -44,7 +41,7 @@ describe('app.initializeHooks()', function() {
     });
   });
 
-  describe('with the grunt hook set to boolen false', function() {
+  describe('with the grunt hook set to boolean false', function() {
     var sails = $Sails.load({hooks: {grunt: false}});
     it('should expose hooks on the `sails` global', function() {
       sails.hooks.should.be.an.Object;
@@ -199,15 +196,25 @@ describe('app.initializeHooks()', function() {
     });
 
     it('should add two `/foo` routes to the sails config', function() {
-      var boundRoutes = sails.router._privateRouter.routes['get'];
-      assert(_.where(boundRoutes, {path: "/foo", method: "get"}).length === 3);
+      var fooRoutes = 0;
+      _.each(sails.router._privateRouter.stack, function(stack){
+        if(stack.route.path === '/foo' && stack.route.methods.get === true){
+          fooRoutes += 1;
+        }
+      });
+      assert(fooRoutes === 3);
     });
 
     it('should bind the routes in the correct order', function(done) {
-      supertest(sails.router._privateRouter)
-          .get('/foo')
-          .expect(200, 'abc')
-          .end(done);
+      sails.request({
+        method: 'get',
+        url: '/foo'
+      }, function (err, res, body) {
+        if (err) return done(err);
+        assert.equal(res.statusCode, 200);
+        assert.equal(body, 'abc');
+        return done();
+      });
     });
 
   });
@@ -223,27 +230,37 @@ describe('app.initializeHooks()', function() {
     });
 
     it('should add four `/foo` routes to the sails config', function() {
-      var boundRoutes = sails.router._privateRouter.routes['get'];
-      assert(_.where(boundRoutes, {path: "/foo", method: "get"}).length === 5);
+      var fooRoutes = 0;
+      _.each(sails.router._privateRouter.stack, function(stack){
+        if(stack.route.path === '/foo' && stack.route.methods.get === true){
+          fooRoutes += 1;
+        }
+      });
+      assert(fooRoutes === 5);
     });
 
     it('should bind the routes in the correct order', function(done) {
-      supertest(sails.router._privateRouter)
-          .get('/foo')
-          .expect(200, 'abcde')
-          .end(done);
+      sails.request({
+        method: 'get',
+        url: '/foo'
+      }, function (err, res, body) {
+        if (err) return done(err);
+        assert.equal(res.statusCode, 200);
+        assert.equal(body, 'abcde');
+        return done();
+      });
     });
 
   });
 
   // describe('configured with a circular hook dependency', function () {
 
-  // 	// NOTE #1: not currently implemented
-  // 	// NOTE #2: not currently possible
-  // 	// (should be possible after merging @ragulka's PR)
-  // 	// $Sails.load();
+  //  // NOTE #1: not currently implemented
+  //  // NOTE #2: not currently possible
+  //  // (should be possible after merging @ragulka's PR)
+  //  // $Sails.load();
 
-  // 	it('should throw a fatal error');
+  //  it('should throw a fatal error');
   // });
 
 
