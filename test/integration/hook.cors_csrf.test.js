@@ -8,38 +8,12 @@ var appHelper = require('./helpers/appHelper');
 var path = require('path');
 var fs = require('fs');
 var _ = require('lodash');
+var tmp = require('tmp');
 
+var Sails = require('../../lib').constructor;
 
 
 describe('CORS and CSRF ::', function() {
-
-  var appName = 'testApp';
-
-
-  var sailsApp;
-  beforeEach(function(done) {
-    appHelper.lift({
-      log: {
-        level: 'error'
-      }
-    }, function(err, sails) {
-      if (err) {
-        return done(err);
-      }
-      sailsApp = sails;
-      return done();
-    });
-  });
-
-  afterEach(function(done) {
-    sailsApp.lower(function(err) {
-      if (err) {
-        return done(err);
-      }
-      setTimeout(done, 100);
-    });
-  });
-
 
 
   //   ██████╗ ██████╗ ██████╗ ███████╗     ██████╗ ██████╗ ███╗   ██╗███████╗██╗ ██████╗
@@ -50,879 +24,358 @@ describe('CORS and CSRF ::', function() {
   //   ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝     ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝     ╚═╝ ╚═════╝
   //
 
-  describe('CORS config ::', function() {
+  describe.only('CORS config ::', function() {
 
-    before(function(done) {
-      appHelper.build(done);
-    });
-
-    describe('with "allRoutes: true" and origin "*"', function() {
-
-      before(function() {
-        fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), 'module.exports.cors = { origin: \'*\', allRoutes: true};');
-        var routeConfig = {
-          'GET /test': {
-            action: 'test.index'
-          },
-          'GET /test/find': {
-            action: 'test.find',
-            cors: false
-          },
-          'GET /test/update': {
-            action: 'test.update',
-            cors: 'http://www.example.com'
-          },
-          'GET /test2': {
-            action: 'test.find',
-            cors: {
-              'exposeHeaders': 'x-custom-header'
+    var setups = {
+      'with default settings': {
+        expectations: [
+          {
+            route: 'GET /no-cors-config',
+            request_headers: {origin: 'http://example.com'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': undefined,
+              'access-control-allow-methods': undefined,
+              'access-control-allow-headers': undefined,
+              'access-control-allow-credentials': undefined,
+              'access-control-exposed-headers': undefined,
+              'vary': undefined
             }
           },
-          'PUT /test': {
-            action: 'test.update',
-            cors: 'http://www.example.com'
-          },
-          'POST /test': {
-            action: 'test.create',
-            cors: 'http://www.different.com'
-          },
-          'DELETE /test': {
-            action: 'test.delete',
-            cors: false
-          },
-          'POST /test2': {
-            action: 'test.create',
-            cors: true
-          },
-          'OPTIONS /test2': {
-            action: 'test.index'
-          },
-          'PUT /test2': {
-            action: 'test.update'
-          },
-          'GET /test/patch': {
-            action: 'test.update',
-            cors: 'http://www.example.com:1338'
-          },
-          'GET /test/create': {
-            action: 'test.create',
-            cors: 'http://www.different.com'
-          },
-          'GET /test/destroy': {
-            action: 'test.destroy',
-            cors: {
-              origin: 'http://www.example.com',
-              credentials: false
+          {
+            route: 'OPTIONS /no-cors-config',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'GET'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': undefined,
+              'access-control-allow-methods': undefined,
+              'access-control-allow-headers': undefined,
+              'access-control-allow-credentials': undefined,
+              'access-control-exposed-headers': undefined,
+              'vary': undefined
             }
           },
-        };
-        fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), 'module.exports.routes = ' + JSON.stringify(routeConfig));
-      });
-
-      describe('an OPTIONS request with origin "http://www.example.com"', function() {
-
-        it('for a PUT route with {cors: http://example.com} and an Access-Control-Request-Method header set to "PUT" should respond with correct Access-Control-Allow-* headers', function(done) {
-
-          httpHelper.testRoute('options', {
-            url: 'test',
-            headers: {
-              'Access-Control-Request-Method': 'PUT',
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(new Error(err));
+          {
+            route: 'GET /cors-true',
+            request_headers: {origin: 'http://example.com'},
+            response_status: 200,
+            response_headers: {
+             'access-control-allow-origin': '*',
+             'access-control-allow-methods': undefined,
+             'access-control-allow-headers': undefined,
+             'access-control-allow-credentials': undefined,
+             'access-control-exposed-headers': undefined,
+             'vary': undefined
             }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
-            assert.equal(response.headers['access-control-allow-methods'], 'put');
-            assert.equal(response.headers['access-control-allow-headers'], 'content-type');
-            assert(_.isUndefined(response.headers['access-control-allow-credentials']));
-            done();
-          });
-
-        });
-
-        it('for a route without a custom OPTIONS handler should use the default Express handler', function(done) {
-
-          httpHelper.testRoute('options', {
-            url: 'test',
-          }, function(err, response) {
-            if (err) {
-              return done(new Error(err));
+          },
+          {
+            route: 'OPTIONS /cors-true',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'GET'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': '*',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'access-control-allow-credentials': undefined,
+              'access-control-exposed-headers': undefined,
+              'vary': undefined
             }
-            var body = response.body.split(',').sort().join(',');
+          },
+          {
+            route: 'OPTIONS /cors-true',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'POST'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': undefined,
+              'access-control-allow-methods': undefined,
+              'access-control-allow-headers': undefined,
+              'access-control-allow-credentials': undefined,
+              'access-control-exposed-headers': undefined,
+              'vary': undefined
+            }
+          },
+        ]
+      },
 
-            // Get the expected methods, either from Node herself (if available) or else from
-            // what we know Express will get from the "methods" dependency
-            var expected = (function() {
-              var methods;
-              if (require('http').METHODS) {
-                methods = require('http').METHODS.reduce(function(memo, method) {
-                  if (method.toUpperCase() !== 'OPTIONS') {
-                    memo.push(method.toUpperCase());
-                  }
-                  return memo;
-                }, []).sort().join(',');
-              } else {
-                methods = 'CHECKOUT,CONNECT,COPY,DELETE,GET,HEAD,LOCK,M-SEARCH,MERGE,MKACTIVITY,MKCOL,MOVE,NOTIFY,PATCH,POST,PROPFIND,PROPPATCH,PURGE,PUT,REPORT,SEARCH,SUBSCRIBE,TRACE,UNLOCK,UNSUBSCRIBE';
+      'with `allRoutes: true`': {
+        sailsCorsConfig: {allRoutes: true},
+        expectations: [
+          {
+            route: 'GET /no-cors-config',
+            request_headers: {origin: 'http://example.com'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': '*',
+              'access-control-allow-methods': undefined,
+              'access-control-allow-headers': undefined,
+              'access-control-allow-credentials': undefined,
+              'access-control-exposed-headers': undefined,
+              'vary': undefined
+            }
+          },
+          {
+            route: 'OPTIONS /no-cors-config',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'GET'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': '*',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'access-control-allow-credentials': undefined,
+              'access-control-exposed-headers': undefined,
+              'vary': undefined
+            }
+          },
+          {
+            route: 'GET /cors-true',
+            request_headers: {origin: 'http://example.com'},
+            response_status: 200,
+            response_headers: {
+             'access-control-allow-origin': '*',
+             'access-control-allow-methods': undefined,
+             'access-control-allow-headers': undefined,
+             'access-control-allow-credentials': undefined,
+             'access-control-exposed-headers': undefined,
+             'vary': undefined
+            }
+          },
+          {
+            route: 'OPTIONS /cors-true',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'GET'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': '*',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'access-control-allow-credentials': undefined,
+              'access-control-exposed-headers': undefined,
+              'vary': undefined
+            }
+          },
+          {
+            route: 'OPTIONS /cors-true',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'POST'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': '*',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'access-control-allow-credentials': undefined,
+              'access-control-exposed-headers': undefined,
+              'vary': undefined
+            }
+          },
+        ],
+      },
+      'with `allRoutes: true`, `credentials: true`, `allowAnyOriginWithCredentialsUnsafe: true`': {
+        sailsCorsConfig: {allRoutes: true, credentials: true, allowAnyOriginWithCredentialsUnsafe: true},
+        expectations: [
+          {
+            route: 'GET /no-cors-config',
+            request_headers: {origin: 'http://example.com'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin':'http://example.com',
+              'access-control-allow-methods': undefined,
+              'access-control-allow-headers': undefined,
+              'access-control-allow-credentials': 'true',
+              'access-control-exposed-headers': undefined,
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /no-cors-config',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'GET'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin':'http://example.com',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'access-control-allow-credentials': 'true',
+              'access-control-exposed-headers': undefined,
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'GET /cors-true',
+            request_headers: {origin: 'http://example.com'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin':'http://example.com',
+              'access-control-allow-methods': undefined,
+              'access-control-allow-headers': undefined,
+              'access-control-allow-credentials': 'true',
+              'access-control-exposed-headers': undefined,
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /cors-true',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'GET'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin':'http://example.com',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'access-control-allow-credentials': 'true',
+              'access-control-exposed-headers': undefined,
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /cors-true',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'POST'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin':'http://example.com',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'access-control-allow-credentials': 'true',
+              'access-control-exposed-headers': undefined,
+              'vary': 'Origin'
+            }
+          },
+        ]
+      },
+      'with `allRoutes: true`, `origin: http://example.com`': {
+        sailsCorsConfig: {allRoutes: true, origin: 'http://example.com'},
+        expectations: [
+          {
+            route: 'GET /no-cors-config',
+            request_headers: {origin: 'http://example.com'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://example.com',
+              'access-control-allow-methods': undefined,
+              'access-control-allow-headers': undefined,
+              'access-control-allow-credentials': undefined,
+              'access-control-exposed-headers': undefined,
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /no-cors-config',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'GET'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://example.com',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'access-control-allow-credentials': undefined,
+              'access-control-exposed-headers': undefined,
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'GET /cors-true',
+            request_headers: {origin: 'http://example.com'},
+            response_status: 200,
+            response_headers: {
+             'access-control-allow-origin': 'http://example.com',
+             'access-control-allow-methods': undefined,
+             'access-control-allow-headers': undefined,
+             'access-control-allow-credentials': undefined,
+             'access-control-exposed-headers': undefined,
+             'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /cors-true',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'GET'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://example.com',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'access-control-allow-credentials': undefined,
+              'access-control-exposed-headers': undefined,
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /cors-true',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'POST'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://example.com',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'access-control-allow-credentials': undefined,
+              'access-control-exposed-headers': undefined,
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'GET /cors-true',
+            request_headers: {origin: 'http://somewhere.com'},
+            response_status: 200,
+            response_headers: {
+             'access-control-allow-origin': undefined,
+             'access-control-allow-methods': undefined,
+             'access-control-allow-headers': undefined,
+             'access-control-allow-credentials': undefined,
+             'access-control-exposed-headers': undefined,
+             'vary': undefined
+            }
+          },
+        ]
+      }
+    };
+
+    _.each(setups, function(setup, name) {
+      describe(name, function() {
+        var sailsApp;
+
+        before(function(done) {
+          (new Sails()).load({
+              hooks: {grunt: false, views: false, blueprints: false, policies: false},
+              log: {level: 'error'},
+              cors: setup.sailsCorsConfig,
+              routes: {
+                'GET /no-cors-config': function(req, res){return res.ok();},
+                'GET /cors-true': {cors: true, target: function(req, res){return res.ok();}},
               }
-              return methods;
-            })();
-
-            assert.equal(response.statusCode, 200);
-            assert.equal(body, expected, require('util').format('\nExpected methods: %s\nActual methods:  ', expected, response.body));
-            done();
-          });
-
-        });
-
-        it('for a route with a custom OPTIONS handler should use the custom handler', function(done) {
-
-          httpHelper.testRoute('options', {
-            url: 'test2',
-          }, function(err, response) {
-            if (err) {
+            }, function(err, _sails) {
+              sailsApp = _sails;
               return done(err);
             }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.body, 'index');
-            done();
-          });
-
+          );
         });
 
-        it('for a POST route with {cors: http://www.different.com} with an Access-Control-Request-Method header set to "POST" should respond with blank Access-Control-Allow-Origin and correct Access-Control-Allow-Method headers', function(done) {
-
-          httpHelper.testRoute('options', {
-            url: 'test',
-            headers: {
-              'Access-Control-Request-Method': 'POST',
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
-            assert.equal(response.headers['access-control-allow-methods'], 'post');
-            done();
-          });
-
+        after(function(done) {
+          sailsApp.lower(done);
         });
 
-        it('for a DELETE route with {cors: false} and an Access-Control-Request-Method header set to "DELETE" should respond with correct Access-Control-Allow-Origin and Access-Control-Allow-Method headers', function(done) {
+        _.each(setup.expectations, function(expectation) {
+          var routeParts = expectation.route.split(' ');
+          var method = routeParts[0];
+          var path = routeParts[1];
+          describe('a ' + method.toUpperCase() + ' request to ' + path + ' using ' + JSON.stringify(expectation.request_headers), function() {
 
-          httpHelper.testRoute('options', {
-            url: 'test',
-            headers: {
-              'Access-Control-Request-Method': 'DELETE',
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
-            assert.equal(response.headers['access-control-allow-methods'], '');
-            done();
-          });
+            var responseHolder = {};
+            before(function(done) {
+              sailsApp.request({
+                url: path,
+                method: method,
+                headers: expectation.request_headers
+              }, function (err, response, data) {
+                if (err) {return done(err);}
+                responseHolder.response = response;
+                return done();
+              });
+            });
 
-        });
+            it('should respond with status code ' + expectation.response_status, function() {
+              assert.equal(responseHolder.response.statusCode, expectation.response_status);
+            });
 
-        it('for a POST route with {cors: true} and an Access-Control-Request-Method header set to "POST" should respond with correct Access-Control-Allow-Origin and Access-Control-Allow-Method headers', function(done) {
+            expectHeaders(responseHolder, expectation.response_headers);
 
-          httpHelper.testRoute('options', {
-            url: 'test2',
-            headers: {
-              'Access-Control-Request-Method': 'POST',
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '*');
-            assert.equal(response.headers['access-control-allow-methods'].toLowerCase(), 'get, post, put, delete, options, head');
-            done();
-          });
-
-        });
-
-        it('for a PUT route with no CORS settings and an Access-Control-Request-Method header set to "PUT" should respond with correct Access-Control-Allow-Origin and Access-Control-Allow-Method headers', function(done) {
-
-          httpHelper.testRoute('options', {
-            url: 'test2',
-            headers: {
-              'Access-Control-Request-Method': 'PUT',
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '*');
-            assert.equal(response.headers['access-control-allow-methods'].toLowerCase(), 'get, post, put, delete, options, head');
-            done();
-          });
-
-        });
-
-      });
-
-      describe('a GET request with origin "http://www.example.com"', function() {
-
-        it('to a route without a CORS config should result in a 200 response with a correct Access-Control-Allow-Origin and Access-Control-Expose-Headers header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test',
-            headers: {
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '*');
-            assert.equal(response.headers['access-control-expose-headers'], '');
-            done();
-          });
-        });
-
-        it('to a route with "exposeHeaders" configured should result in a 200 response with a correct Access-Control-Allow-Origin and Access-Control-Expose-Headers header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test2',
-            headers: {
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '*');
-            assert.equal(response.headers['access-control-expose-headers'], 'x-custom-header');
-            done();
-          });
-        });
-        it('to a route configured with {cors: false} should result in a 200 response with an empty Access-Control-Allow-Origin header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test/find',
-            headers: {
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
-            done();
-          });
-        });
-
-        it('to a route with config {cors: "http://www.example.com"} should result in a 200 response with a correct Access-Control-Allow-Origin header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test/update',
-            headers: {
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
-            done();
-          });
-        });
-
-        it('to a route with config {cors: "http://www.example.com:1338"} should result in a 200 response with an empty Access-Control-Allow-Origin header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test/patch',
-            headers: {
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
-            done();
-          });
-        });
-
-        it('to a route with config {cors: {origin: "http://www.example.com"}} should result in a 200 response with a correct Access-Control-Allow-Origin header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test/destroy',
-            headers: {
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
-            done();
-          });
-        });
-
-        it('to a route with config {cors: "http://www.different.com"} should result in a 200 response with an empty Access-Control-Allow-Origin header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test/create',
-            headers: {
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
-            done();
           });
         });
 
       });
-
-      describe('a request with origin "http://www.example.com:1338"', function() {
-
-        it('to a route with config {cors: "http://www.example.com:1338"} should result in a 200 response with a correct Access-Control-Allow-Origin header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test/patch',
-            headers: {
-              'Origin': 'http://www.example.com:1338'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com:1338');
-            done();
-          });
-        });
-
-        it('to a route with config {cors: "http://www.example.com"} should result in a 200 response with an empty Access-Control-Allow-Origin header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test/update',
-            headers: {
-              'Origin': 'http://www.example.com:1338'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
-            done();
-          });
-        });
-
-      });
-
-      describe('a request with the same origin as the server (http://localhost:1342)"', function() {
-
-        it('to a route with config {cors: "http://www.example.com:1338"} should result in a 200 response with an empty Access-Control-Allow-Origin header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test/patch',
-            headers: {
-              'Origin': 'http://localhost:1342'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
-            done();
-          });
-        });
-
-        it('to a route with config {cors: "http://www.example.com"} should result in a 200 response with an empty Access-Control-Allow-Origin header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test/update',
-            headers: {
-              'Origin': 'http://localhost:1342'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
-            done();
-          });
-        });
-
-      });
-
-
     });
-
-
-    describe('with "allRoutes: false" and origin "*"', function() {
-
-      before(function() {
-        fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': '*', 'allRoutes': false };");
-        var routeConfig = {
-          'GET /test': {
-            action: 'test.index'
-          },
-          'GET /test/find': {
-            action: 'test.find',
-            cors: true
-          },
-          'GET /test/update': {
-            action: 'test.update',
-            cors: 'http://www.example.com'
-          },
-          'GET /test/create': {
-            action: 'test.create',
-            cors: 'http://www.different.com'
-          },
-          'GET /test/destroy': {
-            action: 'test.destroy',
-            cors: {
-              origin: 'http://www.example.com'
-            }
-          }
-        };
-        fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), "module.exports.routes = " + JSON.stringify(routeConfig));
-      });
-
-      describe('a request with origin "http://www.example.com"', function() {
-
-        it('to a route with no CORS should result in a 200 response with a blank Access-Control-Allow-Origin header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test',
-            headers: {
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
-            done();
-          });
-        });
-
-        it('to a route with {cors: true} should result in a 200 response and a correct Access-Control-Allow-Origin header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test/find',
-            headers: {
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '*');
-            done();
-          });
-        });
-
-        it('to a route with config {cors: "http://www.example.com"} should result in a 200 response with a correct Access-Control-Allow-Origin header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test/update',
-            headers: {
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
-            done();
-          });
-        });
-
-        it('to a route with config {cors: {origin: "http://www.example.com"}} should result in a 200 response with a correct Access-Control-Allow-Origin header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test/destroy',
-            headers: {
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
-            done();
-          });
-        });
-
-        it('to a route with config {cors: "http://www.different.com"} should result in a 200 response with an empty Access-Control-Allow-Origin header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test/create',
-            headers: {
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
-            done();
-          });
-        });
-      });
-
-      it('a request with no origin header to a route with no CORS should return successfully', function(done) {
-        httpHelper.testRoute('get', {
-          url: 'test',
-        }, function(err, response) {
-          if (err) {
-            return done(err);
-          }
-          assert.equal(response.statusCode, 200);
-          done();
-        });
-      });
-
-      it('a request with a non-http origin header to a route with no CORS should return successfully', function(done) {
-        httpHelper.testRoute('get', {
-          url: 'test',
-          headers: {
-            'Origin': 'chrome-extension://abc123'
-          },
-
-        }, function(err, response) {
-          if (err) {
-            return done(err);
-          }
-          assert.equal(response.statusCode, 200);
-          done();
-        });
-      });
-
-    });
-
-    describe('with "allRoutes: true" and origin "http://www.example.com", a request', function() {
-
-      before(function() {
-        fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': 'http://www.example.com', 'allRoutes': true };");
-        var routeConfig = {
-          'GET /test': {
-            action: 'test.index'
-          },
-          'GET /test/find': {
-            action: 'test.find',
-            cors: false
-          },
-          'GET /test/update': {
-            action: 'test.update',
-            cors: 'http://www.example.com'
-          },
-          'GET /test/create': {
-            action: 'test.create',
-            cors: 'http://www.different.com'
-          },
-          'GET /test/destroy': {
-            action: 'test.destroy',
-            cors: {
-              origin: 'http://www.example.com'
-            }
-          }
-        };
-        fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), "module.exports.routes = " + JSON.stringify(routeConfig));
-      });
-
-      describe('with origin "http://www.example.com"', function() {
-
-        it('to a route without a CORS config should result in a 200 response with a correct Access-Control-Allow-Origin header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test',
-            headers: {
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
-            done();
-          });
-        });
-
-        it('to a route configured with {cors: false} should result in a 200 response with an empty Access-Control-Allow-Origin header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test/find',
-            headers: {
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
-            done();
-          });
-        });
-
-        it('to a route with config {cors: "http://www.example.com"} should result in a 200 response with a correct Access-Control-Allow-Origin header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test/update',
-            headers: {
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], 'http://www.example.com');
-            done();
-          });
-        });
-
-        it('to a route with config {cors: "http://www.different.com"} should result in a 200 response with an empty Access-Control-Allow-Origin header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test/create',
-            headers: {
-              'Origin': 'http://www.example.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
-            done();
-          });
-        });
-
-      });
-
-      describe('with origin "http://www.different.com"', function() {
-
-        it('to a route without a CORS config should result in a 200 response with an empty Access-Control-Allow-Origin header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test',
-            headers: {
-              'Origin': 'http://www.different.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
-            done();
-          });
-        });
-
-        it('to a route with config {cors: "http://www.different.com"} should result in a 200 response with a correct Access-Control-Allow-Origin header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test/create',
-            headers: {
-              'Origin': 'http://www.different.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], 'http://www.different.com');
-            done();
-          });
-        });
-
-        it('to a route with config {cors: {origin: "http://www.example.com"}} should result in a 200 response with an empty Access-Control-Allow-Origin header', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test/destroy',
-            headers: {
-              'Origin': 'http://www.different.com'
-            },
-          }, function(err, response) {
-            if (err) {
-              return done(err);
-            }
-            assert.equal(response.statusCode, 200);
-            assert.equal(response.headers['access-control-allow-origin'], '');
-            done();
-          });
-        });
-
-      });
-
-    });
-
-    describe('with "credentials: true", a request', function() {
-
-      before(function() {
-        fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), "module.exports.cors = { 'origin': '*', 'allRoutes': true, 'credentials': true};");
-        var routeConfig = {
-          'GET /default': {
-            action: 'test.index'
-          },
-          'GET /notallowed': {
-            action: 'test.index',
-            cors: {
-              origin: '*',
-              credentials: true
-            }
-          },
-          'GET /test': {
-            action: 'test.index',
-            cors: {
-              origin: 'http://www.example.com',
-              credentials: true
-            }
-          },
-          'GET /test/destroy': {
-            action: 'test.destroy',
-            cors: {
-              origin: 'http://www.example.com',
-              credentials: false
-            }
-          }
-        };
-        fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), "module.exports.routes = " + JSON.stringify(routeConfig));
-      });
-
-      it('should not allow origin: \'*\' in conjunction with \'credentials: true\' as the default (should force credentials: force and log a warning)', function(done) {
-        httpHelper.testRoute('get', {
-          url: 'default',
-          headers: {
-            'Origin': 'http://www.example.com'
-          },
-        }, function(err, response) {
-          if (err) {
-            return done(err);
-          }
-          assert.equal(response.statusCode, 200);
-          assert(_.isUndefined(response.headers['access-control-allow-credentials']));
-          assert.equal(sailsApp.config.cors.credentials, false);
-          done();
-        });
-      });
-
-      it('should not allow origin: \'*\' in conjunction with \'credentials: true\' set explicitly (should force credentials: false and log a warning)', function(done) {
-        httpHelper.testRoute('get', {
-          url: 'notallowed',
-          headers: {
-            'Origin': 'http://www.example.com'
-          },
-        }, function(err, response) {
-          if (err) {
-            return done(err);
-          }
-          assert.equal(response.statusCode, 200);
-          assert(_.isUndefined(response.headers['access-control-allow-credentials']));
-          done();
-        });
-
-      });
-
-      it('to a route without a CORS config should result in a 200 response with an Access-Control-Allow-Credentials header with value "true"', function(done) {
-        httpHelper.testRoute('get', {
-          url: 'test',
-          headers: {
-            'Origin': 'http://www.example.com'
-          },
-        }, function(err, response) {
-          if (err) {
-            return done(err);
-          }
-          assert.equal(response.statusCode, 200);
-          assert.equal(response.headers['access-control-allow-credentials'], 'true');
-          done();
-        });
-      });
-
-      it('to a route with {cors: {credentials: false}} should result in a 200 response with no Access-Control-Allow-Credentials header', function(done) {
-        httpHelper.testRoute('get', {
-          url: 'test/destroy',
-          headers: {
-            'Origin': 'http://www.example.com'
-          },
-        }, function(err, response) {
-          if (err) {
-            return done(err);
-          }
-          assert.equal(response.statusCode, 200);
-          assert(_.isUndefined(response.headers['access-control-allow-credentials']));
-          done();
-        });
-      });
-
-    });
-
-    describe('with "credentials: false", a request', function() {
-
-      before(function() {
-        fs.writeFileSync(path.resolve('../', appName, 'config/cors.js'), 'module.exports.cors = { origin: \'*\', allRoutes: true, credentials: false};');
-        var routeConfig = {
-          'GET /test': {
-            action: 'test.index'
-          },
-          'GET /test/destroy': {
-            action: 'test.destroy',
-            cors: {
-              origin: 'http://www.example.com',
-              credentials: true
-            }
-          }
-        };
-        fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), 'module.exports.routes = ' + JSON.stringify(routeConfig));
-      });
-
-      it('to a route without a CORS config should result in a 200 response with an Access-Control-Allow-Credentials header with value "false"', function(done) {
-        httpHelper.testRoute('get', {
-          url: 'test',
-          headers: {
-            'Origin': 'http://www.example.com'
-          },
-        }, function(err, response) {
-          if (err) {
-            return done(err);
-          }
-          assert.equal(response.statusCode, 200);
-          assert(_.isUndefined(response.headers['access-control-allow-credentials']));
-          done();
-        });
-      });
-
-      it('to a route with {cors: {credentials: true}} should result in a 200 response with an Access-Control-Allow-Credentials header with value "true"', function(done) {
-        httpHelper.testRoute('get', {
-          url: 'test/destroy',
-          headers: {
-            'Origin': 'http://www.example.com'
-          },
-        }, function(err, response) {
-          if (err) {
-            return done(err);
-          }
-          assert.equal(response.statusCode, 200);
-          assert.equal(response.headers['access-control-allow-credentials'], 'true');
-          done();
-        });
-      });
-
-    });
-
-
-    // Delete app directory.
-    after(function() {
-      process.chdir('../');
-      appHelper.teardown();
-    });
-
 
   }); //</describe('CORS config ::')>
 
@@ -1647,5 +1100,26 @@ describe('CORS and CSRF ::', function() {
     });
 
   }); //</describe('CORS+CSRF ::')>
+
+  function makeRequest(options, responseHolder, sailsApp) {
+    return function(done) {
+      sailsApp.request(options, function (err, response, data) {
+        if (err) {return done(err);}
+        responseHolder.response = response;
+        return done();
+      });
+    };
+  }
+
+  function expectHeaders(responseHolder, headers) {
+    _.each(headers, function(val, header) {
+      if (_.isUndefined(val)) {
+        it('`' + header + '` should be undefined', function(){ assert(_.isUndefined(responseHolder.response.headers[header]), responseHolder.response.headers[header]); });
+      } else {
+        it('`' + header + '` should be `' + val + '`', function(){ assert.equal(responseHolder.response.headers[header], val); });
+      }
+    });
+
+  }
 
 });
