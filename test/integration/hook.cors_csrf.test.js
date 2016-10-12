@@ -30,7 +30,7 @@ describe('CORS and CSRF ::', function() {
       'with default settings': {
         expectations: [
           {
-            route: 'GET /no-cors-config',
+            route: 'PUT /no-cors-config',
             request_headers: {origin: 'http://example.com'},
             response_status: 200,
             response_headers: {
@@ -44,7 +44,7 @@ describe('CORS and CSRF ::', function() {
           },
           {
             route: 'OPTIONS /no-cors-config',
-            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'GET'},
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
             response_status: 200,
             response_headers: {
               'access-control-allow-origin': undefined,
@@ -56,7 +56,7 @@ describe('CORS and CSRF ::', function() {
             }
           },
           {
-            route: 'GET /cors-true',
+            route: 'PUT /cors-true',
             request_headers: {origin: 'http://example.com'},
             response_status: 200,
             response_headers: {
@@ -70,7 +70,7 @@ describe('CORS and CSRF ::', function() {
           },
           {
             route: 'OPTIONS /cors-true',
-            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'GET'},
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
             response_status: 200,
             response_headers: {
               'access-control-allow-origin': '*',
@@ -101,7 +101,7 @@ describe('CORS and CSRF ::', function() {
         sailsCorsConfig: {allRoutes: true},
         expectations: [
           {
-            route: 'GET /no-cors-config',
+            route: 'PUT /no-cors-config',
             request_headers: {origin: 'http://example.com'},
             response_status: 200,
             response_headers: {
@@ -115,7 +115,7 @@ describe('CORS and CSRF ::', function() {
           },
           {
             route: 'OPTIONS /no-cors-config',
-            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'GET'},
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
             response_status: 200,
             response_headers: {
               'access-control-allow-origin': '*',
@@ -127,7 +127,7 @@ describe('CORS and CSRF ::', function() {
             }
           },
           {
-            route: 'GET /cors-true',
+            route: 'PUT /cors-true',
             request_headers: {origin: 'http://example.com'},
             response_status: 200,
             response_headers: {
@@ -141,7 +141,7 @@ describe('CORS and CSRF ::', function() {
           },
           {
             route: 'OPTIONS /cors-true',
-            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'GET'},
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
             response_status: 200,
             response_headers: {
               'access-control-allow-origin': '*',
@@ -171,7 +171,7 @@ describe('CORS and CSRF ::', function() {
         sailsCorsConfig: {allRoutes: true, credentials: true, allowAnyOriginWithCredentialsUnsafe: true},
         expectations: [
           {
-            route: 'GET /no-cors-config',
+            route: 'PUT /no-cors-config',
             request_headers: {origin: 'http://example.com'},
             response_status: 200,
             response_headers: {
@@ -185,7 +185,7 @@ describe('CORS and CSRF ::', function() {
           },
           {
             route: 'OPTIONS /no-cors-config',
-            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'GET'},
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
             response_status: 200,
             response_headers: {
               'access-control-allow-origin':'http://example.com',
@@ -197,7 +197,7 @@ describe('CORS and CSRF ::', function() {
             }
           },
           {
-            route: 'GET /cors-true',
+            route: 'PUT /cors-true',
             request_headers: {origin: 'http://example.com'},
             response_status: 200,
             response_headers: {
@@ -211,7 +211,7 @@ describe('CORS and CSRF ::', function() {
           },
           {
             route: 'OPTIONS /cors-true',
-            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'GET'},
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
             response_status: 200,
             response_headers: {
               'access-control-allow-origin':'http://example.com',
@@ -241,7 +241,7 @@ describe('CORS and CSRF ::', function() {
         sailsCorsConfig: {allRoutes: true, origin: 'http://example.com'},
         expectations: [
           {
-            route: 'GET /no-cors-config',
+            route: 'PUT /no-cors-config',
             request_headers: {origin: 'http://example.com'},
             response_status: 200,
             response_headers: {
@@ -255,7 +255,7 @@ describe('CORS and CSRF ::', function() {
           },
           {
             route: 'OPTIONS /no-cors-config',
-            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'GET'},
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
             response_status: 200,
             response_headers: {
               'access-control-allow-origin': 'http://example.com',
@@ -267,7 +267,7 @@ describe('CORS and CSRF ::', function() {
             }
           },
           {
-            route: 'GET /cors-true',
+            route: 'PUT /cors-true',
             request_headers: {origin: 'http://example.com'},
             response_status: 200,
             response_headers: {
@@ -281,7 +281,7 @@ describe('CORS and CSRF ::', function() {
           },
           {
             route: 'OPTIONS /cors-true',
-            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'GET'},
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
             response_status: 200,
             response_headers: {
               'access-control-allow-origin': 'http://example.com',
@@ -306,7 +306,7 @@ describe('CORS and CSRF ::', function() {
             }
           },
           {
-            route: 'GET /cors-true',
+            route: 'PUT /cors-true',
             request_headers: {origin: 'http://somewhere.com'},
             response_status: 200,
             response_headers: {
@@ -332,8 +332,8 @@ describe('CORS and CSRF ::', function() {
               log: {level: 'error'},
               cors: setup.sailsCorsConfig,
               routes: {
-                'GET /no-cors-config': function(req, res){return res.ok();},
-                'GET /cors-true': {cors: true, target: function(req, res){return res.ok();}},
+                'PUT /no-cors-config': function(req, res){return res.ok();},
+                'PUT /cors-true': {cors: true, target: function(req, res){return res.ok();}},
               }
             }, function(err, _sails) {
               sailsApp = _sails;
