@@ -1,10 +1,10 @@
 module.exports = {
 	verb: function(req, res) {
-		res.send(req.route.method);
+		res.send(req.method.toLowerCase());
 	},
 
 	dynamic: function(req, res) {
-		res.send(req.route.keys);
+		res.json(req.params.all());
 	},
 
 	index: function(req, res) {

@@ -232,16 +232,9 @@ describe('router :: ', function() {
 
 				httpHelper.testRoute('get', 'test/shirts/large', function(err, response) {
 					if (err) { return done(err); }
-
-					var expected = JSON.stringify([{
-						'name': 'category',
-						'optional': false
-					}, {
-						'name': 'size',
-						'optional': false
-					}]);
-
-					assert(expected === JSON.stringify(JSON.parse(response.body)));
+          var body = JSON.parse(response.body);
+					assert.equal(body.category, 'shirts');
+          assert.equal(body.size, 'large');
 					done();
 				});
 			});
