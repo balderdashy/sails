@@ -2,9 +2,26 @@
 
 ### Master
 
-<!--
-_A blank slate, as of 1467754262139.  Just imagine all the possibilities._
--->
+> _See https://github.com/balderdashy/sails/commits/master and http://sailsjs.com/roadmap for some of the latest developments._
+
+### 0.12.7
+
+* [BUGFIX] Fix issue with multiple config files that have the same filename [3846](https://github.com/balderdashy/sails/issues/3846)
+* [ENHANCEMENT] Warn about overly permissive CORS settings when lifting in production [ca43e05](https://github.com/balderdashy/sails/commit/ca43e0507af79f15361789a3489013b01c8e1825)
+
+### 0.12.6
+
+* [BUGFIX] Revert inadvertent breaking change to CORS config in 0.12.5, see [f80252f](https://github.com/balderdashy/sails/commit/f80252f66edc0bf00cf6ed317d9a3e68b4e8d948) for details)
+
+### 0.12.5
+
+* [INTERNAL] Upgrade version of `include-all` to ^1.0.0 [f6e8d32](https://github.com/balderdashy/sails/commit/f6e8d3243d7d695983a3816e6cf7c43ca4237948)
+* [ENHANCEMENT] Add experimental `sails console --dontLift` option [029fe06](https://github.com/balderdashy/sails/commit/029fe0683ea4f01a962b91381b948136f5c18f63)
+* [UPGRADE] Dependencies in captains-log
+* [UPGRADE] Moduleloader now uses include-all@1, and sails-build-dictionary is deprecated (all of its methods were folded into include-all)
+* [BUGFIX] In moduleloader: Improve path resolution on windows
+* [BUGFIX] Fix property name for ('status' => 'statusCode') in virtual request header
+
 
 ### 0.12.4
 
