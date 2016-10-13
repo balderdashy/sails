@@ -33,27 +33,13 @@ describe('CORS and CSRF ::', function() {
             route: 'PUT /no-cors-config',
             request_headers: {origin: 'http://example.com'},
             response_status: 200,
-            response_headers: {
-              'access-control-allow-origin': undefined,
-              'access-control-allow-methods': undefined,
-              'access-control-allow-headers': undefined,
-              'access-control-allow-credentials': undefined,
-              'access-control-exposed-headers': undefined,
-              'vary': undefined
-            }
+            response_headers: null
           },
           {
             route: 'OPTIONS /no-cors-config',
             request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
             response_status: 200,
-            response_headers: {
-              'access-control-allow-origin': undefined,
-              'access-control-allow-methods': undefined,
-              'access-control-allow-headers': undefined,
-              'access-control-allow-credentials': undefined,
-              'access-control-exposed-headers': undefined,
-              'vary': undefined
-            }
+            response_headers: null
           },
           {
             route: 'PUT /cors-true',
@@ -61,11 +47,6 @@ describe('CORS and CSRF ::', function() {
             response_status: 200,
             response_headers: {
              'access-control-allow-origin': '*',
-             'access-control-allow-methods': undefined,
-             'access-control-allow-headers': undefined,
-             'access-control-allow-credentials': undefined,
-             'access-control-exposed-headers': undefined,
-             'vary': undefined
             }
           },
           {
@@ -76,24 +57,203 @@ describe('CORS and CSRF ::', function() {
               'access-control-allow-origin': '*',
               'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
               'access-control-allow-headers': 'content-type',
-              'access-control-allow-credentials': undefined,
-              'access-control-exposed-headers': undefined,
-              'vary': undefined
             }
           },
           {
             route: 'OPTIONS /cors-true',
             request_headers: {origin: 'http://example.com', 'access-control-request-method': 'POST'},
             response_status: 200,
+            response_headers: null
+          },
+          {
+            route: 'PUT /origin-example-com',
+            request_headers: {origin: 'http://example.com'},
+            response_status: 200,
             response_headers: {
-              'access-control-allow-origin': undefined,
-              'access-control-allow-methods': undefined,
-              'access-control-allow-headers': undefined,
-              'access-control-allow-credentials': undefined,
-              'access-control-exposed-headers': undefined,
-              'vary': undefined
+              'access-control-allow-origin': 'http://example.com',
+              'vary': 'Origin'
             }
           },
+          {
+            route: 'OPTIONS /origin-example-com',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://example.com',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /origin-example-com',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'POST'},
+            response_status: 200,
+            response_headers: null
+          },
+          {
+            route: 'PUT /origin-example-com',
+            request_headers: {origin: 'http://somewhere.com'},
+            response_status: 200,
+            response_headers: null
+          },
+          {
+            route: 'OPTIONS /origin-example-com',
+            request_headers: {origin: 'http://somewhere.com', 'access-control-request-method': 'PUT'},
+            response_status: 200,
+            response_headers: null
+          },
+          {
+            route: 'OPTIONS /origin-example-com',
+            request_headers: {origin: 'http://somewhere.com', 'access-control-request-method': 'POST'},
+            response_status: 200,
+            response_headers: null
+          },
+          {
+            route: 'PUT /origin-example-com-somewhere-com',
+            request_headers: {origin: 'http://example.com'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://example.com',
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /origin-example-com-somewhere-com',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://example.com',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /origin-example-com-somewhere-com',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'POST'},
+            response_status: 200,
+            response_headers: null
+          },
+          {
+            route: 'PUT /origin-example-com-somewhere-com',
+            request_headers: {origin: 'http://somewhere.com'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://somewhere.com',
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /origin-example-com-somewhere-com',
+            request_headers: {origin: 'http://somewhere.com', 'access-control-request-method': 'PUT'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://somewhere.com',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /origin-example-com-somewhere-com',
+            request_headers: {origin: 'http://somewhere.com', 'access-control-request-method': 'POST'},
+            response_status: 200,
+            response_headers: null
+          },
+          {
+            route: 'PUT /origin-example-com-somewhere-com-array',
+            request_headers: {origin: 'http://example.com'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://example.com',
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /origin-example-com-somewhere-com-array',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://example.com',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /origin-example-com-somewhere-com-array',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'POST'},
+            response_status: 200,
+            response_headers: null
+          },
+          {
+            route: 'PUT /origin-example-com-somewhere-com-array',
+            request_headers: {origin: 'http://somewhere.com'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://somewhere.com',
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /origin-example-com-somewhere-com-array',
+            request_headers: {origin: 'http://somewhere.com', 'access-control-request-method': 'PUT'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://somewhere.com',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /origin-example-com-somewhere-com-array',
+            request_headers: {origin: 'http://somewhere.com', 'access-control-request-method': 'POST'},
+            response_status: 200,
+            response_headers: null
+          },
+          {
+            route: 'PUT /all-methods-origin-example-com',
+            request_headers: {origin: 'http://example.com'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://example.com',
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /all-methods-origin-example-com',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://example.com',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'POST /all-methods-origin-example-com',
+            request_headers: {origin: 'http://example.com'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://example.com',
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /all-methods-origin-example-com',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'POST'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://example.com',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'vary': 'Origin'
+            }
+          },
+
         ]
       },
 
@@ -106,11 +266,6 @@ describe('CORS and CSRF ::', function() {
             response_status: 200,
             response_headers: {
               'access-control-allow-origin': '*',
-              'access-control-allow-methods': undefined,
-              'access-control-allow-headers': undefined,
-              'access-control-allow-credentials': undefined,
-              'access-control-exposed-headers': undefined,
-              'vary': undefined
             }
           },
           {
@@ -121,9 +276,6 @@ describe('CORS and CSRF ::', function() {
               'access-control-allow-origin': '*',
               'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
               'access-control-allow-headers': 'content-type',
-              'access-control-allow-credentials': undefined,
-              'access-control-exposed-headers': undefined,
-              'vary': undefined
             }
           },
           {
@@ -132,11 +284,6 @@ describe('CORS and CSRF ::', function() {
             response_status: 200,
             response_headers: {
              'access-control-allow-origin': '*',
-             'access-control-allow-methods': undefined,
-             'access-control-allow-headers': undefined,
-             'access-control-allow-credentials': undefined,
-             'access-control-exposed-headers': undefined,
-             'vary': undefined
             }
           },
           {
@@ -147,9 +294,6 @@ describe('CORS and CSRF ::', function() {
               'access-control-allow-origin': '*',
               'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
               'access-control-allow-headers': 'content-type',
-              'access-control-allow-credentials': undefined,
-              'access-control-exposed-headers': undefined,
-              'vary': undefined
             }
           },
           {
@@ -160,9 +304,6 @@ describe('CORS and CSRF ::', function() {
               'access-control-allow-origin': '*',
               'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
               'access-control-allow-headers': 'content-type',
-              'access-control-allow-credentials': undefined,
-              'access-control-exposed-headers': undefined,
-              'vary': undefined
             }
           },
         ],
@@ -246,10 +387,6 @@ describe('CORS and CSRF ::', function() {
             response_status: 200,
             response_headers: {
               'access-control-allow-origin': 'http://example.com',
-              'access-control-allow-methods': undefined,
-              'access-control-allow-headers': undefined,
-              'access-control-allow-credentials': undefined,
-              'access-control-exposed-headers': undefined,
               'vary': 'Origin'
             }
           },
@@ -261,8 +398,6 @@ describe('CORS and CSRF ::', function() {
               'access-control-allow-origin': 'http://example.com',
               'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
               'access-control-allow-headers': 'content-type',
-              'access-control-allow-credentials': undefined,
-              'access-control-exposed-headers': undefined,
               'vary': 'Origin'
             }
           },
@@ -272,10 +407,6 @@ describe('CORS and CSRF ::', function() {
             response_status: 200,
             response_headers: {
              'access-control-allow-origin': 'http://example.com',
-             'access-control-allow-methods': undefined,
-             'access-control-allow-headers': undefined,
-             'access-control-allow-credentials': undefined,
-             'access-control-exposed-headers': undefined,
              'vary': 'Origin'
             }
           },
@@ -287,8 +418,6 @@ describe('CORS and CSRF ::', function() {
               'access-control-allow-origin': 'http://example.com',
               'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
               'access-control-allow-headers': 'content-type',
-              'access-control-allow-credentials': undefined,
-              'access-control-exposed-headers': undefined,
               'vary': 'Origin'
             }
           },
@@ -300,8 +429,68 @@ describe('CORS and CSRF ::', function() {
               'access-control-allow-origin': 'http://example.com',
               'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
               'access-control-allow-headers': 'content-type',
-              'access-control-allow-credentials': undefined,
-              'access-control-exposed-headers': undefined,
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'PUT /cors-true',
+            request_headers: {origin: 'http://somewhere.com'},
+            response_status: 200,
+            response_headers: null
+          },
+        ]
+      },
+      'with `allRoutes: true`, `origin: http://example.com, http://somewhere.com`': {
+        sailsCorsConfig: {allRoutes: true, origin: 'http://example.com, http://somewhere.com'},
+        expectations: [
+          {
+            route: 'PUT /no-cors-config',
+            request_headers: {origin: 'http://example.com'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://example.com',
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /no-cors-config',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://example.com',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'PUT /cors-true',
+            request_headers: {origin: 'http://example.com'},
+            response_status: 200,
+            response_headers: {
+             'access-control-allow-origin': 'http://example.com',
+             'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /cors-true',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://example.com',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /cors-true',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'POST'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://example.com',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
               'vary': 'Origin'
             }
           },
@@ -310,12 +499,73 @@ describe('CORS and CSRF ::', function() {
             request_headers: {origin: 'http://somewhere.com'},
             response_status: 200,
             response_headers: {
-             'access-control-allow-origin': undefined,
-             'access-control-allow-methods': undefined,
-             'access-control-allow-headers': undefined,
-             'access-control-allow-credentials': undefined,
-             'access-control-exposed-headers': undefined,
-             'vary': undefined
+              'access-control-allow-origin': 'http://somewhere.com',
+              'vary': 'Origin'
+            }
+          },
+        ]
+      },
+      'with `allRoutes: true`, `origin: [\'http://example.com\', \'http://somewhere.com\']`': {
+        sailsCorsConfig: {allRoutes: true, origin: ['http://example.com', 'http://somewhere.com']},
+        expectations: [
+          {
+            route: 'PUT /no-cors-config',
+            request_headers: {origin: 'http://example.com'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://example.com',
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /no-cors-config',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://example.com',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'PUT /cors-true',
+            request_headers: {origin: 'http://example.com'},
+            response_status: 200,
+            response_headers: {
+             'access-control-allow-origin': 'http://example.com',
+             'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /cors-true',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://example.com',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'OPTIONS /cors-true',
+            request_headers: {origin: 'http://example.com', 'access-control-request-method': 'POST'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://example.com',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-headers': 'content-type',
+              'vary': 'Origin'
+            }
+          },
+          {
+            route: 'PUT /cors-true',
+            request_headers: {origin: 'http://somewhere.com'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://somewhere.com',
+              'vary': 'Origin'
             }
           },
         ]
@@ -334,6 +584,11 @@ describe('CORS and CSRF ::', function() {
               routes: {
                 'PUT /no-cors-config': function(req, res){return res.ok();},
                 'PUT /cors-true': {cors: true, target: function(req, res){return res.ok();}},
+                'PUT /origin-example-com': {cors: {origin: 'http://example.com'}, target: function(req, res){return res.ok();}},
+                'PUT /origin-example-com-somewhere-com': {cors: {origin: 'http://example.com, http://somewhere.com'}, target: function(req, res){return res.ok();}},
+                'PUT /origin-example-com-somewhere-com-array': {cors: {origin: ['http://example.com', 'http://somewhere.com']}, target: function(req, res){return res.ok();}},
+                '/all-methods-origin-example-com': {cors: {origin: 'http://example.com'}, target: function(req, res){return res.ok();}},
+                '/unsafe': {cors: {origin: '*', credentials: true, allowAnyOriginWithCredentialsUnsafe: true}},
               }
             }, function(err, _sails) {
               sailsApp = _sails;
@@ -369,7 +624,16 @@ describe('CORS and CSRF ::', function() {
               assert.equal(responseHolder.response.statusCode, expectation.response_status);
             });
 
-            expectHeaders(responseHolder, expectation.response_headers);
+            var expectedHeaders = _.extend({}, {
+              'access-control-allow-origin': undefined,
+              'access-control-allow-methods': undefined,
+              'access-control-allow-headers': undefined,
+              'access-control-allow-credentials': undefined,
+              'access-control-exposed-headers': undefined,
+              'vary': undefined
+            }, expectation.response_headers || {});
+
+            expectHeaders(responseHolder, expectedHeaders);
 
           });
         });
@@ -390,6 +654,33 @@ describe('CORS and CSRF ::', function() {
   //
 
   describe('CSRF config ::', function() {
+
+    var appName = 'testApp';
+
+    var sailsApp;
+    beforeEach(function(done) {
+      appHelper.lift({
+        log: {
+          level: 'silent'
+        }
+      }, function(err, sails) {
+        if (err) {
+          return done(err);
+        }
+        sailsApp = sails;
+        return done();
+      });
+    });
+
+    afterEach(function(done) {
+      sailsApp.lower(function(err) {
+        if (err) {
+          return done(err);
+        }
+        setTimeout(done, 100);
+      });
+    });
+
 
     before(function(done) {
       appHelper.build(done);
@@ -839,6 +1130,33 @@ describe('CORS and CSRF ::', function() {
   //
 
   describe('CORS+CSRF ::', function() {
+
+    var appName = 'testApp';
+
+    var sailsApp;
+    beforeEach(function(done) {
+      appHelper.lift({
+        log: {
+          level: 'silent'
+        }
+      }, function(err, sails) {
+        if (err) {
+          return done(err);
+        }
+        sailsApp = sails;
+        return done();
+      });
+    });
+
+    afterEach(function(done) {
+      sailsApp.lower(function(err) {
+        if (err) {
+          return done(err);
+        }
+        setTimeout(done, 100);
+      });
+    });
+
 
     before(function(done) {
       appHelper.build(function(err) {
