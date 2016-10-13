@@ -254,6 +254,30 @@ describe('CORS and CSRF ::', function() {
             }
           },
 
+          {
+            route: 'DELETE /unsafe',
+            request_headers: {origin: 'http://foobar.com'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://foobar.com',
+              'access-control-allow-credentials': 'true',
+              'vary': 'Origin'
+            }
+          },
+
+          {
+            route: 'OPTIONS /unsafe',
+            request_headers: {origin: 'http://foobar.com', 'access-control-request-method': 'DELETE'},
+            response_status: 200,
+            response_headers: {
+              'access-control-allow-origin': 'http://foobar.com',
+              'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
+              'access-control-allow-credentials': 'true',
+              'access-control-allow-headers': 'content-type',
+              'vary': 'Origin'
+            }
+          },
+
         ]
       },
 
@@ -588,7 +612,7 @@ describe('CORS and CSRF ::', function() {
                 'PUT /origin-example-com-somewhere-com': {cors: {origin: 'http://example.com, http://somewhere.com'}, target: function(req, res){return res.ok();}},
                 'PUT /origin-example-com-somewhere-com-array': {cors: {origin: ['http://example.com', 'http://somewhere.com']}, target: function(req, res){return res.ok();}},
                 '/all-methods-origin-example-com': {cors: {origin: 'http://example.com'}, target: function(req, res){return res.ok();}},
-                '/unsafe': {cors: {origin: '*', credentials: true, allowAnyOriginWithCredentialsUnsafe: true}},
+                '/unsafe': {cors: {origin: '*', credentials: true, allowAnyOriginWithCredentialsUnsafe: true}, target: function(req, res){return res.ok();}},
               }
             }, function(err, _sails) {
               sailsApp = _sails;
@@ -639,6 +663,40 @@ describe('CORS and CSRF ::', function() {
         });
 
       });
+    });
+
+    describe('with invalid global CORS config ({allRoutes: true, origin: \'*\', credentials: true})', function() {
+
+      it('should fail to lift', function(done) {
+        (new Sails()).load({
+            hooks: {grunt: false, views: false, blueprints: false, policies: false},
+            log: {level: 'silent'},
+            cors: {allRoutes: true, origin: '*', credentials: true},
+          }, function(err, _sails) {
+            if (err) {return done();}
+            return done(new Error('Sails should have failed to lift with invalid global CORS config!'));
+          }
+        );
+      });
+
+    });
+
+    describe('with invalid route CORS config ({allRoutes: true, origin: \'*\', credentials: true})', function() {
+
+      it('should fail to lift', function(done) {
+        (new Sails()).load({
+            hooks: {grunt: false, views: false, blueprints: false, policies: false},
+            log: {level: 'silent'},
+            routes: {
+              '/invalid': {cors: {origin: '*', credentials: true}}
+            }
+          }, function(err, _sails) {
+            if (err) {return done();}
+            return done(new Error('Sails should have failed to lift with invalid route CORS config!'));
+          }
+        );
+      });
+
     });
 
   }); //</describe('CORS config ::')>
