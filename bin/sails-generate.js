@@ -55,15 +55,30 @@ module.exports = function() {
     return cb.log.error('Usage: sails generate [something]');
   }
 
-  // Set the "invalid" exit to forward to "error"
-  cb.error = function(msg) {
+  // Handle unexpected errors.
+  cb.error = function(err) {
     var log = this.log || cb.log;
-    log.error(msg);
+    log.error(err);
     process.exit(1);
   };
 
-  cb.invalid = 'error';
+  // Handle invalid usage.
+  cb.invalid = function(err) {
+    var log = this.log || cb.log;
 
+    // If this is an Error, don't bother logging the stack, just log the `.message`.
+    // (This is purely for readability.)
+    if (_.isError(err)) {
+      log.error(err.message);
+    }
+    else {
+      log.error(err);
+    }
+
+    process.exit(1);
+  };
+
+  // Handle success
   cb.success = function() {
 
     // Infer the `outputPath` if necessary/possible.
@@ -88,9 +103,11 @@ module.exports = function() {
     if (scope.id) {
       humanizedId = util.format(' ("%s")',scope.id);
     }
-    else humanizedId = '';
+    else {
+      humanizedId = '';
+    }
 
-    if (scope.generatorType != 'new') {
+    if (scope.generatorType !== 'new') {
 
       cb.log.info(util.format(
         'Created a new %s%s%s!',
