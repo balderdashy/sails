@@ -84,6 +84,14 @@
   //  read, albeit a bit less exciting)
   "laxcomma": false,
 
+  // Do NOT allow avant garde use of commas in conditional statements.
+  // (this prevents accidentally writing code like:
+  //  ```
+  //  if (!_.contains(['+ci', '-ci', '∆ci', '+ce', '-ce', '∆ce']), change.verb) {...}
+  //  ```
+  //  See the problem in that code?  Neither did we-- that's the problem!)
+  "nocomma": true,
+
   // Strictly enforce the consistent use of single quotes.
   // (this is a convention that was established primarily to make it easier
   //  to grep [or FIND+REPLACE in Sublime] particular string literals in
