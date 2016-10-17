@@ -43,18 +43,7 @@ The modules comprising the Sails framework, as well as the other plugins maintai
 
 #### Core generators
 
-| Repo                                                                                  |  Latest Stable Version   |
-|:--------------------------------------------------------------------------------------|--------------------------|
-| [sails-generate-generator](https://github.com/balderdashy/sails-generate-generator)   | [![NPM version](https://badge.fury.io/js/sails-generate-generator.png)](http://badge.fury.io/js/sails-generate-generator) |
-| [sails-generate-new](https://github.com/balderdashy/sails-generate-new)               | [![NPM version](https://badge.fury.io/js/sails-generate-new.png)](http://badge.fury.io/js/sails-generate-new) |
-| [sails-generate-controller](https://github.com/balderdashy/sails-generate-controller) | [![NPM version](https://badge.fury.io/js/sails-generate-controller.png)](http://badge.fury.io/js/sails-generate-controller) |
-| [sails-generate-frontend](https://github.com/balderdashy/sails-generate-frontend)     | [![NPM version](https://badge.fury.io/js/sails-generate-frontend.png)](http://badge.fury.io/js/sails-generate-frontend) |
-| [sails-generate-backend](https://github.com/balderdashy/sails-generate-backend)       | [![NPM version](https://badge.fury.io/js/sails-generate-backend.png)](http://badge.fury.io/js/sails-generate-backend) |
-| [sails-generate-views](https://github.com/balderdashy/sails-generate-views)           | [![NPM version](https://badge.fury.io/js/sails-generate-views.png)](http://badge.fury.io/js/sails-generate-views) |
-| [sails-generate-adapter](https://github.com/balderdashy/sails-generate-adapter)       | [![NPM version](https://badge.fury.io/js/sails-generate-adapter.png)](http://badge.fury.io/js/sails-generate-adapter) |
-| [sails-generate-model](https://github.com/balderdashy/sails-generate-model)           | [![NPM version](https://badge.fury.io/js/sails-generate-model.png)](http://badge.fury.io/js/sails-generate-model) |
-| [sails-generate-api](https://github.com/balderdashy/sails-generate-api)               | [![NPM version](https://badge.fury.io/js/sails-generate-api.png)](http://badge.fury.io/js/sails-generate-api) |
-| [sails-generate-hook](https://github.com/balderdashy/sails-generate-hook)             | [![NPM version](https://badge.fury.io/js/sails-generate-hook.png)](http://badge.fury.io/js/sails-generate-hook) |
+_As of Sails v1.0, core generators are now bundled in [sails-generate](https://github.com/balderdashy/sails-generate).  All generators can still be overridden the same way.  For examples, see below._
 
 
 #### Core hooks
@@ -232,4 +221,24 @@ The recommended production session store for Sails.js is Redis... but we realize
 
 ## FAQ
 
-> If you have an adapter, hook, or other plugin that isn't covered here, and that you feel would add value for the community, please feel free to send a PR adding it to this section.
+#### What happened to the core generators?
+
+For easier maintainence, they were pulled into `sails-generate`.  But you can still find the original versions here:
+
+| Example Repo                                                                          |  Latest Stable Version   |
+|:--------------------------------------------------------------------------------------|--------------------------|
+| [sails-generate-generator](https://github.com/balderdashy/sails-generate-generator)   | [![NPM version](https://badge.fury.io/js/sails-generate-generator.png)](http://badge.fury.io/js/sails-generate-generator) |
+| [sails-generate-new](https://github.com/balderdashy/sails-generate-new)               | [![NPM version](https://badge.fury.io/js/sails-generate-new.png)](http://badge.fury.io/js/sails-generate-new) |
+| [sails-generate-controller](https://github.com/balderdashy/sails-generate-controller) | [![NPM version](https://badge.fury.io/js/sails-generate-controller.png)](http://badge.fury.io/js/sails-generate-controller) |
+| [sails-generate-frontend](https://github.com/balderdashy/sails-generate-frontend)     | [![NPM version](https://badge.fury.io/js/sails-generate-frontend.png)](http://badge.fury.io/js/sails-generate-frontend) |
+| [sails-generate-backend](https://github.com/balderdashy/sails-generate-backend)       | [![NPM version](https://badge.fury.io/js/sails-generate-backend.png)](http://badge.fury.io/js/sails-generate-backend) |
+| [sails-generate-views](https://github.com/balderdashy/sails-generate-views)           | [![NPM version](https://badge.fury.io/js/sails-generate-views.png)](http://badge.fury.io/js/sails-generate-views) |
+| [sails-generate-adapter](https://github.com/balderdashy/sails-generate-adapter)       | [![NPM version](https://badge.fury.io/js/sails-generate-adapter.png)](http://badge.fury.io/js/sails-generate-adapter) |
+| [sails-generate-model](https://github.com/balderdashy/sails-generate-model)           | [![NPM version](https://badge.fury.io/js/sails-generate-model.png)](http://badge.fury.io/js/sails-generate-model) |
+| [sails-generate-api](https://github.com/balderdashy/sails-generate-api)               | [![NPM version](https://badge.fury.io/js/sails-generate-api.png)](http://badge.fury.io/js/sails-generate-api) |
+| [sails-generate-hook](https://github.com/balderdashy/sails-generate-hook)             | [![NPM version](https://badge.fury.io/js/sails-generate-hook.png)](http://badge.fury.io/js/sails-generate-hook) |
+
+
+#### Can I add my plugin to this list?
+
+If you have an adapter, hook, or other plugin that isn't covered here, and that you feel would add value for the community, please feel free to send a PR adding it to this section.

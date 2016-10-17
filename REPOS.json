@@ -128,53 +128,6 @@
 
 
   {
-    "repoName": "sails-generate-new",
-    "owner": "balderdashy"
-  },
-  {
-  	"repoName": "sails-generate-backend",
-  	"owner": "balderdashy"
-  },
-  {
-  	"repoName": "sails-generate-frontend",
-  	"owner": "balderdashy"
-  },
-  {
-    "repoName": "sails-generate-views",
-    "owner": "balderdashy"
-  },
-  {
-    "repoName": "sails-generate-api",
-    "owner": "balderdashy"
-  },
-  {
-    "repoName": "sails-generate-controller",
-    "owner": "balderdashy"
-  },
-  {
-    "repoName": "sails-generate-model",
-    "owner": "balderdashy"
-  },
-  {
-    "repoName": "sails-generate-generator",
-    "owner": "balderdashy"
-  },
-  {
-    "repoName": "sails-generate-hook",
-    "owner": "balderdashy"
-  },
-  {
-    "repoName": "sails-generate-adapter",
-    "owner": "balderdashy"
-  },
-  {
-    "repoName": "sails-generate-test",
-    "owner": "balderdashy"
-  },
-
-
-
-  {
     "repoName": "www.sailsjs.org",
     "owner": "balderdashy"
   },
