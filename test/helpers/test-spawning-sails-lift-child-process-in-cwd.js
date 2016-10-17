@@ -3,10 +3,7 @@
  */
 
 var path = require('path');
-var isString = require('lodash.isstring');
-var isUndefined = require('lodash.isundefined');
-var isFunction = require('lodash.isfunction');
-var isArray = require('lodash.isarray');
+var _ = require('lodash');
 var request = require('request');
 var MProcess = require('machinepack-process');
 
@@ -42,10 +39,10 @@ var MProcess = require('machinepack-process');
  */
 module.exports = function testSpawningSailsLiftChildProcessInCwd (opts){
 
-  if (!isArray(opts.liftCliArgs)){
+  if (!_.isArray(opts.liftCliArgs)){
     throw new Error('Consistency violation: Missing or invalid option (`liftCliArgs` should be an array)  in `testSpawningSailsLiftChildProcessInCwd()`. I may just be a test helper, but I\'m serious about assertions!!!');
   }
-  if (!isString(opts.pathToSailsCLI)){
+  if (!_.isString(opts.pathToSailsCLI)){
     throw new Error('Consistency violation: Missing or invalid option (`pathToSailsCLI` should be a string) in `testSpawningSailsLiftChildProcessInCwd()`. I may just be a test helper, but I\'m serious about assertions!!!');
   }
 
@@ -116,7 +113,7 @@ module.exports = function testSpawningSailsLiftChildProcessInCwd (opts){
     // Now if httpRequestInstructions were provided, we ping to the server to see whether this puppy
     // is ready to handle all those hot hot HTTP requests we have planned for it.
     // (expectations of response vary based on options passed to this helper)
-    if (!isUndefined(opts.httpRequestInstructions)){
+    if (!_.isUndefined(opts.httpRequestInstructions)){
       // If the `opts.expectFailedLift` flag was provided, we're actually expecting an error here.
       if (opts.expectFailedLift) {
         it('should FAIL when a `'+opts.httpRequestInstructions.method+'` request is sent to `'+opts.httpRequestInstructions.uri+', because we\'re expecting Sails to have failed when attempting to lift`', function(done) {
@@ -149,7 +146,7 @@ module.exports = function testSpawningSailsLiftChildProcessInCwd (opts){
 
     // Now run any additional tests.
     // (i.e. this function contains `it` blocks)
-    if (isFunction(opts.fnWithAdditionalTests)) {
+    if (_.isFunction(opts.fnWithAdditionalTests)) {
       opts.fnWithAdditionalTests();
     }
 
