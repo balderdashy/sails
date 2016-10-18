@@ -23,7 +23,8 @@ describe('API and adapter generators', function() {
     }
 
     exec('node ' + sailsBin + ' new ' + appName, function(err) {
-      if (err) done(new Error(err));
+      if (err) { return done(new Error(err)); }
+
       // Move into app directory and update sailsBin relative path
       process.chdir(appName);
       sailsBin = path.resolve('..', sailsBin);
@@ -91,7 +92,7 @@ describe('API and adapter generators', function() {
     it('should create a controller file in controllers folder', function(done) {
 
       exec('node ' + sailsBin + ' generate controller ' + controllerName, function(err) {
-        if (err) done(new Error(err));
+        if (err) { return done(new Error(err)); }
 
         assert.doesNotThrow(function() {
           fs.readFileSync('./api/controllers/' + capitalize(controllerName) + 'Controller.js', 'utf8');
@@ -124,10 +125,10 @@ describe('API and adapter generators', function() {
     it('should create a adapter file in adapters folder', function(done) {
 
       exec('node ' + sailsBin + ' generate adapter ' + adapterName, function(err) {
-        if (err) done(new Error(err));
+        if (err) { return done(err); }
 
         assert.doesNotThrow(function() {
-          fs.readFileSync('./api/adapters/' + adapterName + '/lib/adapter.js', 'utf8');
+          fs.readFileSync('./api/adapters/' + adapterName + '/index.js', 'utf8');
         });
 
         done();
@@ -146,10 +147,13 @@ describe('API and adapter generators', function() {
   describe('sails generate', function() {
     var modelName = 'post';
 
-    it('should display usage if no generator name is specified', function(done) {
+    it('should display usage if no generator type is specified', function(done) {
 
-      exec('node ' + sailsBin + ' generate', function(err, dumb, response) {
-        assert.notEqual(response.indexOf('Usage'), -1);
+      exec('node ' + sailsBin + ' generate', function(err, msg) {
+        if (err) { return done(err); }
+
+        assert.notEqual(msg.indexOf('Usage'), -1);
+
         done();
       });
     });
@@ -171,7 +175,7 @@ describe('API and adapter generators', function() {
     it('should create a controller and a model file', function(done) {
 
       exec('node ' + sailsBin + ' generate api ' + apiName, function(err) {
-        if (err) done(new Error(err));
+        if (err) { return done(err); }
 
         assert.doesNotThrow(function() {
           fs.readFileSync('./api/models/' + capitalize(apiName) + '.js', 'utf8');

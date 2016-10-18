@@ -51,7 +51,6 @@ module.exports = function () {
   var cliArguments = _.initial(arguments);
   scope.generatorType = cliArguments.shift();
   scope.args = cliArguments;
-  assert(arguments.length === (scope.args.length + 2), new Error('Consistency violation: Should have trimmed exactly two args.'));
 
 
   // If no generator type was defined, then log the expected usage.
@@ -59,6 +58,7 @@ module.exports = function () {
     console.log('Usage: sails generate [something]');
     return;
   }
+  assert(arguments.length === (scope.args.length + 2), new Error('Consistency violation: Should have trimmed exactly two args.'));
 
   // Call out to `sails-generate`.
   return sailsGen(scope, {
