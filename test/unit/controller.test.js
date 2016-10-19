@@ -104,16 +104,16 @@ describe('controllers :: ', function() {
              action: 'fnAction',
           },
           'POST /route4': {
-            action: 'toplevellegacy.fnAction',
+            action: 'toplevellegacy/fnAction',
           },
           'POST /route5': {
             action: 'top-level-standalone-fn'
           },
           'POST /route6': {
-            action: 'somefolder.someotherfolder.nestedlegacy.fnaction'
+            action: 'somefolder/someotherfolder/nestedlegacy/fnaction'
           },
           'POST /route7': {
-            action: 'somefolder.someotherfolder.nested-standalone-machine'
+            action: 'somefolder/someotherfolder/nested-standalone-machine'
           },
           'POST /warn1': {
             controller: 'somefolder/someotherfolder/NestedLegacyController',
@@ -124,10 +124,10 @@ describe('controllers :: ', function() {
             action: 'machineaction'
           },
           'POST /warn3': 'somefolder/someotherfolder/NestedLegacyController.machineAction',
-          'POST /warn4': 'some.unknown.action',
+          'POST /warn4': 'some/unknown/action',
           'POST /warn5': {
             controller: 'UnknownController',
-            action: 'unknown.action'
+            action: 'unknown/action'
           },
 
         })
@@ -149,13 +149,13 @@ describe('controllers :: ', function() {
 
     it('should load all of the valid controller actions', function() {
       var expectedActions = [
-        'toplevellegacy.fnaction',
-        'toplevellegacy.machineaction',
+        'toplevellegacy/fnaction',
+        'toplevellegacy/machineaction',
         'top-level-standalone-fn',
         'top-level-standalone-machine',
-        'somefolder.someotherfolder.nestedlegacy.fnaction',
-        'somefolder.someotherfolder.nestedlegacy.machineaction',
-        'somefolder.someotherfolder.nested-standalone-machine'
+        'somefolder/someotherfolder/nestedlegacy/fnaction',
+        'somefolder/someotherfolder/nestedlegacy/machineaction',
+        'somefolder/someotherfolder/nested-standalone-machine'
       ];
       var unexpectedActions = _.difference(_.keys(sailsApp._actions), expectedActions);
       assert(!unexpectedActions.length, 'Loaded unexpected actions:\n' + util.inspect(unexpectedActions));
@@ -165,7 +165,7 @@ describe('controllers :: ', function() {
       });
     });
 
-    it('should bind a route using \'TopLevelLegacyController.fnAction\'', function(done) {
+    it('should bind a route using \'TopLevelLegacyController/fnAction\'', function(done) {
       sailsApp.request('POST /route1', {}, function (err, resp, data) {
         assert(!err, err);
         assert.deepEqual(data, 'legacy fn action!');
@@ -173,7 +173,7 @@ describe('controllers :: ', function() {
       });
     });
 
-    it('should bind a route using \'TopLevelLegacyController.machineAction\'', function(done) {
+    it('should bind a route using \'TopLevelLegacyController/machineAction\'', function(done) {
       sailsApp.request('POST /route2', {}, function (err, resp, data) {
         assert(!err, err);
         assert.deepEqual(data, 'legacy machine action!');
@@ -189,7 +189,7 @@ describe('controllers :: ', function() {
       });
     });
 
-    it('should bind a route using {action: \'toplevellegacy.fnAction\'}', function(done) {
+    it('should bind a route using {action: \'toplevellegacy/fnAction\'}', function(done) {
       sailsApp.request('POST /route4', {}, function (err, resp, data) {
         assert(!err, err);
         assert.deepEqual(data, 'legacy fn action!');
@@ -205,7 +205,7 @@ describe('controllers :: ', function() {
       });
     });
 
-    it('should bind a route using {action: \'somefolder.someotherfolder.nestedlegacy.fnaction\'}', function(done) {
+    it('should bind a route using {action: \'somefolder/someotherfolder/nestedlegacy/fnaction\'}', function(done) {
       sailsApp.request('POST /route6', {}, function (err, resp, data) {
         assert(!err, err);
         assert.deepEqual(data, 'nested legacy fn action!');
@@ -213,7 +213,7 @@ describe('controllers :: ', function() {
       });
     });
 
-    it('should bind a route using {action: \'somefolder.someotherfolder.nested-standalone-machine\'}', function(done) {
+    it('should bind a route using {action: \'somefolder/someotherfolder/nested-standalone-machine\'}', function(done) {
       sailsApp.request('POST /route7', {}, function (err, resp, data) {
         assert(!err, err);
         assert.deepEqual(data, 'nested standalone machine!');
@@ -237,7 +237,7 @@ describe('controllers :: ', function() {
       });
     });
 
-    it('should bind a route (under protest) using \'somefolder/someotherfolder/NestedLegacyController.machineAction\'', function(done) {
+    it('should bind a route (under protest) using \'somefolder/someotherfolder/NestedLegacyController/machineAction\'', function(done) {
       sailsApp.request('POST /warn3', {}, function (err, resp, data) {
         assert(!err, err);
         assert.deepEqual(data, 'nested legacy machine action!');
@@ -249,13 +249,13 @@ describe('controllers :: ', function() {
       var actions = sailsApp.getActions();
       assert(actions !== sailsApp._actions, 'sails.getActions is supposed to return a shallow clone, but got an exact reference!');
       var expectedActions = [
-        'toplevellegacy.fnaction',
-        'toplevellegacy.machineaction',
+        'toplevellegacy/fnaction',
+        'toplevellegacy/machineaction',
         'top-level-standalone-fn',
         'top-level-standalone-machine',
-        'somefolder.someotherfolder.nestedlegacy.fnaction',
-        'somefolder.someotherfolder.nestedlegacy.machineaction',
-        'somefolder.someotherfolder.nested-standalone-machine'
+        'somefolder/someotherfolder/nestedlegacy/fnaction',
+        'somefolder/someotherfolder/nestedlegacy/machineaction',
+        'somefolder/someotherfolder/nested-standalone-machine'
       ];
       var unexpectedActions = _.difference(_.keys(actions), expectedActions);
       assert(!unexpectedActions.length, 'Loaded unexpected actions:\n' + util.inspect(unexpectedActions));
@@ -311,7 +311,7 @@ describe('controllers :: ', function() {
           });
         }
         assert.equal(err.code, 'E_CONFLICT');
-        assert.equal(err.identity, 'toplevel.fnaction');
+        assert.equal(err.identity, 'toplevel/fnaction');
         return done();
       });
 
