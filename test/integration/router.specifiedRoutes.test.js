@@ -51,7 +51,7 @@ describe('router :: ', function() {
             cors: true,
           },
           '/testRoute': {
-            action: 'test.verb',
+            action: 'test/verb',
           },
         });
       });
@@ -76,7 +76,7 @@ describe('router :: ', function() {
       before(function() {
         httpHelper.writeRoutes({
           '/testRoute': {
-           action: 'test.verb'
+           action: 'test/verb'
           }
         });
       });
@@ -128,7 +128,7 @@ describe('router :: ', function() {
       before(function() {
         httpHelper.writeRoutes({
           'get /testRoute': {
-            action: 'test.verb'
+            action: 'test/verb'
           }
         });
       });
@@ -159,7 +159,7 @@ describe('router :: ', function() {
       before(function() {
         httpHelper.writeRoutes({
           'post /testRoute': {
-            action: 'test.verb'
+            action: 'test/verb'
           }
         });
       });
@@ -180,7 +180,7 @@ describe('router :: ', function() {
       before(function() {
         httpHelper.writeRoutes({
           'put /testRoute': {
-            action: 'test.verb'
+            action: 'test/verb'
           }
         });
       });
@@ -201,7 +201,7 @@ describe('router :: ', function() {
       before(function(){
         httpHelper.writeRoutes({
           'delete /testRoute': {
-            action: 'test.verb'
+            action: 'test/verb'
           }
         });
       });
@@ -223,7 +223,7 @@ describe('router :: ', function() {
       before(function() {
         httpHelper.writeRoutes({
           'get /test/:category/:size': {
-            action: 'test.dynamic'
+            action: 'test/dynamic'
           }
         });
       });
@@ -245,7 +245,7 @@ describe('router :: ', function() {
       before(function() {
         httpHelper.writeRoutes({
           'get /testRoute': {
-            action: 'test.verb'
+            action: 'test/verb'
           }
         });
       });
@@ -265,7 +265,7 @@ describe('router :: ', function() {
       before(function() {
         httpHelper.writeRoutes({
           'get /testRoute': {
-            action: 'tEsT.verb'
+            action: 'tEsT/verb'
           }
         });
       });
@@ -285,7 +285,7 @@ describe('router :: ', function() {
       before(function(){
         httpHelper.writeRoutes({
           'get /testRoute': {
-            action: 'test.capiTalleTTers'
+            action: 'test/capiTalleTTers'
           }
         });
       });
@@ -339,7 +339,7 @@ describe('router :: ', function() {
         httpHelper.writeRoutes({
           '/*': {
             skipAssets: true,
-            action: 'test.index'
+            action: 'test/index'
           }
         });
       });
@@ -432,7 +432,7 @@ describe('router :: ', function() {
     describe('skipRegex /abc/', function() {
 
       before(function(){
-        var ROUTES_FILE_CONTENTS = 'module.exports.routes = {\'/*\': {skipRegex: /abc/,action: \'test.index\'}};';
+        var ROUTES_FILE_CONTENTS = 'module.exports.routes = {\'/*\': {skipRegex: /abc/,action: \'test/index\'}};';
         require('fs').writeFileSync('config/routes.js', ROUTES_FILE_CONTENTS);
       });
 
@@ -462,7 +462,7 @@ describe('router :: ', function() {
     describe('skipRegex [/abc/, /def/]', function() {
 
       before(function(){
-        require('fs').writeFileSync('config/routes.js', 'module.exports.routes = {\'/*\': {skipRegex: [/abc/,/def/],action: \'test.index\'}};');
+        require('fs').writeFileSync('config/routes.js', 'module.exports.routes = {\'/*\': {skipRegex: [/abc/,/def/],action: \'test/index\'}};');
       });
 
       it('should match /foo', function(done) {

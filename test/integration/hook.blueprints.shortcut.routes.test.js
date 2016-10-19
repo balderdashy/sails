@@ -686,7 +686,7 @@ describe('blueprints :: ', function() {
           },
           controllers: {
             actions: {
-              'user.find': function(req, res) {
+              'user/find': function(req, res) {
                 return res.send('find dem users!');
               }
             }

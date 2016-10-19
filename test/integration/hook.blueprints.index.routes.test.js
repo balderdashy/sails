@@ -55,9 +55,9 @@ describe('blueprints :: ', function() {
       controllers: {
         actions: {
           'index': function (req, res) { res.send('top-level index!'); },
-          'secondlevel.index': function (req, res) { res.send('second-level index!'); },
-          'thirdlevel.index': function (req, res) { res.send('third-level index!'); },
-          'user.index': function (req, res) { res.send('user index!'); }
+          'secondlevel/index': function (req, res) { res.send('second-level index!'); },
+          'thirdlevel/index': function (req, res) { res.send('third-level index!'); },
+          'user/index': function (req, res) { res.send('user index!'); }
         }
       }
 

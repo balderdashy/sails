@@ -88,14 +88,14 @@ describe('policies :: ', function() {
           controllers: {
             actions: {
               'user': function(req, res) { return res.send('user'); },
-              'user.foo': function(req, res) { return res.send('user.foo'); },
-              'user.foo.bar': function(req, res) { return res.send('user.foo.bar'); }
+              'user/foo': function(req, res) { return res.send('user.foo'); },
+              'user/foo/bar': function(req, res) { return res.send('user.foo.bar'); }
             }
           },
           routes: {
             '/user': 'user',
-            '/user-foo': 'user.foo',
-            '/user-foo-bar': 'user.foo.bar'
+            '/user-foo': 'user/foo',
+            '/user-foo-bar': 'user/foo/bar'
           },
           policies: policyMap
 
@@ -114,13 +114,13 @@ describe('policies :: ', function() {
         }
       });
 
-      describe('with a single, defined "error" policy mapped to user.*', function() {
+      describe('with a single, defined "error" policy mapped to user/*', function() {
 
         before(function() {
-          policyMap = { 'user.*': ['err'] };
+          policyMap = { 'user/*': ['err'] };
         });
 
-        it('the policy should apply to all user.* actions', function(done) {
+        it('the policy should apply to all user/* actions', function(done) {
 
           async.each(['/user', '/user-foo', '/user-foo-bar'], function(url, cb) {
             sailsApp.request({
@@ -142,13 +142,13 @@ describe('policies :: ', function() {
 
       });
 
-      describe('with a `false` policy mapped to user.*', function() {
+      describe('with a `false` policy mapped to user/*', function() {
 
         before(function() {
-          policyMap = { 'user.*': [false] };
+          policyMap = { 'user/*': [false] };
         });
 
-        it('the policy should apply to all user.* actions', function(done) {
+        it('the policy should apply to all user/* actions', function(done) {
 
           async.each(['/user', '/user-foo', '/user-foo-bar'], function(url, cb) {
             sailsApp.request({
@@ -170,16 +170,16 @@ describe('policies :: ', function() {
 
       });
 
-      describe('with a defined "error" policy mapped to user.* and a "blank" policy mapped to user.foo', function() {
+      describe('with a defined "error" policy mapped to user/* and a "blank" policy mapped to user/foo', function() {
 
         before(function() {
           policyMap = {
-            'user.*': ['err'],
-            'user.foo': []
+            'user/*': ['err'],
+            'user/foo': []
           };
         });
 
-        it('the policy should apply to actions `user` and `user.foo.bar`', function(done) {
+        it('the policy should apply to actions `user` and `user/foo/bar`', function(done) {
 
           async.each(['/user', '/user-foo-bar'], function(url, cb) {
             sailsApp.request({
@@ -199,7 +199,7 @@ describe('policies :: ', function() {
           });
         });
 
-        it('the policy should NOT apply to actions `user.foo`', function(done) {
+        it('the policy should NOT apply to actions `user/foo`', function(done) {
 
           sailsApp.request({
             url: '/user-foo',
@@ -216,16 +216,16 @@ describe('policies :: ', function() {
 
       });
 
-      describe('with a defined "error" policy mapped to user.* and a `true` policy mapped to user.foo', function() {
+      describe('with a defined "error" policy mapped to user/* and a `true` policy mapped to user/foo', function() {
 
         before(function() {
           policyMap = {
-            'user.*': ['err'],
-            'user.foo': [true]
+            'user/*': ['err'],
+            'user/foo': [true]
           };
         });
 
-        it('the policy should apply to actions `user` and `user.foo.bar`', function(done) {
+        it('the policy should apply to actions `user` and `user/foo/bar`', function(done) {
 
           async.each(['/user', '/user-foo-bar'], function(url, cb) {
             sailsApp.request({
@@ -245,7 +245,7 @@ describe('policies :: ', function() {
           });
         });
 
-        it('the policy should NOT apply to actions `user.foo`', function(done) {
+        it('the policy should NOT apply to actions `user/foo`', function(done) {
 
           sailsApp.request({
             url: '/user-foo',
@@ -262,12 +262,12 @@ describe('policies :: ', function() {
 
       });
 
-      describe('with a defined "error" policy mapped to user.* and a "blank" policy mapped to user.foo.*', function() {
+      describe('with a defined "error" policy mapped to user/* and a "blank" policy mapped to user/foo/*', function() {
 
         before(function() {
           policyMap = {
-            'user.*': ['err'],
-            'user.foo.*': []
+            'user/*': ['err'],
+            'user/foo/*': []
           };
         });
 
@@ -291,7 +291,7 @@ describe('policies :: ', function() {
           });
         });
 
-        it('the policy should NOT apply to actions `user.foo`', function(done) {
+        it('the policy should NOT apply to actions `user/foo`', function(done) {
 
           sailsApp.request({
             url: '/user-foo',
@@ -306,7 +306,7 @@ describe('policies :: ', function() {
 
         });
 
-        it('the policy should NOT apply to actions `user.foo.bar`', function(done) {
+        it('the policy should NOT apply to actions `user/foo/bar`', function(done) {
 
           sailsApp.request({
             url: '/user-foo-bar',
@@ -345,14 +345,14 @@ describe('policies :: ', function() {
           controllers: {
             actions: {
               'user': function(req, res) { return res.json({action: 'user', animals: {cat: req.options.cat, owl: req.options.owl}}); },
-              'user.foo': function(req, res) { return res.json({action: 'user.foo', animals: {cat: req.options.cat, owl: req.options.owl}}); },
-              'user.foo.bar': function(req, res) { return res.json({action: 'user.foo.bar', animals: {cat: req.options.cat, owl: req.options.owl}}); }
+              'user/foo': function(req, res) { return res.json({action: 'user.foo', animals: {cat: req.options.cat, owl: req.options.owl}}); },
+              'user/foo/bar': function(req, res) { return res.json({action: 'user.foo.bar', animals: {cat: req.options.cat, owl: req.options.owl}}); }
             }
           },
           routes: {
             '/user': 'user',
-            '/user-foo': 'user.foo',
-            '/user-foo-bar': 'user.foo.bar'
+            '/user-foo': 'user/foo',
+            '/user-foo-bar': 'user/foo/bar'
           },
           policies: _.extend({
             moduleDefinitions: {
@@ -379,10 +379,10 @@ describe('policies :: ', function() {
       describe('with a single, defined "pass-thru" policy mapped to user.*', function() {
 
         before(function() {
-          policyMap = { 'user.*': ['add-owl'] };
+          policyMap = { 'user/*': ['add-owl'] };
         });
 
-        it('the policy should apply to all user.* actions', function(done) {
+        it('the policy should apply to all user/* actions', function(done) {
 
           async.each(['/user', '/user-foo', '/user-foo-bar'], function(url, cb) {
             sailsApp.request({
@@ -406,13 +406,13 @@ describe('policies :: ', function() {
 
       });
 
-      describe('with two defined "pass-thru" policies chained to user.*', function() {
+      describe('with two defined "pass-thru" policies chained to user/*', function() {
 
         before(function() {
-          policyMap = { 'user.*': ['add-owl', 'add-cat'] };
+          policyMap = { 'user/*': ['add-owl', 'add-cat'] };
         });
 
-        it('the policies should apply to all user.* actions', function(done) {
+        it('the policies should apply to all user/* actions', function(done) {
 
           async.each(['/user', '/user-foo', '/user-foo-bar'], function(url, cb) {
             sailsApp.request({
@@ -436,13 +436,13 @@ describe('policies :: ', function() {
 
       });
 
-      describe('with the "add-owl" policy on user.*, and "add-cat" on user.foo.bar', function() {
+      describe('with the "add-owl" policy on user/*, and "add-cat" on user/foo/bar', function() {
 
         before(function() {
-          policyMap = { 'user.*': ['add-owl'], 'user.foo.bar': ['add-cat'] };
+          policyMap = { 'user/*': ['add-owl'], 'user/foo/bar': ['add-cat'] };
         });
 
-        it('the "add-owl" policy (and NOT the "add-cat" policy) should apply to the "user" and "user.foo" actions', function(done) {
+        it('the "add-owl" policy (and NOT the "add-cat" policy) should apply to the "user" and "user/foo" actions', function(done) {
 
           async.each(['/user', '/user-foo'], function(url, cb) {
             sailsApp.request({
@@ -464,7 +464,7 @@ describe('policies :: ', function() {
           });
         });
 
-        it('the "add-cat" policy (and NOT the "add-owl" policy) should apply to the "user.foo.bar" action', function(done) {
+        it('the "add-cat" policy (and NOT the "add-owl" policy) should apply to the "user/foo/bar" action', function(done) {
 
           sailsApp.request({
             url: '/user-foo-bar',
@@ -505,14 +505,14 @@ describe('policies :: ', function() {
           controllers: {
             actions: {
               'user': function(req, res) { return res.json({action: 'user', foo: req.options.foo, animals: {cat: req.options.cat, owl: req.options.owl}}); },
-              'user.foo': function(req, res) { return res.json({action: 'user.foo', foo: req.options.foo,  animals: {cat: req.options.cat, owl: req.options.owl}}); },
-              'user.foo.bar': function(req, res) { return res.json({action: 'user.foo.bar', foo: req.options.foo, animals: {cat: req.options.cat, owl: req.options.owl}}); }
+              'user/foo': function(req, res) { return res.json({action: 'user/foo', foo: req.options.foo,  animals: {cat: req.options.cat, owl: req.options.owl}}); },
+              'user/foo/bar': function(req, res) { return res.json({action: 'user/foo/bar', foo: req.options.foo, animals: {cat: req.options.cat, owl: req.options.owl}}); }
             }
           },
           routes: {
             '/user': [{ policy: 'add-owl', foo: 'bar' }, 'user'],
-            '/user-foo': [{ policy: 'add-cat' }, 'user.foo'],
-            '/user-foo-bar': [ { policy: 'add-owl'}, { policy: 'add-cat' }, 'user.foo.bar']
+            '/user-foo': [{ policy: 'add-cat' }, 'user/foo'],
+            '/user-foo-bar': [ { policy: 'add-owl'}, { policy: 'add-cat' }, 'user/foo/bar']
           },
           policies: _.extend({
             moduleDefinitions: {
@@ -563,7 +563,7 @@ describe('policies :: ', function() {
           if (err) {
             return cb(new Error('For URL ' + url + ', expected successful response, got: ' + err));
           }
-          assert.equal(data.action, 'user.foo');
+          assert.equal(data.action, 'user/foo');
           assert.equal(data.animals.cat, 'meow');
           assert(_.isUndefined(data.animals.owl));
           assert(_.isUndefined(data.foo));
@@ -581,7 +581,7 @@ describe('policies :: ', function() {
           if (err) {
             return cb(new Error('For URL ' + url + ', expected successful response, got: ' + err));
           }
-          assert.equal(data.action, 'user.foo.bar');
+          assert.equal(data.action, 'user/foo/bar');
           assert.equal(data.animals.cat, 'meow');
           assert.equal(data.animals.owl, 'hoot');
           assert(_.isUndefined(data.foo));

@@ -44,10 +44,10 @@ describe('sails.reloadActions ::', function() {
         log: {level: 'error'}
       }, function(err, _sails) {
         sailsApp = _sails;
-        assert(sailsApp._actions['toplevel.fnaction'], 'Expected to find a `toplevel.fnaction` action, but didn\'t.');
+        assert(sailsApp._actions['toplevel/fnaction'], 'Expected to find a `toplevel/fnaction` action, but didn\'t.');
         assert(sailsApp._actions['custom-action'], 'Expected to find a `custom-action` action, but didn\'t.');
-        assert(!sailsApp._actions['toplevel.machineaction'], 'Didn\'t expect `toplevel.machineaction` action to exist!');
-        assert(!sailsApp._actions['nested.standalone-action'], 'Didn\'t expect `nested.standalone-action` action to exist!');
+        assert(!sailsApp._actions['toplevel/machineaction'], 'Didn\'t expect `toplevel/machineaction` action to exist!');
+        assert(!sailsApp._actions['nested/standalone-action'], 'Didn\'t expect `nested/standalone-action` action to exist!');
         return done(err);
       });
     });
@@ -73,9 +73,9 @@ describe('sails.reloadActions ::', function() {
       }).execSync();
       sailsApp.reloadActions(function(err) {
         if (err) {return done(err);}
-        assert(sailsApp._actions['toplevel.fnaction'], 'Expected to find a `toplevel.fnaction` action, but didn\'t.');
-        assert(sailsApp._actions['toplevel.machineaction'], 'Expected to find a `toplevel.machineaction` action, but didn\'t.');
-        assert(sailsApp._actions['nested.standalone-action'], 'Expected to find a `nested.standalone-action` action, but didn\'t.');
+        assert(sailsApp._actions['toplevel/fnaction'], 'Expected to find a `toplevel/fnaction` action, but didn\'t.');
+        assert(sailsApp._actions['toplevel/machineaction'], 'Expected to find a `toplevel/machineaction` action, but didn\'t.');
+        assert(sailsApp._actions['nested/standalone-action'], 'Expected to find a `nested/standalone-action` action, but didn\'t.');
         assert(sailsApp._actions['custom-action'], 'Expected to find a `custom-action` action, but didn\'t.');
         return done();
       });
