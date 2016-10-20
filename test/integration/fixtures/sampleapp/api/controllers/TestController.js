@@ -1,37 +1,37 @@
 module.exports = {
-	verb: function(req, res) {
-		res.send(req.method.toLowerCase());
-	},
+  verb: function(req, res) {
+    res.send(req.method.toLowerCase());
+  },
 
-	dynamic: function(req, res) {
-		res.json(req.params.all());
-	},
+  dynamic: function(req, res) {
+    res.json(req.params.all());
+  },
 
-	index: function(req, res) {
-		res.send('index');
-	},
+  index: function(req, res) {
+    res.send('index');
+  },
 
-	find: function(req, res) {
-		res.send('find');
-	},
+  find: function(req, res) {
+    res.send('find');
+  },
 
   findOne: function(req, res) {
     res.send('findOne');
   },
 
-	create: function(req, res) {
-		res.send('create');
-	},
+  create: function(req, res) {
+    res.send('create');
+  },
 
-	update: function(req, res) {
-		res.send('update');
-	},
+  update: function(req, res) {
+    res.send('update');
+  },
 
-	destroy: function(req, res) {
-		res.send('destroy');
-	},
+  destroy: function(req, res) {
+    res.send('destroy');
+  },
 
-	CapitalLetters: function(req, res) {
-		res.send('CapitalLetters');
-	}
+  CapitalLetters: function(req, res) {
+    res.send('CapitalLetters');
+  }
 };

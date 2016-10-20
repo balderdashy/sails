@@ -5,5 +5,5 @@
  * @type {Object}
  */
 module.exports = {
-	EXPECTED_DEFAULT_HOOKS: require('../../lib/app/configuration/default-hooks')
+  EXPECTED_DEFAULT_HOOKS: require('../../lib/app/configuration/default-hooks')
 };

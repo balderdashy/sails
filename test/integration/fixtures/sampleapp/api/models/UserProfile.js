@@ -1,11 +1,11 @@
 module.exports = {
 
-	attributes: {
-		user: {
-			model: 'user',
-			via: 'profile'
-		},
-		zodiac: 'string'
-	}
+  attributes: {
+    user: {
+      model: 'user',
+      via: 'profile'
+    },
+    zodiac: 'string'
+  }
 
 };

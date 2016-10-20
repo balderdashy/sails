@@ -134,10 +134,10 @@ module.exports = {
 
     // var probableAdapterModuleName = connectionId.toLowerCase();
     // if ( ! probableAdapterModuleName.match(/^(sails-|waterline-)/) ) {
-    // 	probableAdapterModuleName = 'sails-' + probableAdapterModuleName;
+    //   probableAdapterModuleName = 'sails-' + probableAdapterModuleName;
     // }
     // log.error('Otherwise, if you\'re trying to use an adapter named `' + connectionId + '`, please run ' +
-    // 	'`npm install ' + probableAdapterModuleName + '@' + sails.majorVersion + '.' + sails.minorVersion + '.x`');
+    //   '`npm install ' + probableAdapterModuleName + '@' + sails.majorVersion + '.' + sails.minorVersion + '.x`');
     return _terminateProcess(1);
   },
 
