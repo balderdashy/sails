@@ -4,11 +4,12 @@
 
 var path = require('path');
 var util = require('util');
+var tmp = require('tmp');
 var request = require('request');
 var MProcess = require('machinepack-process');
-var MFilesystem = require('machinepack-fs');
 var testSpawningSailsLiftChildProcessInCwd = require('../helpers/test-spawning-sails-lift-child-process-in-cwd');
 
+tmp.setGracefulCleanup();
 
 
 
@@ -21,19 +22,21 @@ describe('Starting sails server with `sails lift`', function() {
 
 
   describe('in the directory of a newly-generated sails app', function() {
-    var pathToTestApp = path.resolve('testApp');
 
-    // Ensure test app does not already exist.
-    before(function (done) {
-      MFilesystem.rmrf({path: pathToTestApp}).exec(done);
-    });
+    var pathToTestApp;
 
-    // Create a Sails app on disk.
-    before(function (done){
+    before(function(done) {
+      // Create a temp directory.
+      var tmpDir = tmp.dirSync({gracefulCleanup: true, unsafeCleanup: true});
+      // Switch to the temp directory.
+      process.chdir(tmpDir.name);
+      pathToTestApp = path.resolve(tmpDir.name, 'testApp');
+      // Create a new Sails app.
       MProcess.executeCommand({
         command: util.format('node %s new %s', pathToSailsCLI, pathToTestApp),
       }).exec(done);
     });
+
 
     // And CD in.
     before(function (){
@@ -78,10 +81,6 @@ describe('Starting sails server with `sails lift`', function() {
     });
 
 
-    // Finally clean up the Sails app we created earlier.
-    after(function (done) {
-      MFilesystem.rmrf({path: pathToTestApp}).exec(done);
-    });
     // And CD back to where we were before.
     after(function () {
       process.chdir(originalCwd);
@@ -96,16 +95,14 @@ describe('Starting sails server with `sails lift`', function() {
 
   describe('in an empty directory', function() {
 
-    var pathToEmptyDirectory = path.resolve('.tmp/an-empty-directory');
+    var pathToEmptyDirectory;
 
-    // Ensure empty directory does not already exist.
-    before(function (done) {
-      MFilesystem.rmrf({path: pathToEmptyDirectory}).exec(done);
-    });
-
-    // Then make a new empty folder.
-    before(function(done) {
-      MFilesystem.mkdir({destination: pathToEmptyDirectory}).exec(done);
+    before(function() {
+      // Create a temp directory.
+      var tmpDir = tmp.dirSync({gracefulCleanup: true, unsafeCleanup: true});
+      // Switch to the temp directory.
+      process.chdir(tmpDir.name);
+      pathToEmptyDirectory = tmpDir.name;
     });
 
     // And CD in.
@@ -127,10 +124,6 @@ describe('Starting sails server with `sails lift`', function() {
       });
     });
 
-    // Finally clean up the empty directory we've been using.
-    after(function (done) {
-      MFilesystem.rmrf({path: pathToEmptyDirectory}).exec(done);
-    });
     // And CD back to whererever we were before.
     after(function () {
       process.chdir(originalCwd);
