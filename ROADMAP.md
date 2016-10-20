@@ -57,6 +57,11 @@ This section is an early list of some of the features, enhancements, and other i
 + **Automigrations**
   + Will be moved out of Waterline and into sails-hook-orm.
   + Usage is unlikely to change.
++ **Default `res.ok()` response will no longer accept arguments.**
+  + See https://github.com/balderdashy/sails-docs/commit/7c2e0faf97b82f8bb730577292cdca83ffa0d819
++ **Default blueprint actions will no longer use `res.ok()` or serve matching views.**
+  + Instead of `res.ok()`, blueprints will use `res.json()` directly.
+  + (Or possibly one or more new custom responses, if time allows.  If you're interested in seeing that implemented, please [send a proposal](http://sailsjs.com/contributing))
 <a name="built-in-xss-prevention-expose-locals-to-browser-view-helper"></a>
 + ✓ ~~**Built-in XSS Prevention (`exposeLocalsToBrowser()` view helper)**~~
   + ~~See https://github.com/balderdashy/sails/pull/3522~~~
