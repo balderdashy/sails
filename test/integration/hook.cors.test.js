@@ -321,8 +321,8 @@ describe('CORS config ::', function() {
         },
       ],
     },
-    'with `allRoutes: true`, `credentials: true`, `allowAnyOriginWithCredentialsUnsafe: true`': {
-      sailsCorsConfig: {allRoutes: true, credentials: true, allowAnyOriginWithCredentialsUnsafe: true},
+    'with `allRoutes: true`, `allowCredentials: true`, `allowAnyOriginWithCredentialsUnsafe: true`': {
+      sailsCorsConfig: {allRoutes: true, allowCredentials: true, allowAnyOriginWithCredentialsUnsafe: true},
       expectations: [
         {
           route: 'PUT /no-cors-config',
@@ -583,8 +583,8 @@ describe('CORS config ::', function() {
         },
       ]
     },
-    'with `allowedHeaders: \'x-foo-bar\'`, `exposedHeaders: \'x-owl-hoot\'`, `methods: \'PUT,POST\'`': {
-      sailsCorsConfig: {allowedHeaders: 'x-foo-bar', exposedHeaders: 'x-owl-hoot', methods: 'PUT,POST'},
+    'with `allowRequestHeaders: \'x-foo-bar\'`, `allowResponseHeaders: \'x-owl-hoot\'`, `allowRequestMethods: \'PUT,POST\'`': {
+      sailsCorsConfig: {allowRequestHeaders: 'x-foo-bar', allowResponseHeaders: 'x-owl-hoot', allowRequestMethods: 'PUT,POST'},
       expectations: [
         {
           route: 'PUT /no-cors-config',
@@ -645,7 +645,7 @@ describe('CORS config ::', function() {
               'PUT /origin-example-com-somewhere-com': {cors: {allowOrigins: 'http://example.com, http://somewhere.com'}, target: function(req, res){return res.ok();}},
               'PUT /origin-example-com-somewhere-com-array': {cors: {allowOrigins: ['http://example.com', 'http://somewhere.com']}, target: function(req, res){return res.ok();}},
               '/all-methods-origin-example-com': {cors: {allowOrigins: 'http://example.com'}, target: function(req, res){return res.ok();}},
-              '/unsafe': {cors: {allowOrigins: '*', credentials: true, allowAnyOriginWithCredentialsUnsafe: true}, target: function(req, res){return res.ok();}},
+              '/unsafe': {cors: {allowOrigins: '*', allowCredentials: true, allowAnyOriginWithCredentialsUnsafe: true}, target: function(req, res){return res.ok();}},
             }
           }, function(err, _sails) {
             sailsApp = _sails;
@@ -712,7 +712,7 @@ describe('CORS config ::', function() {
               'PUT /origin-example-com-somewhere-com': {cors: {origin: 'http://example.com, http://somewhere.com'}, target: function(req, res){return res.ok();}},
               'PUT /origin-example-com-somewhere-com-array': {cors: {origin: ['http://example.com', 'http://somewhere.com']}, target: function(req, res){return res.ok();}},
               '/all-methods-origin-example-com': {cors: {origin: 'http://example.com'}, target: function(req, res){return res.ok();}},
-              '/unsafe': {cors: {origin: '*', credentials: true, allowAnyOriginWithCredentialsUnsafe: true}, target: function(req, res){return res.ok();}},
+              '/unsafe': {cors: {origin: '*', allowCredentials: true, allowAnyOriginWithCredentialsUnsafe: true}, target: function(req, res){return res.ok();}},
             }
           }, function(err, _sails) {
             sailsApp = _sails;
@@ -765,13 +765,13 @@ describe('CORS config ::', function() {
     });
   });
 
-  describe('with invalid global CORS config ({allRoutes: true, origin: \'*\', credentials: true})', function() {
+  describe('with invalid global CORS config ({allRoutes: true, origin: \'*\', allowCredentials: true})', function() {
 
     it('should fail to lift', function(done) {
       (new Sails()).load({
           hooks: {grunt: false, views: false, blueprints: false, policies: false},
           log: {level: 'silent'},
-          cors: {allRoutes: true, allowOrigins: '*', credentials: true},
+          cors: {allRoutes: true, allowOrigins: '*', allowCredentials: true},
         }, function(err, _sails) {
           if (err) {return done();}
           return done(new Error('Sails should have failed to lift with invalid global CORS config!'));
@@ -781,14 +781,14 @@ describe('CORS config ::', function() {
 
   });
 
-  describe('with invalid route CORS config ({allRoutes: true, origin: \'*\', credentials: true})', function() {
+  describe('with invalid route CORS config ({allRoutes: true, origin: \'*\', allowCredentials: true})', function() {
 
     it('should fail to lift', function(done) {
       (new Sails()).load({
           hooks: {grunt: false, views: false, blueprints: false, policies: false},
           log: {level: 'silent'},
           routes: {
-            '/invalid': {cors: {allowOrigins: '*', credentials: true}}
+            '/invalid': {cors: {allowOrigins: '*', allowCredentials: true}}
           }
         }, function(err, _sails) {
           if (err) {return done();}
