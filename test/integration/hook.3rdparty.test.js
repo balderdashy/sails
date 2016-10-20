@@ -12,7 +12,7 @@ describe('hooks :: ', function() {
 
   var sailsprocess;
 
-  describe('installing a 3rd-party hook', function() {
+  xdescribe('installing a 3rd-party hook', function() {
     var appName = 'testApp';
 
     before(function() {

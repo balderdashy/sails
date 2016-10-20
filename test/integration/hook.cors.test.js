@@ -392,7 +392,7 @@ describe('CORS config ::', function() {
       ]
     },
     'with `allRoutes: true`, `origin: http://example.com`': {
-      sailsCorsConfig: {allRoutes: true, origin: 'http://example.com'},
+      sailsCorsConfig: {allRoutes: true, allowOrigins: 'http://example.com'},
       expectations: [
         {
           route: 'PUT /no-cors-config',
@@ -454,7 +454,7 @@ describe('CORS config ::', function() {
       ]
     },
     'with `allRoutes: true`, `origin: http://example.com, http://somewhere.com`': {
-      sailsCorsConfig: {allRoutes: true, origin: 'http://example.com, http://somewhere.com'},
+      sailsCorsConfig: {allRoutes: true, allowOrigins: 'http://example.com, http://somewhere.com'},
       expectations: [
         {
           route: 'PUT /no-cors-config',
@@ -519,7 +519,7 @@ describe('CORS config ::', function() {
       ]
     },
     'with `allRoutes: true`, `origin: [\'http://example.com\', \'http://somewhere.com\']`': {
-      sailsCorsConfig: {allRoutes: true, origin: ['http://example.com', 'http://somewhere.com']},
+      sailsCorsConfig: {allRoutes: true, allowOrigins: ['http://example.com', 'http://somewhere.com']},
       expectations: [
         {
           route: 'PUT /no-cors-config',
@@ -582,6 +582,48 @@ describe('CORS config ::', function() {
           }
         },
       ]
+    },
+    'with `allowedHeaders: \'x-foo-bar\'`, `exposedHeaders: \'x-owl-hoot\'`, `methods: \'PUT,POST\'`': {
+      sailsCorsConfig: {allowedHeaders: 'x-foo-bar', exposedHeaders: 'x-owl-hoot', methods: 'PUT,POST'},
+      expectations: [
+        {
+          route: 'PUT /no-cors-config',
+          request_headers: {origin: 'http://example.com'},
+          response_status: 200,
+          response_headers: null
+        },
+        {
+          route: 'PUT /cors-true',
+          request_headers: {origin: 'http://example.com'},
+          response_status: 200,
+          response_headers: {
+            'access-control-allow-origin': '*',
+          }
+        },
+        {
+          route: 'OPTIONS /cors-true',
+          request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
+          response_status: 200,
+          response_headers: {
+            'access-control-allow-origin': '*',
+            'access-control-allow-methods': 'PUT,POST',
+            'access-control-allow-headers': 'x-foo-bar',
+            'access-control-expose-headers': 'x-owl-hoot',
+          }
+        },
+        {
+          route: 'OPTIONS /origin-example-com',
+          request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
+          response_status: 200,
+          response_headers: {
+            'access-control-allow-origin': 'http://example.com',
+            'access-control-allow-methods': 'PUT,POST',
+            'access-control-allow-headers': 'x-foo-bar',
+            'access-control-expose-headers': 'x-owl-hoot',
+            'vary': 'Origin'
+          }
+        },
+      ]
     }
   };
 
@@ -593,6 +635,75 @@ describe('CORS config ::', function() {
         (new Sails()).load({
             hooks: {grunt: false, views: false, blueprints: false, policies: false},
             log: {level: 'error'},
+            security: {
+              cors: setup.sailsCorsConfig
+            },
+            routes: {
+              'PUT /no-cors-config': function(req, res){return res.ok();},
+              'PUT /cors-true': {cors: true, target: function(req, res){return res.ok();}},
+              'PUT /origin-example-com': {cors: {allowOrigins: 'http://example.com'}, target: function(req, res){return res.ok();}},
+              'PUT /origin-example-com-somewhere-com': {cors: {allowOrigins: 'http://example.com, http://somewhere.com'}, target: function(req, res){return res.ok();}},
+              'PUT /origin-example-com-somewhere-com-array': {cors: {allowOrigins: ['http://example.com', 'http://somewhere.com']}, target: function(req, res){return res.ok();}},
+              '/all-methods-origin-example-com': {cors: {allowOrigins: 'http://example.com'}, target: function(req, res){return res.ok();}},
+              '/unsafe': {cors: {allowOrigins: '*', credentials: true, allowAnyOriginWithCredentialsUnsafe: true}, target: function(req, res){return res.ok();}},
+            }
+          }, function(err, _sails) {
+            sailsApp = _sails;
+            return done(err);
+          }
+        );
+      });
+
+      after(function(done) {
+        sailsApp.lower(done);
+      });
+
+      _.each(setup.expectations, function(expectation) {
+        var routeParts = expectation.route.split(' ');
+        var method = routeParts[0];
+        var path = routeParts[1];
+        describe('a ' + method.toUpperCase() + ' request to ' + path + ' using ' + JSON.stringify(expectation.request_headers), function() {
+
+          var responseHolder = {};
+          before(function(done) {
+            sailsApp.request({
+              url: path,
+              method: method,
+              headers: expectation.request_headers
+            }, function (err, response, data) {
+              if (err) {return done(err);}
+              responseHolder.response = response;
+              return done();
+            });
+          });
+
+          it('should respond with status code ' + expectation.response_status, function() {
+            assert.equal(responseHolder.response.statusCode, expectation.response_status);
+          });
+
+          var expectedHeaders = _.extend({}, {
+            'access-control-allow-origin': undefined,
+            'access-control-allow-methods': undefined,
+            'access-control-allow-headers': undefined,
+            'access-control-allow-credentials': undefined,
+            'access-control-exposed-headers': undefined,
+            'vary': undefined
+          }, expectation.response_headers || {});
+
+          expectHeaders(responseHolder, expectedHeaders);
+
+        });
+      });
+
+    });
+
+    describe(name + ' (with deprecated config)', function() {
+      var sailsApp;
+
+      before(function(done) {
+        (new Sails()).load({
+            hooks: {grunt: false, views: false, blueprints: false, policies: false},
+            log: {level: 'silent'},
             cors: setup.sailsCorsConfig,
             routes: {
               'PUT /no-cors-config': function(req, res){return res.ok();},
@@ -660,7 +771,7 @@ describe('CORS config ::', function() {
       (new Sails()).load({
           hooks: {grunt: false, views: false, blueprints: false, policies: false},
           log: {level: 'silent'},
-          cors: {allRoutes: true, origin: '*', credentials: true},
+          cors: {allRoutes: true, allowOrigins: '*', credentials: true},
         }, function(err, _sails) {
           if (err) {return done();}
           return done(new Error('Sails should have failed to lift with invalid global CORS config!'));
@@ -677,7 +788,7 @@ describe('CORS config ::', function() {
           hooks: {grunt: false, views: false, blueprints: false, policies: false},
           log: {level: 'silent'},
           routes: {
-            '/invalid': {cors: {origin: '*', credentials: true}}
+            '/invalid': {cors: {allowOrigins: '*', credentials: true}}
           }
         }, function(err, _sails) {
           if (err) {return done();}
@@ -704,7 +815,7 @@ function makeRequest(options, responseHolder, sailsApp) {
 function expectHeaders(responseHolder, headers) {
   _.each(headers, function(val, header) {
     if (_.isUndefined(val)) {
-      it('`' + header + '` should be undefined', function(){ assert(_.isUndefined(responseHolder.response.headers[header]), responseHolder.response.headers[header]); });
+      it('`' + header + '` should be undefined', function(){ assert(_.isUndefined(responseHolder.response.headers[header]), 'Got `' + responseHolder.response.headers[header] + '` instead'); });
     } else {
       it('`' + header + '` should be `' + val + '`', function(){ assert.equal(responseHolder.response.headers[header], val); });
     }

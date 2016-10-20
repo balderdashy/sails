@@ -134,7 +134,7 @@ describe('controllers :: ', function() {
       }).execSync();
 
       // Load the Sails app.
-      (new Sails()).load({hooks: {grunt: false, views: false, blueprints: false, policies: false}, log: {level: 'error'}}, function(err, _sails) {
+      (new Sails()).load({hooks: {security: false, grunt: false, views: false, blueprints: false, policies: false}, log: {level: 'error'}}, function(err, _sails) {
         sailsApp = _sails;
         return done(err);
       });
