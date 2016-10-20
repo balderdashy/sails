@@ -7,7 +7,7 @@ var _ = require('lodash');
 var sailsgen = require('sails-generate');
 var package = require('../package.json');
 var rconf = require('../lib/app/configuration/rc');
-
+var CaptainsLog = require('captains-log');
 
 
 /**
@@ -57,6 +57,10 @@ module.exports = function () {
   // `scope.generators.modules` as needed (simpler)
   _.merge(scope, rconf);
 
+  // Get a temporary logger just for use in `sails new`.
+  // > This is so that logging levels are configurable, even when a
+  // > Sails app hasn't been loaded yet.
+  var log = CaptainsLog(rconf.log);
 
   // Pass the original CLI arguments down to the generator
   // (but first, remove commander's extra argument)
@@ -67,6 +71,31 @@ module.exports = function () {
   scope.generatorType = 'new';
 
   return sailsgen(scope, {
-    success: function() {}
+    // Handle unexpected errors.
+    error: function (err) {
+
+      log.error(err);
+      return process.exit(1);
+
+    },//</on error :: sailsGen()>
+
+    // Attend to invalid usage.
+    invalid: function (err) {
+
+      // If this is an Error, don't bother logging the stack, just log the `.message`.
+      // (This is purely for readability.)
+      if (_.isError(err)) {
+        log.error(err.message);
+      }
+      else {
+        log.error(err);
+      }
+
+      return process.exit(1);
+
+    },//</on invalid :: sailsGen()>
+    success: function() {
+      // Good to go.
+    }
   });
 };
