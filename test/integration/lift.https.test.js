@@ -23,7 +23,7 @@ describe('Starting HTTPS sails server with lift', function() {
     var sailsServer;
 
     before(function() {
-      fs.writeFileSync(path.resolve('../', appName, 'config/env/development.js'), "module.exports = {ssl: {key: require('fs').readFileSync('"+require('path').resolve(__dirname, 'cert','sailstest-key.pem')+"'), cert: require('fs').readFileSync('"+require('path').resolve(__dirname, 'cert','sailstest-cert.pem')+"')}};");
+      fs.writeFileSync(path.resolve('../', appName, 'config/env/development.js'), "module.exports = {ssl: {key: require('fs').readFileSync('"+require('path').resolve(__dirname, 'cert','sailstest-key.pem').replace(/\\/g,'\\\\')+"'), cert: require('fs').readFileSync('"+require('path').resolve(__dirname, 'cert','sailstest-cert.pem').replace(/\\/g,'\\\\')+"')}};");
     });
 
     after(function(done) {
@@ -62,7 +62,7 @@ describe('Starting HTTPS sails server with lift', function() {
     var sailsServer;
 
     before(function() {
-      fs.writeFileSync(path.resolve('../', appName, 'config/env/development.js'), "module.exports = {ssl: true, http: {serverOptions: { key: require('fs').readFileSync('"+require('path').resolve(__dirname, 'cert','sailstest-key.pem')+"'), cert: require('fs').readFileSync('"+require('path').resolve(__dirname, 'cert','sailstest-cert.pem')+"')}}};");
+      fs.writeFileSync(path.resolve('../', appName, 'config/env/development.js'), "module.exports = {ssl: true, http: {serverOptions: { key: require('fs').readFileSync('"+require('path').resolve(__dirname, 'cert','sailstest-key.pem').replace(/\\/g,'\\\\')+"'), cert: require('fs').readFileSync('"+require('path').resolve(__dirname, 'cert','sailstest-cert.pem').replace(/\\/g,'\\\\')+"')}}};");
     });
 
     after(function(done) {
