@@ -1,11 +1,13 @@
-# # # # # # # # # # # # # # # # # # # # # # # #
-#  ╔═╗╔═╗╔═╗╦  ╦╔═╗╦ ╦╔═╗╦═╗ ┬ ┬┌┬┐┬          #
-#  ╠═╣╠═╝╠═╝╚╗╔╝║╣ ╚╦╝║ ║╠╦╝ └┬┘││││          #
-#  ╩ ╩╩  ╩   ╚╝ ╚═╝ ╩ ╚═╝╩╚═o ┴ ┴ ┴┴─┘        #
-#                                             #
-# This file configures Appveyor CI.           #
-# (i.e. how we run the tests on Windows)      #
-# # # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # # # # #
+#  ╔═╗╔═╗╔═╗╦  ╦╔═╗╦ ╦╔═╗╦═╗ ┬ ┬┌┬┐┬              #
+#  ╠═╣╠═╝╠═╝╚╗╔╝║╣ ╚╦╝║ ║╠╦╝ └┬┘││││              #
+#  ╩ ╩╩  ╩   ╚╝ ╚═╝ ╩ ╚═╝╩╚═o ┴ ┴ ┴┴─┘            #
+#                                                 #
+# This file configures Appveyor CI.               #
+# (i.e. how we run the tests on Windows)          #
+#                                                 #
+# https://www.appveyor.com/docs/lang/nodejs-iojs/ #
+# # # # # # # # # # # # # # # # # # # # # # # # # #
 
 
 # Test against these versions of Node.js.
