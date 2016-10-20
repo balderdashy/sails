@@ -42,14 +42,12 @@ describe('router :: ', function() {
           throw new Error(err);
         }
         sailsprocess = sails;
-        setTimeout(done, 100);
+        return done();
       });
     });
 
     afterEach(function(done) {
-      sailsprocess.lower(function() {
-        setTimeout(done, 100);
-      });
+      sailsprocess.lower(done);
     });
 
     after(function() {
