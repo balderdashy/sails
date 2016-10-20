@@ -25,7 +25,7 @@ describe('CSRF ::', function() {
         hooks: {grunt: false, views: false, blueprints: false, policies: false},
         log: {level: 'error'},
         routes: {
-          '/csrfToken': {action: 'csrftoken'},
+          '/csrfToken': {action: 'security.grantcsrftoken'},
           'GET /viewtest/csrf': function(req, res) {res.send('csrf=' + res.locals._csrf);},
           'POST /user': function(req, res) {
             return res.send(201);
