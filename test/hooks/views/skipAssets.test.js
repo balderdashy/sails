@@ -5,11 +5,13 @@
 var path = require('path');
 var util = require('util');
 var _ = require('lodash');
+var tmp = require('tmp');
 var request = require('request');
 var MProcess = require('machinepack-process');
 var MFilesystem = require('machinepack-fs');
 var testSpawningSailsLiftChildProcessInCwd = require('../../helpers/test-spawning-sails-lift-child-process-in-cwd');
 
+tmp.setGracefulCleanup();
 
 
 
@@ -22,20 +24,20 @@ describe('skipAssets', function() {
     var originalCwd = process.cwd();
     var pathToSailsCLI = path.resolve(__dirname, '../../../bin/sails.js');
 
-    // Track the location of the test app.
-    var pathToTestApp = path.resolve('testApp');
+    var pathToTestApp;
 
-    // Ensure test app does not already exist.
-    before(function (done) {
-      MFilesystem.rmrf({path: pathToTestApp}).exec(done);
-    });
-
-    // Create a Sails app on disk.
-    before(function (done){
+    before(function(done) {
+      // Create a temp directory.
+      var tmpDir = tmp.dirSync({gracefulCleanup: true, unsafeCleanup: true});
+      // Switch to the temp directory.
+      process.chdir(tmpDir.name);
+      pathToTestApp = path.resolve(tmpDir.name, 'testApp');
+      // Create a new Sails app.
       MProcess.executeCommand({
         command: util.format('node %s new %s', pathToSailsCLI, pathToTestApp),
       }).exec(done);
     });
+
 
     // Change its routes file to use `skipAssets`.
     before(function (done){
@@ -87,10 +89,6 @@ describe('skipAssets', function() {
       });
     });
 
-    // Finally clean up the Sails app we created earlier.
-    after(function (done) {
-      MFilesystem.rmrf({path: pathToTestApp}).exec(done);
-    });
     // And CD back to where we were before.
     after(function () {
       process.chdir(originalCwd);
@@ -106,20 +104,20 @@ describe('skipAssets', function() {
     var originalCwd = process.cwd();
     var pathToSailsCLI = path.resolve(__dirname, '../../../bin/sails.js');
 
-    // Track the location of the test app.
-    var pathToTestApp = path.resolve('testApp');
+    var pathToTestApp;
 
-    // Ensure test app does not already exist.
-    before(function (done) {
-      MFilesystem.rmrf({path: pathToTestApp}).exec(done);
-    });
-
-    // Create a Sails app on disk.
-    before(function (done){
+    before(function(done) {
+      // Create a temp directory.
+      var tmpDir = tmp.dirSync({gracefulCleanup: true, unsafeCleanup: true});
+      // Switch to the temp directory.
+      process.chdir(tmpDir.name);
+      pathToTestApp = path.resolve(tmpDir.name, 'testApp');
+      // Create a new Sails app.
       MProcess.executeCommand({
         command: util.format('node %s new %s', pathToSailsCLI, pathToTestApp),
       }).exec(done);
     });
+
 
     // Change its routes file to use `skipAssets`.
     before(function (done){
@@ -168,10 +166,6 @@ describe('skipAssets', function() {
       });
     });
 
-    // Finally clean up the Sails app we created earlier.
-    after(function (done) {
-      MFilesystem.rmrf({path: pathToTestApp}).exec(done);
-    });
     // And CD back to where we were before.
     after(function () {
       process.chdir(originalCwd);
