@@ -8,12 +8,14 @@
 # # # # # # # # # # # # # # # # # # # # # # # #
 
 
-# Test against this version of Node.js
-# (Appveyor does not natively support running against multiple
-#  Node versions, at least not as of Oct 20, 2016.)
+# Test against these versions of Node.js.
 environment:
-  nodejs_version: "4"
-
+  matrix:
+    - nodejs_version: "0.10"
+    - nodejs_version: "0.12"
+    - nodejs_version: "4"
+    - nodejs_version: "5"
+    - nodejs_version: "6"
 
 # Install scripts. (runs after repo cloning)
 install:
