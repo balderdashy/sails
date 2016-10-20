@@ -1,0 +1,42 @@
+# # # # # # # # # # # # # # # # # # # # # # # #
+#  ╔═╗╔═╗╔═╗╦  ╦╔═╗╦ ╦╔═╗╦═╗ ┬ ┬┌┬┐┬          #
+#  ╠═╣╠═╝╠═╝╚╗╔╝║╣ ╚╦╝║ ║╠╦╝ └┬┘││││          #
+#  ╩ ╩╩  ╩   ╚╝ ╚═╝ ╩ ╚═╝╩╚═o ┴ ┴ ┴┴─┘        #
+#                                             #
+# This file configures Appveyor CI.           #
+# (i.e. how we run the tests on Windows)      #
+# # # # # # # # # # # # # # # # # # # # # # # #
+
+
+# Test against this version of Node.js
+# (Appveyor does not natively support running against multiple
+#  Node versions, at least not as of Oct 20, 2016.)
+environment:
+  nodejs_version: "4"
+
+
+# Install scripts. (runs after repo cloning)
+install:
+  # Get the latest stable version of Node.js
+  # (Not sure what this is for, it's just in Appveyor's example.)
+  - ps: Install-Product node $env:nodejs_version
+  # Install declared dependencies
+  - npm install
+
+
+# Post-install test scripts.
+test_script:
+  # Output Node and NPM version info.
+  # (Presumably just in case Appveyor decides to try any funny business?
+  #  But seriously, always good to audit this kind of stuff for debugging.)
+  - node --version
+  - npm --version
+  # Run the actual tests.
+  - npm test
+
+
+# Don't actually build.
+# (Not sure what this is for, it's just in Appveyor's example.
+#  I'm not sure what we're not building... but I'm OK with not
+#  building it.  I guess.)
+build: off
