@@ -67,6 +67,12 @@ describe('controllers :: ', function() {
         destination: 'api/controllers/someFolder/someOtherFolder/NestedLegacyController.js',
         string: 'module.exports = { fnAction: function (req, res) { res.send(\'nested legacy fn action!\'); }, machineAction: { exits: {success: {example: \'abc123\'} },  fn: function (inputs, exits) { exits.success(\'nested legacy machine action!\'); } } };'
       }).execSync();
+      // Create a nested legacy controller file, with dots in the subdirectory.
+      Filesystem.writeSync({
+        force: true,
+        destination: 'api/controllers/some.folder/some.other.folder/NestedLegacyController.js',
+        string: 'module.exports = { fnAction: function (req, res) { res.send(\'nested legacy fn action!\'); }, machineAction: { exits: {success: {example: \'abc123\'} },  fn: function (inputs, exits) { exits.success(\'nested legacy machine action!\'); } } };'
+      }).execSync();
       // Create a nested action file with a machine.
       Filesystem.writeSync({
         force: true,
@@ -98,6 +104,7 @@ describe('controllers :: ', function() {
         destination: 'config/routes.js',
         string: 'module.exports.routes = ' + JSON.stringify({
           'POST /route1': 'TopLevelLegacyController.fnAction',
+          'POST /route1a': 'TopLevelLegacy.fnAction',
           'POST /route2': 'TopLevelLegacyController.machineAction',
           'POST /route3': {
              controller: 'TopLevelLegacyController',
@@ -111,6 +118,9 @@ describe('controllers :: ', function() {
           },
           'POST /route6': {
             action: 'somefolder/someotherfolder/nestedlegacy/fnaction'
+          },
+          'POST /route6a': {
+            action: 'some/folder/some/other/folder/nestedlegacy/fnaction'
           },
           'POST /route7': {
             action: 'somefolder/someotherfolder/nested-standalone-machine'
@@ -155,6 +165,8 @@ describe('controllers :: ', function() {
         'top-level-standalone-machine',
         'somefolder/someotherfolder/nestedlegacy/fnaction',
         'somefolder/someotherfolder/nestedlegacy/machineaction',
+        'some/folder/some/other/folder/nestedlegacy/fnaction',
+        'some/folder/some/other/folder/nestedlegacy/machineaction',
         'somefolder/someotherfolder/nested-standalone-machine'
       ];
       var unexpectedActions = _.difference(_.keys(sailsApp._actions), expectedActions);
@@ -167,6 +179,14 @@ describe('controllers :: ', function() {
 
     it('should bind a route using \'TopLevelLegacyController/fnAction\'', function(done) {
       sailsApp.request('POST /route1', {}, function (err, resp, data) {
+        assert(!err, err);
+        assert.deepEqual(data, 'legacy fn action!');
+        done();
+      });
+    });
+
+    it('should bind a route using \'TopLevelLegacy/fnAction\'', function(done) {
+      sailsApp.request('POST /route1a', {}, function (err, resp, data) {
         assert(!err, err);
         assert.deepEqual(data, 'legacy fn action!');
         done();
@@ -206,6 +226,14 @@ describe('controllers :: ', function() {
     });
 
     it('should bind a route using {action: \'somefolder/someotherfolder/nestedlegacy/fnaction\'}', function(done) {
+      sailsApp.request('POST /route6', {}, function (err, resp, data) {
+        assert(!err, err);
+        assert.deepEqual(data, 'nested legacy fn action!');
+        done();
+      });
+    });
+
+    it('should bind a route using {action: \'some/folder/some/other/folder/nestedlegacy/fnaction\'}', function(done) {
       sailsApp.request('POST /route6', {}, function (err, resp, data) {
         assert(!err, err);
         assert.deepEqual(data, 'nested legacy fn action!');
@@ -255,6 +283,8 @@ describe('controllers :: ', function() {
         'top-level-standalone-machine',
         'somefolder/someotherfolder/nestedlegacy/fnaction',
         'somefolder/someotherfolder/nestedlegacy/machineaction',
+        'some/folder/some/other/folder/nestedlegacy/fnaction',
+        'some/folder/some/other/folder/nestedlegacy/machineaction',
         'somefolder/someotherfolder/nested-standalone-machine'
       ];
       var unexpectedActions = _.difference(_.keys(actions), expectedActions);
