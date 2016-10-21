@@ -59,7 +59,7 @@ describe('blueprints :: ', function() {
         },
         log: {level: 'error'},
         controllers: {
-          actions: {
+          moduleDefinitions: {
             'toplevellegacy/fnaction': function (req, res) { res.send('legacy fn action!'); },
             'toplevellegacy/machineaction': { exits: {success: {example: 'abc123'} }, fn: function (inputs, exits) { exits.success('legacy machine action!'); } },
             'top-level-standalone-fn': function (req, res) { res.send('top level standalone fn!'); },

@@ -86,7 +86,7 @@ describe('policies :: ', function() {
           },
           log: {level: 'silent'},
           controllers: {
-            actions: {
+            moduleDefinitions: {
               'user': function(req, res) { return res.send('user'); },
               'user/foo': function(req, res) { return res.send('user.foo'); },
               'user/foo/bar': function(req, res) { return res.send('user.foo.bar'); }
@@ -343,7 +343,7 @@ describe('policies :: ', function() {
           },
           log: {level: 'silent'},
           controllers: {
-            actions: {
+            moduleDefinitions: {
               'user': function(req, res) { return res.json({action: 'user', animals: {cat: req.options.cat, owl: req.options.owl}}); },
               'user/foo': function(req, res) { return res.json({action: 'user.foo', animals: {cat: req.options.cat, owl: req.options.owl}}); },
               'user/foo/bar': function(req, res) { return res.json({action: 'user.foo.bar', animals: {cat: req.options.cat, owl: req.options.owl}}); }
@@ -503,7 +503,7 @@ describe('policies :: ', function() {
           },
           log: {level: 'silent'},
           controllers: {
-            actions: {
+            moduleDefinitions: {
               'user': function(req, res) { return res.json({action: 'user', foo: req.options.foo, animals: {cat: req.options.cat, owl: req.options.owl}}); },
               'user/foo': function(req, res) { return res.json({action: 'user/foo', foo: req.options.foo,  animals: {cat: req.options.cat, owl: req.options.owl}}); },
               'user/foo/bar': function(req, res) { return res.json({action: 'user/foo/bar', foo: req.options.foo, animals: {cat: req.options.cat, owl: req.options.owl}}); }

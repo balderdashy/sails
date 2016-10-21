@@ -53,7 +53,7 @@ describe('blueprints :: ', function() {
       },
       log: {level: 'error'},
       controllers: {
-        actions: {
+        moduleDefinitions: {
           'index': function (req, res) { res.send('top-level index!'); },
           'secondlevel/index': function (req, res) { res.send('second-level index!'); },
           'thirdlevel/index': function (req, res) { res.send('third-level index!'); },
