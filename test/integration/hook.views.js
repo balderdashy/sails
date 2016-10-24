@@ -21,7 +21,8 @@ describe('hooks :: ', function() {
 
     before(function(done) {
       appHelper.build(function() {
-        fs.writeFileSync('config/extraroutes.js', 'module.exports.routes = {"/renderView": function(req, res) {req._sails.renderView("homepage", {}, function(err, html) {return res.send(html);});}}');
+        fs.writeFileSync('config/extraroutes.js', 'module.exports.routes = {"/resView": function(req, res) { return res.view("homepage"); }, "/resViewNoLayout": function(req, res) { return res.view("homepage", {layout: false}); }, "/resViewBlahLayout": function(req, res) { return res.view("homepage", {layout: "blah"}); }, "/renderView": function(req, res) {req._sails.renderView("homepage", {}, function(err, html) {return res.send(html);});}}');
+        fs.writeFileSync('views/blah.ejs', '<BLAH><%-body%></BLAH>');
         return done();
       });
     });
@@ -29,6 +30,144 @@ describe('hooks :: ', function() {
     after(function() {
       process.chdir('../');
       appHelper.teardown();
+    });
+
+    describe('using res.view', function () {
+
+      before(function(done) {
+        appHelper.lift({
+          verbose: false,
+        }, function(err, sails) {
+          if (err) {
+            throw new Error(err);
+          }
+          sailsprocess = sails;
+          setTimeout(done, 100);
+        });
+      });
+
+      after(function(done) {
+        sailsprocess.lower(function() {
+          setTimeout(done, 100);
+        });
+
+      });
+
+      it('should respond to a get request to localhost:1342 with welcome page', function(done) {
+
+        httpHelper.testRoute('get', 'resView', function(err, response) {
+          if (err) {
+            return done(new Error(err));
+          }
+          assert(response.body.indexOf('not found') < 0);
+          assert(response.body.indexOf('<!-- Default home page -->') > -1);
+          done();
+        });
+      });
+
+      it('should wrap the view in the default layout', function(done) {
+
+        httpHelper.testRoute('get', 'resView', function(err, response) {
+          if (err) {
+            return done(new Error(err));
+          }
+          assert(response.body.indexOf('<html>') > -1);
+          done();
+        });
+      });
+
+    });
+
+    describe('using res.view with no layout', function () {
+
+      before(function(done) {
+        appHelper.lift({
+          verbose: false,
+        }, function(err, sails) {
+          if (err) {
+            throw new Error(err);
+          }
+          sailsprocess = sails;
+          setTimeout(done, 100);
+        });
+      });
+
+      after(function(done) {
+        sailsprocess.lower(function() {
+          setTimeout(done, 100);
+        });
+
+      });
+
+      it('should respond to a get request to localhost:1342 with welcome page', function(done) {
+
+        httpHelper.testRoute('get', 'resViewNoLayout', function(err, response) {
+          if (err) {
+            return done(new Error(err));
+          }
+          assert(response.body.indexOf('not found') < 0);
+          assert(response.body.indexOf('<!-- Default home page -->') > -1);
+          done();
+        });
+      });
+
+      it('should not wrap the view in the default layout', function(done) {
+
+        httpHelper.testRoute('get', 'resViewNoLayout', function(err, response) {
+          if (err) {
+            return done(new Error(err));
+          }
+          assert(response.body.indexOf('<html>') === -1);
+          done();
+        });
+      });
+
+    });
+
+    describe('using res.view with an alternate layout', function () {
+
+      before(function(done) {
+        appHelper.lift({
+          verbose: false,
+        }, function(err, sails) {
+          if (err) {
+            throw new Error(err);
+          }
+          sailsprocess = sails;
+          setTimeout(done, 100);
+        });
+      });
+
+      after(function(done) {
+        sailsprocess.lower(function() {
+          setTimeout(done, 100);
+        });
+
+      });
+
+      it('should respond to a get request to localhost:1342 with welcome page', function(done) {
+
+        httpHelper.testRoute('get', 'resViewBlahLayout', function(err, response) {
+          if (err) {
+            return done(new Error(err));
+          }
+          assert(response.body.indexOf('not found') < 0);
+          assert(response.body.indexOf('<!-- Default home page -->') > -1);
+          done();
+        });
+      });
+
+      it('should wrap the view in the alternate layout', function(done) {
+
+        httpHelper.testRoute('get', 'resViewBlahLayout', function(err, response) {
+          if (err) {
+            return done(new Error(err));
+          }
+          assert(response.body.indexOf('<BLAH>') > -1);
+          done();
+        });
+      });
+
     });
 
     describe('using renderView', function () {
