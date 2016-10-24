@@ -40,7 +40,6 @@
     "cookie-signature": "1.0.6",
     "csurf": "1.9.0",
     "ejs": "2.3.4",
-    "ejs-locals": "1.0.2",
     "express": "4.14.0",
     "express-handlebars": "3.0.0",
     "express-session": "1.12.1",
