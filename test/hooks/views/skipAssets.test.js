@@ -157,6 +157,9 @@ describe('skipAssets', function() {
                 if (!response.headers['content-type'].match(/application\/javascript/)) {
                   return done(new Error('Expected javascript response content-type header when requesting an asset (but got `'+response.headers['content-type']+'`). `skipAssets` seems to be failing silently!'));
                 }
+                if (body !== 'ok') {
+                  return done(new Error('Expected boy of `sails.io.js` file to be returned, but instead got something else. `skipAssets` seems to be failing silently!'));
+                }
               }
               catch (e) { return done(e); }
               return done();
