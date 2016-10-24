@@ -30,19 +30,38 @@ describe('Router.bind', function() {
       method: 'get'
     })
     .test(function() {
-      it('should send expected response (get /foo)', function(done) {
-        this.sails.request({
-          url: '/foo',
+      $Router.bind('get /FOO', RESPOND.GOODBYE)
+        .expectBoundRoute({
+          path: '/FOO',
           method: 'get'
-        }, function(err, res, body) {
-          if (err) {
-            return done(err);
-          }
-          res.statusCode.should.be.equal(200);
-          body.should.be.equal('hello world!');
-          return done();
+        }).test(function() {
+          it('should send expected response (get /foo)', function(done) {
+            this.sails.request({
+              url: '/foo',
+              method: 'get'
+            }, function(err, res, body) {
+              if (err) {
+                return done(err);
+              }
+              res.statusCode.should.be.equal(200);
+              body.should.be.equal('hello world!');
+              return done();
+            });
+          });
+          it('router should not be case-sensitive', function(done) {
+            this.sails.request({
+              url: '/FOO',
+              method: 'get'
+            }, function(err, res, body) {
+              if (err) {
+                return done(err);
+              }
+              res.statusCode.should.be.equal(200);
+              body.should.be.equal('hello world!');
+              return done();
+            });
+          });
         });
-      });
     });
 
   $Router.bind('get /footarg', {
