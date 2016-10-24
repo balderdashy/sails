@@ -15,11 +15,15 @@ describe('app.getRouteFor()', function (){
     app.load({
       globals: false,
       loadHooks: [],
+      log: {
+        level: 'error'
+      },
       routes: {
         'get /signup': 'PageController.signup',
         'post /signup': 'UserController.signup',
         'post /*': 'UserController.signup',
         'get /': { controller: 'PageController', action: 'homepage' },
+        'get /home': 'index',
         'get /about': { target: 'PageController.about' },
         'get /admin': { target: 'PageController.adminDashboard' },
         'get /badmin': { target: 'PageController.admndashboard' },
@@ -50,7 +54,19 @@ describe('app.getRouteFor()', function (){
     assert.equal(route.url, '/signup');
   });
 
-  it('should return the _first_ matching route', function () {
+  it('should work with new action target syntax', function() {
+    var route = app.getRouteFor('user/signup');
+    assert.equal(route.method, 'post');
+    assert.equal(route.url, '/signup');
+  });
+
+  it('should work with strings without dots or slashes', function() {
+    var route = app.getRouteFor('index');
+    assert.equal(route.method, 'get');
+    assert.equal(route.url, '/home');
+  });
+
+  it('should throw usage error (i.e. `e.code===\'E_USAGE\'`) if target to search is not found', function () {
     try {
       app.getRouteFor('JuiceController.makeJuice');
       assert(false, 'Should have thrown an error');
@@ -88,16 +104,6 @@ describe('app.getRouteFor()', function (){
     }
   });
 
-  it('should throw usage error (i.e. `e.code===\'E_USAGE\'`) if specified target string to search for has no dot', function (){
-    try {
-      app.getRouteFor('SomeController');
-      assert(false, 'Should have thrown an error');
-    }
-    catch (e) {
-      if (e.code !== 'E_USAGE') { assert(false, 'Should have thrown an error w/ code === "E_USAGE"'); }
-    }
-  });
-
   it('should be able to match different syntaxes (routes that specify separate controller+action, or specifically specify a target)', function (){
     assert.equal( app.getRouteFor('WolfController.find').url, '/wolves' );
     assert.equal( app.getRouteFor('WolfController.find').method, 'get' );
@@ -107,11 +113,6 @@ describe('app.getRouteFor()', function (){
 
     assert.equal( app.getRouteFor('WolfController.create').url, '/wolves' );
     assert.equal( app.getRouteFor('WolfController.create').method, 'post' );
-  });
-
-  it('should respect case-sensitivity of action names', function (){
-    assert.equal( app.getRouteFor('WolfController.CreaTe').url, '/wolves/test' );
-    assert.equal( app.getRouteFor('WolfController.CreaTe').method, 'options' );
   });
 
 });
