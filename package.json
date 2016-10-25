@@ -75,7 +75,7 @@
     "router": "1.1.4",
     "rttc": "9.3.3",
     "sails-disk": "~0.10.9",
-    "sails-generate": "^1.1.2",
+    "sails-generate": "^1.2.0",
     "sails-hook-helpers": "^1.0.0",
     "sails-hook-orm": "~1.0.6",
     "sails-hook-sockets": "~0.13.0",
