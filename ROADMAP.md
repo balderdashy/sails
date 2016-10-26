@@ -71,7 +71,7 @@ This section is an early list of some of the features, enhancements, and other i
 <a name="upgrade-to-express-5"></a>
 + **Upgrade to Express 5**
   + Move implementation of `req.param()` from Express core into Sails core
-  + Improve error handling and simplify Sails' `res.view()` 
+  + Improve error handling and simplify Sails' `res.view()`
   + ✓ ~~For performance reasons, on-lift view stat-ing will still be used to build handlers for `{view: 'foo'}` route target syntax.~~
   + Use standalone Express router in virtual request interpreter, but continue using express core for handling HTTP requests
   + **Possibly:** Expose context-free view rendering API (replace experimental sails.renderView() and internally, use [`app.render()`](https://expressjs.com/en/4x/api.html#app.render) or better yet, standalone module)
@@ -145,7 +145,7 @@ This section is an early list of some of the features, enhancements, and other i
   + https://github.com/treelinehq/machine-as-script/commits/master
 <a name="normalize-usage-of-routes-disabled-config-keys"></a>
 + **Normalize usage of `routesDisabled` config keys**
-  + Set up all route-disabling config keys (such as in sails.config.csrf and sails.config.session) to use the same route syntax (rather than disparate regexps vs. csv, etc)
+  + Now applies only to sails.config.session: use Sails [route address syntax](http://sailsjs.org/documentation/concepts/routes/custom-routes#?route-address)
 <a name="strip-out-deprecated-sockets-methods"></a>
 + ✓ ~~**Strip Out Deprecated Sockets Methods**
   + Remove the implementation of deprecated `sails.sockets.*` methods from Sails core.

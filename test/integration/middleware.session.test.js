@@ -133,30 +133,34 @@ describe('middleware :: ', function() {
             log: {level: 'silent'},
             session: {
               secret: 'abc123',
-              routesDisabled: ['/test', '/foo/:id/bar/']
+              routesDisabled: ['/test', '/foo/:id/bar/', 'POST /bar', 'ALL /baz', 'GET r|^[^?]*/[^?/]+\\.[^?/]+(\\?.*)?$|']
             },
             hooks: {grunt: false},
             routes: {
               '/test': function(req, res) {
-                if (_.isUndefined(req.session)) {
-                  return res.send(200);
-                }
-                res.send(500);
+                return res.status(200).send();
+              },
+              '/bar': function(req, res) {
+                return res.status(200).send();
+              },
+              '/baz': function(req, res) {
+                return res.status(200).send();
               },
               '/foo/123/bar': function(req, res) {
-                if (_.isUndefined(req.session)) {
-                  return res.send(200);
-                }
-                res.send(500);
+                return res.status(200).send();
+              },
+              '/sails.io.js': function(req, res) {
+                return res.status(200).send();
               }
+
 
             }
           }, done);
         });
 
-        describe('static path', function() {
+        describe('static path (blank verb)', function() {
 
-          it('there should be no `set-cookie` header in the response', function(done) {
+          it('there should be no `set-cookie` header in the response when requesting via GET', function(done) {
 
             request(
               {
@@ -166,6 +170,89 @@ describe('middleware :: ', function() {
               function(err, response, body) {
                 assert.equal(response.statusCode, 200);
                 assert(_.isUndefined(response.headers['set-cookie']));
+                return done();
+              }
+            );
+          });
+
+          it('there should be no `set-cookie` header in the response when requesting via HEAD', function(done) {
+
+            request(
+              {
+                method: 'HEAD',
+                uri: 'http://localhost:1535/test',
+              },
+              function(err, response, body) {
+                assert.equal(response.statusCode, 200);
+                assert(response.headers['set-cookie']);
+                return done();
+              }
+            );
+          });
+
+        });
+
+
+        describe('static path (ALL verb)', function() {
+
+          it('there should be no `set-cookie` header in the response when requesting via GET', function(done) {
+
+            request(
+              {
+                method: 'GET',
+                uri: 'http://localhost:1535/baz',
+              },
+              function(err, response, body) {
+                assert.equal(response.statusCode, 200);
+                assert(_.isUndefined(response.headers['set-cookie']));
+                return done();
+              }
+            );
+          });
+
+          it('there should be no `set-cookie` header in the response when requesting via HEAD', function(done) {
+
+            request(
+              {
+                method: 'HEAD',
+                uri: 'http://localhost:1535/baz',
+              },
+              function(err, response, body) {
+                assert.equal(response.statusCode, 200);
+                assert(_.isUndefined(response.headers['set-cookie']));
+                return done();
+              }
+            );
+          });
+        });
+
+        describe('static path (POST only)', function() {
+
+          it('there should be no `set-cookie` header in the response when requesting via POST', function(done) {
+
+            request(
+              {
+                method: 'POST',
+                uri: 'http://localhost:1535/bar',
+              },
+              function(err, response, body) {
+                assert.equal(response.statusCode, 200);
+                assert(_.isUndefined(response.headers['set-cookie']));
+                return done();
+              }
+            );
+          });
+
+          it('there SHOULD be a `set-cookie` header in the response when requesting via GET', function(done) {
+
+            request(
+              {
+                method: 'GET',
+                uri: 'http://localhost:1535/bar',
+              },
+              function(err, response, body) {
+                assert.equal(response.statusCode, 200);
+                assert(response.headers['set-cookie']);
                 return done();
               }
             );
@@ -181,6 +268,25 @@ describe('middleware :: ', function() {
               {
                 method: 'GET',
                 uri: 'http://localhost:1535/foo/123/bar',
+              },
+              function(err, response, body) {
+                assert.equal(response.statusCode, 200);
+                assert(_.isUndefined(response.headers['set-cookie']));
+                return done();
+              }
+            );
+          });
+
+        });
+
+        describe('regex path', function() {
+
+          it('there should be no `set-cookie` header in the response', function(done) {
+
+            request(
+              {
+                method: 'GET',
+                uri: 'http://localhost:1535/sails.io.js',
               },
               function(err, response, body) {
                 assert.equal(response.statusCode, 200);
@@ -287,9 +393,9 @@ describe('middleware :: ', function() {
             routes: {
               '/test': function(req, res) {
                 if (_.isUndefined(req.session)) {
-                  return res.send(200);
+                  return res.status(200).send();
                 }
-                res.send(500);
+                return res.status(500).send();
               }
             }
           }, done);
