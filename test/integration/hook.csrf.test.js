@@ -26,7 +26,10 @@ describe('CSRF ::', function() {
         log: {level: 'error'},
         routes: {
           '/csrfToken': {action: 'security/grant-csrf-token'},
-          'GET /viewtest/csrf': function(req, res) {res.send('csrf=' + res.locals._csrf);},
+          'ALL /viewtest/csrf': function(req, res) {
+            var template = _.template('csrf=\'<%-_csrf%>\'');
+            res.send(template(res.locals));
+          },
           'POST /user': function(req, res) {
             return res.send(201);
           },
@@ -52,12 +55,12 @@ describe('CSRF ::', function() {
         sailsConfig = {};
       });
 
-      it('no CSRF token should be present in view locals', function(done) {
+      it('a blank CSRF token should be present in view locals', function(done) {
         sailsApp.request({url: '/viewtest/csrf', method: 'get'}, function(err, response) {
           if (err) {
             return done(err);
           }
-          assert(response.body.indexOf('csrf=null') !== -1, response.body);
+          assert(response.body.indexOf('csrf=\'\'') !== -1, response.body);
           done();
         });
       });
@@ -76,12 +79,30 @@ describe('CSRF ::', function() {
 
       });
 
+      it('a HEAD request to a route with the CSRF used as a view local should not result in an error', function(done) {
+        sailsApp.request({url: '/viewtest/csrf', method: 'head'}, function(err, response) {
+          if (err) {
+            return done(err);
+          }
+          done();
+        });
+      });
+
+      it('an OPTIONS request to a route with the CSRF used as a view local should not result in an error', function(done) {
+        sailsApp.request({url: '/viewtest/csrf', method: 'options'}, function(err, response) {
+          if (err) {
+            return done(err);
+          }
+          done();
+        });
+      });
+
       it('a CSRF token should be present in view locals', function(done) {
         sailsApp.request({url: '/viewtest/csrf', method: 'get'}, function(err, response) {
           if (err) {
             return done(err);
           }
-          assert(response.body.match(/csrf=.{36}(?!.)/), response.body);
+          assert(response.body.match(/csrf='.{36}'/), response.body);
           done();
         });
       });
