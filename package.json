@@ -41,7 +41,6 @@
     "csurf": "1.9.0",
     "ejs": "2.3.4",
     "express": "4.14.0",
-    "express-handlebars": "3.0.0",
     "express-session": "1.12.1",
     "glob": "5.0.15",
     "grunt": "1.0.1",
