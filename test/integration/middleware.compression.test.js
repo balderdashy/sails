@@ -23,6 +23,17 @@ describe('middleware :: ', function() {
 
       // Lift a Sails instance in production mode
       var app = Sails();
+      var originalNodeEnv;
+
+      before(function() {
+        originalNodeEnv = process.env.NODE_ENV;
+        process.env.NODE_ENV = 'production';
+      });
+
+      after(function() {
+        process.env.NODE_ENV = originalNodeEnv;
+      });
+
       before(function (done){
         app.lift({
           globals: false,

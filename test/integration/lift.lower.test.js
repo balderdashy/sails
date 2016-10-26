@@ -1,6 +1,7 @@
 var assert = require('assert');
 var Sails = require('../../lib/app');
 var async = require('async');
+var _ = require('lodash');
 
 describe('sails being lifted and lowered (e.g in a test framework)', function() {
 
@@ -58,66 +59,228 @@ describe('sails being lifted and lowered (e.g in a test framework)', function() 
 
   }); //</should clean up event listeners>
 
+  describe('with NODE_ENV set and Sails environment not configured', function() {
 
+    var sailsApp;
+    var originalNodeEnv;
 
+    before(function() {
+      originalNodeEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = 'foobar';
+    });
 
-
-
-
-  it('should revert NODE_ENV env variable if it was set automatically on load/lift', function(done) {
-
-    // Save reference to original NODE_ENV.
-    var originalNodeEnv = process.env.NODE_ENV;
-
-    // Load `app0` deep in the `'cenote'`
-    Sails().load({
-      environment: 'cenote',
-      log: {
-        level: 'error'
-      },
-      globals: false,
-      hooks: {
-        grunt: false,
+    after(function(done) {
+      process.env.NODE_ENV = originalNodeEnv;
+      if (sailsApp) {
+        return sailsApp.lower(done);
       }
-    }, function(err, app0) {
-      if (err) { return done(err); }
+      else {
+        return done();
+      }
+    });
 
-      // Assert that NODE_ENV was set automatically.
-      assert.equal('cenote', process.env.NODE_ENV);
+    it('should change the Sails environment to match NODE_ENV it the Sails environment is not explicitly configured', function(done) {
 
-      // Lower `app0`
-      app0.lower(function (){
+      // Save reference to original NODE_ENV.
+      var originalNodeEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = 'foobar';
 
-        // Assert that NODE_ENV has been reverted.
-        assert.equal(originalNodeEnv, process.env.NODE_ENV);
+      // Load `app0` deep in the `'cenote'`
+      Sails().load({
+        log: {
+          level: 'error'
+        },
+        globals: false,
+        hooks: {
+          grunt: false,
+        }
+      }, function(err, _sailsApp) {
+        if (err) { return done(err); }
 
-        // Load `app1` in the `'savanna'`
-        Sails().load({
-          environment: 'savanna',
-          log: {
-            level: 'error'
-          },
-          globals: false,
-          hooks: {
-            grunt: false,
-          }
-        }, function(err, app1) {
-          if (err) { return done(err); }
+        sailsApp = _sailsApp;
 
-          // Assert that NODE_ENV was set automatically.
-          assert.equal('savanna', process.env.NODE_ENV);
+        // Assert that NODE_ENV is unchanged.
+        assert.equal('foobar', process.env.NODE_ENV);
 
-          // Lower `app1`
-          app1.lower(function (){
+        // Assert that Sails environment has been changed to match NODE_ENV
+        assert.equal('foobar', sailsApp.config.environment);
 
-            // Assert that NODE_ENV has been reverted again.
-            assert.equal(originalNodeEnv, process.env.NODE_ENV);
+        return done();
 
-            return done();
-          });//</app1.lower()>
-        });//</app1.load()>
-      });//</app0.lower()>
-    });//</app0.load()>
+      });
+
+    });
+
+  });
+
+  describe('with Sails environment configured but no NODE_ENV set', function() {
+
+    var sailsApp;
+    var originalNodeEnv;
+
+    before(function() {
+      originalNodeEnv = process.env.NODE_ENV;
+      delete process.env.NODE_ENV;
+    });
+
+    after(function(done) {
+      process.env.NODE_ENV = originalNodeEnv;
+      if (sailsApp) {
+        return sailsApp.lower(done);
+      }
+      else {
+        return done();
+      }
+    });
+
+    it('should not change the NODE_ENV env variable to match the configured Sails environment, or vice versa', function(done) {
+
+      // Load `app0` deep in the `'cenote'`
+      Sails().load({
+        environment: 'cenote',
+        log: {
+          level: 'error'
+        },
+        globals: false,
+        hooks: {
+          grunt: false,
+        }
+      }, function(err, _sailsApp) {
+
+        if (err) { return done(err); }
+
+        sailsApp = _sailsApp;
+
+        // Assert that NODE_ENV is unchanged.
+        assert(typeof process.env.NODE_ENV === 'undefined');
+
+        // Assert that sails config is unchanged.
+        assert.equal(sailsApp.config.environment, 'cenote');
+
+        return done();
+
+      });//</app0.load()>
+
+    });
+
+  });
+
+  describe('with both NODE_ENV set and Sails environment configured', function() {
+
+    var sailsApp;
+    var originalNodeEnv;
+
+    before(function() {
+      originalNodeEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = 'foobar';
+    });
+
+    after(function(done) {
+      process.env.NODE_ENV = originalNodeEnv;
+      if (sailsApp) {
+        return sailsApp.lower(done);
+      }
+      else {
+        return done();
+      }
+    });
+
+    it('should not change the NODE_ENV env variable to match the configured Sails environment, or vice versa', function(done) {
+
+      // Load `app0` deep in the `'cenote'`
+      Sails().load({
+        environment: 'cenote',
+        log: {
+          level: 'error'
+        },
+        globals: false,
+        hooks: {
+          grunt: false,
+        }
+      }, function(err, _sailsApp) {
+
+        if (err) { return done(err); }
+
+        sailsApp = _sailsApp;
+
+        // Assert that NODE_ENV is unchanged.
+        assert.equal('foobar', process.env.NODE_ENV);
+
+        // Assert that sails config is unchanged.
+        assert.equal(sailsApp.config.environment, 'cenote');
+
+        return done();
+
+      });//</app0.load()>
+
+    });
+
+  });
+
+  describe('with Sails environment set to `production`, and the Node environment not set to `production`', function() {
+
+    var sailsApp;
+    var originalNodeEnv;
+
+    before(function() {
+      originalNodeEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = 'development';
+    });
+
+    after(function(done) {
+      process.env.NODE_ENV = originalNodeEnv;
+      if (sailsApp) {
+        return sailsApp.lower(done);
+      }
+      else {
+        return done();
+      }
+    });
+
+    it('should log a warning', function(done) {
+
+      var warns = [];
+      var customLogger = {
+        level: 'warn',
+        custom: {
+          log: console.log.bind(console),
+          debug: console.log.bind(console),
+          warn: function(msg) {warns.push(msg);}
+        },
+        colors: { warn: '' },
+        prefixTheme: 'abbreviated'
+      };
+
+      // Load `app0` deep in the `'cenote'`
+      Sails().load({
+        environment: 'production',
+        log: customLogger,
+        globals: false,
+        hooks: {
+          grunt: false,
+        }
+      }, function(err, _sailsApp) {
+
+        if (err) { return done(err); }
+
+        sailsApp = _sailsApp;
+
+        // Assert that NODE_ENV is unchanged.
+        assert.equal('development', process.env.NODE_ENV);
+
+        // Assert that sails config is unchanged.
+        assert.equal(sailsApp.config.environment, 'production');
+
+        var foundWarning = false;
+        assert (_.any(warns, function(warn) {
+          return warn.indexOf('Detected Sails environment of `production`, but Node environment is `development`') > -1;
+        }), 'Did not log a warning about NODE_ENV not being set to production!');
+
+        return done();
+
+      });//</app0.load()>
+
+    });
 
   });
 
