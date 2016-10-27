@@ -141,7 +141,8 @@ module.exports = {
     options = options || {};
     _.defaults(options, {
       port: 1342,
-      environment: process.env.TEST_ENV
+      environment: process.env.TEST_ENV,
+      globals: false
     });
     options.hooks = options.hooks || {};
     options.hooks.grunt = options.hooks.grunt || false;
