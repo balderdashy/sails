@@ -6,7 +6,7 @@ var assert = require('assert');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
 var _ = require('lodash');
-var fs = require('fs');
+var fs = require('fs-extra');
 
 
 
@@ -21,8 +21,11 @@ describe('hooks :: ', function() {
 
     before(function(done) {
       appHelper.build(function() {
-        fs.writeFileSync('config/extraroutes.js', 'module.exports.routes = {"/resView": function(req, res) { return res.view("homepage"); }, "/resViewNoLayout": function(req, res) { return res.view("homepage", {layout: false}); }, "/resViewBlahLayout": function(req, res) { return res.view("homepage", {layout: "blah"}); }, "/renderView": function(req, res) {req._sails.renderView("homepage", {}, function(err, html) {return res.send(html);});}}');
-        fs.writeFileSync('views/blah.ejs', '<BLAH><%-body%></BLAH>');
+        fs.outputFileSync('config/extraroutes.js', 'module.exports.routes = {"/partials": function(req, res) { return res.view("test-partials"); }, "/resView": function(req, res) { return res.view("homepage"); }, "/resViewNoLayout": function(req, res) { return res.view("homepage", {layout: false}); }, "/resViewBlahLayout": function(req, res) { return res.view("homepage", {layout: "blah"}); }, "/renderView": function(req, res) {req._sails.renderView("homepage", {}, function(err, html) {return res.send(html);});}}');
+        fs.outputFileSync('views/blah.ejs', '<BLAH><%-body%></BLAH>');
+        fs.outputFileSync('views/test-partials.ejs', '<BLAP><%- partial(\'./partials/outer.ejs\') %></BLAP>');
+        fs.outputFileSync('views/partials/outer.ejs', '<FOO><%- partial(\'./nested/inner.ejs\') %></FOO>');
+        fs.outputFileSync('views/partials/nested/inner.ejs', '<BAR>BAZ!</BAR>');
         return done();
       });
     });
@@ -164,6 +167,41 @@ describe('hooks :: ', function() {
             return done(new Error(err));
           }
           assert(response.body.indexOf('<BLAH>') > -1);
+          done();
+        });
+      });
+
+    });
+
+    describe('using partials', function () {
+
+      before(function(done) {
+        appHelper.lift({
+          verbose: false,
+        }, function(err, sails) {
+          if (err) {
+            throw new Error(err);
+          }
+          sailsprocess = sails;
+          setTimeout(done, 100);
+        });
+      });
+
+      after(function(done) {
+        sailsprocess.lower(function() {
+          setTimeout(done, 100);
+        });
+
+      });
+
+      it('should respond to a get request to localhost:1342 with the correct content', function(done) {
+
+        httpHelper.testRoute('get', 'partials', function(err, response) {
+          if (err) {
+            return done(new Error(err));
+          }
+          assert(response.body.indexOf('not found') < 0);
+          assert(response.body.indexOf('<BLAP><FOO><BAR>BAZ!</BAR></FOO></BLAP>') > -1);
           done();
         });
       });
