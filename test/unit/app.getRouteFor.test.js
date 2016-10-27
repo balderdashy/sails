@@ -66,7 +66,7 @@ describe('app.getRouteFor()', function (){
     assert.equal(route.url, '/home');
   });
 
-  it('should throw usage error (i.e. `e.code===\'E_USAGE\'`) if target to search is not found', function () {
+  it('should throw usage error (i.e. `e.code===\'E_NOT_FOUND\'`) if target to search is not found', function () {
     try {
       app.getRouteFor('JuiceController.makeJuice');
       assert(false, 'Should have thrown an error');
@@ -105,14 +105,35 @@ describe('app.getRouteFor()', function (){
   });
 
   it('should be able to match different syntaxes (routes that specify separate controller+action, or specifically specify a target)', function (){
+
+    assert.equal( app.getRouteFor({controller: 'WolfController', action: 'find'}).url, '/wolves' );
+    assert.equal( app.getRouteFor({controller: 'WolfController', action: 'find'}).method, 'get' );
+
+    assert.equal( app.getRouteFor({controller: 'wolf', action: 'find'}).url, '/wolves' );
+    assert.equal( app.getRouteFor({controller: 'wolf', action: 'find'}).method, 'get' );
+
+    assert.equal( app.getRouteFor({target: {controller: 'wolf', action: 'find'}}).url, '/wolves' );
+    assert.equal( app.getRouteFor({target: {controller: 'wolf', action: 'find'}}).method, 'get' );
+
     assert.equal( app.getRouteFor('WolfController.find').url, '/wolves' );
     assert.equal( app.getRouteFor('WolfController.find').method, 'get' );
+
+    assert.equal( app.getRouteFor({target: 'WolfController.find'}).url, '/wolves' );
+    assert.equal( app.getRouteFor({target: 'WolfController.find'}).method, 'get' );
 
     assert.equal( app.getRouteFor('WolfController.findOne').url, '/wolves/:id' );
     assert.equal( app.getRouteFor('WolfController.findOne').method, 'get' );
 
     assert.equal( app.getRouteFor('WolfController.create').url, '/wolves' );
     assert.equal( app.getRouteFor('WolfController.create').method, 'post' );
+  });
+
+  it('should be case-insensitive regarding controller / action names', function (){
+    assert.equal( app.getRouteFor('WolfController.CreaTe').url, '/wolves' );
+    assert.equal( app.getRouteFor('WolfController.CreaTe').method, 'post' );
+
+    assert.equal( app.getRouteFor({controller: 'WOLF', action: 'finD'}).url, '/wolves' );
+    assert.equal( app.getRouteFor({controller: 'WOLF', action: 'finD'}).method, 'get' );
   });
 
 });
