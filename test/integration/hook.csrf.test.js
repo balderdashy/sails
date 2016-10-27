@@ -165,7 +165,7 @@ describe('CSRF ::', function() {
       });
     });
 
-    describe('with CSRF set to true, blacklisting \'/foo/:id, /user\'}', function() {
+    describe('with CSRF set to true, blacklisting \'POST /foo/:id, /user\'}', function() {
 
       before(function() {
 
@@ -174,7 +174,7 @@ describe('CSRF ::', function() {
             csrf: true
           },
           routes: {
-            '/foo/:id': {csrf: false},
+            'POST /foo/:id': {csrf: false},
             '/user': {csrf: false}
           }
         };
@@ -203,6 +203,15 @@ describe('CSRF ::', function() {
         });
       });
 
+      it('a PUT request on /foo/12 without a CSRF token should result in a 403 response', function(done) {
+        sailsApp.request({url: '/foo/12', method: 'put'}, function(err, response) {
+          if (err && err.status === 403) {
+            return done();
+          }
+          done(new Error('Expected a 403 error, instead got: ' + err || response.body));
+        });
+      });
+
       it('a POST request on /test without a CSRF token should result in a 403 response', function(done) {
         sailsApp.request({url: '/test', method: 'post'}, function(err, response) {
           if (err && err.status === 403) {
@@ -223,7 +232,7 @@ describe('CSRF ::', function() {
 
     });
 
-    describe('with CSRF set to true, blacklisting \'/user\\/\\d+/\'', function() {
+    describe('with CSRF set to true, blacklisting \'POST /user\\/\\d+/\'', function() {
 
       before(function() {
 
@@ -232,7 +241,7 @@ describe('CSRF ::', function() {
             csrf: true
           },
           routes: {
-            'r|user/\\d+|': {csrf: false}
+            'POST r|user/\\d+|': {csrf: false}
           }
         };
 
@@ -245,6 +254,15 @@ describe('CSRF ::', function() {
           }
           assert.equal(response.statusCode, 200);
           done();
+        });
+      });
+
+      it('a PUT request on /user/1 without a CSRF token should result in a 403 response', function(done) {
+        sailsApp.request({url: '/user/1', method: 'put'}, function(err, response) {
+          if (err && err.status === 403) {
+            return done();
+          }
+          done(new Error('Expected a 403 error, instead got: ' + err || response.body));
         });
       });
 
