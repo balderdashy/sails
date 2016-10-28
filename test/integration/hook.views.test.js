@@ -169,7 +169,39 @@ describe('hooks :: ', function() {
       });
     });
 
-    describe('using res.view with no layout', function () {
+    describe('using res.view with `sails.config.views.layout = false`', function () {
+
+      before(function() {
+        sailsConfig = {
+          routes: {
+            '/resView': function(req, res) {
+              return res.view('homepage');
+            }
+          },
+          views: {
+            layout: false
+          }
+        };
+        filesToWrite = {
+          'views/homepage.ejs': '<!-- Default home page -->'
+        };
+      });
+
+      it('should respond to a get request to localhost:1342 with the requested page NOT wrapped in the default layout', function(done) {
+
+        httpHelper.testRoute('get', 'resView', function(err, response) {
+          if (err) {
+            return done(new Error(err));
+          }
+          assert.equal(response.body, '<!-- Default home page -->');
+          done();
+        });
+      });
+
+    });
+
+
+    describe('using res.view with {layout: false} in locals', function () {
 
       before(function() {
         sailsConfig = {
@@ -197,7 +229,7 @@ describe('hooks :: ', function() {
 
     });
 
-    describe('using res.view with no layout', function () {
+    describe('using res.view with an alternate layout', function () {
 
       before(function() {
         sailsConfig = {
@@ -225,6 +257,80 @@ describe('hooks :: ', function() {
       });
 
     });
+
+    describe('using res.view with an alternate extension for EJS', function () {
+      var nunjucks = require('nunjucks');
+      before(function() {
+        sailsConfig = {
+          routes: {
+            '/resView': function(req, res) {
+              return res.view('homepage', {boss: 'llama'});
+            },
+          },
+          views: {
+            extension: 'foo',
+          }
+        };
+        filesToWrite = {
+          'views/layout.foo': '<!DOCTYPE html><html><head><!-- default layout --></head><body><%- body %></body></html>',
+          'views/homepage.foo': '<!-- vars like a <%= boss %> -->',
+        };
+      });
+
+      it('should respond to a get request to localhost:1342 with the correct content', function(done) {
+
+        httpHelper.testRoute('get', 'resView', function(err, response) {
+          if (err) {
+            return done(new Error(err));
+          }
+          assert.equal(response.body, '<!DOCTYPE html><html><head><!-- default layout --></head><body><!-- vars like a llama --></body></html>');
+          done();
+        });
+      });
+
+    });
+
+    describe('using res.view with an alternate render fn', function () {
+      var nunjucks = require('nunjucks');
+      before(function() {
+        sailsConfig = {
+          routes: {
+            '/resView': function(req, res) {
+              return res.view('homepage', {boss: 'dinosaur'});
+            },
+          },
+          views: {
+            layout: false,
+            extension: 'html',
+            getRenderFn: function() {
+              var env = nunjucks.configure({
+                tags: {
+                  variableStart: '<$',
+                  variableEnd: '$>',
+                }
+              });
+              return env.render.bind(env);
+            }
+          }
+        };
+        filesToWrite = {
+          'views/homepage.html': '<!-- vars like a <$ boss $> -->',
+        };
+      });
+
+      it('should respond to a get request to localhost:1342 with the correct content', function(done) {
+
+        httpHelper.testRoute('get', 'resView', function(err, response) {
+          if (err) {
+            return done(new Error(err));
+          }
+          assert.equal(response.body, '<!-- vars like a dinosaur -->');
+          done();
+        });
+      });
+
+    });
+
 
     describe('using partials', function () {
 
