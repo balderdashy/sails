@@ -8,7 +8,8 @@ var exec = child_process.exec;
 var fs = require('fs-extra');
 var _ = require('lodash');
 var SocketIOClient = require('socket.io-client');
-var SailsIOClient = require('./sails.io.js');
+delete require.cache[require.resolve('socket.io-client')];
+var SailsIOClient = require('sails.io.js');
 var Sails = require('../../../lib/app');
 
 

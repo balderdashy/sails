@@ -6,8 +6,7 @@ var assert = require('assert');
 var _ = require('lodash');
 var async = require('async');
 var Sails = require('../../../lib').Sails;
-var socketIOClient = require('socket.io-client');
-var sailsIOClient = require('../../helpers/sails.io.js');
+var sailsIOClient = require('sails.io.js');
 
 
 describe('Pubsub hook', function (){
@@ -69,6 +68,8 @@ describe('Pubsub hook', function (){
       langerie: undefined
     };
     before(function (done){
+      delete require.cache[require.resolve('socket.io-client')];
+      var socketIOClient = require('socket.io-client');
       var io = sailsIOClient(socketIOClient);
       io.sails.autoConnect = false;
       io.sails.environment = 'production'; // (to disable logs from sails.io client)
