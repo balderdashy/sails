@@ -18,7 +18,7 @@ This section is an early list of some of the features, enhancements, and other i
 + **Built-in Support for Dynamic Database Connections**
   + Implemented via `sails.hooks.orm.datastore()`
   + See https://github.com/node-machine/driver-interface and https://github.com/particlebanana/waterline-query-docs/issues/2
-  + API: `sails.hooks.orm.datastore('foo').connect(during, afterDisconnecting)`
+  + API: `sails.hooks.orm.datastore('foo').leaseConnection(during).meta(optionalMD).exec(afterDisconnecting)`
   + Also: `User.find().usingConnection(mySQLConnectionObtainedFromUsingRawDriver).exec();`
   + This is currently implemented at the driver level, as of early Oct 2016.
 <a name="advanced-joins-using-compiled-statements-based-on-knex"></a>
@@ -28,12 +28,12 @@ This section is an early list of some of the features, enhancements, and other i
 <a name="built-in-support-for-native-database-transactions-for-databases-that-support-it"></a>
 + **Built-in Support for Native Database Transactions (for databases that support it)**
   + See https://github.com/postmanlabs/sails-mysql-transactions/issues/26#issuecomment-191225758)
-  + API is similar to above:  `sails.hooks.orm.datastore('foo').transaction(during, afterCommittingOrRollingBack)`
+  + API is similar to above:  `sails.hooks.orm.datastore('foo').transaction(during).meta(optionalMD).exec(afterCommittingOrRollingBack)`
 <a name="native-queries"></a>
 + **Native Queries**
   + Model-based usage like `User.native()` and `User.query()` will be deprecated.
   + Instead, native queries (e.g. SQL or Mongo queries) will be performed by accessing the appropriate datastore.
-  + API is similar to above: `sails.hooks.orm.datastore('foo').query(nativeQuery, afterFinished)`
+  + API is similar to above: `sails.hooks.orm.datastore('foo').sendNativeQuery(nativeQuery).usingConnection(optionalDbConnection).meta(optionalMD).exec(afterFinished)`
 <a name="nested-create-nested-update"></a>
 + **Nested create / nested update**
   + Will be disabled by default (and likely completely deferred to userland).
