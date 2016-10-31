@@ -126,45 +126,4 @@ describe('New app generator', function() {
     });
   });
 
-  describe('sails new with no template option', function() {
-
-    it('should create new app with ejs templates', function(done) {
-
-      exec('node '+ sailsbin + ' new ' + appName, function(err) {
-        if (err) { return done(new Error(err)); }
-
-        var viewConfig = fs.readFileSync('./' + appName + '/config/views.js', 'utf8');
-        assert(viewConfig.indexOf('ejs') !== -1, 'configuration file is incorrect');
-        done();
-      });
-    });
-  });
-
-  describe('sails new <appname> with options --template=ejs', function() {
-
-    it('should create new app with ejs templates', function(done) {
-
-      exec('node '+ sailsbin + ' new ' + appName + ' --template=ejs', function(err) {
-        if (err) { return done(new Error(err)); }
-
-        var viewConfig = fs.readFileSync('./' + appName + '/config/views.js', 'utf8');
-        assert(viewConfig.indexOf('ejs') !== -1, 'configuration file is incorrect');
-        done();
-      });
-    });
-  });
-
-  describe('sails new <appname> with options --template=jade', function() {
-
-    it('should create new app with jade templates', function(done) {
-
-      exec('node '+ sailsbin + ' new ' + appName + ' --template=jade', function(err) {
-        if (err) { return done(new Error(err)); }
-
-        var viewConfig = fs.readFileSync('./' + appName + '/config/views.js', 'utf8');
-        assert(viewConfig.indexOf('jade') !== -1, 'configuration file is incorrect');
-        done();
-      });
-    });
-  });
 });
