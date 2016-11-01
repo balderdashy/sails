@@ -70,6 +70,69 @@ describe('router :: ', function() {
 
     });
 
+    describe('"touch" param (with no value)', function() {
+
+      before(function(){
+        require('fs').writeFileSync('config/routes.js', 'module.exports.routes = {"/testTouch": function(req,res){res.send(typeof req.param("touch") !== "undefined");}};');
+      });
+
+      it('when sent as a query param, should respond with a truthy value', function(done) {
+        httpHelper.testRoute('get', 'testTouch?touch', function(err, response) {
+          if (err) { return done(err); }
+          assert(response.body==='true', Err.badResponse(response));
+          done();
+        });
+
+      });
+
+    });
+
+    describe('req.param() precedence', function() {
+
+      before(function(){
+        require('fs').writeFileSync('config/routes.js', 'module.exports.routes = {"/test/:foo": function(req,res){res.json(req.param("foo"));}, "/test": function(req,res){res.json(req.param("foo"));}};');
+      });
+
+      it('when sent a value is specified in the query, body and route, route param should take precedence', function(done) {
+        httpHelper.testRoute('post', {url: 'test/abc?foo=123', json: {foo: 666}}, function(err, response) {
+          if (err) { return done(err); }
+          assert(response.body==='abc', Err.badResponse(response));
+          done();
+        });
+      });
+
+      it('when sent a value is specified in the query and body, body should take precedence', function(done) {
+        httpHelper.testRoute('post', {url: 'test?foo=123', json: {foo: 666}}, function(err, response) {
+          if (err) { return done(err); }
+          assert(response.body===666, Err.badResponse(response));
+          done();
+        });
+      });
+
+    });
+
+    describe('req.params.allParams', function() {
+
+      before(function(){
+        require('fs').writeFileSync('config/routes.js', 'module.exports.routes = {"/testParams/:foo": function(req,res){res.json(req.params.all());}};');
+      });
+
+      it('should return the correct param values, accounting for precedence', function(done) {
+        httpHelper.testRoute('post', {url: 'testParams/abc?foo=123&baz=999&bar=555&touch', json: {bar: 666}}, function(err, response) {
+          if (err) { return done(err); }
+          assert.equal(response.body.foo, 'abc');
+          assert.equal(response.body.bar, 666);
+          assert.equal(response.body.baz, 999);
+          assert.equal(response.body.touch, '');
+          done();
+        });
+
+      });
+
+    });
+
+
+
   });
 
 });
