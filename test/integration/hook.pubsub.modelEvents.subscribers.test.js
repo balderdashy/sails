@@ -32,7 +32,7 @@ describe('pubsub :: ', function() {
 
       before(function (done) {
         appHelper.buildAndLiftWithTwoSockets(appName, {
-          log: {level: 'silent'}, /*, sockets: {'backwardsCompatibilityFor0.9SocketClients':false} */
+          log: {level: 'warn'}, /*, sockets: {'backwardsCompatibilityFor0.9SocketClients':false} */
         }, function(err, sails, _socket1, _socket2) {
           if (err) {
             return done(err);
@@ -40,7 +40,8 @@ describe('pubsub :: ', function() {
           sailsApp = sails;
           socket1 = _socket1;
           socket2 = _socket2;
-          socket2.get('/user/watch', function(body, jwr) {
+          // Subscribe to new user notifications.
+          socket2.get('/user', function(body, jwr) {
             if (jwr.error) { return done(new Error('Error in tests.  Details:' + JSON.stringify(jwr))); }
             done();
           });
@@ -237,8 +238,8 @@ describe('pubsub :: ', function() {
           }
         });
 
-
-        socket1.get('/pet/watch', function() {
+        // Subscribe to new pet notifications.
+        socket1.get('/pet', function() {
           socket2.post('/user/1/pets', {
             name: 'alice'
           },function(body, jwr) {
