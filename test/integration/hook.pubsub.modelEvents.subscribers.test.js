@@ -68,7 +68,7 @@ describe('pubsub :: ', function() {
 
       });
 
-      it('hitting the custom /userMessage route with no event specified should result in a correct `user` event being received by all subscribers', function(done) {
+      it('hitting the custom /userMessage route should result in a correct `user` event being received by all subscribers', function(done) {
         socket2.on('user', function(message) {
           assert(message.greeting === 'hello', Err.badResponse(message));
           done();
@@ -76,39 +76,6 @@ describe('pubsub :: ', function() {
         socket1.get('/user/message', function (body, jwr) {
           if (jwr.error) { return done(jwr.error); }
           // Otherwise, the event handler above should fire (or this test will time out and fail).
-        });
-
-      });
-
-      it('hitting the custom /userMessage route should with a `foo` event specified should result in no message being received by any subscribers', function(done) {
-        var timeout;
-        socket2.on('foo', function(message) {
-          clearTimeout(timeout);
-          return done(new Error('Received a `foo` event despite not being subscribed!'));
-        });
-        socket1.get('/user/message?event=foo', function (body, jwr) {
-          if (jwr.error) { return done(jwr.error); }
-          // Wait long enough to ensure that an event wasn't received above.
-          timeout = setTimeout(done, 100);
-        });
-
-      });
-
-      it('subscribing to `bar` events, then hitting the custom /userMessage route should with a `bar` event specified should result in a message being received by all subscribers', function(done) {
-        var timeout;
-        socket2.on('bar', function(message) {
-          clearTimeout(timeout);
-          return done();
-        });
-        socket2.get('/user/subscribe?id=1&event=bar', function(body, jwr) {
-          if (jwr.error) { return done(jwr.error); }
-          timeout = setTimeout(function() {
-            return done(new Error('No `bar` message received!'));
-          }, 500);
-          socket1.get('/user/message?event=bar', function (body, jwr) {
-            if (jwr.error) { return done(new Error(util.inspect(jwr.error, {depth: null}))); }
-            // Wait long enough to ensure that an event wasn't received above.
-          });
         });
 
       });

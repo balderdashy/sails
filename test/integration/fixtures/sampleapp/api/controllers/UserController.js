@@ -19,7 +19,7 @@ module.exports = {
           error: 'Expected specified user (with user_id=1) to exist...'
         });
       } else {
-        req._sails.models.user.publish(user, req.param('event') || 'user', {
+        req._sails.models.user.publish(user, {
           greeting: 'hello'
         }, req);
         return res.send(200);
@@ -31,7 +31,7 @@ module.exports = {
 
     req._sails.models.user.subscribe(req, {
       user_id: req.param('id')
-    }, req.param('event'));
+    });
     res.send(200);
   }
 
