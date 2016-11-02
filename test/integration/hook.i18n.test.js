@@ -30,62 +30,56 @@ describe('i18n ::', function() {
   var appName = 'testApp';
 
   var sailsApp;
-  beforeEach(function(done) {
-    appHelper.lift({
-      log: { level: 'silent' }
-    }, function(err, sails) {
-      if (err) {
-        return done(err);
-      }
-      sailsApp = sails;
+  before(function(done) {
+    appHelper.build(function(err) {
+      if (err) {return done(err);}
+      appHelper.lift({
+        log: { level: 'silent' }
+      }, function(err, sails) {
+        if (err) {
+          return done(err);
+        }
+        sailsApp = sails;
+        return done();
+      });
+    });
+  });
+
+  after(function(done) {
+    sailsApp.lower(function() {
+      process.chdir('../');
+      appHelper.teardown();
       return done();
     });
   });
 
-  afterEach(function(done) {
-    sailsApp.lower(done);
-  });
-
-
-
-
-
-
-  before(function(done) {
-    appHelper.build(done);
-  });
-
   describe('with locales generate by sails-generate-backend', function() {
-    it('should say "Welcome" by default', function(done) {
-      assert(sailsApp.__('Welcome') == 'Welcome');
-      done();
+    it('should say "Welcome" by default', function() {
+      assert.equal(sailsApp.__('Welcome'), 'Welcome');
     });
 
-    it('should say "Welcome" in English', function(done) {
-      assert(sailsApp.__({
+    it('should say "Welcome" in English', function() {
+      assert.equal(sailsApp.__({
         phrase: 'Welcome',
         locale: 'en'
-      }) == 'Welcome');
-      done();
+      }), 'Welcome');
     });
 
-    it('should say "Bienvenido" in Spanish', function(done) {
-      assert(sailsApp.__({
+    it('should say "Bienvenido" in Spanish', function() {
+      assert.equal(sailsApp.__({
         phrase: 'Welcome',
         locale: 'es'
-      }) == 'Bienvenido');
-      done();
+      }), 'Bienvenido');
     });
 
-    it('should say "Bienvenue" in French', function(done) {
-      assert(sailsApp.__({
+    it('should say "Bienvenue" in French', function() {
+      assert.equal(sailsApp.__({
         phrase: 'Welcome',
         locale: 'fr'
-      }) == 'Bienvenue');
-      done();
+      }), 'Bienvenue');
     });
 
-    it('should say "Willkommen" in German', function(done) {
+    it('should say "Willkommen" in German', function() {
       //see https://github.com/balderdashy/sails-generate-backend/pull/10
       assert(sailsApp.__({
         phrase: 'Welcome',
@@ -94,14 +88,9 @@ describe('i18n ::', function() {
         phrase: 'Welcome',
         locale: 'de'
       }) === 'Wilkommen');
-      done();
     });
   });
 
-  after(function() {
-    process.chdir('../');
-    appHelper.teardown();
-  });
 });//</describe i18n tests>
 
 
@@ -117,41 +106,38 @@ describe('i18n ::', function() {
 describe('i18n Config ::', function() {
 
   var appName = 'testApp';
-
   var sailsApp;
-  beforeEach(function (done) {
-    appHelper.lift({
-      log: {level: 'silent'}
-    }, function(err, sails) {
-      if (err) {
-        return done(err);
-      }
-      sailsApp = sails;
-      return done();
-    });
-  });
-
-  afterEach(function(done) {
-    sailsApp.lower(done);
-  });
-
-
-
-  before(function(done) {
-    appHelper.build(done);
-  });
 
   describe('with locales generate by config', function() {
 
-    before(function() {
-      var config = 'module.exports.i18n = { defaultLocale: \'de\',updateFiles : true };';
-      fs.writeFileSync(path.resolve('../', appName, 'config/i18n.js'), config);
+    before(function (done) {
+      appHelper.build(function(err) {
+        if (err) {return done(err);}
+        var config = 'module.exports.i18n = { defaultLocale: \'de\',updateFiles : true };';
+        fs.writeFileSync(path.resolve('../', appName, 'config/i18n.js'), config);
+        appHelper.lift({
+          log: {level: 'silent'}
+        }, function(err, sails) {
+          if (err) {
+            return done(err);
+          }
+          sailsApp = sails;
+          return done();
+        });
+      });
     });
 
-    it('should say "Willkommen" by defaultLocale', function(done) {
+    after(function(done) {
+      sailsApp.lower(function() {
+        process.chdir('../');
+        appHelper.teardown();
+        return done();
+      });
+    });
+
+    it('should say "Willkommen" by defaultLocale', function() {
       //see https://github.com/balderdashy/sails-generate-backend/pull/10
       assert(sailsApp.__('Welcome') === 'Willkommen' || sailsApp.__('Welcome') === 'Wilkommen');
-      done();
     });
 
     it('should autoupdate the file', function(done) {
@@ -169,10 +155,6 @@ describe('i18n Config ::', function() {
     });
   });
 
-  after(function() {
-    process.chdir('../');
-    appHelper.teardown();
-  });
 });
 
 
