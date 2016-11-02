@@ -156,7 +156,14 @@ This section is an early list of some of the features, enhancements, and other i
 
 
 
+## 1.1.0 and beyond
 
++ **Expand `express-session`/Connect session store interface**
+  + Expose a method in session stores which can be used to do an initial, asynchronous ping in order to check configuration.
+  + Worst case, we should also be able to use [`.get()`](https://github.com/expressjs/session/blob/2667028d39b3655a45eb1f9579d7f66f26a6937f/README.md#storegetsid-callback) with a nonsense session id to do this-- the errors just won't be as nice, or as easy to negotiate.
+  + The best middle-of-the-road solution is probably to get a couple of standardized error codes in the spec for `.get()`
+    + Most likely, that's stuff like `ECONNREFUSED`
+    + But would be a lot better if we could swing more specific error codes-- e.g. `E_BAD_SESSION_STORE_CONFIG` and `E_COULD_NOT_CONNECT_TO_SESSION_STORE`-- since that would eliminate the possibility of false positives due to throwing / `cb(err)`-ing.
 
 
 &nbsp;
@@ -177,7 +184,6 @@ Feature                                          | Proposal                     
  Generate `test/` folder in new Sails apps       | [#2499](https://github.com/balderdashy/sails/pull/2499#issuecomment-171556544)        | Generate a generic setup for mocha tests in all new Sails apps.  Originally suggested by [@jedd-ahyoung](https://github.com/jedd-ahyoung).
  View helper for bootstrapping script tags       | [#3522](https://github.com/balderdashy/sails/pull/3522)                               | Include a view helper for bootstrapping untrusted data from view locals onto the page via script tags in order to expose it to client-side JavaScript. The tricky part is ensuring protection from attempted XSS attacks.
  Improve CORS implementation                     | [#3651](https://github.com/balderdashy/sails/pull/3651)                               | Minor changes to the current CORS hooks to better follow the specs/remove inconsistencies.
-
 
 &nbsp;
 &nbsp;
