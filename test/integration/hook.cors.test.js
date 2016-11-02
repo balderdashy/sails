@@ -7,7 +7,7 @@ var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
 var path = require('path');
 var fs = require('fs');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var tmp = require('tmp');
 
 var Sails = require('../../lib').constructor;

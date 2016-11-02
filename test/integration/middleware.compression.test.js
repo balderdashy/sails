@@ -1,4 +1,4 @@
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var request = require('request');
 var Sails = require('../../lib').Sails;
 var assert = require('assert');

@@ -3,7 +3,7 @@
  */
 var should = require('should');
 var assert = require('assert');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 
 var constants = require('../fixtures/constants');
 var customHooks = require('../fixtures/customHooks');

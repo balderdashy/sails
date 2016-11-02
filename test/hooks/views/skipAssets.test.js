@@ -4,7 +4,7 @@
 
 var path = require('path');
 var util = require('util');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var tmp = require('tmp');
 var request = require('request');
 var MProcess = require('machinepack-process');

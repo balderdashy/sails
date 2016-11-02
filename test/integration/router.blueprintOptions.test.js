@@ -3,7 +3,7 @@
  */
 
 var assert = require('assert');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
 var bootstrap31FakeUsers = require('./fixtures/users.js');

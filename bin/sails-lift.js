@@ -3,7 +3,7 @@
  */
 
 var nodepath = require('path');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var chalk = require('chalk');
 var captains = require('captains-log');
 

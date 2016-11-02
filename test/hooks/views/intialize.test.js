@@ -4,7 +4,7 @@
 
 var assert = require('assert');
 var util = require('util');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var Sails = require('../../../lib').constructor;
 
 

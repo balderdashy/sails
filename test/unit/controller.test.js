@@ -5,7 +5,7 @@
 var util = require('util');
 var assert = require('assert');
 var tmp = require('tmp');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 
 var Filesystem = require('machinepack-fs');
 

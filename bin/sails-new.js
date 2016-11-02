@@ -3,7 +3,7 @@
  */
 
 var nodepath = require('path');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var sailsgen = require('sails-generate');
 var package = require('../package.json');
 var rconf = require('../lib/app/configuration/rc');

@@ -1,7 +1,7 @@
 var assert = require('assert');
 var Sails = require('../../lib/app');
 var async = require('async');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 
 describe('sails being lifted and lowered (e.g in a test framework)', function() {
 

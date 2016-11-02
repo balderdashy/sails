@@ -5,7 +5,7 @@
  * Module dependencies
  */
 
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var program = require('./private/patched-commander');
 var sailsPackageJson = require('../package.json');
 var NOOP = function() {};
