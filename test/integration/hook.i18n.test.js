@@ -90,10 +90,10 @@ describe('i18n ::', function() {
       assert(sailsApp.__({
         phrase: 'Welcome',
         locale: 'de'
-      }) == 'Willkommen' || sailsApp.__({
+      }) === 'Willkommen' || sailsApp.__({
         phrase: 'Welcome',
         locale: 'de'
-      }) == 'Wilkommen');
+      }) === 'Wilkommen');
       done();
     });
   });
@@ -119,7 +119,7 @@ describe('i18n Config ::', function() {
   var appName = 'testApp';
 
   var sailsApp;
-  beforeEach(function(done) {
+  beforeEach(function (done) {
     appHelper.lift({
       log: {level: 'silent'}
     }, function(err, sails) {
@@ -144,13 +144,13 @@ describe('i18n Config ::', function() {
   describe('with locales generate by config', function() {
 
     before(function() {
-      var config = "module.exports.i18n = { defaultLocale: 'de',updateFiles : true };";
+      var config = 'module.exports.i18n = { defaultLocale: \'de\',updateFiles : true };';
       fs.writeFileSync(path.resolve('../', appName, 'config/i18n.js'), config);
     });
 
     it('should say "Willkommen" by defaultLocale', function(done) {
       //see https://github.com/balderdashy/sails-generate-backend/pull/10
-      assert(sailsApp.__('Welcome') == 'Willkommen' || sailsApp.__('Welcome') == 'Wilkommen');
+      assert(sailsApp.__('Welcome') === 'Willkommen' || sailsApp.__('Welcome') === 'Wilkommen');
       done();
     });
 
@@ -158,12 +158,13 @@ describe('i18n Config ::', function() {
       sailsApp.__('Login');
       fs.readFile(path.resolve('../', appName, 'config/locales/de.json'), 'utf8', function read(err, data) {
         if (err) {
-          throw err;
-        } else {
-          var de = JSON.parse(data);
-          assert(de['Login'] == 'Login');
-          done();
+          return done(err);
         }
+
+        var de = JSON.parse(data);
+        assert(de['Login'] === 'Login');
+        return done();
+
       });
     });
   });
