@@ -765,7 +765,7 @@ describe('CORS config ::', function() {
     });
   });
 
-  describe('with invalid global CORS config ({allRoutes: true, origin: \'*\', allowCredentials: true})', function() {
+  describe('with invalid global CORS config ({allRoutes: true, allowOrigins: \'*\', allowCredentials: true})', function() {
 
     it('should fail to lift', function(done) {
       (new Sails()).load({
@@ -779,6 +779,81 @@ describe('CORS config ::', function() {
       );
     });
 
+  });
+
+  describe('with invalid global CORS config ({allowOrigins: [\'localboast.yarg\']})', function() {
+
+    it('should fail to lift', function(done) {
+      (new Sails()).load({
+          hooks: {grunt: false, views: false, blueprints: false, policies: false},
+          log: {level: 'silent'},
+          cors: {allowOrigins: ['localboast.yarg']},
+        }, function(err, _sails) {
+          if (err) {return done();}
+          return done(new Error('Sails should have failed to lift with invalid global CORS config!'));
+        }
+      );
+    });
+  });
+
+  describe('with invalid global CORS config ({allowOrigins: [\'http://localboast.com:80\']})', function() {
+
+    it('should fail to lift', function(done) {
+      (new Sails()).load({
+          hooks: {grunt: false, views: false, blueprints: false, policies: false},
+          log: {level: 'silent'},
+          cors: {allowOrigins: ['http://localboast.com:80']},
+        }, function(err, _sails) {
+          if (err) {return done();}
+          return done(new Error('Sails should have failed to lift with invalid global CORS config!'));
+        }
+      );
+    });
+  });
+
+  describe('with invalid global CORS config ({allowOrigins: [\'https://localboast.com:443\']})', function() {
+
+    it('should fail to lift', function(done) {
+      (new Sails()).load({
+          hooks: {grunt: false, views: false, blueprints: false, policies: false},
+          log: {level: 'silent'},
+          cors: {allowOrigins: ['https://localboast.com:443']},
+        }, function(err, _sails) {
+          if (err) {return done();}
+          return done(new Error('Sails should have failed to lift with invalid global CORS config!'));
+        }
+      );
+    });
+  });
+
+  describe('with invalid global CORS config ({allowOrigins: [\'\']})', function() {
+
+    it('should fail to lift', function(done) {
+      (new Sails()).load({
+          hooks: {grunt: false, views: false, blueprints: false, policies: false},
+          log: {level: 'silent'},
+          cors: {allowOrigins: ['']},
+        }, function(err, _sails) {
+          if (err) {return done();}
+          return done(new Error('Sails should have failed to lift with invalid global CORS config!'));
+        }
+      );
+    });
+  });
+
+  describe('with invalid global CORS config ({allowOrigins: [666]})', function() {
+
+    it('should fail to lift', function(done) {
+      (new Sails()).load({
+          hooks: {grunt: false, views: false, blueprints: false, policies: false},
+          log: {level: 'silent'},
+          cors: {allowOrigins: [666]},
+        }, function(err, _sails) {
+          if (err) {return done();}
+          return done(new Error('Sails should have failed to lift with invalid global CORS config!'));
+        }
+      );
+    });
   });
 
   describe('with invalid route CORS config ({allRoutes: true, origin: \'*\', allowCredentials: true})', function() {
