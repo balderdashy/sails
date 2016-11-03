@@ -19,26 +19,19 @@ The modules comprising the Sails framework, as well as the other plugins maintai
 | [**waterline**](http://github.com/balderdashy/waterline) | [![Build Status](https://travis-ci.org/balderdashy/waterline.png?branch=master)](https://travis-ci.org/balderdashy/waterline) | [![NPM version](https://badge.fury.io/js/waterline.png)](http://badge.fury.io/js/waterline) |
 | [**anchor**](http://github.com/sailsjs/anchor) | [![Build Status](https://travis-ci.org/sailsjs/anchor.png?branch=master)](https://travis-ci.org/sailsjs/anchor) | [![NPM version](https://badge.fury.io/js/anchor.png)](http://badge.fury.io/js/anchor) |
 | [**waterline-criteria**](http://github.com/balderdashy/waterline-criteria) | [![Build Status](https://travis-ci.org/balderdashy/waterline-criteria.png?branch=master)](https://travis-ci.org/balderdashy/waterline-criteria) | [![NPM version](https://badge.fury.io/js/waterline-criteria.png)](http://badge.fury.io/js/waterline-criteria) |
-| [**waterline-errors**](http://github.com/vanetix/waterline-errors) | [![Build Status](https://travis-ci.org/vanetix/waterline-errors.svg?branch=master)](https://travis-ci.org/vanetix/waterline-errors) | [![NPM version](https://badge.fury.io/js/waterline-errors.png)](http://badge.fury.io/js/waterline-errors) |
 | [**waterline-schema**](http://github.com/balderdashy/waterline-schema) | [![Build Status](https://travis-ci.org/balderdashy/waterline-schema.svg?branch=master)](https://travis-ci.org/balderdashy/waterline-schema) | [![NPM version](https://badge.fury.io/js/waterline-schema.png)](http://badge.fury.io/js/waterline-schema) |
+| [**waterline-utils**](http://github.com/treelinehq/waterline-utils) | [![NPM version](https://badge.fury.io/js/waterline-utils.png)](http://badge.fury.io/js/waterline-utils) |
 | [**sails-generate**](http://github.com/balderdashy/sails-generate) | [![Build Status](https://travis-ci.org/balderdashy/sails-generate.png?branch=master)](https://travis-ci.org/balderdashy/sails-generate) | [![NPM version](https://badge.fury.io/js/sails-generate.png)](http://badge.fury.io/js/sails-generate) |
-| [**sails-build-dictionary**](http://github.com/balderdashy/sails-build-dictionary) | N/A | [![NPM version](https://badge.fury.io/js/sails-build-dictionary.png)](http://badge.fury.io/js/sails-build-dictionary) |
 | [**captains-log**](http://github.com/balderdashy/captains-log) | [![Build Status](https://travis-ci.org/balderdashy/captains-log.png?branch=master)](https://travis-ci.org/balderdashy/captains-log) | [![NPM version](https://badge.fury.io/js/captains-log.png)](http://badge.fury.io/js/captains-log) |
-| [**sails-stringfile**](http://github.com/balderdashy/sails-stringfile) | N/A | [![NPM version](https://badge.fury.io/js/sails-stringfile.png)](http://badge.fury.io/js/sails-stringfile) |
 
 
 #### Core framework utilities
 
 | Repo       |  Latest Stable Version   |
 |------------|--------------------------|
-| [**sails-util**](http://github.com/balderdashy/sails-util) (_will be deprecated_) | [![NPM version](https://badge.fury.io/js/sails-util.png)](http://badge.fury.io/js/sails-util) |
 | [**include-all**](http://github.com/balderdashy/include-all) | [![NPM version](https://badge.fury.io/js/include-all.png)](http://badge.fury.io/js/include-all) |
 | [**reportback**](http://github.com/balderdashy/reportback) | [![NPM version](https://badge.fury.io/js/reportback.png)](http://badge.fury.io/js/reportback) |
-| [**node-switchback**](http://github.com/balderdashy/switchback) | [![NPM version](https://badge.fury.io/js/node-switchback.png)](http://badge.fury.io/js/node-switchback) |
-| [**merge-defaults**](http://github.com/balderdashy/merge-defaults) | [![NPM version](https://badge.fury.io/js/merge-defaults.png)](http://badge.fury.io/js/merge-defaults) |
-| [**enpeem**](http://github.com/balderdashy/enpeem) | [![NPM version](https://badge.fury.io/js/enpeem.png)](http://badge.fury.io/js/enpeem) |
-| [**merge-context**](http://github.com/balderdashy/merge-context) | [![NPM version](https://badge.fury.io/js/merge-context.png)](http://badge.fury.io/js/merge-context) |
-| [**fixture-stdout**](http://github.com/balderdashy/fixture-stdout) | [![NPM version](https://badge.fury.io/js/fixture-stdout.png)](http://badge.fury.io/js/fixture-stdout) |
+| [**switchback**](http://github.com/balderdashy/switchback) | [![NPM version](https://badge.fury.io/js/node-switchback.png)](http://badge.fury.io/js/switchback) |
 
 
 #### Core generators
