@@ -73,46 +73,6 @@ module.exports = {
   },
 
 
-
-  // This doesn't technically _need_ to be a fatal error- it just is
-  // because certain grunt modules (e.g. grunt-contrib-watch) don't restart
-  // when an error occurs.
-  __GruntAborted__: function(consoleMsg, stackTrace) {
-
-    var gruntErr =
-      '\n------------------------------------------------------------------------\n' +
-      consoleMsg + '\n' + (stackTrace || '') +
-      '\n------------------------------------------------------------------------';
-    log.error(gruntErr);
-    log.blank();
-
-    log.error('Looks like a Grunt error occurred--');
-    log.error('Please fix it, then **restart Sails** to continue running tasks (e.g. watching for changes in assets)');
-    log.error('Or if you\'re stuck, check out the troubleshooting tips below.');
-    log.blank();
-
-    log.error(chalk.underline('Troubleshooting tips:'));
-    var relativePublicPath = (nodepath.resolve(process.cwd(), './.tmp'));
-    var uid = process.getuid && process.getuid() || 'YOUR_COMPUTER_USER_NAME';
-    log.error();
-    log.error(' *-> Are "grunt" and related grunt task modules installed locally?  Run `npm install` if you\'re not sure.');
-    log.error();
-    log.error(' *-> You might have a malformed LESS, SASS, CoffeeScript file, etc.');
-    log.error();
-    log.error(' *-> Or maybe you don\'t have permissions to access the `.tmp` directory?');
-    log.error('     e.g., `' + relativePublicPath + '`', '?');
-    log.error();
-    log.error('     If you think this might be the case, try running:');
-    log.error('     sudo chown -R', uid, relativePublicPath);
-    log.blank();
-
-    // See note above this function - for now, this will not
-    // actually terminate the process.  The rest of Sails should
-    // continue to run.
-    // return _terminateProcess(1);
-  },
-
-
   __UnknownPolicy__: function(policy, source, pathToPolicies) {
     source = source || 'config.policies';
 

@@ -5,9 +5,9 @@
 var nodepath = require('path');
 var _ = require('@sailshq/lodash');
 var CaptainsLog = require('captains-log');
+var GruntHookDef = require('sails-hook-grunt');
 var Sails = require('../lib/app');
 var rconf = require('../lib/app/configuration/rc');
-var GruntHookDef = require('../lib/hooks/grunt');
 var Err = require('../errors');
 
 
@@ -19,7 +19,6 @@ var Err = require('../errors');
  * Run the `build` or `buildProd` Grunt task (depending on whether this is the production environment)
  * for the Sails app in the current working directory.
  *
- * @stability 2
  * @see http://sailsjs.org/documentation/reference/command-line-interface/sails-www
  */
 
