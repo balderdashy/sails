@@ -32,9 +32,20 @@ module.exports = function() {
   // servers will not actually listen on ports.
   var sails = Sails();
   sails.load(_.merge({}, rconf, {
-    // We leave Grunt disabled
-    // (since we do all the Grunting ourselves using the raw hook definition below)
-    hooks: { grunt: false }
+
+    //  New way:
+    // ------------------------------------------------------------------------------------
+    // We STILL do all the _real_ Grunting ourselves using the raw hook definition below.
+    // However, we still leave Grunt enabled so that we can get access to the hook.
+    // ------------------------------------------------------------------------------------
+    //
+    //  Old way:
+    // ------------------------------------------------------------------------------------
+    // // We leave Grunt disabled
+    // // (since we do all the Grunting ourselves using the raw hook definition below)
+    // hooks: { grunt: false }
+    // ------------------------------------------------------------------------------------
+
   }), function whenAppIsLoaded(err) {
     if (err) {
       return Err.fatal.failedToLoadSails(err);
@@ -51,15 +62,27 @@ module.exports = function() {
     }
     log.info('Compiling assets into standalone `www` directory with `grunt ' + overrideGruntTask + '`...');
 
-    // Pass in our app (`sails`) to the hook definition (factory function) in order to get
-    // a "hydrated" Grunt hook (a dictionary with methods and other fine goods)
-    var hydratedGruntHook = GruntHookDef(sails);
+    //  Old way:
+    // ------------------------------------------------------------------------------------
+    // // Pass in our app (`sails`) to the hook definition (factory function) in order to get
+    // // a "hydrated" Grunt hook (a dictionary with methods and other fine goods)
+    // var hydratedGruntHook = GruntHookDef(sails);
+    //
+    // // Now use that sopping hook definition to run the appropriate Grunt task.
+    // // (by the way, `runTask` is technically a private method, and so should not
+    // //  be relied upon in userland code outside of Sails core.  Its usage may be
+    // //  tweaked in a subsequent release.)
+    // hydratedGruntHook.runTask(overrideGruntTask);
+    // ------------------------------------------------------------------------------------
 
-    // Now use that sopping hook definition to run the appropriate Grunt task.
+    //  New way:
+    // ------------------------------------------------------------------------------------
+    // Run the appropriate Grunt task.
     // (by the way, `runTask` is technically a private method, and so should not
     //  be relied upon in userland code outside of Sails core.  Its usage may be
     //  tweaked in a subsequent release.)
-    hydratedGruntHook.runTask(overrideGruntTask);
+    sails.hooks.grunt.runTask(overrideGruntTask);
+    // ------------------------------------------------------------------------------------
 
     // Listen for `hook:grunt:error` event from the Grunt hook-- if fired,
     // this means the Grunt child process exited with a non-zero status code.
