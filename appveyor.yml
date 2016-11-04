@@ -18,6 +18,7 @@ environment:
     - nodejs_version: "4"
     - nodejs_version: "5"
     - nodejs_version: "6"
+    - nodejs_version: "7"
 
 # Install scripts. (runs after repo cloning)
 install:
