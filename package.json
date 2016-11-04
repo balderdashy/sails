@@ -72,7 +72,6 @@
     "uid-safe": "1.1.0",
     "vary": "1.1.0",
     "walk": "2.3.9",
-    "waterline": "~0.11.0",
     "waterline-criteria": "^2.0.0"
   },
   "devDependencies": {
