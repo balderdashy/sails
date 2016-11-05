@@ -40,7 +40,7 @@ describe('middleware :: ', function() {
           port: 1535,
           environment: 'production',
           log: {level: 'silent'},
-          hooks: {session: false, grunt: false},
+          hooks: {session: false, grunt: false, pubsub: false},
           routes: {
             '/test': function(req, res) {
               return res.send(lipsum);

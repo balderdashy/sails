@@ -46,7 +46,7 @@ describe('blueprints :: ', function() {
 
       (new Sails()).load(_.merge({
         hooks: {
-          grunt: false, views: false, policies: false
+          grunt: false, views: false, policies: false, pubsub: false
         },
         orm: { moduleDefinitions: { adapters: { 'sails-disk': require('sails-disk')} } },
         models: {

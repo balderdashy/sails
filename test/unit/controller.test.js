@@ -144,7 +144,7 @@ describe('controllers :: ', function() {
       }).execSync();
 
       // Load the Sails app.
-      (new Sails()).load({hooks: {security: false, grunt: false, views: false, blueprints: false, policies: false}, log: {level: 'error'}}, function(err, _sails) {
+      (new Sails()).load({hooks: {security: false, grunt: false, views: false, blueprints: false, policies: false, pubsub: false}, log: {level: 'error'}}, function(err, _sails) {
         sailsApp = _sails;
         return done(err);
       });
@@ -334,7 +334,7 @@ describe('controllers :: ', function() {
 
     it('should fail to load sails', function(done) {
       // Load the Sails app.
-      (new Sails()).load({hooks: {grunt: false, views: false, blueprints: false, policies: false}, log: {level: 'error'}}, function(err, _sails) {
+      (new Sails()).load({hooks: {grunt: false, views: false, blueprints: false, policies: false, pubsub: false}, log: {level: 'error'}}, function(err, _sails) {
         if (!err) {
           _sails.lower(function() {
             return done(new Error('Should have thrown an error!'));

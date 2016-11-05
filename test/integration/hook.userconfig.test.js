@@ -41,7 +41,7 @@ describe('hooks :: ', function() {
       it('should merge config options regardless of file structure', function(done) {
 
         sailsApp = Sails();
-        sailsApp.load({hooks:{grunt:false}}, function(err, sails) {
+        sailsApp.load({hooks:{grunt:false, pubsub: false}}, function(err, sails) {
           if (err) { return callback(err); }
           assert.equal(sails.config.foo, 'bar');
           assert.equal(sails.config.abc, 123);
@@ -65,7 +65,7 @@ describe('hooks :: ', function() {
       var sails;
       before(function(done) {
         sails = Sails();
-        sails.load({hooks:{grunt:false}}, done);
+        sails.load({hooks:{grunt:false, pubsub: false}}, done);
       });
 
       it('should load config from config/env/development.js', function() {
@@ -95,7 +95,7 @@ describe('hooks :: ', function() {
       var sails;
       before(function(done) {
         sails = Sails();
-        sails.load({hooks:{grunt:false}, environment: 'test-development'}, done);
+        sails.load({hooks:{grunt:false, pubsub: false}, environment: 'test-development'}, done);
       });
 
       it('should load config from config/env/test-development.js', function() {

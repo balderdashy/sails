@@ -55,7 +55,7 @@ describe('hooks :: ', function() {
       // Merge the default config with any config specific to this test.
       var _config = _.merge({
         port: 1342,
-        hooks: {grunt: false, blueprints: false, policies: false},
+        hooks: {grunt: false, blueprints: false, policies: false, pubsub: false},
         log: {level: 'error'},
       }, sailsConfig);
       // Lift Sails for this test.

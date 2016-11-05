@@ -27,7 +27,7 @@ describe('middleware :: ', function() {
             session: {
               secret: 'abc123'
             },
-            hooks: {grunt: false},
+            hooks: {grunt: false, pubsub: false},
             routes: {
               '/test': function(req, res) {
                 var count = req.session.count || 1;

@@ -79,11 +79,12 @@ module.exports = {
 
     //
     process.chdir(appName);
-    child_process.exec('node ' + pathToLocalSailsCLI + ' new', function(err) {
+    child_process.exec('node ' + pathToLocalSailsCLI + ' new --fast', function(err) {
       if (err) {
         return done(err);
       }
-
+      // Symlink dependencies
+      module.exports.linkDeps('.');
       // Copy test fixtures to the test app.
       fs.copy('../test/integration/fixtures/sampleapp', './', done);
     });
@@ -234,6 +235,13 @@ module.exports = {
       module.exports.liftWithTwoSockets(options, callback);
     });
   },
+
+  linkDeps: function(appPath) {
+    var deps = ['sails-hook-orm', 'sails-hook-sockets', 'sails-disk'];
+    _.each(deps, function(dep) {
+      fs.ensureSymlinkSync(path.resolve(__dirname, '..', '..', '..', 'node_modules', dep), path.resolve(appPath, 'node_modules', dep));
+    });
+  }
 
 };
 
