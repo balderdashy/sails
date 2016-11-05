@@ -114,7 +114,7 @@ describe('router :: ', function() {
     describe('req.params.allParams', function() {
 
       before(function(){
-        require('fs').writeFileSync('config/routes.js', 'module.exports.routes = {"/testParams/:foo": function(req,res){res.json(req.params.all());}};');
+        require('fs').writeFileSync('config/routes.js', 'module.exports.routes = {"/testParams/:foo": function(req,res){res.json(req.allParams());}};');
       });
 
       it('should return the correct param values, accounting for precedence', function(done) {

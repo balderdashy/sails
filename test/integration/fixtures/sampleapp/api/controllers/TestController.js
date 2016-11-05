@@ -4,7 +4,7 @@ module.exports = {
   },
 
   dynamic: function(req, res) {
-    res.json(req.params.all());
+    res.json(req.allParams());
   },
 
   index: function(req, res) {
