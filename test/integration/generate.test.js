@@ -22,7 +22,7 @@ describe('API and adapter generators', function() {
       fs.removeSync(appName);
     }
 
-    exec('node ' + sailsBin + ' new ' + appName, function(err) {
+    exec('node ' + sailsBin + ' new ' + appName + ' --fast', function(err) {
       if (err) { return done(new Error(err)); }
 
       // Move into app directory and update sailsBin relative path

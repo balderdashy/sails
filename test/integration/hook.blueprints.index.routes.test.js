@@ -7,6 +7,8 @@ var assert = require('assert');
 var tmp = require('tmp');
 var _ = require('@sailshq/lodash');
 
+var appHelper = require('./helpers/appHelper');
+
 var Sails = require('../../lib').constructor;
 
 /**
@@ -31,10 +33,11 @@ describe('blueprints :: ', function() {
     tmpDir = tmp.dirSync({gracefulCleanup: true, unsafeCleanup: true});
     // Switch to the temp directory.
     process.chdir(tmpDir.name);
+    appHelper.linkDeps(tmpDir.name);
 
     (new Sails()).load(_.merge({
       hooks: {
-        grunt: false, views: false, policies: false
+        grunt: false, views: false, policies: false, pubsub: false
       },
       orm: {
         moduleDefinitions: {

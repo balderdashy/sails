@@ -45,7 +45,7 @@ describe('policies :: ', function() {
 
       (new Sails()).load({
         hooks: {
-          grunt: false, views: false
+          grunt: false, views: false, pubsub: false
         },
         blueprints: {
           actions: false,
@@ -77,7 +77,7 @@ describe('policies :: ', function() {
       beforeEach(function(done) {
         (new Sails()).load({
           hooks: {
-            grunt: false, views: false
+            grunt: false, views: false, pubsub: false
           },
           blueprints: {
             actions: false,
@@ -334,7 +334,7 @@ describe('policies :: ', function() {
       beforeEach(function(done) {
         (new Sails()).load({
           hooks: {
-            grunt: false, views: false
+            grunt: false, views: false, pubsub: false
           },
           blueprints: {
             actions: false,
@@ -494,7 +494,7 @@ describe('policies :: ', function() {
       before(function(done) {
         (new Sails()).load({
           hooks: {
-            grunt: false, views: false
+            grunt: false, views: false, pubsub: false
           },
           blueprints: {
             actions: false,
@@ -627,7 +627,7 @@ describe('policies :: ', function() {
 
         (new Sails()).load({
           hooks: {
-            grunt: false, views: false
+            grunt: false, views: false, pubsub: false
           },
           log: {level: 'silent'}
         }, function(err, sailsApp) {
@@ -649,7 +649,7 @@ describe('policies :: ', function() {
 
         (new Sails()).load({
           hooks: {
-            grunt: false, views: false,
+            grunt: false, views: false, pubsub: false
           },
           log: {level: 'silent'},
           policies: {
