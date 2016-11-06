@@ -217,7 +217,3 @@ The recommended production session store for Sails.js is Redis... but we realize
 #### What happened to the core generators?
 
 For easier maintainence, they were pulled into [`sails-generate`](https://github.com/balderdashy/sails-generate).
-
-#### Can I add my plugin to this list?
-
-If you have an adapter, hook, or other plugin that isn't covered here, and that you feel would add value for the community, please feel free to send a PR adding it to this section.
