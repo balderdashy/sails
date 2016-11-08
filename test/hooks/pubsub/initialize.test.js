@@ -5,7 +5,7 @@
 var Sails = require('../../../lib').Sails;
 
 
-describe('Pubsub hook', function (){
+xdescribe('Pubsub hook', function (){
   describe('loading a Sails app', function (){
 
     describe('without ORM hook', function (){
