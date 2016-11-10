@@ -10,7 +10,7 @@ node_js:
 sudo: false
 
 script:
-  - "npm test"
+  - "npm run benchmark"
 
 notifications:
   irc:
@@ -33,3 +33,4 @@ branches:
     - stable
     - 0.12
     - beta
+    - benchmark_0_12
