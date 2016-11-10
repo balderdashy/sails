@@ -101,7 +101,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "http://github.com/balderdashy/sails/issues"
+    "url": "http://sailsjs.com/bugs"
   },
   "engines": {
     "node": ">= 0.10.0",
