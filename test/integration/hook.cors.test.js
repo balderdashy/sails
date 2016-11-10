@@ -765,13 +765,13 @@ describe('CORS config ::', function() {
     });
   });
 
-  describe('with invalid global CORS config ({allRoutes: true, allowOrigins: \'*\', allowCredentials: true})', function() {
+  describe('with invalid global CORS config ({allowOrigins: \'*\', allowCredentials: true})', function() {
 
     it('should fail to lift', function(done) {
       (new Sails()).load({
           hooks: {grunt: false, views: false, blueprints: false, policies: false},
           log: {level: 'silent'},
-          cors: {allRoutes: true, allowOrigins: '*', allowCredentials: true},
+          cors: {allowOrigins: '*', allowCredentials: true},
         }, function(err, _sails) {
           if (err) {return done();}
           return done(new Error('Sails should have failed to lift with invalid global CORS config!'));
