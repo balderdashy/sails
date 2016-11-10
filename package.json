@@ -74,7 +74,7 @@
     "waterline-criteria": "^2.0.0"
   },
   "devDependencies": {
-    "benchmark": "1.0.0",
+    "benchmark": "^2.1.2",
     "checksum": "0.1.1",
     "coffee-script": "1.9.1",
     "expect.js": "0.3.1",

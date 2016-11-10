@@ -5,13 +5,13 @@
 From the root directory of sails:
 
 ```sh
-$ mocha test/benchmarks
+$ BENCHMARK=true mocha test/benchmarks
 ```
 
 To get a more detailed report with millisecond timings for each benchmark, run:
 
 ```sh
-$ mocha test/benchmarks -v
+$ BENCHMARK=true mocha test/benchmarks -v
 ```
 
 
