@@ -56,6 +56,7 @@ if (process.env.BENCHMARK) {
                 '/test8': function(req, res) { return res.status(200).json({foo: 'bar'}); },
 
                 'POST /test9': function(req, res) { return res.status(200).send(req.param('foo')); },
+                'POST /test9a': function(req, res) { setTimeout(function() {return res.status(200).send(req.param('foo'));}, 5); },
 
                 'POST /test10': function(req, res) { return res.status(200).json(req.allParams); },
               }
@@ -109,6 +110,13 @@ if (process.env.BENCHMARK) {
                   data: {foo: 'bar'}
                 }, done);
               },
+              function reflect_one_param_w_delay(done) {
+                sailsApp.request({
+                  url: 'http://localhost:1342/test9a',
+                  method: 'post',
+                  data: {foo: 'bar'}
+                }, done);
+              },
               function reflect_all_params(done) {
                 sailsApp.request({
                   url: 'http://localhost:1342/test10',
@@ -154,6 +162,7 @@ if (process.env.BENCHMARK) {
                 '/test8': function(req, res) { return res.status(200).json({foo: 'bar'}); },
 
                 'POST /test9': function(req, res) { return res.status(200).send(req.param('foo')); },
+                'POST /test9a': function(req, res) { setTimeout(function() {return res.status(200).send(req.param('foo'));}, 1); },
 
                 'POST /test10': function(req, res) { return res.status(200).json(req.allParams); },
               }
@@ -203,6 +212,9 @@ if (process.env.BENCHMARK) {
               function reflect_one_param(done) {
                 request.post('http://localhost:1342/test9', {foo: 'bar'}, done);
               },
+              function reflect_one_param_w_delay(done) {
+                request.post('http://localhost:1342/test9a', {foo: 'bar'}, done);
+              },
               function reflect_all_params(done) {
                 request.post('http://localhost:1342/test10', {foo: 'bar', abc: 123}, done);
               }
@@ -243,6 +255,7 @@ if (process.env.BENCHMARK) {
                   '/test8': function(req, res) { return res.status(200).json({foo: 'bar'}); },
 
                   'POST /test9': function(req, res) { return res.status(200).send(req.param('foo')); },
+                  'POST /test9a': function(req, res) { setTimeout(function() {return res.status(200).send(req.param('foo'));}, 1); },
 
                   'POST /test10': function(req, res) { return res.status(200).json(req.allParams); },
                 }
@@ -293,6 +306,9 @@ if (process.env.BENCHMARK) {
               },
               function reflect_one_param(done) {
                 request.post('http://localhost:1342/test9', {foo: 'bar'}, done);
+              },
+              function reflect_one_param_w_delay(done) {
+                request.post('http://localhost:1342/test9a', {foo: 'bar'}, done);
               },
               function reflect_all_params(done) {
                 request.post('http://localhost:1342/test10', {foo: 'bar', abc: 123}, done);
