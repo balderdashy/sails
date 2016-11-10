@@ -10,6 +10,7 @@ var _ = require('lodash');
  * @param  {Function} done
  */
 module.exports = function benchmarx (name, testFns, done) {
+  Benchmark.options.minSamples = 500;
   var suite = new Benchmark.Suite({ name: name });
   _.each(testFns, function (testFn) {
     suite = suite.add(testFn.name, {
