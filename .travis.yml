@@ -22,7 +22,7 @@ node_js:
 sudo: false
 
 script:
-  - "npm test"
+  - "npm run benchmark"
 
 notifications:
   irc:
@@ -44,3 +44,4 @@ branches:
     - master
     - stable
     - beta
+    - benchmark

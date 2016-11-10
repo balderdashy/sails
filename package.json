@@ -21,6 +21,7 @@
   },
   "scripts": {
     "test": "mocha -b",
+    "benchmark": "BENCHMARK=true mocha test/benchmarks",
     "prepublish": "npm prune"
   },
   "directories": {
