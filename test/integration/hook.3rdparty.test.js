@@ -7,12 +7,13 @@ var appHelper = require('./helpers/appHelper');
 var util = require('util');
 var path = require('path');
 var fs = require('fs-extra');
+var _ = require('@sailshq/lodash');
 
 describe('hooks :: ', function() {
 
   var sailsprocess;
 
-  xdescribe('installing a 3rd-party hook', function() {
+  describe('installing a 3rd-party hook', function() {
     var appName = 'testApp';
 
     before(function() {
@@ -212,11 +213,11 @@ describe('hooks :: ', function() {
 
       });
 
-      describe('setting the hook name to `csrf` (an existing hook)', function(){
+      describe('setting the hook name to `security` (an existing hook)', function(){
 
           var sails;
           before(function(done) {
-            appHelper.liftQuiet({installedHooks: {'sails-hook-shout': {name: 'csrf'}}}, function(err, _sails) {
+            appHelper.liftQuiet({installedHooks: {'sails-hook-shout': {name: 'security'}}}, function(err, _sails) {
               sails = _sails;
               done(err);
             });
@@ -226,8 +227,8 @@ describe('hooks :: ', function() {
             sails.lower(function(){setTimeout(done, 100);});
           });
 
-          it('should replace the core `csrf` hook', function() {
-            assert(sails.hooks.csrf.isShoutyHook);
+          it('should replace the core `security` hook', function() {
+            assert(sails.hooks.security.isShoutyHook);
           });
 
       });
@@ -292,11 +293,12 @@ describe('hooks :: ', function() {
 
       });
 
-      describe('with `hookName` set to `csrf` in the package.json', function() {
+      describe('with `hookName` set to `security` in the package.json', function() {
         var sails;
         before(function(done) {
+          delete require.cache[path.resolve(__dirname,'../../testApp/node_modules/shouty','package.json')];
           var packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../testApp/node_modules/shouty','package.json')));
-          packageJson.sails.hookName = 'csrf';
+          packageJson.sails.hookName = 'security';
           fs.writeFileSync(path.resolve(__dirname,'../../testApp/node_modules/shouty','package.json'), JSON.stringify(packageJson));
           appHelper.liftQuiet(function(err, _sails) {
             if (err) {return done(err);}
@@ -309,20 +311,20 @@ describe('hooks :: ', function() {
           sails.lower(function(){setTimeout(done, 100);});
         });
 
-        it('should replace the core `csrf` hook', function() {
-          assert(sails.hooks.csrf.isShoutyHook);
+        it('should replace the core `security` hook', function() {
+          assert(sails.hooks.security.isShoutyHook);
         });
       });
 
     });
 
-    describe('into node_modules/sails-hook-csrf', function(){
+    describe('into node_modules/sails-hook-security', function(){
 
       var sails;
       before(function(done) {
         fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules"), function(err) {
           if (err) {return done(err);}
-          fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/sails-hook-csrf'));
+          fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/sails-hook-security'));
           process.chdir(path.resolve(__dirname, "../..", appName));
           appHelper.liftQuiet(function(err, _sails) {
             if (err) {return done(err);}
@@ -340,20 +342,20 @@ describe('hooks :: ', function() {
         });
       });
 
-      it('should replace the core `csrf` hook', function() {
-        assert(sails.hooks.csrf.isShoutyHook);
+      it('should replace the core `security` hook', function() {
+        assert(sails.hooks.security.isShoutyHook);
       });
 
     });
 
 
-    describe('into node_modules/csrf', function(){
+    describe('into node_modules/security', function(){
 
       var sails;
       before(function(done) {
         fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules"), function(err) {
           if (err) {return done(err);}
-          fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/csrf'));
+          fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/security'));
           process.chdir(path.resolve(__dirname, "../..", appName));
           appHelper.liftQuiet(function(err, _sails) {
             if (err) {return done(err);}
@@ -371,8 +373,8 @@ describe('hooks :: ', function() {
         });
       });
 
-      it('should replace the core `csrf` hook', function() {
-        assert(sails.hooks.csrf.isShoutyHook);
+      it('should replace the core `security` hook', function() {
+        assert(sails.hooks.security.isShoutyHook);
       });
 
     });
@@ -409,15 +411,17 @@ describe('hooks :: ', function() {
 
       });
 
-      describe('with `hookName` set to `csrf` in the package.json', function() {
+      describe('with `hookName` set to `security` in the package.json', function() {
 
         var sails;
         before(function(done) {
+          delete require.cache[path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty')];
+          delete require.cache[path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty','package.json')];
           fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules", "@my-modules"), function(err) {
             if (err) {return done(err);}
             fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty'));
             var packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty','package.json')));
-            packageJson.sails.hookName = 'csrf';
+            packageJson.sails.hookName = 'security';
             fs.writeFileSync(path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty','package.json'), JSON.stringify(packageJson));
             process.chdir(path.resolve(__dirname, "../..", appName));
             appHelper.liftQuiet(function(err, _sails) {
@@ -436,21 +440,21 @@ describe('hooks :: ', function() {
           });
         });
 
-        it('should replace the core `csrf` hook', function() {
-          assert(sails.hooks.csrf.isShoutyHook);
+        it('should replace the core `security` hook', function() {
+          assert(sails.hooks.security.isShoutyHook);
         });
 
       });
 
     });
 
-    describe('into node_modules/@my-modules/sails-hook-csrf', function(){
+    describe('into node_modules/@my-modules/sails-hook-security', function(){
 
       var sails;
       before(function(done) {
         fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules", "@my-modules"), function(err) {
           if (err) {return done(err);}
-          fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-csrf'));
+          fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-security'));
           process.chdir(path.resolve(__dirname, "../..", appName));
           appHelper.liftQuiet(function(err, _sails) {
             if (err) {return done(err);}
@@ -468,8 +472,8 @@ describe('hooks :: ', function() {
         });
       });
 
-      it('should replace the core `csrf` hook', function() {
-        assert(sails.hooks.csrf.isShoutyHook);
+      it('should replace the core `security` hook', function() {
+        assert(sails.hooks.security.isShoutyHook);
       });
 
     });
@@ -478,10 +482,11 @@ describe('hooks :: ', function() {
 
       var sails;
       before(function(done) {
+        delete require.cache[path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-security/package.json')];
         fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules", "@my-modules"), function(err) {
           if (err) {return done(err);}
-          fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-csrf'));
-          fs.outputFileSync(path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-csrf/package.json'), '{"foo":<%=bar%>}');
+          fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-security'));
+          fs.outputFileSync(path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-security/package.json'), '{"foo":<%=bar%>}');
           process.chdir(path.resolve(__dirname, "../..", appName));
           return done();
         });
@@ -499,7 +504,7 @@ describe('hooks :: ', function() {
         appHelper.liftQuiet(function(err, _sails) {
           if (err) {return done(err);}
           sails = _sails;
-          assert(!sails.hooks.csrf.isShoutyHook);
+          assert(!sails.hooks.security.isShoutyHook);
           return done();
         });
       });
