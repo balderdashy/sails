@@ -781,6 +781,21 @@ describe('CORS config ::', function() {
 
   });
 
+  describe('with invalid global CORS config ({allowOrigins: 666})', function() {
+
+    it('should fail to lift', function(done) {
+      (new Sails()).load({
+          hooks: {grunt: false, views: false, blueprints: false, policies: false},
+          log: {level: 'silent'},
+          cors: {allowOrigins: 666},
+        }, function(err, _sails) {
+          if (err) {return done();}
+          return done(new Error('Sails should have failed to lift with invalid global CORS config!'));
+        }
+      );
+    });
+  });
+
   describe('with invalid global CORS config ({allowOrigins: [\'localboast.yarg\']})', function() {
 
     it('should fail to lift', function(done) {
@@ -864,6 +879,60 @@ describe('CORS config ::', function() {
           log: {level: 'silent'},
           routes: {
             '/invalid': {cors: {allowOrigins: '*', allowCredentials: true}}
+          }
+        }, function(err, _sails) {
+          if (err) {return done();}
+          return done(new Error('Sails should have failed to lift with invalid route CORS config!'));
+        }
+      );
+    });
+
+  });
+
+  describe('with invalid route CORS config ({allowOrigins: [666]})', function() {
+
+    it('should fail to lift', function(done) {
+      (new Sails()).load({
+          hooks: {grunt: false, views: false, blueprints: false, policies: false},
+          log: {level: 'silent'},
+          routes: {
+            '/invalid': {cors: {allowOrigins: [666]}}
+          }
+        }, function(err, _sails) {
+          if (err) {return done();}
+          return done(new Error('Sails should have failed to lift with invalid route CORS config!'));
+        }
+      );
+    });
+
+  });
+
+  describe('with invalid route CORS config ({allowOrigins: 666})', function() {
+
+    it('should fail to lift', function(done) {
+      (new Sails()).load({
+          hooks: {grunt: false, views: false, blueprints: false, policies: false},
+          log: {level: 'silent'},
+          routes: {
+            '/invalid': {cors: {allowOrigins: 666}}
+          }
+        }, function(err, _sails) {
+          if (err) {return done();}
+          return done(new Error('Sails should have failed to lift with invalid route CORS config!'));
+        }
+      );
+    });
+
+  });
+
+  describe('with invalid route CORS config ({allowOrigins: [\'blah\']})', function() {
+
+    it('should fail to lift', function(done) {
+      (new Sails()).load({
+          hooks: {grunt: false, views: false, blueprints: false, policies: false},
+          log: {level: 'silent'},
+          routes: {
+            '/invalid': {cors: {allowOrigins: ['blah']}}
           }
         }, function(err, _sails) {
           if (err) {return done();}
