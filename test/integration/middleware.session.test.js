@@ -120,8 +120,54 @@ describe('middleware :: ', function() {
 
       });
 
+      describe('requesting a route listed in sails.config.session.routesDisabled (with default settings)', function() {
 
-      describe('requesting a route listed in sails.config.session.routesDisabled', function() {
+        // Lift a Sails instance in production mode
+        var app = Sails();
+        before(function (done){
+          app.lift({
+            globals: false,
+            port: 1535,
+            environment: 'development',
+            log: {level: 'silent'},
+            session: {
+              secret: 'abc123'
+            },
+            hooks: {grunt: false},
+            routes: {
+              '/sails.io.js': function(req, res) {
+                return res.status(200).send();
+              }
+            }
+          }, done);
+        });
+
+        describe('static asset', function() {
+
+          it('there should be no `set-cookie` header in the response', function(done) {
+
+            request(
+              {
+                method: 'GET',
+                uri: 'http://localhost:1535/sails.io.js',
+              },
+              function(err, response, body) {
+                assert.equal(response.statusCode, 200);
+                assert(_.isUndefined(response.headers['set-cookie']));
+                return done();
+              }
+            );
+          });
+
+        });
+
+        after(function(done) {
+          return app.lower(done);
+        });
+
+      });
+
+      describe('requesting a route listed in sails.config.session.routesDisabled (custom settings)', function() {
 
         // Lift a Sails instance in production mode
         var app = Sails();
@@ -133,7 +179,7 @@ describe('middleware :: ', function() {
             log: {level: 'silent'},
             session: {
               secret: 'abc123',
-              routesDisabled: ['/test', '/foo/:id/bar/', 'POST /bar', 'ALL /baz', 'GET r|^[^?]*/[^?/]+\\.[^?/]+(\\?.*)?$|']
+              routesDisabled: ['/test', '/foo/:id/bar/', 'POST /bar', 'ALL /baz']
             },
             hooks: {grunt: false},
             routes: {
@@ -279,9 +325,9 @@ describe('middleware :: ', function() {
 
         });
 
-        describe('regex path', function() {
+        describe('static asset', function() {
 
-          it('there should be no `set-cookie` header in the response', function(done) {
+          it('there SHOULD be a `set-cookie` header in the response', function(done) {
 
             request(
               {
@@ -290,7 +336,7 @@ describe('middleware :: ', function() {
               },
               function(err, response, body) {
                 assert.equal(response.statusCode, 200);
-                assert(_.isUndefined(response.headers['set-cookie']));
+                assert(response.headers['set-cookie']);
                 return done();
               }
             );
