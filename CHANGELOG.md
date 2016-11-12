@@ -196,3 +196,7 @@
 * [ENHANCEMENT] Refactoring and cleanup.
 * [ENHANCEMENT] Switched from `express3-handlebars` to `express-handlebars`
 * [BUGFIX] Add missing require for async module [#2101](https://github.com/balderdashy/sails/pull/2101)
+
+### 0.10.4 and earlier?
+
+See https://github.com/balderdashy/sails/commits/eea3b43b4e79d6b9f1b03b318a3ccab80704f22a.
