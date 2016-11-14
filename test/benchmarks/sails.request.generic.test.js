@@ -56,7 +56,7 @@ if (process.env.BENCHMARK) {
                 '/test8': function(req, res) { return res.status(200).json({foo: 'bar'}); },
 
                 'POST /test9': function(req, res) { return res.status(200).send(req.param('foo')); },
-                'POST /test9a': function(req, res) { setTimeout(function() {return res.status(200).send(req.param('foo'));}, 5); },
+                'POST /test9a': function(req, res) { setTimeout(function(){return res.status(200).send(req.param('foo'));}, 50);} ,
 
                 'POST /test10': function(req, res) { return res.status(200).json(req.allParams); },
               }
