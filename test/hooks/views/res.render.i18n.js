@@ -3,7 +3,6 @@
  */
 
 var assert = require('assert');
-var util = require('util');
 var Sails = require('../../../lib').constructor;
 var path = require('path');
 
