@@ -16,9 +16,14 @@ module.exports = {
 
   // Lift-time and load-time errors
   failedToLoadSails: function(err) {
+    log.error();
     log.error(err);
     log.error('Could not load Sails app.');
-    log.error('Are you using the latest stable version?');
+    log.error();
+    log.error('Tips:');
+    log.error(' • First, take a look at the error message above.');
+    log.error(' • Check that you\'re using the latest stable version of Sails.');
+    log.error(' • Have a question or need help?  (http://sailsjs.com/support)');
     _terminateProcess(1);
   },
 
