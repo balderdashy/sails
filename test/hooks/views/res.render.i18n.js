@@ -6,7 +6,7 @@ var assert = require('assert');
 var Sails = require('../../../lib').constructor;
 var path = require('path');
 
-describe('res.render() with i18n', function (){
+describe('sails.hooks.views.render() with i18n', function (){
 
   var renderWithLocale = function(req, res){
     var data = {
