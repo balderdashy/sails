@@ -10,6 +10,7 @@ var request = require('request');
 var MProcess = require('machinepack-process');
 var MFilesystem = require('machinepack-fs');
 var testSpawningSailsLiftChildProcessInCwd = require('../../helpers/test-spawning-sails-lift-child-process-in-cwd');
+var appHelper = require('../../integration/helpers/appHelper');
 
 tmp.setGracefulCleanup();
 
@@ -35,7 +36,11 @@ describe('skipAssets', function() {
       // Create a new Sails app.
       MProcess.executeCommand({
         command: util.format('node %s new %s --fast', pathToSailsCLI, 'testApp'),
-      }).exec(done);
+      }).exec(function(err) {
+        if (err) {return done(err);}
+        appHelper.linkDeps(pathToTestApp);
+        return done();
+      });
     });
 
 
@@ -115,7 +120,11 @@ describe('skipAssets', function() {
       // Create a new Sails app.
       MProcess.executeCommand({
         command: util.format('node %s new %s --fast', pathToSailsCLI, 'testApp'),
-      }).exec(done);
+      }).exec(function(err) {
+        if (err) {return done(err);}
+        appHelper.linkDeps(pathToTestApp);
+        return done();
+      });
     });
 
 

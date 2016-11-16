@@ -8,6 +8,7 @@ var tmp = require('tmp');
 var request = require('request');
 var MProcess = require('machinepack-process');
 var testSpawningSailsLiftChildProcessInCwd = require('../helpers/test-spawning-sails-lift-child-process-in-cwd');
+var appHelper = require('./helpers/appHelper');
 
 tmp.setGracefulCleanup();
 
@@ -33,8 +34,12 @@ describe('Starting sails server with `sails lift`', function() {
       pathToTestApp = path.resolve(tmpDir.name, 'testApp');
       // Create a new Sails app.
       MProcess.executeCommand({
-        command: util.format('node %s new %s --fast', pathToSailsCLI, pathToTestApp),
-      }).exec(done);
+        command: util.format('node %s new %s --fast', pathToSailsCLI, 'testApp'),
+      }).exec(function(err) {
+        if (err) {return done(err);}
+        appHelper.linkDeps(pathToTestApp);
+        return done();
+      });
     });
 
 

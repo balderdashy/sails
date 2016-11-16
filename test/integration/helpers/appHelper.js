@@ -237,7 +237,7 @@ module.exports = {
   },
 
   linkDeps: function(appPath) {
-    var deps = ['sails-hook-orm', 'sails-hook-sockets', 'sails-disk'];
+    var deps = ['sails-hook-orm', 'sails-hook-sockets', 'sails-disk', 'lodash', 'async'];
     _.each(deps, function(dep) {
       fs.ensureSymlinkSync(path.resolve(__dirname, '..', '..', '..', 'node_modules', dep), path.resolve(appPath, 'node_modules', dep));
     });
