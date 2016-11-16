@@ -1,6 +1,6 @@
 # Actions in Sails
 
-In Sails, an _action_ is a named request handler that is intended to be bound directly to a route in an app's `config/routes.js` file.  Actions may be loaded from disk (typically from the `api/controllers` project folder and subfolders), from runtime configuration (in `sails.config.controllers.actions`) or added by hooks (using `sails.registerAction`).
+In Sails, an _action_ is a named request handler that is intended to be bound directly to a route in an app's `config/routes.js` file.  Actions may be loaded from disk (typically from the `api/controllers` project folder and subfolders), or added by hooks (using `sails.registerAction`).
 
 ##### Benefits of actions
 
