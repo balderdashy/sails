@@ -28,7 +28,7 @@ Action middleware are functions that are intended to _modify_ actions (or more a
 
 ### Private methods
 
-##### `Sails.controller.loadModules(cb)`
+##### `Sails.controller.loadActionModules(cb)`
 
 When Sails loads, this method loads all of the files underneath the controllers directory (`api/controllers` by default) and attempts to parse them into actions that can be bound to routes.  File in the controllers directory can either be pascal-cased and ending in "Controller" (e.g. MyController.js), in which case they are expected to be _dictionaries_ of actions, or else kebab-cased and lowercased (e.g. my-action.js) in which case they are expected to contain a single action.  An action may be a function which accepts `req` and `res` as arguments, or a [node-machine](http://node-machine.org) definition which will be parsed by [machine-as-action](https://github.com/treelinehq/machine-as-action).
 
