@@ -1,6 +1,6 @@
 # Actions in Sails
 
-In Sails, an _action_ is a named request handler that is intended to be bound directly to a route in an app's `config/routes.js` file.  Actions may be loaded from disk (typically from the `api/controllers` project folder and subfolders), or added by hooks (using `sails.registerAction`).
+In Sails, an _action_ is a named request handler that is intended to be bound directly to a route in an app's `config/routes.js` file.  Actions may be loaded from disk (typically from the `api/controllers` project folder and subfolders), from runtime configuration (in `sails.config.controllers.moduleDefinitions`) or added by hooks (using `sails.registerAction`).
 
 ##### Benefits of actions
 
@@ -32,7 +32,7 @@ Action middleware are functions that are intended to _modify_ actions (or more a
 
 When Sails loads, this method loads all of the files underneath the controllers directory (`api/controllers` by default) and attempts to parse them into actions that can be bound to routes.  File in the controllers directory can either be pascal-cased and ending in "Controller" (e.g. MyController.js), in which case they are expected to be _dictionaries_ of actions, or else kebab-cased and lowercased (e.g. my-action.js) in which case they are expected to contain a single action.  An action may be a function which accepts `req` and `res` as arguments, or a [node-machine](http://node-machine.org) definition which will be parsed by [machine-as-action](https://github.com/treelinehq/machine-as-action).
 
-After actions are loaded from disk, any actions specified under the `sails.config.controllers.actions` config key are merged on top of those actions.  This allows Sails apps to be constructed dynamically at runtime.
+After actions are loaded from disk, any actions specified under the `sails.config.controllers.moduleDefinitions` config key are merged on top of those actions.  This allows Sails apps to be constructed dynamically at runtime.
 
 Note that this method is called internally by Sails _after_ hooks have loaded (or in the case of a `Sails.reloadModules` call, after they have _reloaded_).  This ensures that user actions always take precedence over those added by hooks.
 
