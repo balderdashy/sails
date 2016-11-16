@@ -45,7 +45,7 @@ describe('New app generator', function() {
   describe('sails new <appname>', function() {
 
     it('should create new, liftable app in new folder', function(done) {
-      exec('node '+ sailsbin + ' new ' + appName + ' --fast', function(err) {
+      exec('node '+ sailsbin + ' new ' + appName + ' --fast --without=lodash,async', function(err) {
         if (err) { return done(new Error(err)); }
         appHelper.lift({log:{level:'silent'}}, function(err, sailsApp) {
           if (err) {return done(err);}
@@ -71,7 +71,7 @@ describe('New app generator', function() {
   describe('sails generate new <appname>', function() {
 
     it('should create new app', function(done) {
-      exec('node '+ sailsbin + ' generate new ' + appName + ' --fast', function(err) {
+      exec('node '+ sailsbin + ' generate new ' + appName + ' --fast --without=lodash,async', function(err) {
         if (err) { return done(new Error(err)); }
         appHelper.lift({log:{level:'silent'}}, function(err, sailsApp) {
           if (err) {return done(err);}
@@ -102,7 +102,7 @@ describe('New app generator', function() {
       fs.mkdirSync(appName);
       process.chdir(appName);
 
-      exec( 'node '+ path.resolve('..', sailsbin) + ' new . --fast', function(err) {
+      exec( 'node '+ path.resolve('..', sailsbin) + ' new . --fast --without=lodash,async', function(err) {
         if (err) { return done(new Error(err)); }
 
         // move from app to its parent directory
@@ -117,7 +117,7 @@ describe('New app generator', function() {
       fs.mkdirSync(appName);
       process.chdir(appName);
       fs.mkdirSync('test');
-      exec( 'node ' + path.resolve('..', sailsbin) + ' new . --fast', function(err, dumb, result) {
+      exec( 'node ' + path.resolve('..', sailsbin) + ' new . --fast --without=lodash,async', function(err, dumb, result) {
         // move from app to its parent directory
         process.chdir('../');
         assert.notEqual(result.indexOf('error'), -1);

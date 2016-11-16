@@ -79,7 +79,7 @@ module.exports = {
 
     //
     process.chdir(appName);
-    child_process.exec('node ' + pathToLocalSailsCLI + ' new --fast', function(err) {
+    child_process.exec('node ' + pathToLocalSailsCLI + ' new --fast --without=lodash,async', function(err) {
       if (err) {
         return done(err);
       }
@@ -237,7 +237,7 @@ module.exports = {
   },
 
   linkDeps: function(appPath) {
-    var deps = ['sails-hook-orm', 'sails-hook-sockets', 'sails-disk', 'lodash', 'async'];
+    var deps = ['sails-hook-orm', 'sails-hook-sockets', 'sails-disk'];
     _.each(deps, function(dep) {
       fs.ensureSymlinkSync(path.resolve(__dirname, '..', '..', '..', 'node_modules', dep), path.resolve(appPath, 'node_modules', dep));
     });

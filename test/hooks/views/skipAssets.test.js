@@ -35,7 +35,7 @@ describe('skipAssets', function() {
       pathToTestApp = path.resolve(tmpDir.name, 'testApp');
       // Create a new Sails app.
       MProcess.executeCommand({
-        command: util.format('node %s new %s --fast', pathToSailsCLI, 'testApp'),
+        command: util.format('node %s new %s --fast --without=lodash,async', pathToSailsCLI, 'testApp'),
       }).exec(function(err) {
         if (err) {return done(err);}
         appHelper.linkDeps(pathToTestApp);
@@ -119,7 +119,7 @@ describe('skipAssets', function() {
       pathToTestApp = path.resolve(tmpDir.name, 'testApp');
       // Create a new Sails app.
       MProcess.executeCommand({
-        command: util.format('node %s new %s --fast', pathToSailsCLI, 'testApp'),
+        command: util.format('node %s new %s --fast --without=lodash,async', pathToSailsCLI, 'testApp'),
       }).exec(function(err) {
         if (err) {return done(err);}
         appHelper.linkDeps(pathToTestApp);
