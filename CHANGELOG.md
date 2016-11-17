@@ -1,5 +1,23 @@
 # Sails Changelog
 
+
+### 0.12.10
+
+* [BUGFIX] Fix issue where incorrect file size was computed for incoming (multi-)file uploads on skipper-disk and skipper-s3 [#3847](https://github.com/balderdashy/sails/issues/3847)  (thanks [@crobinson42](https://github.com/crobinson42), [@NAlexandrov](https://github.com/NAlexandrov) and [@vbogdanov](https://github.com/vbogdanov)!)  See also https://github.com/balderdashy/skipper/issues/109.
+* [BUGFIX] Internationalization fix ([#3833](https://github.com/balderdashy/sails/issues/3833) fixes [#3889](https://github.com/balderdashy/sails/pull/3889) (thanks [@josebaseba](https://github.com/Josebaseba)!)
+* [INTERNAL] Added automated request latency benchmarks -- primarily in advance of 1.0 for the purpose of comparison (thanks [@sgress454](http://github.com/sgress454)!)
+* [BUGFIX] Fixed issue with defined-in-app adapters being improperly loaded [#3884](https://github.com/balderdashy/sails/issues/3884) (thanks [@richdunajewski](https://github.com/richdunajewski)!)
+
+### 0.12.9
+
+* [INTERNAL] Fix deprecation warning from express-session [3872](https://github.com/balderdashy/sails/issues/3872)  (thanks [@Boycce](https://github.com/Boycce) and [@dougwilson](https://github.com/dougwilson)!)
+
+### 0.12.8
+
+* [BUGFIX] Fix issue with multiple config files that have the same filename [3850](https://github.com/balderdashy/sails/issues/3850)
+* [ENHANCEMENT] Add criteria validation for the `find` and `findOne` blueprint actions. [ab9c2c3...c6e8ad0](https://github.com/balderdashy/sails/compare/ab9c2c3431a5298e8fd140e5c1e2ed2c7260526c...c6e8ad0940e1034222b958b97e8f28287fae32b6)
+* [INTERNAL] Fix Gitter link in README so it displays properly on NPM [284c660](https://github.com/balderdashy/sails/commit/284c66008632d906524b2238447a0b79715855e7)
+
 ### 0.12.7
 
 * [ENHANCEMENT] Log warning when lifting in production with very permissive CORS settings (thanks [@ejcx](https://github.com/ejcx)).  See [this comment](https://github.com/balderdashy/sails/commit/f80252f66edc0bf00cf6ed317d9a3e68b4e8d948#commitcomment-19209724) for v1.0 plans.
