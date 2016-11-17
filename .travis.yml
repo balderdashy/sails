@@ -18,29 +18,13 @@ node_js:
   - "5"
   - "6"
   - "7"
+  - "node"
 
-sudo: false
-
-script:
-  - "npm test"
-
-notifications:
-  irc:
-    channels:
-      - "irc.freenode.org#sailsjs"
-    on_success: never
-    on_failure: always
-    template:
-      - "Build by %{author} has failed:"
-      - "Git Info: %{branch} - %{commit}"
-      - "Travis states: %{message}"
-      - "Build Details: %{build_url}"
-      - "Change View: %{compare_url}"
-    skip_join: true
-
-# whitelisted branches
 branches:
   only:
     - master
-    - stable
-    - beta
+    - 0.12
+
+notifications:
+  email:
+    - ci@sailsjs.com
