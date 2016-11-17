@@ -217,7 +217,75 @@ describe('sails being lifted and lowered (e.g in a test framework)', function() 
 
   });
 
-  describe('with Sails environment set to `production`, and the Node environment not set to `production`', function() {
+  describe('with Sails environment set to `production`, and the Node environment is `undefined`', function() {
+
+    var sailsApp;
+    var originalNodeEnv;
+
+    before(function() {
+      originalNodeEnv = process.env.NODE_ENV;
+      delete process.env.NODE_ENV;
+    });
+
+    after(function(done) {
+      process.env.NODE_ENV = originalNodeEnv;
+      if (sailsApp) {
+        return sailsApp.lower(done);
+      }
+      else {
+        return done();
+      }
+    });
+
+    it('should change NODE_ENV to production and log a warning', function(done) {
+
+      var debugs = [];
+      var customLogger = {
+        level: 'debug',
+        custom: {
+          log: function(){},
+          warn: function(){},
+          debug: function(msg) {debugs.push(msg);}
+        },
+        colors: { warn: '' },
+        prefixTheme: 'abbreviated'
+      };
+
+      // Load `app0` deep in the `'cenote'`
+      Sails().load({
+        environment: 'production',
+        log: customLogger,
+        globals: false,
+        hooks: {
+          grunt: false,
+        }
+      }, function(err, _sailsApp) {
+
+        if (err) { return done(err); }
+        sailsApp = _sailsApp;
+
+        // Assert that NODE_ENV is changed.
+        assert.equal(process.env.NODE_ENV, 'production');
+
+        // Assert that sails config is unchanged.
+        assert.equal(sailsApp.config.environment, 'production');
+
+        assert (_.any(debugs, function(debug) {
+          return debug.indexOf('Detected Sails environment is "production", but NODE_ENV is `undefined`.') > -1;
+        }), 'Did not log a warning about NODE_ENV being undefined while sails environment is `production`!');
+        assert (_.any(debugs, function(debug) {
+          return debug.indexOf('Automatically setting the NODE_ENV environment variable to "production".') > -1;
+        }), 'Did not log a warning about NODE_ENV being set to `production`!');
+
+        return done();
+
+      });//</app0.load()>
+
+    });
+
+  });
+
+  describe('with Sails environment set to `production`, and the Node environment is `development`', function() {
 
     var sailsApp;
     var originalNodeEnv;
@@ -237,44 +305,19 @@ describe('sails being lifted and lowered (e.g in a test framework)', function() 
       }
     });
 
-    it('should log a warning', function(done) {
-
-      var warns = [];
-      var customLogger = {
-        level: 'warn',
-        custom: {
-          log: console.log.bind(console),
-          debug: console.log.bind(console),
-          warn: function(msg) {warns.push(msg);}
-        },
-        colors: { warn: '' },
-        prefixTheme: 'abbreviated'
-      };
+    it('should fail to lift sails', function(done) {
 
       // Load `app0` deep in the `'cenote'`
       Sails().load({
         environment: 'production',
-        log: customLogger,
+        log: {level: 'silent'},
         globals: false,
         hooks: {
           grunt: false,
         }
       }, function(err, _sailsApp) {
-
-        if (err) { return done(err); }
-
-        sailsApp = _sailsApp;
-
-        // Assert that NODE_ENV is unchanged.
-        assert.equal('development', process.env.NODE_ENV);
-
-        // Assert that sails config is unchanged.
-        assert.equal(sailsApp.config.environment, 'production');
-
-        var foundWarning = false;
-        assert (_.any(warns, function(warn) {
-          return warn.indexOf('Detected Sails environment of `production`, but Node environment is `development`') > -1;
-        }), 'Did not log a warning about NODE_ENV not being set to production!');
+        if (!err) { return done(new Error('Sails should have failed to lift!')); }
+        assert.equal(err.code, 'E_INVALID_NODE_ENV');
 
         return done();
 
@@ -283,7 +326,6 @@ describe('sails being lifted and lowered (e.g in a test framework)', function() 
     });
 
   });
-
 
 
 });
