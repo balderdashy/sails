@@ -3,10 +3,13 @@
  */
 
 var nodepath = require('path');
+var CaptainsLog = require('captains-log');
 
+// Once per process:
 // Build logger using best-available information
 // when this module is initially required.
-var log = require('captains-log')(require('../lib/app/configuration/rc'));
+var rconf = require('../lib/app/configuration/rc');
+var log = CaptainsLog(rconf.log);
 
 
 /**
