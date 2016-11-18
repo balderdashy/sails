@@ -66,6 +66,7 @@ cmd.option('--viewEngine [viewEngine]');
 cmd.option('--template [viewEngine]');
 cmd.usage('[path_to_new_app]');
 cmd.unknownOption = NOOP;
+cmd.description('');
 cmd.action(require('./sails-new'));
 
 
