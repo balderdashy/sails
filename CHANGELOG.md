@@ -4,6 +4,12 @@
 
 > _See https://github.com/balderdashy/sails/commits/master and http://sailsjs.com/roadmap for some of the latest developments._
 
+
+### 0.12.11
+
+* [BUGFIX] backport fix for `_.isFunction()` from Lodash 4 (see https://github.com/lodash/lodash/issues/2768 and https://github.com/balderdashy/sails/issues/3863)  Thanks [@adnan-kamili](https://github.com/adnan-kamili) and [@jdalton](https://github.com/jdalton)!
+* [INTERNAL] rebase changelog updates from master [223567c](https://github.com/balderdashy/sails/commit/223567cf986dd62317d958cb29a6683a4cf1e140)
+
 ### 0.12.10
 
 * [BUGFIX] Fix issue where incorrect file size was computed for incoming (multi-)file uploads on skipper-disk and skipper-s3 [#3847](https://github.com/balderdashy/sails/issues/3847)  (thanks [@crobinson42](https://github.com/crobinson42), [@NAlexandrov](https://github.com/NAlexandrov) and [@vbogdanov](https://github.com/vbogdanov)!)  See also https://github.com/balderdashy/skipper/issues/109.
