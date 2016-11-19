@@ -1,5 +1,5 @@
 var Benchmark = require('benchmark');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 
 /**
  * benchmarx()

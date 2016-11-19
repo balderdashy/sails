@@ -5,7 +5,7 @@
 var assert = require('assert');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var fs = require('fs');
 
 

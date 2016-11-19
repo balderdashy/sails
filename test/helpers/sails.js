@@ -1,7 +1,7 @@
 /**
  * Module dependencies
  */
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var util = require('util');
 var should = require('should');
 var domain = require('domain');

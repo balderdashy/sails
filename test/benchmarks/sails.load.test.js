@@ -1,4 +1,4 @@
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var chalk = require('chalk');
 var portfinder = require('portfinder');
 portfinder.basePort = 2001;

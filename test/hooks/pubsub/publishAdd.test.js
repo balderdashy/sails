@@ -4,7 +4,7 @@
 
 var util = require('util');
 var assert = require('assert');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var async = require('async');
 var Sails = require('../../../lib').Sails;
 var socketIOClient = require('socket.io-client');

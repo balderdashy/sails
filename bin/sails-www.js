@@ -6,7 +6,7 @@
  */
 
 var nodepath = require('path');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var CaptainsLog = require('captains-log');
 var Sails = require('../lib/app');
 var rconf = require('../lib/app/configuration/rc');
