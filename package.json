@@ -68,7 +68,7 @@
     "serve-static": "1.10.2",
     "skipper": "~0.7.0",
     "sort-route-addresses": "^0.0.1",
-    "uid-safe": "1.1.0",
+    "uid-safe": "2.1.3",
     "vary": "1.1.0",
     "waterline-criteria": "^2.0.0"
   },
