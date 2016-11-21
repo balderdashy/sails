@@ -31,6 +31,14 @@ describe('app.getRouteFor()', function (){
         'get /wolves/:id': { target: 'WolfController.findOne' },
         'post /wolves': { controller: 'WolfController', action: 'create' },
         'options /wolves/test': { target: 'WolfController.CreaTe' },
+        'get /my-machineFn': { action: 'machines/machinefn' }
+      },
+      controllers: {
+        moduleDefinitions: {
+          'machines/machinefn': {
+            fn: function () {}
+          }
+        }
       }
     }, done);
   });
@@ -102,6 +110,23 @@ describe('app.getRouteFor()', function (){
     catch (e) {
       if (e.code !== 'E_USAGE') { assert(false, 'Should have thrown an error w/ code === "E_USAGE"'); }
     }
+
+    try {
+      app.getRouteFor([{ action: 'machines/machinefn' }]);
+      assert(false, 'Should have thrown an error');
+    }
+    catch (e) {
+      if (e.code !== 'E_USAGE') { assert(false, 'Should have thrown an error w/ code === "E_USAGE"'); }
+    }
+
+    try {
+      app.getRouteFor(function(){});
+      assert(false, 'Should have thrown an error');
+    }
+    catch (e) {
+      if (e.code !== 'E_USAGE') { assert(false, 'Should have thrown an error w/ code === "E_USAGE"'); }
+    }
+
   });
 
   it('should be able to match different syntaxes (routes that specify separate controller+action, or specifically specify a target)', function (){
@@ -126,6 +151,10 @@ describe('app.getRouteFor()', function (){
 
     assert.equal( app.getRouteFor('WolfController.create').url, '/wolves' );
     assert.equal( app.getRouteFor('WolfController.create').method, 'post' );
+
+    assert.equal( app.getRouteFor('machines/machinefn').url, '/my-machineFn' );
+    assert.equal( app.getRouteFor('machines/machinefn').method, 'get' );
+
   });
 
   it('should be case-insensitive regarding controller / action names', function (){
