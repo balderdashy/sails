@@ -31,7 +31,8 @@ describe('app.getRouteFor()', function (){
         'get /wolves/:id': { target: 'WolfController.findOne' },
         'post /wolves': { controller: 'WolfController', action: 'create' },
         'options /wolves/test': { target: 'WolfController.CreaTe' },
-        'get /my-machineFn': { action: 'machines/machinefn' }
+        'get /my-machineFn': { action: 'machines/machinefn' },
+        'get /my-page': { view: 'somepage' }
       },
       controllers: {
         moduleDefinitions: {
@@ -81,7 +82,7 @@ describe('app.getRouteFor()', function (){
     }
     catch (e) {
       if (e.code !== 'E_NOT_FOUND') {
-        assert(false, 'Should have thrown an error w/ code === "E_NOT_FOUND"');
+        assert(false, 'Should have thrown an error w/ code === "E_NOT_FOUND", instead got: ' + util.inspect(e));
       }
     }
   });
