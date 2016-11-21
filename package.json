@@ -89,6 +89,7 @@
     "sails-hook-orm": "^2.0.0-0",
     "sails-hook-sockets": "^0.13.8",
     "sails.io.js": "^1.0.0",
+    "session-file-store": "1.0.0",
     "should": "9.0.0",
     "socket.io-client": "1.4.5",
     "supertest": "1.1.0",

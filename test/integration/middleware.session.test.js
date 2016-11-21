@@ -3,6 +3,9 @@ var request = require('request');
 var Sails = require('../../lib').Sails;
 var assert = require('assert');
 var cookie = require('cookie');
+var tmp = require('tmp');
+var path = require('path');
+var fs = require('fs');
 
 
 
@@ -14,68 +17,155 @@ describe('middleware :: ', function() {
 
       describe('with a valid session secret', function() {
 
-        var sid;
+        describe('using built-in (memory) store', function() {
 
-        // Lift a Sails instance in production mode
-        var app = Sails();
-        before(function (done){
-          app.lift({
-            globals: false,
-            port: 1535,
-            environment: 'development',
-            log: {level: 'silent'},
-            session: {
-              secret: 'abc123'
-            },
-            hooks: {grunt: false, pubsub: false},
-            routes: {
-              '/test': function(req, res) {
-                var count = req.session.count || 1;
-                req.session.count = count + 1;
-                return res.send('Count is ' + count);
+          var sid;
+
+          // Lift a Sails instance in production mode
+          var app = Sails();
+          before(function (done){
+            app.lift({
+              globals: false,
+              port: 1535,
+              environment: 'development',
+              log: {level: 'silent'},
+              session: {
+                secret: 'abc123'
+              },
+              hooks: {grunt: false, pubsub: false},
+              routes: {
+                '/test': function(req, res) {
+                  var count = req.session.count || 1;
+                  req.session.count = count + 1;
+                  return res.send('Count is ' + count);
+                }
               }
-            }
-          }, done);
-        });
+            }, done);
+          });
 
-        it('a server responses should supply a cookie with a session ID', function(done) {
+          it('a server responses should supply a cookie with a session ID', function(done) {
 
-          request(
-            {
-              method: 'GET',
-              uri: 'http://localhost:1535/test',
-            },
-            function(err, response, body) {
-              assert.equal(body, 'Count is 1');
-              assert(response.headers['set-cookie']);
-              var cookies = require('cookie').parse(response.headers['set-cookie'][0]);
-              assert(cookies['sails.sid']);
-              sid = cookies['sails.sid'];
-              return done();
-            }
-          );
-        });
-
-        it('a subsequent request using that session ID in a "Cookie" header should use the same session', function(done) {
-
-          request(
-            {
-              method: 'GET',
-              uri: 'http://localhost:1535/test',
-              headers: {
-                Cookie: 'sails.sid=' + sid
+            request(
+              {
+                method: 'GET',
+                uri: 'http://localhost:1535/test',
+              },
+              function(err, response, body) {
+                assert.equal(body, 'Count is 1');
+                assert(response.headers['set-cookie']);
+                var cookies = require('cookie').parse(response.headers['set-cookie'][0]);
+                assert(cookies['sails.sid']);
+                sid = cookies['sails.sid'];
+                return done();
               }
-            },
-            function(err, response, body) {
-              assert.equal(body, 'Count is 2');
-              return done();
-            }
-          );
+            );
+          });
 
+          it('a subsequent request using that session ID in a "Cookie" header should use the same session', function(done) {
+
+            request(
+              {
+                method: 'GET',
+                uri: 'http://localhost:1535/test',
+                headers: {
+                  Cookie: 'sails.sid=' + sid
+                }
+              },
+              function(err, response, body) {
+                assert.equal(body, 'Count is 2');
+                return done();
+              }
+            );
+
+          });
+
+          after(function(done) {
+            return app.lower(done);
+          });
         });
 
-        after(function(done) {
-          return app.lower(done);
+        describe('using 3rd-party store (memory) store', function() {
+
+          var curDir, tmpDir, sailsApp;
+          var sid;
+
+          // Lift a Sails instance in production mode
+          var app = Sails();
+          before(function (done){
+
+            // Cache the current working directory.
+            curDir = process.cwd();
+            // Create a temp directory.
+            tmpDir = tmp.dirSync({gracefulCleanup: true, unsafeCleanup: true});
+            // Switch to the temp directory.
+            process.chdir(tmpDir.name);
+
+            app.lift({
+              globals: false,
+              port: 1535,
+              environment: 'development',
+              log: {level: 'silent'},
+              session: {
+                secret: 'abc123',
+                adapter: require('session-file-store'),
+                // adapter: require(path.resolve(__dirname, '..', '..', 'session-file-store')),
+                path: './my-session-files'
+              },
+              hooks: {grunt: false, pubsub: false},
+              routes: {
+                '/test': function(req, res) {
+                  var count = req.session.count || 1;
+                  req.session.count = count + 1;
+                  return res.send('Count is ' + count);
+                }
+              }
+            }, done);
+          });
+
+          it('should use the 3rd-party adapter', function() {
+            assert(fs.existsSync(path.resolve(tmpDir.name, 'my-session-files')));
+          });
+
+          it('a server responses should supply a cookie with a session ID', function(done) {
+
+            request(
+              {
+                method: 'GET',
+                uri: 'http://localhost:1535/test',
+              },
+              function(err, response, body) {
+                assert.equal(body, 'Count is 1');
+                assert(response.headers['set-cookie']);
+                var cookies = require('cookie').parse(response.headers['set-cookie'][0]);
+                assert(cookies['sails.sid']);
+                sid = cookies['sails.sid'];
+                return done();
+              }
+            );
+          });
+
+          it('a subsequent request using that session ID in a "Cookie" header should use the same session', function(done) {
+
+            request(
+              {
+                method: 'GET',
+                uri: 'http://localhost:1535/test',
+                headers: {
+                  Cookie: 'sails.sid=' + sid
+                }
+              },
+              function(err, response, body) {
+                assert.equal(body, 'Count is 2');
+                return done();
+              }
+            );
+
+          });
+
+          after(function(done) {
+            process.chdir(curDir);
+            return app.lower(done);
+          });
         });
 
       });
