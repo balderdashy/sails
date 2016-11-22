@@ -28,6 +28,7 @@ describe('sails being lifted and lowered (e.g in a test framework)', function() 
         globals: false,
         hooks: {
           grunt: false,
+          i18n: false
         }
       }, function(err, sails) {
         if (err) {
@@ -93,6 +94,7 @@ describe('sails being lifted and lowered (e.g in a test framework)', function() 
         globals: false,
         hooks: {
           grunt: false,
+          i18n: false
         }
       }, function(err, _sailsApp) {
         if (err) { return done(err); }
@@ -144,6 +146,7 @@ describe('sails being lifted and lowered (e.g in a test framework)', function() 
         globals: false,
         hooks: {
           grunt: false,
+          i18n: false
         }
       }, function(err, _sailsApp) {
 
@@ -196,6 +199,7 @@ describe('sails being lifted and lowered (e.g in a test framework)', function() 
         globals: false,
         hooks: {
           grunt: false,
+          i18n: false
         }
       }, function(err, _sailsApp) {
 
@@ -258,6 +262,7 @@ describe('sails being lifted and lowered (e.g in a test framework)', function() 
         globals: false,
         hooks: {
           grunt: false,
+          i18n: false
         }
       }, function(err, _sailsApp) {
 
@@ -314,6 +319,7 @@ describe('sails being lifted and lowered (e.g in a test framework)', function() 
         globals: false,
         hooks: {
           grunt: false,
+          i18n: false
         }
       }, function(err, _sailsApp) {
         if (!err) { return done(new Error('Sails should have failed to lift!')); }

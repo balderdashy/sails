@@ -22,7 +22,7 @@ describe('CSRF ::', function() {
     var sailsApp;
     beforeEach(function(done) {
       var _config = _.merge({
-        hooks: {grunt: false, views: false, blueprints: false, policies: false},
+        hooks: {grunt: false, views: false, blueprints: false, policies: false, i18n: false},
         log: {level: 'error'},
         routes: {
           '/csrfToken': {action: 'security/grant-csrf-token'},

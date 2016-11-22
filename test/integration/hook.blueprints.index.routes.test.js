@@ -37,7 +37,7 @@ describe('blueprints :: ', function() {
 
     (new Sails()).load(_.merge({
       hooks: {
-        grunt: false, views: false, policies: false, pubsub: false
+        grunt: false, views: false, policies: false, pubsub: false, i18n: false
       },
       orm: {
         moduleDefinitions: {

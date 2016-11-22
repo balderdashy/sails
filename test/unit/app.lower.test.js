@@ -20,6 +20,7 @@ describe('app.lower', function (){
     async.eachSeries(Array(15), function(i, cb) {
       var app = new Sails();
       var options = {
+        hooks: {i18n: false},
         globals: false,
         log: {
           level: 'error'

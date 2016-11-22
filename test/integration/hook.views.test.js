@@ -78,6 +78,7 @@ describe('hooks :: ', function() {
 
       before(function() {
         sailsConfig = {
+          hooks: {i18n: false},
           routes: {
             '/resView': function(req, res) {
               return res.view('homepage');
@@ -140,6 +141,7 @@ describe('hooks :: ', function() {
 
         before(function() {
           sailsConfig = {
+            hooks: {i18n: false},
             security: {
               csrf: true
             },
@@ -173,6 +175,7 @@ describe('hooks :: ', function() {
 
         before(function() {
           sailsConfig = {
+            hooks: {i18n: false},
             routes: {
               '/expose-locals': function(req, res) {
                 return res.view('show-locals', {foo: 'bar', abc: 123});
@@ -205,6 +208,7 @@ describe('hooks :: ', function() {
 
       before(function() {
         sailsConfig = {
+          hooks: {i18n: false},
           routes: {
             '/resView': function(req, res) {
               return res.view('homepage');
@@ -237,6 +241,7 @@ describe('hooks :: ', function() {
 
       before(function() {
         sailsConfig = {
+          hooks: {i18n: false},
           routes: {
             '/resView': function(req, res) {
               return res.view('homepage', {layout: false});
@@ -265,6 +270,7 @@ describe('hooks :: ', function() {
 
       before(function() {
         sailsConfig = {
+          hooks: {i18n: false},
           routes: {
             '/resView': function(req, res) {
               return res.view('homepage', {layout: 'alt-layout'});
@@ -294,6 +300,7 @@ describe('hooks :: ', function() {
       var nunjucks = require('nunjucks');
       before(function() {
         sailsConfig = {
+          hooks: {i18n: false},
           routes: {
             '/resView': function(req, res) {
               return res.view('homepage', {boss: 'llama'});
@@ -326,6 +333,7 @@ describe('hooks :: ', function() {
       var nunjucks = require('nunjucks');
       before(function() {
         sailsConfig = {
+          hooks: {i18n: false},
           routes: {
             '/resView': function(req, res) {
               return res.view('homepage', {boss: 'dinosaur'});
@@ -370,6 +378,7 @@ describe('hooks :: ', function() {
 
         before(function() {
           sailsConfig = {
+            hooks: {i18n: false},
             routes: {
               '/partials': function(req, res) {
                 return res.view('test-partials');
@@ -419,6 +428,7 @@ describe('hooks :: ', function() {
 
         before(function() {
           sailsConfig = {
+            hooks: {i18n: false},
             routes: {
               '/partials': function(req, res) {
                 return res.view('test-partials', {cache: true});
@@ -470,6 +480,7 @@ describe('hooks :: ', function() {
 
       before(function() {
         sailsConfig = {
+          hooks: {i18n: false},
           routes: {
             '/renderView': function(req, res) {
               req._sails.renderView('homepage', {}, function(err, html) {
@@ -500,6 +511,7 @@ describe('hooks :: ', function() {
 
       before(function() {
         sailsConfig = {
+          hooks: {i18n: false},
           routes: {
             '/renderView': function(req, res) {
               req._sails.renderView('homepage', {}, function(err, html) {

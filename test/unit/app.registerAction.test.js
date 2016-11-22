@@ -12,7 +12,7 @@ describe('sails.registerAction() :: ', function() {
   var sailsApp;
   before(function(done) {
     (new Sails()).load({
-      hooks: {grunt: false, views: false, blueprints: false, policies: false},
+      hooks: {grunt: false, views: false, blueprints: false, policies: false, i18n: false},
       log: {level: 'error'},
       routes: {
         '/foo': ''

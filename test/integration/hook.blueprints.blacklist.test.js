@@ -51,7 +51,8 @@ xdescribe('blueprints :: ', function() {
       before(function(done) {
         sails.load({
           hooks: {
-            grunt: false
+            grunt: false,
+            i18n: false
           },
           globals: false,
           log: {

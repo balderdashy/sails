@@ -633,7 +633,7 @@ describe('CORS config ::', function() {
 
       before(function(done) {
         (new Sails()).load({
-            hooks: {grunt: false, views: false, blueprints: false, policies: false},
+            hooks: {grunt: false, views: false, blueprints: false, policies: false, i18n: false},
             log: {level: 'error'},
             security: {
               cors: setup.sailsCorsConfig
@@ -702,7 +702,7 @@ describe('CORS config ::', function() {
 
       before(function(done) {
         (new Sails()).load({
-            hooks: {grunt: false, views: false, blueprints: false, policies: false},
+            hooks: {grunt: false, views: false, blueprints: false, policies: false, i18n: false},
             log: {level: 'silent'},
             cors: setup.sailsCorsConfig,
             routes: {
@@ -769,7 +769,7 @@ describe('CORS config ::', function() {
 
     it('should fail to lift', function(done) {
       (new Sails()).load({
-          hooks: {grunt: false, views: false, blueprints: false, policies: false},
+          hooks: {grunt: false, views: false, blueprints: false, policies: false, i18n: false},
           log: {level: 'silent'},
           cors: {allowOrigins: '*', allowCredentials: true},
         }, function(err, _sails) {
@@ -785,7 +785,7 @@ describe('CORS config ::', function() {
 
     it('should fail to lift', function(done) {
       (new Sails()).load({
-          hooks: {grunt: false, views: false, blueprints: false, policies: false},
+          hooks: {grunt: false, views: false, blueprints: false, policies: false, i18n: false},
           log: {level: 'silent'},
           cors: {allowOrigins: 666},
         }, function(err, _sails) {
@@ -800,7 +800,7 @@ describe('CORS config ::', function() {
 
     it('should fail to lift', function(done) {
       (new Sails()).load({
-          hooks: {grunt: false, views: false, blueprints: false, policies: false},
+          hooks: {grunt: false, views: false, blueprints: false, policies: false, i18n: false},
           log: {level: 'silent'},
           cors: {allowOrigins: ['localboast.yarg']},
         }, function(err, _sails) {
@@ -815,7 +815,7 @@ describe('CORS config ::', function() {
 
     it('should fail to lift', function(done) {
       (new Sails()).load({
-          hooks: {grunt: false, views: false, blueprints: false, policies: false},
+          hooks: {grunt: false, views: false, blueprints: false, policies: false, i18n: false},
           log: {level: 'silent'},
           cors: {allowOrigins: ['http://localboast.com:80']},
         }, function(err, _sails) {
@@ -830,7 +830,7 @@ describe('CORS config ::', function() {
 
     it('should fail to lift', function(done) {
       (new Sails()).load({
-          hooks: {grunt: false, views: false, blueprints: false, policies: false},
+          hooks: {grunt: false, views: false, blueprints: false, policies: false, i18n: false},
           log: {level: 'silent'},
           cors: {allowOrigins: ['https://localboast.com:443']},
         }, function(err, _sails) {
@@ -845,7 +845,7 @@ describe('CORS config ::', function() {
 
     it('should fail to lift', function(done) {
       (new Sails()).load({
-          hooks: {grunt: false, views: false, blueprints: false, policies: false},
+          hooks: {grunt: false, views: false, blueprints: false, policies: false, i18n: false},
           log: {level: 'silent'},
           cors: {allowOrigins: ['']},
         }, function(err, _sails) {
@@ -860,7 +860,7 @@ describe('CORS config ::', function() {
 
     it('should fail to lift', function(done) {
       (new Sails()).load({
-          hooks: {grunt: false, views: false, blueprints: false, policies: false},
+          hooks: {grunt: false, views: false, blueprints: false, policies: false, i18n: false},
           log: {level: 'silent'},
           cors: {allowOrigins: [666]},
         }, function(err, _sails) {
@@ -875,7 +875,7 @@ describe('CORS config ::', function() {
 
     it('should fail to lift', function(done) {
       (new Sails()).load({
-          hooks: {grunt: false, views: false, blueprints: false, policies: false},
+          hooks: {grunt: false, views: false, blueprints: false, policies: false, i18n: false},
           log: {level: 'silent'},
           routes: {
             '/invalid': {cors: {allowOrigins: '*', allowCredentials: true}}
@@ -893,7 +893,7 @@ describe('CORS config ::', function() {
 
     it('should fail to lift', function(done) {
       (new Sails()).load({
-          hooks: {grunt: false, views: false, blueprints: false, policies: false},
+          hooks: {grunt: false, views: false, blueprints: false, policies: false, i18n: false},
           log: {level: 'silent'},
           routes: {
             '/invalid': {cors: {allowOrigins: [666]}}
@@ -911,7 +911,7 @@ describe('CORS config ::', function() {
 
     it('should fail to lift', function(done) {
       (new Sails()).load({
-          hooks: {grunt: false, views: false, blueprints: false, policies: false},
+          hooks: {grunt: false, views: false, blueprints: false, policies: false, i18n: false},
           log: {level: 'silent'},
           routes: {
             '/invalid': {cors: {allowOrigins: 666}}
@@ -929,7 +929,7 @@ describe('CORS config ::', function() {
 
     it('should fail to lift', function(done) {
       (new Sails()).load({
-          hooks: {grunt: false, views: false, blueprints: false, policies: false},
+          hooks: {grunt: false, views: false, blueprints: false, policies: false, i18n: false},
           log: {level: 'silent'},
           routes: {
             '/invalid': {cors: {allowOrigins: ['blah']}}

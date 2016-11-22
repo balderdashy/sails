@@ -38,7 +38,7 @@ describe('blueprints :: ', function() {
       appHelper.linkDeps(tmpDir.name);
       (new Sails()).load(_.merge({
         hooks: {
-          grunt: false, views: false, policies: false, pubsub: false
+          grunt: false, views: false, policies: false, pubsub: false, i18n: false
         },
         orm: { moduleDefinitions: { adapters: { 'sails-disk': require('sails-disk')} } },
         models: {
