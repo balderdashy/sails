@@ -14,7 +14,9 @@ describe('sails.hooks.views.render() with i18n', function (){
       layout: false
     };
     sails.hooks.views.render('index.i18n', data, function(err, html){
-      if(err) return res.send(500, err);
+      if (err) {
+        return res.send(500, err);
+      }
       return res.send(200, html);
     });
   };
@@ -24,7 +26,9 @@ describe('sails.hooks.views.render() with i18n', function (){
       layout: false
     };
     sails.hooks.views.render('index.i18n', data, function(err, html){
-      if(err) return res.send(500, err);
+      if (err) {
+        return res.send(500, err);
+      }
       return res.send(200, html);
     });
   };

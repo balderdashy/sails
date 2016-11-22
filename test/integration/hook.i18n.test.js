@@ -59,35 +59,23 @@ describe('i18n ::', function() {
     });
 
     it('should say "Welcome" in English', function() {
-      assert.equal(sailsApp.__({
-        phrase: 'Welcome',
-        locale: 'en'
-      }), 'Welcome');
+      sailsApp.hooks.i18n.setLocale('en');
+      assert.equal(sailsApp.__('Welcome'), 'Welcome');
     });
 
     it('should say "Bienvenido" in Spanish', function() {
-      assert.equal(sailsApp.__({
-        phrase: 'Welcome',
-        locale: 'es'
-      }), 'Bienvenido');
+      sailsApp.hooks.i18n.setLocale('es');
+      assert.equal(sailsApp.__('Welcome'), 'Bienvenido');
     });
 
     it('should say "Bienvenue" in French', function() {
-      assert.equal(sailsApp.__({
-        phrase: 'Welcome',
-        locale: 'fr'
-      }), 'Bienvenue');
+      sailsApp.hooks.i18n.setLocale('fr');
+      assert.equal(sailsApp.__('Welcome'), 'Bienvenue');
     });
 
     it('should say "Willkommen" in German', function() {
-      //see https://github.com/balderdashy/sails-generate-backend/pull/10
-      assert(sailsApp.__({
-        phrase: 'Welcome',
-        locale: 'de'
-      }) === 'Willkommen' || sailsApp.__({
-        phrase: 'Welcome',
-        locale: 'de'
-      }) === 'Wilkommen');
+      sailsApp.hooks.i18n.setLocale('de');
+      assert.equal(sailsApp.__('Welcome'), 'Willkommen');
     });
   });
 
@@ -113,7 +101,7 @@ describe('i18n Config ::', function() {
     before(function (done) {
       appHelper.build(function(err) {
         if (err) {return done(err);}
-        var config = 'module.exports.i18n = { defaultLocale: \'de\',updateFiles : true };';
+        var config = 'module.exports.i18n = { locales: [\'en\', \'de\'], defaultLocale: \'de\' };';
         fs.writeFileSync(path.resolve('../', appName, 'config/i18n.js'), config);
         appHelper.lift({
           log: {level: 'silent'}
@@ -137,7 +125,7 @@ describe('i18n Config ::', function() {
 
     it('should say "Willkommen" by defaultLocale', function() {
       //see https://github.com/balderdashy/sails-generate-backend/pull/10
-      assert(sailsApp.__('Welcome') === 'Willkommen' || sailsApp.__('Welcome') === 'Wilkommen');
+      assert(sailsApp.__('Welcome') === 'Willkommen');
     });
 
     it('should autoupdate the file', function(done) {

@@ -102,6 +102,38 @@ describe('hooks :: ', function() {
 
     });
 
+    describe('using res.view with i18n', function () {
+
+      before(function() {
+        sailsConfig = {
+          routes: {
+            '/resView': function(req, res) {
+              return res.view('homepage');
+            }
+          }
+        };
+        filesToWrite = {
+          'views/homepage.ejs': '<%= __(\'Welcome\') %>',
+          'config/locales/es.json': '{"Welcome":"Bienvenido"}'
+        };
+      });
+
+      it('should respond to a get request to localhost:1342 with the requested page wrapped in the default layout', function(done) {
+
+        httpHelper.testRoute(
+          'get',
+          {url: 'resView', headers: {'accept-language': 'es'}},
+          function(err, response) {
+            if (err) {
+              return done(new Error(err));
+            }
+            assert.equal(response.body, '<!DOCTYPE html><html><head><!-- default layout --></head><body>Bienvenido</body></html>');
+            done();
+          });
+      });
+
+    });
+
     describe('using exposeLocalsToBrowser', function () {
 
       describe('with CSRF enabled', function() {

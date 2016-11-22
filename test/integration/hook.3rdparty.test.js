@@ -63,13 +63,13 @@ describe('hooks :: ', function() {
 
         it('should use merge the default hook config', function() {
 
-          assert(sails.config.shout.phrase == 'make it rain', sails.config.shout.phrase);
+          assert.equal(sails.config.shout.phrase, 'make it rain');
 
         });
 
         it('should bind a /shout route that responds with the default phrase', function(done) {
           httpHelper.testRoute('GET', "shout", function(err, resp, body) {
-            assert(body == 'make it rain');
+            assert.equal(body, 'make it rain');
             return done();
           });
         });
