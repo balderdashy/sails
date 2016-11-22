@@ -1,54 +1,89 @@
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var request = require('request');
 var Sails = require('../../lib').Sails;
 var assert = require('assert');
 var cookie = require('cookie');
-var redis = require('redis');
+var tmp = require('tmp');
+var path = require('path');
+var fs = require('fs-extra');
 
+if (process.env.TEST_REDIS_SESSION) {
 
-describe('middleware :: ', function() {
+  describe('middleware :: ', function() {
 
-  describe('session :: ', function() {
+    describe('session :: ', function() {
 
-    describe.only('with redis adapter ::', function() {
+      describe('with redis adapter ::', function() {
 
-      var redisClient;
-      before(function(done) {
-        var self = this;
-        self.skip();
-        return done();
-        // Check that we have a Redis server running
-        var redisClient = require('redis').createClient();
-        var handleRedisError = function() {
-          self.skip();
-          redisClient.removeListener('connect', handleRedisConnection);
-          redisClient =  null;
-          return done();
-        };
-        var handleRedisConnection = function() {
-          redisClient.removeListener('error', handleRedisError);
-          return done();
-        };
-        redisClient.once('error', handleRedisError);
-        redisClient.once('connect', handleRedisConnection);
-      });
+        var curDir, tmpDir;
 
-      describe('http requests :: ', function() {
+        before(function() {
+          // Cache the current working directory.
+          curDir = process.cwd();
+          // Create a temp directory.
+          tmpDir = tmp.dirSync({gracefulCleanup: true, unsafeCleanup: true});
+          // Switch to the temp directory.
+          process.chdir(tmpDir.name);
+          // Ensure a symlink to the connect-redis adapter.
+          fs.ensureSymlinkSync(path.resolve(__dirname, '..', '..', 'node_modules', 'connect-redis'), path.resolve(tmpDir.name, 'node_modules', 'connect-redis'));
+        });
 
-        describe('with a valid session secret', function() {
+        after(function() {
+          process.chdir(curDir);
+        });
+
+        it('should fail to lift if the Redis server can\'t be reached', function(done) {
+
+          var app = Sails();
+          app.lift({
+
+            globals: false,
+            environment: 'development',
+            log: {level: 'silent'},
+            session: {
+              secret: 'abc123',
+              adapter: 'connect-redis',
+              port: 6300
+            },
+            hooks: {grunt: false},
+            routes: {
+              '/test': function(req, res) {
+                var count = req.session.count || 1;
+                req.session.count = count + 1;
+                return res.send('Count is ' + count);
+              }
+            }
+
+          }, function(err) {
+            if (err.code === 'E_REDIS_CONNECTION_FAILED') {
+              return done();
+            }
+            else if (err) {
+              return done(err);
+            }
+            else {
+              return done(new Error('Expected an error, but Sails appears to have lifted!'));
+            }
+          });
+        });
+
+        describe('http requests :: ', function() {
 
           var sid;
 
-          // Lift a Sails instance in production mode
-          var app = Sails();
+          // Lift two Sails instances connected to the same Redis server
+          var app1 = Sails();
+          var app2 = Sails();
           before(function (done){
-            app.lift({
+
+            var liftOptions = {
               globals: false,
-              port: 1535,
               environment: 'development',
               log: {level: 'silent'},
               session: {
-                secret: 'abc123'
+                secret: 'abc123',
+                adapter: 'connect-redis',
+                port: 6380
               },
               hooks: {grunt: false},
               routes: {
@@ -58,18 +93,25 @@ describe('middleware :: ', function() {
                   return res.send('Count is ' + count);
                 }
               }
-            }, done);
+            };
+
+            app1.lift(_.extend({port: 1535}, liftOptions), function(err) {
+              if (err) {return done(err);}
+              app2.lift(_.extend({port: 1536}, liftOptions), function(err) {
+                if (err) {return done(err);}
+                return done();
+              });
+            });
           });
 
           it('a server responses should supply a cookie with a session ID', function(done) {
-            this.skip();
-            return done();
             request(
               {
                 method: 'GET',
                 uri: 'http://localhost:1535/test',
               },
               function(err, response, body) {
+                if (err) {return done(err);}
                 assert.equal(body, 'Count is 1');
                 assert(response.headers['set-cookie']);
                 var cookies = require('cookie').parse(response.headers['set-cookie'][0]);
@@ -80,17 +122,18 @@ describe('middleware :: ', function() {
             );
           });
 
-          it('a subsequent request using that session ID in a "Cookie" header should use the same session', function(done) {
+          it('a subsequent request to a different app sharing the same session store, with the same cookie, should retrieve the same session', function(done) {
 
             request(
               {
                 method: 'GET',
-                uri: 'http://localhost:1535/test',
+                uri: 'http://localhost:1536/test',
                 headers: {
                   Cookie: 'sails.sid=' + sid
                 }
               },
               function(err, response, body) {
+                if (err) {return done(err);}
                 assert.equal(body, 'Count is 2');
                 return done();
               }
@@ -99,88 +142,57 @@ describe('middleware :: ', function() {
           });
 
           after(function(done) {
-            return app.lower(done);
+            return app1.lower(function() {app2.lower(done);});
           });
+
 
         });
 
+        describe('virtual requests :: ', function() {
 
+          var sid;
 
+          // Lift two Sails instances connected to the same Redis server
+          var app1 = Sails();
+          var app2 = Sails();
+          before(function (done){
 
-
-        describe('with an invalid session secret', function() {
-
-          var app = Sails();
-
-          it('should throw an error when lifting Sails', function(done) {
-
-            app.lift({
+            var liftOptions = {
               globals: false,
-              port: 1535,
               environment: 'development',
               log: {level: 'silent'},
               session: {
-                secret: 12345
+                secret: 'abc123',
+                adapter: 'connect-redis',
+                port: 6380
               },
               hooks: {grunt: false},
               routes: {
                 '/test': function(req, res) {
-                  res.json({
-                    cookies: req.cookies,
-                    signedCookies: req.signedCookies
-                  });
-                }
-              }
-            }, function(err) {
-              if (!err) {return done(new Error('Should have thrown an error!'));}
-              return done();
-            });
-
-          });
-
-          after(function(done) {
-            return app.lower(done);
-          });
-
-        });
-
-      });
-
-      describe('virtual requests :: ', function() {
-
-        describe('with a valid session secret', function() {
-
-          var sid;
-
-          // Lift a Sails instance in production mode
-          var app = Sails();
-          before(function (done){
-            app.load({
-              globals: false,
-              environment: 'development',
-              log: {level: 'silent'},
-              session: {
-                secret: 'abc123'
-              },
-              routes: {
-                '/test': function(req, res) {
                   var count = req.session.count || 1;
                   req.session.count = count + 1;
-                  res.send('Count is ' + count);
+                  return res.send('Count is ' + count);
                 }
               }
-            }, done);
+            };
+
+            app1.lift(_.extend({port: 1535}, liftOptions), function(err) {
+              if (err) {return done(err);}
+              app2.lift(_.extend({port: 1536}, liftOptions), function(err) {
+                if (err) {return done(err);}
+                return done();
+              });
+            });
           });
 
-
           it('a server responses should supply a cookie with a session ID', function(done) {
-
-            app.request(
+            app1.request(
               {
                 method: 'GET',
                 url: '/test',
               },
               function(err, response, body) {
+                if (err) {return done(err);}
                 assert.equal(body, 'Count is 1');
                 assert(response.headers['set-cookie']);
                 var cookies = require('cookie').parse(response.headers['set-cookie'][0]);
@@ -191,9 +203,9 @@ describe('middleware :: ', function() {
             );
           });
 
-          it('a subsequent request using that session ID in a "Cookie" header should use the same session', function(done) {
+          it('a subsequent request to a different app sharing the same session store, with the same cookie, should retrieve the same session', function(done) {
 
-            app.request(
+            app2.request(
               {
                 method: 'GET',
                 url: '/test',
@@ -202,6 +214,7 @@ describe('middleware :: ', function() {
                 }
               },
               function(err, response, body) {
+                if (err) {return done(err);}
                 assert.equal(body, 'Count is 2');
                 return done();
               }
@@ -210,8 +223,9 @@ describe('middleware :: ', function() {
           });
 
           after(function(done) {
-            return app.lower(done);
+            return app1.lower(function() {app2.lower(done);});
           });
+
 
         });
 
@@ -220,5 +234,4 @@ describe('middleware :: ', function() {
     });
 
   });
-
-});
+}

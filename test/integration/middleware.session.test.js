@@ -84,7 +84,7 @@ describe('middleware :: ', function() {
           });
         });
 
-        describe('using 3rd-party store (memory) store', function() {
+        describe('using 3rd-party (file) store', function() {
 
           var curDir, tmpDir, sailsApp;
           var sid;
