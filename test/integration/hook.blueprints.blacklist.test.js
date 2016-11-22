@@ -8,7 +8,7 @@ var appHelper = require('./helpers/appHelper');
 var util = require('util');
 var async = require('async');
 var fixture = require('./fixtures/users.js');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var fs = require('fs-extra');
 var path = require('path');
 var Sails = require('../../lib/app');
@@ -16,7 +16,7 @@ var Sails = require('../../lib/app');
 
 
 
-describe('blueprints :: ', function() {
+xdescribe('blueprints :: ', function() {
 
   describe('using the values blacklist ::', function() {
 

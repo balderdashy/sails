@@ -1,4 +1,4 @@
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var request = require('request');
 var Sails = require('../../lib').Sails;
 var assert = require('assert');
@@ -21,7 +21,11 @@ describe('middleware :: ', function() {
       });
 
       before(function(done) {
-        appHelper.lift(function(err, _sailsApp) {
+        appHelper.lift({
+          hooks: {
+            pubsub: false
+          }
+        }, function(err, _sailsApp) {
           if (err) { return done(err); }
           sailsApp = _sailsApp;
           return done();

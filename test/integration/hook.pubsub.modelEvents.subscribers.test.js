@@ -3,7 +3,7 @@
  */
 
 var util = require('util');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var assert = require('assert');
 var socketHelper = require('./helpers/socketHelper.js');
 var appHelper = require('./helpers/appHelper');
@@ -20,15 +20,6 @@ var Err = {
 };
 
 
-/**
- * NOTE:
- * These tests connect to the Sails server using the traditional v0.9.x-style
- * connection.  They don't specify a version string when initiating the socket.io
- * connection, so they are automatically downgraded to the legacy usage.
- *
- * Fortunately, this provides a great test suite to ensure consistent support.
- */
-
 describe('pubsub :: ', function() {
 
   describe('Model events', function() {
@@ -39,9 +30,9 @@ describe('pubsub :: ', function() {
       var appName = 'testApp';
       var sailsApp;
 
-      before(function(done) {
+      before(function (done) {
         appHelper.buildAndLiftWithTwoSockets(appName, {
-          log: {level: 'silent'}, /*, sockets: {'backwardsCompatibilityFor0.9SocketClients':false} */
+          log: {level: 'warn'}, /*, sockets: {'backwardsCompatibilityFor0.9SocketClients':false} */
         }, function(err, sails, _socket1, _socket2) {
           if (err) {
             return done(err);
@@ -49,8 +40,9 @@ describe('pubsub :: ', function() {
           sailsApp = sails;
           socket1 = _socket1;
           socket2 = _socket2;
-          socket2.get('/user/watch', function(body, jwr) {
-            if (jwr.error) { return done(jwr.error); }
+          // Subscribe to new user notifications.
+          socket2.get('/user', function(body, jwr) {
+            if (jwr.error) { return done(new Error('Error in tests.  Details:' + JSON.stringify(jwr))); }
             done();
           });
         });
@@ -79,7 +71,7 @@ describe('pubsub :: ', function() {
 
       it('hitting the custom /userMessage route should result in a correct `user` event being received by all subscribers', function(done) {
         socket2.on('user', function(message) {
-          assert(message.id === 1 && message.verb == 'messaged' && message.data.greeting == 'hello', Err.badResponse(message));
+          assert(message.greeting === 'hello', Err.badResponse(message));
           done();
         });
         socket1.get('/user/message', function (body, jwr) {
@@ -246,8 +238,8 @@ describe('pubsub :: ', function() {
           }
         });
 
-
-        socket1.get('/pet/watch', function() {
+        // Subscribe to new pet notifications.
+        socket1.get('/pet', function() {
           socket2.post('/user/1/pets', {
             name: 'alice'
           },function(body, jwr) {

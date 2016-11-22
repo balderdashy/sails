@@ -2,15 +2,73 @@
 
 ### Master
 
+> _See https://github.com/balderdashy/sails/commits/master and http://sailsjs.com/roadmap for some of the latest developments._
+
+
+### 0.12.11
+
+* [BUGFIX] backport fix for `_.isFunction()` from Lodash 4 (see https://github.com/lodash/lodash/issues/2768 and https://github.com/balderdashy/sails/issues/3863)  Thanks [@adnan-kamili](https://github.com/adnan-kamili) and [@jdalton](https://github.com/jdalton)!
+* [INTERNAL] rebase changelog updates from master [223567c](https://github.com/balderdashy/sails/commit/223567cf986dd62317d958cb29a6683a4cf1e140)
+
+### 0.12.10
+
+* [BUGFIX] Fix issue where incorrect file size was computed for incoming (multi-)file uploads on skipper-disk and skipper-s3 [#3847](https://github.com/balderdashy/sails/issues/3847)  (thanks [@crobinson42](https://github.com/crobinson42), [@NAlexandrov](https://github.com/NAlexandrov) and [@vbogdanov](https://github.com/vbogdanov)!)  See also https://github.com/balderdashy/skipper/issues/109.
+* [BUGFIX] Internationalization fix ([#3833](https://github.com/balderdashy/sails/issues/3833) fixes [#3889](https://github.com/balderdashy/sails/pull/3889) (thanks [@josebaseba](https://github.com/Josebaseba)!)
+* [INTERNAL] Added automated request latency benchmarks -- primarily in advance of 1.0 for the purpose of comparison (thanks [@sgress454](http://github.com/sgress454)!)
+* [BUGFIX] Fixed issue with defined-in-app adapters being improperly loaded [#3884](https://github.com/balderdashy/sails/issues/3884) (thanks [@richdunajewski](https://github.com/richdunajewski)!)
+
+### 0.12.9
+
+* [INTERNAL] Fix deprecation warning from express-session [3872](https://github.com/balderdashy/sails/issues/3872)  (thanks [@Boycce](https://github.com/Boycce) and [@dougwilson](https://github.com/dougwilson)!)
+
+### 0.12.8
+
+* [BUGFIX] Fix issue with multiple config files that have the same filename [3850](https://github.com/balderdashy/sails/issues/3850)
+* [ENHANCEMENT] Add criteria validation for the `find` and `findOne` blueprint actions. [ab9c2c3...c6e8ad0](https://github.com/balderdashy/sails/compare/ab9c2c3431a5298e8fd140e5c1e2ed2c7260526c...c6e8ad0940e1034222b958b97e8f28287fae32b6)
+* [INTERNAL] Fix Gitter link in README so it displays properly on NPM [284c660](https://github.com/balderdashy/sails/commit/284c66008632d906524b2238447a0b79715855e7)
+
+### 0.12.7
+
+* [BUGFIX] Fix issue with multiple config files that have the same filename [3846](https://github.com/balderdashy/sails/issues/3846)
+* [ENHANCEMENT] Warn about overly permissive CORS settings when lifting in production [ca43e05](https://github.com/balderdashy/sails/commit/ca43e0507af79f15361789a3489013b01c8e1825)
+
+### 0.12.6
+
+* [BUGFIX] Revert inadvertent breaking change to CORS config in 0.12.5, see [f80252f](https://github.com/balderdashy/sails/commit/f80252f66edc0bf00cf6ed317d9a3e68b4e8d948) for details)
+
+### 0.12.5
+
+* [INTERNAL] Upgrade version of `include-all` to ^1.0.0 [f6e8d32](https://github.com/balderdashy/sails/commit/f6e8d3243d7d695983a3816e6cf7c43ca4237948)
+* [ENHANCEMENT] Add experimental `sails console --dontLift` option [029fe06](https://github.com/balderdashy/sails/commit/029fe0683ea4f01a962b91381b948136f5c18f63)
+* [UPGRADE] Dependencies in captains-log
+* [UPGRADE] Moduleloader now uses include-all@1, and sails-build-dictionary is deprecated (all of its methods were folded into include-all)
+* [BUGFIX] In moduleloader: Improve path resolution on windows
+* [BUGFIX] Fix property name for ('status' => 'statusCode') in virtual request header
+
+
+### 0.12.4
+
+* [INTERNAL] Upgrade Mocha to 3.0.0 to remove more of the deprecation notices when installing dependencies (see [mocha:#2200](https://github.com/mochajs/mocha/issues/2200))
+* [INTERNAL] Simplify config-merging code in captains-log.  This also gets rid of more deprecation notices during install (see [captains-log:49f433eff348c05115a2caf292b4da0db9499887](https://github.com/balderdashy/captains-log/commit/49f433eff348c05115a2caf292b4da0db9499887))
+* [BUGFIX] Fix long-standing, low-priority (but super annoying) issue with logged dictionaries/arrays getting extra quote marks (due to a pecularity in the usage of util.format()) [d67e9c8e6775](https://github.com/balderdashy/captains-log/commit/d67e9c8e67759e8dda3a2d664c3607e9127d209c)
+* [ENHANCEMENT] Add `sails.config.session.routesDisabled` config option to specify routes that should not use session middleware [c712acf](https://github.com/balderdashy/sails/commit/c712acf29de257d438b422b2c47e67a4d5126ddc)
+* [ENHANCEMENT] Use `res.forbidden()` when denying access to a route via a policy.  Thanks [@wulfsolter](https://github.com/wulfsolter)!  [3764](https://github.com/balderdashy/sails/pull/3764)
+* [ENHANCEMENT] Allow use of Express style path and RegExp in `sails.config.csrf.routesDisabled`.  Thanks [@bolasblack](https://github.com/bolasblack)!
+* [BUGFIX] Fix for query / body params called `length` [3738](https://github.com/balderdashy/sails/issues/3738)
+* [BUGFIX] Fix view rendering when i18n hook is disabled.  Thanks [@mordred](https://github.com/Mordred)! [3741](https://github.com/balderdashy/sails/pull/3741)
+* [BUGFIX] Allow `sails.renderView` to work with globals turned off [3753](https://github.com/balderdashy/sails/issues/3753)
+[d3f634c](https://github.com/balderdashy/sails/commit/d3f634c9ac0c5e2172710fe27ab3f61f8303d840)
 * [BUGFIX] Fix typo which could cause crashing when attempting to serialize non-json-compatible output in the response to a socket request.
+* [UPGRADE] Update all Grunt dependencies [5f6be05](https://github.com/balderdashy/sails/commit/5f6be059823aeb235ef3b4cf53a8d40a341c5873)
+* [UPGRADE] Update "connect" dependency to 3.4.1 [1d3c9e6](https://github.com/balderdashy/sails/commit/1d3c9e6459253261e0f763d133c559641bcbfa33)
+* [UPGRADE] Update "compression" dependency to version 1.6.2
 * [UPGRADE] Upgraded version of Consolidate to `0.14.1` [a70623c](https://github.com/balderdashy/sails/commit/a70623ce2809d497b3581268354f06904d862268)
 * [UPGRADE] Upgraded version of grunt-contrib-watch to `1.0.0` [3678](https://github.com/balderdashy/sails/issues/3678)
-
-
-<!--
-_A blank slate, as of 1459549711072.  Just imagine all the possibilities._
--->
-
+* [INTERNAL] Use standalone CSRF package instead of using the one (formerly) bundled with Connect.  Sails should be using all standalone middleware now. [1d3c9e6](https://github.com/balderdashy/sails/commit/1d3c9e6459253261e0f763d133c559641bcbfa33)
+[98861ef](https://github.com/balderdashy/sails/commit/98861ef12ddca0ff6d57cf7ea6d4bb9f8bca9656)
+* [INTERNAL] Add some assertions to ensure custom hooks don't use reserved properties [2e76dac](https://github.com/balderdashy/sails/commit/2e76dac2f961a1f20c591fb0a5d7ea6556d2ab70)
+* [INTERNAL] Update code that virtual response uses to read buffer to work with all Node versions [a5ab134](https://github.com/balderdashy/sails/commit/a5ab134c4bafa40db6b2b2133145f8a5462e4abc)
+* [INTERNAL] Remove un-maintained "wrench" module from tests; use "fs-extra" instead.  Thanks [@Ignigena](https://github.com/Ignigena)! [4f90f78](https://github.com/balderdashy/sails/commit/4f90f78fbfb1b2edf088c5e57d5e4cab56e3cf47)
 
 ### 0.12.3
 
@@ -155,3 +213,7 @@ _A blank slate, as of 1459549711072.  Just imagine all the possibilities._
 * [ENHANCEMENT] Refactoring and cleanup.
 * [ENHANCEMENT] Switched from `express3-handlebars` to `express-handlebars`
 * [BUGFIX] Add missing require for async module [#2101](https://github.com/balderdashy/sails/pull/2101)
+
+### 0.10.4 and earlier?
+
+See https://github.com/balderdashy/sails/commits/eea3b43b4e79d6b9f1b03b318a3ccab80704f22a.

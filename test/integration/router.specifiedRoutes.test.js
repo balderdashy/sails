@@ -11,38 +11,38 @@ var appHelper = require('./helpers/appHelper');
 
 
 var Err = {
-	badResponse: function(response) {
-		return 'Wrong server response!  Response :::\n' + util.inspect(response.body);
-	}
+  badResponse: function(response) {
+    return 'Wrong server response!  Response :::\n' + util.inspect(response.body);
+  }
 };
 
 
 
 
 describe('router :: ', function() {
-	describe('Specified routes', function() {
-		var appName = 'testApp';
+  describe('Specified routes', function() {
+    var appName = 'testApp';
 
-		before(function(done) {
-			appHelper.build(done);
-		});
+    before(function(done) {
+      appHelper.build(done);
+    });
 
-		beforeEach(function(done) {
-			appHelper.lift({verbose: false}, function(err, sails) {
-				if (err) {throw new Error(err);}
-				sailsprocess = sails;
-				setTimeout(done, 100);
-			});
-		});
+    beforeEach(function(done) {
+      appHelper.lift({verbose: false}, function(err, sails) {
+        if (err) {throw new Error(err);}
+        sailsprocess = sails;
+        setTimeout(done, 100);
+      });
+    });
 
-		afterEach(function(done) {
-			sailsprocess.lower(function(){setTimeout(done, 100);});
-		});
+    afterEach(function(done) {
+      sailsprocess.lower(function(){setTimeout(done, 100);});
+    });
 
-		after(function() {
-			process.chdir('../');
-			appHelper.teardown();
-		});
+    after(function() {
+      process.chdir('../');
+      appHelper.teardown();
+    });
 
     describe('an options request', function() {
       before(function() {
@@ -51,8 +51,7 @@ describe('router :: ', function() {
             cors: true,
           },
           '/testRoute': {
-            controller: 'test',
-            action: 'verb',
+            action: 'test/verb',
           },
         });
       });
@@ -66,256 +65,240 @@ describe('router :: ', function() {
           },
         }, function(err, response, body) {
           assert.equal(response.statusCode, 200);
-          assert.equal(response.headers['access-control-allow-origin'], 'https://foo.shyp.com');
+          assert.equal(response.headers['access-control-allow-origin'], '*');
           done();
         });
       });
     });
 
-		describe('with an unspecified http method', function() {
+    describe('with an unspecified http method', function() {
 
-			before(function() {
-				httpHelper.writeRoutes({
-					'/testRoute': {
-						controller: 'test',
-						action: 'verb'
-					}
-				});
-			});
+      before(function() {
+        httpHelper.writeRoutes({
+          '/testRoute': {
+           action: 'test/verb'
+          }
+        });
+      });
 
-			it('should respond to get requests', function(done) {
-
-
-				httpHelper.testRoute('get', 'testRoute', function(err, response) {
-					if (err) { return done(err); }
-
-					assert(response.body === 'get', Err.badResponse(response));
-					done();
-				});
-			});
-
-			it('should respond to post requests', function(done) {
-
-				httpHelper.testRoute('post', 'testRoute', function(err, response) {
-					if (err) { return done(err); }
-
-					assert(response.body === 'post', Err.badResponse(response));
-					done();
-				});
-			});
-
-			it('should respond to put requests', function(done) {
-
-				httpHelper.testRoute('put', 'testRoute', function(err, response) {
-					if (err) { return done(err); }
-
-					assert(response.body === 'put', Err.badResponse(response));
-					done();
-				});
-			});
-
-			it('should respond to delete requests', function(done) {
-
-				httpHelper.testRoute('del', 'testRoute', function(err, response) {
-					if (err) { return done(err); }
-
-					assert(response.body === 'delete', Err.badResponse(response));
-					done();
-				});
-			});
-		});
-
-		describe('with get http method specified', function() {
-
-			before(function() {
-				httpHelper.writeRoutes({
-					'get /testRoute': {
-						controller: 'test',
-						action: 'verb'
-					}
-				});
-			});
-
-			it('should respond to get requests', function(done) {
-
-				httpHelper.testRoute('get', 'testRoute', function(err, response) {
-					if (err) { return done(err); }
-
-					assert(response.body === 'get', Err.badResponse(response));
-					done();
-				});
-			});
-
-			it('shouldn\'t respond to post requests', function(done) {
-
-				httpHelper.testRoute('post', 'testRoute', function(err, response) {
-					if (err) { return done(err); }
-
-					assert(response.body !== 'post', Err.badResponse(response));
-					done();
-				});
-			});
-		});
-
-		describe('with post http method specified', function() {
-
-			before(function() {
-				httpHelper.writeRoutes({
-					'post /testRoute': {
-						controller: 'test',
-						action: 'verb'
-					}
-				});
-			});
-
-			it('should respond to post requests', function(done) {
-
-				httpHelper.testRoute('post', 'testRoute', function(err, response) {
-					if (err) { return done(err); }
-
-					assert(response.body === 'post', Err.badResponse(response));
-					done();
-				});
-			});
-		});
-
-		describe('with put http method specified', function() {
-
-			before(function() {
-				httpHelper.writeRoutes({
-					'put /testRoute': {
-						controller: 'test',
-						action: 'verb'
-					}
-				});
-			});
-
-			it('should respond to put requests', function(done) {
-
-				httpHelper.testRoute('put', 'testRoute', function(err, response) {
-					if (err) { return done(err); }
-
-					assert(response.body === 'put', Err.badResponse(response));
-					done();
-				});
-			});
-		});
-
-		describe('with delete http method specified', function() {
-
-			before(function(){
-				httpHelper.writeRoutes({
-					'delete /testRoute': {
-						controller: 'test',
-						action: 'verb'
-					}
-				});
-			});
-
-			it('should respond to delete requests', function(done) {
+      it('should respond to get requests', function(done) {
 
 
-				httpHelper.testRoute('del', 'testRoute', function(err, response) {
-					if (err) { return done(err); }
+        httpHelper.testRoute('get', 'testRoute', function(err, response) {
+          if (err) { return done(err); }
 
-					assert(response.body === 'delete', Err.badResponse(response));
-					done();
-				});
-			});
-		});
+          assert(response.body === 'get', Err.badResponse(response));
+          done();
+        });
+      });
 
-		describe('with dynamic url paths specified', function() {
+      it('should respond to post requests', function(done) {
 
-			before(function() {
-				httpHelper.writeRoutes({
-					'get /test/:category/:size': {
-						controller: 'test',
-						action: 'dynamic'
-					}
-				});
-			});
+        httpHelper.testRoute('post', 'testRoute', function(err, response) {
+          if (err) { return done(err); }
 
-			it('should respond to requests that match the url pattern', function(done) {
+          assert(response.body === 'post', Err.badResponse(response));
+          done();
+        });
+      });
 
-				httpHelper.testRoute('get', 'test/shirts/large', function(err, response) {
-					if (err) { return done(err); }
+      it('should respond to put requests', function(done) {
 
-					var expected = JSON.stringify([{
-						'name': 'category',
-						'optional': false
-					}, {
-						'name': 'size',
-						'optional': false
-					}]);
+        httpHelper.testRoute('put', 'testRoute', function(err, response) {
+          if (err) { return done(err); }
 
-					assert(expected === JSON.stringify(JSON.parse(response.body)));
-					done();
-				});
-			});
-		});
+          assert(response.body === 'put', Err.badResponse(response));
+          done();
+        });
+      });
 
-		describe('should be case-insensitive', function() {
+      it('should respond to delete requests', function(done) {
 
-			before(function() {
-				httpHelper.writeRoutes({
-					'get /testRoute': {
-						controller: 'test',
-						action: 'verb'
-					}
-				});
-			});
+        httpHelper.testRoute('del', 'testRoute', function(err, response) {
+          if (err) { return done(err); }
 
-			it('', function(done) {
-				httpHelper.testRoute('get', 'tEStrOutE', function(err, response) {
-					if (err) { return done(err); }
+          assert(response.body === 'delete', Err.badResponse(response));
+          done();
+        });
+      });
+    });
 
-					assert(response.body === 'get', Err.badResponse(response));
-					done();
-				});
-			});
-		});
+    describe('with get http method specified', function() {
 
-		describe('should accept case-insensitive controller key', function() {
+      before(function() {
+        httpHelper.writeRoutes({
+          'get /testRoute': {
+            action: 'test/verb'
+          }
+        });
+      });
 
-			before(function() {
-				httpHelper.writeRoutes({
-					'get /testRoute': {
-						controller: 'tEsT',
-						action: 'verb'
-					}
-				});
-			});
+      it('should respond to get requests', function(done) {
 
-			it('', function(done) {
-				httpHelper.testRoute('get', 'testRoute', function(err, response) {
-					if (err) { return done(err); }
+        httpHelper.testRoute('get', 'testRoute', function(err, response) {
+          if (err) { return done(err); }
 
-					assert(response.body === 'get', Err.badResponse(response));
-					done();
-				});
-			});
-		});
+          assert(response.body === 'get', Err.badResponse(response));
+          done();
+        });
+      });
 
-		describe('should accept case-insensitive action key', function() {
+      it('shouldn\'t respond to post requests', function(done) {
 
-			before(function(){
-				httpHelper.writeRoutes({
-					'get /testRoute': {
-						controller: 'test',
-						action: 'capiTalleTTers'
-					}
-				});
-			});
+        httpHelper.testRoute('post', 'testRoute', function(err, response) {
+          if (err) { return done(err); }
 
-			it('', function(done) {
-				httpHelper.testRoute('get', 'testRoute', function(err, response) {
-					if (err) { return done(err); }
+          assert(response.body !== 'post', Err.badResponse(response));
+          done();
+        });
+      });
+    });
 
-					assert(response.body === 'CapitalLetters', Err.badResponse(response));
-					done();
-				});
-			});
-		});
+    describe('with post http method specified', function() {
+
+      before(function() {
+        httpHelper.writeRoutes({
+          'post /testRoute': {
+            action: 'test/verb'
+          }
+        });
+      });
+
+      it('should respond to post requests', function(done) {
+
+        httpHelper.testRoute('post', 'testRoute', function(err, response) {
+          if (err) { return done(err); }
+
+          assert(response.body === 'post', Err.badResponse(response));
+          done();
+        });
+      });
+    });
+
+    describe('with put http method specified', function() {
+
+      before(function() {
+        httpHelper.writeRoutes({
+          'put /testRoute': {
+            action: 'test/verb'
+          }
+        });
+      });
+
+      it('should respond to put requests', function(done) {
+
+        httpHelper.testRoute('put', 'testRoute', function(err, response) {
+          if (err) { return done(err); }
+
+          assert(response.body === 'put', Err.badResponse(response));
+          done();
+        });
+      });
+    });
+
+    describe('with delete http method specified', function() {
+
+      before(function(){
+        httpHelper.writeRoutes({
+          'delete /testRoute': {
+            action: 'test/verb'
+          }
+        });
+      });
+
+      it('should respond to delete requests', function(done) {
+
+
+        httpHelper.testRoute('del', 'testRoute', function(err, response) {
+          if (err) { return done(err); }
+
+          assert(response.body === 'delete', Err.badResponse(response));
+          done();
+        });
+      });
+    });
+
+    describe('with dynamic url paths specified', function() {
+
+      before(function() {
+        httpHelper.writeRoutes({
+          'get /test/:category/:size': {
+            action: 'test/dynamic'
+          }
+        });
+      });
+
+      it('should respond to requests that match the url pattern', function(done) {
+
+        httpHelper.testRoute('get', 'test/shirts/large', function(err, response) {
+          if (err) { return done(err); }
+          var body = JSON.parse(response.body);
+          assert.equal(body.category, 'shirts');
+          assert.equal(body.size, 'large');
+          done();
+        });
+      });
+    });
+
+    describe('should be case-insensitive', function() {
+
+      before(function() {
+        httpHelper.writeRoutes({
+          'get /testRoute': {
+            action: 'test/verb'
+          }
+        });
+      });
+
+      it('', function(done) {
+        httpHelper.testRoute('get', 'tEStrOutE', function(err, response) {
+          if (err) { return done(err); }
+
+          assert(response.body === 'get', Err.badResponse(response));
+          done();
+        });
+      });
+    });
+
+    describe('should accept case-insensitive controller key', function() {
+
+      before(function() {
+        httpHelper.writeRoutes({
+          'get /testRoute': {
+            action: 'tEsT/verb'
+          }
+        });
+      });
+
+      it('', function(done) {
+        httpHelper.testRoute('get', 'testRoute', function(err, response) {
+          if (err) { return done(err); }
+
+          assert(response.body === 'get', Err.badResponse(response));
+          done();
+        });
+      });
+    });
+
+    describe('should accept case-insensitive action key', function() {
+
+      before(function(){
+        httpHelper.writeRoutes({
+          'get /testRoute': {
+            action: 'test/capiTalleTTers'
+          }
+        });
+      });
+
+      it('', function(done) {
+        httpHelper.testRoute('get', 'testRoute', function(err, response) {
+          if (err) { return done(err); }
+
+          assert(response.body === 'CapitalLetters', Err.badResponse(response));
+          done();
+        });
+      });
+    });
 
     describe('regex routes - get r|^/\\\\d+/(\\\\w+)/(\\\\w+)$|foo,bar', function() {
 
@@ -356,8 +339,7 @@ describe('router :: ', function() {
         httpHelper.writeRoutes({
           '/*': {
             skipAssets: true,
-            controller: 'test',
-            action: 'index'
+            action: 'test/index'
           }
         });
       });
@@ -450,7 +432,7 @@ describe('router :: ', function() {
     describe('skipRegex /abc/', function() {
 
       before(function(){
-        var ROUTES_FILE_CONTENTS = 'module.exports.routes = {\'/*\': {skipRegex: /abc/,controller: \'test\',action: \'index\'}};';
+        var ROUTES_FILE_CONTENTS = 'module.exports.routes = {\'/*\': {skipRegex: /abc/,action: \'test/index\'}};';
         require('fs').writeFileSync('config/routes.js', ROUTES_FILE_CONTENTS);
       });
 
@@ -480,7 +462,7 @@ describe('router :: ', function() {
     describe('skipRegex [/abc/, /def/]', function() {
 
       before(function(){
-        require('fs').writeFileSync('config/routes.js', "module.exports.routes = {'/*': {skipRegex: [/abc/,/def/],controller: 'test',action: 'index'}};");
+        require('fs').writeFileSync('config/routes.js', 'module.exports.routes = {\'/*\': {skipRegex: [/abc/,/def/],action: \'test/index\'}};');
       });
 
       it('should match /foo', function(done) {
@@ -518,5 +500,5 @@ describe('router :: ', function() {
 
 
 
-	});
+  });
 });

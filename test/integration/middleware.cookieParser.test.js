@@ -2,7 +2,7 @@
  * Module dependencies
  */
 
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var request = require('request');
 var Sails = require('../../lib').Sails;
 var assert = require('assert');
@@ -32,7 +32,7 @@ describe('middleware :: ', function() {
             session: {
               secret: 'abc123'
             },
-            hooks: {grunt: false},
+            hooks: {grunt: false, pubsub: false},
             routes: {
               '/test': function(req, res) {
                 res.json({
@@ -88,7 +88,8 @@ describe('middleware :: ', function() {
             },
             hooks: {
               session: false,
-              grunt: false
+              grunt: false,
+              pubsub: false
             },
             routes: {
               '/test': function(req, res) {
@@ -147,7 +148,8 @@ describe('middleware :: ', function() {
             },
             hooks: {
               session: false,
-              grunt: false
+              grunt: false,
+              pubsub: false
             },
             routes: {
               '/test': function(req, res) {

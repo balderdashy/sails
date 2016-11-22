@@ -26,7 +26,7 @@ describe('Request hook', function (){
     ]
   });
 
-  describe('setting req.options.usage', function () {
+  describe.skip('setting req.options.usage <<NO LONGER SUPPORTED>', function () {
 
     it('should call `req.validate(req.options.usage)` and cause server to send 400 response upon receiving invalid params', function (done) {
       var ROUTEADDRESS = '/req_options_usage1';

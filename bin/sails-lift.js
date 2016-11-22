@@ -1,25 +1,27 @@
-#!/usr/bin/env node
-
-
 /**
  * Module dependencies
  */
 
 var nodepath = require('path');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var chalk = require('chalk');
 var captains = require('captains-log');
-var package = require('../package.json');
+
 var rconf = require('../lib/app/configuration/rc');
 var Sails = require('../lib/app');
+var SharedErrorHelpers = require('../errors');
 
 
 
 /**
  * `sails lift`
  *
- * Expose method which lifts the appropriate instance of Sails.
- * (Fire up the Sails app in our working directory.)
+ * Fire up the Sails app in our working directory, using the
+ * appropriate version of Sails.
+ *
+ * > This uses the locally-installed Sails, if available.
+ * > Otherwise, it uses the currently-running Sails (which,
+ * > 99.9% of the time, is the globally-installed version.)
  *
  * @stability 3
  * @see http://sailsjs.org/documentation/reference/command-line-interface/sails-lift
@@ -27,53 +29,67 @@ var Sails = require('../lib/app');
 
 module.exports = function() {
 
-  // console.time('cli_lift');
-  // console.time('cli_prelift');
-
-  // console.time('cli_rc');
-  var log = captains(rconf.log);
-  // console.timeEnd('cli_rc');
+  // Get a temporary logger just for use in `sails lift`.
+  // > This is so that logging levels are configurable, even when a
+  // > Sails app hasn't been loaded yet.
+  var cliLogger = captains(rconf.log);
 
   console.log();
-  log.info(chalk.grey('Starting app...'));
+  cliLogger.info(chalk.grey('Starting app...'));
   console.log();
 
-  // Build initial scope, mixing-in rc config
-  var scope = _.merge({
-    rootPath: process.cwd(),
-    sailsPackageJSON: package
-  }, rconf);
+  // Now grab our dictionary of configuration overrides to pass in
+  // momentarily when we lift (or load) our Sails app.  This is the
+  // dictionary of configuration settings built from `.sailsrc` file(s),
+  // command-line options, and environment variables.
+  // (No need to clone, since it's not being used anywhere else)
+  var configOverrides = rconf;
 
-  var appPath = process.cwd();
+  // Determine whether to use the local or global Sails install.
+  var sailsApp = (function _determineAppropriateSailsAppInstance(){
 
-  // Use the app's local Sails in `node_modules` if it's extant and valid
-  var localSailsPath = nodepath.resolve(appPath, 'node_modules/sails');
-  if (Sails.isLocalSailsValid(localSailsPath, appPath)) {
-    var localSails = require(localSailsPath);
-    // console.timeEnd('cli_prelift');
+    // Use the app's locally-installed Sails dependency (in `node_modules/sails`),
+    // assuming it's extant and valid.
+    // > Note that we always assume the current working directory to be the
+    // > root directory of the app.
+    var appPath = process.cwd();
+    var localSailsPath = nodepath.resolve(appPath, 'node_modules/sails');
+    if (Sails.isLocalSailsValid(localSailsPath, appPath)) {
+      cliLogger.verbose('Using locally-installed Sails.');
+      return require(localSailsPath);
+    }// --•
 
-    localSails.lift(scope, afterwards);
-    return;
-  }
+    // Otherwise, since no workable locally-installed Sails exists,
+    // run the app using the currently running version of Sails.
+    // > This is probably always the global install.
+    cliLogger.info('No local Sails install detected; using globally-installed Sails.');
 
-  // Otherwise, if no workable local Sails exists, run the app
-  // using the currently running version of Sails.  This is
-  // probably always the global install.
-  var globalSails = Sails();
-  // console.timeEnd('cli_prelift');
+    return Sails();
 
-  globalSails.lift(scope, afterwards);
+  })();
 
+  // Lift (or load) Sails
+  (function _loadOrLift(proceed){
 
-  function afterwards (err, sails) {
-    if (err) {
-      var message = err.stack ? err.stack : err;
-      sails ? sails.log.error(message) : log.error(message); process.exit(1);
+    // If `--dontLift` was set, then use `.load()` instead.
+    if (!_.isUndefined(configOverrides.dontLift)) {
+      sailsApp.load(configOverrides, proceed);
     }
-    // try {console.timeEnd('cli_lift');}catch(e){}
-  }
+    // Otherwise, go with the default behavior (`.lift()`)
+    else {
+      sailsApp.lift(configOverrides, proceed);
+    }
+
+  })// ~∞%°
+  (function afterwards(err){
+    if (err) {
+      return SharedErrorHelpers.fatal.failedToLoadSails(err);
+    }// --•
+
+    // If we made it here, the app is all lifted and ready to go.
+    // The server will lower when the process is terminated-- either by a signal,
+    // or via an uncaught fatal error.
+
+  });//</after lifting or loading Sails app>
+
 };
-
-
-
-

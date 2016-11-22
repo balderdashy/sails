@@ -16,7 +16,7 @@ describe('`sails.router`', function() {
         sails
             .router
             ._privateRouter
-            .routes
+            .stack
                 .should.be.ok;
     });
 });

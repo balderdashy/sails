@@ -23,7 +23,7 @@ describe('Request hook', function (){
     ]
   });
 
-  describe('req.validate()', function () {
+  describe.skip('req.validate() <<NO LONGER SUPPORTED>', function () {
 
     it('should not throw when required params are specified in req.query', function (done) {
       var ROUTEADDRESS = '/req_validate0';
@@ -147,7 +147,7 @@ describe('Request hook', function (){
         }
       });
     });
-  });
+  });//</describe req.validate()>
 
 
 });

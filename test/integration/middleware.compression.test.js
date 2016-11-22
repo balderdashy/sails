@@ -1,4 +1,4 @@
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var request = require('request');
 var Sails = require('../../lib').Sails;
 var assert = require('assert');
@@ -23,13 +23,24 @@ describe('middleware :: ', function() {
 
       // Lift a Sails instance in production mode
       var app = Sails();
+      var originalNodeEnv;
+
+      before(function() {
+        originalNodeEnv = process.env.NODE_ENV;
+        process.env.NODE_ENV = 'production';
+      });
+
+      after(function() {
+        process.env.NODE_ENV = originalNodeEnv;
+      });
+
       before(function (done){
         app.lift({
           globals: false,
           port: 1535,
           environment: 'production',
           log: {level: 'silent'},
-          hooks: {session: false, grunt: false},
+          hooks: {session: false, grunt: false, pubsub: false},
           routes: {
             '/test': function(req, res) {
               return res.send(lipsum);

@@ -1,8 +1,8 @@
 module.exports = {
-	log: {
-		level: 'silent'
-	},
-	views: {
+  log: {
+    level: 'silent'
+  },
+  views: {
     locals: {
       foo: '!bar!'
     }

@@ -1,4 +1,12 @@
-# editorconfig.org
+#   ╔═╗╔╦╗╦╔╦╗╔═╗╦═╗┌─┐┌─┐┌┐┌┌─┐┬┌─┐
+#   ║╣  ║║║ ║ ║ ║╠╦╝│  │ ││││├┤ ││ ┬
+#  o╚═╝═╩╝╩ ╩ ╚═╝╩╚═└─┘└─┘┘└┘└  ┴└─┘
+#
+# This file (`.editorconfig`) exists to help maintain consistent formatting
+# throughout this package, the Sails framework, and the Node-Machine project.
+#
+# To review what each of these options mean, see:
+# http://editorconfig.org/
 root = true
 
 [*]

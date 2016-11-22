@@ -19,17 +19,6 @@ describe('Request hook', function (){
     ]
   });
 
-
-  it('should expose `req.params.all()`', function (done) {
-    var ROUTEADDRESS = '/req_params_all';
-    sails.router.bind(ROUTEADDRESS, function (req, res) {
-      assert(typeof req.params.all === 'function', 'req.params.all() should be defined when request hook is enabled.');
-      res.send(200);
-      done();
-    })
-    .emit('router:request', {url: ROUTEADDRESS});
-  });
-
   it('should expose `req.allParams()`', function (done) {
     var ROUTEADDRESS = '/req_allParams';
     sails.router.bind(ROUTEADDRESS, function (req, res) {
@@ -41,15 +30,31 @@ describe('Request hook', function (){
   });
 
 
-  it('should expose `req.validate()`', function (done) {
+  // NO LONGER SUPPORTED
+  it('should expose `req.validate()`-- but calling it should always fail', function (done) {
     var ROUTEADDRESS = '/req_validate';
     sails.router.bind(ROUTEADDRESS, function (req, res, next) {
       assert(typeof req.validate === 'function', 'req.validate() should be defined when request hook is enabled.');
-      res.send(200);
-      done();
-    })
-    .emit('router:request', { url: ROUTEADDRESS });
-  });
+
+      try {
+        req.validate('foo');
+      }
+      catch (e) {
+        return res.send(420);
+      }
+
+      return res.send(200);
+    });
+
+    sails.request(ROUTEADDRESS, function (err){
+      try {
+        assert(err && err.status === 420, new Error('Expecting error: it should no longer be supported'));
+      } catch (e) { return done(e); }
+
+      return done();
+    });
+
+  });//</it>
 
 });
 
@@ -67,7 +72,8 @@ describe('Request hook', function (){
     ]
   });
 
-  describe('req.validate()', function () {
+  // NO LONGER SUPPORTED
+  describe.skip('req.validate() <<NO LONGER SUPPORTED>>', function () {
 
     it('should not throw when required params are specified in req.query', function (done) {
       var ROUTEADDRESS = '/req_validate0';

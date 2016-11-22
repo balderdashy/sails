@@ -5,13 +5,13 @@
 From the root directory of sails:
 
 ```sh
-$ mocha test/benchmarks
+$ BENCHMARK=true mocha test/benchmarks
 ```
 
 To get a more detailed report with millisecond timings for each benchmark, run:
 
 ```sh
-$ mocha test/benchmarks -v
+$ BENCHMARK=true mocha test/benchmarks -v
 ```
 
 
@@ -34,9 +34,9 @@ Feature-wide benchmarks are the "lowest-hanging fruit", if you will.  We'll spen
 
 > **Advice from Felix Geisendörfer ([@felixge](https://github.com/felixge))**
 >
->	+ First of all, keep in mind our problems are definitely not the same as Felix's, and we must remember to follow [his own advice](https://github.com/felixge/faster-than-c#taking-performance-advice-from-strangers): `[What]...does not work is taking performance advise (euro-sic) from strangers...`  That said, he's got some great ideas.
->	+ [Benchmark-Driven Optimization](https://github.com/felixge/faster-than-c#benchmark-driven-development)
->	+ I also highly recommend this [talk on optimization and benchmarking](http://2012.jsconf.eu/speaker/2012/09/05/faster-than-c-parsing-node-js-streams-.html) ([slides](https://github.com/felixge/faster-than-c)).
+>  + First of all, keep in mind our problems are definitely not the same as Felix's, and we must remember to follow [his own advice](https://github.com/felixge/faster-than-c#taking-performance-advice-from-strangers): `[What]...does not work is taking performance advise (euro-sic) from strangers...`  That said, he's got some great ideas.
+>  + [Benchmark-Driven Optimization](https://github.com/felixge/faster-than-c#benchmark-driven-development)
+>  + I also highly recommend this [talk on optimization and benchmarking](http://2012.jsconf.eu/speaker/2012/09/05/faster-than-c-parsing-node-js-streams-.html) ([slides](https://github.com/felixge/faster-than-c)).
 
 
 ### Things to test
@@ -46,19 +46,19 @@ Here are the most important things we need to benchmark:
 ##### Features:
 
 + Bootstrap
-	+ `sails.load` (programmatic)
-	+ `sails.lift` (programmatic) and `sails lift` (CLI)
-	+ `sails load`
-	+ `sails new` and `sails generate *`
-	  + (could be pulled into generic generator suite, like adapters)
+  + `sails.load` (programmatic)
+  + `sails.lift` (programmatic) and `sails lift` (CLI)
+  + `sails load`
+  + `sails new` and `sails generate *`
+    + (could be pulled into generic generator suite, like adapters)
 
 + Router
-	+ private Sails requests via `sails.emit('request')`
-	+ http requests to the HTTP server
-	+ http file uploads to the HTTP server
-	+ connections to the socket.io server
-	+ socket emissions to the socket.io server
-	+ socket broadcasts FROM the socket.io server (pubsub hook)
+  + private Sails requests via `sails.emit('request')`
+  + http requests to the HTTP server
+  + http file uploads to the HTTP server
+  + connections to the socket.io server
+  + socket emissions to the socket.io server
+  + socket broadcasts FROM the socket.io server (pubsub hook)
 
 
 > Thankfully, the ORM is already covered by the benchmarks in Waterline core and its generic adapter tests.

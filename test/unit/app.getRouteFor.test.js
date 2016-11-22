@@ -15,11 +15,15 @@ describe('app.getRouteFor()', function (){
     app.load({
       globals: false,
       loadHooks: [],
+      log: {
+        level: 'error'
+      },
       routes: {
         'get /signup': 'PageController.signup',
         'post /signup': 'UserController.signup',
         'post /*': 'UserController.signup',
         'get /': { controller: 'PageController', action: 'homepage' },
+        'get /home': 'index',
         'get /about': { target: 'PageController.about' },
         'get /admin': { target: 'PageController.adminDashboard' },
         'get /badmin': { target: 'PageController.admndashboard' },
@@ -27,6 +31,15 @@ describe('app.getRouteFor()', function (){
         'get /wolves/:id': { target: 'WolfController.findOne' },
         'post /wolves': { controller: 'WolfController', action: 'create' },
         'options /wolves/test': { target: 'WolfController.CreaTe' },
+        'get /my-machineFn': { action: 'machines/machinefn' },
+        'get /my-page': { view: 'somepage' }
+      },
+      controllers: {
+        moduleDefinitions: {
+          'machines/machinefn': {
+            fn: function () {}
+          }
+        }
       }
     }, done);
   });
@@ -50,14 +63,26 @@ describe('app.getRouteFor()', function (){
     assert.equal(route.url, '/signup');
   });
 
-  it('should return the _first_ matching route', function () {
+  it('should work with new action target syntax', function() {
+    var route = app.getRouteFor('user/signup');
+    assert.equal(route.method, 'post');
+    assert.equal(route.url, '/signup');
+  });
+
+  it('should work with strings without dots or slashes', function() {
+    var route = app.getRouteFor('index');
+    assert.equal(route.method, 'get');
+    assert.equal(route.url, '/home');
+  });
+
+  it('should throw usage error (i.e. `e.code===\'E_NOT_FOUND\'`) if target to search is not found', function () {
     try {
       app.getRouteFor('JuiceController.makeJuice');
       assert(false, 'Should have thrown an error');
     }
     catch (e) {
       if (e.code !== 'E_NOT_FOUND') {
-        assert(false, 'Should have thrown an error w/ code === "E_NOT_FOUND"');
+        assert(false, 'Should have thrown an error w/ code === "E_NOT_FOUND", instead got: ' + util.inspect(e));
       }
     }
   });
@@ -86,32 +111,59 @@ describe('app.getRouteFor()', function (){
     catch (e) {
       if (e.code !== 'E_USAGE') { assert(false, 'Should have thrown an error w/ code === "E_USAGE"'); }
     }
-  });
 
-  it('should throw usage error (i.e. `e.code===\'E_USAGE\'`) if specified target string to search for has no dot', function (){
     try {
-      app.getRouteFor('SomeController');
+      app.getRouteFor([{ action: 'machines/machinefn' }]);
       assert(false, 'Should have thrown an error');
     }
     catch (e) {
       if (e.code !== 'E_USAGE') { assert(false, 'Should have thrown an error w/ code === "E_USAGE"'); }
     }
+
+    try {
+      app.getRouteFor(function(){});
+      assert(false, 'Should have thrown an error');
+    }
+    catch (e) {
+      if (e.code !== 'E_USAGE') { assert(false, 'Should have thrown an error w/ code === "E_USAGE"'); }
+    }
+
   });
 
   it('should be able to match different syntaxes (routes that specify separate controller+action, or specifically specify a target)', function (){
+
+    assert.equal( app.getRouteFor({controller: 'WolfController', action: 'find'}).url, '/wolves' );
+    assert.equal( app.getRouteFor({controller: 'WolfController', action: 'find'}).method, 'get' );
+
+    assert.equal( app.getRouteFor({controller: 'wolf', action: 'find'}).url, '/wolves' );
+    assert.equal( app.getRouteFor({controller: 'wolf', action: 'find'}).method, 'get' );
+
+    assert.equal( app.getRouteFor({target: {controller: 'wolf', action: 'find'}}).url, '/wolves' );
+    assert.equal( app.getRouteFor({target: {controller: 'wolf', action: 'find'}}).method, 'get' );
+
     assert.equal( app.getRouteFor('WolfController.find').url, '/wolves' );
     assert.equal( app.getRouteFor('WolfController.find').method, 'get' );
+
+    assert.equal( app.getRouteFor({target: 'WolfController.find'}).url, '/wolves' );
+    assert.equal( app.getRouteFor({target: 'WolfController.find'}).method, 'get' );
 
     assert.equal( app.getRouteFor('WolfController.findOne').url, '/wolves/:id' );
     assert.equal( app.getRouteFor('WolfController.findOne').method, 'get' );
 
     assert.equal( app.getRouteFor('WolfController.create').url, '/wolves' );
     assert.equal( app.getRouteFor('WolfController.create').method, 'post' );
+
+    assert.equal( app.getRouteFor('machines/machinefn').url, '/my-machineFn' );
+    assert.equal( app.getRouteFor('machines/machinefn').method, 'get' );
+
   });
 
-  it('should respect case-sensitivity of action names', function (){
-    assert.equal( app.getRouteFor('WolfController.CreaTe').url, '/wolves/test' );
-    assert.equal( app.getRouteFor('WolfController.CreaTe').method, 'options' );
+  it('should be case-insensitive regarding controller / action names', function (){
+    assert.equal( app.getRouteFor('WolfController.CreaTe').url, '/wolves' );
+    assert.equal( app.getRouteFor('WolfController.CreaTe').method, 'post' );
+
+    assert.equal( app.getRouteFor({controller: 'WOLF', action: 'finD'}).url, '/wolves' );
+    assert.equal( app.getRouteFor({controller: 'WOLF', action: 'finD'}).method, 'get' );
   });
 
 });

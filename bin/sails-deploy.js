@@ -1,11 +1,8 @@
-#!/usr/bin/env node
-
-
 /**
  * Module dependencies
  */
 
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var util = require('util');
 var path = require('path');
 var rconf = require('../lib/app/configuration/rc');

@@ -4,10 +4,14 @@
 var nodeutil = require('util');
 var nodepath = require('path');
 var chalk = require('chalk');
+var CaptainsLog = require('captains-log');
 
+// Once per process:
 // Build logger using best-available information
 // when this module is initially required.
-var log = require('captains-log')(require('../lib/app/configuration/rc'));
+var rconf = require('../lib/app/configuration/rc');
+var log = CaptainsLog(rconf.log);
+
 
 /**
  * Fatal Errors
@@ -16,9 +20,14 @@ module.exports = {
 
   // Lift-time and load-time errors
   failedToLoadSails: function(err) {
+    log.error();
     log.error(err);
-    log.error('Could not load Sails.');
-    log.error('Are you using the latest stable version?');
+    log.error('Could not load Sails app.');
+    log.error();
+    log.error('Tips:');
+    log.error(' • First, take a look at the error message above.');
+    log.error(' • Check that you\'re using the latest stable version of Sails.');
+    log.error(' • Have a question or need help?  (http://sailsjs.com/support)');
     _terminateProcess(1);
   },
 
@@ -73,46 +82,6 @@ module.exports = {
   },
 
 
-
-  // This doesn't technically _need_ to be a fatal error- it just is
-  // because certain grunt modules (e.g. grunt-contrib-watch) don't restart
-  // when an error occurs.
-  __GruntAborted__: function(consoleMsg, stackTrace) {
-
-    var gruntErr =
-      '\n------------------------------------------------------------------------\n' +
-      consoleMsg + '\n' + (stackTrace || '') +
-      '\n------------------------------------------------------------------------';
-    log.error(gruntErr);
-    log.blank();
-
-    log.error('Looks like a Grunt error occurred--');
-    log.error('Please fix it, then **restart Sails** to continue running tasks (e.g. watching for changes in assets)');
-    log.error('Or if you\'re stuck, check out the troubleshooting tips below.');
-    log.blank();
-
-    log.error(chalk.underline('Troubleshooting tips:'));
-    var relativePublicPath = (nodepath.resolve(process.cwd(), './.tmp'));
-    var uid = process.getuid && process.getuid() || 'YOUR_COMPUTER_USER_NAME';
-    log.error();
-    log.error(' *-> Are "grunt" and related grunt task modules installed locally?  Run `npm install` if you\'re not sure.');
-    log.error();
-    log.error(' *-> You might have a malformed LESS, SASS, CoffeeScript file, etc.');
-    log.error();
-    log.error(' *-> Or maybe you don\'t have permissions to access the `.tmp` directory?');
-    log.error('     e.g., `' + relativePublicPath + '`', '?');
-    log.error();
-    log.error('     If you think this might be the case, try running:');
-    log.error('     sudo chown -R', uid, relativePublicPath);
-    log.blank();
-
-    // See note above this function - for now, this will not
-    // actually terminate the process.  The rest of Sails should
-    // continue to run.
-    // return _terminateProcess(1);
-  },
-
-
   __UnknownPolicy__: function(policy, source, pathToPolicies) {
     source = source || 'config.policies';
 
@@ -134,10 +103,10 @@ module.exports = {
 
     // var probableAdapterModuleName = connectionId.toLowerCase();
     // if ( ! probableAdapterModuleName.match(/^(sails-|waterline-)/) ) {
-    // 	probableAdapterModuleName = 'sails-' + probableAdapterModuleName;
+    //   probableAdapterModuleName = 'sails-' + probableAdapterModuleName;
     // }
     // log.error('Otherwise, if you\'re trying to use an adapter named `' + connectionId + '`, please run ' +
-    // 	'`npm install ' + probableAdapterModuleName + '@' + sails.majorVersion + '.' + sails.minorVersion + '.x`');
+    //   '`npm install ' + probableAdapterModuleName + '@' + sails.majorVersion + '.' + sails.minorVersion + '.x`');
     return _terminateProcess(1);
   },
 

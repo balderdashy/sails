@@ -2,482 +2,675 @@
  * Module dependencies
  */
 
-var path = require('path');
 var util = require('util');
 var assert = require('assert');
-var httpHelper = require('./helpers/httpHelper');
-var appHelper = require('./helpers/appHelper');
-var fs = require('fs-extra');
-var wrench = require('wrench');
+var tmp = require('tmp');
+var _ = require('@sailshq/lodash');
+var async = require('async');
+
+var Filesystem = require('machinepack-fs');
+
+var Sails = require('../../lib').constructor;
+
+tmp.setGracefulCleanup();
 
 
+describe('policies :: ', function() {
 
-// These tests changed for Sails v0.10 because of the introduction
-// of the `findOne` blueprint action, and a change in how GET blueprint
-// routes map to actions (e.g. `GET /foo/3` now maps to `findOne()` instead
-// of `find()`)
-//
-// See the upgrade guide for more details and examples:
-// https://github.com/balderdashy/sails-docs/blob/master/reference/Upgrading.md#policies
+  describe('basic usage :: ', function() {
 
+    var curDir, tmpDir;
 
-describe('router :: ', function() {
+    before(function() {
+      // Cache the current working directory.
+      curDir = process.cwd();
+      // Create a temp directory.
+      tmpDir = tmp.dirSync({gracefulCleanup: true, unsafeCleanup: true});
+      // Switch to the temp directory.
+      process.chdir(tmpDir.name);
 
+      Filesystem.writeSync({
+        force: true,
+        destination: 'api/policies/err.js',
+        string: 'module.exports = function(req, res, next) {return res.serverError(\'Test Error\');}'
+      }).execSync();
 
-  describe('Policies', function() {
-    var appName = 'testApp';
+    });
 
-    var sailsApp;
-    beforeEach(function(done) {
-      appHelper.lift({
-        log: { level: 'silent' }
-      }, function(err, sails) {
+    after(function() {
+      process.chdir(curDir);
+    });
+
+    it('should load policies from disk and merge them with programmatically added policies', function(done) {
+
+      (new Sails()).load({
+        hooks: {
+          grunt: false, views: false, pubsub: false
+        },
+        blueprints: {
+          actions: false,
+          rest: false,
+          shortcuts: false
+        },
+        log: {level: 'silent'},
+        controllers: {},
+        routes: {},
+        policies: {
+          moduleDefinitions: {
+            'foo': function(req, res, next) {return res.serverError('foo');}
+          },
+        }
+      }, function(err, sailsApp) {
         if (err) { return done(err); }
-        sailsApp = sails;
+        assert.equal(_.keys(sailsApp.hooks.policies.middleware).length, 2);
+        assert(sailsApp.hooks.policies.middleware.foo);
+        assert(sailsApp.hooks.policies.middleware.err);
         return done();
       });
     });
 
-    afterEach(function(done) {
-      sailsApp.lower(done);
-    });
+    describe('error policies :: ', function() {
 
+      var sailsApp;
+      var policyMap = {};
 
-
-
-    before(function(done) {
-      appHelper.build(done);
-    });
-
-    describe('an error in the policy callback', function() {
-
-      before(function() {
-        var config = "module.exports.policies = { '*': 'error_policy' };";
-        fs.writeFileSync(path.resolve('../', appName, 'config/policies.js'), config);
-      });
-
-      it('should return a 500 status code and message using default error handling in config/500.js', function(done) {
-        httpHelper.testRoute('get', {
-          url: 'test',
-          headers: {
-            'Content-Type': 'application/json'
+      beforeEach(function(done) {
+        (new Sails()).load({
+          hooks: {
+            grunt: false, views: false, pubsub: false
           },
-          json: true
-        }, function(err, response) {
-          if (err) return done(err);
+          blueprints: {
+            actions: false,
+            rest: false,
+            shortcuts: false
+          },
+          log: {level: 'silent'},
+          controllers: {
+            moduleDefinitions: {
+              'user': function(req, res) { return res.send('user'); },
+              'user/foo': function(req, res) { return res.send('user.foo'); },
+              'user/foo/bar': function(req, res) { return res.send('user.foo.bar'); }
+            }
+          },
+          routes: {
+            '/user': 'user',
+            '/user-foo': 'user/foo',
+            '/user-foo-bar': 'user/foo/bar'
+          },
+          policies: policyMap
 
-          try {
-            assert.equal(response.statusCode, 500);
-            assert.equal(
-              typeof response.body, 'string',
-              util.format('response.body should be a string, instead it is "%s", a %s', response.body, typeof response.body)
-            );
-            assert.equal(response.body, 'Test Error',
-              util.format('`response.body` should === "Test Error" but instead it is "%s"', response.body.error)
-            );
-          } catch (e) {
-            return done(e);
-          }
+
+        }, function(err, _sails) {
+          if (err) { return done(err); }
+          sailsApp = _sails;
           return done();
         });
       });
-    });
 
-    describe('custom policies', function() {
-
-      before(function() {
-        var policy = {
-          'test': {
-            'index': 'error_policy'
-          }
-        };
-
-        var config = "module.exports.policies = " + JSON.stringify(policy);
-        fs.writeFileSync(path.resolve('../', appName, 'config/policies.js'), config);
+      afterEach(function(done){
+        if (sailsApp) {sailsApp.lower(done);}
+        else {
+          return done();
+        }
       });
 
-      describe('a get request to /:controller', function() {
+      describe('with a single, defined "error" policy mapped to user/*', function() {
 
-        it('should return a proper serverError with a message', function(done) {
-
-          httpHelper.testRoute('get', {
-            url: 'test',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            json: true
-          }, function(err, response) {
-            if (err) return done(err);
-
-            try {
-
-              // Assert HTTP status code is correct
-              assert.equal(response.statusCode, 500);
-
-              // Assert that response has the proper error message
-              assert.equal(response.body, 'Test Error');
-            } catch (e) {
-              return done(e);
-            }
-            return done();
-          });
-        });
-      });
-
-      describe('a get request to /:controller/:id', function() {
-
-        it('should NOT hit the `find` action', function(done) {
-
-          httpHelper.testRoute('get', {
-            url: 'test/1',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            json: true
-          }, function(err, response) {
-            if (err) return done(err);
-
-            assert.notEqual(response.body, "find");
-            done();
-          });
+        before(function() {
+          policyMap = { 'user/*': ['err'] };
         });
 
-        it('should hit the `findOne` action', function(done) {
-          httpHelper.testRoute('get', {
-            url: 'test/1',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            json: true
-          }, function(err, response) {
-            if (err) return done(err);
+        it('the policy should apply to all user/* actions', function(done) {
 
-            try {
-              assert.equal(response.body, 'findOne');
-            } catch (e) {
-              return done(e);
-            }
-            return done();
-          });
-        });
-
-        describe('with error_policy', function(done) {
-
-          before(function() {
-            var config = "module.exports.policies = { '*': 'error_policy' };";
-            fs.writeFileSync(path.resolve('../', appName, 'config/policies.js'), config);
-          });
-
-          it('should NOT hit the `findOne` action', function(done) {
-            httpHelper.testRoute('get', {
-              url: 'empty/1',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              json: true
-            }, function(err, response) {
-              if (err) return done(err);
-
-              try {
-                // Assert HTTP status code is correct
-                assert.equal(response.statusCode, 500);
-
-                // Assert that response has the proper error message
-                assert.equal(response.body, 'Test Error');
-
-              } catch (e) {
-                return done(e);
+          async.each(['/user', '/user-foo', '/user-foo-bar'], function(url, cb) {
+            sailsApp.request({
+              url: url,
+              method: 'GET'
+            }, function (err, response, data) {
+              if (!err) {
+                return cb(new Error('For URL ' + url + ', expected server error, got: ' + data));
               }
-
-              return done();
+              assert.equal(err.body, 'Test Error');
+              return cb();
             });
+
+          }, function (err) {
+            if (err) {return done(err);}
+            return done();
           });
         });
 
       });
-    });
 
-    describe('chaining policies', function() {
+      describe('with a `false` policy mapped to user/*', function() {
 
-      before(function() {
-        var policy = {
-          'test': {
-            'index': ['fake_auth', 'sessionAuth']
-          }
-        };
+        before(function() {
+          policyMap = { 'user/*': [false] };
+        });
 
-        var config = "module.exports.policies = " + JSON.stringify(policy);
-        fs.writeFileSync(path.resolve('../', appName, 'config/policies.js'), config);
-      });
+        it('the policy should apply to all user/* actions', function(done) {
 
-      describe('a get request to /:controller', function() {
+          async.each(['/user', '/user-foo', '/user-foo-bar'], function(url, cb) {
+            sailsApp.request({
+              url: url,
+              method: 'GET'
+            }, function (err, response, data) {
+              if (!err) {
+                return cb(new Error('For URL ' + url + ', expected server error, got: ' + data));
+              }
+              assert.equal(err.status, 403);
+              return cb();
+            });
 
-        it('should return a string', function(done) {
-
-          httpHelper.testRoute('get', {
-            url: 'test',
-            json: true
-          }, function(err, response) {
-            if (err) return done(err);
-
-            assert.equal(response.body, "index");
-            done();
+          }, function (err) {
+            if (err) {return done(err);}
+            return done();
           });
         });
-      });
-    });
 
-    describe('chaining wildcard "*" policies', function() {
-
-      before(function() {
-        var policy = {
-          'test': {
-            '*': ['fake_auth', 'sessionAuth']
-          }
-        };
-
-        var config = "module.exports.policies = " + JSON.stringify(policy);
-        fs.writeFileSync(path.resolve('../', appName, 'config/policies.js'), config);
       });
 
-      describe('a get request to /:controller', function() {
+      describe('with a defined "error" policy mapped to user/* and a "blank" policy mapped to user/foo', function() {
 
-        it('should return a string', function(done) {
+        before(function() {
+          policyMap = {
+            'user/*': ['err'],
+            'user/foo': []
+          };
+        });
 
-          httpHelper.testRoute('get', {
-            url: 'test',
-            json: true
-          }, function(err, response) {
-            if (err) return done(err);
+        it('the policy should apply to actions `user` and `user/foo/bar`', function(done) {
 
-            assert.equal(response.body, "index");
-            done();
+          async.each(['/user', '/user-foo-bar'], function(url, cb) {
+            sailsApp.request({
+              url: url,
+              method: 'GET'
+            }, function (err, response, data) {
+              if (!err) {
+                return cb(new Error('For URL ' + url + ', expected server error, got: ' + data));
+              }
+              assert.equal(err.body, 'Test Error');
+              return cb();
+            });
+
+          }, function (err) {
+            if (err) {return done(err);}
+            return done();
           });
         });
+
+        it('the policy should NOT apply to actions `user/foo`', function(done) {
+
+          sailsApp.request({
+            url: '/user-foo',
+            method: 'GET'
+          }, function (err, response, data) {
+            if (err) {
+              return cb(new Error('For URL ' + url + ', expected "user-foo", got: ' + err));
+            }
+            assert.equal(data, 'user.foo');
+            return done();
+          });
+
+        });
+
       });
-    });
 
-    describe('policies for actions named with capital letters', function() {
+      describe('with a defined "error" policy mapped to user/* and a `true` policy mapped to user/foo', function() {
 
-      before(function() {
-        var policy = {
-          '*': false,
-          'test': {
-            '*': false,
-            'CapitalLetters': true
-          }
-        };
+        before(function() {
+          policyMap = {
+            'user/*': ['err'],
+            'user/foo': [true]
+          };
+        });
 
-        var config = "module.exports.policies = " + JSON.stringify(policy);
-        fs.writeFileSync(path.resolve('../', appName, 'config/policies.js'), config);
-      });
+        it('the policy should apply to actions `user` and `user/foo/bar`', function(done) {
 
-      describe('a get request to /:controller', function() {
+          async.each(['/user', '/user-foo-bar'], function(url, cb) {
+            sailsApp.request({
+              url: url,
+              method: 'GET'
+            }, function (err, response, data) {
+              if (!err) {
+                return cb(new Error('For URL ' + url + ', expected server error, got: ' + data));
+              }
+              assert.equal(err.body, 'Test Error');
+              return cb();
+            });
 
-        it('should return a string', function(done) {
-
-          httpHelper.testRoute('get', {
-            url: 'test/CapitalLetters',
-            json: true
-          }, function(err, response) {
-            if (err) return done(err);
-
-            assert.equal(response.body, "CapitalLetters");
-            done();
+          }, function (err) {
+            if (err) {return done(err);}
+            return done();
           });
         });
+
+        it('the policy should NOT apply to actions `user/foo`', function(done) {
+
+          sailsApp.request({
+            url: '/user-foo',
+            method: 'GET'
+          }, function (err, response, data) {
+            if (err) {
+              return cb(new Error('For URL ' + url + ', expected "user-foo", got: ' + err));
+            }
+            assert.equal(data, 'user.foo');
+            return done();
+          });
+
+        });
+
       });
+
+      describe('with a defined "error" policy mapped to user/* and a "blank" policy mapped to user/foo/*', function() {
+
+        before(function() {
+          policyMap = {
+            'user/*': ['err'],
+            'user/foo/*': []
+          };
+        });
+
+        it('the policy should apply to actions `user`', function(done) {
+
+          async.each(['/user'], function(url, cb) {
+            sailsApp.request({
+              url: url,
+              method: 'GET'
+            }, function (err, response, data) {
+              if (!err) {
+                return cb(new Error('For URL ' + url + ', expected server error, got: ' + data));
+              }
+              assert.equal(err.body, 'Test Error');
+              return cb();
+            });
+
+          }, function (err) {
+            if (err) {return done(err);}
+            return done();
+          });
+        });
+
+        it('the policy should NOT apply to actions `user/foo`', function(done) {
+
+          sailsApp.request({
+            url: '/user-foo',
+            method: 'GET'
+          }, function (err, response, data) {
+            if (err) {
+              return cb(new Error('For URL ' + url + ', expected "user-foo", got: ' + err));
+            }
+            assert.equal(data, 'user.foo');
+            return done();
+          });
+
+        });
+
+        it('the policy should NOT apply to actions `user/foo/bar`', function(done) {
+
+          sailsApp.request({
+            url: '/user-foo-bar',
+            method: 'GET'
+          }, function (err, response, data) {
+            if (err) {
+              return cb(new Error('For URL ' + url + ', expected "user-foo-bar", got: ' + err));
+            }
+            assert.equal(data, 'user.foo.bar');
+            return done();
+          });
+
+        });
+
+      });
+
+
     });
 
-    describe('policies added inline to custom routes', function() {
+    describe('pass-thru policies', function() {
 
-      before(function() {
-        var config = 'module.exports.routes = {"get /*": [{policy: "error_policy", skipRegex: /^\\/foo.*$/}], "get /foobar": function(req, res){return res.send("ok!");}}';
-        fs.writeFileSync(path.resolve('../', appName, 'config/routes.js'), config);
-      });
+      var sailsApp;
+      var policyMap = {};
 
-      it('should be applied', function(done) {
-        httpHelper.testRoute('get', {
-          url: 'testPol',
-          headers: {
-            'Content-Type': 'application/json'
+      beforeEach(function(done) {
+        (new Sails()).load({
+          hooks: {
+            grunt: false, views: false, pubsub: false
           },
-          json: true
-        }, function(err, response) {
-          if (err) return done(err);
+          blueprints: {
+            actions: false,
+            rest: false,
+            shortcuts: false
+          },
+          log: {level: 'silent'},
+          controllers: {
+            moduleDefinitions: {
+              'user': function(req, res) { return res.json({action: 'user', animals: {cat: req.options.cat, owl: req.options.owl}}); },
+              'user/foo': function(req, res) { return res.json({action: 'user.foo', animals: {cat: req.options.cat, owl: req.options.owl}}); },
+              'user/foo/bar': function(req, res) { return res.json({action: 'user.foo.bar', animals: {cat: req.options.cat, owl: req.options.owl}}); }
+            }
+          },
+          routes: {
+            '/user': 'user',
+            '/user-foo': 'user/foo',
+            '/user-foo-bar': 'user/foo/bar'
+          },
+          policies: _.extend({
+            moduleDefinitions: {
+              'add-owl': function(req, res, next) {req.options.owl = 'hoot'; return next();},
+              'add-cat': function(req, res, next) {req.options.cat = 'meow'; return next();}
+            },
+          },policyMap)
 
-          try {
-            // Assert HTTP status code is correct
-            assert.equal(response.statusCode, 500);
 
-            // Assert that response has the proper error message
-            assert.equal(response.body, 'Test Error');
-
-          } catch (e) {
-            return done(e);
-          }
-
+        }, function(err, _sails) {
+          if (err) { return done(err); }
+          sailsApp = _sails;
           return done();
         });
       });
 
-      it('should respect options', function(done) {
-        httpHelper.testRoute('get', {
-          url: 'foobar',
-          headers: {
-            'Content-Type': 'application/json'
+      afterEach(function(done){
+        if (sailsApp) {sailsApp.lower(done);}
+        else {
+          return done();
+        }
+      });
+
+      describe('with a single, defined "pass-thru" policy mapped to user.*', function() {
+
+        before(function() {
+          policyMap = { 'user/*': ['add-owl'] };
+        });
+
+        it('the policy should apply to all user/* actions', function(done) {
+
+          async.each(['/user', '/user-foo', '/user-foo-bar'], function(url, cb) {
+            sailsApp.request({
+              url: url,
+              method: 'GET'
+            }, function (err, response, data) {
+              if (err) {
+                return cb(new Error('For URL ' + url + ', expected successful response, got: ' + err));
+              }
+              assert.equal(data.action, url.substr(1).replace(/-/g,'.'));
+              assert.equal(data.animals.owl, 'hoot');
+              assert(_.isUndefined(data.animals.cat));
+              return cb();
+            });
+
+          }, function (err) {
+            if (err) {return done(err);}
+            return done();
+          });
+        });
+
+      });
+
+      describe('with two defined "pass-thru" policies chained to user/*', function() {
+
+        before(function() {
+          policyMap = { 'user/*': ['add-owl', 'add-cat'] };
+        });
+
+        it('the policies should apply to all user/* actions', function(done) {
+
+          async.each(['/user', '/user-foo', '/user-foo-bar'], function(url, cb) {
+            sailsApp.request({
+              url: url,
+              method: 'GET'
+            }, function (err, response, data) {
+              if (err) {
+                return cb(new Error('For URL ' + url + ', expected successful response, got: ' + err));
+              }
+              assert.equal(data.action, url.substr(1).replace(/-/g,'.'));
+              assert.equal(data.animals.owl, 'hoot');
+              assert.equal(data.animals.cat, 'meow');
+              return cb();
+            });
+
+          }, function (err) {
+            if (err) {return done(err);}
+            return done();
+          });
+        });
+
+      });
+
+      describe('with the "add-owl" policy on user/*, and "add-cat" on user/foo/bar', function() {
+
+        before(function() {
+          policyMap = { 'user/*': ['add-owl'], 'user/foo/bar': ['add-cat'] };
+        });
+
+        it('the "add-owl" policy (and NOT the "add-cat" policy) should apply to the "user" and "user/foo" actions', function(done) {
+
+          async.each(['/user', '/user-foo'], function(url, cb) {
+            sailsApp.request({
+              url: url,
+              method: 'GET'
+            }, function (err, response, data) {
+              if (err) {
+                return cb(new Error('For URL ' + url + ', expected successful response, got: ' + err));
+              }
+              assert.equal(data.action, url.substr(1).replace(/-/g,'.'));
+              assert.equal(data.animals.owl, 'hoot');
+              assert(_.isUndefined(data.animals.cat));
+              return cb();
+            });
+
+          }, function (err) {
+            if (err) {return done(err);}
+            return done();
+          });
+        });
+
+        it('the "add-cat" policy (and NOT the "add-owl" policy) should apply to the "user/foo/bar" action', function(done) {
+
+          sailsApp.request({
+            url: '/user-foo-bar',
+            method: 'GET'
+          }, function (err, response, data) {
+            if (err) {
+              return cb(new Error('For URL ' + url + ', expected successful response, got: ' + err));
+            }
+            assert.equal(data.action, 'user.foo.bar');
+            assert.equal(data.animals.cat, 'meow');
+            assert(_.isUndefined(data.animals.owl));
+            return done();
+          });
+
+        });
+
+      });
+
+    });
+
+
+    describe('Adding policies directly to routes', function() {
+
+      var sailsApp;
+      var policyMap = {};
+
+      before(function(done) {
+        (new Sails()).load({
+          hooks: {
+            grunt: false, views: false, pubsub: false
           },
-          json: true
-        }, function(err, response) {
-          if (err) return done(err);
+          blueprints: {
+            actions: false,
+            rest: false,
+            shortcuts: false
+          },
+          log: {level: 'silent'},
+          controllers: {
+            moduleDefinitions: {
+              'user': function(req, res) { return res.json({action: 'user', foo: req.options.foo, animals: {cat: req.options.cat, owl: req.options.owl}}); },
+              'user/foo': function(req, res) { return res.json({action: 'user/foo', foo: req.options.foo,  animals: {cat: req.options.cat, owl: req.options.owl}}); },
+              'user/foo/bar': function(req, res) { return res.json({action: 'user/foo/bar', foo: req.options.foo, animals: {cat: req.options.cat, owl: req.options.owl}}); }
+            }
+          },
+          routes: {
+            '/user': [{ policy: 'add-owl', foo: 'bar' }, 'user'],
+            '/user-foo': [{ policy: 'add-cat' }, 'user/foo'],
+            '/user-foo-bar': [ { policy: 'add-owl'}, { policy: 'add-cat' }, 'user/foo/bar']
+          },
+          policies: _.extend({
+            moduleDefinitions: {
+              'add-owl': function(req, res, next) {req.options.owl = 'hoot'; return next();},
+              'add-cat': function(req, res, next) {req.options.cat = 'meow'; return next();}
+            },
+          },policyMap)
 
-          try {
-            // Assert HTTP status code is correct
-            assert.equal(response.statusCode, 200);
 
-            // Assert that response has the proper error message
-            assert.equal(response.body, 'ok!');
-
-          } catch (e) {
-            return done(e);
-          }
-
+        }, function(err, _sails) {
+          if (err) { return done(err); }
+          sailsApp = _sails;
           return done();
         });
       });
+
+      after(function(done){
+        if (sailsApp) {sailsApp.lower(done);}
+        else {
+          return done();
+        }
+      });
+
+      it('should add the correct policy to `/user` and retain extra options', function(done) {
+
+        sailsApp.request({
+          url: '/user',
+          method: 'GET'
+        }, function (err, response, data) {
+          if (err) {
+            return cb(new Error('For URL ' + url + ', expected successful response, got: ' + err));
+          }
+          assert.equal(data.action, 'user');
+          assert.equal(data.animals.owl, 'hoot');
+          assert(_.isUndefined(data.animals.cat));
+          assert.equal(data.foo, 'bar');
+          return done();
+        });
+
+      });
+
+      it('should add the correct policy to `/user-foo`', function(done) {
+
+        sailsApp.request({
+          url: '/user-foo',
+          method: 'GET'
+        }, function (err, response, data) {
+          if (err) {
+            return cb(new Error('For URL ' + url + ', expected successful response, got: ' + err));
+          }
+          assert.equal(data.action, 'user/foo');
+          assert.equal(data.animals.cat, 'meow');
+          assert(_.isUndefined(data.animals.owl));
+          assert(_.isUndefined(data.foo));
+          return done();
+        });
+
+      });
+
+      it('should add the correct policies to `/user-foo-bar`', function(done) {
+
+        sailsApp.request({
+          url: '/user-foo-bar',
+          method: 'GET'
+        }, function (err, response, data) {
+          if (err) {
+            return cb(new Error('For URL ' + url + ', expected successful response, got: ' + err));
+          }
+          assert.equal(data.action, 'user/foo/bar');
+          assert.equal(data.animals.cat, 'meow');
+          assert.equal(data.animals.owl, 'hoot');
+          assert(_.isUndefined(data.foo));
+          return done();
+        });
+
+      });
+
     });
 
-    after(function() {
-      process.chdir('../');
-      appHelper.teardown();
-    });
+
   });
 
+  describe('with invalid configuration :: ', function() {
 
+    describe('when a non-function policy is specified on disk', function() {
 
-  describe('Test adding policies from another hooks', function() {
-    var appName = 'testApp';
-
-    before(function(done) {
-      appHelper.build(done);
-    });
-
-    before(function(done) {
-      fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules"), function(err) {
-        if (err) {
-          return done(err);
-        }
-
-        wrench.copyDirSyncRecursive(path.resolve(__dirname, 'fixtures/hooks/installable/add-policy'),
-          path.resolve(__dirname, '../../testApp/node_modules/sails-hook-add-policy'));
-
-        process.chdir(path.resolve(__dirname, "../..", appName));
-        done();
-      });
-    });
-
-
-    describe('with default settings', function() {
-
-      var sails;
+      var curDir, tmpDir;
 
       before(function(done) {
-        appHelper.liftQuiet(function(err, _sails) {
-          if (err) {
-            return done(err);
-          }
-          sails = _sails;
-          return done();
-        });
+
+        // Cache the current working directory.
+        curDir = process.cwd();
+        // Create a temp directory.
+        tmpDir = tmp.dirSync({gracefulCleanup: true, unsafeCleanup: true});
+        // Switch to the temp directory.
+        process.chdir(tmpDir.name);
+
+        Filesystem.writeSync({
+          force: true,
+          destination: 'api/policies/err.js',
+          string: 'module.exports = {"foo": "bar"}'
+        }).execSync();
+
+        return done();
       });
 
-      it('should install a hook into `sails.hooks.add-policy`', function() {
-        assert(sails.hooks['add-policy']);
+      after(function() {
+        process.chdir(curDir);
       });
 
-      it('should add policy `forbidden` to app', function() {
-        assert(sails.hooks.policies.middleware.forbidden);
-      });
+      it('Sails should fail to lift', function(done) {
 
-      after(function(done) {
-        sails.lower(done);
-      });
-
-    });
-
-    describe('with policy usage', function() {
-
-      var sails;
-
-      var policy = {
-        '*': 'error_policy',
-
-        'test': {
-          'index': 'forbidden'
-        }
-      };
-
-      before(function(done) {
-        appHelper.lift({
-          policies: policy
-        }, function(err, _sails) {
-          if (err) {
-            return done(err);
-          }
-          sails = _sails;
-          return done();
-        });
-      });
-
-      it('should return `statusCode` 403 ', function(done) {
-
-        httpHelper.testRoute('get', {
-          url: 'test/index',
-          json: true
-        }, function(err, response) {
-          if (err) return done(err);
-
-          assert.equal(response.statusCode, 403);
-          done();
-        });
-      });
-
-      it('default policies should also work', function(done) {
-        httpHelper.testRoute('get', {
-          url: 'test/1',
-          headers: {
-            'Content-Type': 'application/json'
+        (new Sails()).load({
+          hooks: {
+            grunt: false, views: false, pubsub: false
           },
-          json: true
-        }, function(err, response) {
-          if (err) { return done(err); }
-
-          try {
-            assert.equal(response.statusCode, 500);
-            assert.equal(
-              typeof response.body, 'string',
-              util.format('response.body should be a string, instead it is "%s", a %s', response.body, typeof response.body)
-            );
-            assert.equal(response.body, 'Test Error',
-              util.format('`response.body` should === "Test Error" but instead it is "%s"', response.body.error)
-            );
-          } catch (e) {
-            return done(e);
+          log: {level: 'silent'}
+        }, function(err, sailsApp) {
+          if (!err) {
+            sailsApp.lower(function() {
+              return done(new Error('Expected error lifting, but didn\'t get one!'));
+            });
           }
           return done();
         });
+
       });
 
-      after(function(done) {
-        sails.lower(done);
+    });
+
+    describe('when a non-function policy is specified programmatically', function() {
+
+      it('Sails should fail to lift', function(done) {
+
+        (new Sails()).load({
+          hooks: {
+            grunt: false, views: false, pubsub: false
+          },
+          log: {level: 'silent'},
+          policies: {
+            moduleDefinitions: {
+              foo: 'bar'
+            }
+          }
+        }, function(err, sailsApp) {
+          if (!err) {
+            sailsApp.lower(function() {
+              return done(new Error('Expected error lifting, but didn\'t get one!'));
+            });
+          }
+          return done();
+        });
+
       });
+
     });
 
 
-    after(function() {
-      process.chdir('../');
-      appHelper.teardown();
-    });
   });
 
 });

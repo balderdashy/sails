@@ -5,15 +5,15 @@
  * Module dependencies
  */
 
-var _ = require('lodash');
-var program = require('./_commander');
-var package = require('../package.json');
+var _ = require('@sailshq/lodash');
+var program = require('./private/patched-commander');
+var sailsPackageJson = require('../package.json');
 var NOOP = function() {};
 
 
 
 program
-  .version(package.version, '-v, --version');
+  .version(sailsPackageJson.version, '-v, --version');
 
 
 //
@@ -66,6 +66,7 @@ cmd.option('--viewEngine [viewEngine]');
 cmd.option('--template [viewEngine]');
 cmd.usage('[path_to_new_app]');
 cmd.unknownOption = NOOP;
+cmd.description('');
 cmd.action(require('./sails-new'));
 
 

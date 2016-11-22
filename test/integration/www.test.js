@@ -3,8 +3,7 @@
  */
 
 var assert = require('assert');
-var fs = require('fs');
-var wrench = require('wrench');
+var fs = require('fs-extra');
 var request = require('request');
 var exec = require('child_process').exec;
 var path = require('path');
@@ -19,7 +18,7 @@ describe('Running sails www', function() {
 
   before(function() {
     if (fs.existsSync(appName)) {
-      wrench.rmdirSyncRecursive(appName);
+      fs.removeSync(appName);
     }
   });
 
@@ -50,7 +49,7 @@ describe('Running sails www', function() {
 
     it('should start server without error', function(done) {
 
-      exec('node ' + sailsBin + ' new ' + appName, function(err) {
+      exec('node ' + sailsBin + ' new ' + appName + ' --fast --without=lodash,async', function(err) {
         if (err) { done(new Error(err)); }
 
         // Move into app directory
@@ -136,7 +135,7 @@ describe('Running sails www', function() {
 
   after(function() {
     if (fs.existsSync(appName)) {
-      wrench.rmdirSyncRecursive(appName);
+      fs.removeSync(appName);
     }
   });
 });

@@ -5,7 +5,7 @@
 var Sails = require('../../../lib').Sails;
 
 
-describe('Pubsub hook', function (){
+xdescribe('Pubsub hook', function (){
   describe('loading a Sails app', function (){
 
     describe('without ORM hook', function (){
@@ -59,6 +59,10 @@ describe('Pubsub hook', function (){
         app.load({
           globals: false,
           log: {level: 'warn'},
+          hooks: {
+            sockets: require('sails-hook-sockets'),
+            orm: require('sails-hook-orm'),
+          },
           loadHooks: ['moduleloader','userconfig','orm', 'http', 'sockets', 'pubsub']
         }, function (err){
           if (err) { return done(err); }

@@ -5,9 +5,9 @@ var assert = require('assert');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
 var util = require('util');
-var wrench = require('wrench');
 var path = require('path');
 var fs = require('fs-extra');
+var _  = require('@sailshq/lodash');
 
 describe('hooks :: ', function() {
 
@@ -44,7 +44,7 @@ describe('hooks :: ', function() {
         var sails;
 
         before(function(done) {
-          appHelper.liftQuiet(function(err, _sails) {
+          appHelper.liftQuiet({hooks: {pubsub: false}}, function(err, _sails) {
             if (err) {return done(err);}
             sails = _sails;
             return done();
@@ -81,7 +81,7 @@ describe('hooks :: ', function() {
         var sails;
 
         before(function(done) {
-          appHelper.liftQuiet({hooks: {shout: false}}, function(err, _sails) {
+          appHelper.liftQuiet({hooks: {shout: false, pubsub: false}}, function(err, _sails) {
             if (err) {return done(err);}
             sails = _sails;
             return done();
@@ -106,7 +106,7 @@ describe('hooks :: ', function() {
         var sails;
 
         before(function(done) {
-          appHelper.liftQuiet({hooks: {shout: "false"}}, function(err, _sails) {
+          appHelper.liftQuiet({hooks: {shout: "false", pubsub: false}}, function(err, _sails) {
             if (err) {return done(err);}
             sails = _sails;
             return done();
@@ -130,7 +130,7 @@ describe('hooks :: ', function() {
         var sails;
 
         before(function(done) {
-          appHelper.liftQuiet({shout: {phrase: "yolo"}}, function(err, _sails) {
+          appHelper.liftQuiet({shout: {phrase: "yolo"}, hooks:{pubsub: false}}, function(err, _sails) {
             if (err) {return done(err);}
             sails = _sails;
             return done();

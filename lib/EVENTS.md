@@ -151,7 +151,7 @@ Fires your handler **NEXT TIME** the event is triggered and **EVERY TIME AFTERWA
 
 ```javascript
 sails.on('hook:yourHookID:someEvent', function yourEventHandler ( /* a, b, c, ..., z */ ) {
-	// your implementation
+  // your implementation
 });
 ```
 
@@ -161,7 +161,7 @@ Fires your handler **NEXT TIME** the specified event is triggered, and then stop
 
 ```javascript
 sails.once('hook:yourHookID:someEvent', function yourEventHandler ( /* a, b, c, ..., z */ ) {
-	// your implementation
+  // your implementation
 });
 ```
 
@@ -174,7 +174,7 @@ Useful for checking whether some state has been achieved yet.
 
 ```javascript
 sails.after('hook:yourHookID:someEvent', function yourEventHandler ( /* a, b, c, ..., z */ ) {
-	// your implementation
+  // your implementation
 });
 ```
 
@@ -182,7 +182,7 @@ You can actually wait for several events using `.after` as well:
 
 ```javascript
 sails.after(['hook:yourHookID:someEvent', 'hook:someOtherHookID:someOtherEvent'], function yourEventHandler ( /* a, b, c, ..., z */ ) {
-	// your implementation
+  // your implementation
 });
 ```
 

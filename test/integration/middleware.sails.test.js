@@ -31,7 +31,8 @@ describe('middleware :: ', function() {
           },
           hooks: {
             grunt: false,
-            request: false
+            request: false,
+            pubsub: false
           },
           routes: {
             '/test': function(req, res) {

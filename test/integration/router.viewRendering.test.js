@@ -5,7 +5,7 @@
 var assert = require('assert');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var fs = require('fs');
 
 
@@ -42,14 +42,12 @@ describe('router :: ', function() {
           throw new Error(err);
         }
         sailsprocess = sails;
-        setTimeout(done, 100);
+        return done();
       });
     });
 
     afterEach(function(done) {
-      sailsprocess.lower(function() {
-        setTimeout(done, 100);
-      });
+      sailsprocess.lower(done);
     });
 
     after(function() {
@@ -126,7 +124,7 @@ describe('router :: ', function() {
 
     });
 
-    describe('with no specified routing', function() {
+    xdescribe('with no specified routing', function() {
 
       before(function() {
         httpHelper.writeRoutes({});
