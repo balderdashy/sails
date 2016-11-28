@@ -37,6 +37,7 @@ describe('sails.reloadActions ::', function() {
 
       // Load the Sails app.
       (new Sails()).load({
+        globals: { sails: true, models: false, _: false, async: false, services: false },
         hooks: {
           grunt: false, views: false, blueprints: false, policies: false, pubsub: false, i18n: false,
           myHook: function() {return {initialize: function(cb) {this.registerActions(cb);}, registerActions: function(cb) {sails.registerAction(function(){}, 'custom-action'); return cb();}};}

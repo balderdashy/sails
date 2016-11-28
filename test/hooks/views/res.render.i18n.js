@@ -38,7 +38,7 @@ describe('sails.hooks.views.render() with i18n', function (){
   before(function (done) {
     app = new Sails()
     .load({
-      globals: true,
+      globals: { sails: true, models: false, _: false, async: false, services: false } ,
       loadHooks: [
         'moduleloader',
         'userconfig',

@@ -241,7 +241,21 @@ module.exports = {
     _.each(deps, function(dep) {
       fs.ensureSymlinkSync(path.resolve(__dirname, '..', '..', '..', 'node_modules', dep), path.resolve(appPath, 'node_modules', dep));
     });
-  }
+  },
+
+  linkLodash: function(appPath) {
+    fs.ensureSymlinkSync(path.resolve(__dirname, '..', '..', '..', 'node_modules', '@sailshq', 'lodash'), path.resolve(appPath, 'node_modules', 'lodash'));
+  },
+
+
+  linkAsync: function(appPath) {
+    fs.ensureSymlinkSync(path.resolve(__dirname, '..', '..', '..', 'node_modules', 'async'), path.resolve(appPath, 'node_modules', 'async'));
+  },
+
+
+  linkSails: function(appPath) {
+    fs.ensureSymlinkSync(path.resolve(__dirname, '..', '..', '..'), path.resolve(appPath, 'node_modules', 'sails'));
+  },
 
 };
 
