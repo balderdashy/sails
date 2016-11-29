@@ -3,7 +3,7 @@
  */
 
 var assert = require('assert');
-
+var _ = require('@sailshq/lodash');
 var $Sails = require('../helpers/sails');
 
 
@@ -70,6 +70,13 @@ describe('request that causes an error', function (){
 
     var MESSAGE = 'oh no I forgot my keys again';
     var ERROR = new Error(MESSAGE);
+
+    ERROR.toJSON = function() {
+      return {
+        message: MESSAGE,
+        stack: this.stack
+      };
+    };
 
     sails.get('/errors/3', function (req, res) {
       throw ERROR;
