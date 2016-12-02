@@ -1,10 +1,77 @@
 # Sails Changelog
 
-### Master
+### 1.0.0
 
-> _See https://github.com/balderdashy/sails/commits/master and http://sailsjs.com/roadmap for some of the latest developments._
+Sails v1.0 comes with a host of new features and improvements as well as some breaking changes to previous versions.  Please see the [migration guide](http://sailsjs.com/upgrading) if you're upgrading from a previous version of Sails!
 
-
+* [ENHANCEMENT] Introduce Actions 2 -- ability to declare actions as [Machines](http://node-machine.org) in individual files.  See the [Actions and controllers](http://sailsjs.com/documentation/concepts/actions-and-controllers) and [Action target syntax](http://sailsjs.com/documentation/concepts/routes/custom-routes#?action-target-syntax) docs for more info.
+* [ENHANCEMENT] Introduce Helpers -- the successor to services.  See the [Helpers](http://sailsjs.com/documentation/concepts/helpers) docs for more info.
+* [BUGFIX] Improve path resolution in moduleloader for Windows [f13bb77](https://github.com/balderdashy/sails/commit/f13bb77eb49b9b61aa225c43cc2aacaadd4f07be)
+* [BUGFIX] Fix output for virtual requests that have non 2xx/3xx status codes and no body [525c7c5](https://github.com/balderdashy/sails/commit/525c7c503347ef586ebf26730af77e2aa8626060)
+* [REMOVAL] Remove support for (undocumented) "action/model" route syntax for binding routes to blueprint actions
+* [BUGFIX] Fix issue causing Sails to sometimes crash when using Redis sessions if it receives a request after the Redis server has unexpectedly disconnected [3f29dce](https://github.com/balderdashy/sails/commit/3f29dce22b5a36403108d8d1aab7a903aa4488a5)
+* [ENHANCEMENT] Add `sails.getActions()` method to return a dictionary of registered Sails actions [5598179](https://github.com/balderdashy/sails/commit/55981792ea52febfa5c343bbae4517c6a38f20c9)
+* [ENHANCEMENT] Add `sails.registerAction()` method to programmatically register a Sails action [dd9af88](https://github.com/balderdashy/sails/commit/dd9af88b114db696dde2fbeee79a1dc745f2d748)
+* [ENHANCEMENT] Add `exposeLocalsToBrowser` local in all views
+* [ENHANCEMENT] Add `sails.registerActionMiddleware()` to programmatically register middleware to be applied to one or more actions [2c281d5](https://github.com/balderdashy/sails/commit/2c281d51301e684f00c91da5cc9d8fa37814094c)
+* [ENHANCEMENT] Allow explicitly defined actions in Sails config via `sails.config.controllers.moduleDefinitions` [3b264fa](https://github.com/balderdashy/sails/commit/3b264facc2e0a72bd2aa5366271c588c903e6f5c), [4ad23dd](https://github.com/balderdashy/sails/commit/4ad23dd353ff1d7e607c0a75377a0ba6d9dd2f3d)
+* [BUGFIX] Default `req.options.populate` to the value of `sails.config.blueprints.populate [d8f4df8](https://github.com/balderdashy/sails/commit/d8f4df8e19cfb7eaefa00bbcbbc6cab870483194)
+* [ENHANCEMENT] Add `sails.reloadActions()` method to reload actions from disk / config while an app is running [df2ee46](https://github.com/balderdashy/sails/commit/df2ee4657774a092fb0bd25b3013448c9f155700)
+* [ENHANCEMENT] Allow loaded modules (actions, controllers, policies, models, etc.) to have _any_ file extension besides `.md` and `.txt` (which are ignored).  Direct support for anything besides plain Javascript has been removed; variants like CoffeeScript and TypeScript can be used by registering them in the `app.js` file.  See the [Using CoffeeScript tutorial](http://sailsjs.com/documentation/tutorials/using-coffee-script) for an example.
+* [REMOVAL] Remove support for custom blueprints.  These can easily be replaced by regular actions.  See the [migration guide](http://sailsjs.com/upgrading#custom-blueprints) for more info. [0fd4362](https://github.com/balderdashy/sails/commit/0fd4362795ee338ea5b18c3ee42dbdae4b08fd43)
+* [REMOVAL] Remove support for blueprint route target syntax [0fd4362](https://github.com/balderdashy/sails/commit/0fd4362795ee338ea5b18c3ee42dbdae4b08fd43)
+* [REMOVAL] Remove deprecated `dontFlattenConfig` option [56c9b5b](https://github.com/balderdashy/sails/commit/56c9b5bc4b4f876778653a3995981516bb0767a7)
+* [ENHANCEMENT] Humanize config vars that are loaded from the environment [7eb6af6](https://github.com/balderdashy/sails/commit/7eb6af659b67eb856719c8c0d08c7e7043c9e3e8)
+* [REMOVAL] Remove most Resourceful PubSub methods, leaving just `.subscribe()`, `.unsubscribe()` and `.publish()`. [c981c6e](https://github.com/balderdashy/sails/commit/c981c6edf8573fea0d3a13451d51292ba9038b3b)
+* [ENHANCEMENT] Expose Sails generator for programmatic use [e008a6b](https://github.com/balderdashy/sails/commit/e008a6b7e76cf0c272ec556f0ab48b67499269f5)
+* [UPGRADE] Upgrade to Express 4.14.0.  Thanks to [josebaseba](https://github.com/josebaseba) for his help in the transition to Express 4!
+* [ENHANCEMENT] Improved CORS support.  See the [migration guide](http://sailsjs.com/upgrading#security) and [CORS docs](http://sailsjs.com/documentation/concepts/security/cors) for more info.
+* [REMOVAL] Removed `req.validate()` functionality.  Use Actions 2 instead, which automatically validate parameters. [68fa8ff](https://github.com/balderdashy/sails/commit/68fa8ff0327530973237dfd602b3155e0386cad5)
+* [ENHANCEMENT] Updated syntax for policies.  See the [migration guide](http://sailsjs.com/upgrading#policies) and the [policies documentation](http://sailsjs.com/documentation/concepts/policies) for more details. [66d2b2d](https://github.com/balderdashy/sails/commit/66d2b2d8d9d7f23b35cad7693eab79a58e888d77)
+* [ENHANCEMENT] Automatically sort routes to avoid wildcards swallowing static routes.  See the [sort-route-addresses](https://github.com/treelinehq/sort-route-addresses) module for more info on route sorting.
+* [ENHANCEMENT] Combine CORS and CSRF hooks into new "Security" hook.  See the [migration guide](http://sailsjs.com/upgrading#security) for more details.
+* [ENHANCEMENT] Update CSRF configuration and replace `/csrfToken` route with an action that can be bound to any route.  See the [migration guide](http://sailsjs.com/upgrading#security) and [CSRF docs](http://sailsjs.com/documentation/concepts/security/csrf) for more info. [7328c05](https://github.com/balderdashy/sails/commit/7328c0527de4d6ae7bfd48f0c6959ff90c7e3d30)
+* [REMOVAL] `res.created()` will no longer be included by default. [7988866](https://github.com/balderdashy/sails/commit/7988866f68f3cb9926d750265acf1fa9e1cb25c6)
+* [BUGFIX] Ignore default installed hooks when searching `node_modules` for hooks.  [#3855](https://github.com/balderdashy/sails/issues/3855).
+* [SECURITY] Don't serve CSRF token via websockets [50b0684](https://github.com/balderdashy/sails/commit/50b06845a0075f4a45f5e2b5d66c05ea3ed62c4b)
+* [INTERNAL] Bring EJS layout code into Sails rather than relying on the unmaintained `ejs-locals` package [d3ba9bd](https://github.com/balderdashy/sails/commit/d3ba9bdd3c7301b6ac438d2b4591c74c40e2b06c)
+* [REMOVAL] Remove handlebars dependency and support for layouts in view engines other than EJS. See the [migration guide](http://sailsjs.com/upgrading#layouts) for more details. [ae7e656](https://github.com/balderdashy/sails/commit/ae7e656cf815480d135a8d124db6c3269bad1b92), [9f1f2fb](https://github.com/balderdashy/sails/commit/9f1f2fb91b69a8f6a6e29e9a171a981e7a109f51)
+* [ENHANCEMENT] Don't set NODE_ENV based on Sails environment, except in special circumstances. See the [migration guide](http://sailsjs.com/upgrading#node-env) for more details. [cf20d07](https://github.com/balderdashy/sails/commit/cf20d070700230f73b158bd37fb7109739f16519), [abbf1f7](https://github.com/balderdashy/sails/commit/abbf1f724f4b45176d9c8cd46db1a94bef7c37f9)
+* [ENHANCEMENT] Make session hook `routesDisabled` use Sails route address syntax (including regular expression syntax) [aba8f2f](https://github.com/balderdashy/sails/commit/aba8f2fe9856e43168b423d813e17f1b3067746a)
+* [BUGFIX] Supply `res.locals._csrf` to _all_ routes when CSRF protection is enabled.  Fixes [#3865](https://github.com/balderdashy/sails/issues/3865)
+* [REMOVAL] Remove Consolidate dependency -- view template engines are now configurable via the `sails.config.views.getRenderFn` setting.  See the [migration guide](http://sailsjs.com/upgrading#views) for more details. [6316452](https://github.com/balderdashy/sails/commit/63164527b2e0b7c268488539aa3a0e011ff332f9)
+* [REMOVAL] Remove deprecated RPS "firehose" [86b88](https://github.com/balderdashy/sails/commit/86b8884f15b647ebc963cadff8502f2449ce04a2)
+* [REMOVAL] Remove deprecated 0.9.x socket support [6464d8f](https://github.com/balderdashy/sails/commit/6464d8f89bd74aaaed380cee15143e6ad0aad614)
+* [BUGFIX] Update and standardize precedence of route param, query and body in `req.param()` and `req.allParams()` [820d1eb](https://github.com/balderdashy/sails/commit/820d1eb53e12774cd644f516d5952c8da8f02da8)
+* [REMOVAL] Remove JSONP support from blueprints.  CORS is fairly ubiquitous now. [effd6c3](https://github.com/balderdashy/sails/commit/effd6c315f2ef9fe55cf5dafdf65b59b8c5cbe1e)
+* [REMOVAL] Remove deprecated `sails.getBaseUrl` method. [d0fe4ff](https://github.com/balderdashy/sails/commit/d0fe4ff169ae9e01a799d4fd32da45700daba21e)
+* [INTERNAL] Remove `sails-util` [1fee468](https://github.com/balderdashy/sails/commit/1fee468bacf98b847d2455d3c40f92bae8b33233)
+* [INTERNAL] Remove grunt, sockets and ORM hooks [48750d7](https://github.com/balderdashy/sails/commit/48750d7010218bcb224623c532474430063dbdb3), [07c59ce](https://github.com/balderdashy/sails/commit/07c59ceaccf3e5a7258962b01f9eaae03fd888d9)
+* [REMOVAL] Remove deprecated `req.params.all()` method [9c6b217](https://github.com/balderdashy/sails/commit/9c6b21773b07ab816fea28f67d3e614e5eb2210b)
+* [BUGFIX] Correctly load custom adapters (stored in either `FooAdapter.js` files or in subfolders) [#3884](https://github.com/balderdashy/sails/issues/3884)
+* [INTERNAL] Add benchmarks [6b4ba32](https://github.com/balderdashy/sails/commit/6b4ba32d1d5219976be81fe7a5bf57a38635d681)
+* [ENHANCEMENT] Requests for assets will skip running session middleware by default [3c5ddf7](https://github.com/balderdashy/sails/commit/3c5ddf719e78acbe66d0896b9d0d013d9e02279b)
+* [ENHANCEMENT] Support `routesDisabled` for sessions in virtual requests [a00cf78](https://github.com/balderdashy/sails/commit/a00cf78895836f3ab982fab00c52fdcb668c4eef)
+* [INTERNAL] Standardize log level for warnings to always use "debug" except for warning related to security.
+* [ENHANCEMENT] Add 404, 500 and `startRequestTimer` to middleware order automatically (and remove them from default sails.config.http.middleware.order) [a22e4e7](https://github.com/balderdashy/sails/commit/a22e4e730f42e9868f604bc62eaf9dcc4d2abd6b), [f788e39](https://github.com/balderdashy/sails/commit/f788e3956cf2daf521dbe36fdb8d64a2a8dbb5c8)
+* [REMOVAL] Remove the `handleBodyParserError` middleware from the stack, use the `onBodyParserError` option in Skipper instead.  [f788e39](https://github.com/balderdashy/sails/commit/f788e3956cf2daf521dbe36fdb8d64a2a8dbb5c8)
+* [BUGFIX] Take locale into account in views.render() [#3833](https://github.com/balderdashy/sails/issues/3833)
+* [ENHANCEMENT] Allow session adapter to be required directly [039d245](https://github.com/balderdashy/sails/commit/039d24580f55c4e03f187de87339f88dd31afbc6)
+* [REMOVAL] Remove support for Express 3 session adapters [628a55b](https://github.com/balderdashy/sails/commit/628a55b687ed95adc7b6f7667023ddb96bd939fd)
+* [INTERNAL] Switch from i18n to i18n-2. See the [migration guide](http://sailsjs.com/upgrading#i18n) for more details. [4a90de2](https://github.com/balderdashy/sails/commit/4a90de293883545fb0418851826fa84c5331dad9)
+* [BUGFIX] Fail to lift Sails if `connect-redis` can't initialize. [#3590](https://github.com/balderdashy/sails/issues/3590)
+* [REMOVAL] Remove `method-override` from default middleware list. [575c4a3](https://github.com/balderdashy/sails/commit/575c4a37613992af92a3e40338fe5b470ec2531b)
+* [BUGFIX] Use _.clone() instead of _.cloneDeep() for config overrides, to preserve things like Redis clients passed into config. [1b970b6](https://github.com/balderdashy/sails/commit/1b970b6c445659a731967550ec6132c582613bea)
+* [ENHANCEMENT] Update `sails.config.globals` functionality.  See the [migration guide](http://sailsjs.com/upgrading#globals) for more details. [44c6d9b](https://github.com/balderdashy/sails/commit/44c6d9b41e1b1ffd38150788085890c8c2cbe286)
+* [ENHANCEMENT] Add `sails.config.session.onDisconnect` and `sails.config.session.onReconnect` functions [1e55c63](https://github.com/balderdashy/sails/commit/1e55c639b617e13199db7ee4c3a17f62db87b8ea)
+* [ENHANCEMENT] Add `sails.config.sockets.adapterOptions.onDisconnect` and `sails.config.sockets.adapterOptions.onReconnect` functions [3a25971](https://github.com/balderdashy/sails-hook-sockets/commit/3a2597155eefa086bba54b70b1f3274aaa97a1f5)
+* [DEPRECATION] Deprecate `.jsonx()` [cdcc3c0](https://github.com/balderdashy/sails/commit/cdcc3c09ad864329474ae50b5888571cd6dc2654)
+* [INTERNAL] Update default responses [510504e](https://github.com/balderdashy/sails/commit/510504e210047a2ae8aced98a3a17ced5b499140)
+* [REMOVAL] Remove update-via-POST blueprint route [5c3814d](https://github.com/balderdashy/sails/commit/5c3814d0162535d8f5b9e907ed9a25aa263c2eff)
+* [INTERNAL] Disconnect Redis session client when Sails is lowering [80fb71b](https://github.com/balderdashy/sails/commit/80fb71b45fa7dab94f4c6054b6d365a9319150f7)
+* [UPGRADE] Upgrade EJS dependency to v2.5.3 [6bfad70](https://github.com/balderdashy/sails/commit/6bfad700445038533486affb1637b52b73ed2eac)
+* [REMOVAL] Removed deprecated `connect-flash` middleware [c5c4900](https://github.com/balderdashy/sails/commit/c5c49007f9d55ed74b3ca3062b465c470a15e82b)
+* [REMOVAL] Removed 16 unused dependencies (see full list [here](https://gist.github.com/sgress454/4a4930fec3520b24bdf0df552f70a45c))
 
 ### 0.12.11
 
