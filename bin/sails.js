@@ -111,6 +111,13 @@ cmd.description('');
 cmd.action(require('./sails-debug'));
 
 
+// $ sails debug-console
+cmd = program.command('debug-console');
+cmd.unknownOption = NOOP;
+cmd.description('');
+cmd.alias('dc');
+cmd.action(require('./sails-debug-console'));
+
 
 //
 // Normalize help argument, i.e.
@@ -149,3 +156,19 @@ var NO_COMMAND_SPECIFIED = program.args.length === 0;
 if (NO_COMMAND_SPECIFIED) {
   program.usageMinusWildcard();
 }
+
+
+// This is a hack to pass program options to the new process
+// created in the debug-console command. Anybody have a better
+// way of doing this??
+global.sails_dc_opts = '';
+if (program.silent) {
+  global.sails_dc_opts = '--silent';
+}
+else if (program.verbose) {
+  global.sails_dc_opts = '--verbose';
+}
+else if (program.silly) {
+  global.sails_dc_opts = '--silly';
+}
+
