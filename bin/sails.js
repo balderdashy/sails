@@ -41,9 +41,6 @@ program
 
 
 program
-  .option('--silent')
-  .option('--verbose')
-  .option('--silly')
   .unknownOption = NOOP;
 program.usage('[command]');
 
@@ -53,6 +50,9 @@ var cmd;
 cmd = program.command('lift');
 cmd.option('--prod');
 cmd.option('--port [port]');
+cmd.option('--silent');
+cmd.option('--verbose');
+cmd.option('--silly');
 cmd.unknownOption = NOOP;
 cmd.description('');
 cmd.alias('l');
@@ -89,6 +89,9 @@ cmd.action(require('./sails-deploy'));
 
 // $ sails console
 cmd = program.command('console');
+cmd.option('--silent');
+cmd.option('--verbose');
+cmd.option('--silly');
 cmd.unknownOption = NOOP;
 cmd.description('');
 cmd.alias('c');
