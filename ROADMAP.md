@@ -58,7 +58,7 @@ This section is an early list of some of the features, enhancements, and other i
   + Will be moved out of Waterline and into sails-hook-orm.
   + Usage is unlikely to change.
 + ~~ **Default `res.ok()` response will no longer accept arguments.** ~~
-  + (Modified this slightly -- default `res.ok()` can still accept a single data argument, but will no longer attempt to serve a view.  It will _always_ call `res.json()` with the data.)
+  + (Modified this slightly -- default `res.ok()` can still accept a single data argument, but will no longer attempt to serve a view.  It will _always_ call `res.json()` with the data, unless the first argument is not specified or is `undefined`, in which case it will do `return res.sendStatus(200)`.)
 + ~~ **Default blueprint actions will no longer use `res.ok()` or serve matching views.** ~~
   + (Due to the modification of `res.ok()` described above, it's okay for blueprints to continue using it.)
 <a name="built-in-xss-prevention-expose-locals-to-browser-view-helper"></a>
