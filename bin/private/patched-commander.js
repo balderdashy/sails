@@ -12,12 +12,15 @@ var program = require('commander');
 //
 //
 
-// Allow us to display help(), but omit the wildcard (*) command.
-program.Command.prototype.usageMinusWildcard = program.usageMinusWildcard = function() {
+// Override the `usage` method to always strip out the `*` command,
+// which we added so that `sails someunknowncommand` will output
+// the Sails help message instead of nothing.
+var usage = program.Command.prototype.usage;
+program.Command.prototype.usage = program.usage = function(str) {
   program.commands = _.reject(program.commands, {
     _name: '*'
   });
-  program.help();
+  return usage.apply(this, Array.prototype.slice.call(arguments));
 };
 
 // Force commander to display version information.

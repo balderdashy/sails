@@ -123,17 +123,29 @@ cmd.action(require('./sails-debug'));
 
 
 // $ sails help (--help synonym)
-cmd = program.command('help');
+cmd = program.command('help [command]');
 cmd.description('');
-cmd.action(program.usageMinusWildcard);
+cmd.action(function(){
+  if (program.args.length > 1 && _.isString(program.args[0])) {
+    var helpCmd = _.find(program.commands, {_name: program.args[0]});
+    if (helpCmd) {
+      helpCmd.help();
+      return;
+    }
+  }
+  program.help();
+});
 
 
 
 // $ sails <unrecognized_cmd>
-// Mask the '*' in `help`.
+// Output Sails help when an unrecognized command is used.
 program
   .command('*')
-  .action(program.usageMinusWildcard);
+  .action(function(cmd){
+    console.log('\n  ** Unrecognized command:', cmd, '**');
+    program.help();
+  });
 
 
 
@@ -147,5 +159,5 @@ program.unknownOption = NOOP;
 program.parse(process.argv);
 var NO_COMMAND_SPECIFIED = program.args.length === 0;
 if (NO_COMMAND_SPECIFIED) {
-  program.usageMinusWildcard();
+  program.help();
 }
