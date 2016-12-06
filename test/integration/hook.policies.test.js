@@ -346,13 +346,15 @@ describe('policies :: ', function() {
             moduleDefinitions: {
               'user': function(req, res) { return res.json({action: 'user', animals: {cat: req.options.cat, owl: req.options.owl}}); },
               'user/foo': function(req, res) { return res.json({action: 'user.foo', animals: {cat: req.options.cat, owl: req.options.owl}}); },
-              'user/foo/bar': function(req, res) { return res.json({action: 'user.foo.bar', animals: {cat: req.options.cat, owl: req.options.owl}}); }
+              'user/foo/bar': function(req, res) { return res.json({action: 'user.foo.bar', animals: {cat: req.options.cat, owl: req.options.owl}}); },
+              'user/foo/baz': function(req, res) { throw new Error('should never be reached!'); }
             }
           },
           routes: {
             '/user': 'user',
             '/user-foo': 'user/foo',
-            '/user-foo-bar': 'user/foo/bar'
+            '/user-foo-bar': 'user/foo/bar',
+            '/user-foo-baz': 'user/foo/baz'
           },
           policies: _.extend({
             moduleDefinitions: {
@@ -476,6 +478,78 @@ describe('policies :: ', function() {
             assert.equal(data.action, 'user.foo.bar');
             assert.equal(data.animals.cat, 'meow');
             assert(_.isUndefined(data.animals.owl));
+            return done();
+          });
+
+        });
+
+      });
+
+      describe('(using deprecated config) with the "add-owl" policy on user/*, and "add-cat" on user/foo/bar', function() {
+
+        before(function() {
+          policyMap = {
+            'User': {
+              '*': 'add-owl',
+              'foo': ['add-cat']
+            },
+            'user/FooController': {
+              '*': false,
+              'bar': 'add-cat'
+            }
+          };
+        });
+
+        it('the "add-owl" policy (and NOT the "add-cat" policy) should apply to the "user" action', function(done) {
+
+          sailsApp.request({
+            url: '/user',
+            method: 'GET'
+          }, function (err, response, data) {
+            if (err) {
+              return done(new Error('For URL \'/user\', expected successful response, got: ' + err));
+            }
+            assert.equal(data.action, 'user');
+            assert.equal(data.animals.owl, 'hoot');
+            assert(_.isUndefined(data.animals.cat));
+            return done();
+          });
+
+        });
+
+        it('the "add-cat" policy (and NOT the "add-owl" policy) should apply to the "user/foo" and "user/foo/bar" actions', function(done) {
+
+          async.each(['/user-foo', '/user-foo-bar'], function(url, cb) {
+            sailsApp.request({
+              url: url,
+              method: 'GET'
+            }, function (err, response, data) {
+              if (err) {
+                return cb(new Error('For URL ' + url + ', expected successful response, got: ' + err));
+              }
+              assert.equal(data.action, url.substr(1).replace(/-/g,'.'));
+              assert.equal(data.animals.cat, 'meow');
+              assert(_.isUndefined(data.animals.owl));
+              return cb();
+            });
+
+          }, function (err) {
+            if (err) {return done(err);}
+            return done();
+          });
+
+        });
+
+        it('the "user/foo/baz" route should always return "Forbidden"', function(done) {
+
+          sailsApp.request({
+            url: '/user-foo-baz',
+            method: 'GET'
+          }, function (err, response, data) {
+            if (!err) {
+              return done(new Error('For URL \'/user/foo/baz\', expected server error, got: ' + data));
+            }
+            assert.equal(err.status, 403);
             return done();
           });
 
