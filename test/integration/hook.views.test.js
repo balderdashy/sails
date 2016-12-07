@@ -2,6 +2,7 @@
  * Test dependencies
  */
 
+var util = require('util');
 var assert = require('assert');
 var httpHelper = require('./helpers/httpHelper.js');
 var appHelper = require('./helpers/appHelper');
@@ -126,9 +127,17 @@ describe('hooks :: ', function() {
           {url: 'resView', headers: {'accept-language': 'es'}},
           function(err, response) {
             if (err) {
-              return done(new Error(err));
+              return done(err);
             }
-            assert.equal(response.body, '<!DOCTYPE html><html><head><!-- default layout --></head><body>Bienvenido</body></html>');
+
+            if (response.statusCode !== 200) {
+              return done(new Error('Should have gotten 200 status code, but instead got '+response.statusCode+' with a response body of: '+util.inspect(response.body, {depth:null})+''));
+            }
+
+            try {
+              assert.equal(response.body, '<!DOCTYPE html><html><head><!-- default layout --></head><body>Bienvenido</body></html>');
+            } catch (e) { return done(e); }
+
             done();
           });
       });
