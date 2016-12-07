@@ -138,8 +138,9 @@ describe('globals :: ', function() {
           try {
             result = JSON.parse(output.stdout);
           } catch (e) {
-            return done(e);
+            return done(new Error('Error parsing child process output as JSON. Error details: ' +e.stack+'\nAnd here\'s the raw output that could not be parsed as JSON:\n'+output.stdout));
           }
+
           return done();
         });
 

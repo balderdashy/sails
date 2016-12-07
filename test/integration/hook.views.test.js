@@ -108,11 +108,16 @@ describe('hooks :: ', function() {
 
       before(function() {
         sailsConfig = {
+
+          // We must set i18n.locales because otherwise, the hook will be skipped.
+          i18n: { locales: ['en', 'es'] },
+
           routes: {
             '/resView': function(req, res) {
               return res.view('homepage');
             }
           }
+
         };
         filesToWrite = {
           'views/homepage.ejs': '<%= __(\'Welcome\') %>',

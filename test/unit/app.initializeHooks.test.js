@@ -35,9 +35,15 @@ describe('app.initializeHooks()', function() {
       sails.hooks.should.be.an.Object;
     });
     it('should expose at least the expected core hooks', function() {
-
       var intersection = _.intersection(_.keys(sails.hooks), _.keys(constants.EXPECTED_DEFAULT_HOOKS));
-      assert.deepEqual(intersection, _.keys(constants.EXPECTED_DEFAULT_HOOKS),  'Missing expected default hooks');
+
+      // If i18n is missing, that might be ok-- but just check to be sure sails.config.i18n.locales is `[]`.
+      // (i.e. it must have turned itself off)
+      if (!_.contains(intersection, 'i18n')) {
+        assert(_.isEqual(sails.config.i18n.locales, []), 'i18n.locales config must be [] in this situation');
+      }
+
+      assert.deepEqual(intersection, _.without(_.keys(constants.EXPECTED_DEFAULT_HOOKS), 'i18n'),  'Missing expected default hooks');
     });
   });
 
@@ -48,7 +54,7 @@ describe('app.initializeHooks()', function() {
     });
     it('should expose all the core hooks except for Grunt', function() {
       var intersection = _.intersection(_.keys(sails.hooks), _.keys(constants.EXPECTED_DEFAULT_HOOKS));
-      assert.deepEqual(intersection, _.without(_.keys(constants.EXPECTED_DEFAULT_HOOKS), 'grunt'),  'Missing expected default hooks');
+      assert.deepEqual(intersection, _.without(_.keys(constants.EXPECTED_DEFAULT_HOOKS), 'grunt', 'i18n'),  'Missing expected default hooks');
     });
   });
 
@@ -59,7 +65,7 @@ describe('app.initializeHooks()', function() {
     });
     it('should expose all the core hooks except for Grunt', function() {
       var intersection = _.intersection(_.keys(sails.hooks), _.keys(constants.EXPECTED_DEFAULT_HOOKS));
-      assert.deepEqual(intersection, _.without(_.keys(constants.EXPECTED_DEFAULT_HOOKS), 'grunt'),  'Missing expected default hooks');
+      assert.deepEqual(intersection, _.without(_.keys(constants.EXPECTED_DEFAULT_HOOKS), 'grunt', 'i18n'),  'Missing expected default hooks');
     });
   });
 
@@ -79,7 +85,7 @@ describe('app.initializeHooks()', function() {
     });
     it('should also expose the expected core hooks', function() {
       var intersection = _.intersection(Object.keys(sails.hooks), _.keys(constants.EXPECTED_DEFAULT_HOOKS));
-      assert.deepEqual(intersection, _.keys(constants.EXPECTED_DEFAULT_HOOKS),  'Missing expected default hooks');
+      assert.deepEqual(intersection, _.without(_.keys(constants.EXPECTED_DEFAULT_HOOKS), 'i18n'),  'Missing expected default hooks');
     });
   });
 
