@@ -48,7 +48,7 @@ module.exports = function testSpawningSailsLiftChildProcessInCwd (opts){
 
   describe('and then waiting for a bit', function() {
 
-    // We can't use HTTP or ws:// requests for IPC for these tests, beause we're trying
+    // We can't use HTTP or ws:// requests for IPC for these tests, because we're trying
     // to determine whether the Sails app has _actually loaded_, not just whether HTTP
     // requests will work (although that's good to know too).
     //
@@ -62,7 +62,7 @@ module.exports = function testSpawningSailsLiftChildProcessInCwd (opts){
     // but that would involve changes to the actual Sails core code base, which seems
     // silly and potentially costly as far as time and technical debt in the code base.
     // Anyway, it's unnecessary since this works so... daintily.
-    var N_SECONDS = 4;
+    var N_SECONDS = 10;
 
     // The max # of seconds to wait for graceful shutdown is used below.
     // It's the other piece of how we know the app must have successfully lifted vs not.
