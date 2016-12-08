@@ -41,6 +41,7 @@ describe('Starting sails server with `sails lift`', function() {
       }).exec(function(err) {
         if (err) {return done(err);}
         appHelper.linkDeps(pathToTestApp);
+        appHelper.linkSails(pathToTestApp);
         return done();
       });
     });
