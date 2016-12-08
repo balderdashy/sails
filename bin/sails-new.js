@@ -6,7 +6,7 @@ var nodepath = require('path');
 var _ = require('@sailshq/lodash');
 var sailsgen = require('sails-generate');
 var package = require('../package.json');
-var rconf = require('../lib/app/configuration/rc');
+var rconf = require('../lib/app/configuration/rc')();
 var CaptainsLog = require('captains-log');
 
 

@@ -10,7 +10,7 @@ var async = require('async');
 var CaptainsLog = require('captains-log');
 var sailsGen = require('sails-generate');
 var package = require('../package.json');
-var rconf = require('../lib/app/configuration/rc');
+var rconf = require('../lib/app/configuration/rc')();
 
 /**
  * `sails generate`

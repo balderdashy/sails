@@ -6,7 +6,7 @@ var nodepath = require('path');
 var _ = require('@sailshq/lodash');
 var CaptainsLog = require('captains-log');
 var Process = require('machinepack-process');
-var rconf = require('../lib/app/configuration/rc');
+var rconf = require('../lib/app/configuration/rc')();
 
 
 

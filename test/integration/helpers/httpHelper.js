@@ -35,8 +35,11 @@ module.exports = {
     options.method = (method === 'del') ? 'delete' : method;
 
     request(options, function(err, response, body) {
-      if (err) { return callback(err, response, body); }
-      callback(null, response, body);
+      if (err) {
+        return callback(err, response, body);
+      }
+
+      return callback(null, response, body);
     });
 
   }

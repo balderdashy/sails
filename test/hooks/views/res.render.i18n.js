@@ -54,7 +54,7 @@ describe('sails.hooks.views.render() with i18n', function (){
       i18n: {
         locales: ['en', 'es', 'eu'],
         defaultLocale: 'eu',
-        directory: path.join(__dirname, './locales')
+        localesDirectory: path.join(__dirname, './locales')
       },
       paths: {
         views: path.join(__dirname, './ejs')

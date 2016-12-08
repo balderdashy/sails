@@ -173,7 +173,7 @@ describe('controllers :: ', function() {
       assert(!unexpectedActions.length, 'Loaded unexpected actions:\n' + util.inspect(unexpectedActions));
       _.each(expectedActions, function(expectedAction) {
         assert(sailsApp._actions[expectedAction], 'Did not load expected action `' + expectedAction + '`');
-        assert(_.isFunction(sailsApp._actions[expectedAction]), 'Expected action `' + expectedAction + '` loaded, but instead of a function it\'s a ' + typeof(sails._actions[expectedAction]));
+        assert(_.isFunction(sailsApp._actions[expectedAction]), 'Expected action `' + expectedAction + '` loaded, but instead of a function it\'s a ' + typeof(sailsApp._actions[expectedAction]));
       });
     });
 
@@ -265,7 +265,7 @@ describe('controllers :: ', function() {
       });
     });
 
-    it('should bind a route (under protest) using \'somefolder/someotherfolder/NestedLegacyController/machineAction\'', function(done) {
+    it('should bind a route (under protest) using \'somefolder/someotherfolder/NestedLegacyController.machineAction\'', function(done) {
       sailsApp.request('POST /warn3', {}, function (err, resp, data) {
         assert(!err, err);
         assert.deepEqual(data, 'nested legacy machine action!');

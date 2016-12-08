@@ -39,8 +39,8 @@ var MProcess = require('machinepack-process');
  */
 module.exports = function testSpawningSailsLiftChildProcessInCwd (opts){
 
-  if (!_.isArray(opts.liftCliArgs)){
-    throw new Error('Consistency violation: Missing or invalid option (`liftCliArgs` should be an array)  in `testSpawningSailsLiftChildProcessInCwd()`. I may just be a test helper, but I\'m serious about assertions!!!');
+  if (!_.isArray(opts.liftCliArgs) && !_.isArray(opts.cliArgs)){
+    throw new Error('Consistency violation: Missing or invalid option (either `cliArgs` or `liftCliArgs` should be an array)  in `testSpawningSailsLiftChildProcessInCwd()`. I may just be a test helper, but I\'m serious about assertions!!!');
   }
   if (!_.isString(opts.pathToSailsCLI)){
     throw new Error('Consistency violation: Missing or invalid option (`pathToSailsCLI` should be a string) in `testSpawningSailsLiftChildProcessInCwd()`. I may just be a test helper, but I\'m serious about assertions!!!');
@@ -48,7 +48,7 @@ module.exports = function testSpawningSailsLiftChildProcessInCwd (opts){
 
   describe('and then waiting for a bit', function() {
 
-    // We can't use HTTP or ws:// requests for IPC for these tests, beause we're trying
+    // We can't use HTTP or ws:// requests for IPC for these tests, because we're trying
     // to determine whether the Sails app has _actually loaded_, not just whether HTTP
     // requests will work (although that's good to know too).
     //
@@ -62,7 +62,7 @@ module.exports = function testSpawningSailsLiftChildProcessInCwd (opts){
     // but that would involve changes to the actual Sails core code base, which seems
     // silly and potentially costly as far as time and technical debt in the code base.
     // Anyway, it's unnecessary since this works so... daintily.
-    var N_SECONDS = 4;
+    var N_SECONDS = 10;
 
     // The max # of seconds to wait for graceful shutdown is used below.
     // It's the other piece of how we know the app must have successfully lifted vs not.
@@ -76,11 +76,14 @@ module.exports = function testSpawningSailsLiftChildProcessInCwd (opts){
     // This variable will hold the reference to the child process.
     var sailsLiftProc;
 
+    var cliArgs = opts.cliArgs ? opts.cliArgs : [opts.pathToSailsCLI, 'lift'].concat(opts.liftCliArgs);
+
     // Spawn the child process
     before(function(done) {
       sailsLiftProc = MProcess.spawnChildProcess({
         command: 'node',
-        cliArgs: [opts.pathToSailsCLI, 'lift'].concat(opts.liftCliArgs)
+        cliArgs: cliArgs,
+        environmentVars: opts.envVars
       }).execSync();
 
       // For debugging, as needed:

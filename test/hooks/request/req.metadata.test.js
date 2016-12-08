@@ -1,19 +1,23 @@
 var assert = require('assert');
 var mixinMetadata = require('../../../lib/hooks/request/metadata');
+// var Sails = require('../../../lib/app');
 
 describe('Request hook', function () {
   describe('metadata', function () {
+
     beforeEach(function() {
       this.req = {
         headers: {},
-        header: function(key) { return this.headers[key]; },
+        get: function(key) { return this.headers[key]; },
         app: {
           data: { 'trust proxy': false },
           get: function(key) { return this.data[key]; }
         },
-        _sails: { hooks: {} }
+        _sails: {
+          hooks: {},
+          config: {}
+        }
       };
-      this.res = {};
     });
 
     describe('without a reverse proxy', function() {
@@ -66,7 +70,10 @@ describe('Request hook', function () {
     });
 
     describe('with a reverse proxy and app.enable("trust proxy")', function() {
+
       beforeEach(function() {
+        // Fake a situation where trust proxy is enabled
+        // (without having set sails.config.http accordingly)
         this.req.app.data['trust proxy'] = true;
       });
 
@@ -146,5 +153,7 @@ describe('Request hook', function () {
         assert.equal(this.req.baseUrl, 'http://example.org:443');
       });
     });
+
   });
+
 });
