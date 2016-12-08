@@ -20,6 +20,13 @@ describe('app.getUrlFor()', function (){
         'post /login': 'UserController.login',
         'get /login': 'PageController.login',
         'post /*': 'UserController.login'
+      },
+      controllers: {
+        moduleDefinitions: {
+          'page/signup': function() {},
+          'page/login': function() {},
+          'user/login': function() {}
+        }
       }
     }, done);
   });
