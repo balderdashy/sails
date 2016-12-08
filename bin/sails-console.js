@@ -9,7 +9,7 @@ var _ = require('@sailshq/lodash');
 var chalk = require('chalk');
 var CaptainsLog = require('captains-log');
 
-var rconf = require('../lib/app/configuration/rc');
+var rconf = require('../lib/app/configuration/rc')();
 var Sails = require('../lib/app');
 var SharedErrorHelpers = require('../errors');
 var readReplHistoryAndStartTranscribing = require('./private/read-repl-history-and-start-transcribing');

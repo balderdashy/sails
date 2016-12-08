@@ -39,8 +39,8 @@ var MProcess = require('machinepack-process');
  */
 module.exports = function testSpawningSailsLiftChildProcessInCwd (opts){
 
-  if (!_.isArray(opts.liftCliArgs)){
-    throw new Error('Consistency violation: Missing or invalid option (`liftCliArgs` should be an array)  in `testSpawningSailsLiftChildProcessInCwd()`. I may just be a test helper, but I\'m serious about assertions!!!');
+  if (!_.isArray(opts.liftCliArgs) && !_.isArray(opts.cliArgs)){
+    throw new Error('Consistency violation: Missing or invalid option (either `cliArgs` or `liftCliArgs` should be an array)  in `testSpawningSailsLiftChildProcessInCwd()`. I may just be a test helper, but I\'m serious about assertions!!!');
   }
   if (!_.isString(opts.pathToSailsCLI)){
     throw new Error('Consistency violation: Missing or invalid option (`pathToSailsCLI` should be a string) in `testSpawningSailsLiftChildProcessInCwd()`. I may just be a test helper, but I\'m serious about assertions!!!');
@@ -76,11 +76,14 @@ module.exports = function testSpawningSailsLiftChildProcessInCwd (opts){
     // This variable will hold the reference to the child process.
     var sailsLiftProc;
 
+    var cliArgs = opts.cliArgs ? opts.cliArgs : [opts.pathToSailsCLI, 'lift'].concat(opts.liftCliArgs);
+
     // Spawn the child process
     before(function(done) {
       sailsLiftProc = MProcess.spawnChildProcess({
         command: 'node',
-        cliArgs: [opts.pathToSailsCLI, 'lift'].concat(opts.liftCliArgs)
+        cliArgs: cliArgs,
+        environmentVars: opts.envVars
       }).execSync();
 
       // For debugging, as needed:

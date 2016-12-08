@@ -2,7 +2,7 @@
  * Module dependencies
  */
 
-var rc = require('rc');
+var rc = require('../lib/app/configuration/rc');
 
 
 /**
