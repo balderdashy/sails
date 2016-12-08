@@ -145,7 +145,7 @@ describe('policies :: ', function() {
       describe('with a `false` policy mapped to user/*', function() {
 
         before(function() {
-          policyMap = { 'user/*': [false] };
+          policyMap = { 'user/*': false };
         });
 
         it('the policy should apply to all user/* actions', function(done) {
@@ -221,7 +221,7 @@ describe('policies :: ', function() {
         before(function() {
           policyMap = {
             'user/*': ['err'],
-            'user/foo': [true]
+            'user/foo': true
           };
         });
 
