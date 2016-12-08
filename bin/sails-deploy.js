@@ -5,7 +5,7 @@
 var _ = require('@sailshq/lodash');
 var util = require('util');
 var path = require('path');
-var rconf = require('../lib/app/configuration/rc');
+var rconf = require('../lib/app/configuration/rc')();
 
 /**
  * `sails deploy`
