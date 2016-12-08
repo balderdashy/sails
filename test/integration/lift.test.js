@@ -74,8 +74,21 @@ describe('Starting sails server with `sails lift`', function() {
               uri: 'http://localhost:1337/getconf',
             }, function(err, response, body) {
               if (err) { return done(err); }
-              body = JSON.parse(body);
-              assert.equal(body.foo && body.foo.bar && body.foo.bar.abc, 123);
+
+              try {
+
+                assert.equal(response.statusCode, 200);
+
+                try {
+                  body = JSON.parse(body);
+                } catch(e){
+                  throw new Error('Could not parse as JSON: '+e.stack+'\nHere is what I attempted to parse: '+util.inspect(body, {depth:null})+'');
+                }
+
+                assert.equal(body.foo && body.foo.bar && body.foo.bar.abc, 123);
+
+              } catch (e) { return done(e); }
+
               return done();
             });
           });
