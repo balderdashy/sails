@@ -24,7 +24,7 @@ describe('req.session', function (){
       ],
       session: {
         adapter: 'memory',
-        key: 'sails.sid',
+        name: 'sails.sid',
         secret: 'af9442683372850a85a87150c47b4a31'
       }
     }, done);
