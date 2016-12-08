@@ -49,7 +49,6 @@
     "machine-as-action": "^7.1.0-0",
     "machinepack-process": "^2.0.2",
     "merge-defaults": "0.2.1",
-    "method-override": "2.3.5",
     "minimist": "0.0.10",
     "mock-req": "0.2.0",
     "mock-res": "0.3.0",
