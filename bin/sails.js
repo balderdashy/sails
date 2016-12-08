@@ -162,5 +162,12 @@ program.unknownOption = NOOP;
 program.parse(process.argv);
 var NO_COMMAND_SPECIFIED = program.args.length === 0;
 if (NO_COMMAND_SPECIFIED) {
-  program.help();
+  if(require.main === module) {
+    program.help();
+  }
+}
+
+// make it require able to add custom commands
+module.exports.Commands = function(){
+  return program;
 }
