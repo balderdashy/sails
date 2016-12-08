@@ -265,7 +265,7 @@ describe('controllers :: ', function() {
       });
     });
 
-    it('should bind a route (under protest) using \'somefolder/someotherfolder/NestedLegacyController/machineAction\'', function(done) {
+    it('should bind a route (under protest) using \'somefolder/someotherfolder/NestedLegacyController.machineAction\'', function(done) {
       sailsApp.request('POST /warn3', {}, function (err, resp, data) {
         assert(!err, err);
         assert.deepEqual(data, 'nested legacy machine action!');
