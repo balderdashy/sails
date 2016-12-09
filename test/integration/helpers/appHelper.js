@@ -237,10 +237,26 @@ module.exports = {
   },
 
   linkDeps: function(appPath) {
+
+    // Get the given app's package.json (defaulting to an empty dictionary).
+    var packageJson;
+    try {
+      packageJson = require(path.resolve(appPath, 'package.json'));
+    } catch (e) {
+      packageJson = {};
+    }
+
     var deps = ['sails-hook-orm', 'sails-hook-sockets', 'sails-disk'];
     _.each(deps, function(dep) {
+      // Create a symlink
       fs.ensureSymlinkSync(path.resolve(__dirname, '..', '..', '..', 'node_modules', dep), path.resolve(appPath, 'node_modules', dep));
+      // Add a entry into the package.json dependencies
+      packageJson.dependencies = packageJson.dependencies || {};
+      packageJson.dependencies[dep] = '0.0.0';
     });
+
+    // Output the update package.json
+    fs.writeFileSync(path.resolve(appPath, 'package.json'), JSON.stringify(packageJson));
   },
 
   linkLodash: function(appPath) {

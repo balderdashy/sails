@@ -16,6 +16,12 @@ describe('hooks :: ', function() {
   describe('installing a 3rd-party hook', function() {
     var appName = 'testApp';
 
+    // Before each test, remove the test app's package.json from the require cache,
+    // so that we can change its dependencies on a per-test basis.
+    beforeEach(function() {
+      delete require.cache[path.resolve(__dirname, '../..', appName, 'package.json')];
+    });
+
     before(function() {
       appHelper.teardown();
     });
@@ -23,10 +29,13 @@ describe('hooks :: ', function() {
     describe('into node_modules/sails-hook-shout', function(){
 
       before(function(done) {
-        fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules"), function(err) {
+        // Add `sails-hook-shout` as a dependency of the test app.
+        fs.outputFileSync(path.resolve(__dirname, '../..', appName, 'package.json'), '{"dependencies":{"sails-hook-shout":"0.0.0"}}');
+          // Copy the hook into the test app's node_modules folder.
+        fs.mkdirs(path.resolve(__dirname, '../..', appName, 'node_modules'), function(err) {
           if (err) {return done(err);}
           fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/sails-hook-shout'));
-          process.chdir(path.resolve(__dirname, "../..", appName));
+          process.chdir(path.resolve(__dirname, '../..', appName));
           done();
         });
       });
@@ -68,7 +77,7 @@ describe('hooks :: ', function() {
         });
 
         it('should bind a /shout route that responds with the default phrase', function(done) {
-          httpHelper.testRoute('GET', "shout", function(err, resp, body) {
+          httpHelper.testRoute('GET', 'shout', function(err, resp, body) {
             assert.equal(body, 'make it rain');
             return done();
           });
@@ -101,12 +110,12 @@ describe('hooks :: ', function() {
       });
 
 
-      describe('with hooks.shout set to the string "false"', function() {
+      describe('with hooks.shout set to the string `false`', function() {
 
         var sails;
 
         before(function(done) {
-          appHelper.liftQuiet({hooks: {shout: "false"}}, function(err, _sails) {
+          appHelper.liftQuiet({hooks: {shout: 'false'}}, function(err, _sails) {
             if (err) {return done(err);}
             sails = _sails;
             return done();
@@ -130,7 +139,7 @@ describe('hooks :: ', function() {
         var sails;
 
         before(function(done) {
-          appHelper.liftQuiet({shout: {phrase: "yolo"}}, function(err, _sails) {
+          appHelper.liftQuiet({shout: {phrase: 'yolo'}}, function(err, _sails) {
             if (err) {return done(err);}
             sails = _sails;
             return done();
@@ -142,8 +151,8 @@ describe('hooks :: ', function() {
         });
 
         it('should bind a /shout route that responds with the configured phrase', function(done) {
-          httpHelper.testRoute('GET', "shout", function(err, resp, body) {
-            assert(body == 'yolo');
+          httpHelper.testRoute('GET', 'shout', function(err, resp, body) {
+            assert(body === 'yolo');
             return done();
           });
         });
@@ -168,8 +177,8 @@ describe('hooks :: ', function() {
 
 
         it('should bind a /shout route that responds with the configured phrase', function(done) {
-          httpHelper.testRoute('GET', "shout", function(err, resp, body) {
-            assert(body == 'holla back!');
+          httpHelper.testRoute('GET', 'shout', function(err, resp, body) {
+            assert(body === 'holla back!');
             return done();
           });
         });
@@ -200,13 +209,13 @@ describe('hooks :: ', function() {
 
           it('should use merge the default hook config', function() {
 
-            assert(sails.config.foobar.phrase == 'make it rain', sails.config.foobar.phrase);
+            assert(sails.config.foobar.phrase === 'make it rain', sails.config.foobar.phrase);
 
           });
 
           it('should bind a /shout route that responds with the default phrase', function(done) {
-            httpHelper.testRoute('GET', "shout", function(err, resp, body) {
-              assert(body == 'make it rain');
+            httpHelper.testRoute('GET', 'shout', function(err, resp, body) {
+              assert(body === 'make it rain');
               return done();
             });
           });
@@ -239,10 +248,15 @@ describe('hooks :: ', function() {
     describe('into node_modules/shouty', function(){
 
       before(function(done) {
-        fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules"), function(err) {
+        // Add `shouty` as a dependency of the test app.
+        fs.outputFileSync(path.resolve(__dirname, '../..', appName, 'package.json'), '{"dependencies":{"shouty":"0.0.0"}}');
+        fs.mkdirs(path.resolve(__dirname, '../..', appName, 'node_modules'), function(err) {
           if (err) {return done(err);}
           fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/shouty'));
-          process.chdir(path.resolve(__dirname, "../..", appName));
+          var packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../testApp/node_modules/shouty','package.json')));
+          packageJson.name = 'shouty';
+          fs.writeFileSync(path.resolve(__dirname,'../../testApp/node_modules/shouty','package.json'), JSON.stringify(packageJson));
+          process.chdir(path.resolve(__dirname, '../..', appName));
           done();
         });
       });
@@ -280,13 +294,13 @@ describe('hooks :: ', function() {
 
         it('should use merge the default hook config', function() {
 
-          assert(sails.config.shouty.phrase == 'make it rain', sails.config.shouty.phrase);
+          assert(sails.config.shouty.phrase === 'make it rain', sails.config.shouty.phrase);
 
         });
 
         it('should bind a /shout route that responds with the default phrase', function(done) {
-          httpHelper.testRoute('GET', "shout", function(err, resp, body) {
-            assert(body == 'make it rain');
+          httpHelper.testRoute('GET', 'shout', function(err, resp, body) {
+            assert(body === 'make it rain');
             return done();
           });
         });
@@ -322,10 +336,15 @@ describe('hooks :: ', function() {
 
       var sails;
       before(function(done) {
-        fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules"), function(err) {
+        // Add `sails-hook-security` as a dependency of the test app.
+        fs.outputFileSync(path.resolve(__dirname, '../..', appName, 'package.json'), '{"dependencies":{"sails-hook-security":"0.0.0"}}');
+        fs.mkdirs(path.resolve(__dirname, '../..', appName, 'node_modules'), function(err) {
           if (err) {return done(err);}
           fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/sails-hook-security'));
-          process.chdir(path.resolve(__dirname, "../..", appName));
+          var packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../testApp/node_modules/sails-hook-security','package.json')));
+          packageJson.name = 'sails-hook-security';
+          fs.writeFileSync(path.resolve(__dirname,'../../testApp/node_modules/sails-hook-security','package.json'), JSON.stringify(packageJson));
+          process.chdir(path.resolve(__dirname, '../..', appName));
           appHelper.liftQuiet(function(err, _sails) {
             if (err) {return done(err);}
             sails = _sails;
@@ -353,10 +372,15 @@ describe('hooks :: ', function() {
 
       var sails;
       before(function(done) {
-        fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules"), function(err) {
+        // Add `security` as a dependency of the test app.
+        fs.outputFileSync(path.resolve(__dirname, '../..', appName, 'package.json'), '{"dependencies":{"security":"0.0.0"}}');
+        fs.mkdirs(path.resolve(__dirname, '../..', appName, 'node_modules'), function(err) {
           if (err) {return done(err);}
           fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/security'));
-          process.chdir(path.resolve(__dirname, "../..", appName));
+          var packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../testApp/node_modules/security','package.json')));
+          packageJson.name = 'security';
+          fs.writeFileSync(path.resolve(__dirname,'../../testApp/node_modules/security','package.json'), JSON.stringify(packageJson));
+          process.chdir(path.resolve(__dirname, '../..', appName));
           appHelper.liftQuiet(function(err, _sails) {
             if (err) {return done(err);}
             sails = _sails;
@@ -385,10 +409,15 @@ describe('hooks :: ', function() {
 
         var sails;
         before(function(done) {
-          fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules", "@my-modules"), function(err) {
+          // Add `@my-modules/shouty` as a dependency of the test app.
+          fs.outputFileSync(path.resolve(__dirname, '../..', appName, 'package.json'), '{"dependencies":{"@my-modules/shouty":"0.0.0"}}');
+          fs.mkdirs(path.resolve(__dirname, '../..', appName, 'node_modules', '@my-modules'), function(err) {
             if (err) {return done(err);}
             fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty'));
-            process.chdir(path.resolve(__dirname, "../..", appName));
+            var packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty','package.json')));
+            packageJson.name = '@my-modules/shouty';
+            fs.writeFileSync(path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty','package.json'), JSON.stringify(packageJson));
+            process.chdir(path.resolve(__dirname, '../..', appName));
             appHelper.liftQuiet(function(err, _sails) {
               if (err) {return done(err);}
               sails = _sails;
@@ -415,15 +444,17 @@ describe('hooks :: ', function() {
 
         var sails;
         before(function(done) {
+          fs.outputFileSync(path.resolve(__dirname, '../..', appName, 'package.json'), '{"dependencies":{"@my-modules/shouty":"0.0.0"}}');
           delete require.cache[path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty')];
           delete require.cache[path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty','package.json')];
-          fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules", "@my-modules"), function(err) {
+          fs.mkdirs(path.resolve(__dirname, '../..', appName, 'node_modules', '@my-modules'), function(err) {
             if (err) {return done(err);}
             fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty'));
             var packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty','package.json')));
             packageJson.sails.hookName = 'security';
+            packageJson.name = '@my-modules/shouty';
             fs.writeFileSync(path.resolve(__dirname,'../../testApp/node_modules/@my-modules/shouty','package.json'), JSON.stringify(packageJson));
-            process.chdir(path.resolve(__dirname, "../..", appName));
+            process.chdir(path.resolve(__dirname, '../..', appName));
             appHelper.liftQuiet(function(err, _sails) {
               if (err) {return done(err);}
               sails = _sails;
@@ -452,10 +483,14 @@ describe('hooks :: ', function() {
 
       var sails;
       before(function(done) {
-        fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules", "@my-modules"), function(err) {
+        // Add `@my-modules/sails-hook-security` as a dependency of the test app.
+        fs.outputFileSync(path.resolve(__dirname, '../..', appName, 'package.json'), '{"dependencies":{"sails-hook-shout":"0.0.0"}}');
+        fs.mkdirs(path.resolve(__dirname, '../..', appName, 'node_modules', '@my-modules'), function(err) {
           if (err) {return done(err);}
           fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-security'));
-          process.chdir(path.resolve(__dirname, "../..", appName));
+          var packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-security','package.json')));
+          fs.writeFileSync(path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-security','package.json'), JSON.stringify(packageJson));
+          process.chdir(path.resolve(__dirname, '../..', appName));
           appHelper.liftQuiet(function(err, _sails) {
             if (err) {return done(err);}
             sails = _sails;
@@ -478,16 +513,48 @@ describe('hooks :: ', function() {
 
     });
 
+    describe('into node_modules/@my-modules/sails-hook-security, with no corresponding package.json entry', function(){
+
+      var sails;
+      before(function(done) {
+        fs.mkdirs(path.resolve(__dirname, '../..', appName, 'node_modules', '@my-modules'), function(err) {
+          if (err) {return done(err);}
+          fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-security'));
+          var packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-security','package.json')));
+          fs.writeFileSync(path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-security','package.json'), JSON.stringify(packageJson));
+          process.chdir(path.resolve(__dirname, '../..', appName));
+          appHelper.liftQuiet(function(err, _sails) {
+            if (err) {return done(err);}
+            sails = _sails;
+            return done();
+          });
+        });
+      });
+
+      after(function(done) {
+        sails.lower(function(err) {
+          process.chdir('../');
+          appHelper.teardown();
+          return done(err);
+        });
+      });
+
+      it('should NOT replace the core `security` hook', function() {
+        assert(!sails.hooks.security.isShoutyHook);
+      });
+
+    });
+
     describe('with an invalid package.json file', function(){
 
       var sails;
       before(function(done) {
         delete require.cache[path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-security/package.json')];
-        fs.mkdirs(path.resolve(__dirname, "../..", appName, "node_modules", "@my-modules"), function(err) {
+        fs.mkdirs(path.resolve(__dirname, '../..', appName, 'node_modules', '@my-modules'), function(err) {
           if (err) {return done(err);}
           fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout'), path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-security'));
           fs.outputFileSync(path.resolve(__dirname,'../../testApp/node_modules/@my-modules/sails-hook-security/package.json'), '{"foo":<%=bar%>}');
-          process.chdir(path.resolve(__dirname, "../..", appName));
+          process.chdir(path.resolve(__dirname, '../..', appName));
           return done();
         });
       });
