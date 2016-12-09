@@ -13,7 +13,7 @@ The modules comprising the Sails framework, as well as the other plugins maintai
 
 > For more information on the available releases of the Sails framework as a whole, check out the [contribution guide](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md).
 
-| Repo          |  Build Status (edge)                 |  Latest Stable Version   |
+| Repo          |  Build Status (edge)                 |  Latest Stable Release   |
 |---------------|---------------------------------------|--------------------------|
 | <a href="http://github.com/balderdashy/sails" target="_blank" title="Github repo for Sails core"><img src="http://sailsjs.org/images/logos/sails-logo_ltBg_dkBlue.png" width=60 alt="Sails.js logo (small)"/></a>     | [![Build Status](https://travis-ci.org/balderdashy/sails.png?branch=master)](https://travis-ci.org/balderdashy/sails)  | [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails) |
 | [**waterline**](http://github.com/balderdashy/waterline) | [![Build Status](https://travis-ci.org/balderdashy/waterline.png?branch=master)](https://travis-ci.org/balderdashy/waterline) | [![NPM version](https://badge.fury.io/js/waterline.png)](http://badge.fury.io/js/waterline) |
@@ -27,7 +27,7 @@ The modules comprising the Sails framework, as well as the other plugins maintai
 
 #### Core framework utilities
 
-| Repo       |  Latest Stable Version   |
+| Repo       |  Latest Stable Release   |
 |------------|--------------------------|
 | [**include-all**](http://github.com/balderdashy/include-all) | [![NPM version](https://badge.fury.io/js/include-all.png)](http://badge.fury.io/js/include-all) |
 | [**reportback**](http://github.com/balderdashy/reportback) | [![NPM version](https://badge.fury.io/js/reportback.png)](http://badge.fury.io/js/reportback) |
@@ -41,29 +41,31 @@ _As of Sails v1.0, core generators are now bundled in [sails-generate](https://g
 
 #### Core hooks
 
-| Hook           | Repo       |  Build Status (edge)             | Purpose                  |
-|:---------------|------------|----------------------------------|:-------------------------|
-| `orm`          | [sails-hook-orm](https://github.com/balderdashy/sails-hook-orm)  | [![Build Status](https://travis-ci.org/balderdashy/sails-hook-orm.png?branch=master)](https://travis-ci.org/balderdashy/sails-hook-orm)  | Implements support for Waterline ORM in Sails.  |
-| `sockets`      | [sails-hook-sockets](https://github.com/balderdashy/sails-hook-sockets)  | [![Build Status](https://travis-ci.org/balderdashy/sails-hook-sockets.png?branch=master)](https://travis-ci.org/balderdashy/sails-hook-sockets)  | Implements Socket.io support in Sails.  |
+| Hook           | Package       |  Latest Stable Release           | Build Status (edge)             | Purpose                  |
+|:---------------|---------------|----------------------------------|---------------------------------|:---------------|
+| `grunt`        | [sails-hook-grunt](https://npmjs.com/package/sails-hook-grunt)  | [![NPM version](https://badge.fury.io/js/node-sails-hook-grunt.png)](http://badge.fury.io/js/sails-hook-grunt) | [![Build Status](https://travis-ci.org/balderdashy/sails-hook-grunt.png?branch=master)](https://travis-ci.org/balderdashy/sails-hook-grunt)  | Implements support for the built-in Grunt asset pipeline in Sails.  |
+| `orm`          | [sails-hook-orm](https://npmjs.com/package/sails-hook-orm)  | [![NPM version](https://badge.fury.io/js/node-sails-hook-orm.png)](http://badge.fury.io/js/sails-hook-orm) | [![Build Status](https://travis-
+ci.org/balderdashy/sails-hook-orm.png?branch=master)](https://travis-ci.org/balderdashy/sails-hook-orm)  | Implements support for Waterline ORM in Sails.  |
+| `sockets`      | [sails-hook-sockets](https://npmjs.com/package/sails-hook-sockets)  | [![NPM version](https://badge.fury.io/js/node-sails-hook-sockets.png)](http://badge.fury.io/js/sails-hook-sockets) | [![Build Status](https://travis-ci.org/balderdashy/sails-hook-sockets.png?branch=master)](https://travis-ci.org/balderdashy/sails-hook-sockets)  | Implements Socket.io support in Sails.  |
 
 > Other core hooks not listed above are currently contained in sub-folders within Sails core.  See [`lib/hooks/`](https://github.com/balderdashy/sails/tree/master/lib/hooks).
 
 
 
-#### Officially-supported adapters
+#### Core database adapters
 
-| Repo                                                             |  Build Status (edge)                                                                                                                          | Latest Stable Version                                                                                        | Platform                                                          |
+| Package                                                          |  Latest Stable Release                                                                                       | Build Status (edge)                                                                                                                           | Platform                                                          |
 |:-----------------------------------------------------------------| ----------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|:------------------------------------------------------------------|
-| [Local Disk](https://github.com/balderdashy/sails-disk)          | [![Build Status](https://travis-ci.org/balderdashy/sails-disk.png?branch=master)](https://travis-ci.org/balderdashy/sails-disk)               | [![NPM version](https://badge.fury.io/js/sails-disk.png)](http://badge.fury.io/js/sails-disk)                | [Local disk (`.tmp/`)](https://github.com/balderdashy/sails-disk) |
-| [MySQL](https://github.com/balderdashy/sails-mysql)              | [![Build Status](https://travis-ci.org/balderdashy/sails-mysql.png?branch=master)](https://travis-ci.org/balderdashy/sails-mysql)             | [![NPM version](https://badge.fury.io/js/sails-mysql.png)](http://badge.fury.io/js/sails-mysql)              | [MySQL](http://dev.mysql.com/)                                    |
-| [PostgreSQL](https://github.com/balderdashy/sails-postgresql)    | [![Build Status](https://travis-ci.org/balderdashy/sails-postgresql.png?branch=master)](https://travis-ci.org/balderdashy/sails-postgresql)   | [![NPM version](https://badge.fury.io/js/sails-postgresql.png)](http://badge.fury.io/js/sails-postgresql)    | [PostgreSQL](https://www.postgresql.org/)                         |
-| [Mongo](https://github.com/balderdashy/sails-mongo)              | [![Build Status](https://travis-ci.org/balderdashy/sails-mongo.png?branch=master)](https://travis-ci.org/balderdashy/sails-mongo)             | [![NPM version](https://badge.fury.io/js/sails-mongo.png)](http://badge.fury.io/js/sails-mongo)              | [MongoDB](https://www.mongodb.com/)                               |
-| [Redis](https://github.com/balderdashy/sails-redis)              | [![Build Status](https://travis-ci.org/balderdashy/sails-redis.png?branch=master)](https://travis-ci.org/balderdashy/sails-redis)             | [![NPM version](https://badge.fury.io/js/sails-redis.png)](http://badge.fury.io/js/sails-redis)              | [Redis](http://redis.io)                                          |
+| [Local Disk](https://npmjs.com/package/sails-disk)               | [![NPM version](https://badge.fury.io/js/sails-disk.png)](http://badge.fury.io/js/sails-disk)                | [![Build Status](https://travis-ci.org/balderdashy/sails-disk.png?branch=master)](https://travis-ci.org/balderdashy/sails-disk)               | Local disk (`.tmp/`)                                              |
+| [MySQL](https://npmjs.com/package/sails-mysql)                   | [![NPM version](https://badge.fury.io/js/sails-mysql.png)](http://badge.fury.io/js/sails-mysql)              | [![Build Status](https://travis-ci.org/balderdashy/sails-mysql.png?branch=master)](https://travis-ci.org/balderdashy/sails-mysql)             | [MySQL](http://dev.mysql.com/)                                    |
+| [PostgreSQL](https://npmjs.com/package/sails-postgresql)         | [![NPM version](https://badge.fury.io/js/sails-postgresql.png)](http://badge.fury.io/js/sails-postgresql)    | [![Build Status](https://travis-ci.org/balderdashy/sails-postgresql.png?branch=master)](https://travis-ci.org/balderdashy/sails-postgresql)   | [PostgreSQL](https://www.postgresql.org/)                         |
+| [Mongo](https://npmjs.com/package/sails-mongo)                   | [![NPM version](https://badge.fury.io/js/sails-mongo.png)](http://badge.fury.io/js/sails-mongo)              | [![Build Status](https://travis-ci.org/balderdashy/sails-mongo.png?branch=master)](https://travis-ci.org/balderdashy/sails-mongo)             | [MongoDB](https://www.mongodb.com/)                               |
+| [Redis](https://npmjs.com/package/sails-redis)                   | [![NPM version](https://badge.fury.io/js/sails-redis.png)](http://badge.fury.io/js/sails-redis)              | [![Build Status](https://travis-ci.org/balderdashy/sails-redis.png?branch=master)](https://travis-ci.org/balderdashy/sails-redis)             | [Redis](http://redis.io)                                          |
 
 
-#### Officially-supported socket client SDKs
+#### Core socket client SDKs
 
-| Platform     | Package             |  Latest Stable Version           | Build Status (edge)          |
+| Platform     | Package             |  Latest Stable Release           | Build Status (edge)          |
 |--------------|---------------------|----------------------------------|------------------------------|
 | Browser      | [sails.io.js-dist](https://npmjs.com/package/sails.io.js-dist)  | [![NPM version](https://badge.fury.io/js/sails.io.js-dist.png)](http://badge.fury.io/js/sails.io.js-dist) | [![Build Status](https://travis-ci.org/balderdashy/sails.io.js.png?branch=master)](https://travis-ci.org/balderdashy/sails.io.js)  |
 | Node.js      | [sails.io.js](https://npmjs.com/package/sails.io.js)  | [![NPM version](https://badge.fury.io/js/sails.io.js.png)](http://badge.fury.io/js/sails.io.js) | [![Build Status](https://travis-ci.org/balderdashy/sails.io.js.png?branch=master)](https://travis-ci.org/balderdashy/sails.io.js)  |
@@ -129,7 +131,7 @@ Is your database not supported by one of the core adapters?  Good news!  There a
 Here are a few popular community adapters:
 
 ```
-| Repo          |  Build Status (edge)  |  Latest Stable Version   | Platform |
+| Repo          |  Build Status (edge)  |  Latest Stable Release   | Platform |
 |---------------|---------------------------------------|--------------------------|------------|
 | [sails-orientdb](https://github.com/appscot/sails-orientdb) | [![Build Status](https://travis-ci.org/appscot/sails-orientdb.svg?branch=master)](https://travis-ci.org/appscot/sails-orientdb) | [![npm version](https://badge.fury.io/js/sails-orientdb.svg)](http://badge.fury.io/js/sails-orientdb) | OrientDB |
 | [sails-rest](https://github.com/zohararad/sails-rest) |  |  | REST |
