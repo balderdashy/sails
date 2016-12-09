@@ -27,11 +27,17 @@ The modules comprising the Sails framework, as well as the other plugins maintai
 
 #### Core framework utilities
 
-| Repo       |  Latest Stable Release   |
-|------------|--------------------------|
-| [**include-all**](http://github.com/balderdashy/include-all) | [![NPM version](https://badge.fury.io/js/include-all.png)](http://badge.fury.io/js/include-all) |
-| [**reportback**](http://github.com/balderdashy/reportback) | [![NPM version](https://badge.fury.io/js/reportback.png)](http://badge.fury.io/js/reportback) |
-| [**switchback**](http://github.com/balderdashy/switchback) | [![NPM version](https://badge.fury.io/js/node-switchback.png)](http://badge.fury.io/js/switchback) |
+
+| Package                                                               | Latest Stable Release   | Build Status (edge)        |                         
+|-----------------------------------------------------------------------|--------------------------|----------------------------|
+| [**include-all**](http://npmjs.com/package/include-all)               | [![NPM version](https://badge.fury.io/js/include-all.png)](http://badge.fury.io/js/include-all)                   | [![Build Status](https://travis-ci.org/balderdashy/include-all.png?branch=master)](https://travis-ci.org/balderdashy/include-all) |
+| [**sails-generate**](http://npmjs.com/package/sails-generate)         | [![NPM version](https://badge.fury.io/js/sails-generate.png)](http://badge.fury.io/js/sails-generate)             | [![Build Status](https://travis-ci.org/balderdashy/sails-generate.png?branch=master)](https://travis-ci.org/balderdashy/sails-generate) |
+| [**reportback**](http://npmjs.com/package/reportback)                 | [![NPM version](https://badge.fury.io/js/reportback.png)](http://badge.fury.io/js/reportback)                     | _n/a_
+| [**switchback**](http://npmjs.com/package/switchback)                 | [![NPM version](https://badge.fury.io/js/switchback.png)](http://badge.fury.io/js/switchback)                     | [![Build Status](https://travis-ci.org/node-machine/switchback.png?branch=master)](https://travis-ci.org/node-machine/switchback) |
+| [**machine**](http://npmjs.com/package/machine)                       | [![NPM version](https://badge.fury.io/js/machine.png)](http://badge.fury.io/js/machine)                           | [![Build Status](https://travis-ci.org/node-machine/machine.png?branch=master)](https://travis-ci.org/node-machine/machine) |
+| [**rttc**](http://npmjs.com/package/rttc)                             | [![NPM version](https://badge.fury.io/js/rttc.png)](http://badge.fury.io/js/rttc)                                 | [![Build Status](https://travis-ci.org/node-machine/rttc.png?branch=master)](https://travis-ci.org/node-machine/rttc) |
+| [**machine-as-action**](http://npmjs.com/package/machine-as-action)   | [![NPM version](https://badge.fury.io/js/machine-as-action.png)](http://badge.fury.io/js/machine-as-action)       | [![Build Status](https://travis-ci.org/treelinehq/machine-as-action.png?branch=master)](https://travis-ci.org/treelinehq/machine-as-action) |
+| [**machine-as-script**](http://npmjs.com/package/machine-as-script)   | [![NPM version](https://badge.fury.io/js/machine-as-script.png)](http://badge.fury.io/js/machine-as-script)       | [![Build Status](https://travis-ci.org/treelinehq/machine-as-script.png?branch=master)](https://travis-ci.org/treelinehq/machine-as-script) |
 
 
 #### Core generators
@@ -43,7 +49,7 @@ _As of Sails v1.0, core generators are now bundled in [sails-generate](https://g
 
 | Hook           | Package                                                             |  Latest Stable Release                                                                                             | Build Status (edge)                                                                                                                              | Purpose                                                  |
 |:---------------|---------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------|
-| `grunt`        | [sails-hook-grunt](https://npmjs.com/package/sails-hook-grunt)      | [![NPM version](https://badge.fury.io/js/node-sails-hook-grunt.png)](http://badge.fury.io/js/sails-hook-grunt)     | [![Build Status](https://travis-ci.org/balderdashy/sails-hook-grunt.png?branch=master)](https://travis-ci.org/balderdashy/sails-hook-grunt)      | Implements support for the built-in Grunt asset pipeline in Sails.  |
+| `grunt`        | [sails-hook-grunt](https://npmjs.com/package/sails-hook-grunt)      | [![NPM version](https://badge.fury.io/js/node-sails-hook-grunt.png)](http://badge.fury.io/js/sails-hook-grunt)     | [![Build Status](https://travis-ci.org/balderdashy/sails-hook-grunt.png?branch=master)](https://travis-ci.org/balderdashy/sails-hook-grunt)      | Governs the built-in asset pipeline in Sails.  |
 | `orm`          | [sails-hook-orm](https://npmjs.com/package/sails-hook-orm)          | [![NPM version](https://badge.fury.io/js/node-sails-hook-orm.png)](http://badge.fury.io/js/sails-hook-orm)         | [![Build Status](https://travis-ci.org/balderdashy/sails-hook-orm.png?branch=master)](https://travis-ci.org/balderdashy/sails-hook-orm)          | Implements support for Waterline ORM in Sails.  |
 | `sockets`      | [sails-hook-sockets](https://npmjs.com/package/sails-hook-sockets)  | [![NPM version](https://badge.fury.io/js/node-sails-hook-sockets.png)](http://badge.fury.io/js/sails-hook-sockets) | [![Build Status](https://travis-ci.org/balderdashy/sails-hook-sockets.png?branch=master)](https://travis-ci.org/balderdashy/sails-hook-sockets)  | Implements Socket.io support in Sails.  |
 
@@ -68,7 +74,6 @@ _As of Sails v1.0, core generators are now bundled in [sails-generate](https://g
 |--------------|---------------------|----------------------------------|------------------------------|
 | Browser      | [sails.io.js-dist](https://npmjs.com/package/sails.io.js-dist)  | [![NPM version](https://badge.fury.io/js/sails.io.js-dist.png)](http://badge.fury.io/js/sails.io.js-dist) | [![Build Status](https://travis-ci.org/balderdashy/sails.io.js.png?branch=master)](https://travis-ci.org/balderdashy/sails.io.js)  |
 | Node.js      | [sails.io.js](https://npmjs.com/package/sails.io.js)  | [![NPM version](https://badge.fury.io/js/sails.io.js.png)](http://badge.fury.io/js/sails.io.js) | [![Build Status](https://travis-ci.org/balderdashy/sails.io.js.png?branch=master)](https://travis-ci.org/balderdashy/sails.io.js)  |
-
 
 
 
@@ -206,10 +211,12 @@ The recommended production session store for Sails.js is Redis... but we realize
 
 #### Misc. projects
 
-| Repo                          |
-|-------------------------------|
-| [sails-migrations](https://github.com/BlueHotDog/sails-migrations) |
-| [sails-mysql-transactions](https://github.com/postmanlabs/sails-mysql-transactions) |
+| Package                                                                             | Latest Stable Release           | Purpose
+|-------------------------------------------------------------------------------------|---------------------------------|:------------|
+| [sails-stdlib](https://npmjs.com/package/sails-stdlib)                              | [![NPM version](https://badge.fury.io/js/sails-stdlib.png)](http://badge.fury.io/js/sails-stdlib) | Evolving library of well-tested, well-documented, and officially supported modules for the most common everyday tasks in apps (e.g. password encryption, etc.)
+| [stdlib](https://npmjs.com/package/stdlib)                                          | [![NPM version](https://badge.fury.io/js/stdlib.png)](http://badge.fury.io/js/stdlib) | A lighter build of `sails-stdlib`, designed for use outside of the environment of a Sails app (e.g. when building lower-level Node.js modules like machinepacks)
+| [sails-migrations](https://github.com/BlueHotDog/sails-migrations)                  | [![NPM version](https://badge.fury.io/js/sails-migrations.png)](http://badge.fury.io/js/sails-migrations) | Manual migration tool for Sails, built on Knex.
+| [sails-mysql-transactions](https://github.com/postmanlabs/sails-mysql-transactions) | [![NPM version](https://badge.fury.io/js/sails-mysql-transactions.png)](http://badge.fury.io/js/sails-mysql-transactions) | Augmented database adapter for mySQL with transaction and replication support.
 
 
 
