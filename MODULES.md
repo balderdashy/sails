@@ -228,6 +228,7 @@ The recommended production session store for Sails.js is Redis... but we realize
 | [stdlib](https://npmjs.com/package/stdlib)                                          | [![NPM version](https://badge.fury.io/js/stdlib.png)](http://badge.fury.io/js/stdlib) | A lighter build of `sails-stdlib`, designed for use outside of the environment of a Sails app (e.g. when building lower-level Node.js modules like machinepacks)
 | [sails-migrations](https://github.com/BlueHotDog/sails-migrations)                  | [![NPM version](https://badge.fury.io/js/sails-migrations.png)](http://badge.fury.io/js/sails-migrations) | Manual migration tool for Sails, built on Knex.
 | [sails-mysql-transactions](https://github.com/postmanlabs/sails-mysql-transactions) | [![NPM version](https://badge.fury.io/js/sails-mysql-transactions.png)](http://badge.fury.io/js/sails-mysql-transactions) | Augmented database adapter for mySQL with transaction and replication support.
+| [sails-inverse-model](https://www.npmjs.com/package/sails-inverse-model) | Generate Sails/Waterline model definitions from a pre-existing database.
 
 
 
