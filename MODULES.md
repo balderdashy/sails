@@ -37,7 +37,7 @@ The modules comprising the Sails framework, as well as the other plugins maintai
 | [**reportback**](http://npmjs.com/package/reportback)                 | [![NPM version](https://badge.fury.io/js/reportback.png)](http://badge.fury.io/js/reportback)                     | _n/a_
 | [**switchback**](http://npmjs.com/package/switchback)                 | [![NPM version](https://badge.fury.io/js/switchback.png)](http://badge.fury.io/js/switchback)                     | [![Build Status](https://travis-ci.org/node-machine/switchback.png?branch=master)](https://travis-ci.org/node-machine/switchback) |
 | [**rttc**](http://npmjs.com/package/rttc)                             | [![NPM version](https://badge.fury.io/js/rttc.png)](http://badge.fury.io/js/rttc)                                 | [![Build Status](https://travis-ci.org/node-machine/rttc.png?branch=master)](https://travis-ci.org/node-machine/rttc) |
-| [**@sailshq/lodash**](http://npmjs.com/package/@sailshq/lodash)       | [![NPM version](https://badge.fury.io/js/@sailshq/lodash.png)](http://badge.fury.io/js/@sailshq/lodash)                                 | _n/a_
+| [**@sailshq/lodash**](http://npmjs.com/package/@sailshq/lodash)       | [![npm version](https://badge.fury.io/js/%40sailshq%2Flodash.svg)](https://badge.fury.io/js/%40sailshq%2Flodash)                        | _n/a_
 
 
 #### Core generators
