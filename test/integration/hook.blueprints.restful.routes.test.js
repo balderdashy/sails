@@ -115,6 +115,24 @@ describe('blueprints :: ', function() {
       });
 
 
+      describe('a get request to /:model?id=1', function() {
+
+        it('should return an array of 1 item', function(done) {
+          sailsApp.models.user.create({name: 'jeremy'}).exec(function(err) {
+            if (err) {return done (err);}
+            sailsApp.request('get /user?id=1', function (err, resp, data) {
+              assert(!err, err);
+              assert(_.isArray(data), 'Should have receieved an array, but got: ' + util.inspect(data, {depth: null}));
+              assert.equal(data.length, 1);
+              assert.equal(data[0].name, 'jeremy');
+              assert.equal(data[0].id, 1);
+              done();
+            });
+          });
+        });
+      });
+
+
       describe('a get request to /:model/:id', function() {
 
         it('should return JSON for the requested instance of the test model', function(done) {
