@@ -63,10 +63,10 @@ _As of Sails v1.0, core generators are now bundled in [sails-generate](https://g
 
 #### Officially-supported socket client SDKs
 
-| Platform     | Repo       |  Build Status (edge)             |
-|--------------|------------|----------------------------------|
-| Browser      | [sails.io.js](https://github.com/balderdashy/sails.io.js)  | [![Build Status](https://travis-ci.org/balderdashy/sails.io.js.png?branch=master)](https://travis-ci.org/balderdashy/sails.io.js)  |
-| Node.js      | [sails.io.js](https://github.com/balderdashy/sails.io.js)  | [![Build Status](https://travis-ci.org/balderdashy/sails.io.js.png?branch=master)](https://travis-ci.org/balderdashy/sails.io.js)  |
+| Platform     | Package             |  Latest Stable Version           | Build Status (edge)          |
+|--------------|---------------------|----------------------------------|------------------------------|
+| Browser      | [sails.io.js-dist](https://npmjs.com/package/sails.io.js-dist)  | [![NPM version](https://badge.fury.io/js/sails.io.js-dist.png)](http://badge.fury.io/js/sails.io.js-dist) | [![Build Status](https://travis-ci.org/balderdashy/sails.io.js.png?branch=master)](https://travis-ci.org/balderdashy/sails.io.js)  |
+| Node.js      | [sails.io.js](https://npmjs.com/package/sails.io.js)  | [![NPM version](https://badge.fury.io/js/sails.io.js.png)](http://badge.fury.io/js/sails.io.js) | [![Build Status](https://travis-ci.org/balderdashy/sails.io.js.png?branch=master)](https://travis-ci.org/balderdashy/sails.io.js)  |
 
 
 
