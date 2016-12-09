@@ -9,35 +9,35 @@ Below, you'll find an overview of the modules maintained by the core team and co
 
 The modules comprising the Sails framework, as well as the other plugins maintained by our core team, are spread across a number of different code repositories.  Some modules can be used outside of the context of Sails, while others are not intended for external use.
 
-#### Core modules
+#### Framework and ORM
 
 > For more information on the available releases of the Sails framework as a whole, check out the [contribution guide](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md).
 
-| Repo          |  Build Status (edge)                 |  Latest Stable Release   |
-|---------------|---------------------------------------|--------------------------|
+| Package          |  Build Status (edge)                  |  Latest Stable Release   |
+|------------------|---------------------------------------|--------------------------|
 | <a href="http://github.com/balderdashy/sails" target="_blank" title="Github repo for Sails core"><img src="http://sailsjs.org/images/logos/sails-logo_ltBg_dkBlue.png" width=60 alt="Sails.js logo (small)"/></a>     | [![Build Status](https://travis-ci.org/balderdashy/sails.png?branch=master)](https://travis-ci.org/balderdashy/sails)  | [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails) |
 | [**waterline**](http://github.com/balderdashy/waterline) | [![Build Status](https://travis-ci.org/balderdashy/waterline.png?branch=master)](https://travis-ci.org/balderdashy/waterline) | [![NPM version](https://badge.fury.io/js/waterline.png)](http://badge.fury.io/js/waterline) |
-| [**anchor**](http://github.com/sailsjs/anchor) | [![Build Status](https://travis-ci.org/sailsjs/anchor.png?branch=master)](https://travis-ci.org/sailsjs/anchor) | [![NPM version](https://badge.fury.io/js/anchor.png)](http://badge.fury.io/js/anchor) |
-| [**waterline-criteria**](http://github.com/balderdashy/waterline-criteria) | [![Build Status](https://travis-ci.org/balderdashy/waterline-criteria.png?branch=master)](https://travis-ci.org/balderdashy/waterline-criteria) | [![NPM version](https://badge.fury.io/js/waterline-criteria.png)](http://badge.fury.io/js/waterline-criteria) |
-| [**waterline-schema**](http://github.com/balderdashy/waterline-schema) | [![Build Status](https://travis-ci.org/balderdashy/waterline-schema.svg?branch=master)](https://travis-ci.org/balderdashy/waterline-schema) | [![NPM version](https://badge.fury.io/js/waterline-schema.png)](http://badge.fury.io/js/waterline-schema) |
-| [**waterline-utils**](http://github.com/treelinehq/waterline-utils) | [![NPM version](https://badge.fury.io/js/waterline-utils.png)](http://badge.fury.io/js/waterline-utils) |
-| [**sails-generate**](http://github.com/balderdashy/sails-generate) | [![Build Status](https://travis-ci.org/balderdashy/sails-generate.png?branch=master)](https://travis-ci.org/balderdashy/sails-generate) | [![NPM version](https://badge.fury.io/js/sails-generate.png)](http://badge.fury.io/js/sails-generate) |
-| [**captains-log**](http://github.com/balderdashy/captains-log) | [![Build Status](https://travis-ci.org/balderdashy/captains-log.png?branch=master)](https://travis-ci.org/balderdashy/captains-log) | [![NPM version](https://badge.fury.io/js/captains-log.png)](http://badge.fury.io/js/captains-log) |
 
 
 #### Core framework utilities
 
-
-| Package                                                               | Latest Stable Release   | Build Status (edge)        |                         
+| Package                                                               | Latest Stable Release   | Build Status (edge)         |                         
 |-----------------------------------------------------------------------|--------------------------|----------------------------|
-| [**include-all**](http://npmjs.com/package/include-all)               | [![NPM version](https://badge.fury.io/js/include-all.png)](http://badge.fury.io/js/include-all)                   | [![Build Status](https://travis-ci.org/balderdashy/include-all.png?branch=master)](https://travis-ci.org/balderdashy/include-all) |
-| [**sails-generate**](http://npmjs.com/package/sails-generate)         | [![NPM version](https://badge.fury.io/js/sails-generate.png)](http://badge.fury.io/js/sails-generate)             | [![Build Status](https://travis-ci.org/balderdashy/sails-generate.png?branch=master)](https://travis-ci.org/balderdashy/sails-generate) |
-| [**reportback**](http://npmjs.com/package/reportback)                 | [![NPM version](https://badge.fury.io/js/reportback.png)](http://badge.fury.io/js/reportback)                     | _n/a_
-| [**switchback**](http://npmjs.com/package/switchback)                 | [![NPM version](https://badge.fury.io/js/switchback.png)](http://badge.fury.io/js/switchback)                     | [![Build Status](https://travis-ci.org/node-machine/switchback.png?branch=master)](https://travis-ci.org/node-machine/switchback) |
+| [**skipper**](http://npmjs.com/skipper)                               | [![NPM version](https://badge.fury.io/js/skipper.png)](http://badge.fury.io/js/skipper)                           | [![Build Status](https://travis-ci.org/balderdashy/skipper.png?branch=master)](https://travis-ci.org/balderdashy/skipper) |
 | [**machine**](http://npmjs.com/package/machine)                       | [![NPM version](https://badge.fury.io/js/machine.png)](http://badge.fury.io/js/machine)                           | [![Build Status](https://travis-ci.org/node-machine/machine.png?branch=master)](https://travis-ci.org/node-machine/machine) |
-| [**rttc**](http://npmjs.com/package/rttc)                             | [![NPM version](https://badge.fury.io/js/rttc.png)](http://badge.fury.io/js/rttc)                                 | [![Build Status](https://travis-ci.org/node-machine/rttc.png?branch=master)](https://travis-ci.org/node-machine/rttc) |
 | [**machine-as-action**](http://npmjs.com/package/machine-as-action)   | [![NPM version](https://badge.fury.io/js/machine-as-action.png)](http://badge.fury.io/js/machine-as-action)       | [![Build Status](https://travis-ci.org/treelinehq/machine-as-action.png?branch=master)](https://travis-ci.org/treelinehq/machine-as-action) |
 | [**machine-as-script**](http://npmjs.com/package/machine-as-script)   | [![NPM version](https://badge.fury.io/js/machine-as-script.png)](http://badge.fury.io/js/machine-as-script)       | [![Build Status](https://travis-ci.org/treelinehq/machine-as-script.png?branch=master)](https://travis-ci.org/treelinehq/machine-as-script) |
+| [**captains-log**](http://npmjs.com/captains-log)                     | [![NPM version](https://badge.fury.io/js/captains-log.png)](http://badge.fury.io/js/captains-log)                 | [![Build Status](https://travis-ci.org/balderdashy/captains-log.png?branch=master)](https://travis-ci.org/balderdashy/captains-log) |
+| [**anchor**](http://npmjs.com/anchor)                                 | [![NPM version](https://badge.fury.io/js/anchor.png)](http://badge.fury.io/js/anchor)                             | [![Build Status](https://travis-ci.org/sailsjs/anchor.png?branch=master)](https://travis-ci.org/sailsjs/anchor) |
+| [**sails-generate**](http://npmjs.com/package/sails-generate)         | [![NPM version](https://badge.fury.io/js/sails-generate.png)](http://badge.fury.io/js/sails-generate)             | [![Build Status](https://travis-ci.org/balderdashy/sails-generate.png?branch=master)](https://travis-ci.org/balderdashy/sails-generate) |
+| [**waterline-criteria**](http://npmjs.com/waterline-criteria)         | [![NPM version](https://badge.fury.io/js/waterline-criteria.png)](http://badge.fury.io/js/waterline-criteria)     | [![Build Status](https://travis-ci.org/balderdashy/waterline-criteria.png?branch=master)](https://travis-ci.org/balderdashy/waterline-criteria) |
+| [**waterline-schema**](http://npmjs.com/waterline-schema)             | [![NPM version](https://badge.fury.io/js/waterline-schema.png)](http://badge.fury.io/js/waterline-schema)         | [![Build Status](https://travis-ci.org/balderdashy/waterline-schema.svg?branch=master)](https://travis-ci.org/balderdashy/waterline-schema) |
+| [**waterline-utils**](http://npmjs.com/waterline-utils)               | [![NPM version](https://badge.fury.io/js/waterline-utils.png)](http://badge.fury.io/js/waterline-utils)           | [![Build Status](https://travis-ci.org/balderdashy/waterline-utils.svg?branch=master)](https://travis-ci.org/balderdashy/waterline-utils)
+| [**include-all**](http://npmjs.com/package/include-all)               | [![NPM version](https://badge.fury.io/js/include-all.png)](http://badge.fury.io/js/include-all)                   | [![Build Status](https://travis-ci.org/balderdashy/include-all.png?branch=master)](https://travis-ci.org/balderdashy/include-all) |
+| [**reportback**](http://npmjs.com/package/reportback)                 | [![NPM version](https://badge.fury.io/js/reportback.png)](http://badge.fury.io/js/reportback)                     | _n/a_
+| [**switchback**](http://npmjs.com/package/switchback)                 | [![NPM version](https://badge.fury.io/js/switchback.png)](http://badge.fury.io/js/switchback)                     | [![Build Status](https://travis-ci.org/node-machine/switchback.png?branch=master)](https://travis-ci.org/node-machine/switchback) |
+| [**rttc**](http://npmjs.com/package/rttc)                             | [![NPM version](https://badge.fury.io/js/rttc.png)](http://badge.fury.io/js/rttc)                                 | [![Build Status](https://travis-ci.org/node-machine/rttc.png?branch=master)](https://travis-ci.org/node-machine/rttc) |
+| [**@sailshq/lodash**](http://npmjs.com/package/@sailshq/lodash)       | [![NPM version](https://badge.fury.io/js/@sailshq/lodash.png)](http://badge.fury.io/js/@sailshq/lodash)                                 | _n/a_
 
 
 #### Core generators
