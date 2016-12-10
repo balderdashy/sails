@@ -66,7 +66,7 @@ describe('sails.hooks.views.render() with i18n', function (){
   it('should show the message in basque', function (done) {
     app
     .request({url:'/render/eu', method: 'get'}, function(err, res){
-      assert.equal('<h1>Kaixo</h1>\n', res.body);
+      assert.equal('<h1>Kaixo</h1>', res.body.trim());
       done();
     });
   });
@@ -74,7 +74,7 @@ describe('sails.hooks.views.render() with i18n', function (){
   it('should show the message in spanish', function (done) {
     app
     .request({url:'/render/es', method: 'get'}, function(err, res){
-      assert.equal('<h1>Hola</h1>\n', res.body);
+      assert.equal('<h1>Hola</h1>', res.body.trim());
       done();
     });
   });
@@ -82,7 +82,7 @@ describe('sails.hooks.views.render() with i18n', function (){
   it('should show the message in english', function (done) {
     app
     .request({url:'/render/en', method: 'get'}, function(err, res){
-      assert.equal('<h1>Hello</h1>\n', res.body);
+      assert.equal('<h1>Hello</h1>', res.body.trim());
       done();
     });
   });
@@ -90,7 +90,7 @@ describe('sails.hooks.views.render() with i18n', function (){
   it('should show the message in basque by default if unknown lang', function (done) {
     app
     .request({url:'/render/de', method: 'get'}, function(err, res){
-      assert.equal('<h1>Kaixo</h1>\n', res.body);
+      assert.equal('<h1>Kaixo</h1>', res.body.trim());
       done();
     });
   });
@@ -98,7 +98,7 @@ describe('sails.hooks.views.render() with i18n', function (){
   it('should show the message in basque by default', function (done) {
     app
     .request({url:'/render', method: 'get'}, function(err, res){
-      assert.equal('<h1>Kaixo</h1>\n', res.body);
+      assert.equal('<h1>Kaixo</h1>', res.body.trim());
       done();
     });
   });
