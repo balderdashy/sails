@@ -10,6 +10,7 @@ var assert = require('assert');
 var _ = require('@sailshq/lodash');
 var MProcess = require('machinepack-process');
 var Filesystem = require('machinepack-fs');
+var testSpawningSailsChildProcessInCwd = require('../helpers/test-spawning-sails-child-process-in-cwd');
 var testSpawningSailsLiftChildProcessInCwd = require('../helpers/test-spawning-sails-lift-child-process-in-cwd');
 var appHelper = require('./helpers/appHelper');
 
@@ -17,7 +18,7 @@ tmp.setGracefulCleanup();
 
 
 
-describe('Starting sails server with `sails lift`', function() {
+describe('Starting sails server with `sails lift`, `sails console` or `node app.js`', function() {
 
   // Track the location of the Sails CLI, as well as the current working directory
   // before we stop hopping about all over the place.
@@ -58,7 +59,7 @@ describe('Starting sails server with `sails lift`', function() {
 
     });
 
-    // Test `sails lift` in the CWD.
+    // Test `sails lift` in the CWD with env vars for config.
     describe('running `sails lift`', function (){
       testSpawningSailsLiftChildProcessInCwd({
         pathToSailsCLI: pathToSailsCLI,
@@ -97,11 +98,10 @@ describe('Starting sails server with `sails lift`', function() {
       });
     });
 
-    // Test `sails lift` in the CWD with env vars for config.
+    // Test `node app.js` in the CWD with env vars for config.
     describe('running `node app.js`', function (){
 
-      testSpawningSailsLiftChildProcessInCwd({
-        pathToSailsCLI: pathToSailsCLI,
+      testSpawningSailsChildProcessInCwd({
         cliArgs: ['app.js', '--hooks.pubsub=false'],
         envVars: _.extend({ 'sails_foo__bar': '{"abc": 123}'}, process.env),
         fnWithAdditionalTests: function (){
@@ -111,8 +111,19 @@ describe('Starting sails server with `sails lift`', function() {
               uri: 'http://localhost:1337/getconf',
             }, function(err, response, body) {
               if (err) { return done(err); }
-              body = JSON.parse(body);
-              assert.equal(body.foo && body.foo.bar && body.foo.bar.abc, 123);
+              try {
+
+                assert.equal(response.statusCode, 200);
+
+                try {
+                  body = JSON.parse(body);
+                } catch(e){
+                  throw new Error('Could not parse as JSON: '+e.stack+'\nHere is what I attempted to parse: '+util.inspect(body, {depth:null})+'');
+                }
+
+                assert.equal(body.foo && body.foo.bar && body.foo.bar.abc, 123);
+
+              } catch (e) { return done(e); }
               return done();
             });
           });
@@ -121,6 +132,39 @@ describe('Starting sails server with `sails lift`', function() {
 
     });
 
+    // Test `sails console` in the CWD with env vars for config.
+    describe('running `sails console`', function (){
+
+      testSpawningSailsChildProcessInCwd({
+        cliArgs: [pathToSailsCLI, 'console', '--hooks.pubsub=false'],
+        envVars: _.extend({ 'sails_foo__bar': '{"abc": 123}'}, process.env),
+        fnWithAdditionalTests: function (){
+          it('should humanize the config passed in via env vars', function (done){
+            request({
+              method: 'GET',
+              uri: 'http://localhost:1337/getconf',
+            }, function(err, response, body) {
+              if (err) { return done(err); }
+              try {
+
+                assert.equal(response.statusCode, 200);
+
+                try {
+                  body = JSON.parse(body);
+                } catch(e){
+                  throw new Error('Could not parse as JSON: '+e.stack+'\nHere is what I attempted to parse: '+util.inspect(body, {depth:null})+'');
+                }
+
+                assert.equal(body.foo && body.foo.bar && body.foo.bar.abc, 123);
+
+              } catch (e) { return done(e); }
+              return done();
+            });
+          });
+        }
+      });
+
+    });
 
     // Test `sails lift --port=1492` in the CWD.
     describe('running `sails lift --port=1492`', function (){
