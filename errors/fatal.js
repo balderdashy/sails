@@ -53,7 +53,7 @@ module.exports = {
     _terminateProcess(1);
   },
 
-  // TODO: replace the inline version of this error
+  // TODO: inline this error
   // app/loadHooks.js:42
   malformedHook: function() {
     log.error('Malformed hook! (' + id + ')');
@@ -61,7 +61,7 @@ module.exports = {
     _terminateProcess(1);
   },
 
-  // TODO: replace the inline version of this error
+  // TODO: inline this error
   // app/load.js:146
   hooksTookTooLong: function() {
     var hooksTookTooLongErr = 'Hooks are taking way too long to get ready...  ' +
