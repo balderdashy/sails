@@ -1,3 +1,11 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TODO: pull in `sails.io.js-dist` instead of inlining a duplicate version of sails.io.js client
+// (that is, unless this is intended to test compatibility with a specific version of sails.io.js,
+// in which case we need to make that explicit at the top of this file, and to leave a clear comment
+// with the version string.)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
 /**
  * sails.io.js
  * ------------------------------------------------------------------------
