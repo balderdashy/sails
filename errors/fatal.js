@@ -169,9 +169,10 @@ function _terminateProcess(code, opts) {
     throw new Error({
       type: 'terminate',
       code: code,
-      options: {
-        todo: 'put the stuff from the original errors in here'
-      }
+      // options: {
+      //   todo: 'put the stuff from the original errors in here'
+      // }
+      // ^^ Removed this in Sails v1 since it was useless anyways. ~Mike Dec 11, 2016
     });
   }//-•
 

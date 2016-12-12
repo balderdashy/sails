@@ -28,7 +28,7 @@ If you are working on a pull request, **please carefully read this file from top
 
 The Code of Conduct explains the *bare minimum* behavior expectations the Sails project requires of its contributors. [Please read it before participating.](./CODE-OF-CONDUCT.md)
 
-  
+
 ## II. Issue Contributions
 
 When opening new issues or commenting on existing issues in any of the repositories in this GitHub organization, please make sure discussions are related to concrete technical issues of the Sails.js software.  Feature requests and ideas are always welcome; but they should not be submitted as GitHub issues.  See [Requesting Features](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md#requesting-features) below for submission guidelines.
@@ -142,7 +142,7 @@ Over the first year of Sails' life, the **configurability** requirement became e
 
 It is important to realize that today, most (but certainly not all) new features in Sails can be implemented using one or more of the existing plugin interfaces, rather than making a change to core.  If the feature you are requesting is an exception to that rule, then please proceed-- but realize that perhaps the most important part of your proposal is a clear explanation of why what you're suggesting is not possible today.
 
-The core maintainers of Sails review all feature proposals, and we do our best to participate in the discussion in these PRs.  However, many of these proposals can sometimes involve back and forth discussion that could require them to be open for months at a time.  So it is important to understand going in that if you are proposing a feature, the onus is on you to fully specify how that feature would work; i.e. how it would be used, how it would be configured, and in particular its implementation-- that is, which modules would need to change to make it a reality, how it would be tested, whether it would be a major or minor-version breaking change, and the additions and/or modifications that would be necessary to the official Sails documentation.  
+The core maintainers of Sails review all feature proposals, and we do our best to participate in the discussion in these PRs.  However, many of these proposals can sometimes involve back and forth discussion that could require them to be open for months at a time.  So it is important to understand going in that if you are proposing a feature, the onus is on you to fully specify how that feature would work; i.e. how it would be used, how it would be configured, and in particular its implementation-- that is, which modules would need to change to make it a reality, how it would be tested, whether it would be a major or minor-version breaking change, and the additions and/or modifications that would be necessary to the official Sails documentation.
 
 With that in mind, to submit a proposal for a new feature, or an extension to an existing feature, please take the following steps:
 
@@ -174,7 +174,7 @@ There are two types of code contributions we can accept in Sails core:  patches 
 
 **Patches** are small fixes; everything from typos to timing issues.  For example, removing an unused `require()` from the top of a file or fixing a typo that is crashing the master branch tests on Travis are two great examples of patches.  Major refactoring projects changing whitespace and variable names across multiple files are _**not** patches_.  Also keep in mind that even a seemingly trivial change is not a patch if it affects the usage of a documented feature of Sails, or adds an undocumented public function.
 
-**New features** are TODOs summarized in the ROADMAP.md file, with more information in an accompanying pull request.  Anything that is not specifically in the ROADMAP.md file should not be submitted as a new feature.
+**New features** are summarized in the ROADMAP.md file, with more information in an accompanying pull request.  Anything that is not specifically in the ROADMAP.md file should not be submitted as a new feature.
 
 As stated at the top of this file, in case of doubt about whether a change you would like to make would be considered a "patch", please open an issue in the issue tracker or contact someone from our [core team](https://github.com/balderdashy/sails#team) on Twitter _before_ you begin work on the pull request. Especially do so if you plan to work on something big. Nothing is more frustrating than seeing your hard work go to waste because your vision does not align with planned or ongoing development efforts of the project's maintainers.
 
@@ -185,8 +185,8 @@ As stated at the top of this file, in case of doubt about whether a change you w
 - **No CoffeeScript**.  For consistency, all imperative code in Sails core, including core hooks and core generators, must be written in JavaScript, not CoffeeScript, TypeScript, or any other pre-compiled language.  We cannot merge a pull request written in CoffeeScript.
 - Do not auto-format code, or attempt to fix perceived style problems in existing files in core.
 - Do not change more than 3 files in a single pull request-- it makes it very hard to tell what's going on.
-- Do not submit pull requests which implement new features or enhance existing features unless you are working from a very clearly-defined proposal and spec from a merged feature request.  As stated above, nothing is more frustrating than seeing your hard work go to waste because your vision does not align with a project's roadmap. 
-- Before beginning work on a feature, you should be sure to leave a comment telling other contributors that you are working on the feature.  Note that if you do not actively keep other contributors informed about your progress, your silence may be taken as inactivity, and you may end up working on the same feature as someone else in parallel.  
+- Do not submit pull requests which implement new features or enhance existing features unless you are working from a very clearly-defined proposal and spec from a merged feature request.  As stated above, nothing is more frustrating than seeing your hard work go to waste because your vision does not align with a project's roadmap.
+- Before beginning work on a feature, you should be sure to leave a comment telling other contributors that you are working on the feature.  Note that if you do not actively keep other contributors informed about your progress, your silence may be taken as inactivity, and you may end up working on the same feature as someone else in parallel.
 
 
 #### Contributing to core
