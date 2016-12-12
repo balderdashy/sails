@@ -5,9 +5,9 @@
 var nodepath = require('path');
 var _ = require('@sailshq/lodash');
 var sailsgen = require('sails-generate');
+var CaptainsLog = require('captains-log');
 var package = require('../package.json');
 var rconf = require('../lib/app/configuration/rc')();
-var CaptainsLog = require('captains-log');
 
 
 /**
@@ -53,8 +53,14 @@ module.exports = function () {
   // Mix-in rconf
   _.merge(scope, rconf.generators);
 
-  // TODO: just do a top-level merge and reference
-  // `scope.generators.modules` as needed (simpler)
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // FUTURE: Verify that we can just do a top-level merge here,
+  // and then reference `scope.generators.modules` as needed
+  // (would be simpler- but would be a breaking change, though
+  // unlikely to affect most people.  The same issue exists in
+  // other places where we read rconf and then call out to
+  // sails-generate)
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   _.merge(scope, rconf);
 
   // Get a temporary logger just for use in `sails new`.

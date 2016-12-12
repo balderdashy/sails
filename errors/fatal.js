@@ -53,7 +53,7 @@ module.exports = {
     _terminateProcess(1);
   },
 
-  // TODO: inline this error
+  // FUTURE: inline this error
   // app/loadHooks.js:42
   malformedHook: function() {
     log.error('Malformed hook! (' + id + ')');
@@ -61,7 +61,7 @@ module.exports = {
     _terminateProcess(1);
   },
 
-  // TODO: inline this error
+  // FUTURE: inline this error
   // app/load.js:146
   hooksTookTooLong: function() {
     var hooksTookTooLongErr = 'Hooks are taking way too long to get ready...  ' +
@@ -142,29 +142,10 @@ module.exports = {
 
 
 
-/**
- *
- * TODO: Make all of this more elegant.
- * ========================================================
- * + Ideally we don't call `process.exit()` at all.
- * We should consistently use `sails.lower()` for unhandleable core
- * errors and just trigger the appropriate callback w/ an error for
- * core lift/load and any CLI errors.
- *
- * + Then we won't have to worry as much about dangling child processes
- * and things like that. Plus it's more testable that way.
- *
- * In practice, the best way to do this may be an error domain or an
- * event emitted on the sails object (or both!)
- * ========================================================
- *
- *
- *
- * TODO: Merge w/ app/teardown.js
- * ========================================================
- * (probably achievable by doing the aforementioned cleanup)
- * ========================================================
- */
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// FUTURE: Make all of this more elegant (see the info in errors/README)
+// (involves getting rid of this file)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
 
@@ -178,16 +159,21 @@ module.exports = {
  * @param  {[type]} opts [currently unused]
  */
 function _terminateProcess(code, opts) {
-  if (process.env.NODE_ENV === 'test') {
-    var Signal = new Error({
+
+  // FUTURE: get rid of this (actual handling will be inline where the fatal errors are
+  // actually coming from, so we'll be able to handle it there by actually throwing.
+  // That way, it's up to the caller whether it wants to catch the original error and
+  // do a deliberate process.exit and omit the error stack (which can be disorienting
+  // for folks new to SSJ/Node.js))
+  if (process.env.NODE_ENV !== 'test') {
+    throw new Error({
       type: 'terminate',
       code: code,
       options: {
         todo: 'put the stuff from the original errors in here'
       }
     });
-    throw Signal;
-  }
+  }//-•
 
   return process.exit(code);
 }
