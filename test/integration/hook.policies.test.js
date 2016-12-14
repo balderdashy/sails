@@ -175,7 +175,7 @@ describe('policies :: ', function() {
         before(function() {
           policyMap = {
             'user/*': ['err'],
-            'user/foo': []
+            'user/Foo': [] // <-- Note the uppercase F -- this should not matter.
           };
         });
 
@@ -206,7 +206,7 @@ describe('policies :: ', function() {
             method: 'GET'
           }, function (err, response, data) {
             if (err) {
-              return cb(new Error('For URL ' + url + ', expected "user-foo", got: ' + err));
+              return done(new Error('For URL /user-foo, expected "user-foo", got: ' + err));
             }
             assert.equal(data, 'user.foo');
             return done();
@@ -485,17 +485,17 @@ describe('policies :: ', function() {
 
       });
 
-      describe('(using deprecated config) with the "add-owl" policy on user/*, and "add-cat" on user/foo/bar', function() {
+      describe('(using controller config) with the "add-owl" policy on user/*, and "add-cat" on user/foo/bar', function() {
 
         before(function() {
           policyMap = {
             'User': {
-              '*': 'add-owl',
+              '*': 'add-OWL', // Capitalization shouldn't matter for policy name...
               'foo': ['add-cat']
             },
             'user/FooController': {
               '*': false,
-              'bar': 'add-cat'
+              'Bar': 'add-cat' // Capitalization shouldn't matter for action name...
             }
           };
         });
