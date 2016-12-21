@@ -1,1 +1,1 @@
-> The Contribution guide now lives in the 'Contributing' section of the documentation: [https://github.com/balderdashy/sails-docs/tree/master/contributing](https://github.com/balderdashy/sails-docs/tree/master/contributing)
+> The Contribution guide now lives in the 'Contributing' section of the documentation: [sailsjs.com/contribute](http://sailsjs.com/contribute)
