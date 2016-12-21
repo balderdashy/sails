@@ -1,1 +1,1 @@
-> The Code of Conduct now lives in the 'Contributing' section of the sails-docs repo: [https://github.com/balderdashy/sails-docs/contributing/code-of-conduct.md](https://github.com/balderdashy/sails-docs/contributing/code-of-conduct.md)
+> The Code of Conduct now lives in the 'Contributing' section of the documentation: [https://github.com/balderdashy/sails-docs/contributing/code-of-conduct.md](https://github.com/balderdashy/sails-docs/contributing/code-of-conduct.md)
