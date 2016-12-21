@@ -165,7 +165,7 @@ function _terminateProcess(code, opts) {
   // That way, it's up to the caller whether it wants to catch the original error and
   // do a deliberate process.exit and omit the error stack (which can be disorienting
   // for folks new to SSJ/Node.js))
-  if (process.env.NODE_ENV !== 'test') {
+  if (process.env.NODE_ENV === 'test') {
     throw new Error({
       type: 'terminate',
       code: code,
