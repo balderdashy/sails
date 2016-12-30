@@ -41,13 +41,16 @@ describe('blueprints :: ', function() {
       },
       orm: {
         moduleDefinitions: {
-          adapters: { 'sails-disk': require('sails-disk')},
           models: { 'user': {} }
         }
       },
       models: {
         migrate: 'drop',
-        schema: true
+        attributes: {
+          createdAt: { type: 'number', autoCreatedAt: true, },
+          updatedAt: { type: 'number', autoUpdatedAt: true, },
+          id: { type: 'number', autoIncrement: true}
+        }
       },
       blueprints: {
         shortcuts: false,
