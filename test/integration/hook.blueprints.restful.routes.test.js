@@ -113,7 +113,6 @@ describe('blueprints :: ', function() {
         it('should return JSON for all of the instances of the test model', function(done) {
           sailsApp.models.user.create({name: 'al'}).exec(function(err) {
             if (err) {return done (err);}
-            console.log('asdfads');
             sailsApp.request('get /user', function (err, resp, data) {
               assert(!err, err);
               assert.equal(data.length, 1);
