@@ -717,7 +717,7 @@ function setupAppFiles() {
   Filesystem.writeSync({
     force: true,
     destination: 'config/models.js',
-    string: 'module.exports.models = {migrate: \'alter\'};'
+    string: 'module.exports.models = {migrate: \'alter\', attributes: {id: { type: \'number\', autoIncrement: true}}};'
   }).execSync();
 
   var showGlobalsFn = function() {
