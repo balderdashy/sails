@@ -1,10 +1,9 @@
 module.exports = {
-  autoPK: false,
   schema: true,
+  primaryKey: 'user_id',
   attributes: {
     user_id: {
       type: 'integer',
-      primaryKey: true,
       autoIncrement: true
     },
     name: 'string',
