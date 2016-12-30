@@ -40,10 +40,20 @@ describe('blueprints :: ', function() {
         hooks: {
           grunt: false, views: false, policies: false, pubsub: false, i18n: false
         },
-        orm: { moduleDefinitions: { adapters: { 'sails-disk': require('sails-disk')} } },
+        orm: {
+          moduleDefinitions: {
+            models: { 'user': {} }
+          }
+        },
         models: {
           migrate: 'drop',
-          schema: true
+          schema: false,
+          attributes: {
+            createdAt: { type: 'number', autoCreatedAt: true, },
+            updatedAt: { type: 'number', autoUpdatedAt: true, },
+            // id: { type: 'string', unique: true, columnName: '_id'},
+            id: { type: 'number', autoIncrement: true}
+          }
         },
         blueprints: {
           shortcuts: false,
@@ -103,6 +113,7 @@ describe('blueprints :: ', function() {
         it('should return JSON for all of the instances of the test model', function(done) {
           sailsApp.models.user.create({name: 'al'}).exec(function(err) {
             if (err) {return done (err);}
+            console.log('asdfads');
             sailsApp.request('get /user', function (err, resp, data) {
               assert(!err, err);
               assert.equal(data.length, 1);
@@ -210,15 +221,17 @@ describe('blueprints :: ', function() {
         describe('a get request to /:model/:parentid/:association', function() {
 
           it('should return JSON for the specified collection of the test model', function(done) {
-            sailsApp.models.user.create({name: 'will', pets: [{name: 'spot'}]}).exec(function(err) {
-              if (err) {return done (err);}
-              sailsApp.request('get /user/1/pets', function (err, resp, data) {
+            sailsApp.models.pet.create({name: 'spot'}).meta({fetch: true}).exec(function(err, spot) {
+              sailsApp.models.user.create({name: 'will', pets: [spot.id]}).meta({fetch: true}).exec(function(err, will) {
                 if (err) {return done (err);}
-                assert.equal(data.length, 1);
-                assert.equal(data[0].name, 'spot');
-                assert.equal(data[0].id, 1);
-                assert.equal(data[0].owner, 1);
-                return done();
+                sailsApp.request('get /user/1/pets', function (err, resp, data) {
+                  if (err) {return done (err);}
+                  assert.equal(data.length, 1);
+                  assert.equal(data[0].name, 'spot');
+                  assert.equal(data[0].id, 1);
+                  assert.equal(data[0].owner, 1);
+                  return done();
+                });
               });
             });
           });
@@ -227,15 +240,17 @@ describe('blueprints :: ', function() {
         describe('a get request to /:model/:parentid/:association/:id', function() {
 
           it('should return JSON for the specified instance in the collection of the test model', function(done) {
-            sailsApp.models.user.create({name: 'roger', pets: [{name: 'bubbles'}, {name: 'dempsey'}]}).exec(function(err) {
-              if (err) {return done (err);}
-              sailsApp.request('get /user/1/pets/2', function (err, resp, data) {
+            sailsApp.models.pet.createEach([{name: 'bubbles'}, {name: 'dempsey'}]).meta({fetch: true}).exec(function(err, pets) {
+              sailsApp.models.user.create({name: 'roger', pets: _.pluck(pets,'id')}).meta({fetch: true}).exec(function(err) {
                 if (err) {return done (err);}
-                assert.equal(data.length, 1);
-                assert.equal(data[0].name, 'dempsey');
-                assert.equal(data[0].id, 2);
-                assert.equal(data[0].owner, 1);
-                return done();
+                sailsApp.request('get /user/1/pets/2', function (err, resp, data) {
+                  if (err) {return done (err);}
+                  assert.equal(data.length, 1);
+                  assert.equal(data[0].name, 'dempsey');
+                  assert.equal(data[0].id, 2);
+                  assert.equal(data[0].owner, 1);
+                  return done();
+                });
               });
             });
           });
@@ -325,20 +340,22 @@ describe('blueprints :: ', function() {
         describe('a delete request to /:model/:parentid/:association/:id', function() {
 
           it('should return JSON for an instance of the test model, with its collection updated', function(done) {
-            sailsApp.models.user.create({name: 'larry', pets: [{name: 'alice'}]}).exec(function(err) {
-              if (err) {return done (err);}
-              sailsApp.request('delete /user/1/pets/1', function (err, resp, data) {
+            sailsApp.models.pet.create({name: 'alice'}).meta({fetch: true}).exec(function(err, alice) {
+              sailsApp.models.user.create({name: 'larry', pets: [alice.id]}).meta({fetch: true}).exec(function(err) {
                 if (err) {return done (err);}
-                assert.equal(data.name, 'larry');
-                assert.equal(data.id, 1);
-                assert.equal(data.pets.length, 0);
-                sailsApp.models.user.findOne({id: 1}).populate('pets').exec(function(err, user) {
+                sailsApp.request('delete /user/1/pets/1', function (err, resp, data) {
                   if (err) {return done (err);}
-                  assert(user);
-                  assert.equal(user.name, 'larry');
-                  assert.equal(user.id, 1);
-                  assert.equal(user.pets.length, 0);
-                  return done();
+                  assert.equal(data.name, 'larry');
+                  assert.equal(data.id, 1);
+                  assert.equal(data.pets.length, 0);
+                  sailsApp.models.user.findOne({id: 1}).populate('pets').exec(function(err, user) {
+                    if (err) {return done (err);}
+                    assert(user);
+                    assert.equal(user.name, 'larry');
+                    assert.equal(user.id, 1);
+                    assert.equal(user.pets.length, 0);
+                    return done();
+                  });
                 });
               });
             });
@@ -348,20 +365,22 @@ describe('blueprints :: ', function() {
         describe('a delete request to /:model/:parentid/:association', function() {
 
           it('should return JSON for an instance of the test model, with its collection updated', function(done) {
-            sailsApp.models.user.create({name: 'gary', pets: [{name: 'wilbur'}]}).exec(function(err) {
-              if (err) {return done (err);}
-              sailsApp.request('delete /user/1/pets', {id: 1}, function (err, resp, data) {
+            sailsApp.models.pet.create({name: 'wilbur'}).meta({fetch: true}).exec(function(err, wilbur) {
+              sailsApp.models.user.create({name: 'gary', pets: [wilbur.id]}).meta({fetch: true}).exec(function(err) {
                 if (err) {return done (err);}
-                assert.equal(data.name, 'gary');
-                assert.equal(data.id, 1);
-                assert.equal(data.pets.length, 0);
-                sailsApp.models.user.findOne({id: 1}).populate('pets').exec(function(err, user) {
+                sailsApp.request('delete /user/1/pets', {id: 1}, function (err, resp, data) {
                   if (err) {return done (err);}
-                  assert(user);
-                  assert.equal(user.name, 'gary');
-                  assert.equal(user.id, 1);
-                  assert.equal(user.pets.length, 0);
-                  return done();
+                  assert.equal(data.name, 'gary');
+                  assert.equal(data.id, 1);
+                  assert.equal(data.pets.length, 0);
+                  sailsApp.models.user.findOne({id: 1}).populate('pets').exec(function(err, user) {
+                    if (err) {return done (err);}
+                    assert(user);
+                    assert.equal(user.name, 'gary');
+                    assert.equal(user.id, 1);
+                    assert.equal(user.pets.length, 0);
+                    return done();
+                  });
                 });
               });
             });
@@ -395,7 +414,7 @@ describe('blueprints :: ', function() {
       });
 
       it('a get request to /:model?name=scott should respond with the correctly filtered instances', function(done) {
-        sailsApp.models.user.create([{name: 'scott'}, {name: 'mike'}]).exec(function(err) {
+        sailsApp.models.user.createEach([{name: 'scott'}, {name: 'mike'}]).exec(function(err) {
           if (err) {return done(err);}
           sailsApp.request('get /user?name=scott', function (err, resp, data) {
             assert(!err, err);
@@ -407,7 +426,7 @@ describe('blueprints :: ', function() {
       });
 
       it('a get request to /:model?where={...} should respond with the correctly filtered instances', function(done) {
-        sailsApp.models.user.create([{name: 'scott'}, {name: 'mike'}, {name: 'rachael'}, {name: 'cody'}, {name: 'irl'}]).exec(function(err) {        if (err) {return done(err);}
+        sailsApp.models.user.createEach([{name: 'scott'}, {name: 'mike'}, {name: 'rachael'}, {name: 'cody'}, {name: 'irl'}]).exec(function(err) {        if (err) {return done(err);}
           sailsApp.request('get /user?where={"name": {">": "irl"}}', function (err, resp, data) {
             assert(!err, err);
             assert.equal(data.length, 3);
@@ -445,10 +464,10 @@ describe('blueprints :: ', function() {
         extraSailsConfig = {};
       });
 
-      it('a get request to /:model?sort=name&limit=2&skip=1 should respond with the correctly filtered instances', function(done) {
-        sailsApp.models.user.create([{name: 'scott'}, {name: 'mike'}, {name: 'rachael'}, {name: 'cody'}, {name: 'irl'}]).exec(function(err) {
+      it('a get request to /:model?sort=name%20asc&limit=2&skip=1 should respond with the correctly filtered instances', function(done) {
+        sailsApp.models.user.createEach([{name: 'scott'}, {name: 'mike'}, {name: 'rachael'}, {name: 'cody'}, {name: 'irl'}]).exec(function(err) {
           if (err) {return done(err);}
-          sailsApp.request('get /user?sort=name&limit=2&skip=1', function (err, resp, data) {
+          sailsApp.request('get /user?sort=name%20asc&limit=2&skip=1', function (err, resp, data) {
             assert(!err, err);
             assert.equal(data.length, 2);
             assert.equal(data[0].name, 'irl');
@@ -459,7 +478,7 @@ describe('blueprints :: ', function() {
       });
 
       it('a get request to /:model?sort=name%20desc&limit=2&skip=1 should respond with the correctly filtered instances', function(done) {
-        sailsApp.models.user.create([{name: 'scott'}, {name: 'mike'}, {name: 'rachael'}, {name: 'cody'}, {name: 'irl'}]).exec(function(err) {
+        sailsApp.models.user.createEach([{name: 'scott'}, {name: 'mike'}, {name: 'rachael'}, {name: 'cody'}, {name: 'irl'}]).exec(function(err) {
           if (err) {return done(err);}
           sailsApp.request('get /user?sort=name%20desc&limit=2&skip=1', function (err, resp, data) {
             assert(!err, err);
@@ -472,7 +491,7 @@ describe('blueprints :: ', function() {
       });
 
       it('a get request to /:model?sort={"name":-1}&limit=2&skip=1 should respond with the correctly filtered instances', function(done) {
-        sailsApp.models.user.create([{name: 'scott'}, {name: 'mike'}, {name: 'rachael'}, {name: 'cody'}, {name: 'irl'}]).exec(function(err) {
+        sailsApp.models.user.createEach([{name: 'scott'}, {name: 'mike'}, {name: 'rachael'}, {name: 'cody'}, {name: 'irl'}]).exec(function(err) {
           if (err) {return done(err);}
           sailsApp.request('get /user?sort={"name":-1}&limit=2&skip=1', function (err, resp, data) {
             assert(!err, err);
@@ -509,7 +528,7 @@ describe('blueprints :: ', function() {
       });
 
       it('should still respond to RESTful blueprint requests correctly :: ', function(done) {
-        sailsApp.models.user.create([{name: 'scott'}, {name: 'mike'}]).exec(function(err) {
+        sailsApp.models.user.createEach([{name: 'scott'}, {name: 'mike'}]).exec(function(err) {
           if (err) {return done(err);}
           sailsApp.reloadActions(function(err) {
             if (err) {return done(err);}
