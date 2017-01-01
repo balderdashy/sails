@@ -27,7 +27,7 @@ var readReplHistoryAndStartTranscribing = require('./private/read-repl-history-a
  *  replay commands from past runs)
  *
  * @stability 3
- * @see http://sailsjs.org/documentation/reference/command-line-interface/sails-console
+ * @see http://sailsjs.com/documentation/reference/command-line-interface/sails-console
  * ------------------------------------------------------------------------
  * This lifts the Sails app in the current working directory, then uses
  * the core `repl` package to spin up an interactive console.

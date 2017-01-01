@@ -137,14 +137,14 @@ This section is an early list of some of the features, enhancements, and other i
     + ^^needs tests.
 <a name="sails-config-dont-flatten-config-will-be-deprecated"></a>
 + ✓ ~~**The deprecated `sails.config.dontFlattenConfig` will be removed.**~~  _BORN DEPRECATED_
-  + The `dontFlattenConfig` setting was [originally added](http://sailsjs.org/documentation/concepts/upgrading/to-v-0-11#?config-files-in-subfolders) for backards-compatibility with what was essentially a bug.
+  + The `dontFlattenConfig` setting was [originally added](http://sailsjs.com/documentation/concepts/upgrading/to-v-0-11#?config-files-in-subfolders) for backards-compatibility with what was essentially a bug.
   + It will be completely removed in Sails v1.0 for simplicity.
 <a name="better-built-in-support-for-command-line-scripts-that-require-access-to-the-sails-app-instance"></a>
 + ✓ ~~**Better built-in support for command-line scripts that require access to the Sails app instance**~~
   + https://github.com/treelinehq/machine-as-script/commits/master
 <a name="normalize-usage-of-routes-disabled-config-keys"></a>
 + **Normalize usage of `routesDisabled` config keys**
-  + Now applies only to sails.config.session: use Sails [route address syntax](http://sailsjs.org/documentation/concepts/routes/custom-routes#?route-address)
+  + Now applies only to sails.config.session: use Sails [route address syntax](http://sailsjs.com/documentation/concepts/routes/custom-routes#?route-address)
 <a name="strip-out-deprecated-sockets-methods"></a>
 + ✓ ~~**Strip Out Deprecated Sockets Methods**
   + Remove the implementation of deprecated `sails.sockets.*` methods from Sails core.

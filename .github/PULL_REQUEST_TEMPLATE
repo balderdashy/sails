@@ -1,11 +1,11 @@
-<!-- 
+<!--
 ======================================================
 HELLO, and welcome to the (experimental) Sailsbot
 pr-submission system.  If you encounter any
-problems with this system, please contact
-sgress454@treeline.io
+problems with this system, please contact us directly
+at http://sailsjs.com/contact.
 
-IMPORTANT - Read Carefully (Sailsbot will know if you don't)!  
+IMPORTANT - Read Carefully (Sailsbot will know if you don't)!
 ======================================================
 
 Before submitting a pull request for a new feature request, pretty-please read the Sails contribution guide section on proposing features and enhancements: http://bit.ly/sails-feature-guide.
@@ -20,7 +20,7 @@ If after all that, you're still ready to make a pull request, make sure that you
 [implements #<another PR number>]
 [fixes #<an issue number>]
 
-For example: 
+For example:
 [proposal] Add a Kraken to the `sails lift` sailboat image
 [implements #123] Adds Kraken to sailboat
 [patch] Fix the shading on the Kraken's tentacles

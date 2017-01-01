@@ -2,17 +2,18 @@
 ======================================================
 HELLO, and welcome to the (experimental) Sailsbot
 issue-submission system.  If you encounter any
-problems with this system, please contact
-sgress454@treeline.io
+problems with this system, please contact us directly
+at http://sailsjs.com/contact.
 
-FIRST THINGS FIRST: before posting, please carefully 
-read the contribution guide (http://bit.ly/sails-issue-guide), 
-particularly if this is a security issue or an issue of a 
+FIRST THINGS FIRST: before posting, please carefully
+read the contribution guide (http://bit.ly/sails-issue-guide),
+particularly if this is a security issue or an issue of a
 non-technical nature (Github org issues, code of conduct
-issues, etc.).  Those should be sent directly to inquiries@treeline.io.
+issues, etc.).  Those should be sent directly at
+http://sailsjs.com/contact.
 
-NOW THEN: please fill out the following info 
-(Don't change text between **) 
+NOW THEN: please fill out the following info
+(Don't change text between **)
 ======================================================
 ### BEGIN VERSION INFO ###
 -->
@@ -22,11 +23,11 @@ NOW THEN: please fill out the following info
 **NPM version**:
 **Operating system**:
 
-<!-- 
+<!--
 ### END VERSION INFO ###
 ======================================================
-GREAT! - Now read carefully 
-(Sailsbot will know if you don't)!  
+GREAT! - Now read carefully
+(Sailsbot will know if you don't)!
 ======================================================
 
 Before you submit an issue for Sails, please make sure you have read the issue contribution guide (http://bit.ly/sails-issue-guide) carefully, and then verify the following by typing an X in between each set of [ ] brackets below (don't make any other changes to the text!):
@@ -34,7 +35,7 @@ Before you submit an issue for Sails, please make sure you have read the issue c
 ### BEGIN PLEDGE ###
 - [ ] I am experiencing a concrete technical issue (aka a bug) with Sails (ideas and feature proposals should follow the guide for proposing features and enhancements (http://bit.ly/sails-feature-guide), which involves making a pull request).  If you're not 100% certain whether it's a bug or not, that's okay--you may continue.  The worst that can happen is that the issue will be closed and we'll point you in the right direction.
 
-- [ ] I am not asking a question about how to use Sails or about whether or not Sails has a certain feature (please refer to the documentation(http://sailsjs.org), or post on http://stackoverflow.com, our Google Group (http://bit.ly/sails-google-group) or our live chat (https://gitter.im/balderdashy/sails).
+- [ ] I am not asking a question about how to use Sails or about whether or not Sails has a certain feature (please refer to the documentation(http://sailsjs.com), or post on http://stackoverflow.com, our Google Group (http://bit.ly/sails-google-group) or our live chat (https://gitter.im/balderdashy/sails).
 
 - [ ] I have already searched for related issues, and found none open (if you found a related _closed_ issue, please link to it in your post).
 

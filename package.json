@@ -3,7 +3,7 @@
   "author": "Mike McNeil <@mikermcneil>",
   "version": "1.0.0-19",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
-  "homepage": "http://sailsjs.org",
+  "homepage": "http://sailsjs.com",
   "keywords": [
     "mvc",
     "web-framework",

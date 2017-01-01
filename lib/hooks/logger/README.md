@@ -33,7 +33,7 @@ Instantiate a [CaptainsLog](https://github.com/balderdashy/captains-log) logger 
 
 
 ##### Expose `sails.log` function
-Publicly expose `sails.log()` function (see http://sailsjs.org/documentation/concepts/logging)
+Publicly expose `sails.log()` function (see http://sailsjs.com/documentation/concepts/logging)
 
 
 ##### Add `sails.log.ship()` method

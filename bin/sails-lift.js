@@ -24,7 +24,7 @@ var SharedErrorHelpers = require('../errors');
  * > 99.9% of the time, is the globally-installed version.)
  *
  * @stability 3
- * @see http://sailsjs.org/documentation/reference/command-line-interface/sails-lift
+ * @see http://sailsjs.com/documentation/reference/command-line-interface/sails-lift
  */
 
 module.exports = function() {
