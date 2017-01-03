@@ -191,7 +191,7 @@ Feature                                          | Proposal                     
 
 ## Pending Proposals
 
-The backlog items below are from before the recent change to the Sails project's contribution guidelines, and are suggestions for features or enhancements, but are not yet accompanied by a complete proposal.  Before any of the following backlog items can be implemented or a pull request can be merged, a detailed proposal needs to be submitted, discussed and signed off on by the project maintainers.  For information on writing a proposal, see the [Sails contribution guide](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md).  **Please do not submit a pull request _adding_ to this section.**
+The backlog items below are from before the recent change to the Sails project's contribution guidelines, and are suggestions for features or enhancements, but are not yet accompanied by a complete proposal.  Before any of the following backlog items can be implemented or a pull request can be merged, a detailed proposal needs to be submitted, discussed and signed off on by the project maintainers.  For information on writing a proposal, see the [Sails contribution guide](http://sailsjs.com/documentation/contributing).  **Please do not submit a pull request _adding_ to this section.**
 
 > - If you are the original proposer of one of these items, someone from the core team has contacted you in the linked issue or PR, if one was provided. Thank you for your help!
 > - If you are interested in seeing one of the features or enhancements below in Sails core, please create a new pull request moving the relevant item(s) to the backlog table with additional details about your use case (see the updated contribution guide for more information).
