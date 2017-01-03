@@ -28,7 +28,7 @@ To report a bug, [click here](http://sailsjs.com/bugs).
 
 ## Contributing
 
-Please observe the guidelines and conventions laid out in the [Sails project contribution guide](http://sailsjs.com/contribute) when opening issues or submitting pull requests.
+Please observe the guidelines and conventions laid out in the [Sails project contribution guide](http://sailsjs.com/documentation/contributing) when opening issues or submitting pull requests.
 
 [![NPM](https://nodei.co/npm/sails-hook-blueprints.png?downloads=true)](http://npmjs.com/package/sails-hook-blueprints)
 
