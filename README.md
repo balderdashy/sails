@@ -98,7 +98,7 @@ There are many different ways you can contribute to Sails:
 - troubleshooting [reported issues](http://sailsjs.com/bugs)
 - and [submitting patches](http://sailsjs.com/contribute).
 
-Please carefully read our [contribution guide](http://sailsjs.com/contribute) and check the [build status](./MODULES.md) for the relevant branch before submitting a pull request with code changes.
+Please carefully read our [contribution guide](http://sailsjs.com/documentation/contributing) and check the [build status](./MODULES.md) for the relevant branch before submitting a pull request with code changes.
 
 
 ## Links
