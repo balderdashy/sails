@@ -16,8 +16,7 @@ module.exports = {
       via: 'vets'
     },
     profile: {
-      model: 'userprofile',
-      via: 'user'
+      model: 'userprofile'
     }
   }
 
