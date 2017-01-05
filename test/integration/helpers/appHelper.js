@@ -246,7 +246,7 @@ module.exports = {
       packageJson = {};
     }
 
-    var deps = ['sails-hook-orm', 'sails-hook-sockets', 'sails-disk'];
+    var deps = ['sails-hook-orm', 'sails-hook-sockets'];
     _.each(deps, function(dep) {
       // Create a symlink
       fs.ensureSymlinkSync(path.resolve(__dirname, '..', '..', '..', 'node_modules', dep), path.resolve(appPath, 'node_modules', dep));

@@ -48,7 +48,6 @@ describe('blueprints :: ', function() {
         hooks: {
           grunt: false, views: false, policies: false, pubsub: false, i18n: false
         },
-        orm: { moduleDefinitions: { adapters: { 'sails-disk': require('sails-disk')} } },
         models: {
           migrate: 'drop',
           schema: true
