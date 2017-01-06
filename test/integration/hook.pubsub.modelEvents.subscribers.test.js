@@ -175,7 +175,7 @@ describe('pubsub :: ', function() {
 
       });
 
-      it('adding a user to the pet via POST /user/1/pets should result in a correct `pet` event being received by all subscribers', function(done) {
+      it('adding a user to the pet via PUT /user/1/pets/1 should result in a correct `pet` event being received by all subscribers', function(done) {
 
         socket1.on('pet', function(message) {
           assert(message.id == 1 &&
@@ -184,9 +184,7 @@ describe('pubsub :: ', function() {
           done();
         });
 
-        socket2.post('/user/1/pets', {
-          pet_id: 1
-        },function(body, jwr) {
+        socket2.put('/user/1/pets/1', {}, function(body, jwr) {
           if (jwr.error) { return done(jwr.error); }
           // Otherwise, the event handler above should fire (or this test will time out and fail).
         });
@@ -210,7 +208,7 @@ describe('pubsub :: ', function() {
 
       });
 
-      it('creating a new pet and adding it via POST /user/1/pets should result in a `pet` event and a `user` event being received by all subscribers', function(done) {
+      it('creating a new pet and adding it via POST /pet should result in a `pet` event and a `user` event being received by all subscribers', function(done) {
 
         var msgsReceived = 0;
         // We should receive two 'user' updates: one from user #1 telling us they no longer have a profile, one
@@ -240,8 +238,9 @@ describe('pubsub :: ', function() {
 
         // Subscribe to new pet notifications.
         socket1.get('/pet', function() {
-          socket2.post('/user/1/pets', {
-            name: 'alice'
+          socket2.post('/pet', {
+            name: 'alice',
+            owner: 1
           },function(body, jwr) {
             if (jwr.error) { return done(jwr.error); }
             // Otherwise, the event handler above should fire (or this test will time out and fail).
