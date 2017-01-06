@@ -308,31 +308,6 @@ describe('blueprints :: ', function() {
           });
         });
 
-        describe('a delete request to /:model/:parentid/:association', function() {
-
-          it('should return JSON for an instance of the test model, with its collection updated', function(done) {
-            sailsApp.models.pet.create({name: 'wilbur'}).meta({fetch: true}).exec(function(err, wilbur) {
-              sailsApp.models.user.create({name: 'gary', pets: [wilbur.id]}).meta({fetch: true}).exec(function(err) {
-                if (err) {return done (err);}
-                sailsApp.request('delete /user/1/pets', {id: 1}, function (err, resp, data) {
-                  if (err) {return done (err);}
-                  assert.equal(data.name, 'gary');
-                  assert.equal(data.id, 1);
-                  assert.equal(data.pets.length, 0);
-                  sailsApp.models.user.findOne({id: 1}).populate('pets').exec(function(err, user) {
-                    if (err) {return done (err);}
-                    assert(user);
-                    assert.equal(user.name, 'gary');
-                    assert.equal(user.id, 1);
-                    assert.equal(user.pets.length, 0);
-                    return done();
-                  });
-                });
-              });
-            });
-          });
-        });
-
       });
 
     });
