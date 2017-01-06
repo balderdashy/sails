@@ -59,7 +59,7 @@ describe('blueprints :: ', function() {
           shortcuts: false,
           actions: false
         },
-        log: {level: 'debug'}
+        log: {level: 'error'}
       }, extraSailsConfig), function(err, _sails) {
         if (err) { return done(err); }
         sailsApp = _sails;
@@ -312,6 +312,59 @@ describe('blueprints :: ', function() {
                     assert.equal(user.id, 1);
                     assert.equal(user.pets.length, 1);
                     assert.equal(user.pets[0].name, 'flipper');
+                    return done();
+                  });
+                });
+              });
+            });
+          });
+        });
+
+        describe('a put request to /:model/:parentid/:association (with empty array)', function() {
+
+          it('should return JSON for an instance of the test model, with its collection replaced', function(done) {
+            sailsApp.models.user.create({name: 'ira', id: 1}).exec(function(err) {
+              if (err) {return done (err);}
+              sailsApp.models.pet.create({name: 'flipper', id: 1, owner: 1}).exec(function(err) {
+                if (err) {return done (err);}
+                sailsApp.request('put /user/1/pets', [], function (err, resp, data) {
+                  if (err) {return done (err);}
+                  assert.equal(data.name, 'ira');
+                  assert.equal(data.pets.length, 0);
+                  sailsApp.models.pet.findOne({id: 1}).populate('owner').exec(function(err, pet) {
+                    if (err) {return done (err);}
+                    assert(pet);
+                    assert.equal(pet.name, 'flipper');
+                    assert.equal(pet.id, 1);
+                    assert.equal(pet.owner, null);
+                    return done();
+                  });
+                });
+              });
+            });
+          });
+        });
+
+        describe('a put request to /:model/:parentid/:association (with new array)', function() {
+
+          it('should return JSON for an instance of the test model, with its collection replaced', function(done) {
+            sailsApp.models.user.create({name: 'zooey'}).exec(function(err) {
+              if (err) {return done (err);}
+              sailsApp.models.pet.createEach([{name: 'ralph', id: 1, owner: 1}, {name: 'fiona', id: 2}]).exec(function(err) {
+                if (err) {return done (err);}
+                sailsApp.request('put /user/1/pets', [2], function (err, resp, data) {
+                  if (err) {return done (err);}
+                  assert.equal(data.name, 'zooey');
+                  assert.equal(data.pets.length, 1);
+                  assert.equal(data.pets[0].id, 2);
+                  assert.equal(data.pets[0].name, 'fiona');
+                  sailsApp.models.pet.findOne({id: 2}).populate('owner').exec(function(err, pet) {
+                    if (err) {return done (err);}
+                    assert(pet);
+                    assert.equal(pet.name, 'fiona');
+                    assert.equal(pet.id, 2);
+                    assert.equal(pet.owner.name, 'zooey');
+                    assert.equal(pet.owner.id, 1);
                     return done();
                   });
                 });
