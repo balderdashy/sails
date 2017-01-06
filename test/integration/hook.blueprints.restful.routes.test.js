@@ -237,6 +237,23 @@ describe('blueprints :: ', function() {
 
       describe('associations :: ', function() {
 
+        describe('a post request to /:model with an array specified for a collection attribute', function() {
+
+          it('should return JSON for the new record including the associated collection', function(done) {
+            sailsApp.models.pet.create({name: 'spot'}).meta({fetch: true}).exec(function(err, spot) {
+              sailsApp.request('post /user', {name: 'will', pets: [spot.id]}, function (err, resp, data) {
+                if (err) {return done (err);}
+                assert.equal(data.name, 'will');
+                assert.equal(data.id, 1);
+                assert.equal(data.pets.length, 1);
+                assert.equal(data.pets[0].name, 'spot');
+                return done();
+              });
+            });
+          });
+        });
+
+
         describe('a get request to /:model/:parentid/:association', function() {
 
           it('should return JSON for the specified collection of the test model', function(done) {

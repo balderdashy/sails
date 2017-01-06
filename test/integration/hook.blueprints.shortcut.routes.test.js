@@ -176,6 +176,22 @@ describe('blueprints :: ', function() {
         });
       });
 
+      describe('a get request to /:model/create?name=foo&pets=[1]', function() {
+
+        it('should return JSON for the new record including the associated collection', function(done) {
+          sailsApp.models.pet.create({name: 'spot'}).meta({fetch: true}).exec(function(err, spot) {
+            sailsApp.request('get /user/create?name=will&pets=[1]', function (err, resp, data) {
+              if (err) {return done (err);}
+              assert.equal(data.name, 'will');
+              assert.equal(data.id, 1);
+              assert.equal(data.pets.length, 1);
+              assert.equal(data.pets[0].name, 'spot');
+              return done();
+            });
+          });
+        });
+      });
+
 
       describe('a get request to /:model/destroy/1', function() {
 
