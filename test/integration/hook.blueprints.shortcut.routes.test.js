@@ -236,7 +236,7 @@ describe('blueprints :: ', function() {
           });
         });
 
-        describe('a get request to /:model/:parentid/:association/:id', function() {
+        describe('a get request to /:model/:parentid/:association/add/:id', function() {
 
           it('should return JSON for an instance of the test model, with its collection updated', function(done) {
             sailsApp.models.user.create({name: 'ira'}).exec(function(err) {
@@ -264,59 +264,6 @@ describe('blueprints :: ', function() {
           });
         });
 
-        describe('a get request to /:model/:parentid/:association/add?id=1 (posting an existing model ID)', function() {
-
-          it('should return JSON for an instance of the test model, with its collection updated', function(done) {
-            sailsApp.models.user.create({name: 'ryan'}).exec(function(err) {
-              if (err) {return done (err);}
-              sailsApp.models.pet.create({name: 'bubbles'}).exec(function(err) {
-                if (err) {return done (err);}
-                sailsApp.request('get /user/1/pets/add?id=1', function (err, resp, data) {
-                  if (err) {return done (err);}
-                  assert.equal(data.name, 'ryan');
-                  assert.equal(data.id, 1);
-                  assert.equal(data.pets.length, 1);
-                  assert.equal(data.pets[0].name, 'bubbles');
-                  sailsApp.models.user.findOne({id: 1}).populate('pets').exec(function(err, user) {
-                    if (err) {return done (err);}
-                    assert(user);
-                    assert.equal(user.name, 'ryan');
-                    assert.equal(user.id, 1);
-                    assert.equal(user.pets.length, 1);
-                    assert.equal(user.pets[0].name, 'bubbles');
-                    return done();
-                  });
-                });
-              });
-            });
-          });
-        });
-
-        describe('a get request to /:model/:parentid/:association/add (posting a new model)', function() {
-
-          it('should return JSON for an instance of the test model, with its collection updated', function(done) {
-            sailsApp.models.user.create({name: 'kevin'}).exec(function(err) {
-              if (err) {return done (err);}
-              sailsApp.request('get /user/1/pets/add?name=rex', function (err, resp, data) {
-                if (err) {return done (err);}
-                assert.equal(data.name, 'kevin');
-                assert.equal(data.id, 1);
-                assert.equal(data.pets.length, 1);
-                assert.equal(data.pets[0].name, 'rex');
-                sailsApp.models.user.findOne({id: 1}).populate('pets').exec(function(err, user) {
-                  if (err) {return done (err);}
-                  assert(user);
-                  assert.equal(user.name, 'kevin');
-                  assert.equal(user.id, 1);
-                  assert.equal(user.pets.length, 1);
-                  assert.equal(user.pets[0].name, 'rex');
-                  return done();
-                });
-              });
-            });
-          });
-        });
-
         describe('a get request to /:model/:parentid/:association/remove/:id', function() {
 
           it('should return JSON for an instance of the test model, with its collection updated', function(done) {
@@ -332,31 +279,6 @@ describe('blueprints :: ', function() {
                     if (err) {return done (err);}
                     assert(user);
                     assert.equal(user.name, 'larry');
-                    assert.equal(user.id, 1);
-                    assert.equal(user.pets.length, 0);
-                    return done();
-                  });
-                });
-              });
-            });
-          });
-        });
-
-        describe('a get request to /:model/:parentid/:association/remove?id=1', function() {
-
-          it('should return JSON for an instance of the test model, with its collection updated', function(done) {
-            sailsApp.models.pet.create({name: 'wilbur'}).meta({fetch: true}).exec(function(err, wilbur) {
-              sailsApp.models.user.create({name: 'gary', pets: [wilbur.id]}).meta({fetch: true}).exec(function(err) {
-                if (err) {return done (err);}
-                sailsApp.request('get /user/1/pets/remove?id=1', function (err, resp, data) {
-                  if (err) {return done (err);}
-                  assert.equal(data.name, 'gary');
-                  assert.equal(data.id, 1);
-                  assert.equal(data.pets.length, 0);
-                  sailsApp.models.user.findOne({id: 1}).populate('pets').exec(function(err, user) {
-                    if (err) {return done (err);}
-                    assert(user);
-                    assert.equal(user.name, 'gary');
                     assert.equal(user.id, 1);
                     assert.equal(user.pets.length, 0);
                     return done();

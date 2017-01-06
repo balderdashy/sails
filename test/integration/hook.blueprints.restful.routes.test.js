@@ -255,14 +255,14 @@ describe('blueprints :: ', function() {
           });
         });
 
-        describe('a post request to /:model/:parentid/:association/:id', function() {
+        describe('a put request to /:model/:parentid/:association/:id', function() {
 
           it('should return JSON for an instance of the test model, with its collection updated', function(done) {
             sailsApp.models.user.create({name: 'ira'}).exec(function(err) {
               if (err) {return done (err);}
               sailsApp.models.pet.create({name: 'flipper'}).exec(function(err) {
                 if (err) {return done (err);}
-                sailsApp.request('post /user/1/pets/1', function (err, resp, data) {
+                sailsApp.request('put /user/1/pets/1', function (err, resp, data) {
                   if (err) {return done (err);}
                   assert.equal(data.name, 'ira');
                   assert.equal(data.id, 1);
@@ -277,59 +277,6 @@ describe('blueprints :: ', function() {
                     assert.equal(user.pets[0].name, 'flipper');
                     return done();
                   });
-                });
-              });
-            });
-          });
-        });
-
-        describe('a post request to /:model/:parentid/:association (posting an existing model ID)', function() {
-
-          it('should return JSON for an instance of the test model, with its collection updated', function(done) {
-            sailsApp.models.user.create({name: 'ryan'}).exec(function(err) {
-              if (err) {return done (err);}
-              sailsApp.models.pet.create({name: 'bubbles'}).exec(function(err) {
-                if (err) {return done (err);}
-                sailsApp.request('post /user/1/pets', {id: 1}, function (err, resp, data) {
-                  if (err) {return done (err);}
-                  assert.equal(data.name, 'ryan');
-                  assert.equal(data.id, 1);
-                  assert.equal(data.pets.length, 1);
-                  assert.equal(data.pets[0].name, 'bubbles');
-                  sailsApp.models.user.findOne({id: 1}).populate('pets').exec(function(err, user) {
-                    if (err) {return done (err);}
-                    assert(user);
-                    assert.equal(user.name, 'ryan');
-                    assert.equal(user.id, 1);
-                    assert.equal(user.pets.length, 1);
-                    assert.equal(user.pets[0].name, 'bubbles');
-                    return done();
-                  });
-                });
-              });
-            });
-          });
-        });
-
-        describe('a post request to /:model/:parentid/:association (posting a new model)', function() {
-
-          it('should return JSON for an instance of the test model, with its collection updated', function(done) {
-            sailsApp.models.user.create({name: 'kevin'}).exec(function(err) {
-              if (err) {return done (err);}
-              sailsApp.request('post /user/1/pets', {name: 'rex'}, function (err, resp, data) {
-                if (err) {return done (err);}
-                assert.equal(data.name, 'kevin');
-                assert.equal(data.id, 1);
-                assert.equal(data.pets.length, 1);
-                assert.equal(data.pets[0].name, 'rex');
-                sailsApp.models.user.findOne({id: 1}).populate('pets').exec(function(err, user) {
-                  if (err) {return done (err);}
-                  assert(user);
-                  assert.equal(user.name, 'kevin');
-                  assert.equal(user.id, 1);
-                  assert.equal(user.pets.length, 1);
-                  assert.equal(user.pets[0].name, 'rex');
-                  return done();
                 });
               });
             });
