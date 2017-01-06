@@ -59,7 +59,7 @@ describe('blueprints :: ', function() {
           shortcuts: false,
           actions: false
         },
-        log: {level: 'error'}
+        log: {level: 'debug'}
       }, extraSailsConfig), function(err, _sails) {
         if (err) { return done(err); }
         sailsApp = _sails;
@@ -153,6 +153,26 @@ describe('blueprints :: ', function() {
               assert.equal(data.name, 'ron');
               assert.equal(data.id, 1);
               done();
+            });
+          });
+        });
+      });
+
+      describe('a patch request to /:model/:id', function() {
+
+        it('should return JSON for an updated instance of the test model', function(done) {
+          sailsApp.models.user.create({name: 'dave'}).exec(function(err) {
+            if (err) {return done (err);}
+            sailsApp.request('patch /user/1', {name: 'larry'}, function (err, resp, data) {
+              if (err) {return done (err);}
+              assert.equal(data.name, 'larry');
+              assert.equal(data.id, 1);
+              sailsApp.models.user.findOne({id: 1}).exec(function(err, user) {
+                if (err) {return done (err);}
+                assert(user);
+                assert.equal(user.name, 'larry');
+                return done();
+              });
             });
           });
         });
