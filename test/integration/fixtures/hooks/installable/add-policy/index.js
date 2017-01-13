@@ -31,7 +31,7 @@ module.exports = function(sails) {
             if (!sails.hooks[hook]) {
               throw new Error('Cannot use `add-policy` hook without the `' + hook + '` hook.');
             }
-            //if (hook == 'policies') {
+            //if (hook === 'policies') {
             //    eventsToWaitFor.push('hook:' + hook + ':bound');
             //} else {
             eventsToWaitFor.push('hook:' + hook + ':loaded');
