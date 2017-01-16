@@ -1,7 +1,7 @@
 {
   "name": "sails",
   "author": "Mike McNeil <@mikermcneil>",
-  "version": "0.12.11",
+  "version": "0.12.12-1",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
   "homepage": "http://sailsjs.org",
   "keywords": [
@@ -77,7 +77,7 @@
     "rttc": "9.3.3",
     "sails-disk": "~0.10.9",
     "sails-generate": "~0.13.0",
-    "sails-hook-orm": "~1.0.6",
+    "sails-hook-orm": "~1.0.10-1",
     "sails-hook-sockets": "^0.13.9",
     "sails-stringfile": "~0.3.2",
     "sails-util": "~0.11.0",
@@ -87,7 +87,7 @@
     "skipper": "~0.6.0",
     "uid-safe": "1.1.0",
     "walk": "2.3.9",
-    "waterline": "~0.11.0"
+    "waterline": "~0.11.7-1"
   },
   "devDependencies": {
     "benchmark": "1.0.0",
