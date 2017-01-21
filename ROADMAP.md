@@ -43,10 +43,10 @@ This section is an early list of some of the features, enhancements, and other i
     + `removeFromCollection(12)`
     + `.resetCollection([1,2,3])` / `.resetCollection([])`
   + Out of the box, queries like the following will also be supported:
-    + `.update({...}).set({ pets: [3,5,6] }).exec(...)`
-    + `.update({...}).set({ pets: [] }).exec(...)`
-    + `.update({...}).set({ favoritePet: 5 }).exec(...)`
-    + `.update({...}).set({ favoritePet: null }).exec(...)`
+    + `.create({ pets: [3,5,6] }).exec(...)`
+    + `.create({ pets: [] }).exec(...)`
+    + `.create({ favoritePet: 5 }).exec(...)`
+    + `.create({ favoritePet: null }).exec(...)`
 + **Enhanced `.stream()` functionality**
   + Simplify interface and remove reliance on emitters
 <a name="case-sensitivity-in-criteria-s-where-in-waterline-find-find-one-count-update-destroy"></a>
