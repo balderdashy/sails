@@ -55,7 +55,7 @@ if (process.env.TEST_REDIS_SESSION) {
             }
 
           }, function(err) {
-            if (err.code === 'E_REDIS_CONNECTION_FAILED') {
+            if (err && err.code === 'ECONNREFUSED') {
               return done();
             }
             else if (err) {
