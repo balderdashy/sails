@@ -723,7 +723,7 @@ describe('policies :: ', function() {
 
         (new Sails()).load({
           hooks: {
-            grunt: false, views: false, pubsub: false
+            grunt: false, views: false, pubsub: false, orm: false
           },
           log: {level: 'silent'},
           policies: {
