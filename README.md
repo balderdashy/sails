@@ -70,14 +70,12 @@ The ORM, [Waterline](https://github.com/balderdashy/waterline), has a well-defin
 
 ## Support
 Need help or have a question?
+- [FAQ](http://sailsjs.com/faq)
 - [StackOverflow](http://stackoverflow.com/questions/tagged/sails.js)
 - [Develop Web Apps in Node.js and Sails.js](https://courses.platzi.com/courses/develop-apps-sails-js/) (free video course on [Platzi](http://platzi.com))
-- [SailsCasts](http://irlnathan.github.io/sailscasts/)
-- [What are the best video tutorials for Node.js or Sails.js?](https://www.quora.com/What-are-the-best-video-tutorials-for-Node-js-or-Sails-js) (Quora)
-- [Sails.js from Scratch](http://code.tutsplus.com/courses/sailsjs-from-scratch) (video course on Tuts+)
-- [Up and Running in Node.js](http://www.lynda.com/Node.js-tutorials/Up-Running-Node.js/370605-2.html) (Sails basics are covered towards the end of this video course on Lynda)
 - [Gitter Chat Room](https://gitter.im/balderdashy/sails)
-- [Professional/Enterprise Support](https://github.com/balderdashy/sails-docs/blob/master/FAQ.md#are-there-professional-support-options)
+- [Sails.js in Action](https://www.manning.com/books/sails-js-in-action) (our book that guides you through building a basic app)
+- [Professional/Enterprise Support](http://sailsjs.com/flagship)
 
 
 ## Issue Submission
