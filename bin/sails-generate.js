@@ -116,7 +116,9 @@ module.exports = function () {
         humanizedId = '';
       }
 
-      if (scope.generatorType !== 'new') {
+      // If this isn't the "new" generator, and we're not explicitly
+      // asked not to, output a final success message.
+      if (scope.generatorType !== 'new' && !scope.suppressFinalLog) {
 
         log.info(util.format(
           'Created a new %s%s%s!',
