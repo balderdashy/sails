@@ -2,6 +2,7 @@ module.exports = {
   schema: true,
   primaryKey: 'user_id',
   attributes: {
+    id: false,
     user_id: {
       type: 'integer',
       autoIncrement: true
