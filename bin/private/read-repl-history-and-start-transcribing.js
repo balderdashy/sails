@@ -41,7 +41,9 @@ module.exports = function readReplHistoryAndBeginTranscribing(repl, file) {
 
     // Update the REPL history file accordingly.
     if (code && code !== '.history') {
-      fs.write(fd, code + '\n');
+      fs.write(fd, code + '\n', function (err){
+        // Do nothing.
+      });
     }
     else {
       repl.rli.historyIndex++;
