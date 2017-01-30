@@ -4,7 +4,6 @@
 
 var nodepath = require('path');
 var REPL = require('repl');
-var fs = require('fs');
 var _ = require('@sailshq/lodash');
 var chalk = require('chalk');
 var CaptainsLog = require('captains-log');
