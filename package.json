@@ -44,7 +44,7 @@
     "flaverr": "^1.0.0",
     "glob": "5.0.15",
     "i18n-2": "0.6.3",
-    "include-all": "^2.0.0",
+    "include-all": "^3.0.0",
     "machine": "^13.0.0-12",
     "machine-as-action": "^7.1.0-0",
     "machinepack-process": "^2.0.2",
