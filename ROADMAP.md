@@ -7,7 +7,15 @@ This file contains the development roadmap for the upcoming release of Sails, as
 
 ## v1.0
 
-This section is an early list of some of the features, enhancements, and other improvements tentatively planned or already implemented for the v1.0 release of Sails.  Note that this is by no means a comprehensive changelog or release plan, and may exclude important additions, bug fixes, and documentation tasks; it is just a reference point with the highlights.  Please also realize that the following notes may be slightly out of date from time to time.  Until the release is finalized, API changes, deprecation announcements, additions, etc. are all tentative.  (But we're getting close.)
+This section is an early list of some of the features, enhancements, and other improvements tentatively planned or already implemented for the v1.0 release of Sails.  Note that this is by no means a comprehensive changelog or release plan, and may exclude important additions, bug fixes, and documentation tasks; it is just a reference point with the highlights.
+
+> ##### What's up with Sails v1.0?
+>
+> For the latest news on Sails v1.0, and to check out specific changes and new features, see https://trello.com/b/s9zEnyG7/sails-v1.  (Please feel free to contribute by leaving comments on cards!  It helps the core team to verify that the new release is working as expected.)
+>
+> You can find more information about installing v1.0 here: http://sailsjs.com/documentation/upgrading/to-v-1-0
+
+Please also realize that the following notes may be slightly out of date from time to time.  Until the release is finalized, API changes, deprecation announcements, additions, etc. are all tentative.  (But we're getting close.)
 
 <a name="built-in-support-for-database-projections-i-e-select"></a>
 + **Built-in Support for Database Projections (i.e. `SELECT`)**
