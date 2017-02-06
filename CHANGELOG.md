@@ -73,6 +73,10 @@ Sails v1.0 comes with a host of new features and improvements as well as some br
 * [REMOVAL] Removed deprecated `connect-flash` middleware [c5c4900](https://github.com/balderdashy/sails/commit/c5c49007f9d55ed74b3ca3062b465c470a15e82b)
 * [REMOVAL] Removed 16 unused dependencies (see full list [here](https://gist.github.com/sgress454/4a4930fec3520b24bdf0df552f70a45c))
 
+> Also see the [Waterline changelog](https://github.com/balderdashy/waterline/blob/a7cad817e831af5367be2d2c89c021d12a674b86/CHANGELOG.md#edge).
+
+
+
 ### 0.12.11
 
 * [BUGFIX] fix typo in error message (see https://github.com/balderdashy/sails/pull/3902)  Thanks [Johnny](https://github.com/Hiro-Nakamura) and [@appdevdesigns](https://github.com/appdevdesigns)!
