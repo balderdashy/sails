@@ -318,11 +318,53 @@ describe('pubsub :: ', function() {
 
       });
 
+      it('adding a pet to a user via PUT /user/2/pets, where the pet already has an owner, should result in a correct `user` event w/ verb `removedFrom` being received by all subscribers to the former owner', function(done) {
+
+        var userEvents = {
+          addedTo: false,
+          removedFrom: false
+        };
+        socket1.on('user', function(message) {
+          if (message.id === 1 && message.verb === 'removedFrom' && message.attribute === 'pets' && message.removedId === 2) {
+            if (userEvents.removedFrom) {
+              return done(new Error('Got a duplicate `removedFrom` message'));
+            }
+            userEvents.removedFrom = true;
+          }
+          else if (message.id === 2 && message.verb === 'addedTo' && message.attribute === 'pets' && message.addedId === 2) {
+            if (userEvents.addedTo) {
+              return done(new Error('Got a duplicate `addedTo` message'));
+            }
+            userEvents.addedTo = true;
+          }
+          else {
+            return done(new Error('Bad message received: ' + Err.badResponse(message)));
+          }
+
+          if (userEvents.addedTo && userEvents.removedFrom) {
+            return done();
+          }
+        });
+
+        // Subscribe to new pet notifications.
+        socket1.get('/user', function() {
+          socket2.put('/user/2/pets/2', {},function(body, jwr) {
+            if (jwr.error) { return done(jwr.error); }
+            // Otherwise, the event handler above should fire (or this test will time out and fail).
+          });
+        },function(body, jwr) {
+          if (jwr.error) { return done(jwr.error); }
+          // Otherwise, the event handler above should fire (or this test will time out and fail).
+        });
+
+
+      });
+
       it('updating the user again via PUT /user/1 should result in a correct `user` event with verb `updated` being received by all subscribers, with previous pets populated', function(done) {
 
         socket2.on('user', function(message) {
           try {
-            assert(message.id === 1 && message.verb === 'updated' && message.data.name === 'ron' && message.previous.name === 'joe' && message.previous.pets.length === 1, Err.badResponse(message));
+            assert(message.id === 1 && message.verb === 'updated' && message.data.name === 'ron' && message.previous.name === 'joe' && message.previous.pets.length === 0, Err.badResponse(message));
           } catch (e) { return done(e); }
           done();
         });
