@@ -5,6 +5,7 @@
 var util = require('util');
 var _ = require('@sailshq/lodash');
 var assert = require('assert');
+var async = require('async');
 var socketHelper = require('./helpers/socketHelper.js');
 var appHelper = require('./helpers/appHelper');
 
@@ -54,7 +55,7 @@ describe('pubsub :: ', function() {
         done();
       });
 
-      it('a post request to /user should result in the socket watching User getting a `user` event', function(done) {
+      it('a post request to /user should result in the socket watching User getting a `user` event w/ verb `created`', function(done) {
 
         socket2.on('user', function(message) {
           try {
@@ -90,7 +91,7 @@ describe('pubsub :: ', function() {
 
       });
 
-      it('updating the user via PUT /user/1 should result a correct `user` event being received by all subscribers', function(done) {
+      it('updating the user via PUT /user/1 should result a correct `user` event w/ verb `updated` being received by all subscribers', function(done) {
 
         socket2.on('user', function(message) {
 
@@ -117,7 +118,7 @@ describe('pubsub :: ', function() {
 
       });
 
-      it('adding a pet to the user via POST /pet should result a correct `user` event being received by all subscribers', function(done) {
+      it('adding a pet to the user via POST /pet should result a correct `user` event w/ verb `addedTo` being received by all subscribers', function(done) {
 
         socket2.on('user', function(message) {
 
@@ -143,7 +144,7 @@ describe('pubsub :: ', function() {
 
       });
 
-      it('removing a pet from the user via PUT /pet/1 should result a correct `user` event being received by all subscribers', function(done) {
+      it('removing a pet from the user via PUT /pet/1 should result a correct `user` event w/ verb `removedFrom` being received by all subscribers', function(done) {
 
         socket2.on('user', function(message) {
           try {
@@ -167,7 +168,7 @@ describe('pubsub :: ', function() {
 
       });
 
-      it('adding a pet from the user via PUT /pet/1 should result a correct `user` event being received by all subscribers', function(done) {
+      it('adding a pet from the user via PUT /pet/1 should result a correct `user` event w/ verb `addedTo` being received by all subscribers', function(done) {
 
         socket2.on('user', function(message) {
           try {
@@ -194,7 +195,7 @@ describe('pubsub :: ', function() {
 
       // TODO: make this test work without relying on previous tests.
       // (i.e. bootstrap some data in a `before()`)
-      it('removing the user from the pet via DELETE /user/1/pets/1 should result a correct `pet` event being received by all subscribers', function(done) {
+      it('removing the user from the pet via DELETE /user/1/pets/1 should result a correct `pet` event w/ verb `updated` being received by all subscribers', function(done) {
 
         socket1.on('pet', function(message) {
           try {
@@ -211,7 +212,7 @@ describe('pubsub :: ', function() {
 
       });
 
-      it('adding a user to the pet via PUT /user/1/pets/1 should result in a correct `pet` event being received by all subscribers', function(done) {
+      it('adding a user to the pet via PUT /user/1/pets/1 should result in a correct `pet` event w/ verb `updated` being received by all subscribers', function(done) {
 
         socket1.on('pet', function(message) {
 
@@ -233,7 +234,7 @@ describe('pubsub :: ', function() {
 
       });
 
-      it('removing a pet from the user via DELETE /pet/1 should result a correct `user` event being received by all subscribers', function(done) {
+      it('removing a pet from the user via DELETE /pet/1 should result a correct `user` event w/ verb `removedFrom` being received by all subscribers', function(done) {
 
         socket2.on('user', function(message) {
           try {
@@ -255,40 +256,26 @@ describe('pubsub :: ', function() {
 
       });
 
-      it('creating a new pet and adding it via POST /pet should result in a `pet` event and a `user` event being received by all subscribers', function(done) {
+      it('creating a new pet and adding it via POST /pet should result in a `pet` event w/ verb `created` and a `user` event w/ verb `addedTo` being received by all subscribers', function(done) {
 
-        var msgsReceived = 0;
-        // We should receive two 'user' updates: one from user #1 telling us they no longer have a profile, one
-        // from user #2 telling us they are now attached to profile #1
-        socket1.on('pet', function(message) {
-
-          try {
-            assert(
-            (message.id === 2 && message.verb === 'created' && message.data.name === 'alice'), Err.badResponse(message));
-          } catch (e) { return done(e); }
-
-          msgsReceived++;
-          if (msgsReceived === 2) {
-            return done();
+        async.auto({
+          petMessage: function(cb) {
+            socket1.on('pet', function(message) {
+              try {
+                assert((message.id === 2 && message.verb === 'created' && message.data.name === 'alice'), Err.badResponse(message));
+                return cb();
+              } catch (e) { return cb(e); }
+            });
+          },
+          userMessage: function(cb) {
+            socket1.on('user', function(message) {
+              try {
+                assert(message.id === 1 && message.verb === 'addedTo' && message.attribute === 'pets' && message.addedId === 2, Err.badResponse(message));
+                return cb();
+              } catch (e) { return cb(e); }
+            });
           }
-          if (msgsReceived > 2) {
-            throw new Error('Extra, unexpected socket message received in test!');
-          }
-        });
-
-        socket1.on('user', function(message) {
-          try {
-            assert(message.id === 1 && message.verb === 'addedTo' && message.attribute === 'pets' && message.addedId === 2, Err.badResponse(message));
-          } catch (e) { return done(e); }
-
-          msgsReceived++;
-          if (msgsReceived === 2) {
-            return done();
-          }
-          if (msgsReceived > 2) {
-            throw new Error('Extra, unexpected socket message received in test!');
-          }
-        });
+        }, done);
 
         // Subscribe to new pet notifications.
         socket1.get('/pet', function() {
@@ -306,7 +293,11 @@ describe('pubsub :: ', function() {
 
       });
 
-      it('updating the user again via PUT /user/1 should result in a correct `user` event being received by all subscribers, with previous pets populated', function(done) {
+      // it('creating a new user via POST /user with an array value for a collection attribute should result in a correct `pet` event w/ verb `addedTo` being received by all subscribers', function(done) {
+
+      // });
+
+      it('updating the user again via PUT /user/1 should result in a correct `user` event with verb `updated` being received by all subscribers, with previous pets populated', function(done) {
 
         socket2.on('user', function(message) {
           try {
@@ -324,7 +315,7 @@ describe('pubsub :: ', function() {
 
       });
 
-      it('updating the user again via PUT /user/1 with "populate=false" should result in a correct `user` event being received by all subscribers, with no previous pets populated', function(done) {
+      it('updating the user again via PUT /user/1 with "populate=false" should result in a correct `user` event w/ verb `updated` being received by all subscribers, with no previous pets populated', function(done) {
 
         socket2.on('user', function(message) {
           try {
@@ -342,7 +333,7 @@ describe('pubsub :: ', function() {
 
       });
 
-      it('destroying a user via DELETE /user/1 should result in a `user` event being received by all subscribers', function(done) {
+      it('destroying a user via DELETE /user/1 should result in a `user` event w/ verb `destroyed` being received by all subscribers', function(done) {
 
         socket2.on('user', function(message) {
           try {
