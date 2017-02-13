@@ -293,9 +293,30 @@ describe('pubsub :: ', function() {
 
       });
 
-      // it('creating a new user via POST /user with an array value for a collection attribute should result in a correct `pet` event w/ verb `addedTo` being received by all subscribers', function(done) {
+      it('creating a new user via POST /user with an array value for a collection attribute should result in a correct `pet` event w/ verb `addedTo` being received by all subscribers', function(done) {
 
-      // });
+        socket1.on('pet', function(message) {
+          try {
+            assert((message.id === 2 && message.verb === 'addedTo' && message.attribute === 'vets' && message.addedId === 2), Err.badResponse(message));
+            return done();
+          } catch (e) { return done(e); }
+        });
+
+        // Subscribe to new pet notifications.
+        socket1.get('/pet', function() {
+          socket2.post('/user', {
+            name: 'roger',
+            patients: [2]
+          },function(body, jwr) {
+            if (jwr.error) { return done(jwr.error); }
+            // Otherwise, the event handler above should fire (or this test will time out and fail).
+          });
+        },function(body, jwr) {
+          if (jwr.error) { return done(jwr.error); }
+          // Otherwise, the event handler above should fire (or this test will time out and fail).
+        });
+
+      });
 
       it('updating the user again via PUT /user/1 should result in a correct `user` event with verb `updated` being received by all subscribers, with previous pets populated', function(done) {
 
