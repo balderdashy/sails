@@ -469,7 +469,7 @@ describe('pubsub :: ', function() {
             };
           });
 
-          it('should cause an `addedTo` notification to be received by all subscribers to the child record, and an `updated` notification to be received by all subscribers to the child record', function(done) {
+          it('should cause an `addedTo` notification to be received by all subscribers to the parent record, and an `updated` notification to be received by all subscribers to the child record', function(done) {
 
             expectNotifications({
               user: {
