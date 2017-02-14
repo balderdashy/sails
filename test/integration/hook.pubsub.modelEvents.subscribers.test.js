@@ -98,6 +98,13 @@ describe('pubsub :: ', function() {
 
       });//</after>
 
+      //   ██████╗██████╗ ███████╗ █████╗ ████████╗███████╗
+      //  ██╔════╝██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██╔════╝
+      //  ██║     ██████╔╝█████╗  ███████║   ██║   █████╗
+      //  ██║     ██╔══██╗██╔══╝  ██╔══██║   ██║   ██╔══╝
+      //  ╚██████╗██║  ██║███████╗██║  ██║   ██║   ███████╗
+      //   ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝
+
       describe('creating a new user with POST /user', function() {
         it('should cause a `created` notification to be received by all `user` subscribers', function(done) {
 
@@ -314,6 +321,14 @@ describe('pubsub :: ', function() {
 
       });
 
+      //  ██╗   ██╗██████╗ ██████╗  █████╗ ████████╗███████╗
+      //  ██║   ██║██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔════╝
+      //  ██║   ██║██████╔╝██║  ██║███████║   ██║   █████╗
+      //  ██║   ██║██╔═══╝ ██║  ██║██╔══██║   ██║   ██╔══╝
+      //  ╚██████╔╝██║     ██████╔╝██║  ██║   ██║   ███████╗
+      //   ╚═════╝ ╚═╝     ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
+      //
+
       describe('updating a record with PATCH /user', function() {
 
         before(function() {
@@ -434,6 +449,14 @@ describe('pubsub :: ', function() {
         });
 
       });
+
+      //   █████╗ ██████╗ ██████╗
+      //  ██╔══██╗██╔══██╗██╔══██╗
+      //  ███████║██║  ██║██║  ██║
+      //  ██╔══██║██║  ██║██║  ██║
+      //  ██║  ██║██████╔╝██████╔╝
+      //  ╚═╝  ╚═╝╚═════╝ ╚═════╝
+      //
 
       describe('adding a pet to a user with PUT /user/1/pets/1 where pets->owner is a many-to-one relationship', function () {
 
@@ -561,6 +584,13 @@ describe('pubsub :: ', function() {
 
       });
 
+      //  ██████╗ ███████╗███╗   ███╗ ██████╗ ██╗   ██╗███████╗
+      //  ██╔══██╗██╔════╝████╗ ████║██╔═══██╗██║   ██║██╔════╝
+      //  ██████╔╝█████╗  ██╔████╔██║██║   ██║██║   ██║█████╗
+      //  ██╔══██╗██╔══╝  ██║╚██╔╝██║██║   ██║╚██╗ ██╔╝██╔══╝
+      //  ██║  ██║███████╗██║ ╚═╝ ██║╚██████╔╝ ╚████╔╝ ███████╗
+      //  ╚═╝  ╚═╝╚══════╝╚═╝     ╚═╝ ╚═════╝   ╚═══╝  ╚══════╝
+      //
 
       describe('removing a pet from a user with DELETE /user/1/pets/1 where pets->owner is a many-to-one relationship', function () {
 
@@ -639,6 +669,14 @@ describe('pubsub :: ', function() {
 
       });
 
+      //  ██████╗ ███████╗██████╗ ██╗      █████╗  ██████╗███████╗
+      //  ██╔══██╗██╔════╝██╔══██╗██║     ██╔══██╗██╔════╝██╔════╝
+      //  ██████╔╝█████╗  ██████╔╝██║     ███████║██║     █████╗
+      //  ██╔══██╗██╔══╝  ██╔═══╝ ██║     ██╔══██║██║     ██╔══╝
+      //  ██║  ██║███████╗██║     ███████╗██║  ██║╚██████╗███████╗
+      //  ╚═╝  ╚═╝╚══════╝╚═╝     ╚══════╝╚═╝  ╚═╝ ╚═════╝╚══════╝
+      //
+
       describe('replacing pets of a user with PUT /user/1/pets where pets->owner is a many-to-one relationship', function () {
 
         describe('and some of the replacement pets were already linked to owners', function() {
@@ -710,7 +748,7 @@ describe('pubsub :: ', function() {
       });
 
 
-      describe.only('replacing patients of a user with PUT /user/1/patients where patients->vets is a many-to-many relationship', function () {
+      describe('replacing patients of a user with PUT /user/1/patients where patients->vets is a many-to-many relationship', function () {
 
         before(function() {
           bootstrapModels = {
@@ -762,6 +800,86 @@ describe('pubsub :: ', function() {
 
       });
 
+      //  ██████╗ ███████╗███████╗████████╗██████╗  ██████╗ ██╗   ██╗
+      //  ██╔══██╗██╔════╝██╔════╝╚══██╔══╝██╔══██╗██╔═══██╗╚██╗ ██╔╝
+      //  ██║  ██║█████╗  ███████╗   ██║   ██████╔╝██║   ██║ ╚████╔╝
+      //  ██║  ██║██╔══╝  ╚════██║   ██║   ██╔══██╗██║   ██║  ╚██╔╝
+      //  ██████╔╝███████╗███████║   ██║   ██║  ██║╚██████╔╝   ██║
+      //  ╚═════╝ ╚══════╝╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝    ╚═╝
+      //
+
+      describe('destroying a user with DELETE /user/1 where the user has pets and pets->owner is a many-to-one relationship', function () {
+
+        before(function() {
+          bootstrapModels = {
+            user: [{ name: 'bert' }],
+            pet: [{ name: 'alice', owner: 1}]
+          };
+        });
+
+        it('should cause a `destroyed` notification to be received by all subscribers to the parent record, and an `updated` notification to be received by all subscribers to the child records', function(done) {
+
+          expectNotifications({
+            user: {
+              destroyed: {
+                verb: 'destroyed',
+                id: 1,
+              },
+            },
+            pet: {
+              updatedAlice: {
+                verb: 'updated',
+                id: 1,
+                'data.owner': null
+              }
+            }
+          }, done);
+
+          socket2.delete('/user/1', {}, function (body, jwr) {
+            if (jwr.error) { return done(jwr.error); }
+            // Otherwise, the event handler above should fire (or this test will time out and fail).
+          });
+        });
+
+      });
+
+      describe('destroying a user with DELETE /user/1 where the user has patients and patients->vets is a many-to-many relationship', function () {
+
+        before(function() {
+          bootstrapModels = {
+            user: [{name: 'bert'}],
+            pet: [{ name: 'alice', vets: [1] }]
+          };
+        });
+
+        it('should cause a `removedFrom` notification to be received by all subscribers to the child record', function(done) {
+
+          expectNotifications({
+            user: {
+              destroyed: {
+                verb: 'destroyed',
+                id: 1
+              }
+            },
+            pet: {
+              removedFrom: {
+                verb: 'removedFrom',
+                id: 1,
+                attribute: 'vets',
+                removedId: 1
+              }
+            }
+
+          }, done);
+
+          socket2.delete('/user/1', {}, function (body, jwr) {
+            if (jwr.error) { return done(jwr.error); }
+            // Otherwise, the event handler above should fire (or this test will time out and fail).
+          });
+
+        });
+
+      });
 
       function expectNotifications(notifications, done) {
         var checklist = {};
