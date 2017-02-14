@@ -314,7 +314,7 @@ describe('pubsub :: ', function() {
 
       });
 
-      describe.only('updating a record with PATCH /user', function() {
+      describe('updating a record with PATCH /user', function() {
 
         before(function() {
           bootstrapModels = {
@@ -349,9 +349,213 @@ describe('pubsub :: ', function() {
 
         describe('where the previous value was `null`', function() {
 
+          before(function() {
+            bootstrapModels = {
+              user: [{ name: 'bert' }],
+              pet: [{name: 'alice', owner: null}]
+            };
+          });
+
+          it('should cause an `addedTo` notification to be sent to all subscribers to the new parent record', function(done) {
+
+            expectNotifications({
+              pet: {
+                updated: {
+                  verb: 'updated',
+                  id: 1,
+                  'data.owner': 1,
+                  'previous.owner': null
+                }
+              },
+              user: {
+                addedTo: {
+                  verb: 'addedTo',
+                  id: 1,
+                  attribute: 'pets',
+                  addedId: 1
+                }
+              }
+            }, done);
+
+            socket2.patch('/pet/1', { owner: 1 }, function (body, jwr) {
+              if (jwr.error) { return done(jwr.error); }
+              // Otherwise, the event handler above should fire (or this test will time out and fail).
+            });
+
+          });
+
+
         });
 
         describe('where the previous value was not `null`', function() {
+
+          before(function() {
+            bootstrapModels = {
+              user: [{ name: 'bert' }, {name: 'ernie'}],
+              pet: [{name: 'alice', owner: 1}]
+            };
+          });
+
+          it('should cause a `removedFrom` notification to be sent to all subscribers to the old parent record', function(done) {
+
+            expectNotifications({
+              pet: {
+                updated: {
+                  verb: 'updated',
+                  id: 1,
+                  'data.owner': 2,
+                  'previous.owner.user_id': 1
+                }
+              },
+              user: {
+                addedTo: {
+                  verb: 'addedTo',
+                  id: 2,
+                  attribute: 'pets',
+                  addedId: 1
+                },
+                removedFrom: {
+                  verb: 'removedFrom',
+                  id: 1,
+                  attribute: 'pets',
+                  removedId: 1
+                }
+              }
+
+            }, done);
+
+            socket2.patch('/pet/1', { owner: 2 }, function (body, jwr) {
+              if (jwr.error) { return done(jwr.error); }
+              // Otherwise, the event handler above should fire (or this test will time out and fail).
+            });
+
+          });
+
+        });
+
+      });
+
+      describe('adding a pet to a user with PUT /user/1/pets/1 where pets->owner is a many-to-one relationship', function () {
+
+        describe('and the other side was not already linked to a record', function() {
+
+          before(function() {
+            bootstrapModels = {
+              user: [{name: 'bert'}],
+              pet: [{ name: 'alice'}]
+            };
+          });
+
+          it('should cause an `addedTo` notification to be received by all subscribers to the child record, and an `updated` notification to be received by all subscribers to the child record', function(done) {
+
+            expectNotifications({
+              user: {
+                addedTo: {
+                  verb: 'addedTo',
+                  id: 1,
+                  attribute: 'pets',
+                  addedId: 1
+                }
+              },
+              pet: {
+                updatedAlice: {
+                  verb: 'updated',
+                  id: 1,
+                  'data.owner': 1
+                }
+              }
+            }, done);
+
+            socket2.put('/user/1/pets/1', {}, function (body, jwr) {
+              if (jwr.error) { return done(jwr.error); }
+              // Otherwise, the event handler above should fire (or this test will time out and fail).
+            });
+
+          });
+
+        });
+
+        describe('and the other side was already linked to a record', function() {
+
+          before(function() {
+            bootstrapModels = {
+              user: [{ name: 'bert' }, { name: 'ernie' }],
+              pet: [{ name: 'alice', owner: 1}]
+            };
+          });
+
+          it('should cause an `updated` notification to be received by all subscribers to the child record, and a `removedFrom` notification to be received by all subscribers to the child\'s former parent record', function(done) {
+
+            expectNotifications({
+              user: {
+                addedTo: {
+                  verb: 'addedTo',
+                  id: 2,
+                  attribute: 'pets',
+                  addedId: 1
+                },
+                removedFrom: {
+                  verb: 'removedFrom',
+                  id: 1,
+                  removedId: 1,
+                  attribute: 'pets'
+                }
+              },
+              pet: {
+                updatedAlice: {
+                  verb: 'updated',
+                  id: 1,
+                  'data.owner': 2
+                }
+              }
+            }, done);
+
+            socket2.put('/user/2/pets/1', {}, function (body, jwr) {
+              if (jwr.error) { return done(jwr.error); }
+              // Otherwise, the event handler above should fire (or this test will time out and fail).
+            });
+          });
+
+        });
+
+      });
+
+
+      describe('adding a patient to a user with PUT /user/1/patients/1 where patients->vets is a many-to-many relationship', function () {
+
+        before(function() {
+          bootstrapModels = {
+            user: [{name: 'bert'}],
+            pet: [{ name: 'alice' }]
+          };
+        });
+
+        it('should cause an `addedTo` notification to be received by all subscribers to the child record', function(done) {
+
+          expectNotifications({
+            pet: {
+              addedTo: {
+                verb: 'addedTo',
+                id: 1,
+                attribute: 'vets',
+                addedId: 1
+              }
+            },
+            user: {
+              addedTo: {
+                verb: 'addedTo',
+                id: 1,
+                attribute: 'patients',
+                addedId: 1
+              }
+            }
+
+          }, done);
+
+          socket2.put('/user/1/patients/1', {}, function (body, jwr) {
+            if (jwr.error) { return done(jwr.error); }
+            // Otherwise, the event handler above should fire (or this test will time out and fail).
+          });
 
         });
 
