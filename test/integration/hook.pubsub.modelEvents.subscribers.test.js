@@ -639,7 +639,7 @@ describe('pubsub :: ', function() {
 
       });
 
-      describe.only('replacing pets of a user with PUT /user/1/pets where pets->owner is a many-to-one relationship', function () {
+      describe('replacing pets of a user with PUT /user/1/pets where pets->owner is a many-to-one relationship', function () {
 
         describe('and some of the replacement pets were already linked to owners', function() {
 
@@ -650,7 +650,7 @@ describe('pubsub :: ', function() {
             };
           });
 
-          it('should cause an `updated` notification to be received by all subscribers to the replacement child records, an `addedTo` notification to be received by all subscribers to the new parent record, and a `removedFrom` notification to be received by all subscribers to any "stolen" child\'s former parent record', function(done) {
+          it('should cause an `updated` notification to be received by all subscribers to the replacement child records, an `addedTo` notification to be received by all subscribers to the new parent record, a `removedFrom` notification to be received by all subscribers to the new parent record (about replaced children) and a `removedFrom` notification to be received by all subscribers to any "stolen" child\'s former parent record', function(done) {
 
             expectNotifications({
               user: {
@@ -710,38 +710,50 @@ describe('pubsub :: ', function() {
       });
 
 
-      describe('adding a patient to a user with PUT /user/1/patients/1 where patients->vets is a many-to-many relationship', function () {
+      describe.only('replacing patients of a user with PUT /user/1/patients where patients->vets is a many-to-many relationship', function () {
 
         before(function() {
           bootstrapModels = {
-            user: [{name: 'bert'}],
-            pet: [{ name: 'alice' }]
+            pet: [{ name: 'alice' }, { name: 'mr. bailey'}, {name: 'tex'}],
+            user: [{name: 'bert', patients: [1,2]}],
           };
         });
 
-        it('should cause an `addedTo` notification to be received by all subscribers to the child record', function(done) {
+        it('should cause an `updated` notification to be received by all subscribers to the replacement child records, an `addedTo` notification to be received by all subscribers to the new parent record, and a `removedFrom` notification to be received by all subscribers to the new parent record (about replaced children)', function(done) {
 
           expectNotifications({
             pet: {
-              addedTo: {
+              addedTex: {
                 verb: 'addedTo',
-                id: 1,
+                id: 3,
                 attribute: 'vets',
                 addedId: 1
+              },
+              removedAlice: {
+                verb: 'removedFrom',
+                id: 1,
+                attribute: 'vets',
+                removedId: 1
               }
             },
             user: {
-              addedTo: {
+              addedTex: {
                 verb: 'addedTo',
                 id: 1,
                 attribute: 'patients',
-                addedId: 1
+                addedId: 3
+              },
+              removedAlice: {
+                verb: 'removedFrom',
+                id: 1,
+                attribute: 'patients',
+                removedId: 1
               }
             }
 
           }, done);
 
-          socket2.put('/user/1/patients/1', {}, function (body, jwr) {
+          socket2.put('/user/1/patients', [2,3], function (body, jwr) {
             if (jwr.error) { return done(jwr.error); }
             // Otherwise, the event handler above should fire (or this test will time out and fail).
           });
