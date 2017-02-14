@@ -561,6 +561,84 @@ describe('pubsub :: ', function() {
 
       });
 
+
+      describe('removing a pet from a user with DELETE /user/1/pets/1 where pets->owner is a many-to-one relationship', function () {
+
+        before(function() {
+          bootstrapModels = {
+            user: [{ name: 'bert' }],
+            pet: [{ name: 'alice', owner: 1}]
+          };
+        });
+
+        it('should cause a `removedFrom` notification to be received by all subscribers to the parent record, and an `updated` notification to be received by all subscribers to the child record', function(done) {
+
+          expectNotifications({
+            user: {
+              removedFrom: {
+                verb: 'removedFrom',
+                id: 1,
+                attribute: 'pets',
+                removedId: 1
+              },
+            },
+            pet: {
+              updatedAlice: {
+                verb: 'updated',
+                id: 1,
+                'data.owner': null
+              }
+            }
+          }, done);
+
+          socket2.delete('/user/1/pets/1', {}, function (body, jwr) {
+            if (jwr.error) { return done(jwr.error); }
+            // Otherwise, the event handler above should fire (or this test will time out and fail).
+          });
+        });
+
+      });
+
+      describe('removing a patient from a user with DELETE /user/1/patients/1 where patients->vets is a many-to-many relationship', function () {
+
+        before(function() {
+          bootstrapModels = {
+            user: [{name: 'bert'}],
+            pet: [{ name: 'alice', vets: [1] }]
+          };
+        });
+
+        it('should cause a `removedFrom` notification to be received by all subscribers to the child record', function(done) {
+
+          expectNotifications({
+            pet: {
+              removedFrom: {
+                verb: 'removedFrom',
+                id: 1,
+                attribute: 'vets',
+                removedId: 1
+              }
+            },
+            user: {
+              removedFrom: {
+                verb: 'removedFrom',
+                id: 1,
+                attribute: 'patients',
+                removedId: 1
+              }
+            }
+
+          }, done);
+
+          socket2.delete('/user/1/patients/1', {}, function (body, jwr) {
+            if (jwr.error) { return done(jwr.error); }
+            // Otherwise, the event handler above should fire (or this test will time out and fail).
+          });
+
+        });
+
+      });
+
       function expectNotifications(notifications, done) {
         var checklist = {};
         var errored = false;
