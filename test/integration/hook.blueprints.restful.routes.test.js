@@ -459,17 +459,18 @@ describe('blueprints :: ', function() {
 
           describe('a get request to /:model/:parentid/:association/:id', function() {
 
-            it('should return JSON for the specified instance in the collection of the test model', function(done) {
+            it('should return a 404', function(done) {
               sailsApp.models.pet.createEach([{name: 'bubbles'}, {name: 'dempsey'}]).meta({fetch: true}).exec(function(err, pets) {
                 sailsApp.models.user.create({name: 'roger', pets: _.pluck(pets,'id')}).meta({fetch: true}).exec(function(err) {
                   if (err) {return done (err);}
                   sailsApp.request('get /user/1/pets/2', function (err, resp, data) {
-                    if (err) {return done (err);}
-                    assert.equal(data.length, 1);
-                    assert.equal(data[0].name, 'dempsey');
-                    assert.equal(data[0].id, 2);
-                    assert.equal(data[0].owner, 1);
-                    return done();
+                    if (err) {
+                      if (err.status && err.status === 404) {
+                        return done();
+                      }
+                      return done(new Error('Should have responded with a 404 error, but instead got:' + util.inspect(err, {depth: null})));
+                    }
+                    return done(new Error('Should have responded with a 404 error, but instead got:' + util.inspect(data, {depth: null})));
                   });
                 });
               });
