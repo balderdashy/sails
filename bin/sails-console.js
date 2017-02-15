@@ -4,6 +4,7 @@
 
 var nodepath = require('path');
 var REPL = require('repl');
+var stream = require('stream');
 var _ = require('@sailshq/lodash');
 var chalk = require('chalk');
 var CaptainsLog = require('captains-log');
@@ -110,15 +111,57 @@ module.exports = function() {
       return SharedErrorHelpers.fatal.failedToLoadSails(err);
     }
 
+    // Get the current global _ value, if any.
+    var underscore = global._;
+
     cliLogger.info('Welcome to the Sails console.');
     cliLogger.info(chalk.grey('( to exit, type ' + '<CTRL>+<C>' + ' )'));
     console.log();
 
+    // Define a custom output stream that will replace global._ after every command.
+    // This works around the issue where the Node REPL uses the underscore to hold
+    // the result of the last command.
+    var outputStream = (function() {
+      // Create a new writable stream.
+      var writableStream = new stream.Writable();
+      // Add the `_write` method to it (can't do this in the constructor b/c that's not supported in older Node versions).
+      writableStream._write = function(chunk, encoding, callback) {
+        // Ignore the output generated the first time the global _ is set in Node 6+.
+        if (chunk.toString('utf8').indexOf('Expression assignment to _ now disabled.') !== -1) {
+          return callback();
+        }
+        // Set the global underscore again (for Node < 6).
+        // See code after `REPL.start` for more info.
+        if (typeof underscore !== 'undefined') {
+          global._ = underscore;
+        }
+        // Forward the chunk on to stdout.
+        process.stdout.write(chunk, encoding, callback);
+      };
+      // Return the new writable stream.
+      return writableStream;
+    })();
+
     // Start a REPL.
     var repl = REPL.start({
       prompt: 'sails> ',
-      useGlobal: true
+      useGlobal: true,
+      input: process.stdin,
+      output: outputStream,
+      // Set `terminal` to true to allow arrow keys to work correctly,
+      // even when we're using a custom output stream.
+      terminal: true
     });
+
+    // Replace the global _ value, if any.  This will deactivate the underscore behavior
+    // in the Node REPL for Node 6+, which conflicts with the global _ in Sails apps.
+    // Note that in Node 6+ this typically causes the REPL to output "Expression assignment to _ now disabled.",
+    // which unfortunately gets put right next to the `sails>` prompt, making for a very confusing
+    // introduction to the Sails console.  In the custom output stream we defined above, we filter out
+    // that message.
+    if (typeof underscore !== 'undefined') {
+      global._ = underscore;
+    }
 
     // Now attempt to read the existing REPL history file, if there is one.
     var pathToReplHistoryFile = nodepath.join(sails.config.paths.tmp, '.node_history');
