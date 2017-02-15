@@ -60,7 +60,12 @@ describe('New app generator', function() {
         fs.writeFile(path.resolve(appName, 'test'), '', function(err) {
           if (err) { return done(new Error(err)); }
           exec('node '+ sailsbin + ' new ' + appName, function(err, dumb, result) {
-            assert.notEqual(result.indexOf('error'), -1);
+            // In Node v0.10.x on some environments (like in Appveyor), this just
+            // returns an Error in `err` instead of a result, so account for that.
+            if (process.versions.node.split('.')[0] === '0' && process.versions.node.split('.')[1] === '10' && err) {
+              return done();
+            }
+            assert(result.indexOf('error') > -1, 'Should have received an error, but instead got: ' + result);
             done();
           });
         });
@@ -86,7 +91,7 @@ describe('New app generator', function() {
         fs.writeFile(path.resolve(appName, 'test'), '', function(err) {
           if (err) { return done(new Error(err)); }
           exec('node '+ sailsbin + ' generate new ' + appName, function(err, dumb, result) {
-            assert.notEqual(result.indexOf('error'), -1);
+            assert(result.indexOf('error') > -1, 'Should have received an error, but instead got: ' + result);
             done();
           });
         });
@@ -120,7 +125,7 @@ describe('New app generator', function() {
       exec( 'node ' + path.resolve('..', sailsbin) + ' new . --fast --without=lodash,async', function(err, dumb, result) {
         // move from app to its parent directory
         process.chdir('../');
-        assert.notEqual(result.indexOf('error'), -1);
+        assert(result.indexOf('error') > -1, 'Should have received an error, but instead got: ' + result);
         done();
       });
     });
