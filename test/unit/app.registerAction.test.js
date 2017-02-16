@@ -16,7 +16,7 @@ describe('sails.registerAction() :: ', function() {
       hooks: {grunt: false, views: false, blueprints: false, policies: false, i18n: false},
       log: {level: 'error'},
       routes: {
-        '/foo': ''
+        '/foo': {}
       }
     }, function(err, _sails) {
       if (err) { return done(err); }
