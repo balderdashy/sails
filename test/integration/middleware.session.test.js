@@ -210,7 +210,7 @@ describe('middleware :: ', function() {
 
       });
 
-      describe('requesting a route listed in sails.config.session.routesDisabled (with default settings)', function() {
+      describe('requesting a route with default `isSessionDisabled` setting', function() {
 
         // Lift a Sails instance in production mode
         var app = Sails();
@@ -257,8 +257,9 @@ describe('middleware :: ', function() {
 
       });
 
-      describe('requesting a route listed in sails.config.session.routesDisabled (custom settings)', function() {
+      describe('requesting a route with custom `isSessionDisabled` setting', function() {
 
+        var fooRegexp = require('path-to-regexp')('/foo/:id/bar/');
         // Lift a Sails instance in production mode
         var app = Sails();
         before(function (done){
@@ -269,7 +270,19 @@ describe('middleware :: ', function() {
             log: {level: 'silent'},
             session: {
               secret: 'abc123',
-              routesDisabled: ['/test', '/foo/:id/bar/', 'POST /bar', 'ALL /baz']
+              isSessionDisabled: function(req) {
+                var path = req.path;
+                var method = req.method;
+                var CRUD = ['GET', 'PUT', 'POST', 'PATCH', 'DELETE'];
+                if (
+                  (path === '/test' && _.contains(CRUD, method)) ||
+                  (path === '/bar' && method === 'POST') ||
+                  (path === '/baz') ||
+                  (path.match(fooRegexp))
+                ) {
+                    return true;
+                  }
+              }
             },
             hooks: {grunt: false},
             routes: {
@@ -311,7 +324,7 @@ describe('middleware :: ', function() {
             );
           });
 
-          it('there should be no `set-cookie` header in the response when requesting via HEAD', function(done) {
+          it('there should be a `set-cookie` header in the response when requesting via HEAD', function(done) {
 
             request(
               {
@@ -511,7 +524,7 @@ describe('middleware :: ', function() {
 
       });
 
-      describe('requesting a route listed in sails.config.session.routesDisabled', function() {
+      describe('requesting a route disabled by sails.config.session.isSessionDisabled', function() {
 
         // Lift a Sails instance in production mode
         var app = Sails();
@@ -523,7 +536,10 @@ describe('middleware :: ', function() {
             log: {level: 'silent'},
             session: {
               secret: 'abc123',
-              routesDisabled: ['/test']
+              isSessionDisabled: function(req) {
+                var CRUD = ['GET', 'PUT', 'POST', 'PATCH', 'DELETE'];
+                return (req.path === '/test' && _.contains(CRUD, req.method))
+              }
             },
             hooks: {grunt: false},
             routes: {
