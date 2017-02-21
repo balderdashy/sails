@@ -585,7 +585,169 @@ describe('blueprints :: ', function() {
 
         });
 
+        describe('with a custom parseRequest for all blueprints', function() {
+
+          before(function() {
+            extraSailsConfig = {
+              blueprints: {
+                parseRequest: function(req) {
+                  var queryOptions = req._sails.hooks.blueprints.parseRequest(req);
+                  if (queryOptions.populates.pets) {
+                    queryOptions.populates.pets.limit = 1;
+                  }
+                  return queryOptions;
+                }
+              },
+              orm: {
+                moduleDefinitions: {
+                  models: {
+                    user: {
+                      attributes: {
+                        name: 'string',
+                        pets: {
+                          collection: 'pet',
+                          via: 'owner'
+                        }
+                      }
+                    },
+                    pet: {
+                      attributes: {
+                        name: 'string',
+                        owner: {
+                          model: 'user'
+                        }
+                      }
+                    }
+                  },
+                }
+              }
+            };
+          });
+
+          after(function() {
+            extraSailsConfig = {};
+          });
+
+          it('the custom `parseRequest` should be applied to the `find` blueprint', function(done) {
+
+            sailsApp.models.pet.createEach([{name: 'alice'}, {name: 'rex'}]).meta({fetch: true}).exec(function(err, pets) {
+              if (err) {return done(err);}
+              sailsApp.models.user.create({name: 'bill', pets: _.pluck(pets, sailsApp.models.pet.primaryKey)}).exec(function(err, bill) {
+                if (err) {return done(err);}
+                sailsApp.request('get /user/' + bill[sailsApp.models.user.primaryKey], function (err, resp, data) {
+                  if (err) {return done (err);}
+                  assert.equal(data.name, 'bill');
+                  assert(data.pets, 'Record should have `pets` key, but none was found.  Full record: ' + util.inspect(data, {depth: null}));
+                  assert.equal(data.pets.length, 1);
+                  return done();
+                });
+              });
+            });
+
+          });
+
+          it('the custom `parseRequest` should be applied to the `create` blueprint', function(done) {
+
+            sailsApp.models.pet.createEach([{name: 'june'}, {name: 'jane'}]).meta({fetch: true}).exec(function(err, pets) {
+              if (err) {return done(err);}
+              sailsApp.request('post /user', {name: 'bob', pets: _.pluck(pets, sailsApp.models.pet.primaryKey)}, function (err, resp, data) {
+                if (err) {return done (err);}
+                assert.equal(data.name, 'bob');
+                assert(data.pets, 'Record should have `pets` key, but none was found.  Full record: ' + util.inspect(data, {depth: null}));
+                assert.equal(data.pets.length, 1);
+                return done();
+              });
+            });
+
+          });
+
+
+        });
+
+        describe('with a custom parseRequest for a specific route', function() {
+
+          before(function() {
+            extraSailsConfig = {
+              routes: {
+                'GET /user/:id': {
+                  action: 'user/findOne',
+                  model: 'user',
+                  parseRequest: function(req) {
+                    var queryOptions = req._sails.hooks.blueprints.parseRequest(req);
+                    queryOptions.populates.pets.limit = 1;
+                    return queryOptions;
+                  }
+                }
+              },
+              orm: {
+                moduleDefinitions: {
+                  models: {
+                    user: {
+                      attributes: {
+                        name: 'string',
+                        pets: {
+                          collection: 'pet',
+                          via: 'owner'
+                        }
+                      }
+                    },
+                    pet: {
+                      attributes: {
+                        name: 'string',
+                        owner: {
+                          model: 'user'
+                        }
+                      }
+                    }
+                  },
+                }
+              }
+            };
+          });
+
+          after(function() {
+            extraSailsConfig = {};
+          });
+
+          it('the custom `parseRequest` should be applied to the specific route', function(done) {
+
+            sailsApp.models.pet.createEach([{name: 'alice'}, {name: 'rex'}]).meta({fetch: true}).exec(function(err, pets) {
+              if (err) {return done(err);}
+              sailsApp.models.user.create({name: 'bill', pets: _.pluck(pets, sailsApp.models.pet.primaryKey)}).exec(function(err, bill) {
+                if (err) {return done(err);}
+                sailsApp.request('get /user/' + bill[sailsApp.models.user.primaryKey], function (err, resp, data) {
+                  if (err) {return done (err);}
+                  assert.equal(data.name, 'bill');
+                  assert(data.pets, 'Record should have `pets` key, but none was found.  Full record: ' + util.inspect(data, {depth: null}));
+                  assert.equal(data.pets.length, 1);
+                  return done();
+                });
+              });
+            });
+
+          });
+
+          it('the custom `parseRequest` should NOT be applied to a different route blueprint', function(done) {
+
+            sailsApp.models.pet.createEach([{name: 'june'}, {name: 'jane'}]).meta({fetch: true}).exec(function(err, pets) {
+              if (err) {return done(err);}
+              sailsApp.request('post /user', {name: 'bob', pets: _.pluck(pets, sailsApp.models.pet.primaryKey)}, function (err, resp, data) {
+                if (err) {return done (err);}
+                assert.equal(data.name, 'bob');
+                assert(data.pets, 'Record should have `pets` key, but none was found.  Full record: ' + util.inspect(data, {depth: null}));
+                assert.equal(data.pets.length, 2);
+                return done();
+              });
+            });
+
+          });
+
+
+        });
+
       });
+
+
 
       describe('filtering in the query string :: ', function() {
 
