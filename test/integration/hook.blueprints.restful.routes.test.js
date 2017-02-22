@@ -598,6 +598,9 @@ describe('blueprints :: ', function() {
                   return queryOptions;
                 }
               },
+              routes: {
+                'GET /yolo/:id': 'user/findOne',
+              },
               orm: {
                 moduleDefinitions: {
                   models: {
@@ -661,6 +664,24 @@ describe('blueprints :: ', function() {
 
           });
 
+          it('the custom `parseBlueprintOptions` should be applied to a user-defined (i.e. not shadow) route', function(done) {
+
+            sailsApp.models.pet.createEach([{name: 'lolly'}, {name: 'dolly'}]).meta({fetch: true}).exec(function(err, pets) {
+              if (err) {return done(err);}
+              sailsApp.models.user.create({name: 'bruce', pets: _.pluck(pets, sailsApp.models.pet.primaryKey)}).exec(function(err, bruce) {
+                if (err) {return done(err);}
+                sailsApp.request('get /yolo/' + bruce[sailsApp.models.user.primaryKey], function (err, resp, data) {
+                  if (err) {return done (err);}
+                  assert.equal(data.name, 'bruce');
+                  assert(data.pets, 'Record should have `pets` key, but none was found.  Full record: ' + util.inspect(data, {depth: null}));
+                  assert.equal(data.pets.length, 1);
+                  return done();
+                });
+              });
+            });
+
+
+          });
 
         });
 
@@ -671,7 +692,6 @@ describe('blueprints :: ', function() {
               routes: {
                 'GET /user/:id': {
                   action: 'user/findOne',
-                  model: 'user',
                   parseBlueprintOptions: function(req) {
                     var queryOptions = req._sails.hooks.blueprints.parseBlueprintOptions(req);
                     queryOptions.populates.pets.limit = 1;
