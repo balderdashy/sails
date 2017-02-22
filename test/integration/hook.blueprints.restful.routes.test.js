@@ -438,7 +438,7 @@ describe('blueprints :: ', function() {
           });
 
 
-          describe('a get request to /:model/:parentid/:association', function() {
+          describe('a get request to /:model/:parentid/:association for a plural association', function() {
 
             it('should return JSON for the specified collection of the test model', function(done) {
               sailsApp.models.pet.create({name: 'spot'}).meta({fetch: true}).exec(function(err, spot) {
@@ -452,6 +452,54 @@ describe('blueprints :: ', function() {
                     assert.equal(data[0].owner, 1);
                     return done();
                   });
+                });
+              });
+            });
+          });
+
+          describe('a get request to /:model/:parentid/:association for a plural association with no associated records', function() {
+
+            it('should return JSON for the specified collection of the test model', function(done) {
+              sailsApp.models.user.create({name: 'will'}).meta({fetch: true}).exec(function(err, will) {
+                if (err) {return done (err);}
+                sailsApp.request('get /user/1/pets', function (err, resp, data) {
+                  if (err) {return done (err);}
+                  assert.equal(data.length, 0);
+                  return done();
+                });
+              });
+            });
+          });
+
+          describe('a get request to /:model/:parentid/:association for a singular association', function() {
+
+            it('should return JSON for the specified collection of the test model', function(done) {
+              sailsApp.models.pet.create({name: 'spot'}).meta({fetch: true}).exec(function(err, spot) {
+                sailsApp.models.user.create({name: 'will', pets: [spot.id]}).meta({fetch: true}).exec(function(err, will) {
+                  if (err) {return done (err);}
+                  sailsApp.request('get /pet/1/owner', function (err, resp, data) {
+                    if (err) {return done (err);}
+                    assert.equal(data.name, 'will');
+                    assert.equal(data.id, 1);
+                    return done();
+                  });
+                });
+              });
+            });
+          });
+
+          describe('a get request to /:model/:parentid/:association for a singular association with no associated record', function() {
+
+            it('should return JSON for the specified collection of the test model', function(done) {
+              sailsApp.models.pet.create({name: 'spot'}).meta({fetch: true}).exec(function(err, spot) {
+                sailsApp.request('get /pet/1/owner', function (err, resp, data) {
+                  if (err) {
+                    if (err.status && err.status === 404) {
+                      return done();
+                    }
+                    return done(new Error('Should have responded with a 404 error, but instead got:' + util.inspect(err, {depth: null})));
+                  }
+                  return done(new Error('Should have responded with a 404 error, but instead got:' + util.inspect(data, {depth: null})));
                 });
               });
             });
