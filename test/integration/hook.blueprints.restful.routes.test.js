@@ -585,13 +585,13 @@ describe('blueprints :: ', function() {
 
         });
 
-        describe('with a custom parseRequest for all blueprints', function() {
+        describe('with a custom parseBlueprintOptions for all blueprints', function() {
 
           before(function() {
             extraSailsConfig = {
               blueprints: {
-                parseRequest: function(req) {
-                  var queryOptions = req._sails.hooks.blueprints.parseRequest(req);
+                parseBlueprintOptions: function(req) {
+                  var queryOptions = req._sails.hooks.blueprints.parseBlueprintOptions(req);
                   if (queryOptions.populates.pets) {
                     queryOptions.populates.pets.limit = 1;
                   }
@@ -628,7 +628,7 @@ describe('blueprints :: ', function() {
             extraSailsConfig = {};
           });
 
-          it('the custom `parseRequest` should be applied to the `find` blueprint', function(done) {
+          it('the custom `parseBlueprintOptions` should be applied to the `find` blueprint', function(done) {
 
             sailsApp.models.pet.createEach([{name: 'alice'}, {name: 'rex'}]).meta({fetch: true}).exec(function(err, pets) {
               if (err) {return done(err);}
@@ -646,7 +646,7 @@ describe('blueprints :: ', function() {
 
           });
 
-          it('the custom `parseRequest` should be applied to the `create` blueprint', function(done) {
+          it('the custom `parseBlueprintOptions` should be applied to the `create` blueprint', function(done) {
 
             sailsApp.models.pet.createEach([{name: 'june'}, {name: 'jane'}]).meta({fetch: true}).exec(function(err, pets) {
               if (err) {return done(err);}
@@ -664,7 +664,7 @@ describe('blueprints :: ', function() {
 
         });
 
-        describe('with a custom parseRequest for a specific route', function() {
+        describe('with a custom parseBlueprintOptions for a specific route', function() {
 
           before(function() {
             extraSailsConfig = {
@@ -672,8 +672,8 @@ describe('blueprints :: ', function() {
                 'GET /user/:id': {
                   action: 'user/findOne',
                   model: 'user',
-                  parseRequest: function(req) {
-                    var queryOptions = req._sails.hooks.blueprints.parseRequest(req);
+                  parseBlueprintOptions: function(req) {
+                    var queryOptions = req._sails.hooks.blueprints.parseBlueprintOptions(req);
                     queryOptions.populates.pets.limit = 1;
                     return queryOptions;
                   }
@@ -709,7 +709,7 @@ describe('blueprints :: ', function() {
             extraSailsConfig = {};
           });
 
-          it('the custom `parseRequest` should be applied to the specific route', function(done) {
+          it('the custom `parseBlueprintOptions` should be applied to the specific route', function(done) {
 
             sailsApp.models.pet.createEach([{name: 'alice'}, {name: 'rex'}]).meta({fetch: true}).exec(function(err, pets) {
               if (err) {return done(err);}
@@ -727,7 +727,7 @@ describe('blueprints :: ', function() {
 
           });
 
-          it('the custom `parseRequest` should NOT be applied to a different route blueprint', function(done) {
+          it('the custom `parseBlueprintOptions` should NOT be applied to a different route blueprint', function(done) {
 
             sailsApp.models.pet.createEach([{name: 'june'}, {name: 'jane'}]).meta({fetch: true}).exec(function(err, pets) {
               if (err) {return done(err);}
