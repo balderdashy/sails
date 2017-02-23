@@ -59,7 +59,7 @@ describe('req.session', function (){
 
     });
 
-    describe('with routes in the routesDisabled list', function() {
+    describe('with routes disabled by the default `isSessionDisabled` function', function() {
 
       it('should not exist', function (done) {
         app.request({
@@ -78,7 +78,7 @@ describe('req.session', function (){
 
     });
 
-    describe('with routes NOT in the routesDisabled list', function() {
+    describe('with routes NOT disabled by the default `isSessionDisabled` function', function() {
 
       it('should exist', function (done) {
         app.request({
