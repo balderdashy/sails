@@ -815,118 +815,435 @@ describe('blueprints :: ', function() {
 
       });
 
+      describe('using query string params :: ', function() {
 
+        describe('with the `find` blueprint :: ', function() {
 
-      describe('filtering in the query string :: ', function() {
+          describe('filtering :: ', function() {
 
-        before(function() {
-          extraSailsConfig = {
-            orm: {
-              moduleDefinitions: {
-                models: {
-                  user: {
-                    attributes: {
-                      name: 'string'
+            before(function() {
+              extraSailsConfig = {
+                orm: {
+                  moduleDefinitions: {
+                    models: {
+                      user: {
+                        attributes: {
+                          name: 'string'
+                        }
+                      }
                     }
                   }
                 }
-              }
-            }
-          };
-        });
-
-        after(function() {
-          extraSailsConfig = {};
-        });
-
-        it('a get request to /:model?name=scott should respond with the correctly filtered instances', function(done) {
-          sailsApp.models.user.createEach([{name: 'scott'}, {name: 'mike'}]).exec(function(err) {
-            if (err) {return done(err);}
-            sailsApp.request('get /user?name=scott', function (err, resp, data) {
-              assert(!err, err);
-              assert.equal(data.length, 1);
-              assert.equal(data[0].name, 'scott');
-              done();
+              };
             });
-          });
-        });
 
-        it('a get request to /:model?where={...} should respond with the correctly filtered instances', function(done) {
-          sailsApp.models.user.createEach([{name: 'scott'}, {name: 'mike'}, {name: 'rachael'}, {name: 'cody'}, {name: 'irl'}]).exec(function(err) {        if (err) {return done(err);}
-            sailsApp.request('get /user?where={"name": {">": "irl"}}', function (err, resp, data) {
-              assert(!err, err);
-              assert.equal(data.length, 3);
-              var names = _.pluck(data, 'name');
-              assert(_.contains(names, 'scott'));
-              assert(_.contains(names, 'mike'));
-              assert(_.contains(names, 'rachael'));
-              done();
+            after(function() {
+              extraSailsConfig = {};
             });
+
+            it('a get request to /:model?name=scott should respond with the correctly filtered instances', function(done) {
+              sailsApp.models.user.createEach([{name: 'scott'}, {name: 'mike'}]).exec(function(err) {
+                if (err) {return done(err);}
+                sailsApp.request('get /user?name=scott', function (err, resp, data) {
+                  assert(!err, err);
+                  assert.equal(data.length, 1);
+                  assert.equal(data[0].name, 'scott');
+                  done();
+                });
+              });
+            });
+
+            it('a get request to /:model?where={...} should respond with the correctly filtered instances', function(done) {
+              sailsApp.models.user.createEach([{name: 'scott'}, {name: 'mike'}, {name: 'rachael'}, {name: 'cody'}, {name: 'irl'}]).exec(function(err) {        if (err) {return done(err);}
+                sailsApp.request('get /user?where={"name": {">": "irl"}}', function (err, resp, data) {
+                  assert(!err, err);
+                  assert.equal(data.length, 3);
+                  var names = _.pluck(data, 'name');
+                  assert(_.contains(names, 'scott'));
+                  assert(_.contains(names, 'mike'));
+                  assert(_.contains(names, 'rachael'));
+                  done();
+                });
+              });
+            });
+
+
           });
-        });
 
+          describe('using sort, skip and limit in the query string :: ', function() {
 
-      });
-
-      describe('using sort, skip and limit in the query string :: ', function() {
-
-        before(function() {
-          extraSailsConfig = {
-            orm: {
-              moduleDefinitions: {
-                models: {
-                  user: {
-                    attributes: {
-                      name: 'string'
+            before(function() {
+              extraSailsConfig = {
+                orm: {
+                  moduleDefinitions: {
+                    models: {
+                      user: {
+                        attributes: {
+                          name: 'string'
+                        }
+                      }
                     }
                   }
                 }
-              }
-            }
-          };
-        });
-
-        after(function() {
-          extraSailsConfig = {};
-        });
-
-        it('a get request to /:model?sort=name%20asc&limit=2&skip=1 should respond with the correctly filtered instances', function(done) {
-          sailsApp.models.user.createEach([{name: 'scott'}, {name: 'mike'}, {name: 'rachael'}, {name: 'cody'}, {name: 'irl'}]).exec(function(err) {
-            if (err) {return done(err);}
-            sailsApp.request('get /user?sort=name%20asc&limit=2&skip=1', function (err, resp, data) {
-              assert(!err, err);
-              assert.equal(data.length, 2);
-              assert.equal(data[0].name, 'irl');
-              assert.equal(data[1].name, 'mike');
-              done();
+              };
             });
+
+            after(function() {
+              extraSailsConfig = {};
+            });
+
+            it('a get request to /:model?sort=name%20asc&limit=2&skip=1 should respond with the correctly filtered instances', function(done) {
+              sailsApp.models.user.createEach([{name: 'scott'}, {name: 'mike'}, {name: 'rachael'}, {name: 'cody'}, {name: 'irl'}]).exec(function(err) {
+                if (err) {return done(err);}
+                sailsApp.request('get /user?sort=name%20asc&limit=2&skip=1', function (err, resp, data) {
+                  assert(!err, err);
+                  assert.equal(data.length, 2);
+                  assert.equal(data[0].name, 'irl');
+                  assert.equal(data[1].name, 'mike');
+                  done();
+                });
+              });
+            });
+
+            it('a get request to /:model?sort=name%20desc&limit=2&skip=1 should respond with the correctly filtered instances', function(done) {
+              sailsApp.models.user.createEach([{name: 'scott'}, {name: 'mike'}, {name: 'rachael'}, {name: 'cody'}, {name: 'irl'}]).exec(function(err) {
+                if (err) {return done(err);}
+                sailsApp.request('get /user?sort=name%20desc&limit=2&skip=1', function (err, resp, data) {
+                  assert(!err, err);
+                  assert.equal(data.length, 2);
+                  assert.equal(data[0].name, 'rachael');
+                  assert.equal(data[1].name, 'mike');
+                  done();
+                });
+              });
+            });
+
+            it('a get request to /:model?sort={"name":-1}&limit=2&skip=1 should respond with the correctly filtered instances', function(done) {
+              sailsApp.models.user.createEach([{name: 'scott'}, {name: 'mike'}, {name: 'rachael'}, {name: 'cody'}, {name: 'irl'}]).exec(function(err) {
+                if (err) {return done(err);}
+                sailsApp.request('get /user?sort={"name":-1}&limit=2&skip=1', function (err, resp, data) {
+                  assert(!err, err);
+                  assert.equal(data.length, 2);
+                  assert.equal(data[0].name, 'rachael');
+                  assert.equal(data[1].name, 'mike');
+                  done();
+                });
+              });
+            });
+
           });
+
+          describe('using `select` and `omit` in the query string', function() {
+
+            before(function() {
+              extraSailsConfig = {
+                orm: {
+                  moduleDefinitions: {
+                    models: {
+                      user: {
+                        schema: true, // So that `omit` works
+                        attributes: {
+                          name: 'string',
+                          favoriteColor: 'string',
+                          luckyNumber: 'number'
+                        }
+                      }
+                    }
+                  }
+                }
+              };
+            });
+
+            after(function() {
+              extraSailsConfig = {};
+            });
+
+            it('a get request to /:model?select=name, luckyNumber should respond with the correctly projected instances', function(done) {
+              sailsApp.models.user.createEach([
+                {name: 'scott', favoriteColor: 'grey', luckyNumber: 3},
+                {name: 'mike', favoriteColor: 'blue', luckyNumber: 25},
+                {name: 'rachael', favoriteColor: 'red', luckyNumber: 12},
+                {name: 'cody', favoriteColor: 'blue', luckyNumber: 9},
+                {name: 'irl', favoriteColor: 'black', luckyNumber: 66}
+              ]).exec(function(err) {
+                if (err) {return done(err);}
+                sailsApp.request('get /user?select=name, luckyNumber', function (err, resp, data) {
+                  assert(!err, err);
+                  assert.equal(data.length, 5);
+                  _.each(data, function(row) {
+                    assert(row.name);
+                    assert(row.luckyNumber);
+                    assert(!row.favoriteColor, 'Got favoriteColor for `' + row.name + '`, even though it wasn\'t selected!');
+                  });
+                  done();
+                });
+              });
+            });
+
+            it('a get request to /:model?omit=favoriteColor, luckyNumber should respond with the correctly projected instances', function(done) {
+              sailsApp.models.user.createEach([
+                {name: 'scott', favoriteColor: 'grey', luckyNumber: 3},
+                {name: 'mike', favoriteColor: 'blue', luckyNumber: 25},
+                {name: 'rachael', favoriteColor: 'red', luckyNumber: 12},
+                {name: 'cody', favoriteColor: 'blue', luckyNumber: 9},
+                {name: 'irl', favoriteColor: 'black', luckyNumber: 66}
+              ]).exec(function(err) {
+                if (err) {return done(err);}
+                sailsApp.request('get /user?omit=favoriteColor, luckyNumber', function (err, resp, data) {
+                  assert(!err, err);
+                  assert.equal(data.length, 5);
+                  _.each(data, function(row) {
+                    assert(row.name);
+                    assert(!row.luckyNumber, 'Got luckyNumber for `' + row.name + '`, even though it was omitted!');
+                    assert(!row.favoriteColor, 'Got favoriteColor for `' + row.name + '`, even though it was omitted!');
+                  });
+                  done();
+                });
+              });
+            });
+
+          });
+
         });
 
-        it('a get request to /:model?sort=name%20desc&limit=2&skip=1 should respond with the correctly filtered instances', function(done) {
-          sailsApp.models.user.createEach([{name: 'scott'}, {name: 'mike'}, {name: 'rachael'}, {name: 'cody'}, {name: 'irl'}]).exec(function(err) {
-            if (err) {return done(err);}
-            sailsApp.request('get /user?sort=name%20desc&limit=2&skip=1', function (err, resp, data) {
-              assert(!err, err);
-              assert.equal(data.length, 2);
-              assert.equal(data[0].name, 'rachael');
-              assert.equal(data[1].name, 'mike');
-              done();
-            });
-          });
-        });
+        describe('with the `populate` blueprint :: ', function() {
 
-        it('a get request to /:model?sort={"name":-1}&limit=2&skip=1 should respond with the correctly filtered instances', function(done) {
-          sailsApp.models.user.createEach([{name: 'scott'}, {name: 'mike'}, {name: 'rachael'}, {name: 'cody'}, {name: 'irl'}]).exec(function(err) {
-            if (err) {return done(err);}
-            sailsApp.request('get /user?sort={"name":-1}&limit=2&skip=1', function (err, resp, data) {
-              assert(!err, err);
-              assert.equal(data.length, 2);
-              assert.equal(data[0].name, 'rachael');
-              assert.equal(data[1].name, 'mike');
-              done();
+          describe('filtering :: ', function() {
+
+            before(function() {
+              extraSailsConfig = {
+                orm: {
+                  moduleDefinitions: {
+                    models: {
+                      user: {
+                        attributes: {
+                          name: 'string',
+                          pets: {
+                            collection: 'pet',
+                            via: 'owner'
+                          }
+                        }
+                      },
+                      pet: {
+                        attributes: {
+                          name: 'string',
+                          owner: {
+                            model: 'user'
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              };
             });
+
+            after(function() {
+              extraSailsConfig = {};
+            });
+
+            it('a get request to /:model/:id/:association?name=alice should respond with the correctly filtered association records', function(done) {
+              sailsApp.models.user.create({name: 'scott'}).meta({fetch: true}).exec(function(err, scott) {
+                sailsApp.models.pet.createEach([{name: 'alice', owner: scott.id}, {name: 'mojo', owner: scott.id}]).exec(function(err) {
+                  if (err) {return done(err);}
+                  sailsApp.request('get /user/'+scott.id+'/pets?name=alice', function (err, resp, data) {
+                    assert(!err, err);
+                    assert.equal(data.length, 1);
+                    assert.equal(data[0].name, 'alice');
+                    done();
+                  });
+                });
+              });
+            });
+
+            it('a get request to /:model/:id/:association?where={...} should respond with the correctly filtered association records', function(done) {
+              sailsApp.models.user.create({name: 'scott'}).meta({fetch: true}).exec(function(err, scott) {
+                sailsApp.models.pet.createEach([{name: 'alice', owner: scott.id}, {name: 'mojo', owner: scott.id}, {name: 'bert', owner: scott.id}]).exec(function(err) {
+                  if (err) {return done(err);}
+                  sailsApp.request('get /user/'+scott.id+'/pets?where={"name":{">":"alice"}}', function (err, resp, data) {
+                    assert(!err, err);
+                    assert.equal(data.length, 2);
+                    var names = _.pluck(data, 'name');
+                    assert(_.contains(names, 'bert'));
+                    assert(_.contains(names, 'mojo'));
+                    done();
+                  });
+                });
+              });
+            });
+
           });
+
+          describe('using sort, skip and limit in the query string :: ', function() {
+
+            before(function() {
+              extraSailsConfig = {
+                orm: {
+                  moduleDefinitions: {
+                    models: {
+                      user: {
+                        attributes: {
+                          name: 'string',
+                          pets: {
+                            collection: 'pet',
+                            via: 'owner'
+                          }
+                        }
+                      },
+                      pet: {
+                        attributes: {
+                          name: 'string',
+                          owner: {
+                            model: 'user'
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              };
+            });
+
+            after(function() {
+              extraSailsConfig = {};
+            });
+
+            it('a get request to /:model/:id/:association?sort=name%20asc&limit=2&skip=1 should respond with the correctly filtered association records', function(done) {
+              sailsApp.models.user.create({name: 'scott'}).meta({fetch: true}).exec(function(err, scott) {
+                sailsApp.models.pet.createEach([{name: 'alice', owner: scott.id}, {name: 'mojo', owner: scott.id}, {name: 'bert', owner: scott.id}, {name: 'bandit', owner: scott.id}]).exec(function(err) {
+                  if (err) {return done(err);}
+                  sailsApp.request('get /user/'+scott.id+'/pets?sort=name%20asc&limit=2&skip=1', function (err, resp, data) {
+                    assert(!err, err);
+                    assert.equal(data.length, 2);
+                    var names = _.pluck(data, 'name');
+                    assert(_.contains(names, 'bandit'));
+                    assert(_.contains(names, 'bert'));
+                    done();
+                  });
+                });
+              });
+            });
+
+            it('a get request to /:model/:id/:association?sort=name%desc&limit=1&skip=1 should respond with the correctly filtered association records', function(done) {
+              sailsApp.models.user.create({name: 'scott'}).meta({fetch: true}).exec(function(err, scott) {
+                sailsApp.models.pet.createEach([{name: 'alice', owner: scott.id}, {name: 'mojo', owner: scott.id}, {name: 'bert', owner: scott.id}, {name: 'bandit', owner: scott.id}]).exec(function(err) {
+                  if (err) {return done(err);}
+                  sailsApp.request('get /user/'+scott.id+'/pets?sort=name%20desc&limit=1&skip=1', function (err, resp, data) {
+                    assert(!err, err);
+                    assert.equal(data.length, 1);
+                    var names = _.pluck(data, 'name');
+                    assert(_.contains(names, 'bert'));
+                    done();
+                  });
+                });
+              });
+            });
+
+            it('a get request to /:model/:id/:association?sort={"name":-1}&limit=2&skip=1 should respond with the correctly filtered association records', function(done) {
+              sailsApp.models.user.create({name: 'scott'}).meta({fetch: true}).exec(function(err, scott) {
+                sailsApp.models.pet.createEach([{name: 'alice', owner: scott.id}, {name: 'mojo', owner: scott.id}, {name: 'bert', owner: scott.id}, {name: 'bandit', owner: scott.id}]).exec(function(err) {
+                  if (err) {return done(err);}
+                  sailsApp.request('get /user/'+scott.id+'/pets?sort={"name":-1}&limit=1&skip=1', function (err, resp, data) {
+                    assert(!err, err);
+                    assert.equal(data.length, 1);
+                    var names = _.pluck(data, 'name');
+                    assert(_.contains(names, 'bert'));
+                    done();
+                  });
+                });
+              });
+            });
+
+          });
+
+          describe('using `select` and `omit` in the query string', function() {
+
+            before(function() {
+              extraSailsConfig = {
+                orm: {
+                  moduleDefinitions: {
+                    models: {
+                      schema: true, // so that `omit` works
+                      user: {
+                        attributes: {
+                          name: 'string',
+                          pets: {
+                            collection: 'pet',
+                            via: 'owner'
+                          }
+                        }
+                      },
+                      pet: {
+                        schema: true, // so that `omit` works
+                        attributes: {
+                          name: 'string',
+                          animal: 'string',
+                          age: 'number',
+                          owner: {
+                            model: 'user'
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              };
+            });
+
+            after(function() {
+              extraSailsConfig = {};
+            });
+
+            it('a get request to /:model/:id/:association?select=name, luckyNumber should respond with the correctly projected association records', function(done) {
+              sailsApp.models.user.create({name: 'scott'}).meta({fetch: true}).exec(function(err, scott) {
+                sailsApp.models.pet.createEach([
+                  {name: 'alice', animal: 'cat', age: 3, owner: scott.id},
+                  {name: 'bandit', animal: 'dog', age: 25, owner: scott.id},
+                  {name: 'bert', animal: 'cat', age: 12, owner: scott.id},
+                  {name: 'mojo', animal: 'cat', age: 9, owner: scott.id},
+                  {name: 'rex', animal: 'cheetah', age: 66, owner: scott.id}
+                ]).exec(function(err) {
+                  if (err) {return done(err);}
+                  sailsApp.request('get /user/' + scott.id + '/pets?select=name, age', function (err, resp, data) {
+                    assert(!err, err);
+                    assert.equal(data.length, 5);
+                    _.each(data, function(row) {
+                      assert(row.name);
+                      assert(row.age);
+                      assert(!row.animal, 'Got animal for `' + row.name + '`, even though it wasn\'t selected!');
+                    });
+                    done();
+                  });
+                });
+              });
+            });
+
+            it('a get request to /:model/:id/:association?omit=age, animal should respond with the correctly projected association records', function(done) {
+              sailsApp.models.user.create({name: 'scott'}).meta({fetch: true}).exec(function(err, scott) {
+                sailsApp.models.pet.createEach([
+                  {name: 'alice', animal: 'cat', age: 3, owner: scott.id},
+                  {name: 'bandit', animal: 'dog', age: 25, owner: scott.id},
+                  {name: 'bert', animal: 'cat', age: 12, owner: scott.id},
+                  {name: 'mojo', animal: 'cat', age: 9, owner: scott.id},
+                  {name: 'rex', animal: 'cheetah', age: 66, owner: scott.id}
+                ]).exec(function(err) {
+                  if (err) {return done(err);}
+                  sailsApp.request('get /user/' + scott.id + '/pets?omit=age, animal', function (err, resp, data) {
+                    assert(!err, err);
+                    assert.equal(data.length, 5);
+                    _.each(data, function(row) {
+                      assert(row.name);
+                      assert(!row.age, 'Got age for `' + row.name + '`, even though it was omitted!');
+                      assert(!row.animal, 'Got animal for `' + row.name + '`, even though it was omitted!');
+                    });
+                    done();
+                  });
+                });
+              });
+            });
+
+          });
+
         });
 
       });
