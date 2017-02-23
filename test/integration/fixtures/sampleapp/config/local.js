@@ -7,9 +7,6 @@ module.exports = {
       foo: '!bar!'
     }
   },
-  blueprints: {
-    defaultLimit: 10
-  },
   models: {
     migrate: 'alter'
   },
