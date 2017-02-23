@@ -144,12 +144,19 @@ module.exports = function() {
 
     // Start a REPL.
     var repl = REPL.start({
+      // Set the REPL prompt.
       prompt: 'sails> ',
+      // Allow the REPL to use the same global space as the Sails app, giving it access
+      // to things like globalized models.
       useGlobal: true,
-      input: process.stdin,
+      // Specify the custom output stream we created above.
       output: outputStream,
+      // When an output stream is specified, an input stream must be specified as well
+      // or else the REPL crashes.
+      input: process.stdin,
       // Set `terminal` to true to allow arrow keys to work correctly,
-      // even when we're using a custom output stream.
+      // even when we're using a custom output stream.  Otherwise pressing
+      // the up arrow just outputs ^[[A instead of accessing history.
       terminal: true
     });
 
