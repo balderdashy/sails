@@ -47,7 +47,7 @@ describe('controllers :: ', function() {
       Filesystem.writeSync({
         force: true,
         destination: 'api/controllers/TopLevelLegacyController.js',
-        string: 'module.exports = { fnAction: function (req, res) { res.send(\'legacy fn action!\'); }, machineAction: { exits: {success: {example: \'abc123\'} }, fn: function (inputs, exits) { exits.success(\'legacy machine action!\'); } } };'
+        string: 'module.exports = { fnAction: function (req, res) { res.send(\'legacy fn action!\'); }, machineAction: { exits: {success: {example: \'abc123\'} }, fn: function (inputs, exits) { exits.success(\'legacy machine action!\'); } }, underscore_action: function(req, res) { return res.send(); }, \'action-with-dashes\': function(req, res) {  return res.send(); } };'
       }).execSync();
       // Create a top-level action file with a req/res function.
       Filesystem.writeSync({
@@ -161,6 +161,8 @@ describe('controllers :: ', function() {
       var expectedActions = [
         'toplevellegacy/fnaction',
         'toplevellegacy/machineaction',
+        'toplevellegacy/underscore_action',
+        'toplevellegacy/action-with-dashes',
         'top-level-standalone-fn',
         'top-level-standalone-machine',
         'somefolder/someotherfolder/nestedlegacy/fnaction',
@@ -279,6 +281,8 @@ describe('controllers :: ', function() {
       var expectedActions = [
         'toplevellegacy/fnaction',
         'toplevellegacy/machineaction',
+        'toplevellegacy/underscore_action',
+        'toplevellegacy/action-with-dashes',
         'top-level-standalone-fn',
         'top-level-standalone-machine',
         'somefolder/someotherfolder/nestedlegacy/fnaction',

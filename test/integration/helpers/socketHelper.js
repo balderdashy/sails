@@ -18,7 +18,7 @@ module.exports = {
       url = options.url;
     }
 
-    if (method == 'get') {
+    if (method === 'get') {
       socket[method](url, function(response) {
         callback(null, response);
       });

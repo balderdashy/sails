@@ -16,7 +16,7 @@ var rconf = require('../lib/app/configuration/rc')();
  * Run the `build` or `buildProd` Grunt task (depending on whether this is the production environment)
  * for the Sails app in the current working directory.
  *
- * @see http://sailsjs.org/documentation/reference/command-line-interface/sails-www
+ * @see http://sailsjs.com/documentation/reference/command-line-interface/sails-www
  */
 
 module.exports = function() {

@@ -23,10 +23,10 @@ describe('hooks :: ', function() {
     describe('in api/hooks/shout', function(){
 
       before(function(done) {
-        fs.mkdirs(path.resolve(__dirname, "../..", appName, "api/hooks"), function(err) {
+        fs.mkdirs(path.resolve(__dirname, '../..', appName, 'api/hooks'), function(err) {
           if (err) {return done(err);}
           fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/shout/index.js'), path.resolve(__dirname,'../../testApp/api/hooks/shout/index.js'));
-          process.chdir(path.resolve(__dirname, "../..", appName));
+          process.chdir(path.resolve(__dirname, '../..', appName));
           done();
         });
       });
@@ -63,13 +63,13 @@ describe('hooks :: ', function() {
 
         it('should use merge the default hook config', function() {
 
-          assert(sails.config.shout.phrase == 'make it rain', sails.config.shout.phrase);
+          assert(sails.config.shout.phrase === 'make it rain', sails.config.shout.phrase);
 
         });
 
         it('should bind a /shout route that responds with the default phrase', function(done) {
-          httpHelper.testRoute('GET', "shout", function(err, resp, body) {
-            assert(body == 'make it rain');
+          httpHelper.testRoute('GET', 'shout', function(err, resp, body) {
+            assert(body === 'make it rain');
             return done();
           });
         });
@@ -106,7 +106,7 @@ describe('hooks :: ', function() {
         var sails;
 
         before(function(done) {
-          appHelper.liftQuiet({hooks: {shout: "false", pubsub: false}}, function(err, _sails) {
+          appHelper.liftQuiet({hooks: {shout: 'false', pubsub: false}}, function(err, _sails) {
             if (err) {return done(err);}
             sails = _sails;
             return done();
@@ -130,7 +130,7 @@ describe('hooks :: ', function() {
         var sails;
 
         before(function(done) {
-          appHelper.liftQuiet({shout: {phrase: "yolo"}, hooks:{pubsub: false}}, function(err, _sails) {
+          appHelper.liftQuiet({shout: {phrase: 'yolo'}, hooks:{pubsub: false}}, function(err, _sails) {
             if (err) {return done(err);}
             sails = _sails;
             return done();
@@ -142,8 +142,8 @@ describe('hooks :: ', function() {
         });
 
         it('should bind a /shout route that responds with the configured phrase', function(done) {
-          httpHelper.testRoute('GET', "shout", function(err, resp, body) {
-            assert(body == 'yolo');
+          httpHelper.testRoute('GET', 'shout', function(err, resp, body) {
+            assert(body === 'yolo');
             return done();
           });
         });

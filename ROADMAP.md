@@ -7,7 +7,15 @@ This file contains the development roadmap for the upcoming release of Sails, as
 
 ## v1.0
 
-This section is an early list of some of the features, enhancements, and other improvements tentatively planned or already implemented for the v1.0 release of Sails.  Note that this is by no means a comprehensive changelog or release plan, and may exclude important additions, bug fixes, and documentation tasks; it is just a reference point with the highlights.  Please also realize that the following notes may be slightly out of date from time to time.  Until the release is finalized, API changes, deprecation announcements, additions, etc. are all tentative.  (But we're getting close.)
+This section is an early list of some of the features, enhancements, and other improvements tentatively planned or already implemented for the v1.0 release of Sails.  Note that this is by no means a comprehensive changelog or release plan, and may exclude important additions, bug fixes, and documentation tasks; it is just a reference point with the highlights.
+
+> ##### What's up with Sails v1.0?
+>
+> For the latest news on Sails v1.0, and to check out specific changes and new features, see https://trello.com/b/s9zEnyG7/sails-v1.  (Please feel free to contribute by leaving comments on cards!  It helps the core team to verify that the new release is working as expected.)
+>
+> You can find more information about installing v1.0 here: http://sailsjs.com/documentation/upgrading/to-v-1-0
+
+Please also realize that the following notes may be slightly out of date from time to time.  Until the release is finalized, API changes, deprecation announcements, additions, etc. are all tentative.  (But we're getting close.)
 
 <a name="built-in-support-for-database-projections-i-e-select"></a>
 + **Built-in Support for Database Projections (i.e. `SELECT`)**
@@ -43,10 +51,10 @@ This section is an early list of some of the features, enhancements, and other i
     + `removeFromCollection(12)`
     + `.resetCollection([1,2,3])` / `.resetCollection([])`
   + Out of the box, queries like the following will also be supported:
-    + `.update({...}).set({ pets: [3,5,6] }).exec(...)`
-    + `.update({...}).set({ pets: [] }).exec(...)`
-    + `.update({...}).set({ favoritePet: 5 }).exec(...)`
-    + `.update({...}).set({ favoritePet: null }).exec(...)`
+    + `.create({ pets: [3,5,6] }).exec(...)`
+    + `.create({ pets: [] }).exec(...)`
+    + `.create({ favoritePet: 5 }).exec(...)`
+    + `.create({ favoritePet: null }).exec(...)`
 + **Enhanced `.stream()` functionality**
   + Simplify interface and remove reliance on emitters
 <a name="case-sensitivity-in-criteria-s-where-in-waterline-find-find-one-count-update-destroy"></a>
@@ -137,14 +145,14 @@ This section is an early list of some of the features, enhancements, and other i
     + ^^needs tests.
 <a name="sails-config-dont-flatten-config-will-be-deprecated"></a>
 + ✓ ~~**The deprecated `sails.config.dontFlattenConfig` will be removed.**~~  _BORN DEPRECATED_
-  + The `dontFlattenConfig` setting was [originally added](http://sailsjs.org/documentation/concepts/upgrading/to-v-0-11#?config-files-in-subfolders) for backards-compatibility with what was essentially a bug.
+  + The `dontFlattenConfig` setting was [originally added](http://sailsjs.com/documentation/concepts/upgrading/to-v-0-11#?config-files-in-subfolders) for backards-compatibility with what was essentially a bug.
   + It will be completely removed in Sails v1.0 for simplicity.
 <a name="better-built-in-support-for-command-line-scripts-that-require-access-to-the-sails-app-instance"></a>
 + ✓ ~~**Better built-in support for command-line scripts that require access to the Sails app instance**~~
   + https://github.com/treelinehq/machine-as-script/commits/master
 <a name="normalize-usage-of-routes-disabled-config-keys"></a>
 + **Normalize usage of `routesDisabled` config keys**
-  + Now applies only to sails.config.session: use Sails [route address syntax](http://sailsjs.org/documentation/concepts/routes/custom-routes#?route-address)
+  + Now applies only to sails.config.session: use Sails [route address syntax](http://sailsjs.com/documentation/concepts/routes/custom-routes#?route-address)
 <a name="strip-out-deprecated-sockets-methods"></a>
 + ✓ ~~**Strip Out Deprecated Sockets Methods**
   + Remove the implementation of deprecated `sails.sockets.*` methods from Sails core.
@@ -154,16 +162,32 @@ This section is an early list of some of the features, enhancements, and other i
   + Library of well-tested, well-documented, and officially supported modules for the most common everyday tasks in apps (e.g. password encryption)
 
 
-
 ## 1.1.0 and beyond
 
-+ **Expand `express-session`/Connect session store interface**
++ **Blueprint API: Support transactions, when possible.**
+  + See "FUTURE" comments throughout the code for the blueprints hook in this repo.
++ **Sessions: Expand `express-session`/Connect session store interface**
   + Expose a method in session stores which can be used to do an initial, asynchronous ping in order to check configuration.
   + Worst case, we should also be able to use [`.get()`](https://github.com/expressjs/session/blob/2667028d39b3655a45eb1f9579d7f66f26a6937f/README.md#storegetsid-callback) with a nonsense session id to do this-- the errors just won't be as nice, or as easy to negotiate.
   + The best middle-of-the-road solution is probably to get a couple of standardized error codes in the spec for `.get()`
     + Most likely, that's stuff like `ECONNREFUSED`
     + But would be a lot better if we could swing more specific error codes-- e.g. `E_BAD_SESSION_STORE_CONFIG` and `E_COULD_NOT_CONNECT_TO_SESSION_STORE`-- since that would eliminate the possibility of false positives due to throwing / `cb(err)`-ing.
 
+  
+## 2.0.0 and beyond
+
++ **Custom responses: Deprecate res.ok() in favor of res.success(); as well as some other breaking changes to custom responses.**
+  + See first half of https://github.com/balderdashy/sails/commit/518bae84f01d17eac84c96977e5ed0c3b6a98083#commitcomment-20917978 for details.
++ **Blueprint API: Make the behavior of certain error conditions in blueprint actions customizable via `sails.config.blueprints.handle*`**
+  + See second half of https://github.com/balderdashy/sails/commit/518bae84f01d17eac84c96977e5ed0c3b6a98083#commitcomment-20917978 for details.
++ **Federate sails-hook-blueprints**
+  + In the process, pull the implementation of the three public RPS methods into sails-hook-sockets (and take the rest of the private methods out and drop them into the blueprints hook)
++ **Federate sails-hook-session**
+  + Remember: This will involve a few delicate tweaks to the boilerplate config generated by `sails new foo --without=session`
++ **Federate sails-hook-i18n**
+  + (Will need to publish the backwards-compatible i18n hook as a separate package at that point)
+  
+  
 
 &nbsp;
 &nbsp;
@@ -191,7 +215,7 @@ Feature                                          | Proposal                     
 
 ## Pending Proposals
 
-The backlog items below are from before the recent change to the Sails project's contribution guidelines, and are suggestions for features or enhancements, but are not yet accompanied by a complete proposal.  Before any of the following backlog items can be implemented or a pull request can be merged, a detailed proposal needs to be submitted, discussed and signed off on by the project maintainers.  For information on writing a proposal, see the [Sails contribution guide](https://github.com/balderdashy/sails/blob/master/CONTRIBUTING.md).  **Please do not submit a pull request _adding_ to this section.**
+The backlog items below are from before the recent change to the Sails project's contribution guidelines, and are suggestions for features or enhancements, but are not yet accompanied by a complete proposal.  Before any of the following backlog items can be implemented or a pull request can be merged, a detailed proposal needs to be submitted, discussed and signed off on by the project maintainers.  For information on writing a proposal, see the [Sails contribution guide](http://sailsjs.com/documentation/contributing).  **Please do not submit a pull request _adding_ to this section.**
 
 > - If you are the original proposer of one of these items, someone from the core team has contacted you in the linked issue or PR, if one was provided. Thank you for your help!
 > - If you are interested in seeing one of the features or enhancements below in Sails core, please create a new pull request moving the relevant item(s) to the backlog table with additional details about your use case (see the updated contribution guide for more information).

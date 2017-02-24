@@ -2,8 +2,7 @@ module.exports = {
 
   attributes: {
     user: {
-      model: 'user',
-      via: 'profile'
+      model: 'user'
     },
     zodiac: 'string'
   }

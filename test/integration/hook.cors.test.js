@@ -627,7 +627,25 @@ describe('CORS config ::', function() {
     }
   };
 
+  var only = _.findKey(setups, function(setup, name) {
+    if (name.indexOf('only.') === 0) {
+      return name;
+    }
+  });
+
+  if (only) {
+    setups = (function(){
+      var onlySetup = setups[only];
+      newSetups = {};
+      newSetups[only.replace(/^only\./,'')] = onlySetup;
+      return newSetups;
+    })();
+  }
+
   _.each(setups, function(setup, name) {
+    if (name.indexOf('skip.') === 0) {
+      return;
+    }
     describe(name, function() {
       var sailsApp;
 

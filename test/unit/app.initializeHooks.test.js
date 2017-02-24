@@ -130,13 +130,13 @@ describe('app.initializeHooks()', function() {
     });
 
     it('should add a `foo` key to sails config', function() {
-      assert(sails.config.foo == 'bar');
+      assert(sails.config.foo === 'bar');
     });
     it('should add an `inky.dinky` key to sails config', function() {
-      assert(sails.config.inky.dinky == 'doo');
+      assert(sails.config.inky.dinky === 'doo');
     });
     it('should keep the existing `inky.pinky` key to sails config', function() {
-      assert(sails.config.inky.pinky == 'boo');
+      assert(sails.config.inky.pinky === 'boo');
     });
 
   });
@@ -152,13 +152,13 @@ describe('app.initializeHooks()', function() {
     });
 
     it('should add a `foo` key to sails config', function() {
-      assert(sails.config.foo == 'bar');
+      assert(sails.config.foo === 'bar');
     });
     it('should add an `inky.dinky` key to sails config', function() {
-      assert(sails.config.inky.dinky == 'doo');
+      assert(sails.config.inky.dinky === 'doo');
     });
     it('should keep the existing `inky.pinky` key to sails config', function() {
-      assert(sails.config.inky.pinky == 'boo');
+      assert(sails.config.inky.pinky === 'boo');
     });
 
   });
@@ -172,7 +172,7 @@ describe('app.initializeHooks()', function() {
     });
 
     it('should add a `hookConfigLikeABoss` key to sails config', function() {
-      assert(sails.config.hookConfigLikeABoss == 'oh yeah!');
+      assert(sails.config.hookConfigLikeABoss === 'oh yeah!');
     });
 
   });

@@ -36,12 +36,30 @@ module.exports = function readReplHistoryAndBeginTranscribing(repl, file) {
   // Attempt to open the history file.
   var fd = fs.openSync(file, 'a');
 
+  // Track whether we've logged a warning about writing the REPL history yet.
+  // (Just to avoid making everybody tear their hair out.)
+  var alreadyLoggedWarningAboutREPLHistory;
+
   // Bind alistener that will fire each time a newline is entered on the REPL.
   repl.rli.addListener('line', function (code) {
 
     // Update the REPL history file accordingly.
     if (code && code !== '.history') {
-      fs.write(fd, code + '\n');
+      var buffer = new Buffer(code + '\n');
+      // Send all arguments to fs.write to support Node v0.10.x.
+      fs.write(fd, buffer, 0, buffer.length, null, function (err, written, buffer){
+        if (!err) {
+          // If everything worked, then there's nothing to worry about.  We're done.
+          return;
+        }
+
+        // Otherwise, log a warning about the REPL history.
+        // (Unless the spinlock has already been spun.)
+        if (alreadyLoggedWarningAboutREPLHistory) { return; }
+        alreadyLoggedWarningAboutREPLHistory = true;
+        console.warn('WARNING: Could not write REPL history.  Details: '+err.stack);
+
+      });// _∏_
     }
     else {
       repl.rli.historyIndex++;

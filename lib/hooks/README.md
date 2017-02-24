@@ -18,7 +18,7 @@ This architecture has allowed for built-in hooks to be overridden or disabled, a
 
 This gave way to hooks becoming a proper plugin system.  Nowadays, the goal of hooks is to provide an API that is flexible and powerful enough for plugin developers or folks who need to hack Sails core, but also predictable, documented, and easy to install for end users.
 
-See http://sailsjs.org/documentation/concepts/extending-sails/hooks for more information.
+See http://sailsjs.com/documentation/concepts/extending-sails/hooks for more information.
 
 
 > **For historical purposes, here is the original proposal from the v0.9 days:**

@@ -16,7 +16,7 @@ var Sails = require('../lib/app');
  * You can then use Node inspector to debug your app as it runs.
  *
  * @stability 2
- * @see http://sailsjs.org/documentation/reference/command-line-interface/sails-debug
+ * @see http://sailsjs.com/documentation/reference/command-line-interface/sails-debug
  */
 module.exports = function() {
   var log = CaptainsLog();

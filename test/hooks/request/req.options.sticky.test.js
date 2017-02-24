@@ -55,7 +55,7 @@ describe('Request hook', function (){
     });
 
     it('req.options should not be sticky', function () {
-      assert(!opts.foo, "req.options.foo from first request carried over to second request!");
+      assert(!opts.foo, 'req.options.foo from first request carried over to second request!');
     });
 
   });

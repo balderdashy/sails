@@ -26,7 +26,7 @@ var rconf = require('../lib/app/configuration/rc')();
  * ```
  *
  * @stability 3
- * @see http://sailsjs.org/documentation/reference/command-line-interface/sails-new
+ * @see http://sailsjs.com/documentation/reference/command-line-interface/sails-new
  * ------------------------------------------------------------------------
  * This command builds `scope` for the generator by scooping up any available
  * configuration using `rc` (merging config from env vars, CLI opts, and
