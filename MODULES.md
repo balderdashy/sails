@@ -193,6 +193,14 @@ Want to work with your database at a low level?  Need to get extra performance o
 
 > [Learn about Waterline drivers](https://github.com/node-machine/driver-interface).
 
+#### Hooks
+
+| Repo          |  Build Status (edge)  |  Latest Stable Version   |
+|---------------|---------------------------------------|--------------------------|------------|
+| [sails-hook-eslint](https://github.com/Globegitter/sails-hook-eslint) | | [![npm version](https://badge.fury.io/js/sails-hook-eslint.svg)](http://badge.fury.io/js/sails-hook-eslint) |
+| [sails-hook-babel](https://github.com/artificialio/sails-hook-babel) | | [![npm version](https://badge.fury.io/js/sails-hook-babel.svg)](http://badge.fury.io/js/sails-hook-babel) |
+| [sails-hook-sentry](https://github.com/listepo/sails-hook-sentry) | | [![npm version](https://badge.fury.io/js/sails-hook-sentry.svg)](http://badge.fury.io/js/sails-hook-sentry) |
+| [sails-hook-newrelic](https://github.com/Kikobeats/sails-hook-newrelic) | | [![npm version](https://badge.fury.io/js/sails-hook-newrelic.svg)](http://badge.fury.io/js/sails-hook-newrelic) |
 
 #### View engines
 
