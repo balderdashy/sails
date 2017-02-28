@@ -342,9 +342,17 @@ describe('CSRF ::', function() {
 
         sailsConfig = {
           security: {
-            csrf: true
+            csrf: false
           },
-          hooks: {session: false}
+          hooks: {session: false},
+          routes: {
+            'GET /user': {csrf: true, target: function(req, res) {
+              return res.send(200);
+            }},
+            'POST /user': {csrf: true, target: function(req, res) {
+              return res.send(201);
+            }}
+          }
         };
 
       });
