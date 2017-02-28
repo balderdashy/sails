@@ -381,4 +381,16 @@ describe('CSRF ::', function() {
 
   }); //</describe('CSRF config ::')>
 
+  describe('With CSRF set to `true` globally and the session hook disabled :: ', function() {
+    it('should fail to lift', function(done) {
+      (new Sails()).load({security: {csrf: true}, hooks: {session: false}}, function(err, _sails) {
+          if (err) { return done(); }
+          _sails.lower(function() {
+            return done(new Error('Sails lifted successfully, but it should have failed!'));
+          });
+        }
+      );
+    });
+  });
+
 });
