@@ -13,6 +13,45 @@ describe('middleware :: ', function() {
 
   describe('session :: ', function() {
 
+    describe('with invalid `cookie.secure` setting', function() {
+
+      it('should throw an error', function(done) {
+
+        var app = Sails();
+        app.lift({
+          globals: false,
+          port: 1535,
+          environment: 'development',
+          log: {level: 'silent'},
+          session: {
+            cookie: {
+              secure: 'true'
+            }
+          },
+          hooks: {grunt: false, pubsub: false},
+        }, function(err, _app) {
+
+          if (err && err.code && err.code === 'E_SESSION_BAD_COOKIE_SECURE') {
+            return done();
+          }
+
+          if (err) {
+            return done(err);
+          }
+
+          _app.lower(function(err) {
+            if (err) {
+              return done(new Error('App lifted when it should have failed with E_SESSION_BAD_COOKIE_SECURE.  Additionally, an error occurred while lowering: ' + util.inspect(err)));
+            }
+            return done(new Error('App lifted when it should have failed with E_SESSION_BAD_COOKIE_SECURE'));
+          });
+
+        });
+
+      });
+
+    });
+
     describe('http requests :: ', function() {
 
       describe('with a valid session secret', function() {

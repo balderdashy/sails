@@ -54,4 +54,41 @@ describe('HTTP hook', function (){
     });
   });
 
+  describe('with invalid `trustProxy` config', function() {
+
+    it('should throw an error', function(done) {
+
+      var app = Sails();
+      app.lift({
+        globals: false,
+        port: 1535,
+        environment: 'development',
+        log: {level: 'silent'},
+        http: {
+          trustProxy: ''
+        },
+        hooks: {grunt: false, pubsub: false},
+      }, function(err, _app) {
+
+        if (err && err.code && err.code === 'E_HTTP_BAD_TRUSTPROXY') {
+          return done();
+        }
+
+        if (err) {
+          return done(err);
+        }
+
+        _app.lower(function(err) {
+          if (err) {
+            return done(new Error('App lifted when it should have failed with E_HTTP_BAD_TRUSTPROXY.  Additionally, an error occurred while lowering: ' + util.inspect(err)));
+          }
+          return done(new Error('App lifted when it should have failed with E_HTTP_BAD_TRUSTPROXY'));
+        });
+
+      });
+
+    });
+
+  });
+
 });

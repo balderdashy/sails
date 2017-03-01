@@ -1,7 +1,7 @@
 {
   "name": "sails",
   "author": "Mike McNeil <@mikermcneil>",
-  "version": "1.0.0-26",
+  "version": "1.0.0-27",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
   "homepage": "http://sailsjs.com",
   "keywords": [
@@ -51,6 +51,7 @@
     "machinepack-process": "^2.0.2",
     "machinepack-redis": "^1.1.1",
     "merge-defaults": "0.2.1",
+    "merge-dictionaries": "0.0.3",
     "minimist": "0.0.10",
     "mock-req": "0.2.0",
     "mock-res": "0.3.0",
