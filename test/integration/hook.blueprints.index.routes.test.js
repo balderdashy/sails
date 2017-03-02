@@ -54,6 +54,7 @@ describe('blueprints :: ', function() {
       },
       blueprints: {
         shortcuts: false,
+        actions: true,
         rest: true,
         index: true
       },
