@@ -1,5 +1,13 @@
 # Sails Changelog
 
+### 0.12.12
+
+* [ENHANCEMENT] bump skipper version [29f983d](https://github.com/balderdashy/sails/commit/29f983d8ec4bee81c98c932f719cb95ee27aab30)
+* [SECURITY] increase entropy in generating session secret [b13c078](https://github.com/balderdashy/sails/commit/b13c078d55aaccb27308aafd4cb7a5143aa07b8a)
+* [SECURITY] switch to @sailshq/express to incorporate security patch to underlying `qs` dependency [8c7234d](https://github.com/balderdashy/sails/commit/8c7234d6f9bc3a68d46ee2aaeb2e4468ee25b45d)
+* [INTERNAL] remove unused waterline dependency (waterline is now a dependency of sails-hook-orm) [0d0f58f](https://github.com/balderdashy/sails/commit/0d0f58f640ceb0dd939cdd442719619bb4546704)
+
+
 ### 0.12.11
 
 * [BUGFIX] fix typo in error message (see https://github.com/balderdashy/sails/pull/3902)  Thanks [Johnny](https://github.com/Hiro-Nakamura) and [@appdevdesigns](https://github.com/appdevdesigns)!
