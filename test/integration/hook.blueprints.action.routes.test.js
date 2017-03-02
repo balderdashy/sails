@@ -54,6 +54,7 @@ describe('blueprints :: ', function() {
             schema: true
           },
           blueprints: {
+            actions: true,
             shortcuts: false,
             rest: false
           },
@@ -271,6 +272,7 @@ describe('blueprints :: ', function() {
             schema: true
           },
           blueprints: {
+            actions: true,
             shortcuts: false,
             rest: false
           },

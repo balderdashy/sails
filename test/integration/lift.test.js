@@ -56,6 +56,11 @@ describe('Starting sails server with `sails lift`, `sails console` or `node app.
         destination: 'api/controllers/getconf.js',
         string: 'module.exports = function (req, res) { return res.json(sails.config); }'
       }).execSync();
+      Filesystem.writeSync({
+        force: true,
+        destination: 'config/routes.js',
+        string: 'module.exports.routes = { \'get /getconf\': \'getconf\' };'
+      }).execSync();
 
     });
 
@@ -67,7 +72,7 @@ describe('Starting sails server with `sails lift`, `sails console` or `node app.
         envVars: _.extend({ 'sails_foo__bar': '{"abc": 123}'}, process.env),
         httpRequestInstructions: {
           method: 'GET',
-          uri: 'http://localhost:1337',
+          uri: 'http://localhost:1337/getconf',
         },
         fnWithAdditionalTests: function (){
           it('should humanize the config passed in via env vars', function (done){
@@ -176,7 +181,7 @@ describe('Starting sails server with `sails lift`, `sails console` or `node app.
         ],
         httpRequestInstructions: {
           method: 'GET',
-          uri: 'http://localhost:1492',
+          uri: 'http://localhost:1492/getconf',
         },
         fnWithAdditionalTests: function (){
           it('should NOT be able to contact localhost:1337 anymore', function (done){
