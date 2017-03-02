@@ -84,7 +84,7 @@
     "semver": "5.1.0",
     "serve-favicon": "2.3.0",
     "serve-static": "1.10.2",
-    "skipper": "~0.6.0",
+    "skipper": "~0.7.0",
     "uid-safe": "1.1.0",
     "walk": "2.3.9"
   },
