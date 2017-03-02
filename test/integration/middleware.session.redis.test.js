@@ -95,9 +95,9 @@ if (process.env.TEST_REDIS_SESSION) {
               }
             };
 
-            app1.lift(_.extend({port: 1535}, liftOptions), function(err) {
+            app1.lift(_.extend({port: 1535}, _.cloneDeep(liftOptions)), function(err) {
               if (err) {return done(err);}
-              app2.lift(_.extend({port: 1536}, liftOptions), function(err) {
+              app2.lift(_.extend({port: 1536}, _.cloneDeep(liftOptions)), function(err) {
                 if (err) {return done(err);}
                 return done();
               });
@@ -176,9 +176,9 @@ if (process.env.TEST_REDIS_SESSION) {
               }
             };
 
-            app1.lift(_.extend({port: 1535}, liftOptions), function(err) {
+            app1.lift(_.extend({port: 1535}, _.cloneDeep(liftOptions)), function(err) {
               if (err) {return done(err);}
-              app2.lift(_.extend({port: 1536}, liftOptions), function(err) {
+              app2.lift(_.extend({port: 1536}, _.cloneDeep(liftOptions)), function(err) {
                 if (err) {return done(err);}
                 return done();
               });

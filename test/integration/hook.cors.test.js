@@ -654,7 +654,7 @@ describe('CORS config ::', function() {
             hooks: {grunt: false, views: false, blueprints: false, policies: false, i18n: false},
             log: {level: 'error'},
             security: {
-              cors: setup.sailsCorsConfig
+              cors: _.cloneDeep(setup.sailsCorsConfig)
             },
             routes: {
               'PUT /no-cors-config': function(req, res){return res.ok();},
@@ -722,9 +722,11 @@ describe('CORS config ::', function() {
         (new Sails()).load({
             hooks: {grunt: false, views: false, blueprints: false, policies: false, i18n: false},
             log: {level: 'silent'},
-            cors: setup.sailsCorsConfig,
+            cors: _.cloneDeep(setup.sailsCorsConfig),
             routes: {
-              'PUT /no-cors-config': function(req, res){return res.ok();},
+              'PUT /no-cors-config': function(req, res){
+                return res.ok();
+              },
               'PUT /cors-true': {cors: true, target: function(req, res){return res.ok();}},
               'PUT /origin-example-com': {cors: {origin: 'http://example.com'}, target: function(req, res){return res.ok();}},
               'PUT /origin-example-com-somewhere-com': {cors: {origin: 'http://example.com, http://somewhere.com'}, target: function(req, res){return res.ok();}},

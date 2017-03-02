@@ -30,6 +30,9 @@ describe('CSRF ::', function() {
             var template = _.template('csrf=\'<%-_csrf%>\'');
             res.send(template(res.locals));
           },
+          'GET /user': function(req, res) {
+            return res.send(200);
+          },
           'POST /user': function(req, res) {
             return res.send(201);
           },
@@ -339,26 +342,23 @@ describe('CSRF ::', function() {
 
         sailsConfig = {
           security: {
-            csrf: true
+            csrf: false
           },
-          hooks: {session: false}
+          hooks: {session: false},
+          routes: {
+            'GET /user': {csrf: true, target: function(req, res) {
+              return res.send(200);
+            }},
+            'POST /user': {csrf: true, target: function(req, res) {
+              return res.send(201);
+            }}
+          }
         };
 
       });
 
-      it('a POST request on /user without a CSRF token should result in a 201 response', function(done) {
-        sailsApp.request({url: '/user', method: 'post'}, function(err, response) {
-          if (err) {
-            return done(err);
-          }
-          assert.equal(response.statusCode, 201);
-          done();
-        });
-
-      });
-
-      it('a POST request on /user/:id without a CSRF token should result in a 200 response', function(done) {
-        sailsApp.request({url: '/user/123', method: 'post'}, function(err, response) {
+      it('a GET request on /user should result in a 200 response', function(done) {
+        sailsApp.request({url: '/user', method: 'get'}, function(err, response) {
           if (err) {
             return done(err);
           }
@@ -368,8 +368,29 @@ describe('CSRF ::', function() {
 
       });
 
+      it('a POST request on /user without a CSRF token should result in a 403 response', function(done) {
+        sailsApp.request({url: '/user', method: 'post'}, function(err, response) {
+          assert(err);
+          assert.equal(err.status, 403);
+          done();
+        });
+
+      });
+
     });
 
   }); //</describe('CSRF config ::')>
+
+  describe('With CSRF set to `true` globally and the session hook disabled :: ', function() {
+    it('should fail to lift', function(done) {
+      (new Sails()).load({security: {csrf: true}, hooks: {session: false}}, function(err, _sails) {
+          if (err) { return done(); }
+          _sails.lower(function() {
+            return done(new Error('Sails lifted successfully, but it should have failed!'));
+          });
+        }
+      );
+    });
+  });
 
 });
