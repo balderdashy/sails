@@ -2,6 +2,7 @@
 
 ### 0.12.12
 
+* [BUGFIX] fix issue where using "add" and "remove" shortcut routes would result in a 404. [b3d8fd8](https://github.com/balderdashy/sails/commit/b3d8fd8c1acbd9ef4b6188b9405b9a2c75aeddef)
 * [ENHANCEMENT] bump skipper version [29f983d](https://github.com/balderdashy/sails/commit/29f983d8ec4bee81c98c932f719cb95ee27aab30)
 * [SECURITY] increase entropy in generating session secret [b13c078](https://github.com/balderdashy/sails/commit/b13c078d55aaccb27308aafd4cb7a5143aa07b8a)
 * [SECURITY] switch to @sailshq/express to incorporate security patch to underlying `qs` dependency [8c7234d](https://github.com/balderdashy/sails/commit/8c7234d6f9bc3a68d46ee2aaeb2e4468ee25b45d)
