@@ -43,7 +43,7 @@
     "csurf": "1.9.0",
     "ejs": "2.3.4",
     "ejs-locals": "1.0.2",
-    "express": "3.21.2",
+    "@sailshq/express": "^3.21.3",
     "express-handlebars": "3.0.0",
     "express-session": "1.14.2",
     "flaverr": "^1.0.0",
