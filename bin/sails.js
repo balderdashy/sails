@@ -78,6 +78,12 @@ cmd.description('');
 cmd.usage('[something]');
 cmd.action(require('./sails-generate'));
 
+// $ sails upgrade
+cmd = program.command('upgrade');
+cmd.unknownOption = NOOP;
+cmd.description('');
+cmd.action(require('./sails-upgrade'));
+
 // $ sails deploy
 cmd = program.command('deploy');
 // cmd.option('--dry');
