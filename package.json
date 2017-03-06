@@ -40,7 +40,7 @@
     "cookie-signature": "1.0.6",
     "csurf": "1.9.0",
     "ejs": "2.5.5",
-    "express": "4.15.0",
+    "express": "4.15.2",
     "express-session": "1.14.2",
     "flaverr": "^1.0.0",
     "glob": "5.0.15",
