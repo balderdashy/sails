@@ -28,13 +28,14 @@ var Err = {
 describe('router :: ', function() {
   describe('Default controller routing', function() {
     var appName = 'testApp';
+    var liftOptions = {};
 
     before(function(done) {
       appHelper.build(done);
     });
 
     beforeEach(function(done) {
-      appHelper.lift(function(err, sails) {
+      appHelper.lift(liftOptions, function(err, sails) {
         if (err) {
           throw new Error(err);
         }
@@ -44,6 +45,7 @@ describe('router :: ', function() {
     });
 
     afterEach(function(done) {
+      liftOptions = {};
       sailsprocess.lower(function() {
         setTimeout(done, 100);
       });
@@ -71,17 +73,46 @@ describe('router :: ', function() {
 
     describe('REST default routes', function() {
 
-      describe('a get request to /:controller', function() {
+      describe('with `action` routes turned on', function() {
 
-        it('should call the controller index method', function(done) {
+        describe('a get request to /:controller', function() {
 
-          httpHelper.testRoute('get', 'test', function(err, response) {
-            if (err) return done(new Error(err));
+          it('should call the controller index method', function(done) {
 
-            assert(response.body === 'index', Err.badResponse(response));
-            done();
+            httpHelper.testRoute('get', 'test', function(err, response) {
+              if (err) return done(new Error(err));
+
+              assert(response.body === 'index', Err.badResponse(response));
+              done();
+            });
           });
         });
+
+      });
+
+      describe('with `action` routes turned off', function() {
+
+        before(function() {
+          liftOptions = {
+            blueprints: {
+              actions: false
+            }
+          }
+        });
+
+        describe('a get request to /:controller', function() {
+
+          it('should call the controller `find` method', function(done) {
+
+            httpHelper.testRoute('get', 'test', function(err, response) {
+              if (err) return done(new Error(err));
+
+              assert(response.body === 'find', Err.badResponse(response));
+              done();
+            });
+          });
+        });
+
       });
 
       describe('a get request to /:controller/:id', function() {
