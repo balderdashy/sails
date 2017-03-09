@@ -69,7 +69,7 @@ describe('blueprints :: ', function() {
           },
           models: {
             migrate: 'drop',
-            schema: false,
+            schema: true,
             attributes: {
               createdAt: { type: 'number', autoCreatedAt: true, },
               updatedAt: { type: 'number', autoUpdatedAt: true, },
@@ -157,7 +157,7 @@ describe('blueprints :: ', function() {
           },
           models: {
             migrate: 'drop',
-            schema: false,
+            schema: true,
             attributes: {
               createdAt: { type: 'number', autoCreatedAt: true, },
               updatedAt: { type: 'number', autoUpdatedAt: true, },
@@ -232,6 +232,7 @@ describe('blueprints :: ', function() {
           },
           models: {
             migrate: 'drop',
+            schema: true,
             attributes: {
               createdAt: { type: 'number', autoCreatedAt: true, },
               updatedAt: { type: 'number', autoUpdatedAt: true, },

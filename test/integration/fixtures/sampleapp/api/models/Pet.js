@@ -1,5 +1,4 @@
 module.exports = {
-  schema: true,
   primaryKey: 'pet_id',
   attributes: {
     id: false,

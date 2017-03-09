@@ -1,5 +1,4 @@
 module.exports = {
-  schema: true,
   primaryKey: 'user_id',
   attributes: {
     id: false,

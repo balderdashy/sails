@@ -8,7 +8,8 @@ module.exports = {
     }
   },
   models: {
-    migrate: 'alter'
+    migrate: 'alter',
+    schema: true
   },
   globals: false
 };

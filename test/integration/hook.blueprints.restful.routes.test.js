@@ -68,7 +68,7 @@ describe('blueprints :: ', function() {
           },
           models: {
             migrate: 'drop',
-            schema: false,
+            schema: true,
             attributes: {
               createdAt: { type: 'number', autoCreatedAt: true, },
               updatedAt: { type: 'number', autoUpdatedAt: true, },
@@ -156,7 +156,7 @@ describe('blueprints :: ', function() {
           },
           models: {
             migrate: 'drop',
-            schema: false,
+            schema: true,
             attributes: {
               createdAt: { type: 'number', autoCreatedAt: true, },
               updatedAt: { type: 'number', autoUpdatedAt: true, },
@@ -231,7 +231,7 @@ describe('blueprints :: ', function() {
           },
           models: {
             migrate: 'drop',
-            schema: false,
+            schema: true,
             attributes: {
               createdAt: { type: 'number', autoCreatedAt: true, },
               updatedAt: { type: 'number', autoUpdatedAt: true, },
@@ -941,7 +941,6 @@ describe('blueprints :: ', function() {
                   moduleDefinitions: {
                     models: {
                       user: {
-                        schema: true, // So that `omit` works
                         attributes: {
                           name: 'string',
                           favoriteColor: 'string',
@@ -1163,7 +1162,6 @@ describe('blueprints :: ', function() {
                 orm: {
                   moduleDefinitions: {
                     models: {
-                      schema: true, // so that `omit` works
                       user: {
                         attributes: {
                           name: 'string',
@@ -1174,7 +1172,6 @@ describe('blueprints :: ', function() {
                         }
                       },
                       pet: {
-                        schema: true, // so that `omit` works
                         attributes: {
                           name: 'string',
                           animal: 'string',
