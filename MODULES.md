@@ -77,7 +77,6 @@ _As of Sails v1.0, core generators are now bundled in [sails-generate](https://g
 | [**captains-log**](http://npmjs.com/package/captains-log)             | [![NPM version](https://badge.fury.io/js/captains-log.png)](http://badge.fury.io/js/captains-log)                 | [![Build Status](https://travis-ci.org/balderdashy/captains-log.png?branch=master)](https://travis-ci.org/balderdashy/captains-log) |
 | [**anchor**](http://npmjs.com/package/anchor)                         | [![NPM version](https://badge.fury.io/js/anchor.png)](http://badge.fury.io/js/anchor)                             | [![Build Status](https://travis-ci.org/sailsjs/anchor.png?branch=master)](https://travis-ci.org/sailsjs/anchor) |
 | [**sails-generate**](http://npmjs.com/package/sails-generate)         | [![NPM version](https://badge.fury.io/js/sails-generate.png)](http://badge.fury.io/js/sails-generate)             | [![Build Status](https://travis-ci.org/balderdashy/sails-generate.png?branch=master)](https://travis-ci.org/balderdashy/sails-generate) |
-| [**waterline-criteria**](http://npmjs.com/package/waterline-criteria) | [![NPM version](https://badge.fury.io/js/waterline-criteria.png)](http://badge.fury.io/js/waterline-criteria)     | [![Build Status](https://travis-ci.org/balderdashy/waterline-criteria.png?branch=master)](https://travis-ci.org/balderdashy/waterline-criteria) |
 | [**waterline-schema**](http://npmjs.com/package/waterline-schema)     | [![NPM version](https://badge.fury.io/js/waterline-schema.png)](http://badge.fury.io/js/waterline-schema)         | [![Build Status](https://travis-ci.org/balderdashy/waterline-schema.svg?branch=master)](https://travis-ci.org/balderdashy/waterline-schema) |
 | [**waterline-utils**](http://npmjs.com/package/waterline-utils)       | [![NPM version](https://badge.fury.io/js/waterline-utils.png)](http://badge.fury.io/js/waterline-utils)           | [![Build Status](https://travis-ci.org/balderdashy/waterline-utils.svg?branch=master)](https://travis-ci.org/balderdashy/waterline-utils)
 | [**include-all**](http://npmjs.com/package/include-all)               | [![NPM version](https://badge.fury.io/js/include-all.png)](http://badge.fury.io/js/include-all)                   | [![Build Status](https://travis-ci.org/balderdashy/include-all.png?branch=master)](https://travis-ci.org/balderdashy/include-all) |
@@ -141,35 +140,6 @@ Is your database not supported by one of the core adapters?  Good news!  There a
 
 > [Learn how to install and configure community adapters](http://sailsjs.com/documentation/concepts/extending-sails/adapters).
 
-
-<!--
-Here are a few popular community adapters:
-
-```
-| Repo          |  Build Status (edge)  |  Latest Stable Release   | Platform |
-|---------------|---------------------------------------|--------------------------|------------|
-| [sails-orientdb](https://github.com/appscot/sails-orientdb) | [![Build Status](https://travis-ci.org/appscot/sails-orientdb.svg?branch=master)](https://travis-ci.org/appscot/sails-orientdb) | [![npm version](https://badge.fury.io/js/sails-orientdb.svg)](http://badge.fury.io/js/sails-orientdb) | OrientDB |
-| [sails-rest](https://github.com/zohararad/sails-rest) |  |  | REST |
-| [sails-oracle](https://github.com/mayconheerdt/sails-oracle) | | | Oracle |
-| [sails-mssql](https://github.com/swelham/sails-mssql) | | | MSSQL (for sails@<=0.9.x) |
-| [sails-sqlserver](https://github.com/cnect/sails-sqlserver) | | | SQL Server |
-| [sails-neo4j](https://github.com/natgeo/sails-neo4j) | | | Neo4j |
-| [sails-sqlite3](https://github.com/AndrewJo/sails-sqlite3) | | | SQLite3 |
-| [sails-dynamodb](https://github.com/dohzoh/sails-dynamodb) | | | DynamoDB |
-| [sails-elasticsearch](https://github.com/DarthHater/sails-elasticsearch) | | | Elasticsearch |
-| [sails-couchdb](https://github.com/shmakes/sails-couchdb) | | | CouchDB |
-| [sails-couchbase](https://github.com/CaseyJones-/sails-couchbase) | | | Couchbase |
-| [sails-odata](https://github.com/TheSharpieOne/sails-odata) | | | OData |
-| [sails-db2](https://github.com/IbuildingsItaly/sails-db2) | | | DB2 |
-| [sails-rethinkdb](https://github.com/dsincl12/sails-rethinkdb) | | | RethinkDB |
-| [sails-azuretables](https://github.com/azuqua/sails-azuretables) | | | Windows Azure Tables |
-| [sails-riak](https://github.com/balderdashy/sails-riak) | | | Riak |
-| [sails-nedb](https://github.com/balderdashy/sails-riak) | | | NeDB |
-| [sails-parse](https://github.com/tskaggs/sails-parse) | | | Parse |
-| [sails-tingo](https://github.com/andyhu/sails-tingo) | | | TingoDB |
-```
-
--->
 
 
 #### Filesystem adapters
@@ -237,3 +207,7 @@ The recommended production session store for Sails.js is Redis... but we realize
 #### What happened to the core generators?
 
 For easier maintainence, they were pulled into [`sails-generate`](https://github.com/balderdashy/sails-generate).
+
+#### What release of XYZ should I install?
+
+You can read about naming conventions for plugins and core modules [here](https://gist.github.com/mikermcneil/baa3eed1030e67f1b0670fb05a2b1f53).  Covers NPM dist tags, git tags, and version strings, as well as recommendations for hotfix branches.
