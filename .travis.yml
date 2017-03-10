@@ -32,4 +32,4 @@ notifications:
 env:
   TEST_REDIS_SESSION=true
 
-before_script: sudo redis-server /etc/redis/redis.conf --port 6380
+before_script: sudo redis-server /etc/redis/redis.conf --port 6380 --requirepass 'secret'

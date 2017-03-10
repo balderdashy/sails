@@ -82,6 +82,8 @@ if (process.env.TEST_REDIS_SESSION) {
               log: {level: 'silent'},
               session: {
                 secret: 'abc123',
+                pass: 'secret',
+                db: 3,
                 adapter: 'connect-redis',
                 port: 6380
               },
@@ -164,6 +166,8 @@ if (process.env.TEST_REDIS_SESSION) {
               session: {
                 secret: 'abc123',
                 adapter: 'connect-redis',
+                pass: 'secret',
+                db: 3,
                 port: 6380
               },
               hooks: {grunt: false},
