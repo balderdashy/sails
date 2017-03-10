@@ -16,7 +16,7 @@ The modules comprising the Sails framework, as well as the other plugins maintai
 | Package          |  Latest Stable Release   |  Build Status (edge)                  |
 |------------------|--------------------------|---------------------------------------|
 | <a href="http://github.com/balderdashy/sails" target="_blank" title="Github repo for Sails core"><img src="http://sailsjs.com/images/logos/sails-logo_ltBg_dkBlue.png" width=60 alt="Sails.js logo (small)"/></a>     | [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails) | [![Build Status](https://travis-ci.org/balderdashy/sails.png?branch=master)](https://travis-ci.org/balderdashy/sails)
-| <a href="http://github.com/balderdashy/waterline" target="_blank" title="Github repo for Waterline ORM"><img src="http://waterlinejs.org/images/waterline-logo.png" width=17 alt="Waterline logo (small)"/> <strong>waterline</strong></a> | [![NPM version](https://badge.fury.io/js/waterline.png)](http://badge.fury.io/js/waterline) | [![Build Status](https://travis-ci.org/balderdashy/waterline.png?branch=master)](https://travis-ci.org/balderdashy/waterline)
+| <a href="http://github.com/balderdashy/waterline" target="_blank" title="Github repo for Waterline ORM"><img src="https://camo.githubusercontent.com/fda800f7fab38baffcf951761d8c1e97f3af6533/687474703a2f2f692e696d6775722e636f6d2f33587168364d7a2e706e67" width=100 alt="Waterline logo (small)"/></a> | [![NPM version](https://badge.fury.io/js/waterline.png)](http://badge.fury.io/js/waterline) | [![Build Status](https://travis-ci.org/balderdashy/waterline.png?branch=master)](https://travis-ci.org/balderdashy/waterline)
 
 
 
