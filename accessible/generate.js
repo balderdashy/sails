@@ -16,7 +16,7 @@ var sailsgen = require('sails-generate');
  * @param {Dictionary} scope
  * @param {Function|Dictionary} cbOrHandlers
  */
-SailsFactory.generate = function (){
+module.exports = function generate (){
 
   return sailsgen.apply(this, Array.prototype.slice.call(arguments));
 
