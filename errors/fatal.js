@@ -49,14 +49,14 @@ module.exports = {
       'has a corrupted, missing, or un-parsable package.json file.'
     );
     log.error('You may consider running:');
-    log.error('rm -rf ' + pathTo_localSails + ' && npm install sails@' + app.dependencies.sails);
+    log.error('rm -rf ' + pathTo_localSails + ' && npm install sails@' + requiredVersion);
     _terminateProcess(1);
   },
 
   // FUTURE: inline this error
   // app/loadHooks.js:42
   malformedHook: function() {
-    log.error('Malformed hook! (' + id + ')');
+    log.error('Malformed hook!');
     log.error('Hooks should be a function with one argument (`sails`)');
     _terminateProcess(1);
   },
