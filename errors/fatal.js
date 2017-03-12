@@ -45,7 +45,7 @@ module.exports = {
 
   badLocalDependency: function(pathTo_localSails, requiredVersion) {
     log.error(
-      'The local Sails dependency installed at `' + pathTo.localSails + '` ' +
+      'The local Sails dependency installed at `' + pathTo_localSails + '` ' +
       'has a corrupted, missing, or un-parsable package.json file.'
     );
     log.error('You may consider running:');
