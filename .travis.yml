@@ -34,6 +34,12 @@ env:
 
 before_script:
   - sudo redis-server /etc/redis/redis.conf --port 6380 --requirepass 'secret'
+
+script:
+  # Install latest node, so that eslint can run, as it requires node > 4
   - nvm install stable
   - npm run lint
+  # Revert node to the version being tested
   - nvm use $TRAVIS_NODE_VERSION
+  # Run the test without linting
+  - npm run test-only

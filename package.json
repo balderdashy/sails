@@ -97,8 +97,8 @@
     "url": "http://sailsjs.com/bugs"
   },
   "scripts": {
-    "test": "node ./node_modules/mocha/bin/mocha -b",
-    "test-lint": "npm run lint && node ./node_modules/mocha/bin/mocha -b",
+    "test-only": "node ./node_modules/mocha/bin/mocha -b",
+    "test": "npm run lint && npm run test-only",
     "lint": "node ./node_modules/eslint/bin/eslint accessible bin errors lib --max-warnings=0"
   },
   "main": "./lib/index.js",
