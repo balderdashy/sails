@@ -32,4 +32,8 @@ notifications:
 env:
   TEST_REDIS_SESSION=true
 
-before_script: sudo redis-server /etc/redis/redis.conf --port 6380 --requirepass 'secret'
+before_script:
+  - sudo redis-server /etc/redis/redis.conf --port 6380 --requirepass 'secret'
+  - nvm install stable
+  - npm run lint
+  - nvm use $TRAVIS_NODE_VERSION
