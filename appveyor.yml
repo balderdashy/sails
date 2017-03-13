@@ -31,13 +31,19 @@ install:
 
 # Post-install test scripts.
 test_script:
+  # Switch back to the latest stable version of Node.js
+  - ps: Install-Product node ''
+  # Run lint with the latest node version
+  - npm run lint
+  # Switch back to the latest stable version of Node.js
+  - ps: Install-Product node $env:nodejs_version
   # Output Node and NPM version info.
   # (Presumably just in case Appveyor decides to try any funny business?
   #  But seriously, always good to audit this kind of stuff for debugging.)
   - node --version
   - npm --version
-  # Run the actual tests.
-  - npm test
+  # Run the actual test, without linting
+  - npm run test-only
 
 
 # Don't actually build.
