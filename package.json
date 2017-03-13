@@ -98,7 +98,7 @@
   },
   "scripts": {
     "test": "npm run lint && node ./node_modules/mocha/bin/mocha -b",
-    "lint": "node ./node_modules/eslint/bin/eslint *.js **/*.js --max-warnings=0"
+    "lint": "node ./node_modules/eslint/bin/eslint accessible bin errors lib --max-warnings=0"
   },
   "main": "./lib/index.js",
   "repository": {
