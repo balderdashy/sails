@@ -21,7 +21,19 @@ module.exports = {
   // Lift-time and load-time errors
   failedToLoadSails: function(err) {
     log.error();
-    log.error(err);
+
+    // Dont log stack trace if this is a recognized load/lift-time error
+    // (& also comes from a core hook)
+    switch (err.code) {
+      case 'include-all:COULD_NOT_REQUIRE':
+      case 'E_COULD_NOT_LOAD_ADAPTER':
+      case 'E_ADAPTER_NOT_INSTALLED':
+        log.error(err.message); break;
+      default:
+        log.error(err);
+    }
+
+    console.error();
     log.error('Could not load Sails app.');
     log.error();
     log.error('Tips:');
