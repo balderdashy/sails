@@ -294,20 +294,96 @@ describe('blueprints :: ', function() {
 
         describe('a get request to /:model', function() {
 
-          it('should return JSON for all of the instances of the test model', function(done) {
-            sailsApp.models.user.create({name: 'al'}).exec(function(err) {
-              if (err) {return done (err);}
-              sailsApp.request('get /user', function (err, resp, data) {
-                assert(!err, err);
-                assert.equal(data.length, 1);
-                assert.equal(data[0].name, 'al');
-                assert.equal(data[0].id, 1);
-                done();
+          describe('where a single instance of the model exists', function() {
+
+            it('should return JSON for all of the instances of the test model', function(done) {
+              sailsApp.models.user.create({name: 'al'}).exec(function(err) {
+                if (err) {return done (err);}
+                sailsApp.request('get /user', function (err, resp, data) {
+                  assert(!err, err);
+                  assert.equal(data.length, 1);
+                  assert.equal(data[0].name, 'al');
+                  assert.equal(data[0].id, 1);
+                  done();
+                });
               });
             });
-          });
-        });
 
+
+            it('should populate all associations of the test model', function(done) {
+              sailsApp.models.pet.createEach([{name: 'alice'}, {name: 'tex'}, {name: 'bailey'}]).meta({fetch: true}).exec(function(err, pets) {
+                sailsApp.models.user.create({name: 'al', pets: _.pluck(pets, 'id')}).exec(function(err) {
+                  if (err) {return done (err);}
+                  sailsApp.request('get /user', function (err, resp, data) {
+                    assert(!err, err);
+                    assert.equal(data.length, 1);
+                    assert.equal(data[0].name, 'al');
+                    assert.equal(data[0].id, 1);
+                    assert.equal(data[0].pets.length, 3);
+                    done();
+                  });
+                });
+              });
+            });
+
+            it('should limit populate records to the default limit (30)', function(done) {
+              var instancesToCreate = _.map(_.range(1,41), function(i) {
+                return { name: 'pet' + i };
+              });
+              sailsApp.models.pet.createEach(instancesToCreate).meta({fetch: true}).exec(function(err, pets) {
+                sailsApp.models.user.create({name: 'al', pets: _.pluck(pets, 'id')}).exec(function(err) {
+                  if (err) {return done (err);}
+                  sailsApp.request('get /user', function (err, resp, data) {
+                    assert(!err, err);
+                    assert.equal(data.length, 1);
+                    assert.equal(data[0].name, 'al');
+                    assert.equal(data[0].id, 1);
+                    assert.equal(data[0].pets.length, 30);
+                    done();
+                  });
+                });
+              });
+            });
+
+          });
+
+          describe('where 40 instances of the model exist, with no limit set', function() {
+
+            it('should return JSON for 30 instances of the test model (becase the default limit is 30)', function(done) {
+              var instancesToCreate = _.map(_.range(1,41), function(i) {
+                return { name: 'user_' + i };
+              });
+              sailsApp.models.user.createEach(instancesToCreate).exec(function(err) {
+                if (err) {return done (err);}
+                sailsApp.request('get /user', function (err, resp, data) {
+                  assert(!err, err);
+                  assert.equal(data.length, 30);
+                  done();
+                });
+              });
+            });
+
+          });
+
+          describe('where 40 instances of the model exist, with limit set to 35', function() {
+
+            it('should return JSON for 35 instances of the test model', function(done) {
+              var instancesToCreate = _.map(_.range(1,41), function(i) {
+                return { name: 'user_' + i };
+              });
+              sailsApp.models.user.createEach(instancesToCreate).exec(function(err) {
+                if (err) {return done (err);}
+                sailsApp.request('get /user?limit=35', function (err, resp, data) {
+                  assert(!err, err);
+                  assert.equal(data.length, 35);
+                  done();
+                });
+              });
+            });
+
+          });
+
+        });
 
         describe('a get request to /:model?id=1', function() {
 
@@ -440,21 +516,67 @@ describe('blueprints :: ', function() {
 
           describe('a get request to /:model/:parentid/:association for a plural association', function() {
 
-            it('should return JSON for the specified collection of the test model', function(done) {
-              sailsApp.models.pet.create({name: 'spot'}).meta({fetch: true}).exec(function(err, spot) {
-                sailsApp.models.user.create({name: 'will', pets: [spot.id]}).meta({fetch: true}).exec(function(err, will) {
-                  if (err) {return done (err);}
-                  sailsApp.request('get /user/1/pets', function (err, resp, data) {
+            describe('where a single child instance exists', function() {
+
+              it('should return JSON for the specified collection of the test model', function(done) {
+                sailsApp.models.pet.create({name: 'spot'}).meta({fetch: true}).exec(function(err, spot) {
+                  sailsApp.models.user.create({name: 'will', pets: [spot.id]}).meta({fetch: true}).exec(function(err, will) {
                     if (err) {return done (err);}
-                    assert.equal(data.length, 1);
-                    assert.equal(data[0].name, 'spot');
-                    assert.equal(data[0].id, 1);
-                    assert.equal(data[0].owner, 1);
-                    return done();
+                    sailsApp.request('get /user/1/pets', function (err, resp, data) {
+                      if (err) {return done (err);}
+                      assert.equal(data.length, 1);
+                      assert.equal(data[0].name, 'spot');
+                      assert.equal(data[0].id, 1);
+                      assert.equal(data[0].owner, 1);
+                      return done();
+                    });
                   });
                 });
               });
+
             });
+
+            describe('where a 40 instances exist, and no limit is given', function() {
+
+              it('should return JSON for 30 records of the specified collection of the test model (since the default limit is 30)', function(done) {
+                var instancesToCreate = _.map(_.range(1,41), function(i) {
+                  return { name: 'pet_' + i };
+                });
+                sailsApp.models.pet.createEach(instancesToCreate).meta({fetch: true}).exec(function(err, pets) {
+                  sailsApp.models.user.create({name: 'will', pets: _.pluck(pets, 'id')}).meta({fetch: true}).exec(function(err, will) {
+                    if (err) {return done (err);}
+                    sailsApp.request('get /user/1/pets', function (err, resp, data) {
+                      if (err) {return done (err);}
+                      assert.equal(data.length, 30);
+                      return done();
+                    });
+                  });
+                });
+              });
+
+            });
+
+
+            describe('where a 40 instances exist, and a limit of 35 is given', function() {
+
+              it('should return JSON for 35 records of the specified collection of the test model', function(done) {
+                var instancesToCreate = _.map(_.range(1,41), function(i) {
+                  return { name: 'pet_' + i };
+                });
+                sailsApp.models.pet.createEach(instancesToCreate).meta({fetch: true}).exec(function(err, pets) {
+                  sailsApp.models.user.create({name: 'will', pets: _.pluck(pets, 'id')}).meta({fetch: true}).exec(function(err, will) {
+                    if (err) {return done (err);}
+                    sailsApp.request('get /user/1/pets?limit=35', function (err, resp, data) {
+                      if (err) {return done (err);}
+                      assert.equal(data.length, 35);
+                      return done();
+                    });
+                  });
+                });
+              });
+
+            });
+
           });
 
           describe('a get request to /:model/:parentid/:association for a plural association with no associated records', function() {
