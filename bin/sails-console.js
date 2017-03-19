@@ -104,8 +104,7 @@ module.exports = function() {
       sailsApp.lift(configOverrides, proceed);
     }
 
-  })// ~∞%°
-  (function afterwards(err){
+  })(function afterwards(err){// ~∞%°
     if (err) {
       return SharedErrorHelpers.fatal.failedToLoadSails(err);
     }
