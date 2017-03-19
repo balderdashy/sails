@@ -262,6 +262,53 @@ describe('policies :: ', function() {
 
       });
 
+
+      describe('with a defined "error" policy mapped to * and a `true` policy mapped to user/foo', function() {
+
+        before(function() {
+          policyMap = {
+            '*': ['err'],
+            'user/foo': true
+          };
+        });
+
+        it('the policy should apply to actions `user` and `user/foo/bar`', function(done) {
+
+          async.each(['/user', '/user-foo-bar'], function(url, cb) {
+            sailsApp.request({
+              url: url,
+              method: 'GET'
+            }, function (err, response, data) {
+              if (!err) {
+                return cb(new Error('For URL ' + url + ', expected server error, got: ' + data));
+              }
+              assert.equal(err.body, 'Test Error');
+              return cb();
+            });
+
+          }, function (err) {
+            if (err) {return done(err);}
+            return done();
+          });
+        });
+
+        it('the policy should NOT apply to actions `user/foo`', function(done) {
+
+          sailsApp.request({
+            url: '/user-foo',
+            method: 'GET'
+          }, function (err, response, data) {
+            if (err) {
+              return done(new Error('For URL /user-foo, expected "user-foo", got: ' + err));
+            }
+            assert.equal(data, 'user.foo');
+            return done();
+          });
+
+        });
+
+      });
+
       describe('with a defined "error" policy mapped to user/* and a "blank" policy mapped to user/foo/*', function() {
 
         before(function() {
