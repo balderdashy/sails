@@ -16,7 +16,7 @@ var program = require('commander');
 // which we added so that `sails someunknowncommand` will output
 // the Sails help message instead of nothing.
 var usage = program.Command.prototype.usage;
-program.Command.prototype.usage = program.usage = function(str) {
+program.Command.prototype.usage = program.usage = function( /* str */ ) {
   program.commands = _.reject(program.commands, {
     _name: '*'
   });

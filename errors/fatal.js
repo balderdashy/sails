@@ -2,8 +2,6 @@
  * Module dependencies
  */
 var nodeutil = require('util');
-var nodepath = require('path');
-var chalk = require('chalk');
 var CaptainsLog = require('captains-log');
 
 // Once per process:
@@ -129,7 +127,7 @@ module.exports = {
     return _terminateProcess(1);
   },
 
-  __UnknownAdapter__: function(adapterId, sourceModelId, sailsMajorV, sailsMinorV) {
+  __UnknownAdapter__: function(adapterId, sourceModelId /*, sailsMajorV, sailsMinorV */) {
     log.error('Trying to use unknown adapter, "' + adapterId + '", in model `' + sourceModelId + '`.');
     log.error('Are you sure that adapter is installed in this Sails app?');
     log.error('If you wrote a custom adapter with identity="' + adapterId + '", it should be in this app\'s adapters directory.');
@@ -170,13 +168,19 @@ module.exports = {
  * @param  {[type]} code [console error code]
  * @param  {[type]} opts [currently unused]
  */
-function _terminateProcess(code, opts) {
+function _terminateProcess(code /*, opts */) {
 
   // FUTURE: get rid of this (actual handling will be inline where the fatal errors are
   // actually coming from, so we'll be able to handle it there by actually throwing.
   // That way, it's up to the caller whether it wants to catch the original error and
   // do a deliberate process.exit and omit the error stack (which can be disorienting
   // for folks new to SSJ/Node.js))
+  //
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // TODO: Double-check on this, and then remove it if possible:
+  // (I'm pretty sure we can get rid of this now b/c all tests have been updated.
+  // We should definitely never be checking that NODE_ENV is or isn't anything other
+  // than "production")
   if (process.env.NODE_ENV === 'test') {
     throw new Error({
       type: 'terminate',
@@ -187,6 +191,7 @@ function _terminateProcess(code, opts) {
       // ^^ Removed this in Sails v1 since it was useless anyways. ~Mike Dec 11, 2016
     });
   }//-•
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   return process.exit(code);
 }

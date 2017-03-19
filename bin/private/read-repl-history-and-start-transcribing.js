@@ -47,7 +47,7 @@ module.exports = function readReplHistoryAndBeginTranscribing(repl, file) {
     if (code && code !== '.history') {
       var buffer = new Buffer(code + '\n');
       // Send all arguments to fs.write to support Node v0.10.x.
-      fs.write(fd, buffer, 0, buffer.length, null, function (err, written, buffer){
+      fs.write(fd, buffer, 0, buffer.length, null, function (err /*, written */){
         if (!err) {
           // If everything worked, then there's nothing to worry about.  We're done.
           return;

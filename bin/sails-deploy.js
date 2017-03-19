@@ -2,8 +2,6 @@
  * Module dependencies
  */
 
-var _ = require('@sailshq/lodash');
-var util = require('util');
 var path = require('path');
 var rconf = require('../lib/app/configuration/rc')();
 
@@ -41,7 +39,7 @@ module.exports = function() {
 
   try {
     // Attempt to run the deploy command
-    module({config: rconf}, function(err, result) {
+    module({config: rconf}, function(err) {
       // If there were any issues, log them to the console.
       if (err) {
         console.error('=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-');
