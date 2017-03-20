@@ -97,7 +97,8 @@
     "url": "http://sailsjs.com/bugs"
   },
   "scripts": {
-    "test": "nodever=`node -e \"console.log('\\`node -v\\`'[1]);\"` && if [ $nodever != \"0\" ]; then npm run lint; fi && node ./node_modules/mocha/bin/mocha -b",
+    "test": "nodever=`node -e \"console.log('\\`node -v\\`'[1]);\"` && if [ $nodever != \"0\" ]; then npm run lint; fi && npm run custom-tests",
+    "custom-tests": "node ./node_modules/mocha/bin/mocha -b",
     "lint": "node ./node_modules/eslint/bin/eslint . --max-warnings=0 --ignore-pattern 'test/'"
   },
   "main": "./lib/index.js",
