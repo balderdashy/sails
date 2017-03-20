@@ -213,10 +213,10 @@ describe.only('virtual request interpreter', function (){
       });
 
       it('should stay wrapped in quotes if it was wrapped in quotes, even if it empty string wrapped in quotes', function (done) {
-        app.get('/res_sending_back_a_string/3', function (req, res) {
+        app.get('/res_sending_back_a_string/3/b', function (req, res) {
           return res.json('""');
         });
-        app.request('GET /res_sending_back_a_string/3', {}, function (err, resp, data) {
+        app.request('GET /res_sending_back_a_string/3/b', {}, function (err, resp, data) {
           try {
             assert(!err, err);
             assert.deepEqual(200, resp.statusCode);
