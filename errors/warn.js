@@ -46,13 +46,13 @@ module.exports = {
     log.warn();
   },
 
-  badLocalDependency: function(pathTo_localSails, requiredVersion) {
+  badLocalDependency: function(pathToLocalSails, requiredVersion) {
     log.warn(
-      'The local Sails dependency installed at `' + pathTo_localSails + '` ' +
+      'The local Sails dependency installed at `' + pathToLocalSails + '` ' +
       'has a corrupted, missing, or un-parsable package.json file.'
     );
     log.warn('You may consider running:');
-    log.warn('rm -rf ' + pathTo_localSails + ' && npm install sails@' + requiredVersion);
+    log.warn('rm -rf ' + pathToLocalSails + ' && npm install sails@' + requiredVersion);
     log.warn();
   }
 };

@@ -104,8 +104,7 @@ module.exports = function() {
       sailsApp.lift(configOverrides, proceed);
     }
 
-  })// ~∞%°
-  (function afterwards(err){
+  })(function afterwards(err){// ~∞%°
     if (err) {
       return SharedErrorHelpers.fatal.failedToLoadSails(err);
     }
@@ -121,7 +120,7 @@ module.exports = function() {
     });
 
     // Now attempt to read the existing REPL history file, if there is one.
-    var pathToReplHistoryFile = nodepath.join(sails.config.paths.tmp, '.node_history');
+    var pathToReplHistoryFile = nodepath.join(sailsApp.config.paths.tmp, '.node_history');
     try {
 
       // Read the REPL history file, and bind notifier functions that will listen

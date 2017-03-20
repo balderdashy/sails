@@ -6,11 +6,11 @@ var util = require('util');
 var path = require('path');
 var assert = require('assert');
 var _ = require('@sailshq/lodash');
-var async = require('async');
 var CaptainsLog = require('captains-log');
 var sailsGen = require('sails-generate');
 var package = require('../package.json');
 var rconf = require('../lib/app/configuration/rc')();
+
 
 /**
  * `sails generate`

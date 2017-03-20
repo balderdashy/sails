@@ -3,6 +3,7 @@
   "author": "Mike McNeil <@mikermcneil>",
   "version": "1.0.0-31",
   "description": "API-driven framework for building realtime apps, using MVC conventions (based on Express and Socket.io)",
+  "license": "MIT",
   "homepage": "http://sailsjs.com",
   "keywords": [
     "mvc",
@@ -15,16 +16,12 @@
     "orm",
     "socket.io"
   ],
-  "main": "./lib/index.js",
   "bin": {
     "sails": "./bin/sails.js"
   },
-  "scripts": {
-    "test": "mocha -b",
-    "prepublish": "npm prune"
-  },
-  "directories": {
-    "lib": "lib"
+  "engines": {
+    "node": ">= 0.10.0",
+    "npm": ">= 1.4.0"
   },
   "dependencies": {
     "@sailshq/lodash": "^3.10.2",
@@ -77,6 +74,7 @@
     "checksum": "0.1.1",
     "coffee-script": "1.9.1",
     "connect-redis": "3.1.0",
+    "eslint": "3.5.0",
     "expect.js": "0.3.1",
     "fs-extra": "0.30.0",
     "istanbul": "0.4.5",
@@ -95,16 +93,16 @@
     "supertest": "1.1.0",
     "tmp": "0.0.29"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/balderdashy/sails.git"
-  },
-  "license": "MIT",
   "bugs": {
     "url": "http://sailsjs.com/bugs"
   },
-  "engines": {
-    "node": ">= 0.10.0",
-    "npm": ">= 1.4.0"
+  "scripts": {
+    "test": "nodever=`node -e \"console.log('\\`node -v\\`'[1]);\"` && if [ $nodever != \"0\" ]; then npm run lint; fi && node ./node_modules/mocha/bin/mocha -b",
+    "lint": "node ./node_modules/eslint/bin/eslint . --max-warnings=0 --ignore-pattern 'test/'"
+  },
+  "main": "./lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/balderdashy/sails.git"
   }
 }
