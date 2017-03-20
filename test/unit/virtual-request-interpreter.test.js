@@ -6,7 +6,7 @@ var assert = require('assert');
 var $Sails = require('../helpers/sails');
 
 
-describe('virtual request interpreter', function (){
+describe.only('virtual request interpreter', function (){
 
   var app = $Sails.load({
     globals: false,
@@ -83,6 +83,163 @@ describe('virtual request interpreter', function (){
       });
     });
 
-  });
+  });//</describe: res.redirect()>
 
-});
+
+
+
+  describe('sending back a number', function (){
+    describe('using res.send()', function (){
+      it('should be the body, and NOT interpreted as a status code', function (done) {
+        app.get('/res_sending_back_a_number/1', function (req, res) {
+          return res.send(45);
+        });
+        app.request('GET /res_sending_back_a_number/1', {}, function (err, resp, data) {
+          try {
+            assert(!err, err);
+            assert.deepEqual(200, resp.statusCode);
+            assert.strictEqual(resp.body, 45);
+            assert.strictEqual(data, 45);
+          } catch (e) { return done(e); }
+          done();
+        });
+      });
+    });//</describe using res.send()>
+    describe('using res.json()', function (){
+      it('should be the body, and NOT interpreted as a status code', function (done) {
+        app.get('/res_sending_back_a_number/2', function (req, res) {
+          return res.json(45);
+        });
+        app.request('GET /res_sending_back_a_number/2', {}, function (err, resp, data) {
+          try {
+            assert(!err, err);
+            assert.deepEqual(200, resp.statusCode);
+            assert.strictEqual(resp.body, 45);
+            assert.strictEqual(data, 45);
+          } catch (e) { return done(e); }
+          done();
+        });
+      });
+
+      it('should stay a string, if it was wrapped in quotes', function (done) {
+        app.get('/res_sending_back_a_number/3', function (req, res) {
+          return res.json('45');
+        });
+        app.request('GET /res_sending_back_a_number/3', {}, function (err, resp, data) {
+          try {
+            assert(!err, err);
+            assert.deepEqual(200, resp.statusCode);
+            assert.strictEqual(resp.body, '45');
+            assert.strictEqual(data, '45');
+          } catch (e) { return done(e); }
+          done();
+        });
+      });
+    });//</describe using res.json()>
+  });//</describe: sending back a number >
+
+
+
+  describe('sending back a boolean', function (){
+    describe('using res.send()', function (){
+      describe('`true`', function (){
+        it('should be the body', function (done) {
+          app.get('/res_sending_back_a_boolean/1', function (req, res) {
+            return res.send(true);
+          });
+          app.request('GET /res_sending_back_a_boolean/1', {}, function (err, resp, data) {
+            try {
+              assert(!err, err);
+              assert.deepEqual(200, resp.statusCode);
+              assert.strictEqual(resp.body, true);
+              assert.strictEqual(data, true);
+            } catch (e) { return done(e); }
+            done();
+          });
+        });
+      });//</describe: `true`>
+      describe('`false`', function (){
+        it('should be the body', function (done) {
+          app.get('/res_sending_back_a_boolean/2', function (req, res) {
+            return res.send(false);
+          });
+          app.request('GET /res_sending_back_a_boolean/2', {}, function (err, resp, data) {
+            try {
+              assert(!err, err);
+              assert.deepEqual(200, resp.statusCode);
+              assert.strictEqual(resp.body, false);
+              assert.strictEqual(data, false);
+            } catch (e) { return done(e); }
+            done();
+          });
+        });
+      });//</describe: `false`>
+    });//</describe using res.send()>
+    describe('using res.json()', function (){
+      describe('`true`', function (){
+        it('should be the body', function (done) {
+          app.get('/res_sending_back_a_boolean/3', function (req, res) {
+            return res.json(true);
+          });
+          app.request('GET /res_sending_back_a_boolean/3', {}, function (err, resp, data) {
+            try {
+              assert(!err, err);
+              assert.deepEqual(200, resp.statusCode);
+              assert.strictEqual(resp.body, true);
+              assert.strictEqual(data, true);
+            } catch (e) { return done(e); }
+            done();
+          });
+        });
+
+        it('should stay a string, if it was wrapped in quotes', function (done) {
+          app.get('/res_sending_back_a_boolean/4', function (req, res) {
+            return res.json('true');
+          });
+          app.request('GET /res_sending_back_a_boolean/4', {}, function (err, resp, data) {
+            try {
+              assert(!err, err);
+              assert.deepEqual(200, resp.statusCode);
+              assert.strictEqual(resp.body, 'true');
+              assert.strictEqual(data, 'true');
+            } catch (e) { return done(e); }
+            done();
+          });
+        });
+      });//</describe: `true`>
+      describe('`false`', function (){
+        it('should be the body', function (done) {
+          app.get('/res_sending_back_a_boolean/5', function (req, res) {
+            return res.json(false);
+          });
+          app.request('GET /res_sending_back_a_boolean/5', {}, function (err, resp, data) {
+            try {
+              assert(!err, err);
+              assert.deepEqual(200, resp.statusCode);
+              assert.strictEqual(resp.body, false);
+              assert.strictEqual(data, false);
+            } catch (e) { return done(e); }
+            done();
+          });
+        });
+
+        it('should stay a string, if it was wrapped in quotes', function (done) {
+          app.get('/res_sending_back_a_boolean/6', function (req, res) {
+            return res.json('false');
+          });
+          app.request('GET /res_sending_back_a_boolean/6', {}, function (err, resp, data) {
+            try {
+              assert(!err, err);
+              assert.deepEqual(200, resp.statusCode);
+              assert.strictEqual(resp.body, 'false');
+              assert.strictEqual(data, 'false');
+            } catch (e) { return done(e); }
+            done();
+          });
+        });
+      });//</describe: `false`>
+
+    });//</describe using res.json()>
+  });//</describe: sending back a boolean >
+
+});//</describe: VR interpreter>
