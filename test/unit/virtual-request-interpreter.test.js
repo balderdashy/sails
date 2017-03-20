@@ -19,6 +19,13 @@ describe.only('virtual request interpreter', function (){
   });
 
 
+  //  ██████╗ ███████╗███████╗   ██████╗ ███████╗██████╗ ██╗██████╗ ███████╗ ██████╗████████╗ ██╗██╗
+  //  ██╔══██╗██╔════╝██╔════╝   ██╔══██╗██╔════╝██╔══██╗██║██╔══██╗██╔════╝██╔════╝╚══██╔══╝██╔╝╚██╗
+  //  ██████╔╝█████╗  ███████╗   ██████╔╝█████╗  ██║  ██║██║██████╔╝█████╗  ██║        ██║   ██║  ██║
+  //  ██╔══██╗██╔══╝  ╚════██║   ██╔══██╗██╔══╝  ██║  ██║██║██╔══██╗██╔══╝  ██║        ██║   ██║  ██║
+  //  ██║  ██║███████╗███████║██╗██║  ██║███████╗██████╔╝██║██║  ██║███████╗╚██████╗   ██║   ╚██╗██╔╝
+  //  ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝╚═╝  ╚═╝╚══════╝╚═════╝ ╚═╝╚═╝  ╚═╝╚══════╝ ╚═════╝   ╚═╝    ╚═╝╚═╝
+  //
   describe('res.redirect()', function (){
 
     it('should support creamy vanilla usage', function (done) {
@@ -84,6 +91,49 @@ describe.only('virtual request interpreter', function (){
     });
 
   });//</describe: res.redirect()>
+
+
+
+
+
+
+
+  //  ██████╗ ███████╗███████╗   ███████╗███████╗███╗   ██╗██████╗  ██╗██╗        ██╗
+  //  ██╔══██╗██╔════╝██╔════╝   ██╔════╝██╔════╝████╗  ██║██╔══██╗██╔╝╚██╗       ██║
+  //  ██████╔╝█████╗  ███████╗   ███████╗█████╗  ██╔██╗ ██║██║  ██║██║  ██║    ████████╗
+  //  ██╔══██╗██╔══╝  ╚════██║   ╚════██║██╔══╝  ██║╚██╗██║██║  ██║██║  ██║    ██╔═██╔═╝
+  //  ██║  ██║███████╗███████║██╗███████║███████╗██║ ╚████║██████╔╝╚██╗██╔╝    ██████║
+  //  ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝╚══════╝╚══════╝╚═╝  ╚═══╝╚═════╝  ╚═╝╚═╝     ╚═════╝
+  //
+  //  ██████╗ ███████╗███████╗        ██╗███████╗ ██████╗ ███╗   ██╗ ██╗██╗
+  //  ██╔══██╗██╔════╝██╔════╝        ██║██╔════╝██╔═══██╗████╗  ██║██╔╝╚██╗
+  //  ██████╔╝█████╗  ███████╗        ██║███████╗██║   ██║██╔██╗ ██║██║  ██║
+  //  ██╔══██╗██╔══╝  ╚════██║   ██   ██║╚════██║██║   ██║██║╚██╗██║██║  ██║
+  //  ██║  ██║███████╗███████║██╗╚█████╔╝███████║╚██████╔╝██║ ╚████║╚██╗██╔╝
+  //  ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝ ╚════╝ ╚══════╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═╝╚═╝
+  //
+  // For reference, here is the actual behavior when testing w/ express over http:
+  // ```
+  // return res.send();       // 122b
+  // return res.send('');     // 200b (empty body, content length ==> 0)
+  // return res.send(0);      // XXXXXXXX WARNING (because deprecated usage-- it sees it as status code only)
+  // return res.send(null);   // 163b   (empty body, content length ==> 0)
+  // return res.send(false);  // 215b  (sends down the string `false`, content len ==> 5)
+  // return res.send(true);   // same as false basically
+  // return res.send(45);     // XXXXXXXX WARNING (because deprecated usage-- it sees it as status code only)
+  // return res.send("");     // exactly like `''` above
+  //
+  // return res.json();       // 154b
+  // return res.json('');     // 212b (body is `""`- content length ==> 2)
+  // return res.json(0);      // (content length ==> 1)
+  // return res.json(null);   // null - 214b   (empty body, content length ==> 4)
+  // return res.json('null'); // "null" -> 216b   (empty body, content length ==> 6)
+  // return res.json(false);  // 215b  (sends down the string `false`, content len ==> 5)
+  // return res.json(true);   // same as false basically
+  // return res.json(45);     // 212b (content length ==> 2)
+  // return res.json('45');   // "45" content len ==> 4
+  // return res.json("");     // exactly like `''` above
+  // ```
 
 
   describe('sending back a string', function (){
