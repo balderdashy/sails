@@ -86,6 +86,98 @@ describe.only('virtual request interpreter', function (){
   });//</describe: res.redirect()>
 
 
+  describe('sending back a string', function (){
+    describe('using res.send()', function (){
+      it('should be the body', function (done) {
+        app.get('/res_sending_back_a_string/1', function (req, res) {
+          return res.send('foo');
+        });
+        app.request('GET /res_sending_back_a_string/1', {}, function (err, resp, data) {
+          try {
+            assert(!err, err);
+            assert.deepEqual(200, resp.statusCode);
+            assert.strictEqual(resp.body, 'foo');
+            assert.strictEqual(data, 'foo');
+          } catch (e) { return done(e); }
+          done();
+        });
+      });
+      it('should be the body, even if it is empty string', function (done) {
+        app.get('/res_sending_back_a_string/1/B', function (req, res) {
+          return res.send('');
+        });
+        app.request('GET /res_sending_back_a_string/1/B', {}, function (err, resp, data) {
+          try {
+            assert(!err, err);
+            assert.deepEqual(200, resp.statusCode);
+            assert.strictEqual(resp.body, '');
+            assert.strictEqual(data, '');
+          } catch (e) { return done(e); }
+          done();
+        });
+      });
+    });//</describe using res.send()>
+    describe('using res.json()', function (){
+      it('should be the body', function (done) {
+        app.get('/res_sending_back_a_string/2', function (req, res) {
+          return res.json('foo');
+        });
+        app.request('GET /res_sending_back_a_string/2', {}, function (err, resp, data) {
+          try {
+            assert(!err, err);
+            assert.deepEqual(200, resp.statusCode);
+            assert.strictEqual(resp.body, 'foo');
+            assert.strictEqual(data, 'foo');
+          } catch (e) { return done(e); }
+          done();
+        });
+      });
+      it('should be the body, even if empty string', function (done) {
+        app.get('/res_sending_back_a_string/2/B', function (req, res) {
+          return res.json('');
+        });
+        app.request('GET /res_sending_back_a_string/2/B', {}, function (err, resp, data) {
+          try {
+            assert(!err, err);
+            assert.deepEqual(200, resp.statusCode);
+            assert.strictEqual(resp.body, '');
+            assert.strictEqual(data, '');
+          } catch (e) { return done(e); }
+          done();
+        });
+      });
+
+      it('should stay wrapped in quotes if it was wrapped in quotes', function (done) {
+        app.get('/res_sending_back_a_string/3', function (req, res) {
+          return res.json('"foo"');
+        });
+        app.request('GET /res_sending_back_a_string/3', {}, function (err, resp, data) {
+          try {
+            assert(!err, err);
+            assert.deepEqual(200, resp.statusCode);
+            assert.strictEqual(resp.body, '"foo"');
+            assert.strictEqual(data, '"foo"');
+          } catch (e) { return done(e); }
+          done();
+        });
+      });
+
+      it('should stay wrapped in quotes if it was wrapped in quotes, even if it empty string wrapped in quotes', function (done) {
+        app.get('/res_sending_back_a_string/3', function (req, res) {
+          return res.json('""');
+        });
+        app.request('GET /res_sending_back_a_string/3', {}, function (err, resp, data) {
+          try {
+            assert(!err, err);
+            assert.deepEqual(200, resp.statusCode);
+            assert.strictEqual(resp.body, '""');
+            assert.strictEqual(data, '""');
+          } catch (e) { return done(e); }
+          done();
+        });
+      });
+    });//</describe using res.json()>
+  });//</describe: sending back a string >
 
 
   describe('sending back a number', function (){
@@ -100,6 +192,20 @@ describe.only('virtual request interpreter', function (){
             assert.deepEqual(200, resp.statusCode);
             assert.strictEqual(resp.body, 45);
             assert.strictEqual(data, 45);
+          } catch (e) { return done(e); }
+          done();
+        });
+      });
+      it('should be the body, and NOT interpreted as a status code, even when zero is used', function (done) {
+        app.get('/res_sending_back_a_number/1/B', function (req, res) {
+          return res.send(0);
+        });
+        app.request('GET /res_sending_back_a_number/1/B', {}, function (err, resp, data) {
+          try {
+            assert(!err, err);
+            assert.deepEqual(200, resp.statusCode);
+            assert.strictEqual(resp.body, 0);
+            assert.strictEqual(data, 0);
           } catch (e) { return done(e); }
           done();
         });
@@ -121,6 +227,21 @@ describe.only('virtual request interpreter', function (){
         });
       });
 
+      it('should be the body, and NOT interpreted as a status code, even when zero is used', function (done) {
+        app.get('/res_sending_back_a_number/2/B', function (req, res) {
+          return res.json(0);
+        });
+        app.request('GET /res_sending_back_a_number/2/B', {}, function (err, resp, data) {
+          try {
+            assert(!err, err);
+            assert.deepEqual(200, resp.statusCode);
+            assert.strictEqual(resp.body, 0);
+            assert.strictEqual(data, 0);
+          } catch (e) { return done(e); }
+          done();
+        });
+      });
+
       it('should stay a string, if it was wrapped in quotes', function (done) {
         app.get('/res_sending_back_a_number/3', function (req, res) {
           return res.json('45');
@@ -135,8 +256,77 @@ describe.only('virtual request interpreter', function (){
           done();
         });
       });
+
+      it('should stay a string, if it was wrapped in quotes, even if it is zero', function (done) {
+        app.get('/res_sending_back_a_number/3/B', function (req, res) {
+          return res.json('0');
+        });
+        app.request('GET /res_sending_back_a_number/3/B', {}, function (err, resp, data) {
+          try {
+            assert(!err, err);
+            assert.deepEqual(200, resp.statusCode);
+            assert.strictEqual(resp.body, '0');
+            assert.strictEqual(data, '0');
+          } catch (e) { return done(e); }
+          done();
+        });
+      });
     });//</describe using res.json()>
   });//</describe: sending back a number >
+
+
+
+
+
+  describe('sending back `null`', function (){
+    describe('using res.send()', function (){
+      it('should be the body', function (done) {
+        app.get('/res_sending_back_the_null_literal/1', function (req, res) {
+          return res.send(null);
+        });
+        app.request('GET /res_sending_back_the_null_literal/1', {}, function (err, resp, data) {
+          try {
+            assert(!err, err);
+            assert.deepEqual(200, resp.statusCode);
+            assert.strictEqual(resp.body, null);
+            assert.strictEqual(data, null);
+          } catch (e) { return done(e); }
+          done();
+        });
+      });
+    });//</describe using res.send()>
+    describe('using res.json()', function (){
+      it('should be the body', function (done) {
+        app.get('/res_sending_back_the_null_literal/2', function (req, res) {
+          return res.json(null);
+        });
+        app.request('GET /res_sending_back_the_null_literal/2', {}, function (err, resp, data) {
+          try {
+            assert(!err, err);
+            assert.deepEqual(200, resp.statusCode);
+            assert.strictEqual(resp.body, null);
+            assert.strictEqual(data, null);
+          } catch (e) { return done(e); }
+          done();
+        });
+      });
+
+      it('should stay a string, if it was wrapped in quotes', function (done) {
+        app.get('/res_sending_back_the_null_literal/3', function (req, res) {
+          return res.json('null');
+        });
+        app.request('GET /res_sending_back_the_null_literal/3', {}, function (err, resp, data) {
+          try {
+            assert(!err, err);
+            assert.deepEqual(200, resp.statusCode);
+            assert.strictEqual(resp.body, 'null');
+            assert.strictEqual(data, 'null');
+          } catch (e) { return done(e); }
+          done();
+        });
+      });
+    });//</describe using res.json()>
+  });//</describe: sending back `null` >
 
 
 
