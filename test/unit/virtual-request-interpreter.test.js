@@ -160,8 +160,8 @@ describe.only('virtual request interpreter', function (){
           try {
             assert(!err, err);
             assert.deepEqual(200, resp.statusCode);
-            assert.strictEqual(resp.body, '');
-            assert.strictEqual(data, '');
+            assert.strictEqual(resp.body, undefined);
+            assert.strictEqual(data, undefined);
           } catch (e) { return done(e); }
           done();
         });
