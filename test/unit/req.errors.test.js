@@ -52,7 +52,7 @@ describe('request that causes an error', function (){
     saveServerError = sails.registry.responses.serverError;
     sails.registry.responses.serverError = function (err) {
       assert.deepEqual(ERROR, err);
-      this.res.send(500, CHECKPOINT);
+      this.res.status(500).send(CHECKPOINT);
     };
 
     sails.get('/errors/2', function (req, res) {

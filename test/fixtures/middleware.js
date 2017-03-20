@@ -14,7 +14,7 @@ module.exports = {
   },
 
   HELLO_500: function(req, res) {
-    return res.send(500, 'hello world!');
+    return res.status(500).send('hello world!');
   },
 
   JSON_HELLO: function(req, res) {

@@ -33,7 +33,7 @@ describe('res.view()', function (){
     app
     .get(mockRoutes.next(), function (req, res) {
       assert.equal(typeof res.view, 'function', 'res.view() should be defined when request hook is enabled.');
-      return res.send(200);
+      return res.sendStatus(200);
     })
     .request(mockRoutes.current, done);
   });

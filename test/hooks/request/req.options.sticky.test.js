@@ -33,7 +33,7 @@ describe('Request hook', function (){
       var ROUTEADDRESS = '/route';
       sails.router.bind(ROUTEADDRESS, function (req,res,next) {
         req.options[req.param('opt')] = true;
-        return res.send(200, JSON.stringify(req.options));
+        return res.status(200).send(JSON.stringify(req.options));
       });
       sails.emit('router:request', {
         url: ROUTEADDRESS,
@@ -47,8 +47,8 @@ describe('Request hook', function (){
           opt: 'bar'
         }
       }, {
-        send: function (_statusCode, body) {
-          opts = JSON.parse(body);
+        send: function (data) {
+          opts = JSON.parse(data);
           return done();
         }
       });

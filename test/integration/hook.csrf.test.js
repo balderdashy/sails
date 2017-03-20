@@ -3,14 +3,14 @@
  */
 
 var assert = require('assert');
-var httpHelper = require('./helpers/httpHelper.js');
-var appHelper = require('./helpers/appHelper');
-var path = require('path');
 var fs = require('fs');
+var path = require('path');
 var _ = require('@sailshq/lodash');
 var tmp = require('tmp');
-
 var Sails = require('../../lib').constructor;
+var httpHelper = require('./helpers/httpHelper.js');
+var appHelper = require('./helpers/appHelper');
+
 
 
 describe('CSRF ::', function() {
@@ -31,13 +31,13 @@ describe('CSRF ::', function() {
             res.send(template(res.locals));
           },
           'GET /user': function(req, res) {
-            return res.send(200);
+            return res.sendStatus(200);
           },
           'POST /user': function(req, res) {
-            return res.send(201);
+            return res.status(201).send();
           },
           'POST /user/:id': function(req, res) {
-            return res.send(200);
+            return res.sendStatus(200);
           }
         }
       }, sailsConfig);
@@ -347,10 +347,10 @@ describe('CSRF ::', function() {
           hooks: {session: false},
           routes: {
             'GET /user': {csrf: true, target: function(req, res) {
-              return res.send(200);
+              return res.sendStatus(200);
             }},
             'POST /user': {csrf: true, target: function(req, res) {
-              return res.send(201);
+              return res.status(201).send();
             }}
           }
         };

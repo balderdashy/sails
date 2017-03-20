@@ -2,7 +2,7 @@ module.exports = {
 
   watch: function(req, res) {
     req._sails.models.user.watch(req);
-    res.send(200);
+    res.sendStatus(200);
   },
 
   message: function(req, res) {
@@ -10,19 +10,19 @@ module.exports = {
       user_id: 1
     }, function(err, user) {
       if (err) {
-        return res.json(500, {
+        return res.status(500).json({
           error: err
         });
       }
       else if (!user) {
-        return res.json(404,{
+        return res.status(404).json({
           error: 'Expected specified user (with user_id=1) to exist...'
         });
       } else {
         req._sails.models.user.publish([user.user_id], {
           greeting: 'hello'
         }, req);
-        return res.send(200);
+        return res.sendStatus(200);
       }
     });
   },
@@ -30,7 +30,7 @@ module.exports = {
   subscribe: function(req, res) {
 
     req._sails.models.user.subscribe(req, [req.param('id')]);
-    res.send(200);
+    res.sendStatus(200);
   }
 
 
