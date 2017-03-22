@@ -353,4 +353,75 @@ describe('controllers :: ', function() {
 
   });
 
+  describe('With a controller with `Controller` in the name', function() {
+
+    var curDir, tmpDir, sailsApp;
+    var warn;
+    var warnings = [];
+
+    before(function(done) {
+      // Cache the current working directory.
+      curDir = process.cwd();
+      // Create a temp directory.
+      tmpDir = tmp.dirSync({gracefulCleanup: true, unsafeCleanup: true});
+      // Switch to the temp directory.
+      process.chdir(tmpDir.name);
+      // Create a top-level legacy controller file with `Controller` in the name.
+      Filesystem.writeSync({
+        force: true,
+        destination: 'api/controllers/MicroControllerController.js',
+        string: 'module.exports = { \'check\': function(req, res) {  return res.send(\'mate\'); } };'
+      }).execSync();
+
+      // Write a routes.js file
+      Filesystem.writeSync({
+        force: true,
+        destination: 'config/routes.js',
+        string: 'module.exports.routes = ' + JSON.stringify({
+          'GET /microcontroller/:id/check':  'MicroControllerController.check',
+          'GET /microcontroller/:id/check2': { controller: 'MicroControllerController', action: 'check' },
+          'GET /microcontroller/:id/check3': 'microcontroller/check'
+        })
+      }).execSync();
+
+      // Load the Sails app.
+      (new Sails()).load({hooks: {security: false, grunt: false, views: false, blueprints: false, policies: false, pubsub: false}, log: {level: 'error'}}, function(err, _sails) {
+        sailsApp = _sails;
+        return done(err);
+      });
+    });
+
+    after(function(done) {
+      sailsApp.lower(function() {
+        process.chdir(curDir);
+        return done();
+      });
+    });
+
+    it('should bind a route using \'MicroControllerController.check\'', function(done) {
+      sailsApp.request('GET /microcontroller/123/check', {}, function (err, resp, data) {
+        assert(!err, err);
+        assert.deepEqual(data, 'mate');
+        done();
+      });
+    });
+
+    it('should bind a route using { controller: \'MicroControllerController\', action: \'check\' }', function(done) {
+      sailsApp.request('GET /microcontroller/123/check2', {}, function (err, resp, data) {
+        assert(!err, err);
+        assert.deepEqual(data, 'mate');
+        done();
+      });
+    });
+
+    it('should bind a route using \'microcontroller/check\'', function(done) {
+      sailsApp.request('GET /microcontroller/123/check3', {}, function (err, resp, data) {
+        assert(!err, err);
+        assert.deepEqual(data, 'mate');
+        done();
+      });
+    });
+
+  });
+
 });
