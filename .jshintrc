@@ -45,6 +45,7 @@
   // Tolerate the use `[]` notation when dot notation would be possible.
   // (this is sometimes preferable for readability)
   "sub": true,
+  "maxlen": 80,
 
   // Do NOT suppress warnings about mixed tabs and spaces
   // (two spaces always, please; see `.editorconfig`)
