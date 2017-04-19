@@ -70,6 +70,7 @@ module.exports = function() {
     var localSailsPath = nodepath.resolve(appPath, 'node_modules/sails');
     if (Sails.isLocalSailsValid(localSailsPath, appPath)) {
       cliLogger.verbose('Using locally-installed Sails.');
+      cliLogger.silly('(which is located at `'+localSailsPath+'`)');
       return require(localSailsPath);
     }// --•
 
