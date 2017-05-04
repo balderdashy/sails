@@ -3,10 +3,29 @@
  */
 
 var path = require('path');
+var fs = require('fs');
 var _ = require('@sailshq/lodash');
-var Process = require('machinepack-process');
 var chalk = require('chalk');
+var COMMON_JS_FILE_EXTENSIONS = require('common-js-file-extensions');
 var flaverr = require('flaverr');
+var Process = require('machinepack-process');
+
+
+/**
+ * Module constants
+ */
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Supported file extensions for imperative code files such as hooks:
+//  • 'js' (.js)
+//  • 'ts' (.ts)
+//  • 'es6' (.es6)
+//  • ...etc.
+//
+// > For full list, see:
+// > https://github.com/luislobo/common-js-file-extensions/blob/210fd15d89690c7aaa35dba35478cb91c693dfa8/README.md#code-file-extensions
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+var BASIC_SUPPORTED_FILE_EXTENSIONS = COMMON_JS_FILE_EXTENSIONS.code;
 
 
 /**
@@ -22,11 +41,48 @@ var flaverr = require('flaverr');
 
 module.exports = function(scriptName) {
 
+  // If there is only one argument, it means there is actually no scriptName at all.
+  // (A detail of how commander works.)
+  if (arguments.length === 1) {
+    scriptName = undefined;
+  }
+
+  // Sanitize the script name, for comfort.
+  if (!scriptName) {
+    console.error('Which one?  (To run a script, provide its name.)');
+    console.error('For example:');
+    console.error('    sails run add-customer');
+    console.error();
+    console.error('^ runs `scripts/add-customer.js`.');
+    console.error();
+    console.error('(For more help, visit '+chalk.underline('http://sailsjs.com/support')+'.)');
+    return process.exit(1);
+  }
+
+  scriptName = _.trim(scriptName);
+  scriptName = scriptName.replace(/^scripts\//, '');
+  if (scriptName.match(/\//)) {
+    console.error('Cannot run `'+scriptName+'`.  Script name should never contain any slashes.');
+    return process.exit(1);
+  }//-•
+
+  // Examine the script name and determine if it has a file extension included.
+  // If so, we'll rip it out of the script name, but keep a reference to it.
+  // Otherwise, we'll always assume that we're looking for a normal `.js` file.
+  var matchedFileExtension = scriptName.match(new RegExp('^[^.]+\\.(' + BASIC_SUPPORTED_FILE_EXTENSIONS.join('|') + ')$'));
+  var fileExtension;
+  if (matchedFileExtension) {
+    fileExtension = matchedFileExtension[1];
+  }
+  else {
+    fileExtension = 'js';
+  }
+
 
   // First, we need to determine the appropriate script to run.
   // (either a terminal command or a specially-formatted Node.js/Sails.js module)
 
-  // We begin by figuring out whether this is a command-line script or a MaS definition.
+  // We begin by figuring out whether this is a command-line script or a script (MaS) definition.
   var commandToRun;
 
 
@@ -43,7 +99,7 @@ module.exports = function(scriptName) {
       }
     }
 
-    if (!_.isUndefined(packageJson.scripts) && (!_.isObject(packageJson.scripts) || !_.isArray(packageJson.scripts))) {
+    if (!_.isUndefined(packageJson.scripts) && (!_.isObject(packageJson.scripts) || _.isArray(packageJson.scripts))) {
       throw flaverr('E_MALFORMED_PACKAGE_JSON', new Error('This package.json file has an invalid `scripts` property -- should be a dictionary (plain JS object).'));
     }
 
@@ -69,15 +125,28 @@ module.exports = function(scriptName) {
   }
 
 
-  // Now check the `scripts/` directory.
-  // TODO
+  // Now check the `scripts/` directory to see if the file exists.
+  var relativePathToScript = 'scripts/'+scriptName+fileExtension;
+  var doesScriptFileExist = fs.existsSync(path.resolve(relativePathToScript));
+  if (doesScriptFileExist) {
 
-  // Ensure that this script is not defined more than once, and that there
-  // are no other scripts with ambiguous filenames.
-  // TODO
+  }
 
-  // Ensure that this script exists.
-  // TODO
+  // Ensure that this script is not defined in BOTH places.
+  if (commandToRun && doesScriptFileExist) {
+    console.error('Cannot run `'+scriptName+'` because it is too ambiguous.');
+    console.error('A script should only be defined once, but that script is defined in both the package.json file');
+    console.error('AND as a file in the `scripts/` directory.');
+    return process.exit(1);
+  }
+
+  // Ensure that this script exists one place or the other.
+  if (!commandToRun && !doesScriptFileExist) {
+    console.error('Unknown script: `'+scriptName+'`');
+    console.error('No matching script is defined at `'+relativePathToScript+'`.');
+    console.error('(And there is no matching NPM script in the package.json file.)');
+    return process.exit(1);
+  }
 
 
   // If this is a Node.js/Sails.js script (machine def), then require the script file
@@ -103,8 +172,9 @@ module.exports = function(scriptName) {
       return process.exit(1);
     }
   }
-  // Otherwise, this is just a command-line script, so execute the command like you would on the terminal.
+  // Otherwise, this is an NPM script of some kind, from the package.json file.
   else {
+    // So execute the command like you would on the terminal.
     Process.executeCommand({
       command: commandToRun,
     }).exec(function (err, report) {
@@ -116,8 +186,10 @@ module.exports = function(scriptName) {
         return process.exit(1);
       }
 
-      console.log();
-      console.log('Done.');
+      // Log output, if any.
+      if (report.stderr) { console.log(report.stderr); }
+      if (report.stdout) { console.log(report.stdout); }
+
       return process.exit(0);
     });//< Process.executeCommand().exec() > _∏_
   }//</ else >

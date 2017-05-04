@@ -119,6 +119,13 @@ cmd.unknownOption = NOOP;
 cmd.description('');
 cmd.action(require('./sails-debug'));
 
+// $ sails run
+cmd = program.command('run');
+cmd.usage('[name-of-script]');
+cmd.unknownOption = NOOP;
+cmd.description('');
+cmd.action(require('./sails-run'));
+
 
 
 //
