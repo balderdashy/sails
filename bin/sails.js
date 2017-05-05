@@ -84,14 +84,6 @@ cmd.unknownOption = NOOP;
 cmd.description('');
 cmd.action(require('./sails-upgrade'));
 
-// $ sails deploy
-cmd = program.command('deploy');
-// cmd.option('--dry');
-cmd.unknownOption = NOOP;
-cmd.description('');
-cmd.usage('');
-cmd.action(require('./sails-deploy'));
-
 
 // $ sails console
 cmd = program.command('console');
@@ -126,6 +118,34 @@ cmd.unknownOption = NOOP;
 cmd.description('');
 cmd.action(require('./sails-run'));
 
+
+// $ sails test
+cmd = program.command('test');
+cmd.unknownOption = NOOP;
+cmd.description('');
+cmd.action(function(){
+  require('./sails-run')('test', _.last(arguments));
+});
+
+// $ sails lint
+cmd = program.command('lint');
+cmd.unknownOption = NOOP;
+cmd.description('');
+cmd.action(function(){
+  require('./sails-run')('lint', _.last(arguments));
+});
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// $ sails deploy
+cmd = program.command('deploy');
+// cmd.option('--dry');
+cmd.unknownOption = NOOP;
+cmd.description('');
+cmd.usage('');
+cmd.action(require('./sails-deploy'));
+// FUTURE: ^^ Consider simplifying this into a script.
+// - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
 //
