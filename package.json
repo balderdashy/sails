@@ -45,6 +45,7 @@
     "include-all": "^4.0.0",
     "machine": "^13.0.0-12",
     "machine-as-action": "^9.0.0",
+    "machine-as-script": "^4.1.1",
     "machinepack-process": "^2.0.2",
     "machinepack-redis": "^1.1.1",
     "merge-defaults": "0.2.1",

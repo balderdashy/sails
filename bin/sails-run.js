@@ -9,6 +9,8 @@ var chalk = require('chalk');
 var COMMON_JS_FILE_EXTENSIONS = require('common-js-file-extensions');
 var flaverr = require('flaverr');
 var Process = require('machinepack-process');
+var machineAsScript = require('machine-as-script');
+var Sails = require('../lib/app');
 
 
 /**
@@ -69,15 +71,20 @@ module.exports = function(scriptName) {
   // Examine the script name and determine if it has a file extension included.
   // If so, we'll rip it out of the script name, but keep a reference to it.
   // Otherwise, we'll always assume that we're looking for a normal `.js` file.
-  var matchedFileExtension = scriptName.match(new RegExp('^[^.]+\\.(' + BASIC_SUPPORTED_FILE_EXTENSIONS.join('|') + ')$'));
+  var X_BASIC_SUPPORTED_FILE_EXTENSION = new RegExp('^([^.]+)\\.(' + BASIC_SUPPORTED_FILE_EXTENSIONS.join('|') + ')$');
+  var matchedFileExtension = scriptName.match(X_BASIC_SUPPORTED_FILE_EXTENSION);
   var fileExtension;
   if (matchedFileExtension) {
-    fileExtension = matchedFileExtension[1];
+    fileExtension = matchedFileExtension[2];
+    scriptName = scriptName.replace(X_BASIC_SUPPORTED_FILE_EXTENSION, '$1');
   }
   else {
     fileExtension = 'js';
   }
 
+  // console.log(scriptName);
+  // console.log(fileExtension);
+  // return;
 
   // First, we need to determine the appropriate script to run.
   // (either a terminal command or a specially-formatted Node.js/Sails.js module)
@@ -126,11 +133,8 @@ module.exports = function(scriptName) {
 
 
   // Now check the `scripts/` directory to see if the file exists.
-  var relativePathToScript = 'scripts/'+scriptName+fileExtension;
+  var relativePathToScript = 'scripts/'+scriptName+'.'+fileExtension;
   var doesScriptFileExist = fs.existsSync(path.resolve(relativePathToScript));
-  if (doesScriptFileExist) {
-
-  }
 
   // Ensure that this script is not defined in BOTH places.
   if (commandToRun && doesScriptFileExist) {
@@ -164,8 +168,49 @@ module.exports = function(scriptName) {
         }
       }
 
+      // Make sure the script is at least basically valid.
+      // (MaS will check it more later -- this is just preliminary -- and also to make sure that it's not `{}`,
+      // the special indicator that the script definition didn't export _ANYTHING_ at all.)
+      if (!_.isObject(scriptDef) || _.isArray(scriptDef) || _.isEqual(scriptDef, {})) {
+        console.error('');
+        console.error('');
+        console.error('Invalid script: `'+scriptName+'`');
+        console.error('');
+        console.error('A well-formed Node.js/Sails.js script should export a script definition.');
+        console.error('In other words, it should be defined more or less like this:');
+        console.error('');
+        console.error('    ```````````````````````````````````````````````````````````');
+        console.error('    module.exports = {');
+        console.error('      description: \'Do a thing given some stuff.\',');
+        console.error('      inputs: {');
+        console.error('        someStuff: { type: \'string\', required: true }');
+        console.error('      },');
+        console.error('      fn: function (inputs, exits) {');
+        console.error('        // ...');
+        console.error('        sails.log(\'Hello world!\');');
+        console.error('        return exits.success();');
+        console.error('      }');
+        console.error('    };');
+        console.error('    ```````````````````````````````````````````````````````````');
+        console.error('');
+        return process.exit(1);
+      }
+
+      // Modify the script definition to add `sails: require('sails')` and `habitat: 'sails'`
+      // (unless it explicitly disables this behavior with `sails: false` or by explicitly
+      // declaring some other habitat)
+      var isLifecycleMgmtExplicitlyDisabled = (
+        scriptDef.sails === false || (
+          !_.isUndefined(scriptDef.habitat) && scriptDef.habitat !== 'sails'
+        )
+      );
+      if (!isLifecycleMgmtExplicitlyDisabled) {
+        scriptDef.habitat = 'sails';
+        scriptDef.sails = Sails();
+      }
+
       // Now actually run the script.
-      // TODO
+      machineAsScript(scriptDef).exec();
 
     } catch (e) {
       console.error(e);
@@ -192,6 +237,28 @@ module.exports = function(scriptName) {
 
       return process.exit(0);
     });//< Process.executeCommand().exec() > _∏_
+
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // FUTURE: Consider allowing streaming output:
+    // `````````````````````````````````````````````````````````
+    // sailsLiftProc = MProcess.spawnChildProcess({
+    //   command: 'node',
+    //   cliArgs: opts.cliArgs,
+    //   environmentVars: opts.envVars
+    // }).execSync();
+    //
+    // sailsLiftProc.stdout.on('data', function (data){
+    //   console.log('stdout:',''+data);
+    //   // ...
+    // });
+    // sailsLiftProc.stderr.on('data', function (data){
+    //   console.log('stderr:',''+data);
+    //   // ...
+    // });
+    // `````````````````````````````````````````````````````````
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   }//</ else >
 
 };
