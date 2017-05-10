@@ -16,7 +16,7 @@ Sails.js is a [web framework](http://sailsjs.com/whats-that) that makes it easy 
 $ npm install sails -g
 ```
 
-> ######Upgrading from an earlier version of Sails?
+> ##### Upgrading from an earlier version of Sails?
 > Version migration guides for all major releases since 2013 are available on the Sails website under [**Upgrading**](http://sailsjs.com/upgrading).
 
 
