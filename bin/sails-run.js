@@ -219,24 +219,6 @@ module.exports = function(scriptName) {
   }
   // Otherwise, this is an NPM script of some kind, from the package.json file.
   else {
-    // // So execute the command like you would on the terminal.
-    // Process.executeCommand({
-    //   command: commandToRun,
-    // }).exec(function (err, report) {
-    //   if (err) {
-    //     console.error('Error occured running `'+ commandToRun+ '`');
-    //     console.error('Please resolve any issues and try `sails run '+scriptName+'` again.');
-    //     console.error('Details:');
-    //     console.error(err);
-    //     return process.exit(1);
-    //   }
-
-    //   // Log output, if any.
-    //   if (report.stderr) { console.log(report.stderr); }
-    //   if (report.stdout) { console.log(report.stdout); }
-
-    //   return process.exit(0);
-    // });//< Process.executeCommand().exec() > _∏_
 
 
     // So execute the command like you would on the terminal.
@@ -246,12 +228,44 @@ module.exports = function(scriptName) {
     // as a way of leveraging a subshell to remove the need to pass in CLI args directly.
     // Maybe as an option at least.
     //
+    // > Also, we should also consider adding a notifier function to optionally provide
+    // > special instructions of what to do when the current (parent) process receives a SIGINT.
+    // > (Otherwise, by default, the SIGINT behavior implemented below could be used instead.)
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    //
     // -AND/OR-
     //
-    // Consider exposing an optional `onData` input to the more basic `executeCommand()`
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // FUTURE: Consider exposing an optional `onData` input to the more basic `executeCommand()`
     // machine.  That way, you can just pass in a notifier function that handles the child's
     // writes to its stdout and stderr streams without having to dig into all of these
-    // annoying complexities.
+    // annoying complexities.  Also, it'd then be possible to add another input: a flag that
+    // allows you to choose whether or not to store output and pass it to the callback
+    // (e.g. `bufferOutput`).
+    //
+    // > Finally, we should also consider adding the same SIGINT notifier function mentioned above.
+    //
+    // Here's an example of how we might put it all together:
+    // ```
+    // Process.executeCommand({
+    //   command: commandToRun,
+    //   bufferOutput: false,
+    //   killOnParentSigint: false,
+    //   onData: function (data, stdStreamName){
+    //     process[stdStreamName].write(data);
+    //   }
+    // }).exec(function (err) {
+    //   if (err) {
+    //     console.error('Error occured running `'+ commandToRun+ '`');
+    //     console.error('Please resolve any issues and try `sails run '+scriptName+'` again.');
+    //     console.error('Details:');
+    //     console.error(err);
+    //     return process.exit(1);
+    //   }//-•
+    //
+    //   return process.exit(0);
+    // });//< Process.executeCommand().exec() > _∏_
+    // ```
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     // Determine an appropriate name for our shell.
@@ -293,9 +307,9 @@ module.exports = function(scriptName) {
     var spinlocked;
     (function (proceed){
 
-      childProcess.on('error', function(err) { return proceed(err); });
-      childProcess.stderr.on('error', function(err) { return proceed(err); });
-      childProcess.stdout.on('error', function(err) { return proceed(err); });
+      childProcess.on('error', function (err) { return proceed(err); });
+      childProcess.stderr.on('error', function (err) { return proceed(err); });
+      childProcess.stdout.on('error', function (err) { return proceed(err); });
       childProcess.on('close', function (code, signal) {
         // log.silly('lifecycle', logid(pkg, stage), 'Returned: code:', code, ' signal:', signal)
         // If a signal was received, terminate the current parent process (i.e. `sails run`).
@@ -323,7 +337,7 @@ module.exports = function(scriptName) {
         }
         spinlocked = true;
 
-
+        console.error('- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ');
         console.error('Error occured running `'+ commandToRun+ '`');
         console.error('Please resolve any issues and try `sails run '+scriptName+'` again.');
         console.error('Details:');
@@ -331,113 +345,11 @@ module.exports = function(scriptName) {
 
         process.removeListener('SIGTERM', onSigTerm);
         return process.exit(1);
-      }
+      }//-•
 
       return process.exit(0);
 
-    });
-
-
-
-    // childProcess.on('error', procError)
-
-
-    // function procError (er) {
-    //   if (er) {
-    //     log.info('lifecycle', logid(pkg, stage), 'Failed to exec ' + stage + ' script')
-    //     er.message = pkg._id + ' ' + stage + ': `' + cmd + '`\n' +
-    //                  er.message
-    //     if (er.code !== 'EPERM') {
-    //       er.code = 'ELIFECYCLE'
-    //     }
-    //     fs.stat(npm.dir, function (statError, d) {
-    //       if (statError && statError.code === 'ENOENT' && npm.dir.split(path.sep).slice(-1)[0] === 'node_modules') {
-    //         log.warn('', 'Local package.json exists, but node_modules missing, did you mean to install?')
-    //       }
-    //     })
-    //     er.pkgid = pkg._id
-    //     er.stage = stage
-    //     er.script = cmd
-    //     er.pkgname = pkg.name
-    //   }
-    //   process.removeListener('SIGTERM', procKill)
-    //   return cb(er)
-    // }
-
-
-
-    // // if (_forceKillErr) {
-    //   //   return done(new Error('There was a problem terminating this script:\n'+err.stack+'\nBut hey, also force-killing the child process didn\'t work.  So something weird is going on, I\'d say.  Check out the deets on that force kill error:\n' + _forceKillErr.stack));
-    //   // }
-    //   // else {
-    //   //   return done(new Error('Should have been able to gracefully shut down child process, because it should have been lifted. Heres the error that came back when attempting the graceful shutdown (although honestly it prbly doesn\'t matter-- it\'s more likely the app just didn\'t successfully lift).  Graceful shutdown error:\n'+err.stack));
-    //   // }
-    // function procKill () {
-    //   proc.kill()
-    // }
-
-    // (function (proceed){
-
-
-    //   // childProcess.stdout.on('data', function (data){
-    //   //   console.log('stdout:',''+data);
-    //   //   // ...
-    //   // });
-    //   // childProcess.stderr.on('data', function (data){
-    //   //   console.log('stderr:',''+data);
-    //   //   // ...
-    //   // });
-
-    //   // childProcess.stdout.on('end', function (){
-
-    //   // });
-    //   // childProcess.stderr.on('end', function (){
-
-    //   // });
-
-    //   // childProcess.stdout.on('error', function (err){
-
-    //   // });
-    //   // childProcess.stderr.on('error', function (err){
-
-    //   // });
-
-
-    //   return proceed();
-
-    // })(function (err) {
-    //   if (err) {
-    //     console.error('- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ');
-    //     console.error('Error occured running `'+ commandToRun+ '`');
-    //     console.error('Please resolve any issues and try `sails run '+scriptName+'` again.');
-    //     console.error('Details:');
-    //     console.error(err);
-    //     return process.exit(1);
-    //   }
-
-    //   return process.exit(0);
-    // });
-
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // FUTURE: Consider allowing streaming output:
-    // `````````````````````````````````````````````````````````
-    // var childProcess = Process.spawnChildProcess({
-    //   command: commandToRun,
-    //   // cliArgs: opts.cliArgs,
-    //   // environmentVars: opts.envVars
-    // }).execSync();
-
-    // childProcess.stdout.on('data', function (data){
-    //   console.log('stdout:',''+data);
-    //   // ...
-    // });
-    // childProcess.stderr.on('data', function (data){
-    //   console.log('stderr:',''+data);
-    //   // ...
-    // });
-    // `````````````````````````````````````````````````````````
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    });//</ self-calling function > _∏_
 
   }//</ else >
 
