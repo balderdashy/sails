@@ -8,9 +8,11 @@ var _ = require('@sailshq/lodash');
 var chalk = require('chalk');
 var COMMON_JS_FILE_EXTENSIONS = require('common-js-file-extensions');
 var flaverr = require('flaverr');
-var Process = require('machinepack-process');
-var machineAsScript = require('machine-as-script');
-var Sails = require('../lib/app');
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Note that `machine-as-script`, `machinepack-process`, and `../lib/app` are
+// conditionally required below, only in the cases where they are actually used.
+// (That way you don't have to wait for them to load if you're not using them.)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 
 /**
@@ -205,9 +207,14 @@ module.exports = function(scriptName) {
         )
       );
       if (!isLifecycleMgmtExplicitlyDisabled) {
+        // (Only require the rest of the Sails framework if it's needed.)
+        var Sails = require('../lib/app');
         scriptDef.habitat = 'sails';
         scriptDef.sails = Sails();
       }
+
+      // (Only require machine-as-script if it's needed.)
+      var machineAsScript = require('machine-as-script');
 
       // Now actually run the script.
       machineAsScript(scriptDef).exec();
@@ -267,6 +274,9 @@ module.exports = function(scriptName) {
     // });//< Process.executeCommand().exec() > _∏_
     // ```
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    // (Only require machinepack-process if it's needed.)
+    var Process = require('machinepack-process');
 
     // Determine an appropriate name for our shell.
     // > This is mainly just so we don't have to try and do any fancy parsing of the command,
