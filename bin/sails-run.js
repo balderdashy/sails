@@ -284,8 +284,7 @@ module.exports = function(scriptName) {
 
     var childProcess = Process.spawnChildProcess({
       command: shProcName,
-      cliArgs: [ shFlag, commandToRun ],
-      // environmentVars: opts.envVars
+      cliArgs: [ shFlag, commandToRun ]
     }).execSync();
 
     // Pipe output from the child process to the current (parent) process.
