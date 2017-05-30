@@ -31,26 +31,37 @@ describe('i18n ::', function() {
 
   var sailsApp;
   before(function(done) {
-    appHelper.build(function(err) {
-      if (err) {return done(err);}
-      appHelper.lift({
-        log: { level: 'silent' }
-      }, function(err, sails) {
-        if (err) {
-          return done(err);
-        }
-        sailsApp = sails;
-        return done();
-      });
+    appHelper.build(done);
+  });
+
+  beforeEach(function(done) {
+    appHelper.lift({
+      log: { level: 'silent' },
+      routes: {
+        '/test_req_getlocale': function(req, res) {
+          res.send(req.getLocale());
+        },
+        '/test_req_setlocale': function(req, res) {
+          req.setLocale('es');
+          res.send(sailsApp.i18n('Welcome'));
+        },
+      }
+    }, function(err, sails) {
+      if (err) {
+        return done(err);
+      }
+      sailsApp = sails;
+      return done();
     });
   });
 
-  after(function(done) {
-    sailsApp.lower(function() {
-      process.chdir('../');
-      appHelper.teardown();
-      return done();
-    });
+  afterEach(function(done) {
+    sailsApp.lower(done);
+  });
+
+  after(function() {
+    process.chdir('../');
+    appHelper.teardown();
   });
 
   describe('with locales generate by sails-generate-backend', function() {
@@ -70,6 +81,23 @@ describe('i18n ::', function() {
     it('should say "Bienvenido" in Spanish', function() {
       sailsApp.hooks.i18n.setLocale('es');
       assert.equal(sailsApp.__('Welcome'), 'Bienvenido');
+    });
+
+    it('should support `req.getLocale()` to get the current locale.', function(done) {
+      sailsApp.hooks.i18n.setLocale('es');
+      sailsApp.request('GET /test_req_getlocale', function(err, res, body) {
+        if (err) { return done(err); }
+        assert.equal(body, 'es');
+        return done();
+      });
+    });
+
+    it('should support `req.setLocale()` to set the current locale.', function(done) {
+      sailsApp.request('GET /test_req_setlocale', function(err, res, body) {
+        if (err) { return done(err); }
+        assert.equal(body, 'Bienvenido');
+        return done();
+      });
     });
 
     it('should say "Bienvenue" in French', function() {
