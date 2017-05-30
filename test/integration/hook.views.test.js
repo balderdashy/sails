@@ -120,7 +120,7 @@ describe('hooks :: ', function() {
 
         };
         filesToWrite = {
-          'views/homepage.ejs': '<%= __(\'Welcome\') %>',
+          'views/homepage.ejs': '<%= __(\'Welcome\') + i18n(\'Welcome\') %>',
           'config/locales/es.json': '{"Welcome":"Bienvenido"}'
         };
       });
@@ -140,7 +140,7 @@ describe('hooks :: ', function() {
             }
 
             try {
-              assert.equal(response.body, '<!DOCTYPE html><html><head><!-- default layout --></head><body>Bienvenido</body></html>');
+              assert.equal(response.body, '<!DOCTYPE html><html><head><!-- default layout --></head><body>BienvenidoBienvenido</body></html>');
             } catch (e) { return done(e); }
 
             done();

@@ -58,6 +58,10 @@ describe('i18n ::', function() {
       assert.equal(sailsApp.__('Welcome'), 'Welcome');
     });
 
+    it('should work using `i18n()` as well as `__()`', function() {
+      assert.equal(sailsApp.i18n('Welcome'), 'Welcome');
+    });
+
     it('should say "Welcome" in English', function() {
       sailsApp.hooks.i18n.setLocale('en');
       assert.equal(sailsApp.__('Welcome'), 'Welcome');
