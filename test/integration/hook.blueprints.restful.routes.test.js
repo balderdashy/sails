@@ -222,7 +222,7 @@ describe('blueprints :: ', function() {
         appHelper.linkDeps(tmpDir.name);
         (new Sails()).load(_.merge({
           hooks: {
-            grunt: false, views: false, policies: false, pubsub: false, i18n: false
+            grunt: false, views: false, policies: false, i18n: false
           },
           orm: {
             moduleDefinitions: {
@@ -850,6 +850,69 @@ describe('blueprints :: ', function() {
               });
             });
 
+
+          });
+
+        });
+
+        describe('with a custom parseBlueprintOptions that disables auto-population (tests #4138)', function() {
+
+          before(function() {
+            extraSailsConfig = {
+              hooks: {
+                pubsub: undefined
+              },
+              blueprints: {
+                parseBlueprintOptions: function(req) {
+                  var queryOptions = req._sails.hooks.blueprints.parseBlueprintOptions(req);
+
+                  if (!req.param('populate', false) && !queryOptions.alias) {
+                    queryOptions.populates = {};
+                  }
+                  return queryOptions;
+                }
+              },
+              orm: {
+                moduleDefinitions: {
+                  models: {
+                    user: {
+                      attributes: {
+                        name: 'string',
+                        pets: {
+                          collection: 'pet',
+                          via: 'owner'
+                        }
+                      }
+                    },
+                    pet: {
+                      attributes: {
+                        name: 'string',
+                        owner: {
+                          model: 'user'
+                        }
+                      }
+                    }
+                  },
+                }
+              }
+            };
+          });
+
+          after(function() {
+            extraSailsConfig = {};
+          });
+
+          it('the delete blueprint should not cause any errors', function(done) {
+            sailsApp.models.pet.createEach([{name: 'alice'}, {name: 'rex'}]).meta({fetch: true}).exec(function(err, pets) {
+              if (err) {return done(err);}
+              sailsApp.models.user.create({name: 'bill', pets: _.pluck(pets, sailsApp.models.pet.primaryKey)}).exec(function(err, bill) {
+                if (err) {return done(err);}
+                sailsApp.request('delete /user/' + bill[sailsApp.models.user.primaryKey], function (err, resp, data) {
+                  if (err) {return done (err);}
+                  return done();
+                });
+              });
+            });
 
           });
 
