@@ -48,3 +48,4 @@ testApp
 -coverage
 -isolate-0x*
 ssl
+package-lock.json
