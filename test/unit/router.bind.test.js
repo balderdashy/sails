@@ -427,6 +427,65 @@ describe('Router.bind', function() {
       });
     });
 
+  $Router.bind('   /whitespace1 ', RESPOND.JSON_HELLO)
+    .expectBoundRoute({
+      path: '/whitespace1',
+      method: 'get'
+    })
+    .test(function() {
+      it('should send expected response (get /whitespace1)', function(done) {
+        this.sails.request({
+          url: '/whitespace1',
+          method: 'get'
+        }, function(err, res, body) {
+          if (err) {
+            return done(err);
+          }
+          res.statusCode.should.be.equal(200);
+          body.should.be.instanceOf(Object);
+          body.hello.should.be.equal('world');
+          return done();
+        });
+      });
+    });
+
+  $Router.bind('  GET   /whitespace2 ', RESPOND.JSON_HELLO)
+    .expectBoundRoute({
+      path: '/whitespace',
+      method: 'get'
+    })
+    .test(function() {
+      it('should send expected response (get /whitespace2)', function(done) {
+        this.sails.request({
+          url: '/whitespace2',
+          method: 'get'
+        }, function(err, res, body) {
+          if (err) {
+            return done(err);
+          }
+          res.statusCode.should.be.equal(200);
+          body.should.be.instanceOf(Object);
+          body.hello.should.be.equal('world');
+          return done();
+        });
+      });
+      it('should send 404 response (put /whitespace2)', function(done) {
+        this.sails.request({
+          url: '/whitespace2',
+          method: 'put'
+        }, function(err, res, body) {
+          if (err && err.status === 404) {
+            return done();
+          } else if (err) {
+            return done(err);
+          } else {
+            return done(new Error('Should have returned 404!'));
+          }
+        });
+      });
+
+    });
+
 
   $Router
     .test(function() {
