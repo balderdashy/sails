@@ -498,6 +498,50 @@ describe('router :: ', function() {
 
     });
 
+    if (Number(process.version.match(/^v(\d+\.\d+)/)[1]) >= 7.6) {
+
+      describe('Async route handlers :: ', function() {
+
+        describe('ad-hoc functions', function() {
+
+          before(function() {
+            require('fs').writeFileSync('config/routes.js', 'module.exports.routes = {"/testasync": async function(req, res, next) { throw new Error("foo!"); } }');
+          });
+
+          it('should handle uncaught promises correctly', function(done) {
+            httpHelper.testRoute('get', 'testasync', function(err, response) {
+              if (err) { return done(err); }
+              assert(response.statusCode === 500);
+              done();
+            });
+
+          });
+
+        });
+
+        describe('actions', function() {
+
+          before(function() {
+            require('fs').writeFileSync('config/routes.js', 'module.exports.routes = {"/testasync": "asynctest" }');
+            require('fs').writeFileSync('api/controllers/asynctest.js', 'module.exports = async function(req, res, next) { throw new Error("foo!"); }');
+          });
+
+          it('should handle uncaught promises correctly', function(done) {
+            httpHelper.testRoute('get', 'testasync', function(err, response) {
+              if (err) { return done(err); }
+              assert(response.statusCode === 500);
+              done();
+            });
+
+          });
+
+        });
+
+
+      });
+
+
+    }
 
 
   });
