@@ -522,12 +522,23 @@ describe('router :: ', function() {
         describe('actions', function() {
 
           before(function() {
-            require('fs').writeFileSync('config/routes.js', 'module.exports.routes = {"/testasync": "asynctest" }');
-            require('fs').writeFileSync('api/controllers/asynctest.js', 'module.exports = async function(req, res, next) { throw new Error("foo!"); }');
+            require('fs').writeFileSync('config/routes.js', 'module.exports.routes = {"/testasyncerror": "asynctesterr", "/testasyncok": "asynctestok" }');
+            require('fs').writeFileSync('api/controllers/asynctesterr.js', 'module.exports = async function(req, res, next) { throw new Error("foo!"); }');
+            require('fs').writeFileSync('api/controllers/asynctestok.js', 'module.exports = async function(req, res, next) { var dumb = function() { return new Promise (function(resolve, reject) { setTimeout(function(){ return resolve("foo")}, 100);}); }; var val = await dumb();  return res.send(val) }');
+          });
+
+          it('should handle responses correctly', function(done) {
+            httpHelper.testRoute('get', 'testasyncok', function(err, response) {
+              if (err) { return done(err); }
+              assert(response.statusCode === 200);
+              assert(response.body === 'foo');
+              done();
+            });
+
           });
 
           it('should handle uncaught promises correctly', function(done) {
-            httpHelper.testRoute('get', 'testasync', function(err, response) {
+            httpHelper.testRoute('get', 'testasyncerror', function(err, response) {
               if (err) { return done(err); }
               assert(response.statusCode === 500);
               done();
