@@ -22,7 +22,10 @@ var CaptainsLog = require('captains-log');
  * @stability 2
  * @see http://sailsjs.org/documentation/reference/command-line-interface/sails-debug-console
  */
-module.exports = function() {
+module.exports = function(cmd) {
+
+  var extraArgs = cmd.parent.rawArgs.slice(3);
+
   var log = CaptainsLog();
 
   console.log();
@@ -40,7 +43,7 @@ module.exports = function() {
 
     // Spin up child process for the Sails console
     var pathToConsole = path.resolve(__dirname, './sails.js');
-    Womb.spawn('node', ['--debug', pathToConsole, 'console', global.sails_dc_opts], {
+    Womb.spawn('node', ['--debug', pathToConsole, 'console'].concat(extraArgs), {
       stdio: 'inherit'
     });
   });
