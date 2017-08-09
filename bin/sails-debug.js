@@ -18,7 +18,10 @@ var Sails = require('../lib/app');
  * @stability 2
  * @see http://sailsjs.com/documentation/reference/command-line-interface/sails-debug
  */
-module.exports = function() {
+module.exports = function(cmd) {
+
+  var extraArgs = cmd.parent.rawArgs.slice(3);
+
   var log = CaptainsLog();
 
   // Use the app's local Sails in `node_modules` if one exists
@@ -47,7 +50,7 @@ module.exports = function() {
     console.log();
 
     // Spin up child process for Sails
-    Womb.spawn('node', ['--debug', pathToSails, 'lift'], {
+    Womb.spawn('node', ['--debug', pathToSails, 'lift'].concat(extraArgs), {
       stdio: 'inherit'
     });
   });
