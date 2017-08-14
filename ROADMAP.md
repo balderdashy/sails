@@ -173,7 +173,7 @@ Please also realize that the following notes may be slightly out of date from ti
     + Most likely, that's stuff like `ECONNREFUSED`
     + But would be a lot better if we could swing more specific error codes-- e.g. `E_BAD_SESSION_STORE_CONFIG` and `E_COULD_NOT_CONNECT_TO_SESSION_STORE`-- since that would eliminate the possibility of false positives due to throwing / `cb(err)`-ing.
 
-  
+
 ## 2.0.0 and beyond
 
 + **Custom responses: Deprecate res.ok() in favor of res.success(); as well as some other breaking changes to custom responses.**
@@ -189,7 +189,7 @@ Please also realize that the following notes may be slightly out of date from ti
 + **Switch to Lodash view engine by default?**
   + This is really just to normalize the confusing backwardsness of `<%=` vs. `<%-` in EJS/Lodash/Underscore
   + Would need to figure out partials/layouts though
-  
+
 
 &nbsp;
 &nbsp;
@@ -206,6 +206,7 @@ The backlog consists of approved proposals for useful features which are not cur
 
 Feature                                          | Proposal                                                                              | Summary
  :---------------------------------------------- | :------------------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------
+ Allow select/omit clauses when populating a singular association | https://trello.com/c/yM9WPxzr/107-waterline-fs2q-tolerate-a-subcriteria-being-provided-to-populate-for-a-singular-associations-but-only-if-it-exclusively-contains | Don't throw an error if these clauses are included in a `populate` for a singular association (but still error if actual "where" criteria are used)
  Generate `test/` folder in new Sails apps       | [#2499](https://github.com/balderdashy/sails/pull/2499#issuecomment-171556544)        | Generate a generic setup for mocha tests in all new Sails apps.  Originally suggested by [@jedd-ahyoung](https://github.com/jedd-ahyoung).
  View helper for bootstrapping script tags       | [#3522](https://github.com/balderdashy/sails/pull/3522)                               | Include a view helper for bootstrapping untrusted data from view locals onto the page via script tags in order to expose it to client-side JavaScript. The tricky part is ensuring protection from attempted XSS attacks.
 ~~Improve CORS implementation~~                     | [#3651](https://github.com/balderdashy/sails/pull/3651)                               | ~~Minor changes to the current CORS hooks to better follow the specs/remove inconsistencies.~~
