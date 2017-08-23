@@ -65,7 +65,7 @@ describe('helpers :: ', function() {
     });
 
     it('should load asynchronously helpers correctly', function(done) {
-      sailsApp.helpers.greet({ name: 'Glen' }).switch({
+      sailsApp.helpers.greet({ name: 'Glen' }).exec({
         error: done,
         success: function ( result ) {
           assert.equal(result, 'Hi, Glen!');
