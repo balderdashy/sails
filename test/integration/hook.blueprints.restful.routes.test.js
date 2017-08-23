@@ -271,6 +271,10 @@ describe('blueprints :: ', function() {
                       pets: {
                         collection: 'pet',
                         via: 'owner'
+                      },
+                      animalFriends: {
+                        collection: 'pet',
+                        via: 'humanFriends'
                       }
                     }
                   },
@@ -279,6 +283,10 @@ describe('blueprints :: ', function() {
                       name: 'string',
                       owner: {
                         model: 'user'
+                      },
+                      humanFriends: {
+                        collection: 'user',
+                        via: 'animalFriends'
                       }
                     }
                   }
@@ -495,145 +503,136 @@ describe('blueprints :: ', function() {
           });
         });
 
+        //   █████╗ ███████╗███████╗ ██████╗  ██████╗██╗ █████╗ ████████╗██╗ ██████╗ ███╗   ██╗███████╗
+        //  ██╔══██╗██╔════╝██╔════╝██╔═══██╗██╔════╝██║██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
+        //  ███████║███████╗███████╗██║   ██║██║     ██║███████║   ██║   ██║██║   ██║██╔██╗ ██║███████╗
+        //  ██╔══██║╚════██║╚════██║██║   ██║██║     ██║██╔══██║   ██║   ██║██║   ██║██║╚██╗██║╚════██║
+        //  ██║  ██║███████║███████║╚██████╔╝╚██████╗██║██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║███████║
+        //  ╚═╝  ╚═╝╚══════╝╚══════╝ ╚═════╝  ╚═════╝╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
+        //
+
         describe('associations :: ', function() {
 
-          describe('a post request to /:model with an array specified for a collection attribute', function() {
+          describe('one to many :: ', function() {
 
-            it('should return JSON for the new record including the associated collection', function(done) {
-              sailsApp.models.pet.create({name: 'spot'}).meta({fetch: true}).exec(function(err, spot) {
-                sailsApp.request('post /user', {name: 'will', pets: [spot.id]}, function (err, resp, data) {
-                  if (err) {return done (err);}
-                  assert.equal(data.name, 'will');
-                  assert.equal(data.id, 1);
-                  assert.equal(data.pets.length, 1);
-                  assert.equal(data.pets[0].name, 'spot');
-                  return done();
-                });
-              });
-            });
-          });
+            describe('a post request to /:model with an array specified for a collection attribute', function() {
 
-
-          describe('a get request to /:model/:parentid/:association for a plural association', function() {
-
-            describe('where a single child instance exists', function() {
-
-              it('should return JSON for the specified collection of the test model', function(done) {
+              it('should return JSON for the new record including the associated collection', function(done) {
                 sailsApp.models.pet.create({name: 'spot'}).meta({fetch: true}).exec(function(err, spot) {
-                  sailsApp.models.user.create({name: 'will', pets: [spot.id]}).meta({fetch: true}).exec(function(err, will) {
-                    if (err) {return done (err);}
-                    sailsApp.request('get /user/1/pets', function (err, resp, data) {
-                      if (err) {return done (err);}
-                      assert.equal(data.length, 1);
-                      assert.equal(data[0].name, 'spot');
-                      assert.equal(data[0].id, 1);
-                      assert.equal(data[0].owner, 1);
-                      return done();
-                    });
-                  });
-                });
-              });
-
-            });
-
-            describe('where a 40 instances exist, and no limit is given', function() {
-
-              it('should return JSON for 30 records of the specified collection of the test model (since the default limit is 30)', function(done) {
-                var instancesToCreate = _.map(_.range(1,41), function(i) {
-                  return { name: 'pet_' + i };
-                });
-                sailsApp.models.pet.createEach(instancesToCreate).meta({fetch: true}).exec(function(err, pets) {
-                  sailsApp.models.user.create({name: 'will', pets: _.pluck(pets, 'id')}).meta({fetch: true}).exec(function(err, will) {
-                    if (err) {return done (err);}
-                    sailsApp.request('get /user/1/pets', function (err, resp, data) {
-                      if (err) {return done (err);}
-                      assert.equal(data.length, 30);
-                      return done();
-                    });
-                  });
-                });
-              });
-
-            });
-
-
-            describe('where a 40 instances exist, and a limit of 35 is given', function() {
-
-              it('should return JSON for 35 records of the specified collection of the test model', function(done) {
-                var instancesToCreate = _.map(_.range(1,41), function(i) {
-                  return { name: 'pet_' + i };
-                });
-                sailsApp.models.pet.createEach(instancesToCreate).meta({fetch: true}).exec(function(err, pets) {
-                  sailsApp.models.user.create({name: 'will', pets: _.pluck(pets, 'id')}).meta({fetch: true}).exec(function(err, will) {
-                    if (err) {return done (err);}
-                    sailsApp.request('get /user/1/pets?limit=35', function (err, resp, data) {
-                      if (err) {return done (err);}
-                      assert.equal(data.length, 35);
-                      return done();
-                    });
-                  });
-                });
-              });
-
-            });
-
-          });
-
-          describe('a get request to /:model/:parentid/:association for a plural association with no associated records', function() {
-
-            it('should return JSON for the specified collection of the test model', function(done) {
-              sailsApp.models.user.create({name: 'will'}).meta({fetch: true}).exec(function(err, will) {
-                if (err) {return done (err);}
-                sailsApp.request('get /user/1/pets', function (err, resp, data) {
-                  if (err) {return done (err);}
-                  assert.equal(data.length, 0);
-                  return done();
-                });
-              });
-            });
-          });
-
-          describe('a get request to /:model/:parentid/:association for a singular association', function() {
-
-            it('should return JSON for the specified collection of the test model', function(done) {
-              sailsApp.models.pet.create({name: 'spot'}).meta({fetch: true}).exec(function(err, spot) {
-                sailsApp.models.user.create({name: 'will', pets: [spot.id]}).meta({fetch: true}).exec(function(err, will) {
-                  if (err) {return done (err);}
-                  sailsApp.request('get /pet/1/owner', function (err, resp, data) {
+                  sailsApp.request('post /user', {name: 'will', pets: [spot.id]}, function (err, resp, data) {
                     if (err) {return done (err);}
                     assert.equal(data.name, 'will');
                     assert.equal(data.id, 1);
+                    assert.equal(data.pets.length, 1);
+                    assert.equal(data.pets[0].name, 'spot');
                     return done();
                   });
                 });
               });
             });
-          });
 
-          describe('a get request to /:model/:parentid/:association for a singular association with no associated record', function() {
 
-            it('should return JSON for the specified collection of the test model', function(done) {
-              sailsApp.models.pet.create({name: 'spot'}).meta({fetch: true}).exec(function(err, spot) {
-                sailsApp.request('get /pet/1/owner', function (err, resp, data) {
-                  if (err) {
-                    if (err.status && err.status === 404) {
-                      return done();
-                    }
-                    return done(new Error('Should have responded with a 404 error, but instead got:' + util.inspect(err, {depth: null})));
-                  }
-                  return done(new Error('Should have responded with a 404 error, but instead got:' + util.inspect(data, {depth: null})));
+            describe('a get request to /:model/:parentid/:association for a plural association', function() {
+
+              describe('where a single child instance exists', function() {
+
+                it('should return JSON for the specified collection of the test model', function(done) {
+                  sailsApp.models.pet.create({name: 'spot'}).meta({fetch: true}).exec(function(err, spot) {
+                    sailsApp.models.user.create({name: 'will', pets: [spot.id]}).meta({fetch: true}).exec(function(err, will) {
+                      if (err) {return done (err);}
+                      sailsApp.request('get /user/1/pets', function (err, resp, data) {
+                        if (err) {return done (err);}
+                        assert.equal(data.length, 1);
+                        assert.equal(data[0].name, 'spot');
+                        assert.equal(data[0].id, 1);
+                        assert.equal(data[0].owner, 1);
+                        return done();
+                      });
+                    });
+                  });
+                });
+
+              });
+
+              describe('where a 40 instances exist, and no limit is given', function() {
+
+                it('should return JSON for 30 records of the specified collection of the test model (since the default limit is 30)', function(done) {
+                  var instancesToCreate = _.map(_.range(1,41), function(i) {
+                    return { name: 'pet_' + i };
+                  });
+                  sailsApp.models.pet.createEach(instancesToCreate).meta({fetch: true}).exec(function(err, pets) {
+                    sailsApp.models.user.create({name: 'will', pets: _.pluck(pets, 'id')}).meta({fetch: true}).exec(function(err, will) {
+                      if (err) {return done (err);}
+                      sailsApp.request('get /user/1/pets', function (err, resp, data) {
+                        if (err) {return done (err);}
+                        assert.equal(data.length, 30);
+                        return done();
+                      });
+                    });
+                  });
+                });
+
+              });
+
+
+              describe('where a 40 instances exist, and a limit of 35 is given', function() {
+
+                it('should return JSON for 35 records of the specified collection of the test model', function(done) {
+                  var instancesToCreate = _.map(_.range(1,41), function(i) {
+                    return { name: 'pet_' + i };
+                  });
+                  sailsApp.models.pet.createEach(instancesToCreate).meta({fetch: true}).exec(function(err, pets) {
+                    sailsApp.models.user.create({name: 'will', pets: _.pluck(pets, 'id')}).meta({fetch: true}).exec(function(err, will) {
+                      if (err) {return done (err);}
+                      sailsApp.request('get /user/1/pets?limit=35', function (err, resp, data) {
+                        if (err) {return done (err);}
+                        assert.equal(data.length, 35);
+                        return done();
+                      });
+                    });
+                  });
+                });
+
+              });
+
+            });
+
+            describe('a get request to /:model/:parentid/:association for a plural association with no associated records', function() {
+
+              it('should return JSON for the specified collection of the test model', function(done) {
+                sailsApp.models.user.create({name: 'will'}).meta({fetch: true}).exec(function(err, will) {
+                  if (err) {return done (err);}
+                  sailsApp.request('get /user/1/pets', function (err, resp, data) {
+                    if (err) {return done (err);}
+                    assert.equal(data.length, 0);
+                    return done();
+                  });
                 });
               });
             });
-          });
 
-          describe('a get request to /:model/:parentid/:association/:id', function() {
+            describe('a get request to /:model/:parentid/:association for a singular association', function() {
 
-            it('should return a 404', function(done) {
-              sailsApp.models.pet.createEach([{name: 'bubbles'}, {name: 'dempsey'}]).meta({fetch: true}).exec(function(err, pets) {
-                sailsApp.models.user.create({name: 'roger', pets: _.pluck(pets,'id')}).meta({fetch: true}).exec(function(err) {
-                  if (err) {return done (err);}
-                  sailsApp.request('get /user/1/pets/2', function (err, resp, data) {
+              it('should return JSON for the specified collection of the test model', function(done) {
+                sailsApp.models.pet.create({name: 'spot'}).meta({fetch: true}).exec(function(err, spot) {
+                  sailsApp.models.user.create({name: 'will', pets: [spot.id]}).meta({fetch: true}).exec(function(err, will) {
+                    if (err) {return done (err);}
+                    sailsApp.request('get /pet/1/owner', function (err, resp, data) {
+                      if (err) {return done (err);}
+                      assert.equal(data.name, 'will');
+                      assert.equal(data.id, 1);
+                      return done();
+                    });
+                  });
+                });
+              });
+            });
+
+            describe('a get request to /:model/:parentid/:association for a singular association with no associated record', function() {
+
+              it('should return JSON for the specified collection of the test model', function(done) {
+                sailsApp.models.pet.create({name: 'spot'}).meta({fetch: true}).exec(function(err, spot) {
+                  sailsApp.request('get /pet/1/owner', function (err, resp, data) {
                     if (err) {
                       if (err.status && err.status === 404) {
                         return done();
@@ -645,113 +644,341 @@ describe('blueprints :: ', function() {
                 });
               });
             });
+
+            describe('a get request to /:model/:parentid/:association/:id', function() {
+
+              it('should return a 404', function(done) {
+                sailsApp.models.pet.createEach([{name: 'bubbles'}, {name: 'dempsey'}]).meta({fetch: true}).exec(function(err, pets) {
+                  sailsApp.models.user.create({name: 'roger', pets: _.pluck(pets,'id')}).meta({fetch: true}).exec(function(err) {
+                    if (err) {return done (err);}
+                    sailsApp.request('get /user/1/pets/2', function (err, resp, data) {
+                      if (err) {
+                        if (err.status && err.status === 404) {
+                          return done();
+                        }
+                        return done(new Error('Should have responded with a 404 error, but instead got:' + util.inspect(err, {depth: null})));
+                      }
+                      return done(new Error('Should have responded with a 404 error, but instead got:' + util.inspect(data, {depth: null})));
+                    });
+                  });
+                });
+              });
+            });
+
+            describe('a put request to /:model/:parentid/:association/:id', function() {
+
+              it('should return JSON for an instance of the test model, with its collection updated', function(done) {
+                sailsApp.models.user.create({name: 'ira'}).exec(function(err) {
+                  if (err) {return done (err);}
+                  sailsApp.models.pet.create({name: 'flipper'}).exec(function(err) {
+                    if (err) {return done (err);}
+                    sailsApp.request('put /user/1/pets/1', function (err, resp, data) {
+                      if (err) {return done (err);}
+                      assert.equal(data.name, 'ira');
+                      assert.equal(data.id, 1);
+                      assert.equal(data.pets.length, 1);
+                      assert.equal(data.pets[0].name, 'flipper');
+                      sailsApp.models.user.findOne({id: 1}).populate('pets').exec(function(err, user) {
+                        if (err) {return done (err);}
+                        assert(user);
+                        assert.equal(user.name, 'ira');
+                        assert.equal(user.id, 1);
+                        assert.equal(user.pets.length, 1);
+                        assert.equal(user.pets[0].name, 'flipper');
+                        return done();
+                      });
+                    });
+                  });
+                });
+              });
+            });
+
+            describe('a put request to /:model/:parentid/:association (with empty array)', function() {
+
+              it('should return JSON for an instance of the test model, with its collection replaced', function(done) {
+                sailsApp.models.user.create({name: 'ira', id: 1}).exec(function(err) {
+                  if (err) {return done (err);}
+                  sailsApp.models.pet.create({name: 'flipper', id: 1, owner: 1}).exec(function(err) {
+                    if (err) {return done (err);}
+                    sailsApp.request('put /user/1/pets', [], function (err, resp, data) {
+                      if (err) {return done (err);}
+                      assert.equal(data.name, 'ira');
+                      assert.equal(data.pets.length, 0);
+                      sailsApp.models.pet.findOne({id: 1}).populate('owner').exec(function(err, pet) {
+                        if (err) {return done (err);}
+                        assert(pet);
+                        assert.equal(pet.name, 'flipper');
+                        assert.equal(pet.id, 1);
+                        assert.equal(pet.owner, null);
+                        return done();
+                      });
+                    });
+                  });
+                });
+              });
+            });
+
+            describe('a put request to /:model/:parentid/:association (with new array)', function() {
+
+              it('should return JSON for an instance of the test model, with its collection replaced', function(done) {
+                sailsApp.models.user.create({name: 'zooey'}).exec(function(err) {
+                  if (err) {return done (err);}
+                  sailsApp.models.pet.createEach([{name: 'ralph', id: 1, owner: 1}, {name: 'fiona', id: 2}]).exec(function(err) {
+                    if (err) {return done (err);}
+                    sailsApp.request('put /user/1/pets', [2], function (err, resp, data) {
+                      if (err) {return done (err);}
+                      assert.equal(data.name, 'zooey');
+                      assert.equal(data.pets.length, 1);
+                      assert.equal(data.pets[0].id, 2);
+                      assert.equal(data.pets[0].name, 'fiona');
+                      sailsApp.models.pet.findOne({id: 2}).populate('owner').exec(function(err, pet) {
+                        if (err) {return done (err);}
+                        assert(pet);
+                        assert.equal(pet.name, 'fiona');
+                        assert.equal(pet.id, 2);
+                        assert.equal(pet.owner.name, 'zooey');
+                        assert.equal(pet.owner.id, 1);
+                        return done();
+                      });
+                    });
+                  });
+                });
+              });
+            });
+
+            describe('a delete request to /:model/:parentid/:association/:id', function() {
+
+              it('should return JSON for an instance of the test model, with its collection updated', function(done) {
+                sailsApp.models.pet.create({name: 'alice'}).meta({fetch: true}).exec(function(err, alice) {
+                  sailsApp.models.user.create({name: 'larry', pets: [alice.id]}).meta({fetch: true}).exec(function(err) {
+                    if (err) {return done (err);}
+                    sailsApp.request('delete /user/1/pets/1', function (err, resp, data) {
+                      if (err) {return done (err);}
+                      assert.equal(data.name, 'larry');
+                      assert.equal(data.id, 1);
+                      assert.equal(data.pets.length, 0);
+                      sailsApp.models.user.findOne({id: 1}).populate('pets').exec(function(err, user) {
+                        if (err) {return done (err);}
+                        assert(user);
+                        assert.equal(user.name, 'larry');
+                        assert.equal(user.id, 1);
+                        assert.equal(user.pets.length, 0);
+                        return done();
+                      });
+                    });
+                  });
+                });
+              });
+            });
+
           });
 
-          describe('a put request to /:model/:parentid/:association/:id', function() {
+          describe('many-to-many :: ', function() {
 
-            it('should return JSON for an instance of the test model, with its collection updated', function(done) {
-              sailsApp.models.user.create({name: 'ira'}).exec(function(err) {
-                if (err) {return done (err);}
-                sailsApp.models.pet.create({name: 'flipper'}).exec(function(err) {
-                  if (err) {return done (err);}
-                  sailsApp.request('put /user/1/pets/1', function (err, resp, data) {
+            describe('a post request to /:model with an array specified for a collection attribute', function() {
+
+              it('should return JSON for the new record including the associated collection', function(done) {
+                sailsApp.models.pet.create({name: 'spot'}).meta({fetch: true}).exec(function(err, spot) {
+                  sailsApp.request('post /user', {name: 'will', animalFriends: [spot.id]}, function (err, resp, data) {
                     if (err) {return done (err);}
-                    assert.equal(data.name, 'ira');
+                    assert.equal(data.name, 'will');
                     assert.equal(data.id, 1);
-                    assert.equal(data.pets.length, 1);
-                    assert.equal(data.pets[0].name, 'flipper');
-                    sailsApp.models.user.findOne({id: 1}).populate('pets').exec(function(err, user) {
-                      if (err) {return done (err);}
-                      assert(user);
-                      assert.equal(user.name, 'ira');
-                      assert.equal(user.id, 1);
-                      assert.equal(user.pets.length, 1);
-                      assert.equal(user.pets[0].name, 'flipper');
-                      return done();
-                    });
+                    assert.equal(data.animalFriends.length, 1);
+                    assert.equal(data.animalFriends[0].name, 'spot');
+                    return done();
                   });
                 });
               });
             });
-          });
 
-          describe('a put request to /:model/:parentid/:association (with empty array)', function() {
 
-            it('should return JSON for an instance of the test model, with its collection replaced', function(done) {
-              sailsApp.models.user.create({name: 'ira', id: 1}).exec(function(err) {
-                if (err) {return done (err);}
-                sailsApp.models.pet.create({name: 'flipper', id: 1, owner: 1}).exec(function(err) {
+            describe('a get request to /:model/:parentid/:association for a plural association', function() {
+
+              describe('where a single child instance exists', function() {
+
+                it('should return JSON for the specified collection of the test model', function(done) {
+                  sailsApp.models.pet.create({name: 'spot'}).meta({fetch: true}).exec(function(err, spot) {
+                    sailsApp.models.user.create({name: 'will', animalFriends: [spot.id]}).meta({fetch: true}).exec(function(err, will) {
+                      if (err) {return done (err);}
+                      sailsApp.request('get /user/1/animalFriends', function (err, resp, data) {
+                        if (err) {return done (err);}
+                        assert.equal(data.length, 1);
+                        assert.equal(data[0].name, 'spot');
+                        assert.equal(data[0].id, 1);
+                        return done();
+                      });
+                    });
+                  });
+                });
+
+              });
+
+              describe('where a 40 instances exist, and no limit is given', function() {
+
+                it('should return JSON for 30 records of the specified collection of the test model (since the default limit is 30)', function(done) {
+                  var instancesToCreate = _.map(_.range(1,41), function(i) {
+                    return { name: 'pet_' + i };
+                  });
+                  sailsApp.models.pet.createEach(instancesToCreate).meta({fetch: true}).exec(function(err, pets) {
+                    sailsApp.models.user.create({name: 'will', animalFriends: _.pluck(pets, 'id')}).meta({fetch: true}).exec(function(err, will) {
+                      if (err) {return done (err);}
+                      sailsApp.request('get /user/1/animalFriends', function (err, resp, data) {
+                        if (err) {return done (err);}
+                        assert.equal(data.length, 30);
+                        return done();
+                      });
+                    });
+                  });
+                });
+
+              });
+
+
+              describe('where a 40 instances exist, and a limit of 35 is given', function() {
+
+                it('should return JSON for 35 records of the specified collection of the test model', function(done) {
+                  var instancesToCreate = _.map(_.range(1,41), function(i) {
+                    return { name: 'pet_' + i };
+                  });
+                  sailsApp.models.pet.createEach(instancesToCreate).meta({fetch: true}).exec(function(err, pets) {
+                    sailsApp.models.user.create({name: 'will', animalFriends: _.pluck(pets, 'id')}).meta({fetch: true}).exec(function(err, will) {
+                      if (err) {return done (err);}
+                      sailsApp.request('get /user/1/animalFriends?limit=35', function (err, resp, data) {
+                        if (err) {return done (err);}
+                        assert.equal(data.length, 35);
+                        return done();
+                      });
+                    });
+                  });
+                });
+
+              });
+
+            });
+
+            describe('a get request to /:model/:parentid/:association for a plural association with no associated records', function() {
+
+              it('should return JSON for the specified collection of the test model', function(done) {
+                sailsApp.models.user.create({name: 'will'}).meta({fetch: true}).exec(function(err, will) {
                   if (err) {return done (err);}
-                  sailsApp.request('put /user/1/pets', [], function (err, resp, data) {
+                  sailsApp.request('get /user/1/animalFriends', function (err, resp, data) {
                     if (err) {return done (err);}
-                    assert.equal(data.name, 'ira');
-                    assert.equal(data.pets.length, 0);
-                    sailsApp.models.pet.findOne({id: 1}).populate('owner').exec(function(err, pet) {
-                      if (err) {return done (err);}
-                      assert(pet);
-                      assert.equal(pet.name, 'flipper');
-                      assert.equal(pet.id, 1);
-                      assert.equal(pet.owner, null);
-                      return done();
-                    });
+                    assert.equal(data.length, 0);
+                    return done();
                   });
                 });
               });
             });
-          });
 
-          describe('a put request to /:model/:parentid/:association (with new array)', function() {
+            describe('a put request to /:model/:parentid/:association/:id', function() {
 
-            it('should return JSON for an instance of the test model, with its collection replaced', function(done) {
-              sailsApp.models.user.create({name: 'zooey'}).exec(function(err) {
-                if (err) {return done (err);}
-                sailsApp.models.pet.createEach([{name: 'ralph', id: 1, owner: 1}, {name: 'fiona', id: 2}]).exec(function(err) {
+              it('should return JSON for an instance of the test model, with its collection updated', function(done) {
+                sailsApp.models.user.create({name: 'ira'}).exec(function(err) {
                   if (err) {return done (err);}
-                  sailsApp.request('put /user/1/pets', [2], function (err, resp, data) {
+                  sailsApp.models.pet.create({name: 'flipper'}).exec(function(err) {
                     if (err) {return done (err);}
-                    assert.equal(data.name, 'zooey');
-                    assert.equal(data.pets.length, 1);
-                    assert.equal(data.pets[0].id, 2);
-                    assert.equal(data.pets[0].name, 'fiona');
-                    sailsApp.models.pet.findOne({id: 2}).populate('owner').exec(function(err, pet) {
+                    sailsApp.request('put /user/1/animalFriends/1', function (err, resp, data) {
                       if (err) {return done (err);}
-                      assert(pet);
-                      assert.equal(pet.name, 'fiona');
-                      assert.equal(pet.id, 2);
-                      assert.equal(pet.owner.name, 'zooey');
-                      assert.equal(pet.owner.id, 1);
-                      return done();
+                      assert.equal(data.name, 'ira');
+                      assert.equal(data.id, 1);
+                      assert.equal(data.animalFriends.length, 1);
+                      assert.equal(data.animalFriends[0].name, 'flipper');
+                      sailsApp.models.user.findOne({id: 1}).populate('animalFriends').exec(function(err, user) {
+                        if (err) {return done (err);}
+                        assert(user);
+                        assert.equal(user.name, 'ira');
+                        assert.equal(user.id, 1);
+                        assert.equal(user.animalFriends.length, 1);
+                        assert.equal(user.animalFriends[0].name, 'flipper');
+                        return done();
+                      });
                     });
                   });
                 });
               });
             });
-          });
 
-          describe('a delete request to /:model/:parentid/:association/:id', function() {
+            describe('a put request to /:model/:parentid/:association (with empty array)', function() {
 
-            it('should return JSON for an instance of the test model, with its collection updated', function(done) {
-              sailsApp.models.pet.create({name: 'alice'}).meta({fetch: true}).exec(function(err, alice) {
-                sailsApp.models.user.create({name: 'larry', pets: [alice.id]}).meta({fetch: true}).exec(function(err) {
+              it('should return JSON for an instance of the test model, with its collection replaced', function(done) {
+                sailsApp.models.user.create({name: 'ira', id: 1}).exec(function(err) {
                   if (err) {return done (err);}
-                  sailsApp.request('delete /user/1/pets/1', function (err, resp, data) {
+                  sailsApp.models.pet.create({name: 'flipper', id: 1, humanFriends: [1]}).exec(function(err) {
                     if (err) {return done (err);}
-                    assert.equal(data.name, 'larry');
-                    assert.equal(data.id, 1);
-                    assert.equal(data.pets.length, 0);
-                    sailsApp.models.user.findOne({id: 1}).populate('pets').exec(function(err, user) {
+                    sailsApp.request('put /user/1/animalFriends', [], function (err, resp, data) {
                       if (err) {return done (err);}
-                      assert(user);
-                      assert.equal(user.name, 'larry');
-                      assert.equal(user.id, 1);
-                      assert.equal(user.pets.length, 0);
-                      return done();
+                      assert.equal(data.name, 'ira');
+                      assert.equal(data.animalFriends.length, 0);
+                      sailsApp.models.pet.findOne({id: 1}).populate('humanFriends').exec(function(err, pet) {
+                        if (err) {return done (err);}
+                        assert(pet);
+                        assert.equal(pet.name, 'flipper');
+                        assert.equal(pet.id, 1);
+                        assert.equal(pet.humanFriends.length, 0);
+                        return done();
+                      });
                     });
                   });
                 });
               });
             });
+
+            describe('a put request to /:model/:parentid/:association (with new array)', function() {
+
+              it('should return JSON for an instance of the test model, with its collection replaced', function(done) {
+                sailsApp.models.user.create({name: 'zooey'}).exec(function(err) {
+                  if (err) {return done (err);}
+                  sailsApp.models.pet.createEach([{name: 'ralph', id: 1, humanFriends: [1]}, {name: 'fiona', id: 2}]).exec(function(err) {
+                    if (err) {return done (err);}
+                    sailsApp.request('put /user/1/animalFriends', [2], function (err, resp, data) {
+                      if (err) {return done (err);}
+                      assert.equal(data.name, 'zooey');
+                      assert.equal(data.animalFriends.length, 1);
+                      assert.equal(data.animalFriends[0].id, 2);
+                      assert.equal(data.animalFriends[0].name, 'fiona');
+                      sailsApp.models.pet.findOne({id: 2}).populate('humanFriends').exec(function(err, pet) {
+                        if (err) {return done (err);}
+                        assert(pet);
+                        assert.equal(pet.name, 'fiona');
+                        assert.equal(pet.id, 2);
+                        assert.equal(pet.humanFriends.length, 1);
+                        assert.equal(pet.humanFriends[0].id, 1);
+                        return done();
+                      });
+                    });
+                  });
+                });
+              });
+            });
+
+            describe('a delete request to /:model/:parentid/:association/:id', function() {
+
+              it('should return JSON for an instance of the test model, with its collection updated', function(done) {
+                sailsApp.models.pet.create({name: 'alice'}).meta({fetch: true}).exec(function(err, alice) {
+                  sailsApp.models.user.create({name: 'larry', animalFriends: [alice.id]}).meta({fetch: true}).exec(function(err) {
+                    if (err) {return done (err);}
+                    sailsApp.request('delete /user/1/animalFriends/1', function (err, resp, data) {
+                      if (err) {return done (err);}
+                      assert.equal(data.name, 'larry');
+                      assert.equal(data.id, 1);
+                      assert.equal(data.animalFriends.length, 0);
+                      sailsApp.models.user.findOne({id: 1}).populate('animalFriends').exec(function(err, user) {
+                        if (err) {return done (err);}
+                        assert(user);
+                        assert.equal(user.name, 'larry');
+                        assert.equal(user.id, 1);
+                        assert.equal(user.animalFriends.length, 0);
+                        return done();
+                      });
+                    });
+                  });
+                });
+              });
+            });
+
           });
+
+
 
         });
 
