@@ -144,7 +144,7 @@ if (process.env.TEST_REDIS_SESSION) {
           });
 
           after(function(done) {
-            return app1.lower(function() {app2.lower(done);});
+            return app1.lower(function(err) {if(err) {return done(err);} app2.lower(done);});
           });
 
 
@@ -227,7 +227,7 @@ if (process.env.TEST_REDIS_SESSION) {
           });
 
           after(function(done) {
-            return app1.lower(function() {app2.lower(done);});
+            return app1.lower(function(err) {if(err) {return done(err);} app2.lower(done);});
           });
 
 
