@@ -21,6 +21,8 @@ NOW THEN: please fill out the following info
 **Sails version**:
 **Node version**:
 **NPM version**:
+**DB adapter name**: N/A
+**DB adapter version**: N/A
 **Operating system**:
 
 <!--
