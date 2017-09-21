@@ -20,7 +20,7 @@
     "sails": "./bin/sails.js"
   },
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha -b"
+    "test": "mocha -b"
   },
   "directories": {
     "lib": "lib"
