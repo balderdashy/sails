@@ -197,8 +197,10 @@ module.exports = function() {
       }// --•
 
       // Otherwise, everything is cool.
-      // Terminate the process with an exit code of 0.
-      return process.exit(0);
+      // Call the core 'lower' function and terminate the process with an exit code of 0.
+      sailsApp.lower(function () {
+        return process.exit(0);
+      });
 
     });//</when 'exit' event it emitted by repl instance>
 
