@@ -62,12 +62,12 @@ describe('blueprints :: ', function() {
           controllers: {
             moduleDefinitions: {
               'toplevellegacy/fnaction': function (req, res) { res.send('legacy fn action!'); },
-              'toplevellegacy/machineaction': { exits: {success: {example: 'abc123'} }, fn: function (inputs, exits) { exits.success('legacy machine action!'); } },
+              'toplevellegacy/machineaction': { exits: {success: {outputExample: 'abc123'} }, fn: function (inputs, exits) { exits.success('legacy machine action!'); } },
               'top-level-standalone-fn': function (req, res) { res.send('top level standalone fn!'); },
-              'top-level-standalone-machine': { exits: {success: {example: 'abc123'} },  fn: function (inputs, exits) { exits.success('top level standalone machine!'); } },
+              'top-level-standalone-machine': { exits: {success: {outputExample: 'abc123'} },  fn: function (inputs, exits) { exits.success('top level standalone machine!'); } },
               'somefolder/someotherfolder/nestedlegacy/fnaction': function (req, res) { res.send('nested legacy fn action!'); },
-              'somefolder/someotherfolder/nestedlegacy/machineaction': { exits: {success: {example: 'abc123'} },  fn: function (inputs, exits) { exits.success('nested legacy machine action!'); } },
-              'somefolder/someotherfolder/nested-standalone-machine': { exits: {success: {example: 'abc123'} },  fn: function (inputs, exits) { exits.success('nested standalone machine!'); } }
+              'somefolder/someotherfolder/nestedlegacy/machineaction': { exits: {success: {outputExample: 'abc123'} },  fn: function (inputs, exits) { exits.success('nested legacy machine action!'); } },
+              'somefolder/someotherfolder/nested-standalone-machine': { exits: {success: {outputExample: 'abc123'} },  fn: function (inputs, exits) { exits.success('nested standalone machine!'); } }
             }
           }
 
@@ -199,12 +199,12 @@ describe('blueprints :: ', function() {
           controllers: {
             moduleDefinitions: {
               'toplevellegacy/fnaction': function (req, res) { res.send('legacy fn action!'); },
-              'toplevellegacy/machineaction': { exits: {success: {example: 'abc123'} }, fn: function (inputs, exits) { exits.success('legacy machine action!'); } },
+              'toplevellegacy/machineaction': { exits: {success: {outputExample: 'abc123'} }, fn: function (inputs, exits) { exits.success('legacy machine action!'); } },
               'top-level-standalone-fn': function (req, res) { res.send('top level standalone fn!'); },
-              'top-level-standalone-machine': { exits: {success: {example: 'abc123'} },  fn: function (inputs, exits) { exits.success('top level standalone machine!'); } },
+              'top-level-standalone-machine': { exits: {success: {outputExample: 'abc123'} },  fn: function (inputs, exits) { exits.success('top level standalone machine!'); } },
               'somefolder/someotherfolder/nestedlegacy/fnaction': function (req, res) { res.send('nested legacy fn action!'); },
-              'somefolder/someotherfolder/nestedlegacy/machineaction': { exits: {success: {example: 'abc123'} },  fn: function (inputs, exits) { exits.success('nested legacy machine action!'); } },
-              'somefolder/someotherfolder/nested-standalone-machine': { exits: {success: {example: 'abc123'} },  fn: function (inputs, exits) { exits.success('nested standalone machine!'); } }
+              'somefolder/someotherfolder/nestedlegacy/machineaction': { exits: {success: {outputExample: 'abc123'} },  fn: function (inputs, exits) { exits.success('nested legacy machine action!'); } },
+              'somefolder/someotherfolder/nested-standalone-machine': { exits: {success: {outputExample: 'abc123'} },  fn: function (inputs, exits) { exits.success('nested standalone machine!'); } }
             }
           }
 
