@@ -47,7 +47,7 @@ describe('controllers :: ', function() {
       Filesystem.writeSync({
         force: true,
         destination: 'api/controllers/TopLevelLegacyController.js',
-        string: 'module.exports = { fnAction: function (req, res) { res.send(\'legacy fn action!\'); }, machineAction: { exits: {success: {example: \'abc123\'} }, fn: function (inputs, exits) { exits.success(\'legacy machine action!\'); } }, underscore_action: function(req, res) { return res.send(); }, \'action-with-dashes\': function(req, res) {  return res.send(); } };'
+        string: 'module.exports = { fnAction: function (req, res) { res.send(\'legacy fn action!\'); }, machineAction: { exits: {success: {outputExample: \'abc123\'} }, fn: function (inputs, exits) { exits.success(\'legacy machine action!\'); } }, underscore_action: function(req, res) { return res.send(); }, \'action-with-dashes\': function(req, res) {  return res.send(); } };'
       }).execSync();
       // Create a top-level action file with a req/res function.
       Filesystem.writeSync({
@@ -59,25 +59,25 @@ describe('controllers :: ', function() {
       Filesystem.writeSync({
         force: true,
         destination: 'api/controllers/top-level-standalone-machine.js',
-        string: 'module.exports = { exits: {success: {example: \'abc123\'} },  fn: function (inputs, exits) { exits.success(\'top level standalone machine!\'); } };'
+        string: 'module.exports = { exits: {success: {outputExample: \'abc123\'} },  fn: function (inputs, exits) { exits.success(\'top level standalone machine!\'); } };'
       }).execSync();
       // Create a nested legacy controller file.
       Filesystem.writeSync({
         force: true,
         destination: 'api/controllers/someFolder/someOtherFolder/NestedLegacyController.js',
-        string: 'module.exports = { fnAction: function (req, res) { res.send(\'nested legacy fn action!\'); }, machineAction: { exits: {success: {example: \'abc123\'} },  fn: function (inputs, exits) { exits.success(\'nested legacy machine action!\'); } } };'
+        string: 'module.exports = { fnAction: function (req, res) { res.send(\'nested legacy fn action!\'); }, machineAction: { exits: {success: {outputExample: \'abc123\'} },  fn: function (inputs, exits) { exits.success(\'nested legacy machine action!\'); } } };'
       }).execSync();
       // Create a nested legacy controller file, with dots in the subdirectory.
       Filesystem.writeSync({
         force: true,
         destination: 'api/controllers/some.folder/some.other.folder/NestedLegacyController.js',
-        string: 'module.exports = { fnAction: function (req, res) { res.send(\'nested legacy fn action!\'); }, machineAction: { exits: {success: {example: \'abc123\'} },  fn: function (inputs, exits) { exits.success(\'nested legacy machine action!\'); } } };'
+        string: 'module.exports = { fnAction: function (req, res) { res.send(\'nested legacy fn action!\'); }, machineAction: { exits: {success: {outputExample: \'abc123\'} },  fn: function (inputs, exits) { exits.success(\'nested legacy machine action!\'); } } };'
       }).execSync();
       // Create a nested action file with a machine.
       Filesystem.writeSync({
         force: true,
         destination: 'api/controllers/someFolder/someOtherFolder/nested-standalone-machine.js',
-        string: 'module.exports = { exits: {success: {example: \'abc123\'} },  fn: function (inputs, exits) { exits.success(\'nested standalone machine!\'); } };'
+        string: 'module.exports = { exits: {success: {outputExample: \'abc123\'} },  fn: function (inputs, exits) { exits.success(\'nested standalone machine!\'); } };'
       }).execSync();
       // Create an invalid legacy controller (doesn't contain a dictionary)
       Filesystem.writeSync({
