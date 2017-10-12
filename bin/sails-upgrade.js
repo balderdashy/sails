@@ -24,110 +24,114 @@ var rconf = require('../lib/app/configuration/rc')();
 
 module.exports = function () {
 
-  console.log(chalk.gray('Checking compatibility for Sails v1.0 upgrade...'));
+  if (!rconf.reportOnly) {
 
-  try {
-    var packageJson;
+    console.log(chalk.gray('Checking compatibility for Sails v1.0 upgrade...'));
+
     try {
-      var pathToLocalPackageJson = path.resolve(process.cwd(), 'package.json');
-      packageJson = require(pathToLocalPackageJson);
+      var packageJson;
+      try {
+        var pathToLocalPackageJson = path.resolve(process.cwd(), 'package.json');
+        packageJson = require(pathToLocalPackageJson);
+      } catch (e) {
+        switch (e.code) {
+          case 'MODULE_NOT_FOUND': throw flaverr('E_NO_PACKAGE_JSON', new Error('No package.json file.  Are you sure you\'re in the root directory of a Sails app?'));
+          default: throw e;
+        }
+      }
+
+      if (_.isUndefined(packageJson.dependencies)) {
+        throw flaverr('E_NO_SAILS_DEP', new Error('This package.json file does not declare any dependencies.  Are you sure you\'re in the root directory of a Sails app?'));
+      }
+
+      if (!_.isObject(packageJson.dependencies) || _.isArray(packageJson.dependencies)) {
+        throw flaverr('E_NO_SAILS_DEP', new Error('This package.json file has an invalid `dependencies` property -- should be a dictionary (plain JS object).'));
+      }
+
+      var sailsDepSVR = packageJson.dependencies.sails;
+      if (!sailsDepSVR) {
+        throw flaverr('E_NO_SAILS_DEP', new Error('This package.json file does not declare `sails` as a dependency.  Are you sure you\'re in the root directory of a Sails app?'));
+      }
+
+      if (!semver.ltr('0.9.9999', sailsDepSVR)) {
+        throw flaverr('E_SAILS_DEP_DEFINITELY_TOO_OLD', new Error('this app depends on sails@'+sailsDepSVR+'.'));
+      }
+
+      if (!semver.ltr('0.11.9999', sailsDepSVR)) {
+        throw flaverr('E_SAILS_DEP_MIGHT_BE_TOO_OLD', new Error('this app depends on sails@'+sailsDepSVR+'.'));
+      }
+
+      if (semver.ltr('0.12.9999', sailsDepSVR)) {
+        throw flaverr('E_SAILS_DEP_IS_ALREADY_V1', new Error('this app already depends on sails@'+sailsDepSVR+'...'));
+      }
+
+      console.log();
+      console.log('----------------------------------------------------');
+      console.log('This utility will kickstart the process of migrating');
+      console.log('this Sails v0.12.x app to Sails v1.');
+      console.log('----------------------------------------------------');
+      console.log();
+
     } catch (e) {
       switch (e.code) {
-        case 'MODULE_NOT_FOUND': throw flaverr('E_NO_PACKAGE_JSON', new Error('No package.json file.  Are you sure you\'re in the root directory of a Sails app?'));
-        default: throw e;
+        case 'E_SAILS_DEP_IS_ALREADY_V1':
+          console.log();
+          console.log('----------------------------------------------------');
+          console.log('This utility is designed to kickstart the process of');
+          console.log('migrating a '+chalk.bold('v0.12.x')+' app to Sails v1.');
+          console.log();
+          console.log(chalk.yellow.bold('But '+e.message));
+          console.log(chalk.reset('Maybe you already started upgrading it?'));
+          console.log(chalk.reset('If so, then please press CTRL+C to cancel now, or'));
+          console.log(chalk.reset('otherwise feel free to proceed with care-- this'));
+          console.log(chalk.reset('upgrade tool may still work partially as-is.'));
+          console.log(chalk.gray('For more help, visit '+chalk.underline('http://sailsjs.com/support')+'.'));
+          console.log('----------------------------------------------------');
+          console.log();
+          break;
+
+        case 'E_SAILS_DEP_MIGHT_BE_TOO_OLD':
+          console.log();
+          console.log('----------------------------------------------------');
+          console.log('This utility is designed to kickstart the process of');
+          console.log('migrating a '+chalk.bold('v0.12.x')+' app to Sails v1.');
+          console.log();
+          console.log(chalk.yellow.bold('But '+e.message));
+          console.log(chalk.reset('This upgrade tool may partially work as-is, but we recommend'));
+          console.log(chalk.reset('using the appropriate guide(s) to upgrade to Sails v0.12 first.'));
+          console.log(chalk.reset('See '+chalk.underline('http://sailsjs.com/upgrading')+' for details.'));
+          console.log(chalk.gray('(Press CTRL+C to cancel -- or proceed at your own risk!)'));
+          console.log('----------------------------------------------------');
+          console.log();
+          break;
+
+        case 'E_SAILS_DEP_DEFINITELY_TOO_OLD':
+          console.log('--');
+          console.log(chalk.red.bold('Well, '+e.message));
+          console.log(chalk.reset('It looks to be built for a version of Sails that is probably too'));
+          console.log(chalk.reset('old to work with this upgrade tool as-is.  We recommend using'));
+          console.log(chalk.reset('the appropriate guide(s) to upgrade to Sails v0.12 first.'));
+          console.log(chalk.gray('For more assistance, visit '+chalk.underline('http://sailsjs.com/support')+' or, if'));
+          console.log(chalk.gray('you\'re using Sails Flagship, '+chalk.underline('https://flagship.sailsjs.com')+'.'));
+          return process.exit(1);
+
+        case 'E_NO_PACKAGE_JSON':
+        case 'E_NO_SAILS_DEP':
+          console.log('--');
+          console.log(chalk.red(e.message));
+          return process.exit(1);
+
+        default:
+          console.log('--');
+          console.log(chalk.bold('Oops, something unexpected happened:'));
+          console.log(chalk.red(e.stack));
+          console.log('--');
+          console.log('Please read the error message above and troubleshoot accordingly.');
+          console.log('(You can report suspected bugs at '+chalk.underline('http://sailsjs.com/bugs')+'.)');
+          return process.exit(1);
       }
     }
 
-    if (_.isUndefined(packageJson.dependencies)) {
-      throw flaverr('E_NO_SAILS_DEP', new Error('This package.json file does not declare any dependencies.  Are you sure you\'re in the root directory of a Sails app?'));
-    }
-
-    if (!_.isObject(packageJson.dependencies) || _.isArray(packageJson.dependencies)) {
-      throw flaverr('E_NO_SAILS_DEP', new Error('This package.json file has an invalid `dependencies` property -- should be a dictionary (plain JS object).'));
-    }
-
-    var sailsDepSVR = packageJson.dependencies.sails;
-    if (!sailsDepSVR) {
-      throw flaverr('E_NO_SAILS_DEP', new Error('This package.json file does not declare `sails` as a dependency.  Are you sure you\'re in the root directory of a Sails app?'));
-    }
-
-    if (!semver.ltr('0.9.9999', sailsDepSVR)) {
-      throw flaverr('E_SAILS_DEP_DEFINITELY_TOO_OLD', new Error('this app depends on sails@'+sailsDepSVR+'.'));
-    }
-
-    if (!semver.ltr('0.11.9999', sailsDepSVR)) {
-      throw flaverr('E_SAILS_DEP_MIGHT_BE_TOO_OLD', new Error('this app depends on sails@'+sailsDepSVR+'.'));
-    }
-
-    if (semver.ltr('0.12.9999', sailsDepSVR)) {
-      throw flaverr('E_SAILS_DEP_IS_ALREADY_V1', new Error('this app already depends on sails@'+sailsDepSVR+'...'));
-    }
-
-    console.log();
-    console.log('----------------------------------------------------');
-    console.log('This utility will kickstart the process of migrating');
-    console.log('this Sails v0.12.x app to Sails v1.');
-    console.log('----------------------------------------------------');
-    console.log();
-
-  } catch (e) {
-    switch (e.code) {
-      case 'E_SAILS_DEP_IS_ALREADY_V1':
-        console.log();
-        console.log('----------------------------------------------------');
-        console.log('This utility is designed to kickstart the process of');
-        console.log('migrating a '+chalk.bold('v0.12.x')+' app to Sails v1.');
-        console.log();
-        console.log(chalk.yellow.bold('But '+e.message));
-        console.log(chalk.reset('Maybe you already started upgrading it?'));
-        console.log(chalk.reset('If so, then please press CTRL+C to cancel now, or'));
-        console.log(chalk.reset('otherwise feel free to proceed with care-- this'));
-        console.log(chalk.reset('upgrade tool may still work partially as-is.'));
-        console.log(chalk.gray('For more help, visit '+chalk.underline('http://sailsjs.com/support')+'.'));
-        console.log('----------------------------------------------------');
-        console.log();
-        break;
-
-      case 'E_SAILS_DEP_MIGHT_BE_TOO_OLD':
-        console.log();
-        console.log('----------------------------------------------------');
-        console.log('This utility is designed to kickstart the process of');
-        console.log('migrating a '+chalk.bold('v0.12.x')+' app to Sails v1.');
-        console.log();
-        console.log(chalk.yellow.bold('But '+e.message));
-        console.log(chalk.reset('This upgrade tool may partially work as-is, but we recommend'));
-        console.log(chalk.reset('using the appropriate guide(s) to upgrade to Sails v0.12 first.'));
-        console.log(chalk.reset('See '+chalk.underline('http://sailsjs.com/upgrading')+' for details.'));
-        console.log(chalk.gray('(Press CTRL+C to cancel -- or proceed at your own risk!)'));
-        console.log('----------------------------------------------------');
-        console.log();
-        break;
-
-      case 'E_SAILS_DEP_DEFINITELY_TOO_OLD':
-        console.log('--');
-        console.log(chalk.red.bold('Well, '+e.message));
-        console.log(chalk.reset('It looks to be built for a version of Sails that is probably too'));
-        console.log(chalk.reset('old to work with this upgrade tool as-is.  We recommend using'));
-        console.log(chalk.reset('the appropriate guide(s) to upgrade to Sails v0.12 first.'));
-        console.log(chalk.gray('For more assistance, visit '+chalk.underline('http://sailsjs.com/support')+' or, if'));
-        console.log(chalk.gray('you\'re using Sails Flagship, '+chalk.underline('https://flagship.sailsjs.com')+'.'));
-        return process.exit(1);
-
-      case 'E_NO_PACKAGE_JSON':
-      case 'E_NO_SAILS_DEP':
-        console.log('--');
-        console.log(chalk.red(e.message));
-        return process.exit(1);
-
-      default:
-        console.log('--');
-        console.log(chalk.bold('Oops, something unexpected happened:'));
-        console.log(chalk.red(e.stack));
-        console.log('--');
-        console.log('Please read the error message above and troubleshoot accordingly.');
-        console.log('(You can report suspected bugs at '+chalk.underline('http://sailsjs.com/bugs')+'.)');
-        return process.exit(1);
-    }
   }
 
 
