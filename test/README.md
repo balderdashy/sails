@@ -12,7 +12,7 @@ npm test
 > Or if you're using Windows:
 >
 > ```cmd
-> npm run cusatom-tests
+> npm run custom-tests
 > ```
 
 ## Goals
