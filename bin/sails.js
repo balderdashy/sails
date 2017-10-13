@@ -48,11 +48,11 @@ program.usage('[command]');
 // $ sails lift
 var cmd;
 cmd = program.command('lift');
-cmd.option('--prod');
-cmd.option('--port [port]');
-cmd.option('--silent');
-cmd.option('--verbose');
-cmd.option('--silly');
+cmd.option('--prod', 'Lift in "production" environment.');
+cmd.option('--port [port]', 'Listen on the specified port (defaults to 1337).');
+cmd.option('--silent', 'Set log level to "silent".');
+cmd.option('--verbose', 'Set log level to "verbose".');
+cmd.option('--silly', 'Set log level to "silly".');
 cmd.unknownOption = NOOP;
 cmd.description('');
 cmd.alias('l');
@@ -62,8 +62,8 @@ cmd.action(require('./sails-lift'));
 // $ sails new <appname>
 cmd = program.command('new [path_to_new_app]');
 // cmd.option('--dry');
-cmd.option('--viewEngine [viewEngine]');
-cmd.option('--template [viewEngine]');
+cmd.option('--no-front-end', 'Don\'t generate "assets", "views" or "task" folders.');
+cmd.option('--fast', 'Don\'t install node modules after generating app.');
 cmd.usage('[path_to_new_app]');
 cmd.unknownOption = NOOP;
 cmd.description('');
@@ -87,9 +87,10 @@ cmd.action(require('./sails-upgrade'));
 
 // $ sails console
 cmd = program.command('console');
-cmd.option('--silent');
-cmd.option('--verbose');
-cmd.option('--silly');
+cmd.option('--silent', 'Set log level to "silent".');
+cmd.option('--verbose', 'Set log level to "silent".');
+cmd.option('--silly', 'Set log level to "silly".');
+cmd.option('--dontLift', 'Start console session without lifting an HTTP server.');
 cmd.unknownOption = NOOP;
 cmd.description('');
 cmd.alias('c');
