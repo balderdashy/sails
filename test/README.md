@@ -9,6 +9,12 @@ From the root directory of Sails core, run:
 npm test
 ```
 
+> Or if you're using Windows:
+>
+> ```cmd
+> npm run cusatom-tests
+> ```
+
 ## Goals
 
 1. Identify latent inconsistencies or issues that we don't know about yet.
