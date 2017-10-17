@@ -97,12 +97,14 @@ module.exports = function() {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Execute a command like you would on the terminal.
   Process.executeCommand({
-    command: 'grunt '+overrideGruntTask,
+    command: path.join('node_modules', '.bin', 'grunt')+' '+overrideGruntTask,
   }).exec(function (err) {
     if (err) {
       log.error('Error occured running `grunt ' + overrideGruntTask + '`');
       log.error('Please resolve any issues and try running `sails www` again.');
-      log.error('Details:');
+      log.error('Hint: you must have the Grunt CLI installed!  Try `npm install grunt`.');
+      log.error();
+      log.error('Error details:');
       log.error(err);
       return process.exit(1);
     }
