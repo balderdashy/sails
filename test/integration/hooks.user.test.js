@@ -152,6 +152,88 @@ describe('hooks :: ', function() {
 
     });
 
+    if (Number(process.version.match(/^v(\d+\.\d+)/)[1]) >= 7.6) {
+
+      describe('with an asynchronous initialize function', function() {
+
+        before(function(done) {
+          fs.mkdirs(path.resolve(__dirname, '../..', appName, 'api/hooks'), function(err) {
+            if (err) {return done(err);}
+            fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/async/index.js'), path.resolve(__dirname,'../../testApp/api/hooks/async/index.js'));
+            process.chdir(path.resolve(__dirname, '../..', appName));
+            done();
+          });
+        });
+
+        after(function(done) {
+          process.chdir('../');
+          // Sleep for 500ms--otherwise we get timing errors for this test on Windows
+          setTimeout(function() {
+            appHelper.teardown();
+            return done();
+          }, 500);
+        });
+
+        describe('that runs succesfully', function() {
+
+          var sails;
+
+          before(function(done) {
+            appHelper.liftQuiet({hooks: {pubsub: false}}, function(err, _sails) {
+              if (err) {return done(err);}
+              sails = _sails;
+              return done();
+            });
+          });
+
+          after(function(done) {
+            sails.lower(done, 100);
+          });
+
+          it('should run the initialize function successfully', function() {
+
+            assert.equal(sails.hooks.async.val, 'foo');
+
+          });
+
+        });
+
+        describe('that has an error', function() {
+
+          var sails;
+
+          after(function(done) {
+            if (!sails) { return done(); }
+            sails.lower(function(){setTimeout(function() {
+              process.chdir('../');
+              // Sleep for 500ms--otherwise we get timing errors for this test on Windows
+              setTimeout(function() {
+                appHelper.teardown();
+                return done();
+              }, 500);
+            }, 100);});
+          });
+
+          it('should handle the error gracefully', function(done) {
+
+            appHelper.liftQuiet({hooks: {pubsub: false}, custom: {reject: true}}, function(err, _sails) {
+              if (err) {
+                assert.equal(err, 'foo');
+                return done();
+              }
+              sails = _sails;
+              return done(new Error('Should have failed to lift!'));
+            });
+
+          });
+
+        });
+
+      });
+
+    }
+
+
   });
 
 

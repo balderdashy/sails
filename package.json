@@ -100,7 +100,7 @@
   "scripts": {
     "test": "nodever=`node -e \"console.log('\\`node -v\\`'[1]);\"` && if [ $nodever != \"0\" ]; then npm run lint; fi && npm run custom-tests",
     "custom-tests": "node ./node_modules/mocha/bin/mocha -b",
-    "lint": "node ./node_modules/eslint/bin/eslint . --max-warnings=0 --ignore-pattern 'test/'"
+    "lint": "node ./node_modules/eslint/bin/eslint . --max-warnings=0 --ignore-pattern 'test/' --ignore-pattern 'testApp/'"
   },
   "main": "./lib/index.js",
   "repository": {
