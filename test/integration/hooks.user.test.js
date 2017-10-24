@@ -159,7 +159,7 @@ describe('hooks :: ', function() {
         before(function(done) {
           fs.mkdirs(path.resolve(__dirname, '../..', appName, 'api/hooks'), function(err) {
             if (err) {return done(err);}
-            fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/async/index.js'), path.resolve(__dirname,'../../testApp/api/hooks/async/index.js'));
+            fs.copySync(path.resolve(__dirname, 'fixtures/hooks/installable/async/index.js.txt'), path.resolve(__dirname,'../../testApp/api/hooks/async/index.js'));
             process.chdir(path.resolve(__dirname, '../..', appName));
             done();
           });
