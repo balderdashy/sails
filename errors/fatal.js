@@ -20,15 +20,24 @@ module.exports = {
   failedToLoadSails: function(err) {
     log.error();
 
-    // Dont log stack trace if this is a recognized load/lift-time error
-    // (& also comes from a core hook)
-    switch (err.code) {
-      case 'include-all:COULD_NOT_REQUIRE':
-      case 'E_COULD_NOT_LOAD_ADAPTER':
-      case 'E_ADAPTER_NOT_INSTALLED':
-        log.error(err.message); break;
-      default:
-        log.error(err);
+    // If the error is something the user can fix (as opposed to an internal Sails error AKA bug),
+    // just show the error message, not the whole stack trace into Sails core.
+    if (err.name && err.name === 'userError') {
+      log.error(err.message);
+    }
+
+    else {
+      // Dont log stack trace if this is a recognized load/lift-time error
+      // (& also comes from a core hook)
+      switch (err.code) {
+        case 'include-all:COULD_NOT_REQUIRE':
+        case 'E_COULD_NOT_LOAD_ADAPTER':
+        case 'E_ADAPTER_NOT_INSTALLED':
+        case 'E_BIND_ERR':
+          log.error(err.message); break;
+        default:
+          log.error(err);
+      }
     }
 
     console.error();
