@@ -2,7 +2,8 @@
   //   ╔═╗╔═╗╦  ╦╔╗╔╔╦╗┬─┐┌─┐
   //   ║╣ ╚═╗║  ║║║║ ║ ├┬┘│
   //  o╚═╝╚═╝╩═╝╩╝╚╝ ╩ ┴└─└─┘
-  // A set of basic conventions designed to complement the .jshintrc file.
+  // A set of basic conventions (similar to .jshintrc) for use within any
+  // arbitrary JavaScript / Node.js package -- inside or outside Sails.js.
   // For the master copy of this file, see the `.eslintrc` template file in
   // the `sails-generate` package (https://www.npmjs.com/package/sails-generate.)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -12,8 +13,11 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "env": {
-    "node": true,
-    "mocha": true
+    "node": true
+  },
+
+  "parserOptions": {
+    "ecmaVersion": 5
   },
 
   "rules": {
@@ -24,8 +28,10 @@
     "eqeqeq":                       [2, "always"],
     "eol-last":                     [1],
     "handle-callback-err":          [2],
-    "indent":                       [2, 2, {"SwitchCase": 1}],
+    "indent":                       [1, 2, {"SwitchCase": 1}],
     "linebreak-style":              [2, "unix"],
+    "no-dupe-keys":                 [2],
+    "no-duplicate-case":            [2],
     "no-mixed-spaces-and-tabs":     [2, "smart-tabs"],
     "no-return-assign":             [2, "always"],
     "no-sequences":                 [2],
@@ -34,6 +40,7 @@
     "no-unexpected-multiline":      [1],
     "no-unused-vars":               [1],
     "one-var":                      [2, "never"],
+    "quotes":                       [1, "single", { "avoidEscape": false, "allowTemplateLiterals": true }],
     "semi":                         [2, "always"]
   }
 
