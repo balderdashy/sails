@@ -9,7 +9,7 @@ var chalk = require('chalk');
 var COMMON_JS_FILE_EXTENSIONS = require('common-js-file-extensions');
 var flaverr = require('flaverr');
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Note that `machine-as-script`, `machinepack-process`, and `../lib/app` are
+// Note that `whelk`, `machinepack-process`, and `../lib/app` are
 // conditionally required below, only in the cases where they are actually used.
 // (That way you don't have to wait for them to load if you're not using them.)
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -187,7 +187,7 @@ module.exports = function(scriptName) {
         console.error('      inputs: {');
         console.error('        someStuff: { type: \'string\', required: true }');
         console.error('      },');
-        console.error('      fn: function (inputs, exits) {');
+        console.error('      fn: async function (inputs, exits) {');
         console.error('        // ...');
         console.error('        sails.log(\'Hello world!\');');
         console.error('        return exits.success();');
@@ -213,14 +213,14 @@ module.exports = function(scriptName) {
         scriptDef.sails = Sails();
       }
 
-      // (Only require machine-as-script if it's needed.)
-      var machineAsScript = require('machine-as-script');
+      // (Only require whelk if it's needed.)
+      var whelk = require('whelk');
 
       // Now actually run the script.
-      machineAsScript(scriptDef).exec();
+      whelk(scriptDef);
 
-    } catch (e) {
-      console.error(e);
+    } catch (err) {
+      console.error(err);
       return process.exit(1);
     }
   }
