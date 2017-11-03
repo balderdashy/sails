@@ -55,11 +55,11 @@ module.exports = function(scriptName) {
   if (!scriptName) {
     console.error('Which one?  (To run a script, provide its name.)');
     console.error('For example:');
-    console.error('    sails run add-customer');
+    console.error('    sails run rebuild-cloud-sdk');
     console.error();
-    console.error('^ runs `scripts/add-customer.js`.');
+    console.error('^ runs `scripts/rebuild-cloud-sdk.js`.');
     console.error();
-    console.error('(For more help, visit '+chalk.underline('http://sailsjs.com/support')+'.)');
+    console.error('(For more help, visit '+chalk.underline('https://sailsjs.com/support')+'.)');
     return process.exit(1);
   }
 
@@ -84,23 +84,20 @@ module.exports = function(scriptName) {
     fileExtension = 'js';
   }
 
-  // console.log(scriptName);
-  // console.log(fileExtension);
-  // return;
 
   // First, we need to determine the appropriate script to run.
   // (either a terminal command or a specially-formatted Node.js/Sails.js module)
 
-  // We begin by figuring out whether this is a command-line script or a script (MaS) definition.
-  var commandToRun;
-
+  // We begin by figuring out whether this is a script from the package.json
+  // or a definition in the `scripts/` folder.
+  var pjCommandToRun;
 
   // Check the package.json file.
   try {
-    var pathToLocalPackageJson = path.resolve(process.cwd(), 'package.json');
+    var pathToLocalPj = path.resolve(process.cwd(), 'package.json');
     var packageJson;
     try {
-      packageJson = require(pathToLocalPackageJson);
+      packageJson = require(pathToLocalPj);
     } catch (e) {
       switch (e.code) {
         case 'MODULE_NOT_FOUND': throw flaverr('E_NO_PACKAGE_JSON', new Error('No package.json file.  Are you sure you\'re in the root directory of a Node.js/Sails.js app?'));
@@ -112,7 +109,7 @@ module.exports = function(scriptName) {
       throw flaverr('E_MALFORMED_PACKAGE_JSON', new Error('This package.json file has an invalid `scripts` property -- should be a dictionary (plain JS object).'));
     }
 
-    commandToRun = packageJson.scripts[scriptName];
+    pjCommandToRun = packageJson.scripts[scriptName];
 
   } catch (e) {
     switch (e.code) {
@@ -139,7 +136,7 @@ module.exports = function(scriptName) {
   var doesScriptFileExist = fs.existsSync(path.resolve(relativePathToScript));
 
   // Ensure that this script is not defined in BOTH places.
-  if (commandToRun && doesScriptFileExist) {
+  if (pjCommandToRun && doesScriptFileExist) {
     console.error('Cannot run `'+scriptName+'` because it is too ambiguous.');
     console.error('A script should only be defined once, but that script is defined in both the package.json file');
     console.error('AND as a file in the `scripts/` directory.');
@@ -147,7 +144,7 @@ module.exports = function(scriptName) {
   }
 
   // Ensure that this script exists one place or the other.
-  if (!commandToRun && !doesScriptFileExist) {
+  if (!pjCommandToRun && !doesScriptFileExist) {
     console.error('Unknown script: `'+scriptName+'`');
     console.error('No matching script is defined at `'+relativePathToScript+'`.');
     console.error('(And there is no matching NPM script in the package.json file.)');
@@ -157,7 +154,7 @@ module.exports = function(scriptName) {
 
   // If this is a Node.js/Sails.js script (machine def), then require the script file
   // to get the module definition, then run it using MaS.
-  if (!commandToRun) {
+  if (!pjCommandToRun) {
     try {
       var pathToScriptDef = path.resolve(process.cwd(), 'scripts/'+scriptName);
       var scriptDef;
@@ -216,6 +213,7 @@ module.exports = function(scriptName) {
       // (Only require whelk if it's needed.)
       var whelk = require('whelk');
 
+
       // Now actually run the script.
       whelk(scriptDef);
 
@@ -255,7 +253,7 @@ module.exports = function(scriptName) {
     // Here's an example of how we might put it all together:
     // ```
     // Process.executeCommand({
-    //   command: commandToRun,
+    //   command: pjCommandToRun,
     //   bufferOutput: false,
     //   killOnParentSigint: false,
     //   onData: function (data, stdStreamName){
@@ -263,7 +261,7 @@ module.exports = function(scriptName) {
     //   }
     // }).exec(function (err) {
     //   if (err) {
-    //     console.error('Error occured running `'+ commandToRun+ '`');
+    //     console.error('Error occured running `'+ pjCommandToRun+ '`');
     //     console.error('Please resolve any issues and try `sails run '+scriptName+'` again.');
     //     console.error('Details:');
     //     console.error(err);
@@ -294,7 +292,7 @@ module.exports = function(scriptName) {
 
     var childProcess = Process.spawnChildProcess({
       command: shProcName,
-      cliArgs: [ shFlag, commandToRun ]
+      cliArgs: [ shFlag, pjCommandToRun ]
     }).execSync();
 
     // Pipe output from the child process to the current (parent) process.
@@ -347,7 +345,7 @@ module.exports = function(scriptName) {
         spinlocked = true;
 
         console.error('- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ');
-        console.error('Error occured running `'+ commandToRun+ '`');
+        console.error('Error occured running `'+ pjCommandToRun+ '`');
         console.error('Please resolve any issues and try `sails run '+scriptName+'` again.');
         console.error('Details:');
         console.error(err);
@@ -358,7 +356,7 @@ module.exports = function(scriptName) {
 
       return process.exit(0);
 
-    });//</ self-calling function > _∏_
+    });//_∏_  (†)
 
   }//</ else >
 
