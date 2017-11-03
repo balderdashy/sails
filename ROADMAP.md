@@ -210,6 +210,7 @@ Feature                                          | Proposal                     
  Generate `test/` folder in new Sails apps       | [#2499](https://github.com/balderdashy/sails/pull/2499#issuecomment-171556544)        | Generate a generic setup for mocha tests in all new Sails apps.  Originally suggested by [@jedd-ahyoung](https://github.com/jedd-ahyoung).
  View helper for bootstrapping script tags       | [#3522](https://github.com/balderdashy/sails/pull/3522)                               | Include a view helper for bootstrapping untrusted data from view locals onto the page via script tags in order to expose it to client-side JavaScript. The tricky part is ensuring protection from attempted XSS attacks.
 ~~Improve CORS implementation~~                     | [#3651](https://github.com/balderdashy/sails/pull/3651)                               | ~~Minor changes to the current CORS hooks to better follow the specs/remove inconsistencies.~~
+Assets-only gzip compression | | An option which would compress everything in assets folder and serve the client compressed files
 
 &nbsp;
 &nbsp;
