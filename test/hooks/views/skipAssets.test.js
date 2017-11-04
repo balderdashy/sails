@@ -132,7 +132,7 @@ describe('skipAssets', function() {
     before(function (done){
       MFilesystem.write({
         destination: path.join(pathToTestApp, 'config/routes.js'),
-        string: 'module.exports.routes = { \'get /*\': { view: \'homepage\', skipAssets: true }, \'/js/dependencies/sails.io.js\': function(req,res){ return res.header(\'content-type\', \'application/javascript\').send(\'ok\'); } };',
+        string: 'module.exports.routes = { \'get /*\': { view: \'pages/homepage\', skipAssets: true }, \'/js/dependencies/sails.io.js\': function(req,res){ return res.header(\'content-type\', \'application/javascript\').send(\'ok\'); } };',
         force: true,
       }).exec(done);
     });
