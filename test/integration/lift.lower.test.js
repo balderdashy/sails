@@ -283,7 +283,8 @@ describe('sails being lifted and lowered (e.g in a test framework)', function() 
         hooks: {
           grunt: false,
           i18n: false,
-          session: false
+          session: false,
+          sockets: false
         }
       }, function(err, _sailsApp) {
 
