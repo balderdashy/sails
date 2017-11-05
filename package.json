@@ -45,7 +45,6 @@
     "include-all": "^4.0.0",
     "machine": "^15.0.0-2",
     "machine-as-action": "^10.0.0-0",
-    "machine-as-script": "^4.1.1",
     "machinepack-process": "^2.0.2",
     "machinepack-redis": "^1.1.1",
     "merge-defaults": "0.2.1",
@@ -66,7 +65,8 @@
     "skipper": "~0.8.0",
     "sort-route-addresses": "^0.0.1",
     "uid-safe": "2.1.5",
-    "vary": "1.1.2"
+    "vary": "1.1.2",
+    "whelk": "^5.1.0"
   },
   "devDependencies": {
     "benchmark": "^2.1.2",

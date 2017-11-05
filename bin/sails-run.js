@@ -192,6 +192,8 @@ module.exports = function(scriptName) {
         console.error('    };');
         console.error('    ```````````````````````````````````````````````````````````');
         console.error('');
+        console.error(' [?] Visit https://sailsjs.com/support for assistance.');
+        console.error('');
         return process.exit(1);
       }
 
@@ -199,9 +201,8 @@ module.exports = function(scriptName) {
       // (unless it explicitly disables this behavior with `sails: false` or by explicitly
       // declaring some other habitat)
       var isLifecycleMgmtExplicitlyDisabled = (
-        scriptDef.sails === false || (
-          !_.isUndefined(scriptDef.habitat) && scriptDef.habitat !== 'sails'
-        )
+        scriptDef.sails === false ||
+        (scriptDef.habitat !== undefined && scriptDef.habitat !== 'sails')
       );
       if (!isLifecycleMgmtExplicitlyDisabled) {
         // (Only require the rest of the Sails framework if it's needed.)
@@ -213,6 +214,14 @@ module.exports = function(scriptName) {
       // (Only require whelk if it's needed.)
       var whelk = require('whelk');
 
+      // console.log('process.argv ->', require('util').inspect(process.argv,{depth:null}));
+      // console.log('arguments ->', require('util').inspect(arguments,{depth:null}));
+      // console.log('scriptName ->', scriptName);
+      // console.log('Array.prototype.slice.call(arguments, 1, -1) ->', Array.prototype.slice.call(arguments, 1, -1));
+
+      // Pass in override for runtime array of serial command-line arguments
+      // (we rely on commander having parsed them for us so that we don't include `sails`, `run`, `node`, etc)
+      scriptDef.rawSerialCommandLineArgs = Array.prototype.slice.call(arguments, 1, -1);
 
       // Now actually run the script.
       whelk(scriptDef);
