@@ -61,9 +61,9 @@ module.exports = function () {
         throw flaverr('E_SAILS_DEP_MIGHT_BE_TOO_OLD', new Error('this app depends on sails@'+sailsDepSVR+'.'));
       }
 
-      if (semver.ltr('0.12.9999', sailsDepSVR)) {
-        throw flaverr('E_SAILS_DEP_IS_ALREADY_V1', new Error('this app already depends on sails@'+sailsDepSVR+'...'));
-      }
+      // if (semver.ltr('0.12.9999', sailsDepSVR)) {
+      //   throw flaverr('E_SAILS_DEP_IS_ALREADY_V1', new Error('this app already depends on sails@'+sailsDepSVR+'...'));
+      // }
 
       console.log();
       console.log('----------------------------------------------------');
