@@ -8,6 +8,12 @@
 
 Sails.js is a [web framework](http://sailsjs.com/whats-that) that makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app & API development. It's especially good for building realtime features like chat.
 
+Since version 1.0, Sails supports ES8 async functions out of the box.  This replaces nested callbacks (and the commensurate error handling) with simple, familiar usage:
+
+```javascript
+var orgs = await Organization.find();
+```
+
 
 ## Installation &nbsp;
 **With [node](http://nodejs.org) [installed](http://nodejs.org/en/download):**
@@ -17,7 +23,12 @@ $ npm install sails -g
 ```
 
 > ##### Upgrading from an earlier version of Sails?
-> Version migration guides for all major releases since 2013 are available on the Sails website under [**Upgrading**](http://sailsjs.com/upgrading).
+>
+> Available as of Node >=v7.9 and Sails >=v1.0, ES8's async/await enables dramatic improvements to the way developers build Node.js / Sails apps.  It allows server-side JavaScript code to be written with the `await` keyword, instead of lower-level (and more fragile) flow control mechanisms like nested callbacks and promise chains.  It lets developers breathe easier by removing the burden of painstaking, manual error handling after every database query.  And best of all, it means **the end of "callback hell"**: the most common source of bugs and stability issues in real world Node.js / Sails applications.
+> 
+> If ES8 isn't for you, don't worry-- Node callbacks and promise chaining are still fully supported.  But for most teams, the transition to `await` results in sizable gains in productivity, with fewer lines of code.
+>
+> Upgrade guides for all major releases since 2013 are available on the Sails website under [**Upgrading**](http://sailsjs.com/upgrading).
 
 
 ## Your First Sails Project
