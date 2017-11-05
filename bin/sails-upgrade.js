@@ -146,9 +146,6 @@ module.exports = function () {
       console.log(chalk.blue.bold('Could not find the `@sailshq/upgrade` package in your local app folder.'));
       console.log('Please run `npm install @sailshq/upgrade` and try again.');
       console.log(chalk.gray('(Or just use the Sails v1.0.x upgrade guide on sailsjs.com.)'));
-      console.log(chalk.gray('--'));
-      console.log(chalk.gray('Note: upgrade tool is currently available only in Sails Flagship.'));
-      console.log(chalk.gray('Configure your account:  '+chalk.underline('https://flagship.sailsjs.com/settings')+''));
       console.log();
       return process.exit(1);
     }//-•
