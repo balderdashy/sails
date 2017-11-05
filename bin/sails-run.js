@@ -227,8 +227,13 @@ module.exports = function(scriptName) {
       whelk(scriptDef);
 
     } catch (err) {
-      console.error(err);
-      return process.exit(1);
+      if (err.code === 'E_FAILED_TO_LOAD_SAILS') {
+        console.error('Something went wrong when trying to load this Sails app:\n', flaverr.unwrap('E_FAILED_TO_LOAD_SAILS'));
+      }
+      else {
+        console.error(err);
+        return process.exit(1);
+      }
     }
   }
   // Otherwise, this is an NPM script of some kind, from the package.json file.
