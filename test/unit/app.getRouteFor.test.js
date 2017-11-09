@@ -32,7 +32,9 @@ describe('app.getRouteFor()', function (){
         'post /wolves': { controller: 'WolfController', action: 'create' },
         'options /wolves/test': { target: 'WolfController.CreaTe' },
         'get /my-machineFn': { action: 'machines/machinefn' },
-        'get /my-page': { view: 'somepage' }
+        'get /my-page': { view: 'somepage' },
+        'get /cause-trouble': [{ policy: 'be-good'}, { action: 'trouble/cause'}],
+        'put /cause-more-trouble': [{ policy: 'be-good'}, { controller: 'TroubleController', action: 'cause-more' }],
       },
       controllers: {
         moduleDefinitions: {
@@ -113,14 +115,6 @@ describe('app.getRouteFor()', function (){
     }
 
     try {
-      app.getRouteFor([{ action: 'machines/machinefn' }]);
-      assert(false, 'Should have thrown an error');
-    }
-    catch (e) {
-      if (e.code !== 'E_USAGE') { assert(false, 'Should have thrown an error w/ code === "E_USAGE"'); }
-    }
-
-    try {
       app.getRouteFor(function(){});
       assert(false, 'Should have thrown an error');
     }
@@ -155,6 +149,12 @@ describe('app.getRouteFor()', function (){
 
     assert.equal( app.getRouteFor('machines/machinefn').url, '/my-machineFn' );
     assert.equal( app.getRouteFor('machines/machinefn').method, 'get' );
+
+    assert.equal( app.getRouteFor('trouble/cause').url, '/cause-trouble' );
+    assert.equal( app.getRouteFor('trouble/cause').method, 'get' );
+
+    assert.equal( app.getRouteFor('trouble/cause-more').url, '/cause-more-trouble' );
+    assert.equal( app.getRouteFor('trouble/cause-more').method, 'put' );
 
   });
 
