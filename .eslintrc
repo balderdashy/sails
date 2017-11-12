@@ -18,6 +18,7 @@
 
   "parserOptions": {
     "ecmaVersion": 5
+    // ^^This can be changed to 8 if this package does not support <= Node v6.
   },
 
   "rules": {
@@ -39,6 +40,7 @@
     "no-undef":                     [2],
     "no-unexpected-multiline":      [1],
     "no-unused-vars":               [1],
+    "no-use-before-define":         [2, { "functions": false }],
     "one-var":                      [2, "never"],
     "quotes":                       [1, "single", { "avoidEscape": false, "allowTemplateLiterals": true }],
     "semi":                         [2, "always"]
