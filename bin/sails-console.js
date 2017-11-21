@@ -157,7 +157,11 @@ module.exports = function() {
       // Set `terminal` to true to allow arrow keys to work correctly,
       // even when we're using a custom output stream.  Otherwise pressing
       // the up arrow just outputs ^[[A instead of accessing history.
-      terminal: true
+      terminal: true,
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // FUTURE: Potentially use custom `eval` as stopgap for `await` support in Node <v9
+      // https://nodejs.org/api/repl.html#repl_repl_start_options
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     });
 
     // Replace the global _ value, if any.  This will deactivate the underscore behavior
