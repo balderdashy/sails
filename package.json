@@ -67,7 +67,7 @@
     "sort-route-addresses": "^0.0.1",
     "uid-safe": "2.1.5",
     "vary": "1.1.2",
-    "whelk": "^5.1.0"
+    "whelk": "^6.0.0"
   },
   "devDependencies": {
     "benchmark": "^2.1.2",
