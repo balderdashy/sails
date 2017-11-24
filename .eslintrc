@@ -6,10 +6,12 @@
   // arbitrary JavaScript / Node.js package -- inside or outside Sails.js.
   // For the master copy of this file, see the `.eslintrc` template file in
   // the `sails-generate` package (https://www.npmjs.com/package/sails-generate.)
+  // Designed for ESLint v4.
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // For more information about any of the rules below, check out the relevant
   // reference page on eslint.org.  For example, to get details on "no-sequences",
-  // you would visit `http://eslint.org/docs/rules/no-sequences`.
+  // you would visit `http://eslint.org/docs/rules/no-sequences`.  If you're unsure
+  // or could use some advice, come by https://sailsjs.com/support.
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "env": {
@@ -18,32 +20,51 @@
 
   "parserOptions": {
     "ecmaVersion": 5
-    // ^^This can be changed to 8 if this package does not support <= Node v6.
+    // ^^This can be changed to `8` if this package doesn't need to support <= Node v6.
+  },
+
+  "globals": {
+    "Promise": true
+    // ^^Available since Node v4
   },
 
   "rules": {
-    "callback-return":              [2, ["callback", "cb", "next", "done", "proceed"]],
-    "camelcase":                    [1, {"properties": "always"}],
-    "comma-style":                  [2, "last"],
-    "curly":                        [2],
-    "eqeqeq":                       [2, "always"],
-    "eol-last":                     [1],
-    "handle-callback-err":          [2],
-    "indent":                       [1, 2, {"SwitchCase": 1}],
-    "linebreak-style":              [2, "unix"],
-    "no-dupe-keys":                 [2],
-    "no-duplicate-case":            [2],
-    "no-mixed-spaces-and-tabs":     [2, "smart-tabs"],
-    "no-return-assign":             [2, "always"],
-    "no-sequences":                 [2],
-    "no-trailing-spaces":           [1],
-    "no-undef":                     [2],
-    "no-unexpected-multiline":      [1],
-    "no-unused-vars":               [1],
-    "no-use-before-define":         [2, { "functions": false }],
-    "one-var":                      [2, "never"],
-    "quotes":                       [1, "single", { "avoidEscape": false, "allowTemplateLiterals": true }],
-    "semi":                         [2, "always"]
+    "callback-return":              ["error", ["done", "proceed", "next", "onwards", "callback", "cb"]],
+    "camelcase":                    ["warn", {"properties": "always"}],
+    "comma-style":                  ["warn", "last"],
+    "curly":                        ["error"],
+    "eqeqeq":                       ["error", "always"],
+    "eol-last":                     ["warn"],
+    "handle-callback-err":          ["error"],
+    "indent":                       ["warn", 2, {
+      "SwitchCase": 1,
+      "MemberExpression": "off",
+      "FunctionDeclaration": {"body":1, "parameters": "off"},
+      "FunctionExpression": {"body":1, "parameters": "off"},
+      "CallExpression": {"arguments":"off"},
+      "ArrayExpression": 1,
+      "ObjectExpression": 1,
+      "ignoredNodes": ["ConditionalExpression"]
+    }],
+    "linebreak-style":              ["error", "unix"],
+    "no-dupe-keys":                 ["error"],
+    "no-duplicate-case":            ["error"],
+    "no-extra-semi":                ["warn"],
+    "no-labels":                    ["error"],
+    "no-mixed-spaces-and-tabs":     ["error", "smart-tabs"],
+    "no-redeclare":                 ["warn"],
+    "no-return-assign":             ["error", "always"],
+    "no-sequences":                 ["error"],
+    "no-trailing-spaces":           ["warn"],
+    "no-undef":                     ["error"],
+    "no-unexpected-multiline":      ["warn"],
+    "no-unused-vars":               ["warn"],
+    "no-use-before-define":         ["error", {"functions":false}],
+    "one-var":                      ["warn", "never"],
+    "quotes":                       ["warn", "single", {"avoidEscape":false, "allowTemplateLiterals":true}],
+    "semi":                         ["error", "always"],
+    "semi-spacing":                 ["warn", {"before":false, "after":true}],
+    "semi-style":                   ["warn", "last"]
   }
 
 }
