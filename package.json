@@ -26,7 +26,7 @@
   "dependencies": {
     "@sailshq/lodash": "^3.10.2",
     "async": "2.5.0",
-    "captains-log": "^1.0.3",
+    "captains-log": "^2.0.0",
     "chalk": "2.3.0",
     "commander": "2.11.0",
     "common-js-file-extensions": "1.0.2",
