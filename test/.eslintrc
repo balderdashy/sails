@@ -13,20 +13,12 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   "env": {
-    "node": true
+    "node": true,
+    "mocha": true
   },
 
   "parserOptions": {
     "ecmaVersion": 5
-  },
-
-  "globals": {
-    "it": true,
-    "describe": true,
-    "before": true,
-    "beforeEach": true,
-    "after": true,
-    "afterEach": true
   },
 
   "rules": {
