@@ -67,7 +67,7 @@ module.exports = function(scriptName) {
   scriptName = _.trim(scriptName);
   scriptName = scriptName.replace(/^scripts\//, '');
 
-  // Unless the script name is under an org (as in `@sailshq/somescript`), don't allow slashes in the name.
+  // Unless the script name is under a "scope" (as in `@sailshq/some-package`), don't allow slashes in the name.
   if (scriptName.match(/\//) && scriptName[0] !== '@') {
     console.error('Cannot run `'+scriptName+'`.  Script name should never contain any slashes.');
     return process.exit(1);
