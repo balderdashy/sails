@@ -43,8 +43,15 @@ describe('i18n ::', function() {
         },
         '/test_req_setlocale': function(req, res) {
           req.setLocale('es');
-          res.send(sailsApp.i18n('Welcome'));
+          res.send(req.i18n.__('Welcome'));
         },
+        '/test_sails_getlocale': function(req, res) {
+          res.send(req._sails.hooks.i18n.getLocale());
+        },
+        '/test_sails_setlocale': function(req, res) {
+          res.send(req._sails.__('Welcome'));
+        },
+
       }
     }, function(err, sails) {
       if (err) {
@@ -84,8 +91,8 @@ describe('i18n ::', function() {
     });
 
     it('should support `req.getLocale()` to get the current locale.', function(done) {
-      sailsApp.hooks.i18n.setLocale('es');
-      sailsApp.request('GET /test_req_getlocale', function(err, res, body) {
+      // sailsApp.hooks.i18n.setLocale('es');
+      sailsApp.request({url: 'GET /test_req_getlocale', headers: {'Accept-language': 'es'}}, function(err, res, body) {
         if (err) { return done(err); }
         assert.equal(body, 'es');
         return done();
@@ -96,6 +103,24 @@ describe('i18n ::', function() {
       sailsApp.request('GET /test_req_setlocale', function(err, res, body) {
         if (err) { return done(err); }
         assert.equal(body, 'Bienvenido');
+        return done();
+      });
+    });
+
+    it('should support `sails.hooks.i18n.getLocale()` to get the current locale.', function(done) {
+      sailsApp.hooks.i18n.setLocale('es');
+      sailsApp.request('GET /test_sails_getlocale', function(err, res, body) {
+        if (err) { return done(err); }
+        assert.equal(body, 'es');
+        return done();
+      });
+    });
+
+    it('should support `sails.hooks.i18n.setLocale()` to set the current locale.', function(done) {
+      sailsApp.hooks.i18n.setLocale('fr');
+      sailsApp.request('GET /test_sails_setlocale', function(err, res, body) {
+        if (err) { return done(err); }
+        assert.equal(body, 'Bienvenue');
         return done();
       });
     });
