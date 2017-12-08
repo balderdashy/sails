@@ -63,9 +63,12 @@ module.exports = function(scriptName) {
     return process.exit(1);
   }
 
+  // Remove `scripts/` prefix if it exists (allows users to do sails run scripts/foo, so they can use tab autocomplete).
   scriptName = _.trim(scriptName);
   scriptName = scriptName.replace(/^scripts\//, '');
-  if (scriptName.match(/\//)) {
+
+  // Unless the script name is under a "scope" (as in `@sailshq/some-package`), don't allow slashes in the name.
+  if (scriptName.match(/\//) && scriptName[0] !== '@') {
     console.error('Cannot run `'+scriptName+'`.  Script name should never contain any slashes.');
     return process.exit(1);
   }//-•
@@ -131,9 +134,23 @@ module.exports = function(scriptName) {
   }
 
 
-  // Now check the `scripts/` directory to see if the file exists.
-  var relativePathToScript = 'scripts/'+scriptName+'.'+fileExtension;
-  var doesScriptFileExist = fs.existsSync(path.resolve(relativePathToScript));
+  // Now check both the `scripts/` directory and node_modules to see if a matching script exists.
+  var relativePathToAppScript = 'scripts/'+scriptName+'.'+fileExtension;
+  var relativePathToInstalledScript = (function(){
+    // Handle scripts organized under org subdirectories in node_modules.
+    var installedScriptName = scriptName;
+    var org = '';
+    if (scriptName[0] === '@') {
+      org = scriptName.split('/')[0] + '/';
+      installedScriptName = scriptName.split('/')[1];
+    }
+    installedScriptName = installedScriptName.replace(/^sails-run-/,'');
+    return 'node_modules/' + org + 'sails-run-'+installedScriptName;
+  })();
+
+  var installedScriptExists = fs.existsSync(path.resolve(relativePathToInstalledScript));
+  var appScriptExists = fs.existsSync(path.resolve(relativePathToAppScript));
+  var doesScriptFileExist = appScriptExists || installedScriptExists;
 
   // Ensure that this script is not defined in BOTH places.
   if (pjCommandToRun && doesScriptFileExist) {
@@ -146,7 +163,7 @@ module.exports = function(scriptName) {
   // Ensure that this script exists one place or the other.
   if (!pjCommandToRun && !doesScriptFileExist) {
     console.error('Unknown script: `'+scriptName+'`');
-    console.error('No matching script is defined at `'+relativePathToScript+'`.');
+    console.error('No matching script is defined at `'+relativePathToAppScript+'`.');
     console.error('(And there is no matching NPM script in the package.json file.)');
     return process.exit(1);
   }
@@ -156,7 +173,7 @@ module.exports = function(scriptName) {
   // to get the module definition, then run it using MaS.
   if (!pjCommandToRun) {
     try {
-      var pathToScriptDef = path.resolve(process.cwd(), 'scripts/'+scriptName);
+      var pathToScriptDef = path.resolve(process.cwd(), appScriptExists ? relativePathToAppScript : relativePathToInstalledScript);
       var scriptDef;
       try {
         scriptDef = require(pathToScriptDef);
