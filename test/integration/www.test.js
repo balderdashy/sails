@@ -49,7 +49,7 @@ describe('Running sails www', function() {
 
     it('should start server without error', function(done) {
 
-      exec('node ' + sailsBin + ' new ' + appName + ' --fast --without=lodash,async', function(err) {
+      exec('node ' + sailsBin + ' new ' + appName + ' --fast --traditional --without=lodash,async', function(err) {
         if (err) { done(new Error(err)); }
 
         // Move into app directory

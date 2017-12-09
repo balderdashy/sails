@@ -79,7 +79,7 @@ module.exports = {
 
     //
     process.chdir(appName);
-    child_process.exec('node ' + pathToLocalSailsCLI + ' new --fast --without=lodash,async', function(err) {
+    child_process.exec('node ' + pathToLocalSailsCLI + ' new --fast --traditional --without=lodash,async', function(err) {
       if (err) {
         return done(err);
       }

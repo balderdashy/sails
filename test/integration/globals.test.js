@@ -105,7 +105,7 @@ describe('globals :: ', function() {
 
       // Create a new Sails app w/out npm install.
       MProcess.executeCommand({
-        command: util.format('node %s new %s --fast', pathToSailsCLI, 'testApp'),
+        command: util.format('node %s new %s --fast --traditional', pathToSailsCLI, 'testApp'),
       }).exec(function(err) {
         if (err) {return done(err);}
 
@@ -199,7 +199,7 @@ describe('globals :: ', function() {
 
       // Create a new Sails app w/out npm install.
       MProcess.executeCommand({
-        command: util.format('node %s new %s --fast', pathToSailsCLI, 'testApp'),
+        command: util.format('node %s new %s --fast --traditional', pathToSailsCLI, 'testApp'),
       }).exec(function(err) {
         if (err) {return done(err);}
 
@@ -309,7 +309,7 @@ describe('globals :: ', function() {
 
       // Create a new Sails app w/out npm install.
       MProcess.executeCommand({
-        command: util.format('node %s new %s --fast', pathToSailsCLI, 'testApp'),
+        command: util.format('node %s new %s --fast --traditional', pathToSailsCLI, 'testApp'),
       }).exec(function(err) {
         if (err) {return done(err);}
 

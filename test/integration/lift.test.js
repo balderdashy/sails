@@ -38,7 +38,7 @@ describe('Starting sails server with `sails lift`, `sails console` or `node app.
       pathToTestApp = path.resolve(tmpDir.name, 'testApp');
       // Create a new Sails app.
       MProcess.executeCommand({
-        command: util.format('node %s new %s --fast --without=lodash,async', pathToSailsCLI, 'testApp'),
+        command: util.format('node %s new %s --fast --traditional --without=lodash,async', pathToSailsCLI, 'testApp'),
       }).exec(function(err) {
         if (err) {return done(err);}
         appHelper.linkDeps(pathToTestApp);

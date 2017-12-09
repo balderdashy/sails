@@ -45,7 +45,7 @@ describe('New app generator', function() {
   describe('sails new <appname>', function() {
 
     it('should create new, liftable app in new folder', function(done) {
-      exec('node '+ sailsbin + ' new ' + appName + ' --fast --without=lodash,async', function(err) {
+      exec('node '+ sailsbin + ' new ' + appName + ' --fast --traditional --without=lodash,async', function(err) {
         if (err) { return done(new Error(err)); }
         appHelper.lift({log:{level:'silent'}}, function(err, sailsApp) {
           if (err) {return done(err);}
@@ -59,7 +59,7 @@ describe('New app generator', function() {
         if (err) { return done(new Error(err)); }
         fs.writeFile(path.resolve(appName, 'test'), '', function(err) {
           if (err) { return done(new Error(err)); }
-          exec('node '+ sailsbin + ' new ' + appName, function(err, dumb, result) {
+          exec('node '+ sailsbin + ' new ' + appName + ' --fast --traditional', function(err, dumb, result) {
             // In Node v0.10.x on some environments (like in Appveyor), this just
             // returns an Error in `err` instead of a result, so account for that.
             if (process.versions.node.split('.')[0] === '0' && process.versions.node.split('.')[1] === '10' && err) {
@@ -76,7 +76,7 @@ describe('New app generator', function() {
   describe('sails generate new <appname>', function() {
 
     it('should create new app', function(done) {
-      exec('node '+ sailsbin + ' generate new ' + appName + ' --fast --without=lodash,async', function(err) {
+      exec('node '+ sailsbin + ' generate new ' + appName + ' --fast --traditional --without=lodash,async', function(err) {
         if (err) { return done(new Error(err)); }
         appHelper.lift({log:{level:'silent'}}, function(err, sailsApp) {
           if (err) {return done(err);}
@@ -90,7 +90,7 @@ describe('New app generator', function() {
         if (err) { return done(new Error(err)); }
         fs.writeFile(path.resolve(appName, 'test'), '', function(err) {
           if (err) { return done(new Error(err)); }
-          exec('node '+ sailsbin + ' generate new ' + appName, function(err, dumb, result) {
+          exec('node '+ sailsbin + ' generate new ' + appName + ' --fast --traditional', function(err, dumb, result) {
             // In Node v0.10.x on some environments (like in Appveyor), this just
             // returns an Error in `err` instead of a result, so account for that.
             if (process.versions.node.split('.')[0] === '0' && process.versions.node.split('.')[1] === '10' && err) {
@@ -112,7 +112,7 @@ describe('New app generator', function() {
       fs.mkdirSync(appName);
       process.chdir(appName);
 
-      exec( 'node '+ path.resolve('..', sailsbin) + ' new . --fast --without=lodash,async', function(err) {
+      exec( 'node '+ path.resolve('..', sailsbin) + ' new . --fast --traditional --without=lodash,async', function(err) {
         if (err) { return done(new Error(err)); }
 
         // move from app to its parent directory
@@ -127,7 +127,7 @@ describe('New app generator', function() {
       fs.mkdirSync(appName);
       process.chdir(appName);
       fs.mkdirSync('test');
-      exec( 'node ' + path.resolve('..', sailsbin) + ' new . --fast --without=lodash,async', function(err, dumb, result) {
+      exec( 'node ' + path.resolve('..', sailsbin) + ' new . --fast --traditional --without=lodash,async', function(err, dumb, result) {
         // move from app to its parent directory
         process.chdir('../');
         // In Node v0.10.x on some environments (like in Appveyor), this just

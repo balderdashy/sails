@@ -35,7 +35,7 @@ describe('skipAssets', function() {
       pathToTestApp = path.resolve(tmpDir.name, 'testApp');
       // Create a new Sails app.
       MProcess.executeCommand({
-        command: util.format('node %s new %s --fast --without=lodash,async', pathToSailsCLI, 'testApp'),
+        command: util.format('node %s new %s --fast --traditional --without=lodash,async', pathToSailsCLI, 'testApp'),
       }).exec(function(err) {
         if (err) {return done(err);}
         appHelper.linkDeps(pathToTestApp);
@@ -63,7 +63,7 @@ describe('skipAssets', function() {
     describe('running `sails lift', function (){
       testSpawningSailsLiftChildProcessInCwd({
         pathToSailsCLI: pathToSailsCLI,
-        liftCliArgs: ['--port=1331', '--hooks.grunt=false', '--hooks.pubsub=false'],
+        liftCliArgs: ['--port=1331', '--hooks.grunt=false', '--hooks.pubsub=false', '--traditional'],
         httpRequestInstructions: {
           method: 'GET',
           uri: 'http://localhost:1331',
@@ -119,7 +119,7 @@ describe('skipAssets', function() {
       pathToTestApp = path.resolve(tmpDir.name, 'testApp');
       // Create a new Sails app.
       MProcess.executeCommand({
-        command: util.format('node %s new %s --fast --without=lodash,async', pathToSailsCLI, 'testApp'),
+        command: util.format('node %s new %s --fast --traditional --without=lodash,async', pathToSailsCLI, 'testApp'),
       }).exec(function(err) {
         if (err) {return done(err);}
         appHelper.linkDeps(pathToTestApp);
