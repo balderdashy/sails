@@ -15,7 +15,10 @@
 # sails / node.js / npm
 ############################
 node_modules
+.tmp
 npm-debug.log
+package-lock.json
+.waterline
 .node_history
 
 ############################
@@ -42,10 +45,4 @@ nbproject
 ############################
 # misc
 ############################
-.tmp
 dump.rdb
-testApp
--coverage
--isolate-0x*
-ssl
-package-lock.json

@@ -3,6 +3,7 @@
 ./.jshintrc
 ./.editorconfig
 ./.travis.yml
+./appveyor.yml
 ./example
 ./examples
 ./test

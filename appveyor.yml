@@ -33,8 +33,7 @@ test_script:
   #  But seriously, always good to audit this kind of stuff for debugging.)
   - node --version
   - npm --version
-  # Run the actual tests.
-  # (But note that we skip linting.)
+  # Run the actual tests (but note that we skip linting.)
   - npm run custom-tests
 
 
