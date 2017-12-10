@@ -131,7 +131,7 @@ Don't like Grunt?  Want to use WebPack or Gulp instead?  Prefer your generated b
 
 > [Learn how to use community generators, and how to build your own](http://sailsjs.com/documentation/concepts/extending-sails/generators).
 
-<!-- Looking for the list that used to be here?  See https://github.com/balderdashy/sails-docs/blob/master/concepts/extending-sails/Generators/generatorList.md -->
+<!-- Looking for the list that used to be here?  See https://github.com/balderdashy/sails-docs/blob/323477613b6b9ab0cfd7dfb38e53cdff6f46f5d8/concepts/extending-sails/Generators/generatorList.md -->
 
 
 #### Database adapters
