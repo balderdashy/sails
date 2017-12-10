@@ -30,12 +30,11 @@ module.exports = function() {
   // Attempt to require the specified module from the project node_modules folder
   try {
     module = require(path.resolve(process.cwd(), 'node_modules', modulePath));
-  }
-
-  // If the module couldn't be required, bail out
-  catch (e) {
+  } catch (unusedErr) {
+    // If the module couldn't be required, bail out
     console.error('Could not require module at path: ' + modulePath + '.  Please check the path and try again.');
-  }
+    return;
+  }//•
 
   try {
     // Attempt to run the deploy command
