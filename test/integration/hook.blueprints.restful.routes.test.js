@@ -300,6 +300,16 @@ describe('blueprints :: ', function() {
           extraSailsConfig = {};
         });
 
+        describe('a get request to /archive (the default archive model', function() {
+          it('should return a 404', function(done) {
+            sailsApp.request('get /archive', function (err) {
+              assert(err, 'Should have received an error trying to access blueprint for archive model, but didn\'t!');
+              assert.equal(err.status, 404);
+              done();
+            });
+          });
+        });
+
         describe('a get request to /:model', function() {
 
           describe('where a single instance of the model exists', function() {
