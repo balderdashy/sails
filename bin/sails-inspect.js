@@ -33,6 +33,10 @@ module.exports = function(cmd) {
 
   console.log();
   log.info('Running app in inspect mode...');
+  if (process.version[1] >= 8) {
+    log.info('In Google Chrome, go to chrome://inspect for interactive debugging.');
+    log.info('For other options, see the link below.');
+  }
 
   log.info(chalk.grey('( to exit, type ' + '<CTRL>+<C>' + ' )'));
   console.log();
