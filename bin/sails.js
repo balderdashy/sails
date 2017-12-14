@@ -108,13 +108,13 @@ cmd.action(require('./sails-www'));
 // $ sails debug
 cmd = program.command('debug');
 cmd.unknownOption = NOOP;
-cmd.description('');
+cmd.description('(for Node v5 and below)');
 cmd.action(require('./sails-debug'));
 
 // $ sails inspect
 cmd = program.command('inspect');
 cmd.unknownOption = NOOP;
-cmd.description('');
+cmd.description('(for Node v6 and above)');
 cmd.action(require('./sails-inspect'));
 
 // $ sails run
