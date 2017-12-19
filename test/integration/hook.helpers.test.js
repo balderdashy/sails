@@ -64,19 +64,38 @@ describe('helpers :: ', function() {
       assert.equal(_.keys(sailsApp.helpers).length, 2);
     });
 
-    it('should load asynchronously helpers correctly', function(done) {
-      sailsApp.helpers.greet({ name: 'Glen' }).switch({
+    it('should load asynchronous helpers correctly', function(done) {
+      sailsApp.helpers.greet('Glen').switch({
         error: done,
-        success: function ( result ) {
-          assert.equal(result, 'Hi, Glen!');
-          return done();
-        }
-      });
+        success: function (result1) {
+          sailsApp.helpers.greet.with({ name: 'Glen' }).exec(function(err, result2) {
+            if (err) { return done(err); }
+            try {
+              assert.equal(result1, 'Hi, Glen!');
+              assert.equal(result2, result1);
+            } catch (err) { return done(err); }
+            return done();
+          });//_∏_
+        }//>
+      });//_∏_
     });
 
-    it('should load synchronously helpers correctly', function() {
-      var result = sailsApp.helpers.ucase({ string: 'Hi, Glen!' }).execSync();
-      assert.equal(result, 'HI, GLEN!');
+    it('should load synchronous helpers correctly', function() {
+      var result1 = sailsApp.helpers.ucase('Hi, Glen!');
+      var result2 = sailsApp.helpers.ucase.with({ string: 'Hi, Glen!' });
+      assert.equal(result1, 'HI, GLEN!');
+      assert.equal(result2, result1);
+    });
+
+    it('should support customization', function(done) {
+      sailsApp.helpers.greet.customize({ arginStyle: 'named', execStyle: 'natural' })({ name: 'Glen' }).then(function(result1){
+        assert.equal(result1, 'Hi, Glen!');
+        var result2 = sailsApp.helpers.ucase.customize({ arginStyle: 'serial', execStyle: 'deferred' })('Hi, Glen!').now();
+        var result3 = sailsApp.helpers.ucase.customize({ arginStyle: 'serial', execStyle: 'deferred' }).with({ string: 'Hi, Glen!' }).now();
+        assert.equal(result2, 'HI, GLEN!');
+        assert.equal(result3, result2);
+        return done();
+      }).catch (function(err){ return done(err); });//_∏_
     });
 
   });
