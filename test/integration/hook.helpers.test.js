@@ -64,27 +64,32 @@ describe('helpers :: ', function() {
       assert.equal(_.keys(sailsApp.helpers).length, 2);
     });
 
-    it('should load asynchronous helpers correctly', function(done) {
+    it('should load helpers correctly', function() {
+      assert(_.isFunction(sailsApp.helpers.greet));
+      assert(_.isFunction(sailsApp.helpers.greet.with));
+      assert(_.isFunction(sailsApp.helpers.ucase));
+      assert(_.isFunction(sailsApp.helpers.ucase.with));
+    });
+
+    it('should support "serial" and "natural" usage out of the box, and `.with()` too', function(done) {
+      var result1 = sailsApp.helpers.ucase('Hi, Glen!');
+      var result2 = sailsApp.helpers.ucase.with({ string: 'Hi, Glen!' });
+      assert.equal(result1, 'HI, GLEN!');
+      assert.equal(result2, result1);
+
       sailsApp.helpers.greet('Glen').switch({
         error: done,
-        success: function (result1) {
-          sailsApp.helpers.greet.with({ name: 'Glen' }).exec(function(err, result2) {
+        success: function (result3) {
+          sailsApp.helpers.greet.with({ name: 'Glen' }).exec(function(err, result4) {
             if (err) { return done(err); }
             try {
-              assert.equal(result1, 'Hi, Glen!');
-              assert.equal(result2, result1);
+              assert.equal(result3, 'Hi, Glen!');
+              assert.equal(result4, result3);
             } catch (err) { return done(err); }
             return done();
           });//_∏_
         }//>
       });//_∏_
-    });
-
-    it('should load synchronous helpers correctly', function() {
-      var result1 = sailsApp.helpers.ucase('Hi, Glen!');
-      var result2 = sailsApp.helpers.ucase.with({ string: 'Hi, Glen!' });
-      assert.equal(result1, 'HI, GLEN!');
-      assert.equal(result2, result1);
     });
 
     it('should support customization', function(done) {
