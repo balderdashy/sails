@@ -2,13 +2,13 @@
 <a href="http://sailsjs.com"><img alt="Sails.js logo" src="http://balderdashy.github.io/sails/images/logo.png" title="Sails.js"/></a>
 </h1>
 
-### [Website](http://sailsjs.com/)  &nbsp; [Get Started](http://sailsjs.com/get-started) &nbsp;  [Docs](http://sailsjs.com/documentation)  &nbsp; [News](http://twitter.com/sailsjs) &nbsp; [Submit Issue](http://sailsjs.com/bugs)
+### [Website](https://sailsjs.com/)  &nbsp; [Get Started](https://sailsjs.com/get-started) &nbsp;  [Docs](http://sailsjs.com/documentation)  &nbsp; [News](http://twitter.com/sailsjs) &nbsp; [Submit Issue](http://sailsjs.com/bugs)
 
 [![NPM version](https://badge.fury.io/js/sails.svg)](http://badge.fury.io/js/sails) &nbsp; [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/balderdashy/sails)  &nbsp; [![Twitter Follow](https://img.shields.io/twitter/follow/sailsjs.svg?style=social&maxAge=3600)](https://twitter.com/sailsjs)
 
 Sails.js is a [web framework](http://sailsjs.com/whats-that) that makes it easy to build custom, enterprise-grade Node.js apps. It is designed to resemble the MVC architecture from frameworks like Ruby on Rails, but with support for the more modern, data-oriented style of web app & API development. It's especially good for building realtime features like chat.
 
-Since version 1.0, Sails supports ES8 async functions out of the box.  This replaces nested callbacks (and the commensurate error handling) with simple, familiar usage:
+Since version 1.0, Sails supports `await` out of the box.  This replaces nested callbacks (and the commensurate error handling) with simple, familiar usage:
 
 ```javascript
 var orgs = await Organization.find();
@@ -94,11 +94,11 @@ Please read the [submission guidelines](http://sailsjs.com/documentation/contrib
 
 ## Contribute
 There are many different ways you can contribute to Sails:
-- answering questions on [StackOverflow](http://stackoverflow.com/questions/tagged/sails.js), [Gitter](https://gitter.im/balderdashy/sails), [IRC](http://sailsjs.com/support/about-irc), [Facebook](https://www.facebook.com/sailsjs), or [Twitter](https://twitter.com/search?f=tweets&vertical=default&q=%40sailsjs%20OR%20%23sailsjs%20OR%20sails.js%20OR%20sailsjs&src=typd)
+- answering questions on [StackOverflow](http://stackoverflow.com/questions/tagged/sails.js), [Gitter](https://gitter.im/balderdashy/sails), [Facebook](https://www.facebook.com/sailsjs), or [Twitter](https://twitter.com/search?f=tweets&vertical=default&q=%40sailsjs%20OR%20%23sailsjs%20OR%20sails.js%20OR%20sailsjs&src=typd)
 - improving the [documentation](https://github.com/balderdashy/sails-docs#contributing-to-the-docs) or [website](https://github.com/balderdashy/www.sailsjs.com/issues)
 - translating the [documentation](https://github.com/balderdashy/sails-docs/issues/580) to your native language
 - writing [tests](https://github.com/balderdashy/sails/blob/master/test/README.md)
-- writing a [tutorial](https://github.com/sails101/contribute-to-sails101), giving a [talk](http://lanyrd.com/search/?q=sailsjs), or supporting [your local Sails meetup](http://www.meetup.com/find/?allMeetups=false&keywords=sails.js&radius=Infinity&sort=default)
+- writing a [tutorial](https://github.com/sails101/contribute-to-sails101), giving a [talk](https://speakerdeck.com/mikermcneil), or supporting [your local Sails meetup](https://www.meetup.com/find/?allMeetups=false&keywords=node.js&radius=Infinity&sort=default)
 - troubleshooting [reported issues](http://sailsjs.com/bugs)
 - and [submitting patches](http://sailsjs.com/documentation/contributing/code-submission-guidelines).
 
@@ -111,13 +111,13 @@ _Please carefully read our [contribution guide](http://sailsjs.com/documentation
 - [Ask a question](http://sailsjs.com/support)
 - [Roadmap](https://trello.com/b/s9zEnyG7/sails-v1)
 - [Twitter (@sailsjs)](https://twitter.com/sailsjs)
-- [Newsgroup](https://groups.google.com/forum/#!forum/sailsjs)
 - [Facebook](https://www.facebook.com/sailsjs)
+- [Newsgroup](https://groups.google.com/forum/#!forum/sailsjs)
 
 ## Team
 Sails is actively maintained with the help of many amazing [contributors](https://github.com/balderdashy/sails/graphs/contributors).  Our core team consists of:
 
-[![Mike McNeil](https://www.gravatar.com/avatar/7751d3f6e0284f4c3a99dcb9009e0a4d?s=144&d=identicon&rating=g)](http://twitter.com/mikermcneil) |  [![Cody Stoltman](https://1.gravatar.com/avatar/368567acca0c5dfb9a4ff512c5c0c3fa?s=144)](http://twitter.com/particlebanana) | [![Scott Gress](https://0.gravatar.com/avatar/b74e07aa543552709bf546ca279c9c67?s=144)](http://twitter.com/sgress454) | [![Irl Nathan](https://www.gravatar.com/avatar/d350bea2bf2e54ad59e6e241f70b7648?s=144&d=identicon&rating=g)](http://twitter.com/irlnathan) | [![Rachael Shaw](https://avatars0.githubusercontent.com/u/3065949?v=3&s=144)](http://twitter.com/fancydoilies)
+[![Mike McNeil](https://www.gravatar.com/avatar/4b02a9d5780bdd282151f7f9b8a4d8de?s=144&d=identicon&rating=g)](http://twitter.com/mikermcneil) |  [![Cody Stoltman](https://1.gravatar.com/avatar/368567acca0c5dfb9a4ff512c5c0c3fa?s=144)](http://twitter.com/particlebanana) | [![Scott Gress](https://0.gravatar.com/avatar/b74e07aa543552709bf546ca279c9c67?s=144)](http://twitter.com/sgress454) | [![Irl Nathan](https://www.gravatar.com/avatar/d350bea2bf2e54ad59e6e241f70b7648?s=144&d=identicon&rating=g)](http://twitter.com/irlnathan) | [![Rachael Shaw](https://avatars0.githubusercontent.com/u/3065949?v=3&s=144)](http://twitter.com/fancydoilies)
 :---:|:---:|:---:|:---:|:---:
 [Mike McNeil](http://github.com/mikermcneil) | [Cody Stoltman](https://github.com/particlebanana) | [Scott Gress](https://github.com/sgress454) | [Irl Nathan](https://github.com/irlnathan) | [Rachael Shaw](https://github.com/rachaelshaw)
 
