@@ -157,10 +157,16 @@ cmd.action(require('./sails-deploy'));
 // $ sails debug-console
 cmd = program.command('debug-console');
 cmd.unknownOption = NOOP;
-cmd.description('');
+cmd.description('(for Node v5 and below)');
 cmd.alias('dc');
 cmd.action(require('./sails-debug-console'));
 
+// $ sails inspect-console
+cmd = program.command('inspect-console');
+cmd.unknownOption = NOOP;
+cmd.description('(for Node v6 and above)');
+cmd.alias('ic');
+cmd.action(require('./sails-inspect-console'));
 
 //
 // Normalize help argument, i.e.
