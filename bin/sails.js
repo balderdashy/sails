@@ -49,6 +49,7 @@ program.usage('[command]');
 var cmd;
 cmd = program.command('lift');
 cmd.option('--prod', 'Lift in "production" environment.');
+cmd.option('--staging', 'Lift in "staging" environment.');
 cmd.option('--port [port]', 'Listen on the specified port (defaults to 1337).');
 cmd.option('--silent', 'Set log level to "silent".');
 cmd.option('--verbose', 'Set log level to "verbose".');
