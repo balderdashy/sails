@@ -81,9 +81,15 @@ module.exports = function() {
 
   var log = CaptainsLog(rconf.log);
 
-  // The destination path.
-  var originalWwwPath = 'www';
-  var wwwPath = path.resolve(process.cwd(), originalWwwPath);
+  // Determine the destination path.
+  // > Grab the custom destination path from the CLI serial args, if one was provided.
+  // > (making sure to remove commander's extra argument)
+  var cliArguments = Array.prototype.slice.call(arguments);
+  cliArguments.pop();
+  var wwwPath = cliArguments[0] || 'www';
+
+  // Resolve the destination path, because it is probably a relative path.
+  wwwPath = path.resolve(process.cwd(), wwwPath);
 
   // Determine the appropriate Grunt task to run based on `process.env.NODE_ENV`, `rconf.prod`, and `rconf.environment`.
   var overrideGruntTask;
@@ -93,7 +99,7 @@ module.exports = function() {
   else {
     overrideGruntTask = 'build';
   }
-  log.info('Compiling assets into standalone `'+originalWwwPath+'` directory with `grunt ' + overrideGruntTask + '`...');
+  log.info('Compiling assets into standalone directory at `'+wwwPath+'` with `grunt ' + overrideGruntTask + '`...');
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Execute a command like you would on the terminal.
