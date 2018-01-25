@@ -48,9 +48,9 @@ module.exports = function() {
       throw flaverr('E_NO_SAILS_DEP', new Error('This package.json file does not declare `sails` as a dependency.\nAre you sure you\'re in the root directory of a Sails app?'));
     }
 
-    var shGruntDepSVR = packageJson.dependencies['sails-hook-grunt'];
+    var shGruntDepSVR = packageJson.dependencies['sails-hook-grunt'] || packageJson.devDependencies['sails-hook-grunt'];
     if (!shGruntDepSVR) {
-      throw flaverr('E_NO_SH_GRUNT_DEP', new Error('This app\'s package.json file does not declare `sails-hook-grunt` as a dependency.\nAre you sure this is a Sails v1.0 app that is using Grunt?'));
+      throw flaverr('E_NO_SH_GRUNT_DEP', new Error('This app\'s package.json file does not declare `sails-hook-grunt` in "dependencies" or "devDependencies".\nAre you sure this is a Sails v1.0 app that is using Grunt?'));
     }
 
   } catch (e) {
