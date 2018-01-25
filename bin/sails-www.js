@@ -81,15 +81,8 @@ module.exports = function() {
 
   var log = CaptainsLog(rconf.log);
 
-  // Determine the destination path.
-  // > Grab the custom destination path from the CLI serial args, if one was provided.
-  // > (making sure to remove commander's extra argument)
-  var cliArguments = Array.prototype.slice.call(arguments);
-  cliArguments.pop();
-  var wwwPath = cliArguments[0] || 'www';
-
-  // Resolve the destination path, because it is probably a relative path.
-  wwwPath = path.resolve(process.cwd(), wwwPath);
+  // The destination path.
+  var wwwPath = path.resolve(process.cwd(), 'www');
 
   // Determine the appropriate Grunt task to run based on `process.env.NODE_ENV`, `rconf.prod`, and `rconf.environment`.
   var overrideGruntTask;
@@ -99,7 +92,7 @@ module.exports = function() {
   else {
     overrideGruntTask = 'build';
   }
-  log.info('Compiling assets into standalone directory at `'+wwwPath+'` with `grunt ' + overrideGruntTask + '`...');
+  log.info('Compiling assets into standalone directory with `grunt ' + overrideGruntTask + '`...');
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Execute a command like you would on the terminal.
@@ -109,7 +102,7 @@ module.exports = function() {
     if (err) {
       log.error('Error occured running `grunt ' + overrideGruntTask + '`');
       log.error('Please resolve any issues and try running `sails www` again.');
-      log.error('Hint: you must have the Grunt CLI installed!  Try `npm install grunt`.');
+      log.error('Hint: you must have the Grunt CLI installed!  Try `npm install grunt -g`.');
       log.error();
       log.error('Error details:');
       log.error(err);
@@ -117,7 +110,7 @@ module.exports = function() {
     }
 
     log.info();
-    log.info('Created directory of compiled static assets at:');
+    log.info('Created directory of compiled assets at:');
     log.info(wwwPath);
     return process.exit(0);
 
