@@ -82,7 +82,8 @@ module.exports = function() {
   var log = CaptainsLog(rconf.log);
 
   // The destination path.
-  var wwwPath = path.resolve(process.cwd(), './www');
+  var originalWwwPath = 'www';
+  var wwwPath = path.resolve(process.cwd(), originalWwwPath);
 
   // Determine the appropriate Grunt task to run based on `process.env.NODE_ENV`, `rconf.prod`, and `rconf.environment`.
   var overrideGruntTask;
@@ -92,7 +93,7 @@ module.exports = function() {
   else {
     overrideGruntTask = 'build';
   }
-  log.info('Compiling assets into standalone `www` directory with `grunt ' + overrideGruntTask + '`...');
+  log.info('Compiling assets into standalone `'+originalWwwPath+'` directory with `grunt ' + overrideGruntTask + '`...');
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Execute a command like you would on the terminal.
@@ -110,7 +111,7 @@ module.exports = function() {
     }
 
     log.info();
-    log.info('Created `www` directory at:');
+    log.info('Created directory of compiled static assets at:');
     log.info(wwwPath);
     return process.exit(0);
 
