@@ -127,7 +127,7 @@ describe('CSRF ::', function() {
           if (err && err.status === 403) {
             return done();
           }
-          done(new Error('Expected a 403 error, instead got: ' + err || response.body));
+          done(new Error('Expected a 403 error, instead got: ' + (err || response.body)));
 
         });
 
@@ -211,7 +211,7 @@ describe('CSRF ::', function() {
           if (err && err.status === 403) {
             return done();
           }
-          done(new Error('Expected a 403 error, instead got: ' + err || response.body));
+          done(new Error('Expected a 403 error, instead got: ' + (err || response.body)));
         });
       });
 
@@ -220,7 +220,7 @@ describe('CSRF ::', function() {
           if (err && err.status === 403) {
             return done();
           }
-          done(new Error('Expected a 403 error, instead got: ' + err || response.body));
+          done(new Error('Expected a 403 error, instead got: ' + (err || response.body)));
         });
       });
 
@@ -229,7 +229,7 @@ describe('CSRF ::', function() {
           if (err && err.status === 403) {
             return done();
           }
-          done(new Error('Expected a 403 error, instead got: ' + err || response.body));
+          done(new Error('Expected a 403 error, instead got: ' + (err || response.body)));
         });
       });
 
@@ -265,7 +265,7 @@ describe('CSRF ::', function() {
           if (err && err.status === 403) {
             return done();
           }
-          done(new Error('Expected a 403 error, instead got: ' + err || response.body));
+          done(new Error('Expected a 403 error, instead got: ' + (err || response.body)));
         });
       });
 
@@ -274,7 +274,7 @@ describe('CSRF ::', function() {
           if (err && err.status === 403) {
             return done();
           }
-          done(new Error('Expected a 403 error, instead got: ' + err || response.body));
+          done(new Error('Expected a 403 error, instead got: ' + (err || response.body)));
         });
       });
 
@@ -283,7 +283,7 @@ describe('CSRF ::', function() {
           if (err && err.status === 403) {
             return done();
           }
-          done(new Error('Expected a 403 error, instead got: ' + err || response.body));
+          done(new Error('Expected a 403 error, instead got: ' + (err || response.body)));
         });
       });
 
@@ -309,7 +309,7 @@ describe('CSRF ::', function() {
           if (err && err.status === 403) {
             return done();
           }
-          done(new Error('Expected a 403 error, instead got: ' + err || response.body));
+          done(new Error('Expected a 403 error, instead got: ' + (err || response.body)));
         });
       });
 
