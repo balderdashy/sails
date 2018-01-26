@@ -168,7 +168,7 @@ describe('CSRF ::', function() {
       });
     });
 
-    describe('with CSRF set to true, blacklisting \'POST /foo/:id, /user\'}', function() {
+    describe('with CSRF set to true, blacklisting \'POST /foo/:id, POST /bar/:id?, /user\'}', function() {
 
       before(function() {
 
@@ -177,7 +177,9 @@ describe('CSRF ::', function() {
             csrf: true
           },
           routes: {
+            // Note -- since we don't actually define a target for these, requests that pass CSRF should return a 404.
             'POST /foo/:id': {csrf: false},
+            '/bar/:id?': {csrf: false},
             '/user': {csrf: false}
           }
         };
@@ -202,7 +204,52 @@ describe('CSRF ::', function() {
           if (err && err.status === 404) {
             return done();
           }
-          done(new Error('Expected a 404 error, instead got: ' + err || response.body));
+          done(new Error('Expected a 404 error, instead got: ' + (err || response.body)));
+        });
+      });
+
+      it('a POST request on /foo/12?abc=123 without a CSRF token should result in a 404 response', function(done) {
+        sailsApp.request({url: '/foo/12?abc=123', method: 'post'}, function(err, response) {
+          if (err && err.status === 404) {
+            return done();
+          }
+          done(new Error('Expected a 404 error, instead got: ' + (err || response.body)));
+        });
+      });
+
+      it('a POST request on /bar/12 without a CSRF token should result in a 404 response', function(done) {
+        sailsApp.request({url: '/bar/12', method: 'post'}, function(err, response) {
+          if (err && err.status === 404) {
+            return done();
+          }
+          done(new Error('Expected a 404 error, instead got: ' + (err || response.body)));
+        });
+      });
+
+      it('a POST request on /bar/12?abc=123 without a CSRF token should result in a 404 response', function(done) {
+        sailsApp.request({url: '/bar/12?abc=123', method: 'post'}, function(err, response) {
+          if (err && err.status === 404) {
+            return done();
+          }
+          done(new Error('Expected a 404 error, instead got: ' + (err || response.body)));
+        });
+      });
+
+      it('a POST request on /bar without a CSRF token should result in a 404 response', function(done) {
+        sailsApp.request({url: '/bar', method: 'post'}, function(err, response) {
+          if (err && err.status === 404) {
+            return done();
+          }
+          done(new Error('Expected a 404 error, instead got: ' + (err || response.body)));
+        });
+      });
+
+      it('a POST request on /bar?abc=123 without a CSRF token should result in a 404 response', function(done) {
+        sailsApp.request({url: '/bar?abc=123', method: 'post'}, function(err, response) {
+          if (err && err.status === 404) {
+            return done();
+          }
+          done(new Error('Expected a 404 error, instead got: ' + (err || response.body)));
         });
       });
 
