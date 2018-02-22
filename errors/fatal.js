@@ -45,7 +45,8 @@ module.exports = {
     log.error();
     log.error('Tips:');
     log.error(' • First, take a look at the error message above.');
-    log.error(' • Check that you\'re using the latest stable version of Sails.');
+    log.error(' • Make sure you\'ve installed dependencies with `npm install`.');
+    log.error(' • Check that this app was built for a compatible version of Sails.');
     log.error(' • Have a question or need help?  (http://sailsjs.com/support)');
     _terminateProcess(1);
   },
