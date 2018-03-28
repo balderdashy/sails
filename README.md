@@ -109,6 +109,7 @@ _Please carefully read our [contribution guide](http://sailsjs.com/documentation
 - [Website](http://sailsjs.com/)
 - [Documentation](http://sailsjs.com/documentation)
 - [Ask a question](http://sailsjs.com/support)
+- [Tutorial](https://platzi.com/cursos/javascript-pro/)
 - [Roadmap](https://trello.com/b/s9zEnyG7/sails-v1)
 - [Twitter (@sailsjs)](https://twitter.com/sailsjs)
 - [Facebook](https://www.facebook.com/sailsjs)
@@ -125,7 +126,7 @@ Sails is actively maintained with the help of many amazing [contributors](https:
 
 ## License
 
-[MIT License](http://sailsjs.com/license)  Copyright © 2012-2017 Mike McNeil, Balderdash Design Co., & The Sails Company
+[MIT License](http://sailsjs.com/license)  Copyright © 2012-present Mike McNeil, Balderdash Design Co., & The Sails Company
 
 > Sails is built around so many great open-source technologies that it would never have crossed our minds to keep it proprietary.  We owe huge gratitude and props to Ryan Dahl ([@ry](https://github.com/ry)), TJ Holowaychuk ([@tj](https://github.com/tj)), Doug Wilson ([@dougwilson](https://github.com/dougwilson)) and Guillermo Rauch ([@rauchg](https://github.com/rauchg)) for the work they've done, as well as the stewards of all the other open-source modules we use.  Sails could never have been developed without your tremendous contributions to the JavaScript community.
 
