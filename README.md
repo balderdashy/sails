@@ -36,23 +36,23 @@ $ npm install sails -g
 **Create a new app:**
 ```sh
 # Create the app
-$ sails new my-app
+sails new my-app
 ```
 
 **Lift sails:**
 ```sh
 # cd into the new folder
-$ cd my-app
+cd my-app
 
 # fire up the server
-$ sails lift
+sails lift
 ```
 
 **Generate a REST API:**
 
-[![Screenshot from the original Sails video](http://i.imgur.com/Ii88jlhl.png)](https://www.youtube.com/watch?v=GK-tFvpIR7c)
+[![Screenshot from the original Sails video](http://i.imgur.com/Ii88jlhl.png)](https://sailsjs.com/get-started)
 
-_For the most up-to-date introduction to Sails, [get started here](http://sailsjs.com/get-started)._
+For the most up-to-date introduction to Sails, [get started here](https://sailsjs.com/get-started).
 
 ## Compatibility
 
@@ -75,6 +75,10 @@ Community adapters exist for [CouchDB](https://github.com/search?q=sails+couch&n
 <!-- /core adapter logos -->
 
 > For the latest core adapters and notable community adapters, see [Available Adapters](http://sailsjs.com/documentation/concepts/extending-sails/adapters/available-adapters).
+
+## Tutorial Course
+- [Full-Stack JavaScript with Sails.js and Vue.js](https://platzi.com/cursos/javascript-pro/), taught by [Mike McNeil](https://twitter.com/mikermcneil) _(in English, with optional Spanish subtitles)_
+
 
 ## Books
 - [Sails.js in Action](https://www.manning.com/books/sails-js-in-action) by Mike McNeil and Irl Nathan (Manning Publications).
@@ -126,7 +130,7 @@ Sails is actively maintained with the help of many amazing [contributors](https:
 
 ## License
 
-[MIT License](http://sailsjs.com/license)  Copyright © 2012-present Mike McNeil, Balderdash Design Co., & The Sails Company
+[MIT License](http://sailsjs.com/license)  Copyright © 2012-present, Mike McNeil, Balderdash Design Co., & The Sails Company
 
 > Sails is built around so many great open-source technologies that it would never have crossed our minds to keep it proprietary.  We owe huge gratitude and props to Ryan Dahl ([@ry](https://github.com/ry)), TJ Holowaychuk ([@tj](https://github.com/tj)), Doug Wilson ([@dougwilson](https://github.com/dougwilson)) and Guillermo Rauch ([@rauchg](https://github.com/rauchg)) for the work they've done, as well as the stewards of all the other open-source modules we use.  Sails could never have been developed without your tremendous contributions to the JavaScript community.
 
