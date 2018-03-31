@@ -48,8 +48,6 @@ cd my-app
 sails lift
 ```
 
-**Generate a REST API:**
-
 [![Screenshot from the original Sails video](http://i.imgur.com/Ii88jlhl.png)](https://sailsjs.com/get-started)
 
 For the most up-to-date introduction to Sails, [get started here](https://sailsjs.com/get-started).
@@ -126,11 +124,11 @@ Sails is actively maintained with the help of many amazing [contributors](https:
 :---:|:---:|:---:|:---:|:---:
 [Mike McNeil](http://github.com/mikermcneil) | [Cody Stoltman](https://github.com/particlebanana) | [Scott Gress](https://github.com/sgress454) | [Irl Nathan](https://github.com/irlnathan) | [Rachael Shaw](https://github.com/rachaelshaw)
 
-[Our company](https://sailsjs.com/about) designs/builds scalable Node.js apps for startups and enterprise customers. After building a few applications and taking them into production, we realized that the Node.js development landscape was very much still the Wild West. Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  Six years later, Sails is now one of the most widely-used web application frameworks in the world. I hope it saves you some time! :)
+[Our company](https://sailsjs.com/about) designs/builds Node.js websites and apps for startups and enterprise customers. After building a few applications and taking them into production, we realized that the Node.js development landscape was very much still the Wild West. Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  Six years later, Sails is now one of the most widely-used web application frameworks in the world. I hope it saves you some time! :)
 
 ## License
 
-[MIT License](http://sailsjs.com/license)  Copyright © 2012-present, Mike McNeil, Balderdash Design Co., & The Sails Company
+[MIT License](https://opensource.org/licenses/MIT)  Copyright © 2012-present, Mike McNeil
 
 > Sails is built around so many great open-source technologies that it would never have crossed our minds to keep it proprietary.  We owe huge gratitude and props to Ryan Dahl ([@ry](https://github.com/ry)), TJ Holowaychuk ([@tj](https://github.com/tj)), Doug Wilson ([@dougwilson](https://github.com/dougwilson)) and Guillermo Rauch ([@rauchg](https://github.com/rauchg)) for the work they've done, as well as the stewards of all the other open-source modules we use.  Sails could never have been developed without your tremendous contributions to the JavaScript community.
 
