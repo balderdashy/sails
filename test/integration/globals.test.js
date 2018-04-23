@@ -14,6 +14,8 @@ var pathToSailsCLI = path.resolve(__dirname, '../../bin/sails.js');
 
 describe('globals :: ', function() {
 
+  var curDir;
+
   describe('with default settings in an app lifted programmatically with no configuration', function() {
 
     var result;
@@ -37,9 +39,6 @@ describe('globals :: ', function() {
 
         // Symlink Sails to the new app
         appHelper.linkSails(tmpDir.name);
-
-        // This variable will hold the reference to the child process.
-        var sailsLiftProc, dataLog, errorLog;
 
         MProcess.executeCommand({
           command: util.format('node expose_globals.js'),
@@ -101,7 +100,7 @@ describe('globals :: ', function() {
       process.chdir(tmpDir.name);
 
       // Get the full path to the directory containing the app
-      pathToTestApp = path.resolve(tmpDir.name, 'testApp');
+      var pathToTestApp = path.resolve(tmpDir.name, 'testApp');
 
       // Create a new Sails app w/out npm install.
       MProcess.executeCommand({
@@ -126,9 +125,6 @@ describe('globals :: ', function() {
 
         // Symlink Sails to the new app
         appHelper.linkAsync(pathToTestApp);
-
-        // This variable will hold the reference to the child process.
-        var sailsLiftProc, dataLog, errorLog;
 
         MProcess.executeCommand({
           command: util.format('node expose_globals.js'),
@@ -195,7 +191,7 @@ describe('globals :: ', function() {
       process.chdir(tmpDir.name);
 
       // Get the full path to the directory containing the app
-      pathToTestApp = path.resolve(tmpDir.name, 'testApp');
+      var pathToTestApp = path.resolve(tmpDir.name, 'testApp');
 
       // Create a new Sails app w/out npm install.
       MProcess.executeCommand({
@@ -238,9 +234,6 @@ describe('globals :: ', function() {
           destination: 'node_modules/async/index.js',
           string: 'module.exports = {"owl": "hoot"}'
         }).execSync();
-
-        // This variable will hold the reference to the child process.
-        var sailsLiftProc, dataLog, errorLog;
 
         MProcess.executeCommand({
           command: util.format('node expose_globals.js'),
@@ -305,7 +298,7 @@ describe('globals :: ', function() {
       process.chdir(tmpDir.name);
 
       // Get the full path to the directory containing the app
-      pathToTestApp = path.resolve(tmpDir.name, 'testApp');
+      var pathToTestApp = path.resolve(tmpDir.name, 'testApp');
 
       // Create a new Sails app w/out npm install.
       MProcess.executeCommand({
@@ -355,9 +348,6 @@ describe('globals :: ', function() {
           string: 'module.exports = {"owl": "hoot"}'
         }).execSync();
 
-        // This variable will hold the reference to the child process.
-        var sailsLiftProc, dataLog, errorLog;
-
         MProcess.executeCommand({
           command: util.format('node expose_globals.js'),
         }).exec(function(err, output) {
@@ -404,8 +394,6 @@ describe('globals :: ', function() {
 
   describe('with `_` set to `true`', function() {
 
-    var result;
-
     before(function(done) {
 
       // Cache the current working directory.
@@ -439,8 +427,6 @@ describe('globals :: ', function() {
     });
 
     it('should fail to lift', function(done) {
-      // This variable will hold the reference to the child process.
-      var sailsLiftProc, dataLog, errorLog;
 
       MProcess.executeCommand({
         command: util.format('node expose_globals.js'),
@@ -449,7 +435,7 @@ describe('globals :: ', function() {
           if (output.stderr.match('E_BAD_GLOBAL_CONFIG')) {
             return done();
           }
-          return done(e);
+          return done(err);
         }
         return done(new Error('Sails should have failed to lift!'));
       });
@@ -462,8 +448,6 @@ describe('globals :: ', function() {
   });
 
   describe('with `async` set to `true`', function() {
-
-    var result;
 
     before(function(done) {
 
@@ -498,8 +482,6 @@ describe('globals :: ', function() {
     });
 
     it('should fail to lift', function(done) {
-      // This variable will hold the reference to the child process.
-      var sailsLiftProc, dataLog, errorLog;
 
       MProcess.executeCommand({
         command: util.format('node expose_globals.js'),
@@ -508,7 +490,7 @@ describe('globals :: ', function() {
           if (output.stderr.match('E_BAD_GLOBAL_CONFIG')) {
             return done();
           }
-          return done(e);
+          return done(err);
         }
         return done(new Error('Sails should have failed to lift!'));
       });
@@ -521,8 +503,6 @@ describe('globals :: ', function() {
   });
 
   describe('with `models` set to `undefined`', function() {
-
-    var result;
 
     before(function(done) {
 
@@ -557,8 +537,6 @@ describe('globals :: ', function() {
     });
 
     it('should fail to lift', function(done) {
-      // This variable will hold the reference to the child process.
-      var sailsLiftProc, dataLog, errorLog;
 
       MProcess.executeCommand({
         command: util.format('node expose_globals.js'),
@@ -567,7 +545,7 @@ describe('globals :: ', function() {
           if (output.stderr.match('E_BAD_GLOBAL_CONFIG')) {
             return done();
           }
-          return done(e);
+          return done(err);
         }
         return done(new Error('Sails should have failed to lift!'));
       });
@@ -580,8 +558,6 @@ describe('globals :: ', function() {
   });
 
   describe('with `sails` set to `undefined`', function() {
-
-    var result;
 
     before(function(done) {
 
@@ -616,8 +592,6 @@ describe('globals :: ', function() {
     });
 
     it('should fail to lift', function(done) {
-      // This variable will hold the reference to the child process.
-      var sailsLiftProc, dataLog, errorLog;
 
       MProcess.executeCommand({
         command: util.format('node expose_globals.js'),
@@ -626,7 +600,7 @@ describe('globals :: ', function() {
           if (output.stderr.match('E_BAD_GLOBAL_CONFIG')) {
             return done();
           }
-          return done(e);
+          return done(err);
         }
         return done(new Error('Sails should have failed to lift!'));
       });
@@ -639,8 +613,6 @@ describe('globals :: ', function() {
   });
 
   describe('with `sails.config.globals` set to `true`', function() {
-
-    var result;
 
     before(function(done) {
 
@@ -675,15 +647,13 @@ describe('globals :: ', function() {
     });
 
     it('should fail to lift', function(done) {
-      // This variable will hold the reference to the child process.
-      var sailsLiftProc, dataLog, errorLog;
 
       MProcess.executeCommand({
         command: util.format('node expose_globals.js'),
       }).exec(function(err, output) {
         if (output.stderr) {
           if (output.stderr.match('E_BAD_GLOBAL_CONFIG')) {
-            return done();
+            return done(err);
           }
           return done(new Error(output.stderr));
         }
@@ -725,9 +695,9 @@ function setupAppFiles() {
     Sails.load({log: {level: 'silent'}}, function(err, sailsApp) {
       if (err) {console.error(err); return;}
       console.log(JSON.stringify({
-        async:  typeof async !== 'undefined' && Object.keys(async),
+        async:  typeof async !== 'undefined' && Object.keys(async), // eslint-disable-line no-undef
         _: typeof _ !== 'undefined' && Object.keys(_),
-        sails: typeof sails !== 'undefined' && sails.constructor.name === 'Sails',
+        sails: typeof sails !== 'undefined' && sails.constructor.name === 'Sails', // eslint-disable-line no-undef
         models: typeof sailsApp.models !== 'undefined' && Object.keys(sailsApp.models).reduce(function(memo, key) {if (global[sailsApp.models[key].globalId]){memo.push(sailsApp.models[key].globalId);}return memo;}, []),
         services: typeof sailsApp.services !== 'undefined' && Object.keys(sailsApp.services).reduce(function(memo, key) {if (global[sailsApp.services[key].globalId]){memo.push(sailsApp.services[key].globalId);}return memo;}, [])
       }));
