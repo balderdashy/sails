@@ -213,13 +213,13 @@ describe('globals :: ', function() {
 
         Filesystem.writeSync({
           force: true,
-          destination: 'node_modules/lodash/package.json',
+          destination: 'node_modules/@sailshq/lodash/package.json',
           string: '{"name": "lodash", "version": "0.0.0"}'
         }).execSync();
 
         Filesystem.writeSync({
           force: true,
-          destination: 'node_modules/lodash/index.js',
+          destination: 'node_modules/@sailshq/lodash/index.js',
           string: 'module.exports = {"foo": "bar"}'
         }).execSync();
 

@@ -260,7 +260,7 @@ module.exports = {
   },
 
   linkLodash: function(appPath) {
-    fs.ensureSymlinkSync(path.resolve(__dirname, '..', '..', '..', 'node_modules', '@sailshq', 'lodash'), path.resolve(appPath, 'node_modules', 'lodash'));
+    fs.ensureSymlinkSync(path.resolve(__dirname, '..', '..', '..', 'node_modules', '@sailshq', 'lodash'), path.resolve(appPath, 'node_modules', '@sailshq', 'lodash'));
   },
 
 
