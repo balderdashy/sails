@@ -651,9 +651,10 @@ describe('globals :: ', function() {
       MProcess.executeCommand({
         command: util.format('node expose_globals.js'),
       }).exec(function(err, output) {
+        if (err) { return done(err); }
         if (output.stderr) {
           if (output.stderr.match('E_BAD_GLOBAL_CONFIG')) {
-            return done(err);
+            return done();
           }
           return done(new Error(output.stderr));
         }
