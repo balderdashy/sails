@@ -7,6 +7,7 @@ var fs = require('fs-extra');
 var exec = require('child_process').exec;
 var path = require('path');
 var spawn = require('child_process').spawn;
+var tmp = require('tmp');
 
 // Make existsSync not crash on older versions of Node
 fs.existsSync = fs.existsSync || require('path').existsSync;
@@ -45,6 +46,11 @@ describe('Running sails www', function() {
 
     var sailsChildProc;
 
+    after(function() {
+      if (fs.existsSync(appName)) {
+        fs.removeSync(appName);
+      }
+    });
 
     it('should start server without error', function(done) {
 
@@ -79,18 +85,36 @@ describe('Running sails www', function() {
   describe('with command line arguments', function() {
 
     var sailsChildProc;
+    var curDir;
+    var tmpDir;
+
+    beforeEach(function(done) {
+      // Cache the current working directory.
+      curDir = process.cwd();
+
+      // Create a temp directory.
+      tmpDir = tmp.dirSync({gracefulCleanup: true, unsafeCleanup: true});
+
+      // Switch to the temp directory.
+      process.chdir(tmpDir.name);
+
+      // Create a new Sails app in the temp directory.
+      exec('node ' + sailsBin + ' new ' + appName + ' --fast --traditional --without=lodash,async', function(err) {
+        if (err) { return done(new Error(err)); }
+        process.chdir(path.resolve(tmpDir.name, appName));
+        return done();
+      });
+
+    });
 
     afterEach(function(done) {
       sailsChildProc.stderr.removeAllListeners('data');
-      process.chdir('../');
+      process.chdir(curDir);
       sailsChildProc.kill();
       return done();
     });
 
     it('--dev should execute grunt build', function(done) {
-
-      // Move into app directory
-      process.chdir(appName);
 
       // Change environment to production in config file
       fs.writeFileSync('config/application.js', 'module.exports = ' + JSON.stringify({
@@ -115,9 +139,6 @@ describe('Running sails www', function() {
 
     it('--prod should execute grunt buildProd', function(done) {
 
-      // Move into app directory
-      process.chdir(appName);
-
       // Overrwrite session config file
       // to set session adapter:null ( to prevent warning message from appearing on command line )
       fs.writeFileSync('config/session.js', 'module.exports.session = { adapter: null }');
@@ -135,9 +156,4 @@ describe('Running sails www', function() {
 
   });
 
-  after(function() {
-    if (fs.existsSync(appName)) {
-      fs.removeSync(appName);
-    }
-  });
 });
