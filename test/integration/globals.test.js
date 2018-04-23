@@ -690,25 +690,26 @@ function setupAppFiles() {
     string: 'module.exports.models = {migrate: \'alter\', attributes: {id: { type: \'number\', autoIncrement: true}}};'
   }).execSync();
 
-  var showGlobalsFn = function() {
-    var Sails = require('sails');
-    Sails.load({log: {level: 'silent'}}, function(err, sailsApp) {
-      if (err) {console.error(err); return;}
-      console.log(JSON.stringify({
-        async:  typeof async !== 'undefined' && Object.keys(async), // eslint-disable-line no-undef
-        _: typeof _ !== 'undefined' && Object.keys(_),
-        sails: typeof sails !== 'undefined' && sails.constructor.name === 'Sails', // eslint-disable-line no-undef
-        models: typeof sailsApp.models !== 'undefined' && Object.keys(sailsApp.models).reduce(function(memo, key) {if (global[sailsApp.models[key].globalId]){memo.push(sailsApp.models[key].globalId);}return memo;}, []),
-        services: typeof sailsApp.services !== 'undefined' && Object.keys(sailsApp.services).reduce(function(memo, key) {if (global[sailsApp.services[key].globalId]){memo.push(sailsApp.services[key].globalId);}return memo;}, [])
-      }));
-      sailsApp.lower();
-    });
-  };
 
   Filesystem.writeSync({
     force: true,
     destination: 'expose_globals.js',
-    string: '(' + showGlobalsFn.toString()  + ')();'
+    string: '(' + (function logGlobalVarsIIFERiddle() {
+      /* eslint-disable no-undef */
+      var Sails = require('sails');
+      Sails.load({log: {level: 'silent'}}, function(err, sailsApp) {
+        if (err) {console.error(err); return;}
+        console.log(JSON.stringify({
+          async:  typeof async !== 'undefined' && Object.keys(async),
+          _: typeof _ !== 'undefined' && Object.keys(_),
+          sails: typeof sails !== 'undefined' && sails.constructor.name === 'Sails',
+          models: typeof sailsApp.models !== 'undefined' && Object.keys(sailsApp.models).reduce(function(memo, key) {if (global[sailsApp.models[key].globalId]){memo.push(sailsApp.models[key].globalId);}return memo;}, []),
+          services: typeof sailsApp.services !== 'undefined' && Object.keys(sailsApp.services).reduce(function(memo, key) {if (global[sailsApp.services[key].globalId]){memo.push(sailsApp.services[key].globalId);}return memo;}, [])
+        }));
+        sailsApp.lower();
+      });
+      /* eslint-enable no-undef */
+    }).toString()  + ')();'
   }).execSync();
 
 }
