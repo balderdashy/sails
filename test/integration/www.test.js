@@ -4,7 +4,6 @@
 
 var assert = require('assert');
 var fs = require('fs-extra');
-var request = require('request');
 var exec = require('child_process').exec;
 var path = require('path');
 var spawn = require('child_process').spawn;
@@ -50,7 +49,7 @@ describe('Running sails www', function() {
     it('should start server without error', function(done) {
 
       exec('node ' + sailsBin + ' new ' + appName + ' --fast --traditional --without=lodash,async', function(err) {
-        if (err) { done(new Error(err)); }
+        if (err) { return done(new Error(err)); }
 
         // Move into app directory
         process.chdir(appName);
@@ -78,6 +77,9 @@ describe('Running sails www', function() {
   });
 
   describe('with command line arguments', function() {
+
+    var sailsChildProc;
+
     afterEach(function(done) {
       sailsChildProc.stderr.removeAllListeners('data');
       process.chdir('../');
@@ -105,7 +107,7 @@ describe('Running sails www', function() {
       sailsChildProc.stdout.on('data', function(data) {
         var dataString = data + '';
         if (dataString.indexOf('`grunt build`') !== -1) {
-          done();
+          return done();
         }
       });
     });
@@ -126,7 +128,7 @@ describe('Running sails www', function() {
         var dataString = data + '';
         if (dataString.indexOf('`grunt buildProd`') !== -1) {
 
-          done();
+          return done();
         }
       });
     });
