@@ -45,11 +45,25 @@ describe('Running sails www', function() {
   describe('in a sails app directory', function() {
 
     var sailsChildProc;
+    var curDir;
+    var tmpDir;
 
-    after(function() {
-      if (fs.existsSync(appName)) {
-        fs.removeSync(appName);
-      }
+    before(function(done) {
+      // Cache the current working directory.
+      curDir = process.cwd();
+
+      // Create a temp directory.
+      tmpDir = tmp.dirSync({gracefulCleanup: true, unsafeCleanup: true});
+
+      // Switch to the temp directory.
+      process.chdir(tmpDir.name);
+
+      return done();
+    });
+
+    after(function(done) {
+      process.chdir(curDir);
+      return done();
     });
 
     it('should start server without error', function(done) {
