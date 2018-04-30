@@ -72,7 +72,7 @@
   "devDependencies": {
     "benchmark": "^2.1.2",
     "checksum": "0.1.1",
-    "coffee-script": "1.12.7",
+    "coffeescript": "1.12.7",
     "connect-redis": "3.3.2",
     "eslint": "4.11.0",
     "expect.js": "0.3.1",
