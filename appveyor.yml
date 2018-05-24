@@ -36,6 +36,8 @@ test_script:
   # Run the actual tests (but note that we skip linting.)
   - npm run custom-tests
 
+cache:
+  - node_modules 
 
 # Don't actually build.
 # (Not sure what this is for, it's just in Appveyor's example.
