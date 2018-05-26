@@ -42,6 +42,7 @@ describe('globals :: ', function() {
 
         MProcess.executeCommand({
           command: util.format('node expose_globals.js'),
+          timeout: 30000,
         }).exec(function(err, output) {
           if (err) {return done(err);}
           if (output.stderr) {return done(output.stderr);}
@@ -105,6 +106,7 @@ describe('globals :: ', function() {
       // Create a new Sails app w/out npm install.
       MProcess.executeCommand({
         command: util.format('node %s new %s --fast --traditional', pathToSailsCLI, 'testApp'),
+        timeout: 30000,
       }).exec(function(err) {
         if (err) {return done(err);}
 
@@ -128,6 +130,7 @@ describe('globals :: ', function() {
 
         MProcess.executeCommand({
           command: util.format('node expose_globals.js'),
+          timeout: 30000,
         }).exec(function(err, output) {
           if (err) {return done(err);}
           if (output.stderr) {return done(output.stderr);}
@@ -196,6 +199,7 @@ describe('globals :: ', function() {
       // Create a new Sails app w/out npm install.
       MProcess.executeCommand({
         command: util.format('node %s new %s --fast --traditional', pathToSailsCLI, 'testApp'),
+        timeout: 30000,
       }).exec(function(err) {
         if (err) {return done(err);}
 
@@ -237,6 +241,7 @@ describe('globals :: ', function() {
 
         MProcess.executeCommand({
           command: util.format('node expose_globals.js'),
+          timeout: 30000,
         }).exec(function(err, output) {
           if (err) {return done(err);}
           if (output.stderr) {return done(output.stderr);}
@@ -303,6 +308,7 @@ describe('globals :: ', function() {
       // Create a new Sails app w/out npm install.
       MProcess.executeCommand({
         command: util.format('node %s new %s --fast --traditional', pathToSailsCLI, 'testApp'),
+        timeout: 30000,
       }).exec(function(err) {
         if (err) {return done(err);}
 
@@ -350,6 +356,7 @@ describe('globals :: ', function() {
 
         MProcess.executeCommand({
           command: util.format('node expose_globals.js'),
+          timeout: 30000,
         }).exec(function(err, output) {
           if (err) {return done(err);}
           if (output.stderr) {return done(output.stderr);}
@@ -430,6 +437,7 @@ describe('globals :: ', function() {
 
       MProcess.executeCommand({
         command: util.format('node expose_globals.js'),
+        timeout: 30000,
       }).exec(function(err, output) {
         if (output.stderr) {
           if (output.stderr.match('E_BAD_GLOBAL_CONFIG')) {
@@ -485,6 +493,7 @@ describe('globals :: ', function() {
 
       MProcess.executeCommand({
         command: util.format('node expose_globals.js'),
+        timeout: 30000,
       }).exec(function(err, output) {
         if (output.stderr) {
           if (output.stderr.match('E_BAD_GLOBAL_CONFIG')) {
@@ -540,6 +549,7 @@ describe('globals :: ', function() {
 
       MProcess.executeCommand({
         command: util.format('node expose_globals.js'),
+        timeout: 30000,
       }).exec(function(err, output) {
         if (output.stderr) {
           if (output.stderr.match('E_BAD_GLOBAL_CONFIG')) {
@@ -595,6 +605,7 @@ describe('globals :: ', function() {
 
       MProcess.executeCommand({
         command: util.format('node expose_globals.js'),
+        timeout: 30000,
       }).exec(function(err, output) {
         if (output.stderr) {
           if (output.stderr.match('E_BAD_GLOBAL_CONFIG')) {
@@ -650,6 +661,7 @@ describe('globals :: ', function() {
 
       MProcess.executeCommand({
         command: util.format('node expose_globals.js'),
+        timeout: 30000,
       }).exec(function(err, output) {
         if (err) { return done(err); }
         if (output.stderr) {
