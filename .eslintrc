@@ -59,7 +59,7 @@
     "no-undef":                     ["error"],
     "no-unexpected-multiline":      ["warn"],
     "no-unreachable":               ["warn"],
-    "no-unused-vars":               ["warn", {"caughtErrors":"all", "caughtErrorsIgnorePattern": "^unused($|[A-Z].*$)"}],
+    "no-unused-vars":               ["warn", {"caughtErrors":"all", "caughtErrorsIgnorePattern": "^unused($|[A-Z].*$)", "argsIgnorePattern": "^unused($|[A-Z].*$)", "varsIgnorePattern": "^unused($|[A-Z].*$)" }],
     "no-use-before-define":         ["error", {"functions":false}],
     "one-var":                      ["warn", "never"],
     "quotes":                       ["warn", "single", {"avoidEscape":false, "allowTemplateLiterals":true}],
