@@ -242,7 +242,6 @@ module.exports = function(scriptName) {
 
       // Now actually run the script.
       whelk(scriptDef);
-      // TODO: set `customize` option
 
     } catch (err) {
       console.error(err);
