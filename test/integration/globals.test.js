@@ -146,22 +146,22 @@ describe('globals :: ', function() {
 
     it('should expose `async` as a global', function() {
       assert(_.isArray(result.async));
-      assert(_.contains(result.async, 'auto'));
+      assert(_.includes(result.async, 'auto'));
     });
 
     it('should expose `_` as a global', function() {
       assert(_.isArray(result._));
-      assert(_.contains(result._, 'contains'));
+      assert(_.includes(result._, 'contains'));
     });
 
     it('should expose services as globals', function() {
       assert(_.isArray(result.services));
-      assert(_.contains(result.services, 'Foo'));
+      assert(_.includes(result.services, 'Foo'));
     });
 
     it('should expose models as globals', function() {
       assert(_.isArray(result.models));
-      assert(_.contains(result.models, 'User'));
+      assert(_.includes(result.models, 'User'));
     });
 
     it('should expose sails as a global', function() {
@@ -254,22 +254,22 @@ describe('globals :: ', function() {
 
     it('should expose `async` as a global, using the custom async', function() {
       assert(_.isArray(result.async));
-      assert(_.contains(result.async, 'owl'));
+      assert(_.includes(result.async, 'owl'));
     });
 
     it('should expose `_` as a global, using the custom lodash', function() {
       assert(_.isArray(result._));
-      assert(_.contains(result._, 'foo'));
+      assert(_.includes(result._, 'foo'));
     });
 
     it('should expose services as globals', function() {
       assert(_.isArray(result.services));
-      assert(_.contains(result.services, 'Foo'));
+      assert(_.includes(result.services, 'Foo'));
     });
 
     it('should expose models as globals', function() {
       assert(_.isArray(result.models));
-      assert(_.contains(result.models, 'User'));
+      assert(_.includes(result.models, 'User'));
     });
 
     it('should expose sails as a global', function() {

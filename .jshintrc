@@ -87,7 +87,7 @@
   // Do NOT allow avant garde use of commas in conditional statements.
   // (this prevents accidentally writing code like:
   //  ```
-  //  if (!_.contains(['+ci', '-ci', '∆ci', '+ce', '-ce', '∆ce']), change.verb) {...}
+  //  if (!_.includes(['+ci', '-ci', '∆ci', '+ce', '-ce', '∆ce']), change.verb) {...}
   //  ```
   //  See the problem in that code?  Neither did we-- that's the problem!)
   "nocomma": true,

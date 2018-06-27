@@ -39,7 +39,7 @@ describe('app.initializeHooks()', function() {
 
       // If i18n is missing, that might be ok-- but just check to be sure sails.config.i18n.locales is `[]`.
       // (i.e. it must have turned itself off)
-      if (!_.contains(intersection, 'i18n')) {
+      if (!_.includes(intersection, 'i18n')) {
         assert(_.isEqual(sails.config.i18n.locales, []), 'i18n.locales config must be [] in this situation');
       }
 

@@ -314,7 +314,7 @@ describe('middleware :: ', function() {
                 var method = req.method;
                 var CRUD = ['GET', 'PUT', 'POST', 'PATCH', 'DELETE'];
                 if (
-                  (path === '/test' && _.contains(CRUD, method)) ||
+                  (path === '/test' && _.includes(CRUD, method)) ||
                   (path === '/bar' && method === 'POST') ||
                   (path === '/baz') ||
                   (path.match(fooRegexp))
@@ -577,7 +577,7 @@ describe('middleware :: ', function() {
               secret: 'abc123',
               isSessionDisabled: function(req) {
                 var CRUD = ['GET', 'PUT', 'POST', 'PATCH', 'DELETE'];
-                return (req.path === '/test' && _.contains(CRUD, req.method))
+                return (req.path === '/test' && _.includes(CRUD, req.method))
               }
             },
             hooks: {grunt: false},

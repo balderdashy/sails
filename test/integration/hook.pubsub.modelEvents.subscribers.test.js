@@ -892,8 +892,8 @@ describe('pubsub :: ', function() {
             // console.log(notification);
             if (errored) {return;}
             try {
-              if (!_.any(modelNotifications, function(validator, identifier) {
-                if (_.all(validator, function(val, path) {
+              if (!_.some(modelNotifications, function(validator, identifier) {
+                if (_.every(validator, function(val, path) {
                   return _.get(notification, path) === val;
                 })) {
                   if (checklist[model + '.' + identifier] === true) {
@@ -901,7 +901,7 @@ describe('pubsub :: ', function() {
                     throw new Error('Got duplicate `' + identifier + '` notification for model `' + model + '`' );
                   }
                   checklist[model + '.' + identifier] = true;
-                  if (_.all(checklist, function(flag) {
+                  if (_.every(checklist, function(flag) {
                     return flag === true;
                   })) {
                     done();

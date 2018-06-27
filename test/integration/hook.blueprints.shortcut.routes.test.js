@@ -590,9 +590,9 @@ describe('blueprints :: ', function() {
               assert(!err, err);
               assert.equal(data.length, 3);
               var names = _.pluck(data, 'name');
-              assert(_.contains(names, 'scott'));
-              assert(_.contains(names, 'mike'));
-              assert(_.contains(names, 'rachael'));
+              assert(_.includes(names, 'scott'));
+              assert(_.includes(names, 'mike'));
+              assert(_.includes(names, 'rachael'));
               done();
             });
           });

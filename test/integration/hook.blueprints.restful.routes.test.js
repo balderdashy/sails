@@ -1281,9 +1281,9 @@ describe('blueprints :: ', function() {
                   assert(!err, err);
                   assert.equal(data.length, 3);
                   var names = _.pluck(data, 'name');
-                  assert(_.contains(names, 'scott'));
-                  assert(_.contains(names, 'mike'));
-                  assert(_.contains(names, 'rachael'));
+                  assert(_.includes(names, 'scott'));
+                  assert(_.includes(names, 'mike'));
+                  assert(_.includes(names, 'rachael'));
                   done();
                 });
               });
@@ -1485,8 +1485,8 @@ describe('blueprints :: ', function() {
                     assert(!err, err);
                     assert.equal(data.length, 2);
                     var names = _.pluck(data, 'name');
-                    assert(_.contains(names, 'bert'));
-                    assert(_.contains(names, 'mojo'));
+                    assert(_.includes(names, 'bert'));
+                    assert(_.includes(names, 'mojo'));
                     done();
                   });
                 });
@@ -1537,8 +1537,8 @@ describe('blueprints :: ', function() {
                     assert(!err, err);
                     assert.equal(data.length, 2);
                     var names = _.pluck(data, 'name');
-                    assert(_.contains(names, 'bandit'));
-                    assert(_.contains(names, 'bert'));
+                    assert(_.includes(names, 'bandit'));
+                    assert(_.includes(names, 'bert'));
                     done();
                   });
                 });
@@ -1553,7 +1553,7 @@ describe('blueprints :: ', function() {
                     assert(!err, err);
                     assert.equal(data.length, 1);
                     var names = _.pluck(data, 'name');
-                    assert(_.contains(names, 'bert'));
+                    assert(_.includes(names, 'bert'));
                     done();
                   });
                 });
@@ -1568,7 +1568,7 @@ describe('blueprints :: ', function() {
                     assert(!err, err);
                     assert.equal(data.length, 1);
                     var names = _.pluck(data, 'name');
-                    assert(_.contains(names, 'bert'));
+                    assert(_.includes(names, 'bert'));
                     done();
                   });
                 });

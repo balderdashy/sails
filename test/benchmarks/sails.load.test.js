@@ -3,7 +3,7 @@ var chalk = require('chalk');
 var portfinder = require('portfinder');
 portfinder.basePort = 2001;
 
-var SHOW_VERBOSE_BENCHMARK_REPORT = _.any(process.argv, function(arg) {
+var SHOW_VERBOSE_BENCHMARK_REPORT = _.some(process.argv, function(arg) {
   return arg.match(/-v/);
 });
 

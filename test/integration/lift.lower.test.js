@@ -297,10 +297,10 @@ describe('sails being lifted and lowered (e.g in a test framework)', function() 
         // Assert that sails config is unchanged.
         assert.equal(sailsApp.config.environment, 'production');
 
-        assert (_.any(debugs, function(debug) {
+        assert (_.some(debugs, function(debug) {
           return debug.indexOf('Detected Sails environment is "production", but NODE_ENV is `undefined`.') > -1;
         }), 'Did not log a warning about NODE_ENV being undefined while sails environment is `production`!');
-        assert (_.any(debugs, function(debug) {
+        assert (_.some(debugs, function(debug) {
           return debug.indexOf('Automatically setting the NODE_ENV environment variable to "production".') > -1;
         }), 'Did not log a warning about NODE_ENV being set to `production`!');
 
