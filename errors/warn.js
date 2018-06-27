@@ -2,7 +2,7 @@
  * Module dependencies
  */
 
-var nodepath = require('path');
+var path = require('path');
 var CaptainsLog = require('captains-log');
 
 // Once per process:
@@ -19,7 +19,7 @@ module.exports = {
 
   incompatibleLocalSails: function(requiredVersion, localVersion) {
     log.warn('Trying to lift app using a local copy of `sails`');
-    log.warn('(located in ' + nodepath.resolve(process.cwd(), 'node_modules/sails') + ')');
+    log.warn('(located in ' + path.resolve(process.cwd(), 'node_modules/sails') + ')');
     log.warn();
     log.warn('But the package.json in the current directory indicates a dependency');
     log.warn('on Sails `' + requiredVersion + '`, and the locally installed Sails is `' + localVersion + '`!');

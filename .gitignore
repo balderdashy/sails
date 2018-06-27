@@ -12,13 +12,14 @@
 #
 
 ############################
-# sails / node.js / npm
+# sails / node.js / npm / yarn
 ############################
 node_modules
 .tmp
 npm-debug.log
 package-lock.json
 package-lock.*
+yarn.lock
 .waterline
 .node_history
 

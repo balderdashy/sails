@@ -2,7 +2,7 @@
  * Module dependencies
  */
 
-var nodepath = require('path');
+var path = require('path');
 var _ = require('@sailshq/lodash');
 var sailsgen = require('sails-generate');
 var CaptainsLog = require('captains-log');
@@ -40,7 +40,7 @@ module.exports = function () {
   var scope = {
     rootPath: process.cwd(),
     modules: {},
-    sailsRoot: nodepath.resolve(__dirname, '..'),
+    sailsRoot: path.resolve(__dirname, '..'),
     sailsPackageJSON: package,
     viewEngine: rconf.viewEngine
   };

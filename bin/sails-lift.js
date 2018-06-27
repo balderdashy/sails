@@ -2,7 +2,7 @@
  * Module dependencies
  */
 
-var nodepath = require('path');
+var path = require('path');
 var _ = require('@sailshq/lodash');
 var chalk = require('chalk');
 var captains = require('captains-log');
@@ -53,7 +53,7 @@ module.exports = function() {
     // > Note that we always assume the current working directory to be the
     // > root directory of the app.
     var appPath = process.cwd();
-    var localSailsPath = nodepath.resolve(appPath, 'node_modules/sails');
+    var localSailsPath = path.resolve(appPath, 'node_modules/sails');
     if (Sails.isLocalSailsValid(localSailsPath, appPath)) {
       cliLogger.verbose('Using locally-installed Sails.');
       cliLogger.silly('(which is located at `'+localSailsPath+'`)');

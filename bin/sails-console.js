@@ -2,7 +2,7 @@
  * Module dependencies
  */
 
-var nodepath = require('path');
+var path = require('path');
 var REPL = require('repl');
 var stream = require('stream');
 var _ = require('@sailshq/lodash');
@@ -67,7 +67,7 @@ module.exports = function() {
     // > Note that we always assume the current working directory to be the
     // > root directory of the app.
     var appPath = process.cwd();
-    var localSailsPath = nodepath.resolve(appPath, 'node_modules/sails');
+    var localSailsPath = path.resolve(appPath, 'node_modules/sails');
     if (Sails.isLocalSailsValid(localSailsPath, appPath)) {
       cliLogger.verbose('Using locally-installed Sails.');
       cliLogger.silly('(which is located at `'+localSailsPath+'`)');
@@ -175,7 +175,7 @@ module.exports = function() {
     }
 
     // Now attempt to read the existing REPL history file, if there is one.
-    var pathToReplHistoryFile = nodepath.join(sailsApp.config.paths.tmp, '.node_history');
+    var pathToReplHistoryFile = path.join(sailsApp.config.paths.tmp, '.node_history');
     try {
 
       // Read the REPL history file, and bind notifier functions that will listen
