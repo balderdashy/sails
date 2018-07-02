@@ -69,6 +69,7 @@ module.exports = function(scriptName) {
 
   // Unless the script name is under a "scope" (as in `@sailshq/some-package`), don't allow slashes in the name.
   if (scriptName.match(/\//) && scriptName[0] !== '@') {
+    // FUTURE: Do allow this so scripts can be nested in subdirectories  (doesn't work for package.json scripts obviously)
     console.error('Cannot run `'+scriptName+'`.  Script name should never contain any slashes.');
     return process.exit(1);
   }//-•
