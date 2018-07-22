@@ -1,10 +1,14 @@
 # Sails Changelog
 
+### 1.2.0 _(planned)_
+
+* [INTERNAL]  The files in `api/responses/` are now stat-ed on disk earlier in the lift process.  Note that eventually, the `responses` hook will be internalized in Sails core, meaning that it will not be possible to disable or override it.
+* [ENHANCEMENT]  actions2: Actions now have built in (but overridable) exits for every response in `api/responses/`.  In other words, assuming you have a custom response in `api/responses/unauthorized.js`, you can now do `throw 'unauthorized';` even if you don't have a `notFound` exit defined.  This default behavior can be overridden on an action-by-action basis.
+
 ### 1.1.0
 
 * [ENHANCEMENT]  New model methods: `.updateOne()`, `.destroyOne()`, and `.archiveOne()`
 * [ENHANCEMENT]  `exits` argument may now be excluded from your `fn` function in all helpers, actions2 definitions, and shell scripts.
-* [ENHANCEMENT]  actions2: Actions now have built in (but overridable) exits for every response in `api/responses/`.  In other words, assuming you have a custom response in `api/responses/unauthorized.js`, you can now do `throw 'unauthorized';` even if you don't have a `notFound` exit defined.  This default behavior can be overridden on an action-by-action basis.
 * [ENHANCEMENT]  Cleaner usage for `.stream()`,  `.transaction()`, and `.leaseConnection()`.  Functions provided as procedural parameters (i.e. `during` and iteratees) no longer expect a callback to be invoked, as long as you omit their 2nd callabck argument from the function signature.
 * [ENHANCEMENT]  The bootstrap function (`config/bootstrap.js`) and the `initialize` function of hooks no longer expect a callback to be invoked, as long as the callback argument is excluded from the function signature.
 * [ENHANCEMENT]  New chainable methods available on helpers: `.timeout()` and `.retry()`.
