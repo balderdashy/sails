@@ -1,5 +1,14 @@
 # Sails Changelog
 
+### 1.1.0
+
+* [ENHANCEMENT]  New model methods: `.updateOne()`, `.destroyOne()`, and `.archiveOne()`
+* [ENHANCEMENT]  `exits` argument may now be excluded from your `fn` function in all helpers, actions2 definitions, and shell scripts.
+* [ENHANCEMENT]  actions2: Actions now have built in (but overridable) exits for every response in `api/responses/`.  In other words, assuming you have a custom response in `api/responses/unauthorized.js`, you can now do `throw 'unauthorized';` even if you don't have a `notFound` exit defined.  This default behavior can be overridden on an action-by-action basis.
+* [ENHANCEMENT]  Cleaner usage for `.stream()`,  `.transaction()`, and `.leaseConnection()`.  Functions provided as procedural parameters (i.e. `during` and iteratees) no longer expect a callback to be invoked, as long as you omit their 2nd callabck argument from the function signature.
+* [ENHANCEMENT]  The bootstrap function (`config/bootstrap.js`) and the `initialize` function of hooks no longer expect a callback to be invoked, as long as the callback argument is excluded from the function signature.
+* [ENHANCEMENT]  New chainable methods available on helpers: `.timeout()` and `.retry()`.
+
 ### 1.0.0
 
 Sails v1.0 comes with a host of new features and improvements as well as some breaking changes to previous versions.  Please see the [migration guide](http://sailsjs.com/upgrading) if you're upgrading from a previous version of Sails!
