@@ -11,7 +11,7 @@
 * [ENHANCEMENT]  `exits` argument may now be excluded from your `fn` function in all helpers, actions2 definitions, and shell scripts.
 * [ENHANCEMENT]  Cleaner usage for `.stream()`,  `.transaction()`, and `.leaseConnection()`.  Functions provided as procedural parameters (i.e. `during` and iteratees) no longer expect a callback to be invoked, as long as you omit their 2nd callabck argument from the function signature.
 * [ENHANCEMENT]  The bootstrap function (`config/bootstrap.js`) and the `initialize` function of hooks no longer expect a callback to be invoked, as long as the callback argument is excluded from the function signature.
-* [ENHANCEMENT]  New chainable methods available on helpers: `.timeout()` and `.retry()`.
+* [ENHANCEMENT]  New chainable methods available on helper invocations: `.timeout()` and `.retry()`.
 
 ### 1.0.0
 
