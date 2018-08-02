@@ -101,7 +101,7 @@ The official documentation for the Sails framework is written in Markdown, and i
 | Repo       | Purpose                           |
 |------------|:----------------------------------|
 | [sails-docs](https://github.com/balderdashy/sails-docs)  | Raw content for reference, conceptual, anatomical, and other documentation on the Sails website (in Markdown).
-| [www.sailsjs.com](https://github.com/balderdashy/www.sailsjs.com) | The Sails app that powers [sailsjs.com](http://sailsjs.com).  HTML content is automatically compiled from [`sails-docs`](https://github.com/balderdashy/sails-docs).
+| [www.sailsjs.com](https://sailsjs.com) | The Sails app that powers [sailsjs.com](http://sailsjs.com).  HTML content is automatically compiled from [`sails-docs`](https://github.com/balderdashy/sails-docs).
 | [doc-templater](https://github.com/uncletammy/doc-templater) | The module we use to pre-process, compile, and format Markdown documentation files into the HTML markup and tree menus at [`sailsjs.com/documentation`](http://sailsjs.com/documentation).
 
 
