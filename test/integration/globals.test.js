@@ -120,10 +120,10 @@ describe('globals :: ', function() {
         // Symlink Sails to the new app
         appHelper.linkSails(pathToTestApp);
 
-        // Symlink Sails to the new app
+        // Symlink `lodash` to the new app
         appHelper.linkLodash(pathToTestApp);
 
-        // Symlink Sails to the new app
+        // Symlink `async` to the new app
         appHelper.linkAsync(pathToTestApp);
 
         MProcess.executeCommand({
@@ -145,7 +145,7 @@ describe('globals :: ', function() {
     });
 
     it('should NO LONGER expose `async` as a global', function() {
-      assert(result.async === undefined);
+      assert.equal(result.async, false);
     });
 
     it('should expose `_` as a global', function() {
