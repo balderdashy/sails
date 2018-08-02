@@ -251,9 +251,8 @@ describe('globals :: ', function() {
 
     });
 
-    it('should expose `async` as a global, using the custom async', function() {
-      assert(_.isArray(result.async));
-      assert(_.contains(result.async, 'owl'));
+    it('should NO LONGER expose `async` as a global', function() {
+      assert.equal(result.async, false);
     });
 
     it('should expose `_` as a global, using the custom lodash', function() {
