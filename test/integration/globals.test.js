@@ -144,9 +144,8 @@ describe('globals :: ', function() {
 
     });
 
-    it('should expose `async` as a global', function() {
-      assert(_.isArray(result.async));
-      assert(_.contains(result.async, 'auto'));
+    it('should NO LONGER expose `async` as a global', function() {
+      assert(result.async === undefined);
     });
 
     it('should expose `_` as a global', function() {
