@@ -29,6 +29,7 @@ As of Sails v1, some hooks are no longer included in Sails core.  Instead, they'
 | `grunt`        | [sails-hook-grunt](https://npmjs.com/package/sails-hook-grunt)      | [![NPM version](https://badge.fury.io/js/sails-hook-grunt.png)](http://badge.fury.io/js/sails-hook-grunt)     | [![Build Status](https://travis-ci.org/balderdashy/sails-hook-grunt.png?branch=master)](https://travis-ci.org/balderdashy/sails-hook-grunt)      | Governs the built-in asset pipeline in Sails.  |
 | `orm`          | [sails-hook-orm](https://npmjs.com/package/sails-hook-orm)          | [![NPM version](https://badge.fury.io/js/sails-hook-orm.png)](http://badge.fury.io/js/sails-hook-orm)         | [![Build Status](https://travis-ci.org/balderdashy/sails-hook-orm.png?branch=master)](https://travis-ci.org/balderdashy/sails-hook-orm)          | Implements support for Waterline ORM in Sails.  |
 | `sockets`      | [sails-hook-sockets](https://npmjs.com/package/sails-hook-sockets)  | [![NPM version](https://badge.fury.io/js/sails-hook-sockets.png)](http://badge.fury.io/js/sails-hook-sockets) | [![Build Status](https://travis-ci.org/balderdashy/sails-hook-sockets.png?branch=master)](https://travis-ci.org/balderdashy/sails-hook-sockets)  | Implements Socket.io support in Sails.  |
+| `organics`     | [sails-hook-organics](https://npmjs.com/package/sails-hook-organics)                | [![NPM version](https://badge.fury.io/js/sails-stdlib.png)](http://badge.fury.io/js/sails-stdlib) | [![Build Status](https://travis-ci.org/sailshq/sails-hook-organics.png?branch=master)](https://travis-ci.org/sailshq/sails-hook-organics)             | Evolving library of well-tested, well-documented, and officially supported modules for the most common everyday tasks in apps (e.g. password encryption, etc.)
 
 > These are not _all_ the core hooks in Sails.  There are other core hooks built in to the `sails` package itself (see [`lib/hooks/`](https://github.com/balderdashy/sails/tree/master/lib/hooks)).  These other, _built-in hooks_ can still be disabled or overridden using the same configuration.
 
@@ -39,6 +40,13 @@ As of Sails v1, some hooks are no longer included in Sails core.  Instead, they'
 |--------------|---------------------|----------------------------------|------------------------------|
 | Browser      | [sails.io.js-dist](https://npmjs.com/package/sails.io.js-dist)  | [![NPM version](https://badge.fury.io/js/sails.io.js-dist.png)](http://badge.fury.io/js/sails.io.js-dist) | [![Build Status](https://travis-ci.org/balderdashy/sails.io.js.png?branch=master)](https://travis-ci.org/balderdashy/sails.io.js)  |
 | Node.js      | [sails.io.js](https://npmjs.com/package/sails.io.js)  | [![NPM version](https://badge.fury.io/js/sails.io.js.png)](http://badge.fury.io/js/sails.io.js) | [![Build Status](https://travis-ci.org/balderdashy/sails.io.js.png?branch=master)](https://travis-ci.org/balderdashy/sails.io.js)  |
+
+
+#### Other browser libraries
+
+The "Web App" template in Sails comes with a lightweight client-side JavaScript wrapper for Vue.js called `parasails`:
+
+[![NPM version](https://badge.fury.io/js/parasails.png)](https://npmjs.com/package/parasails)
 
 
 #### Core database adapters
@@ -194,8 +202,6 @@ The recommended production session store for Sails.js is Redis... but we realize
 
 | Package                                                                             | Latest Stable Release           | Purpose
 |-------------------------------------------------------------------------------------|---------------------------------|:------------|
-| [sails-stdlib](https://npmjs.com/package/sails-stdlib)                              | [![NPM version](https://badge.fury.io/js/sails-stdlib.png)](http://badge.fury.io/js/sails-stdlib) | Evolving library of well-tested, well-documented, and officially supported modules for the most common everyday tasks in apps (e.g. password encryption, etc.)
-| [stdlib](https://npmjs.com/package/stdlib)                                          | [![NPM version](https://badge.fury.io/js/stdlib.png)](http://badge.fury.io/js/stdlib) | A lighter build of `sails-stdlib`, designed for use outside of the environment of a Sails app (e.g. when building lower-level Node.js modules like machinepacks)
 | [sails-migrations](https://github.com/BlueHotDog/sails-migrations)                  | [![NPM version](https://badge.fury.io/js/sails-migrations.png)](http://badge.fury.io/js/sails-migrations) | Manual migration tool for Sails, built on Knex.
 | [sails-mysql-transactions](https://github.com/postmanlabs/sails-mysql-transactions) | [![NPM version](https://badge.fury.io/js/sails-mysql-transactions.png)](http://badge.fury.io/js/sails-mysql-transactions) | Augmented database adapter for mySQL with transaction and replication support.
 | [sails-inverse-model](https://www.npmjs.com/package/sails-inverse-model) | Generate Sails/Waterline model definitions from a pre-existing database.
