@@ -89,7 +89,7 @@ cmd.action(require('./sails-upgrade'));
 // $ sails console
 cmd = program.command('console');
 cmd.option('--silent', 'Set log level to "silent".');
-cmd.option('--verbose', 'Set log level to "silent".');
+cmd.option('--verbose', 'Set log level to "verbose".');
 cmd.option('--silly', 'Set log level to "silly".');
 cmd.option('--dontLift', 'Start console session without lifting an HTTP server.');
 cmd.unknownOption = NOOP;
