@@ -41,7 +41,7 @@
     "express-session": "1.15.6",
     "flaverr": "^1.9.0",
     "glob": "7.1.2",
-    "i18n-2": "0.6.3",
+    "i18n-2": "0.7.3",
     "include-all": "^4.0.0",
     "machine": "^15.2.2",
     "machine-as-action": "^10.3.0-0",
