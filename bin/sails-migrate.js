@@ -3,10 +3,7 @@
  */
 
 var nodepath = require('path');
-var _ = require('@sailshq/lodash');
-var chalk = require('chalk');
 var captains = require('captains-log');
-
 var rconf = require('../lib/app/configuration/rc')();
 var Sails = require('../lib/app');
 var SharedErrorHelpers = require('../errors');
@@ -30,10 +27,10 @@ var SharedErrorHelpers = require('../errors');
 
 module.exports = function() {
 
-  // Get a temporary logger just for use in `sails console`.
+  // Get a temporary logger just for use in this file.
   // > This is so that logging levels are configurable, even when a
   // > Sails app hasn't been loaded yet.
-  var cliLogger = CaptainsLog(rconf.log);
+  var cliLogger = captains(rconf.log);
 
   // Now grab our dictionary of configuration overrides to pass in
   // momentarily when we lift (or load) our Sails app.  This is the
