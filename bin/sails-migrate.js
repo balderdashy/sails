@@ -3,6 +3,7 @@
  */
 
 var nodepath = require('path');
+var _ = require('@sailshq/lodash');
 var captains = require('captains-log');
 var rconf = require('../lib/app/configuration/rc')();
 var Sails = require('../lib/app');
@@ -63,10 +64,13 @@ module.exports = function() {
 
   })();//†
 
-  // FUTURE: if no orm hook, then fail with an error explaining you can't
-  // really run auto-migrations without that
 
-  // TODO: load only orm hook + essentials
+  // // Load only orm hook + essentials
+  // // > FUTURE: if no orm hook actually installed, then fail with an error
+  // // > explaining you can't really run auto-migrations without that.
+  // configOverrides = _.extend(_.clone(configOverrides), {
+  //   loadHooks: ['moduleloader', 'userconfig', 'userhooks', 'helpers', 'logger', 'orm']
+  // });
 
   // Load the Sails app
   sailsApp.load(configOverrides, function(err) {
@@ -74,8 +78,18 @@ module.exports = function() {
       return SharedErrorHelpers.fatal.failedToLoadSails(err);
     }// --•
 
-    // Tear down the Sails app
-    sailsApp.lower();
+    // Run the app bootstrap
+    sailsApp.runBootstrap(function afterBootstrap(err) {
+      if (err) {
+        sailsApp.log.error('Bootstrap function encountered an error during `sails migrate`: (see below)');
+        sailsApp.log.error(err);
+        return;
+      }// --•
+
+      // Tear down the Sails app
+      sailsApp.lower();
+
+    });//_∏_. </after running bootstrap>
 
   });//_∏_  </after loading Sails app>
 
