@@ -15,12 +15,24 @@ var SharedErrorHelpers = require('../errors');
  * `sails migrate`
  *
  * Load (but don't lift) the Sails app in our working directory, using the
- * appropriate version of Sails, and only the ORM hook (plus other essentials).
- * Then simply exit.  (Useful for quickly running auto-migrations by hand.)
+ * appropriate version of Sails, and skipping the Grunt hook.  Then run the
+ * app's bootstrap function, and simply exit.
+ *
+ * (Useful for quickly running auto-migrations by hand.)
  *
  * > This uses the locally-installed Sails, if available.
  * > Otherwise, it uses the currently-running Sails (which,
  * > 99.9% of the time, is the globally-installed version.)
+ *
+ * Example usage:
+ * ```
+ * # Run "alter" auto-migrations to attempt to adjust all data
+ * # (but possibly delete it)
+ * sails migrate
+ *
+ * # Run "drop" auto-migrations to wipe all data
+ * sails migrate --drop
+ * ```
  *
  * @stability EXPERIMENTAL
  * @see http://sailsjs.com/documentation/reference/command-line-interface/sails-migrate
@@ -32,6 +44,8 @@ module.exports = function() {
   // > This is so that logging levels are configurable, even when a
   // > Sails app hasn't been loaded yet.
   var cliLogger = captains(rconf.log);
+
+  cliLogger.warn('`sails migrate` is currently experimental.');
 
   // Now grab our dictionary of configuration overrides to pass in
   // momentarily when we lift (or load) our Sails app.  This is the
@@ -65,12 +79,17 @@ module.exports = function() {
   })();//†
 
 
-  // // Load only orm hook + essentials
-  // // > FUTURE: if no orm hook actually installed, then fail with an error
-  // // > explaining you can't really run auto-migrations without that.
-  // configOverrides = _.extend(_.clone(configOverrides), {
-  //   loadHooks: ['moduleloader', 'userconfig', 'userhooks', 'helpers', 'logger', 'orm']
-  // });
+  // Skip the grunt hook.
+  // (Note that we can't really use `sails.config.loadHooks` because we don't
+  // know what kinds of stuff you might be relying on in your bootstrap function.)
+  //
+  // > FUTURE: if no orm hook actually installed, then fail with an error
+  // > explaining you can't really run auto-migrations without that.
+  configOverrides = _.extend(_.clone(configOverrides), {
+    hooks: !_.isObject(configOverrides.hooks) ? configOverrides.hooks : _.extend(configOverrides.hooks, {
+      grunt: false
+    }),
+  });
 
   // Load the Sails app
   sailsApp.load(configOverrides, function(err) {
