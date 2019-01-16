@@ -85,6 +85,12 @@ cmd.unknownOption = NOOP;
 cmd.description('');
 cmd.action(require('./sails-upgrade'));
 
+// $ sails migrate
+cmd = program.command('migrate');
+cmd.unknownOption = NOOP;
+cmd.description('');
+cmd.action(require('./sails-migrate'));
+
 
 // $ sails console
 cmd = program.command('console');
