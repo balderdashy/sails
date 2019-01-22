@@ -86,7 +86,7 @@ module.exports = function() {
   // > FUTURE: if no orm hook actually installed, then fail with an error
   // > explaining you can't really run auto-migrations without that.
   configOverrides = _.extend(_.clone(configOverrides), {
-    hooks: !_.isObject(configOverrides.hooks) ? configOverrides.hooks : _.extend(configOverrides.hooks, {
+    hooks: _.extend(configOverrides.hooks||{}, {
       grunt: false
     }),
   });
