@@ -106,7 +106,17 @@ _As of Sails v1.0, core generators are now bundled in [sails-generate](https://g
 | [**@sailshq/lodash**](http://npmjs.com/package/@sailshq/lodash)       | [![npm version](https://badge.fury.io/js/%40sailshq%2Flodash.svg)](https://badge.fury.io/js/%40sailshq%2Flodash)                        | _n/a_
 
 
-## Official Documentation
+#### Forks
+
+- [@sailshq/lodash](https://npmjs.com/package/@sailshq/lodash) · _(A fork of Lodash 3.10.x that fixes security issues.  Ongoing maintenance provided by the Sails core team.)_
+- [@sailshq/connect-redis](https://npmjs.com/package/@sailshq/connect-redis)
+- [@sailshq/socket.io-redis](https://npmjs.com/package/@sailshq/socket.io-redis)
+- [@sailshq/eslint](https://npmjs.com/package/@sailshq/eslint)
+- [@sailshq/htmlhint](https://npmjs.com/package/@sailshq/htmlhint)
+- [@sailshq/lesshint](https://npmjs.com/package/@sailshq/lesshint)
+
+
+## Official documentation
 
 The official documentation for the Sails framework is written in Markdown, and is automatically compiled for the [Sails website](http://sailsjs.com).
 
