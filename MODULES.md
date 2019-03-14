@@ -204,7 +204,7 @@ Is EJS bumming you out?  Prefer to use a different templating language like pug 
 
 #### Session stores
 
-The recommended production session store for Sails.js is Redis... but we realize that, for some apps, that isn't an option.  Fortunately, Sails.js supports almost any Connect/Express-compatible session store-- meaning you can store your sessions almost anywhere, whether that's Mongo, on the local fileystem, or even in a relational database.  Check out the community session stores for Sails.js, Express, and Connect [available on NPM](https://www.npmjs.com/search?q=connect%20session-).
+The recommended production session store for Sails.js is Redis... but we realize that, for some apps, that isn't an option.  Fortunately, Sails.js supports almost any Connect/Express-compatible session store-- meaning you can store your sessions almost anywhere, whether that's Mongo, on the local filesystem, or even in a relational database.  Check out the community session stores for Sails.js, Express, and Connect [available on NPM](https://www.npmjs.com/search?q=connect%20session-).
 
 > [Learn how to install and configure a custom session store in your Sails app](http://sailsjs.com/documentation/reference/configuration/sails-config-session#?production-config).
 
