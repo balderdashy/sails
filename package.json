@@ -39,7 +39,7 @@
     "ejs": "2.5.7",
     "express": "4.16.2",
     "express-session": "1.15.6",
-    "flaverr": "^1.9.0",
+    "flaverr": "^1.10.0",
     "glob": "7.1.2",
     "i18n-2": "0.6.3",
     "include-all": "^4.0.0",
