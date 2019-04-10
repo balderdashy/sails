@@ -7,6 +7,7 @@
 > We especially want to thank those contributors who helped out with the documentation:
 > - [Rachael Shaw](https://github.com/rachaelshaw)
 > - [Mike McNeil](https://github.com/mikermcneil)
+> - Ali Norouzi
 > - [Ronny Medina](https://github.com/ronnymedinave)
 > - [Alex Schwarz](https://github.com/alexschwarz89)
 > - [Xavier Spriet](https://github.com/loginx)
@@ -325,6 +326,8 @@ edaa and https://github.com/mikermcneil/parasails/commit/b54258a9f244fabbbd3c89e
 - whelk (shell scripts): Add note about customizations
 - whelk (shell scripts): Add support for new `customize` option
 - whelk (shell scripts): Ensure at least machine@15.2.2
+- Defined a req.path for socket requests.
+- Ensured req.path is good and stringy.
 
 #### Documentation:
 - Add documentation for new model methods in Sails 1.1.0.
