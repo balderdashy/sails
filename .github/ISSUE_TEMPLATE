@@ -7,5 +7,4 @@
 **Uploads hook version** _(sails-hook-uploads)_: 
 **DB adapter & version** _(e.g. sails-mysql@^5.55.5)_: 
 **Skipper adapter & version** _(e.g. skipper-s3@^5.55.5)_: 
-
----
+<hr/>
