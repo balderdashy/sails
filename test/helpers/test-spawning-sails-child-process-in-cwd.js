@@ -79,7 +79,7 @@ module.exports = function testSpawningSailsLiftChildProcessInCwd (opts){
         command: 'node',
         cliArgs: opts.cliArgs,
         environmentVars: opts.envVars
-      }).execSync();
+      }).now();
 
       // For debugging, as needed:
       // sailsLiftProc.stdout.on('data', function (data){
