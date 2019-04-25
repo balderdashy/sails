@@ -124,9 +124,9 @@ Sails is actively maintained with the help of many amazing [contributors](https:
 :---:|:---:|:---:|:---:|:---:
 [Mike McNeil](http://github.com/mikermcneil) | [Rachael Shaw](https://github.com/rachaelshaw) | [Raquel Estevez](https://github.com/raqem) | [John Abrams](http://github.com/johnabrams7) | [Madison Hicks](https://github.com/madisonhicks) |
 [![Cody Stoltman](https://1.gravatar.com/avatar/368567acca0c5dfb9a4ff512c5c0c3fa?s=144)](http://twitter.com/particlebanana) | [![Scott Gress](https://0.gravatar.com/avatar/b74e07aa543552709bf546ca279c9c67?s=144)](http://twitter.com/sgress454) | [![Irl Nathan](https://www.gravatar.com/avatar/d350bea2bf2e54ad59e6e241f70b7648?s=144&d=identicon&rating=g)](http://twitter.com/irlnathan) |
-:---:|:---:|:---:|
-[Cody Stoltman](https://github.com/particlebanana) | [Scott Gress](https://github.com/sgress454) | [Irl Nathan](https://github.com/irlnathan) |
 |||
+[Cody Stoltman](https://github.com/particlebanana) | [Scott Gress](https://github.com/sgress454) | [Irl Nathan](https://github.com/irlnathan) |
+
 
 [Our company](https://sailsjs.com/about) designs/builds Node.js websites and apps for startups and enterprise customers. After building a few applications and taking them into production, we realized that the Node.js development landscape was very much still the Wild West. Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  Six years later, Sails is now one of the most widely-used web application frameworks in the world. I hope it saves you some time! :)
 
