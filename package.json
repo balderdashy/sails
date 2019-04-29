@@ -55,7 +55,7 @@
     "path-to-regexp": "1.5.3",
     "pluralize": "1.2.1",
     "prompt": "0.2.14",
-    "rc": "1.2.2",
+    "rc": "1.2.8",
     "router": "1.3.2",
     "rttc": "^10.0.0-0",
     "sails-generate": "^1.16.0-0",
