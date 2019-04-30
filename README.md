@@ -1,6 +1,4 @@
-<h1>
-<a href="http://sailsjs.com"><img alt="Sails.js logo" src="http://balderdashy.github.io/sails/images/logo.png" title="Sails.js"/></a>
-</h1>
+# [![Sails.js logo](http://balderdashy.github.io/sails/images/logo.png "Sails.js")](http://sailsjs.com)
 
 ### [Website](https://sailsjs.com/)  &nbsp; [Get Started](https://sailsjs.com/get-started) &nbsp;  [Docs](http://sailsjs.com/documentation)  &nbsp; [News](http://twitter.com/sailsjs) &nbsp; [Submit Issue](http://sailsjs.com/bugs)
 
