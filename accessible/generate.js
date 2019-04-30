@@ -4,6 +4,19 @@
 
 var sailsgen = require('sails-generate');
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TODO: Remove this at next opportunity to simplify maintenance.
+// (Check docs, but I don't think it's documented, and it's not being used
+// anywhere anymore.  Now that NPM is faster than it used to be, there's no
+// reason to work towards separating the core generators from the main
+// framework's NPM package anymore.  So this doesn't really need to exist,
+// unless there are a lot of really good use cases for why generators need to be
+// easily expoed for programmatic usage.  If you have such a use case, let us
+// know at https://sailsjs.com/bugs)
+//
+// But note that this is a breaking change.
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
 /**
  * require('sails/accessible/generate')
