@@ -28,7 +28,7 @@
   "dependencies": {
     "anchor": "~0.10.5",
     "async": "1.5.0",
-    "captains-log": "1.0.0",
+    "captains-log": "^2.0.2",
     "chalk": "1.1.3",
     "commander": "2.9.0",
     "compression": "1.6.2",
@@ -70,7 +70,7 @@
     "path-to-regexp": "1.5.3",
     "pluralize": "1.2.1",
     "prompt": "0.2.14",
-    "rc": "1.0.1",
+    "rc": "^1.2.8",
     "reportback": "~0.1.9",
     "rttc": "9.3.3",
     "sails-disk": "~0.10.9",
