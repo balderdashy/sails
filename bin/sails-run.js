@@ -320,7 +320,7 @@ module.exports = function(scriptName) {
     var childProcess = Process.spawnChildProcess({
       command: shProcName,
       cliArgs: [ shFlag, pjCommandToRun ]
-    }).execSync();
+    }).now();
 
     // Pipe output from the child process to the current (parent) process.
     childProcess.stdout.pipe(process.stdout);

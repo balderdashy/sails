@@ -1,5 +1,21 @@
 # Sails Changelog
 
+## 1.2.0
+
+- Added `sails migrate` for quickly running auto-migrations by hand
+- The output of `sails inspect` no longer includes controller information
+- When loading user hooks, if `sails.config.loadHooks` is specified, skip hooks whose names aren't explicitly included
+- Increased time to display warning message in `config/bootstrap.js` from 5 seconds to 30 seconds
+- Switched to using `updateOne` in the "update" blueprint
+- Blueprint queries no longer include `fetch: true` by default, to avoid warnings from `updateOne`
+- Update error mesage in default `serverError` response to use flaverr
+- In `lib/router/res.js`, instead of always setting 'content-type' to 'application/json', only set it if `res.get('content-type')` is falsy
+- Update flaverr dependency
+- Update i18n-2 dependency to resolve deprecation warning
+- Update rc dependency to address potential vulnerabilities
+- Update machinepack-process dependency to address potential vulnerabilities
+- Update machinepack-redis dependency to address potential vulnerabilities
+
 ## 1.1.0
 
 > As always, we owe a debt of gratitude to our contributors-- we mentioned you below next to the features/enhancements/fixes you contributed to.  (Apologies to anyone we missed, there was a lot in this release!  Let us know and we'll add you to the list.)
