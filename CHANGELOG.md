@@ -10,7 +10,11 @@
 - Blueprint queries no longer include `fetch: true` by default, to avoid warnings from `updateOne`
 - Update error mesage in default `serverError` response to use flaverr
 - In `lib/router/res.js`, instead of always setting 'content-type' to 'application/json', only set it if `res.get('content-type')` is falsy
-- Update versions of machinepack-redis and flaverr
+- Update flaverr dependency
+- Update i18n-2 dependency to resolve deprecation warning
+- Update rc dependency to address potential vulnerabilities
+- Update machinepack-process dependency to address potential vulnerabilities
+- Update machinepack-redis dependency to address potential vulnerabilities
 
 ## 1.1.0
 
