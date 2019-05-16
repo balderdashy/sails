@@ -47,7 +47,7 @@
     "machine-as-action": "^10.3.0-0",
     "machinepack-process": "^4.0.1",
     "machinepack-redis": "^2.0.2",
-    "merge-defaults": "0.2.1",
+    "merge-defaults": "0.2.2",
     "merge-dictionaries": "1.0.0",
     "minimist": "0.0.10",
     "parley": "^3.3.4",
