@@ -64,7 +64,7 @@
     "serve-favicon": "2.4.5",
     "serve-static": "1.13.1",
     "skipper": "^0.9.0-0",
-    "sort-route-addresses": "^0.0.1",
+    "sort-route-addresses": "^0.0.3",
     "uid-safe": "2.1.5",
     "vary": "1.1.2",
     "whelk": "^6.0.1"
