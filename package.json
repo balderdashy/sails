@@ -72,7 +72,7 @@
   "devDependencies": {
     "benchmark": "^2.1.2",
     "connect-redis": "3.3.2",
-    "eslint": "4.11.0",
+    "eslint": "5.16.0",
     "expect.js": "0.3.1",
     "fs-extra": "4.0.2",
     "machinepack-fs": "^8.0.2",
