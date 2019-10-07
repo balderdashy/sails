@@ -37,9 +37,10 @@ Grab `this.middleware` from each hook and make it available on the `sails` objec
 
 #### Assemble Router
 
-Prepares the core Router, then emit multiple events on the `sails` object informing hooks that they can safely bind routes.
+Prepare the core Router, then emit multiple events on the `sails` object informing hooks that they can safely bind routes.
 
 #### Expose global variables
+
 After all hooks have initialized, Sails exposes global variables
 (by default: `sails` object, models, services, `_`, and `async`)
 
