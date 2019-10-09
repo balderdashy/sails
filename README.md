@@ -13,7 +13,7 @@ var orgs = await Organization.find();
 ```
 
 
-## Installation &nbsp;
+## Installation
 **With [node](https://nodejs.org) [installed](https://nodejs.org/en/download):**
 ```sh
 # Get the latest stable release of Sails
