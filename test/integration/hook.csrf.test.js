@@ -18,12 +18,16 @@ describe('CSRF ::', function() {
   describe('Basic CSRF config ::', function() {
 
     var sailsConfig = {};
+    var sid;
 
     var sailsApp;
     beforeEach(function(done) {
       var _config = _.merge({
         hooks: {grunt: false, views: false, blueprints: false, policies: false, i18n: false},
         log: {level: 'error'},
+        session: {
+          secret: 'abc123'
+        },
         routes: {
           '/csrfToken': {action: 'security/grant-csrf-token'},
           'ALL /viewtest/csrf': function(req, res) {
@@ -43,7 +47,16 @@ describe('CSRF ::', function() {
       }, sailsConfig);
       (new Sails()).load(_config, function(err, _sails) {
           sailsApp = _sails;
-          return done(err);
+
+          sailsApp.request({url: '/user', method: 'get' }, function (cerr, response) {
+            if (response.headers['set-cookie']) {
+              var cookies = require('cookie').parse(response.headers['set-cookie'][0]);
+              sid = cookies['sails.sid'];
+            } else {
+              sid = '';
+            }
+            return done(err);
+          });
         }
       );
     });
@@ -122,7 +135,7 @@ describe('CSRF ::', function() {
 
       it('a POST request without a CSRF token should result in a 403 response', function(done) {
 
-        sailsApp.request({url: '/user', method: 'post'}, function(err, response) {
+        sailsApp.request({url: '/user', method: 'post', headers: {Cookie: 'sails.sid=' + sid}}, function(err, response) {
 
           if (err && err.status === 403) {
             return done();
@@ -141,7 +154,7 @@ describe('CSRF ::', function() {
           }
           try {
             var body = response.body;
-            var sid = response.headers['set-cookie'][0].split(';')[0].substr(10);
+            sid = response.headers['set-cookie'][0].split(';')[0].substr(10);
             sailsApp.request({
               method: 'post',
               url: '/user',
@@ -189,7 +202,8 @@ describe('CSRF ::', function() {
       it('a POST request on /user without a CSRF token should result in a 201 response', function(done) {
         sailsApp.request({
           method: 'post',
-          url: '/user'
+          url: '/user',
+          headers: {Cookie: 'sails.sid=' + sid}
         }, function(err, response) {
           if (err) {
             return done(err);
@@ -200,7 +214,7 @@ describe('CSRF ::', function() {
       });
 
       it('a POST request on /foo/12 without a CSRF token should result in a 404 response', function(done) {
-        sailsApp.request({url: '/foo/12', method: 'post'}, function(err, response) {
+        sailsApp.request({url: '/foo/12', method: 'post', headers: {Cookie: 'sails.sid=' + sid}}, function(err, response) {
           if (err && err.status === 404) {
             return done();
           }
@@ -209,7 +223,7 @@ describe('CSRF ::', function() {
       });
 
       it('a POST request on /foo/12?abc=123 without a CSRF token should result in a 404 response', function(done) {
-        sailsApp.request({url: '/foo/12?abc=123', method: 'post'}, function(err, response) {
+        sailsApp.request({url: '/foo/12?abc=123', method: 'post', headers: {Cookie: 'sails.sid=' + sid}}, function(err, response) {
           if (err && err.status === 404) {
             return done();
           }
@@ -218,7 +232,7 @@ describe('CSRF ::', function() {
       });
 
       it('a POST request on /bar/12 without a CSRF token should result in a 404 response', function(done) {
-        sailsApp.request({url: '/bar/12', method: 'post'}, function(err, response) {
+        sailsApp.request({url: '/bar/12', method: 'post', headers: {Cookie: 'sails.sid=' + sid}}, function(err, response) {
           if (err && err.status === 404) {
             return done();
           }
@@ -227,7 +241,7 @@ describe('CSRF ::', function() {
       });
 
       it('a POST request on /bar/12?abc=123 without a CSRF token should result in a 404 response', function(done) {
-        sailsApp.request({url: '/bar/12?abc=123', method: 'post'}, function(err, response) {
+        sailsApp.request({url: '/bar/12?abc=123', method: 'post', headers: {Cookie: 'sails.sid=' + sid}}, function(err, response) {
           if (err && err.status === 404) {
             return done();
           }
@@ -236,7 +250,7 @@ describe('CSRF ::', function() {
       });
 
       it('a POST request on /bar without a CSRF token should result in a 404 response', function(done) {
-        sailsApp.request({url: '/bar', method: 'post'}, function(err, response) {
+        sailsApp.request({url: '/bar', method: 'post', headers: {Cookie: 'sails.sid=' + sid}}, function(err, response) {
           if (err && err.status === 404) {
             return done();
           }
@@ -245,7 +259,7 @@ describe('CSRF ::', function() {
       });
 
       it('a POST request on /bar?abc=123 without a CSRF token should result in a 404 response', function(done) {
-        sailsApp.request({url: '/bar?abc=123', method: 'post'}, function(err, response) {
+        sailsApp.request({url: '/bar?abc=123', method: 'post', headers: {Cookie: 'sails.sid=' + sid}}, function(err, response) {
           if (err && err.status === 404) {
             return done();
           }
@@ -254,7 +268,7 @@ describe('CSRF ::', function() {
       });
 
       it('a PUT request on /foo/12 without a CSRF token should result in a 403 response', function(done) {
-        sailsApp.request({url: '/foo/12', method: 'put'}, function(err, response) {
+        sailsApp.request({url: '/foo/12', method: 'put', headers: {Cookie: 'sails.sid=' + sid}}, function(err, response) {
           if (err && err.status === 403) {
             return done();
           }
@@ -263,7 +277,7 @@ describe('CSRF ::', function() {
       });
 
       it('a POST request on /test without a CSRF token should result in a 403 response', function(done) {
-        sailsApp.request({url: '/test', method: 'post'}, function(err, response) {
+        sailsApp.request({url: '/test', method: 'post', headers: {Cookie: 'sails.sid=' + sid}}, function(err, response) {
           if (err && err.status === 403) {
             return done();
           }
@@ -272,7 +286,7 @@ describe('CSRF ::', function() {
       });
 
       it('a POST request on /foo without a CSRF token should result in a 403 response', function(done) {
-        sailsApp.request({url: '/foo', method: 'post'}, function(err, response) {
+        sailsApp.request({url: '/foo', method: 'post', headers: {Cookie: 'sails.sid=' + sid}}, function(err, response) {
           if (err && err.status === 403) {
             return done();
           }
@@ -298,7 +312,7 @@ describe('CSRF ::', function() {
       });
 
       it('a POST request on /user/1 without a CSRF token should result in a 200 response', function(done) {
-        sailsApp.request({url: '/user/1', method: 'post'}, function(err, response) {
+        sailsApp.request({url: '/user/1', method: 'post', headers: {Cookie: 'sails.sid=' + sid}}, function(err, response) {
           if (err) {
             return done(err);
           }
@@ -308,7 +322,7 @@ describe('CSRF ::', function() {
       });
 
       it('a PUT request on /user/1 without a CSRF token should result in a 403 response', function(done) {
-        sailsApp.request({url: '/user/1', method: 'put'}, function(err, response) {
+        sailsApp.request({url: '/user/1', method: 'put', headers: {Cookie: 'sails.sid=' + sid}}, function(err, response) {
           if (err && err.status === 403) {
             return done();
           }
@@ -317,7 +331,7 @@ describe('CSRF ::', function() {
       });
 
       it('a POST request on /user/a without a CSRF token should result in a 403 response', function(done) {
-        sailsApp.request({url: '/user/a', method: 'post'}, function(err, response) {
+        sailsApp.request({url: '/user/a', method: 'post', headers: {Cookie: 'sails.sid=' + sid}}, function(err, response) {
           if (err && err.status === 403) {
             return done();
           }
@@ -326,7 +340,7 @@ describe('CSRF ::', function() {
       });
 
       it('a POST request on /user without a CSRF token should result in a 403 response', function(done) {
-        sailsApp.request({url: '/user', method: 'post'}, function(err, response) {
+        sailsApp.request({url: '/user', method: 'post', headers: {Cookie: 'sails.sid=' + sid}}, function(err, response) {
           if (err && err.status === 403) {
             return done();
           }
@@ -352,7 +366,7 @@ describe('CSRF ::', function() {
       });
 
       it('a POST request on /user/1 without a CSRF token should result in a 403 response', function(done) {
-        sailsApp.request({url: '/user/1', method: 'post'}, function(err, response) {
+        sailsApp.request({url: '/user/1', method: 'post', headers: {Cookie: 'sails.sid=' + sid}}, function(err, response) {
           if (err && err.status === 403) {
             return done();
           }
@@ -361,7 +375,7 @@ describe('CSRF ::', function() {
       });
 
       it('a POST request on /user/a without a CSRF token should result in a 200 response', function(done) {
-        sailsApp.request({url: '/user/a', method: 'post'}, function(err, response) {
+        sailsApp.request({url: '/user/a', method: 'post', headers: {Cookie: 'sails.sid=' + sid}}, function(err, response) {
           if (err) {
             return done(err);
           }
@@ -371,7 +385,7 @@ describe('CSRF ::', function() {
       });
 
       it('a POST request on /user without a CSRF token should result in a 201 response', function(done) {
-        sailsApp.request({url: '/user', method: 'post'}, function(err, response) {
+        sailsApp.request({url: '/user', method: 'post', headers: {Cookie: 'sails.sid=' + sid}}, function(err, response) {
           if (err) {
             return done(err);
           }
