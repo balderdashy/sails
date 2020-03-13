@@ -77,11 +77,13 @@ sails.registerActionMiddleware(mustBeLoggedIn, ['user.*', 'pet.*'], ['user.publi
 
 ##### `loadActionModules()`
 
-When Sails loads, this method loads all of the files underneath the controllers directory (`api/controllers` by default) and attempts to parse them into actions that can be bound to routes.  File in the controllers directory can either be pascal-cased and ending in "Controller" (e.g. MyController.js), in which case they are expected to be _dictionaries_ of actions, or else kebab-cased and lowercased (e.g. my-action.js) in which case they are expected to contain a single action.  An action may be a function which accepts `req` and `res` as arguments, or a [node-machine](http://node-machine.org) definition which will be parsed by [machine-as-action](https://github.com/treelinehq/machine-as-action).
+When Sails loads, this method loads all of the files underneath the controllers directory (`api/controllers` by default) and attempts to parse them into actions that can be bound to routes.  File in the controllers directory can either be pascal-cased and ending in "Controller" (e.g. MyController.js), in which case they are expected to be _dictionaries_ of actions, or else (kebab-cased and lowercased (e.g. my-action.js by default) ) in which case they are expected to contain a single action.  An action may be a function which accepts `req` and `res` as arguments, or a [node-machine](http://node-machine.org) definition which will be parsed by [machine-as-action](https://github.com/treelinehq/machine-as-action).
 
 After actions are loaded from disk, any actions specified under the `sails.config.controllers.moduleDefinitions` config key are merged on top of those actions.  This allows Sails apps to be constructed dynamically at runtime.
 
 Note that this method is called internally by Sails _after_ hooks have loaded (or in the case of a `Sails.reloadModules` call, after they have _reloaded_).  This ensures that user actions always take precedence over those added by hooks.
+
+You can specify the naming convention of actions with the config located at `sails.config.casings.actions`, options are 'kebab-case' or 'camel-case'
 
 ##### `helpRegisterAction(action, identity, [force])`
 
