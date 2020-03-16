@@ -49,7 +49,7 @@
     "machinepack-redis": "^2.0.2",
     "merge-defaults": "0.2.2",
     "merge-dictionaries": "1.0.0",
-    "minimist": "0.0.10",
+    "minimist": "1.2.5",
     "parley": "^3.3.4",
     "parseurl": "1.3.2",
     "path-to-regexp": "1.5.3",
