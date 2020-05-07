@@ -210,15 +210,17 @@ The recommended production session store for Sails.js is Redis... but we realize
 
 
 
-#### Socket client SDKs & examples
+#### Community socket client SDKs & examples
+
+Need to connect to Sails from a native iPhone or Android app?
 
 | Platform     | Repo       |  Build Status (edge)             |
 |--------------|------------|----------------------------------|
 | iOS          | [sails.ios](https://github.com/ChrisChares/sails.ios)  | [![CI Status](http://img.shields.io/travis/ChrisChares/sails.ios.svg?style=flat)](https://travis-ci.org/ChrisChares/sails.ios) |
-| Android      | [Sails Messenger](https://github.com/TheFinestArtist/Sails-Messenger)  | _N/A_  |
-| Angular      | [angularSails](https://github.com/balderdashy/angularSails)  | [![Build Status](https://travis-ci.org/balderdashy/angularSails.png?branch=master)](https://travis-ci.org/balderdashy/angularSails) |
 | Objective C  | [sails.io.objective-c](https://github.com/fishrod-interactive/sails-io.objective-c) | _N/A_ |
-| Backbone     | [backbone-to-sails](https://github.com/balderdashy/backbone-to-sails)  | _N/A_ |
+| Android      | [Sails Messenger](https://github.com/TheFinestArtist/Sails-Messenger)  | _N/A_  |
+| React Native | [React Native example](https://github.com/mikermcneil/chatkin/tree/master/mobileapp)  | _N/A_  |
+| Cordova      | [Phonegap tips](https://stackoverflow.com/questions/33378104/how-to-implement-sailsjs-phonegap-cordova-application)  | _N/A_  |
 
 
 #### Misc. projects
