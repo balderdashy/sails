@@ -118,9 +118,10 @@ _Please carefully read our [contribution guide](http://sailsjs.com/documentation
 ## Team
 Sails is actively maintained with the help of many amazing [contributors](https://github.com/balderdashy/sails/graphs/contributors).  Our core team consists of:
 
-[![Mike McNeil](https://www.gravatar.com/avatar/4b02a9d5780bdd282151f7f9b8a4d8de?s=144&d=identicon&rating=g)](http://twitter.com/mikermcneil) |  [![Rachael McNeil](https://avatars0.githubusercontent.com/u/3065949?v=3&s=144)](http://twitter.com/fancydoilies) |  [![John Abrams](https://avatars0.githubusercontent.com/u/32274602?s=144&v=3)](http://github.com/johnabrams7) |  [![Madison Hicks](https://avatars0.githubusercontent.com/u/16329366?s=144&v=3)](https://github.com/madisonhicks)
-:---:|:---:|:---:|:---:
-[Mike McNeil](http://github.com/mikermcneil) | [Rachael McNeil](https://github.com/rachaelshaw) | [John Abrams](http://github.com/johnabrams7) | [Madison Hicks](https://github.com/madisonhicks)
+[![Mike McNeil](https://www.gravatar.com/avatar/4b02a9d5780bdd282151f7f9b8a4d8de?s=144&d=identicon&rating=g)](http://twitter.com/mikermcneil) |  [![Rachael McNeil](https://avatars0.githubusercontent.com/u/3065949?v=3&s=144)](http://twitter.com/fancydoilies) |  [![John Abrams](https://avatars0.githubusercontent.com/u/32274602?s=144&v=3)](http://github.com/johnabrams7) |  [![Madison Hicks](https://avatars0.githubusercontent.com/u/16329366?s=144&v=3)](https://github.com/madisonhicks) |  [![Eric Shaw](https://avatars2.githubusercontent.com/u/7445991?s=144&v=3)](https://github.com/eashaw)
+:---:|:---:|:---:|:---:|:---:
+[Mike McNeil](http://github.com/mikermcneil) | [Rachael McNeil](https://github.com/rachaelshaw) | [John Abrams](http://github.com/johnabrams7) | [Madison Hicks](https://github.com/madisonhicks) | [Eric Shaw](https://github.com/eashaw)
+
 
 [Our company](https://sailsjs.com/about) designs/builds Node.js websites and apps for startups and enterprise customers. After building a few applications and taking them into production, we realized that the Node.js development landscape was very much still the Wild West. Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  Six years later, Sails is now one of the most widely-used web application frameworks in the world. I hope it saves you some time! :)
 
