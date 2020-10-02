@@ -131,4 +131,4 @@ Sails is actively maintained with the help of many amazing [contributors](https:
 
 > Sails is built around so many great open-source technologies that it would never have crossed our minds to keep it proprietary.  We owe huge gratitude and props to Ryan Dahl ([@ry](https://github.com/ry)), TJ Holowaychuk ([@tj](https://github.com/tj)), Doug Wilson ([@dougwilson](https://github.com/dougwilson)) and Guillermo Rauch ([@rauchg](https://github.com/rauchg)) for the work they've done, as well as the stewards of all the other open-source modules we use.  Sails could never have been developed without your tremendous contributions to the JavaScript community.
 
-![image_squidhome@2x.png](http://sailsjs.com/images/bkgd_squiddy.png)
+![A squid peering inside a book, halation and cosmic Sails.js knowledge emanating from the pages of the substantial tome](https://sailsjs.com/images/get_started_hero.png)
