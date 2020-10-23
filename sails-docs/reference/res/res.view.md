@@ -25,7 +25,7 @@ The specified [`locals`](https://sailsjs.com/documentation/concepts/views/locals
 |   | Argument       | Type        | Details |
 |---|----------------|:-----------:|---------|
 | 1 |  pathToView    | ((string))  | The path to the desired view file relative to your app's [`views` folder](https://sailsjs.com/documentation/anatomy/views) (usually `views/`), without the file extension (e.g. `.ejs`), and with no trailing slash.<br/>Defaults to "identityOfController/nameOfAction".
-| 2 |  locals        | ((dictionary))  | Data to pass to the view template.  These explicitly specified locals will be merged in to Sails' [built-in locals](https://sailsjs.com/documentation/concepts/views/locals) and your [configured app-wide locals](https://github.com/balderdashy/sails-docs/blob/master/PAGE_NEEDED.md).<br/>Defaults to `{}`.
+| 2 |  locals        | ((dictionary))  | Data to pass to the view template.  These explicitly specified locals will be merged in to Sails' [built-in locals](https://sailsjs.com/documentation/concepts/views/locals) and your [configured app-wide locals](https://github.com/balderdashy/sails/blob/master/sails-docs/PAGE_NEEDED.md).<br/>Defaults to `{}`.
 
 
 

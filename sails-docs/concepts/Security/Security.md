@@ -4,7 +4,7 @@
 
 Sails and Express provide built-in, easily configurable protection against most known types of web-application-level attacks.
 
-> **Note**: If you believe you have found a security vulnerability in Sails, please refer to our [security policy](https://github.com/balderdashy/sails-docs/blob/master/security/SAILS-SECURITY-POLICY.md) for instructions for reporting it.
+> **Note**: If you believe you have found a security vulnerability in Sails, please refer to our [security policy](https://sailsjs.com/security) for instructions for reporting it.
 
 
 ### Security topics

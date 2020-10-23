@@ -10,7 +10,7 @@ Sails comes bundled with a suite of conventional HTTP middleware, ready to use. 
  **compress**              | Compresses response data using gzip/deflate. See [`compression`](https://github.com/expressjs/compression) for details.
  **poweredBy**             | Attaches an `X-Powered-By` header to outgoing responses.
  _router_ *                | This is where the bulk of your app logic gets applied to any given request.  In addition to running `"before"` handlers in hooks (e.g. csrf token enforcement) and some internal Sails logic, this routes requests using your app's explicit routes (in [`sails.config.routes`](https://sailsjs.com/documentation/reference/configuration/sails-config-routes)) and/or route blueprints.
- _www_ *                   | Serves static files&mdash;usually images, stylesheets, scripts&mdash;in your app's "public" folder (configured in [`sails.config.paths`](https://github.com/balderdashy/sails-docs/blob/master/PAGE_NEEDED.md), conventionally [`.tmp/public/`](https://github.com/balderdashy/sails-docs/blob/master/PAGE_NEEDED.md)) using Connect's [static middleware](http://www.senchalabs.org/connect/static.html).
+ _www_ *                   | Serves static files&mdash;usually images, stylesheets, scripts&mdash;in your app's "public" folder (configured in [`sails.config.paths`](https://github.com/balderdashy/sails/blob/master/sails-docs/PAGE_NEEDED.md), conventionally [`.tmp/public/`](https://github.com/balderdashy/sails/blob/master/sails-docs/PAGE_NEEDED.md)) using Connect's [static middleware](http://www.senchalabs.org/connect/static.html).
  **favicon**               | Serves the [browser favicon](http://en.wikipedia.org/wiki/Favicon) for your app if one is provided as `/assets/favicon.ico`.
 
 

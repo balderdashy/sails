@@ -9,6 +9,7 @@
 ./test
 ./tests
 ./.github
+./.sails-docs
 
 node_modules
 npm-debug.log

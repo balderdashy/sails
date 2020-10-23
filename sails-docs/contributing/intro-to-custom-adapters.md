@@ -4,7 +4,7 @@
 
 ## Reference
 
-Please see the [adapter interface specification](https://github.com/balderdashy/sails-docs/blob/0.9/adapter-specification.md).
+Please see the [adapter interface specification](https://github.com/balderdashy/sails/blob/master/sails-docs/adapter-specification.md).
 
 
 

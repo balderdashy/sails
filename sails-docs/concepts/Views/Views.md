@@ -3,7 +3,7 @@
 
 In Sails, views are markup templates that are compiled _on the server_ into HTML pages.  In most cases, views are used as the response to an incoming HTTP request, e.g. to serve your home page.
 
-> Much more rarely, you can also compile a view directly into an HTML string for use in your backend code (see [`sails.renderView()`](https://github.com/balderdashy/sails-docs/blob/master/PAGE_NEEDED.md)).  For instance, you might use this approach to send HTML emails, or to build big XML strings for use with a legacy API.
+> Much more rarely, you can also compile a view directly into an HTML string for use in your backend code (see [`sails.renderView()`](https://github.com/balderdashy/sails/blob/master/sails-docs/PAGE_NEEDED.md)).  For instance, you might use this approach to send HTML emails, or to build big XML strings for use with a legacy API.
 
 
 ##### Creating a view

@@ -1,6 +1,6 @@
 # Request (`req`)
 
-Sails is built on [Express](https://github.com/balderdashy/sails-docs/blob/master/PAGE_NEEDED.md), and uses [Node's HTTP server](http://nodejs.org/api/http.html) conventions.  Because of this, you can access all of the Node and Express methods and properties on the `req` object wherever it is accessible (in your controllers, policies, and custom responses).
+Sails is built on [Express](https://github.com/balderdashy/sails/blob/master/sails-docs/PAGE_NEEDED.md), and uses [Node's HTTP server](http://nodejs.org/api/http.html) conventions.  Because of this, you can access all of the Node and Express methods and properties on the `req` object wherever it is accessible (in your controllers, policies, and custom responses).
 
 A nice side effect of this compatibility is that, in many cases, you can paste existing Node.js code into a Sails app and it will work.  And since Sails implements a transport-agnostic request interpreter, the code in your Sails app is WebSocket-compatible as well.
 

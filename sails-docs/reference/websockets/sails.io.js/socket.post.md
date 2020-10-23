@@ -22,7 +22,7 @@ io.socket.post(url, data, function (resData, jwres){
 |   | Argument  | Type         | Details |
 |---|-----------|:------------:|---------|
 | 1 | resData   | ((json))     | Data received in the response from the Sails server (=== `jwres.body`, and also equivalent to the HTTP response body).
-| 2 | jwres     | ((dictionary))      | A [JSON WebSocket Response](https://github.com/balderdashy/sails-docs/blob/master/PAGE_NEEDED.md) object.  Has `headers`, a `body`, and a `statusCode`.
+| 2 | jwres     | ((dictionary))      | A [JSON WebSocket Response](https://github.com/balderdashy/sails/blob/master/sails-docs/PAGE_NEEDED.md) object.  Has `headers`, a `body`, and a `statusCode`.
 
 
 ### Example

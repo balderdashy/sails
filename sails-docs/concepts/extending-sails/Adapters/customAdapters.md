@@ -1,6 +1,6 @@
 # Custom adapters
 
-Sails makes it fairly easy to write your own database adapter.  Custom adapters can be built directly in your app (`api/adapters/`) or published as NPM packages.  Check out [Intro to Custom Adapters](https://github.com/balderdashy/sails-docs/blob/master/contributing/intro-to-custom-adapters.md), the [Adapter Interface Reference](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md), and [sails-adapter-boilerplate](https://github.com/balderdashy/sails-adapter-boilerplate) for more information about creating your own adapter.
+Sails makes it fairly easy to write your own database adapter.  Custom adapters can be built directly in your app (`api/adapters/`) or published as NPM packages.  Check out [Intro to Custom Adapters](https://github.com/balderdashy/sails/blob/master/sails-docs/contributing/intro-to-custom-adapters.md), the [Adapter Interface Reference](https://github.com/balderdashy/sails/blob/master/sails-docs/contributing/adapter-specification.md), and [sails-adapter-boilerplate](https://github.com/balderdashy/sails-adapter-boilerplate) for more information about creating your own adapter.
 
 
 ### Where does my adapter go?
@@ -72,7 +72,7 @@ $ npm test
 1. Create a [new public repo](https://github.com/new) and add it as a remote (`git remote add origin git@github.com:yourusername/sails-youradaptername.git).
 2. Make sure you attribute yourself as the author and set the license in the package.json to "MIT".
 3. Run the tests one last time.
-4. Do a [pull request to sails-docs](https://github.com/balderdashy/sails-docs/edit/master/concepts/extending-sails/Adapters/adapterList.md), adding your adapter's repo.
+4. Do a [pull request to sails-docs](https://github.com/balderdashy/sails/edit/master/sails-docs/concepts/extending-sails/Adapters/adapterList.md), adding your adapter's repo.
 5. We'll update the documentation with information about your new adapter.
 6. Let the people of the world adore you with lavish praise.
 7. Run `npm version patch`.
@@ -108,7 +108,7 @@ The more high-quality adapters the Sails community collectively releases as open
 
 The functionality of database adapters is as varied as the services they connect.  That said, there is a standard library of methods, and a support matrix you should be aware of.  Adapters may implement some, all, or none of the interfaces below, but rest assured that **if an adapter implements one method in an interface, it should implement *all* of them**.  This is not always the case due to limitations and/or incomplete implementations, but at the very least, a descriptive error message should be used to keep developers informed of what's supported and what's not.
 
-> For more information, check out the Sails docs, and specifically the [adapter interface reference](https://github.com/balderdashy/sails-docs/blob/master/contributing/adapter-specification.md).
+> For more information, check out the Sails docs, and specifically the [adapter interface reference](https://github.com/balderdashy/sails/blob/master/sails-docs/contributing/adapter-specification.md).
 
 ### Are there examples I can look at?
 
