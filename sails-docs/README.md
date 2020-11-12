@@ -41,12 +41,12 @@ To make an edit that is relevant for the latest stable version of Sails (i.e. th
 On the other hand, if you are making an edit related to an unreleased feature in an upcoming version; most commonly as an accompaniment a feature proposal or open pull request to Sails or a related project, then you will want to edit the branch for the next, unreleased version of Sails (sometimes called "edge").
  -->
 
-| Branch (in `sails-docs`)                                          | Documentation for Sails Version...                                                     | Accessible At...   |
+| Branch                                                       | Documentation for Sails Version...                                                     | Accessible At...   |
 |:------------------------------------------------------------------|:---------------------------------------------------------------------------------------|:-------------------|
 | [`master`](https://github.com/balderdashy/sails/tree/master/sails-docs) | _Bleeding edge_                                                                        | [`next.sailsjs.com`](https://next.sailsjs.com)
 | [`1.0`](https://github.com/balderdashy/sails/tree/1.0/sails-docs)       | [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)    | [`sailsjs.com`](https://sailsjs.com)
-| [`0.12`](https://github.com/balderdashy/sails-docs/tree/0.12)     | Sails v0.12.x                                                                          | [`0.12.sailsjs.com`](https://0.12.sailsjs.com)
-| [`0.11`](https://github.com/balderdashy/sails-docs/tree/0.11)     | Sails v0.11.x                                                                          | [`0.11.sailsjs.com`](http://0.11.sailsjs.com)
+| [`0.12`](https://github.com/balderdashy/sails-docs/tree/0.12)(in `sails-docs`)     | Sails v0.12.x                                                                          | [`0.12.sailsjs.com`](https://0.12.sailsjs.com)
+| [`0.11`](https://github.com/balderdashy/sails-docs/tree/0.11)(in `sails-docs`)     | Sails v0.11.x                                                                          | [`0.11.sailsjs.com`](http://0.11.sailsjs.com)
 
 
 #### How are these docs compiled and pushed to the website?
