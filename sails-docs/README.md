@@ -86,9 +86,7 @@ For more information on contributing to Sails in general, see the [Contribution 
 
 ## License
 
-[MIT](./LICENSE.md)
+[MIT](https://sailsjs.com/license)
 
 The [Sails framework](https://sailsjs.com) is free and open-source under the [MIT License](https://sailsjs.com/license).
-
-_(And the files in this repo are too.)_
 
