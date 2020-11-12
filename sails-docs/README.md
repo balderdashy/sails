@@ -28,13 +28,13 @@ The documentation for Sails has been translated to a number of different languag
 
 We welcome your help!  Please send a pull request to **master** with corrections/additions and they'll be double-checked and merged as soon as possible.
 
-Secondly, we are open to suggestions about the process we're using to manage our documentation, and to work with the community in general.  Please post to the Google Group with your ideas- or if you're interested in helping directly, contact @fancydoilies, @rudeboot, or @mikermcneil on Twitter.
+Secondly, we are open to suggestions about the process we're using to manage our documentation, and to work with the community in general.  Please post to the Google Group with your ideas- or if you're interested in helping directly, contact @fancydoilies, @aaaaanxiety, or @mikermcneil on Twitter.
 
 #### What branch should I edit?
 
 <!-- As we get closer to releasing a newer version of Sails, we ask that all pull requests be made to the `1.0` branch, since that content will soon replace the 0.12 docs on the main website. The only exception is if you are documenting something that isn't relevant for Sails v1. -->
 
-To make an edit that is relevant for the latest stable version of Sails (i.e. the version on [NPM](npmjs.org/package/sails)), you'll want to edit the `master` branch of _this_ repo (what you see in the sails-docs repo by default).  The Sails core team merges master into the appropriate branch for the latest stable release of Sails, and then deploys that to sailsjs.com about once per week.
+To make an edit that is relevant for the latest stable version of Sails (i.e. the version on [NPM](npmjs.org/package/sails)), you'll want to edit the `master` branch of _this_ repo (what you see in the /sails-docs folder of the sails repo by default).  The Sails core team merges master into the appropriate branch for the latest stable release of Sails, and then deploys that to sailsjs.com about once per week.
 
 <!-- That depends on what kind of edit you are making.  Most often, you'll be making an edit that is relevant for the latest stable version of Sails (i.e. the version on [NPM](npmjs.org/package/sails)) and so you'll want to edit the `master` branch of _this_ repo (what you see in the sails-docs repo by default).  The docs team merges master into the appropriate branch for the latest stable release of Sails, and then deploys that to sailsjs.com about once per week.
 
@@ -43,8 +43,8 @@ On the other hand, if you are making an edit related to an unreleased feature in
 
 | Branch (in `sails-docs`)                                          | Documentation for Sails Version...                                                     | Accessible At...   |
 |:------------------------------------------------------------------|:---------------------------------------------------------------------------------------|:-------------------|
-| [`master`](https://github.com/balderdashy/sails-docs/tree/master) | _Bleeding edge_                                                                        | [`next.sailsjs.com`](https://next.sailsjs.com)
-| [`1.0`](https://github.com/balderdashy/sails-docs/tree/1.0)       | [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)    | [`sailsjs.com`](https://sailsjs.com)
+| [`master`](https://github.com/balderdashy/sails/tree/master/sails-docs) | _Bleeding edge_                                                                        | [`next.sailsjs.com`](https://next.sailsjs.com)
+| [`1.0`](https://github.com/balderdashy/sails/tree/1.0/sails-docs)       | [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails)    | [`sailsjs.com`](https://sailsjs.com)
 | [`0.12`](https://github.com/balderdashy/sails-docs/tree/0.12)     | Sails v0.12.x                                                                          | [`0.12.sailsjs.com`](https://0.12.sailsjs.com)
 | [`0.11`](https://github.com/balderdashy/sails-docs/tree/0.11)     | Sails v0.11.x                                                                          | [`0.11.sailsjs.com`](http://0.11.sailsjs.com)
 
@@ -72,7 +72,7 @@ A great way to help the Sails project, especially if you speak a language other 
 
 If your language is not represented in the table above, and you are interested in beginning a translation project, follow these steps:
 
-+ Fork this repo (`balderdashy/sails-docs`) and change the name of your fork to be `sails-docs-{{IETF}}` where {{IETF}} is the [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) for your language.
++ Bring the documentation folder (`balderdashy/sails/sails-docs`) into a new repo named `sails-docs-{{IETF}}` where {{IETF}} is the [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) for your language.
 + Edit the README to summarize your progress so far, provide any other information you think would be helpful for others reading your translation, and let interested contributors know how to contact you.
 + Send a pull request editing the table above to add a link to your fork.
 + When you are satisfied with the first complete version of your translation, open an issue and someone from our docs team will be happy to help you get preview it in the context of the Sails website, get it live on a domain (yours, or a subdomain of sailsjs.com, whichever makes the most sense), and share it with the rest of the Sails community.
