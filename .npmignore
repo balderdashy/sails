@@ -8,8 +8,8 @@
 ./examples
 ./test
 ./tests
+./sails-docs
 ./.github
-./.sails-docs
 
 node_modules
 npm-debug.log
