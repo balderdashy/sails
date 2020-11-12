@@ -12,15 +12,15 @@
 language: node_js
 
 node_js:
-  - "6"
   - "8"
   - "10"
+  - "12"
+  - "14"
   - "node"
 
 branches:
   only:
     - master
-    - 0.12
 
 notifications:
   email:
