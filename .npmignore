@@ -8,6 +8,7 @@
 ./examples
 ./test
 ./tests
+./sails-docs
 ./.github
 
 node_modules
