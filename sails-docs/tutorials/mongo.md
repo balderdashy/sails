@@ -61,12 +61,14 @@ As of `sails-mongo` v2.0.0 and above, you can access the [`MongoClient`](https:/
 and with it, transactions, [change streams](https://mongodb.github.io/node-mongodb-native/3.5/api/ChangeStream.html), and other new features.
 
 ```js
-  var mongoClient = Pet.getDatastore().manager.client;
+var mongoClient = Pet.getDatastore().manager.client;
 
-  var results = await mongoClient.db('test')
-  .collection('pet')
-  .find({}, { name: 1 })
-  .toArray();
+var results = await mongoClient.db('test')
+.collection('pet')
+.find({}, { name: 1 })
+.toArray();
+
+console.log(results);
 ```
 
 For a full list of methods available in the native MongoDB client, see the [Node.js MongoDB Driver API reference](https://mongodb.github.io/node-mongodb-native/3.5/api/Collection.html).
