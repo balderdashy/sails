@@ -55,18 +55,21 @@ As with all of the [Sails database adapters](https://sailsjs.com/documentation/c
 
 For many apps, that's all you'll need-- from "hello world" to production.  Even if you run into limitations, they can usually be worked around without writing Mongo-specific code.  However, for situations when there is no alternative, it is possible to use the Mongo driver directly in your Sails app.
 
-To access the lower-level &ldquo;native&rdquo; MongoDB client directly, use the [`.manager`](https://sailsjs.com/documentation/reference/waterline-orm/datastores/manager) property of the [datastore instance](https://sailsjs.com/documentation/reference/application/sails-get-datastore):
+To access the lower-level &ldquo;native&rdquo; MongoDB client directly, use the [`.manager`](https://sailsjs.com/documentation/reference/waterline-orm/datastores/manager) property of the [datastore instance](https://sailsjs.com/documentation/reference/application/sails-get-datastore).
+
+As of `sails-mongo` v2.0.0 and above, you can access the [`MongoClient`](https://mongodb.github.io/node-mongodb-native/3.5/api/MongoClient.html) object via `manager.client`. This gives you access to the latest MongoDB improvements, like `ClientSession`,
+and with it, transactions, [change streams](https://mongodb.github.io/node-mongodb-native/3.5/api/ChangeStream.html), and other new features.
 
 ```js
-// Get access to the native MongoDB client via the default Sails datastore.
-var db = sails.getDatastore().manager;
+  var mongoClient = Pet.getDatastore().manager.client;
 
-// Find all users who own albums with the word "blue" in the title.
-// ("albums" would be defined in `api/models/User.js` as an attribute of type "json".)
-db.collection('user').find({"albums.title": {"$regex": /blue/}}).toArray(console.log);
+  var results = await mongoClient.db('test')
+  .collection('pet')
+  .find({}, { name: 1 })
+  .toArray();
 ```
 
-For a full list of methods available in the native MongoDB client, see the [Node.js MongoDB Driver API reference](http://mongodb.github.io/node-mongodb-native/2.2/api/Collection.html).
+For a full list of methods available in the native MongoDB client, see the [Node.js MongoDB Driver API reference](https://mongodb.github.io/node-mongodb-native/3.5/api/Collection.html).
 
 
 <docmeta name="displayName" value="Using MongoDB">
