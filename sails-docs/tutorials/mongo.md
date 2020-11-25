@@ -57,7 +57,7 @@ For many apps, that's all you'll need-- from "hello world" to production.  Even 
 
 To access the lower-level &ldquo;native&rdquo; MongoDB client directly, use the [`.manager`](https://sailsjs.com/documentation/reference/waterline-orm/datastores/manager) property of the [datastore instance](https://sailsjs.com/documentation/reference/application/sails-get-datastore).
 
-As of `sails-mongo` v2.0.0 and above, you can access the [`MongoClient`](https://mongodb.github.io/node-mongodb-native/3.5/api/MongoClient.html) object via `manager.client`. This gives you access to the latest MongoDB improvements, like `ClientSession`,
+As of `sails-mongo` v2.0.0 and above, you can access the [`MongoClient`](https://mongodb.github.io/node-mongodb-native/3.5/api/MongoClient.html) object via `manager.client`. This gives you access to the latest MongoDB improvements, like [`ClientSession`](https://mongodb.github.io/node-mongodb-native/3.5/api/ClientSession.html),
 and with it, transactions, [change streams](https://mongodb.github.io/node-mongodb-native/3.5/api/ChangeStream.html), and other new features.
 
 ```js
