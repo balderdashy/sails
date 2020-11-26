@@ -1,4 +1,4 @@
-# sails-docs/concepts
+# docs/concepts
 
 This section contains the markdown files which are compiled to HTML and eventually made available as conceptual documentation for the Sails framework at https://sailsjs.com/documentation/concepts.
 

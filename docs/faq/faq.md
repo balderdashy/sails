@@ -65,7 +65,7 @@ Aside from the [official documentation](https://sailsjs.com/documentation), be s
 
 ### What are some good community tutorials?
 
-> If you are the author of a tutorial or guide about Sails, please send us a pull request [here](https://github.com/balderdashy/sails-docs/edit/master/FAQ.md) and we'll check it out. (Be sure to add your tutorial to the top of the applicable list, as we try to order these from newest to oldest.)
+> If you are the author of a tutorial or guide about Sails, please send us a pull request [here](https://github.com/balderdashy/sails/edit/master/docs/faq/faq.md) and we'll check it out. (Be sure to add your tutorial to the top of the applicable list, as we try to order these from newest to oldest.)
 
 <!--
 A quick note for anyone contributing to this file:
@@ -133,7 +133,7 @@ Thanks!
 
 ##### Articles / interviews / press releases / whitepapers / talks
 
-> + If you are the author of an article about Sails, please send us a pull request [here](https://github.com/balderdashy/sails-docs/edit/1.0/FAQ.md).  We'll check it out!
+> + If you are the author of an article about Sails, please send us a pull request [here](https://github.com/balderdashy/sails/edit/master/docs/faq/faq.md).  We'll check it out!
 > + If you are a company interested in doing a press release about Sails, please contact [@mikermcneil](https://twitter.com/mikermcneil) on Twitter.  We'll do what we can to help.
 
 + [InfoWorld: Why Node.js beats Java and .Net for web, mobile, and IoT apps](http://www.infoworld.com/article/2975233/javascript/why-node-js-beats-java-net-for-web-mobile-iot-apps.html) _(Speed, scalability, productivity, and developer politics all played a role in [AnyPresence](http://anypresence.com)’s selection of Sails.js/Node.js for its enterprise development platform)_
@@ -202,15 +202,15 @@ For more instructions on installing the beta and edge versions of Sails, check o
 
 ### How do I get involved?
 
-There are many different ways to contribute to Sails; for example you could help us improve the [official documentation](https://github.com/balderdashy/sails-docs), write a [plugin](https://sailsjs.com/documentation/concepts/extending-sails), answer [StackOverflow questions](http://stackoverflow.com/questions/tagged/sails.js), start a Sails meetup, help troubleshoot GitHub issues, write some tests, or submit a patch to Sails core or one of its dependencies.  Please look through the [contribution guide](https://sailsjs.com/documentation/contributing) before you get started. It's a short read that covers guidelines and best practices that ensure your hard work will have the maximum impact.
+There are many different ways to contribute to Sails; for example you could help us improve the [official documentation](https://github.com/balderdashy/sails/tree/master/docs), write a [plugin](https://sailsjs.com/documentation/concepts/extending-sails), answer [StackOverflow questions](http://stackoverflow.com/questions/tagged/sails.js), start a Sails meetup, help troubleshoot GitHub issues, write some tests, or submit a patch to Sails core or one of its dependencies.  Please look through the [contribution guide](https://sailsjs.com/documentation/contributing) before you get started. It's a short read that covers guidelines and best practices that ensure your hard work will have the maximum impact.
 
 ### How does the documentation end up on the Sails website?
 
-The documentation is compiled from the markdown files in the [`sails-docs` repo on github](https://github.com/balderdashy/sails-docs). A number of Sails users have expressed interest in emulating the process we use to generate the pages on the Sails website.  Good news is it's pretty simple:  The compilation process for the Sails docs involves generating HTML from Markdown files in the sails-docs repo, then performing some additional transformations such as adding data type bubbles, tagging permalinks for individual sections of pages, building JSON data to power the side navigation menu and setting HTML `<title>` attributes for better search engine discoverability of individual doc pages.  See the [doc-templater](https://github.com/uncletammy/doc-templater) module for more information.
+The documentation is compiled from the markdown files in the [`sails` repo on github](https://github.com/balderdashy/sails/tree/master/docs). A number of Sails users have expressed interest in emulating the process we use to generate the pages on the Sails website.  Good news is it's pretty simple:  The compilation process for the Sails docs involves generating HTML from Markdown files in the sails repo, then performing some additional transformations such as adding data type bubbles, tagging permalinks for individual sections of pages, building JSON data to power the side navigation menu and setting HTML `<title>` attributes for better search engine discoverability of individual doc pages.  See the [doc-templater](https://github.com/uncletammy/doc-templater) module for more information.
 
 
 ### Where is the documentation for the different releases of Sails?
-The [documentation on the main website](https://sailsjs.com/documentation) is for the latest stable npm release of Sails, and is mirrored by the [master branch of the `sails-docs` repo on github](https://github.com/balderdashy/sails-docs) (Master is sometimes a few commits ahead, but any critical documentation updates make it onto the website within a day or two.)
+The [documentation on the main website](https://sailsjs.com/documentation) is for the latest stable npm release of Sails, and is mirrored by the docs in the [master branch of the `sails` repo on github](https://github.com/balderdashy/sails/tree/master/docs) (Master is sometimes a few commits ahead, but any critical documentation updates make it onto the website within a day or two.)
 
 For older releases of Sails that are still widely used, the documentation is compiled from the relevant `sails-docs` branches and hosted on the following subdomains:
 + [0.12.sailsjs.com](http://0.12.sailsjs.com/)

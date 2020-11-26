@@ -1,4 +1,4 @@
-# sails-docs/faq
+# docs/faq
 
 This section contains the contents that will live on sailsjs.com/faq.
 

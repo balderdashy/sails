@@ -12,7 +12,7 @@ On the other hand, if you are making an edit related to an unreleased feature in
 
 | Branch (in `sails` or `sails-docs`)                    | Documentation for Sails Version...                                   | Preview At...      |
 |-------------------------------------------------------------------------------------|------------------------|:-------------------|
-| [`master`](https://github.com/balderdashy/sails/tree/master/sails-docs) | [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails) | [preview.sailsjs.com](http://preview.sailsjs.com)
+| [`master`](https://github.com/balderdashy/sails/tree/master/docs) | [![NPM version](https://badge.fury.io/js/sails.png)](http://badge.fury.io/js/sails) | [preview.sailsjs.com](http://preview.sailsjs.com)
 | [`0.12`](https://github.com/balderdashy/sails-docs/tree/0.12) | Sails v0.12.x | [sailsjs.com](https://sailsjs.com)
 | [`0.11`](https://github.com/balderdashy/sails-docs/tree/0.11) | Sails v0.11.x           | [0.11.sailsjs.com](http://0.11.sailsjs.com)
 
@@ -40,8 +40,8 @@ A great way to help the Sails project, especially if you're a native speaker of 
 
 If you are interested in beginning a translation project, follow these steps:
 
-+ Fork the [sails repo](https://github.com/balderdashy/sails-docs) (`balderdashy/sails/sails-docs`) and change the name of your fork to be `sails-docs-{{IETF}}` where {{IETF}} is the [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) for your language.
-+ Edit `sails-docs/README.md` to summarize your progress so far, provide any other information you think would be helpful for others reading your translation, and let interested contributors know how to contact you.
++ Bring the documentation folder from the [sails repo](https://github.com/balderdashy/sails/tree/master/docs) (`balderdashy/sails/docs`) into a new repo named `sails-docs-{{IETF}}` where {{IETF}} is the [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag) for your language.
++ Edit [the documentation README](https://github.com/balderdashy/sails/tree/master/docs) to summarize your progress so far, provide any other information you think would be helpful for others reading your translation, and let interested contributors know how to contact you.
 + When you are satisfied with the first complete version of your translation, open an issue and someone from our docs team will be happy to help you preview it in the context of the Sails website, get it live on a domain (yours, or a subdomain of sailsjs.com, whichever makes the most sense), and share it with the rest of the Sails community.
 
 

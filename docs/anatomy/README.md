@@ -1,4 +1,4 @@
-# sails-docs/anatomy
+# docs/anatomy
 
 This section contains the "Anatomy" documentation which is eventually available at https://sailsjs.com/documentation/anatomy.
 

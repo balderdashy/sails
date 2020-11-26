@@ -72,7 +72,7 @@ $ npm test
 1. Create a [new public repo](https://github.com/new) and add it as a remote (`git remote add origin git@github.com:yourusername/sails-youradaptername.git).
 2. Make sure you attribute yourself as the author and set the license in the package.json to "MIT".
 3. Run the tests one last time.
-4. Do a [pull request to sails-docs](https://github.com/balderdashy/sails/edit/master/sails-docs/concepts/extending-sails/Adapters/adapterList.md), adding your adapter's repo.
+4. Do a [pull request to the docs](https://github.com/balderdashy/sails/edit/master/docs/concepts/extending-sails/Adapters/adapterList.md), adding your adapter's repo.
 5. We'll update the documentation with information about your new adapter.
 6. Let the people of the world adore you with lavish praise.
 7. Run `npm version patch`.
