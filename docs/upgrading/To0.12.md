@@ -113,7 +113,7 @@ The biggest change for contributors is the [updated contribution guide](https://
 
 ## Documentation
 
-This release also comes with a deep clean of the official reference documentation, and some minor usability improvements to the online docs at [https://sailsjs.com/documentation](https://sailsjs.com/documentation). The entire Sails website is now available in [Japanese](http://sailsjs.jp/), and four other [translation projects](https://github.com/balderdashy/sails-docs#in-other-languages) are underway for Korean, Brazillian Portugese, Taiwanese Mandarin, and Spanish.
+This release also comes with a deep clean of the official reference documentation, and some minor usability improvements to the online docs at [https://sailsjs.com/documentation](https://sailsjs.com/documentation). The entire Sails website is now available in [Japanese](http://sailsjs.jp/), and four other [translation projects](https://github.com/balderdashy/sails/tree/master/docs#in-other-languages) are underway for Korean, Brazillian Portugese, Taiwanese Mandarin, and Spanish.
 
 In addition, the Sails.js project (finally) has an [official blog](http://blog.sailsjs.com).  The Sails.js blog is the new source for all longform updates and announcements about Sails, as well as for our related projects like Waterline, Skipper, and the machine specification.
 

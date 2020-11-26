@@ -1,4 +1,4 @@
-# sails-docs/reference
+# docs/reference
 
 This section contains the official reference documentation for Sails.  It is made available at https://sailsjs.com/documentation/reference.
 

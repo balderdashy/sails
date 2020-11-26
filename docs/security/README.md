@@ -1,4 +1,4 @@
-# sails-docs/security
+# docs/security
 
 This section contains the official policy for disclosing security vulnerabilities in Sails or our dependencies.  It is made available at https://sailsjs.com/security-policy.
 
