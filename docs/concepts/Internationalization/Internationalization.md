@@ -57,7 +57,7 @@ For more information on configuring your Node.js/Sails.js app's internationaliza
 
 Of course you can always `require()` any Node modules you like, anywhere in your project, and use any internationalization strategy you want.
 
-But worth noting is that since Sails implements [node-i18n-2](https://github.com/jeresig/i18n-node-2) integration in the [i18n hook](https://sailsjs.com/documentation/concepts/Internationalization), you can completely disable or override it using the [`loadHooks`](https://github.com/balderdashy/sails/blob/master/sails-docs/PAGE_NEEDED.md) and/or [`hooks`](https://github.com/balderdashy/sails/blob/master/sails-docs/PAGE_NEEDED.md) configuration options.
+But worth noting is that since Sails implements [node-i18n-2](https://github.com/jeresig/i18n-node-2) integration in the [i18n hook](https://sailsjs.com/documentation/concepts/Internationalization), you can completely disable or override it using the [`loadHooks`](https://github.com/balderdashy/sails/blob/master/docs/PAGE_NEEDED.md) and/or [`hooks`](https://github.com/balderdashy/sails/blob/master/docs/PAGE_NEEDED.md) configuration options.
 
 
 ### Translating dynamic content
