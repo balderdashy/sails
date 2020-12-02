@@ -292,9 +292,20 @@ attributes: {
   }
 }
 ```
+
+Depending on your database, when using `unique: true`, you may also need set `required: true`. 
+Consider: 
+```
+await Character.create({ fullName: 'Jack Torrance', uniqueCatchPhrase: 'Heeeeere’s Johnny!' });
+await Character.create({ fullName: 'Clubber Lang', uniqueCatchPhrase: 'I pity the fool.' });
+await Character.create({ fullName: 'Mary Lazarus' });
+// If `uniqueCatchPhrase` is required, we'd never make it here.
+await Character.create({ fullName: 'Reverend Mother' });
+// ...but if `uniqueCatchPhrase` was optional, what would happen now?
+```
+uniqueCatchPhrase is supposed to be unique, so you can't have two records with empty string ('') as the value.
+
 > When using `unique: true` on an attribute with the `utf8mb4` character set in a MySQL database, you will need to set the column size manually via the [`columnType` property](https://sailsjs.com/documentation/concepts/models-and-orm/attributes#?columntype) to avoid a possible 'index too long' error.  For example: `columnType: varchar(100) CHARACTER SET utf8mb4`.
-
-
 <!--
 
 commented-out content at: https://gist.github.com/rachaelshaw/f10d70c73780d5087d4c936cdefd5648#2
