@@ -21,11 +21,6 @@ $ npm install sails -g
 ```
 
 > ##### Upgrading from an earlier version of Sails?
->
-> Available as of Node >=v7.9 and Sails >=v1.0, ES8's async/await enables dramatic improvements to the way developers build Node.js / Sails apps.  It allows server-side JavaScript code to be written with the `await` keyword, instead of lower-level (and more fragile) flow control mechanisms like nested callbacks and promise chains.  It lets developers breathe easier by removing the burden of painstaking, manual error handling after every database query.  And best of all, it means **the end of "callback hell"**: the most common source of bugs and stability issues in real world Node.js / Sails applications.
-> 
-> If ES8 isn't for you, don't worry-- Node callbacks and promise chaining are still fully supported.  But for most teams, the transition to `await` results in sizable gains in productivity, with fewer lines of code.
->
 > Upgrade guides for all major releases since 2013 are available on the Sails website under [**Upgrading**](http://sailsjs.com/upgrading).
 
 
