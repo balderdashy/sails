@@ -16,9 +16,10 @@ initialize: async function() {
 
 }
 ```
-`initialize` Can either be a `function`, `()=>{}`, or `()=>` we recommend using an arrow function. Note that not all arrow function syntax is supported for this parameter to ensure compatibility with existing apps. 
+`initialize` Can either be a `function`, `()=>{}`, or `()=>` we recommend using an arrow function.
 
-##### Hook timeout settings
+_Note that not all arrow function syntax is supported for this parameter to ensure compatibility with existing apps._
+
 
 ##### Hook timeout settings
 
