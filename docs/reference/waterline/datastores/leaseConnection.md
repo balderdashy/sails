@@ -15,7 +15,7 @@ _Or_
 ### Usage
 |   |     Argument        | Type                | Details
 |---|---------------------|---------------------|:------------|
-| 1 | during              | ((function))        | A [procedural parameter](https://en.wikipedia.org/wiki/Procedural_parameter) that Sails will call automatically when a connection has been obtained and made ready for you.  It will receive the arguments specified in the "During" usage table below. Can either be a `function`, `()=>{}`, or `()=>` we recommend using an arrow function. Note that not all arrow function syntax is supported for this parameter to ensure compatibility with existing apps.  |
+| 1 | during              | ((function))        | A [procedural parameter](https://en.wikipedia.org/wiki/Procedural_parameter) that Sails will call automatically when a connection has been obtained and made ready for you.  It will receive the arguments specified in the "During" usage table below.||||| Can either be a `function`, `()=>{}`, or `()=>` we recommend using an arrow function. Note that not all arrow function syntax is supported for this parameter to ensure compatibility with existing apps.  |
 
 ##### During
 |   |     Argument        | Type                | Details
