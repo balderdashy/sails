@@ -13,7 +13,7 @@ or
 ### Usage
 |   |     Argument        | Type                | Details
 |---|---------------------|---------------------|:------------|
-| 1 | during              | ((function))        | See parameters in the "`during` usage" table below. |
+| 1 | during              | ((function))        | See parameters in the "`during` usage" table below. This can be a `function`, `()=>{}`, or `()=>` we recommend using an arrow function. Note that not all arrow function syntax is supported for this parameter to ensure compatibility with existing apps.  |
 
 ##### During
 |   |     Argument        | Type                | Details
