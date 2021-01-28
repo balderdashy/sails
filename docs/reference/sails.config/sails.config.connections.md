@@ -4,7 +4,7 @@
 
 Datastore configurations (or simply datastores) are like "saved settings" for your adapters.
 
-In Sails, [database adapters](https://sailsjs.com/documentation/concepts/extending-sails/adapters) are the middleman between your app and some kind of structured data storage (typically a database).  But in order for an adapter to communicate between your Sails app and a particular database, it needs some additional information.  That's where datastores come in.  Datastores are dictionaries (plain JavaScript objects) that specify an `adapter`, as well as other necessary configuration information, like `url`, or `host`, `port`, `username`, and `password`.
+In Sails, [database adapters](https://sailsjs.com/documentation/concepts/extending-sails/adapters) are the middleman between your app and some kind of structured data storage (typically a database).  But in order for an adapter to communicate between your Sails app and a particular database, it needs some additional information.  That's where datastores come in.  Datastores are dictionaries (plain JavaScript objects) that specify an `adapter`, as well as other necessary configuration information, like `url`, or `host`, `port`, `user`, and `password`.
 
 While this [can be overridden](https://sailsjs.com/documentation/concepts/orm/model-settings) on a per-model basis, out of the box, every model in your app uses a datastore named "default".
 
