@@ -2,8 +2,8 @@
 
 This file configures a Grunt task called "sails-linker".
 
-Automatically inject `<script>` tags and `<link>` tags into the specified
-specified HTML and/or EJS files.  The specified delimiters (`startTag`
+Automatically inject `<script>` tags and `<link>` tags into the specified 
+HTML and/or EJS files.  The specified delimiters (`startTag`
 and `endTag`) determine the insertion points.
 
 ##### Development (default)
@@ -22,11 +22,11 @@ In production, all stylesheets (including all .css files and `assets/styles/impo
 minified into a single `.css` file (see `tasks/config/cssmin.js` task) and
 all client-side scripts (including `.js` and `.coffee` files) are minified
 into a single `.js` file (see `tasks/config/uglify.js` task).  Any precompiled,
-client-side HTML templates (JST) can calso be minified alongside the other
+client-side HTML templates (JST) can also be minified alongside the other
 scripts when `sails-linker:prodJs` runs-- but since this could change the
 behavior of your front-end code, it is not included by default.
 
-> If you're using JST templates and you'd like to them to included in the
+> If you're using JST templates and you'd like them to be included in the
 > minified bundle, remove `clientSideTemplates` from the tasklist array in
 > `tasks/register/prod.js`, and then modify `tasks/config/uglify.js` to include
 > the compiled `jst.js` file from `.tmp/public/` in its `src` array.
