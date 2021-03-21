@@ -63,7 +63,7 @@ cmd.action(require('./sails-lift'));
 // $ sails new <appname>
 cmd = program.command('new [path_to_new_app]');
 // cmd.option('--dry');
-cmd.option('--no-front-end', 'Don\'t generate "assets", "views" or "task" folders.');
+cmd.option('--no-frontend', 'Don\'t generate "assets", "views" or "task" folders.');
 cmd.option('--fast', 'Don\'t install node modules after generating app.');
 cmd.usage('[path_to_new_app]');
 cmd.unknownOption = NOOP;
