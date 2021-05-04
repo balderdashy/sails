@@ -68,6 +68,7 @@ Community adapters exist for [CouchDB](https://github.com/search?q=sails+couch&n
 > For the latest core adapters and notable community adapters, see [Available Adapters](http://sailsjs.com/documentation/concepts/extending-sails/adapters/available-adapters).
 
 ## Tutorial Course
+- [Sailscasts](https://sailscasts.com/), taught by [Kelvin Omereshone](https://twitter.com/Dominus_Kelvin) _(English)_
 - [Full-Stack JavaScript with Sails.js and Vue.js](https://platzi.com/cursos/javascript-pro/), taught by [Mike McNeil](https://twitter.com/mikermcneil) _(in English, with optional Spanish subtitles)_
 
 
