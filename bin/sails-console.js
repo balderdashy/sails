@@ -158,6 +158,7 @@ module.exports = function() {
       // even when we're using a custom output stream.  Otherwise pressing
       // the up arrow just outputs ^[[A instead of accessing history.
       terminal: true,
+      preview: false,
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // FUTURE: Potentially use custom `eval` as stopgap for `await` support in Node <v9
       // https://nodejs.org/api/repl.html#repl_repl_start_options
