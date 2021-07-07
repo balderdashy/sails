@@ -41,41 +41,8 @@ If you are using Redis as a session store in development, additional configurati
 
 Any session adapter written for Connect/Express works in Sails, as long as you use a compatible version.
 
-For example, to use Mongo as your session store, install [connect-mongo](https://github.com/kcbanner/connect-mongo):
+The recommended production session store for Sails.js is Redis... but we realize that, for some apps, that isn't an option.  Fortunately, Sails.js supports almost any Connect/Express-compatible session store-- meaning you can store your sessions almost anywhere, whether that's Mongo, on the local filesystem, or even in a relational database.  Check out the community session stores for Sails.js, Express, and Connect [available on NPM](https://www.npmjs.com/search?q=connect%20session-).
 
-```bash
-npm install connect-mongo@1.1.0 --save --save-exact
-```
-
-Then specify it as your `adapter` in `config/session.js`:
-
-```javascript
-  adapter: 'connect-mongo',
-```
-
-The following values are optional, and should only be used if relevant for your Mongo configuration. You can read more about these, and other available options, at [https://github.com/kcbanner/connect-mongo](https://github.com/kcbanner/connect-mongo):
-
-```js
-// Note: in this URL, `user`, `pass` and `port` are all optional.
-url: 'mongodb://user:pass@host:port/database',
-//--------------------------------------------------------------------------
-// The following additional options may also be used, if needed:
-// (See http://bit.ly/mongooptions for more about `mongoOptions`.)
-//--------------------------------------------------------------------------
-// collection: 'sessions',
-// stringify: true,
-// auto_reconnect: false,
-// mongoOptions: {
-//   server: {
-//     ssl: true
-//   }
-// }
-```
-
-
-> **Notes:**
-> * When using Node version <= 0.12.x, install `connect-mongo` version 0.8.2.  For Node version >= 4.0, install `connect-mongo` version `1.1.0`.
-> * If you run into kerberos-related issues when using the MongoDB as your session store or the database for one or more of your app's models, be sure and have a look at the relevant [troubleshooting page](http://mongodb.github.io/node-mongodb-native/2.0/getting-started/installation-guide/#troubleshooting) in the Mongo docs.  Also see [#3362](https://github.com/balderdashy/sails/issues/3362) for more diagnostic information about using Kerberos with Mongo in your Sails app.
 
 
 
