@@ -21,11 +21,6 @@ $ npm install sails -g
 ```
 
 > ##### Upgrading from an earlier version of Sails?
->
-> Available as of Node >=v7.9 and Sails >=v1.0, ES8's async/await enables dramatic improvements to the way developers build Node.js / Sails apps.  It allows server-side JavaScript code to be written with the `await` keyword, instead of lower-level (and more fragile) flow control mechanisms like nested callbacks and promise chains.  It lets developers breathe easier by removing the burden of painstaking, manual error handling after every database query.  And best of all, it means **the end of "callback hell"**: the most common source of bugs and stability issues in real world Node.js / Sails applications.
-> 
-> If ES8 isn't for you, don't worry-- Node callbacks and promise chaining are still fully supported.  But for most teams, the transition to `await` results in sizable gains in productivity, with fewer lines of code.
->
 > Upgrade guides for all major releases since 2013 are available on the Sails website under [**Upgrading**](http://sailsjs.com/upgrading).
 
 
@@ -73,6 +68,7 @@ Community adapters exist for [CouchDB](https://github.com/search?q=sails+couch&n
 > For the latest core adapters and notable community adapters, see [Available Adapters](http://sailsjs.com/documentation/concepts/extending-sails/adapters/available-adapters).
 
 ## Tutorial Course
+- [Sailscasts](https://sailscasts.com/), taught by [Kelvin Omereshone](https://twitter.com/Dominus_Kelvin) _(English)_
 - [Full-Stack JavaScript with Sails.js and Vue.js](https://platzi.com/cursos/javascript-pro/), taught by [Mike McNeil](https://twitter.com/mikermcneil) _(in English, with optional Spanish subtitles)_
 
 
@@ -118,9 +114,9 @@ _Please carefully read our [contribution guide](http://sailsjs.com/documentation
 ## Team
 Sails is actively maintained with the help of many amazing [contributors](https://github.com/balderdashy/sails/graphs/contributors).  Our core team consists of:
 
-[![Mike McNeil](https://www.gravatar.com/avatar/4b02a9d5780bdd282151f7f9b8a4d8de?s=144&d=identicon&rating=g)](http://twitter.com/mikermcneil) |  [![Rachael McNeil](https://avatars0.githubusercontent.com/u/3065949?v=3&s=144)](http://twitter.com/fancydoilies) |  [![John Abrams](https://avatars0.githubusercontent.com/u/32274602?s=144&v=3)](http://github.com/johnabrams7) |  [![Madison Hicks](https://avatars0.githubusercontent.com/u/16329366?s=144&v=3)](https://github.com/madisonhicks) |  [![Eric Shaw](https://avatars2.githubusercontent.com/u/7445991?s=144&v=3)](https://github.com/eashaw)
-:---:|:---:|:---:|:---:|:---:
-[Mike McNeil](http://github.com/mikermcneil) | [Rachael McNeil](https://github.com/rachaelshaw) | [John Abrams](http://github.com/johnabrams7) | [Madison Hicks](https://github.com/madisonhicks) | [Eric Shaw](https://github.com/eashaw)
+[![Mike McNeil](https://www.gravatar.com/avatar/4b02a9d5780bdd282151f7f9b8a4d8de?s=144&d=identicon&rating=g)](http://twitter.com/mikermcneil) |  [![Rachael McNeil](https://avatars0.githubusercontent.com/u/3065949?v=3&s=144)](http://twitter.com/fancydoilies) |  [![Eric Shaw](https://avatars2.githubusercontent.com/u/7445991?s=144&v=3)](https://github.com/eashaw)
+|:---:|:---:|:---:|
+[Mike McNeil](http://github.com/mikermcneil) | [Rachael McNeil](https://github.com/rachaelshaw) | [Eric Shaw](https://github.com/eashaw)
 
 
 [Our company](https://sailsjs.com/about) designs/builds Node.js websites and apps for startups and enterprise customers. After building a few applications and taking them into production, we realized that the Node.js development landscape was very much still the Wild West. Over time, after trying lots of different methodologies, we decided to crystallize all of our best practices into this framework.  Six years later, Sails is now one of the most widely-used web application frameworks in the world. I hope it saves you some time! :)
