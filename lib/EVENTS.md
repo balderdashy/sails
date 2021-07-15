@@ -206,3 +206,12 @@ sails.emit('hook:yourHookID:someEvent', 'arbitrary', 'number', {of: 'arguments'}
 ## FAQ
 
 > If you have a question that isn't covered here, please feel free to send a PR adding it to this section (even if you don't have the answer!)
+
+### Is there an equivalent event to `ready` for hooks to utilize when using `sails.load()`?
+
+When `sails.lift()` is called, hooks can utilise `sails.after('ready', ...)` but this is
+not called when `sails.load()` is used.
+
+Is there an equivalent for use by hooks that captures the `sails.load()` case?
+
+Is `router:done` appropriate or might this miss some aspect of the load/lift process?
