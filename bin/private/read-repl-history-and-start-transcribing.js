@@ -27,9 +27,9 @@ module.exports = function readReplHistoryAndBeginTranscribing(repl, file) {
   if (historyFileExists) {
 
     // If so, then read it, and set the initial REPL history.
-    repl.rli.history = fs.readFileSync(file, 'utf-8').split('\n').reverse();
-    repl.rli.history.shift();
-    repl.rli.historyIndex = -1;
+    repl.history = fs.readFileSync(file, 'utf-8').split('\n').reverse();
+    repl.history.shift();
+    repl.historyIndex = -1;
 
   }//>-
 
@@ -41,11 +41,11 @@ module.exports = function readReplHistoryAndBeginTranscribing(repl, file) {
   var alreadyLoggedWarningAboutREPLHistory;
 
   // Bind alistener that will fire each time a newline is entered on the REPL.
-  repl.rli.addListener('line', function (code) {
+  repl.addListener('line', function (code) {
 
     // Update the REPL history file accordingly.
     if (code && code !== '.history') {
-      var buffer = new Buffer(code + '\n');
+      var buffer = Buffer.from(code + '\n');
       // Send all arguments to fs.write to support Node v0.10.x.
       fs.write(fd, buffer, 0, buffer.length, null, function (err /*, written */){
         if (!err) {
@@ -62,11 +62,11 @@ module.exports = function readReplHistoryAndBeginTranscribing(repl, file) {
       });// _∏_
     }
     else {
-      repl.rli.historyIndex++;
-      repl.rli.history.pop();
+      repl.historyIndex++;
+      repl.history.pop();
     }
 
-  });//</every time repl.rli emits a "line" event>
+  });//</every time repl emits a "line" event>
 
   // Bind a one-time-use listener that will fire when the process exits.
   process.once('exit', function () {
