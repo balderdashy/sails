@@ -17,13 +17,15 @@ Specify a where clause for filtering a query.
 
 To find all the users named Finn whose email addresses start with 'f':
 ```javascript
-var users = await User.find({ name: 'Finn' })
-.where({ 'emailAddress' : { startsWith : 'f' } });
+var users = await User.find()
+.where({ name: 'Finn', 'emailAddress' : { startsWith : 'f' } });
 
 return res.json(users);
 ```
 
 ### Notes
+> The criteria provided in the `.where()` method takes precendence over the the criteria provided in `.find()`.
+
 > The `.find()` method returns a chainable object if you don't supply a callback.  This method can be chained to `.find()` to further filter your results.
 
 
