@@ -9,7 +9,7 @@ Register a new action middleware function that will be applied to actions with t
 sails.registerActionMiddleware(actionMiddlewareFns, actionIdentities);
 ```
 
-Action middleware functions are essentially [policies](https://sailsjs.com/documentation/concepts/policies#?writing-your-first-policy) that you declare programmatically (rather than via [sails.config.policies](https://sailsjs.com/documentation/reference/configuration/sails-config-policies)).  In fact, policies are implemented under-the-hook using action middleware.  The `registerActionMiddleware()` method is mainly useful in [custom hooks](https://sailsjs.com/documentation/concepts/extending-sails/hooks) as a way of adding new policies to an app.
+Action middleware functions are essentially [policies](https://sailsjs.com/documentation/concepts/policies#?writing-your-first-policy) that you declare programmatically (rather than via [sails.config.policies](https://sailsjs.com/documentation/reference/configuration/sails-config-policies)).  In fact, policies are implemented under-the-hood using action middleware.  The `registerActionMiddleware()` method is mainly useful in [custom hooks](https://sailsjs.com/documentation/concepts/extending-sails/hooks) as a way of adding new policies to an app.
 
 ### Usage
 
