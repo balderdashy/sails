@@ -29,17 +29,16 @@ describe('middleware :: ', function () {
         app.lower();
       });
 
-      it('sails can lift', function (done) {
+      it('can initialise connect-mongo - expects connection strategy error', function (done) {
         app.lift({
           environment: 'development',
           log: {level: 'silent'},
           session: {
             adapter: 'mongo',
-            url: 'mongodb://mongodb:27017/sessions', // user, password and port optional
+            url: '', // leave blank since only startup is being tested
           },
         }, function (err) {
-          console.log(err);
-          assert.equal(err, undefined);
+          assert.equal(err.message.includes('Connection strategy not found'), true);
           return done();
         });
       });
@@ -67,14 +66,14 @@ describe('middleware :: ', function () {
         app.lower();
       });
 
-      it('sails can lift', function (done) {
+      it('can initialise connect-mongo - ', function (done) {
         app.lift({
           environment: 'development',
           log: {level: 'silent'},
           session: {
             // secret: 'abc123',
             adapter: 'mongo',
-            mongoUrl: 'mongodb://mongodb:27017/sessions', // user, password and port optional
+            mongoUrl: 'url', // leave blank since only start up needs to be tested
           },
         }, function (err) {
           assert.equal(err, undefined);
