@@ -32,6 +32,7 @@ If you are using Redis as a session store in development, additional configurati
 | `client`       | ((ref))  | `undefined` | An already-connected Redis client to use.  If provided, any `url`, `host` and `port` settings will be ignored.  This setting is useful if you have a Redis Sentinel setup and need to connect using a module like <a href="https://www.npmjs.com/package/ioredis" target="_blank">`ioredis`</a>
 | `onRedisDisconnect` | ((function)) | `undefined` | An optional function for Sails to call if the Redis connection is dropped.  Useful for placing your site in a temporary maintenance mode or "panic mode" (see [sails-hook-panic-mode](https://www.npmjs.com/package/sails-hook-panic-mode) for an example).
 | `onRedisReconnect` | ((function)) | `undefined` | An optional function for Sails to call if a previously-dropped Redis connection is restored (see `onDisconnect` above).
+| `handleConstructingSessionStore` | ((function)) | `undefined` | An optional override function for Sails to call instead of the standard session store construction behavior. To use this setting, please first read and understand the [relevant source code](https://github.com/balderdashy/sails/blob/master/lib/hooks/session/index.js#L415).
 
 > Note: `onRedisDisconnect` and `onRedisReconnect` will only be called for Redis clients that are created by Sails for you; if you provide your own Redis client (see the `client` option above), these functions will _not_ be called automatically in the case of a disconnect or reconnect.
 

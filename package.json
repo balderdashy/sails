@@ -32,8 +32,6 @@
     "common-js-file-extensions": "1.0.2",
     "compression": "1.7.1",
     "connect": "3.6.5",
-    "connect-mongo": "^2.0.3",
-    "connect-mongo-latest": "npm:connect-mongo@^4.5.0",
     "cookie": "0.4.0",
     "cookie-parser": "1.4.4",
     "cookie-signature": "1.1.0",
