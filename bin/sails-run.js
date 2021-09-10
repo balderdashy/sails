@@ -288,7 +288,7 @@ module.exports = function(scriptName) {
     //   }
     // }).exec(function (err) {
     //   if (err) {
-    //     console.error('Error occured running `'+ pjCommandToRun+ '`');
+    //     console.error('Error occurred running `'+ pjCommandToRun+ '`');
     //     console.error('Please resolve any issues and try `sails run '+scriptName+'` again.');
     //     console.error('Details:');
     //     console.error(err);
@@ -372,7 +372,7 @@ module.exports = function(scriptName) {
         spinlocked = true;
 
         console.error('- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ');
-        console.error('Error occured running `'+ pjCommandToRun+ '`');
+        console.error('Error occurred running `'+ pjCommandToRun+ '`');
         console.error('Please resolve any issues and try `sails run '+scriptName+'` again.');
         console.error('Details:');
         console.error(err);
