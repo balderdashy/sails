@@ -71,6 +71,7 @@ url: 'postgresql://user:password@host:port/database',
 
 > + The default port for PostgreSQL is `5432`.
 > + In addition to `adapter` and `url`, you might also need to set `ssl: true`.  This depends on where your PostgreSQL database server is hosted.  For example, `ssl: true` is required when connecting to Heroku's hosted PostgreSQL service.
+> + Note that in `pg@8.0` the syntax was updated to `ssl: { rejectUnauthorized: false }`.
 
 ### sails-mongo
 
