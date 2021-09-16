@@ -30,7 +30,7 @@ await query;
 
 First, the query is "shaken out" by Waterline core into a [normalized query](https://sailsjs.com/documentation/concepts/models-and-orm/query-language).  Then it passes through the relevant Waterline adapter(s) for translation to the raw query syntax of your database(s) (e.g. Redis or Mongo commands, various SQL dialects, etc.)  Next, each involved adapter uses its native Node.js database driver to send the query out over the network to the corresponding physical database.
 
-When the adapter receives a response, it is marshalled to the Waterline interface spec and passed back up to Waterine core, where it is integrated with any other raw adapter responses into a coherent result set.  At that point, it undergoes one last normalization before being passed back to "userland" (i.e. your code) for consumption by your app.
+When the adapter receives a response, it is marshalled to the Waterline interface spec and passed back up to Waterline core, where it is integrated with any other raw adapter responses into a coherent result set.  At that point, it undergoes one last normalization before being passed back to "userland" (i.e. your code) for consumption by your app.
 
 
 ### Error handling
@@ -103,7 +103,7 @@ If you are a fan of promises and have a reasonable amount of experience with the
 
 > If you decide to use traditional promise chaining for a particular query in your app, please make sure that you provide callbacks for both `.then()` _and_ `.catch()`.  Otherwise errors could go unhandled, and unpleasant race conditions and memory leaks could ensue. This is not just a Sails or Waterline concept. Rather, it's something to be aware of whenever you implement this type of usage in JavaScript&mdash;particularly in Node.js&mdash;since unhandled errors in server-side code tend to be more problematic than their client-side counterparts.   Omitting `.catch()` is equivalent to ignoring the `err` argument in a conventional Node callback, and it is similarly insidious.  In fact, this is hands-down one of the most common sources of bugs for Node.js developers of all skill levels.
 >
-> Proper error handling is particularly easy to neglect if you're new to asynchronous code. Once you've been at it for a while, you'll get in the habit of handling your asynchronous errors right after (or even better, right before) you write code that handles the successful case. Habits like this immunize your apps to those common bugs discussed above. 
+> Proper error handling is particularly easy to neglect if you're new to asynchronous code. Once you've been at it for a while, you'll get in the habit of handling your asynchronous errors right after (or even better, right before) you write code that handles the successful case. Habits like this immunize your apps to those common bugs discussed above.
 >
 > (Better yet: just use `await`!)
 
