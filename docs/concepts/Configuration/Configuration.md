@@ -120,7 +120,7 @@ sails lift --custom.array='[1,2,3]'
 
 ### Custom configuration
 
-You can also leverage Sails's configuration loader to manage your own custom settings.  See [sails.config.custom](https://sailsjs.com/config/sails-config-custom) for more information.
+You can also leverage Sails's configuration loader to manage your own custom settings.  See [sails.config.custom](https://sailsjs.com/documentation/reference/configuration/sails-config-custom) for more information.
 
 
 
