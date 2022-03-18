@@ -25,6 +25,9 @@ This method is useful primarily in development scenarios.
 | 1 |      _options_      | ((dictionary?))          | Currently accepts one key, `hooksToSkip`, which if given should be an array of names of hooks that should _not_ call their `reloadActions` method.
 | 2 |      _callback_              | ((function)) | A callback to be called with the virtual response.
 
+### Notes
+> - Never dynamically replace your Sails.js controller or action files on disk with untrusted code at runtime, regardless of whether you are using `.reloadActions()` in your app or not.  Since `reloadActions()` runs the code in your Sails.js app's files, if the files are not safe to run, then using `reloadActions()` would be [a security risk](https://github.com/balderdashy/sails/issues/7209).  This risk is only present if your Sails app is deliberately overwriting its own files to replace them with unsafe code.
+
 
 <docmeta name="displayName" value="sails.reloadActions()">
 <docmeta name="pageType" value="method">
