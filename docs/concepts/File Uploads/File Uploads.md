@@ -4,6 +4,7 @@ Uploading files in Sails is similar to uploading files for a vanilla Node.js or 
 
 Sails comes with a powerful "body parser", [Skipper](https://github.com/balderdashy/skipper), which makes it easy to implement streaming file uploads&mdash;not only to the server's filesystem (i.e. hard disk), but also to Amazon S3, MongoDB's gridfs, or any other supported file adapter.
 
+Sails does not automatically virus scan file uploads, or do any other attempt to detect whether uploaded files might be infected, broken, or unusual.  If you allow users to upload and share files with each other, it is your responsibility to protect your users from each other.  Always assume any request coming into your server could be malicious or misrepresent itself.
 
 
 ### Uploading a file
@@ -109,6 +110,7 @@ avatar: function (req, res){
 #### Where do the files go?
 When using the default `receiver`, file uploads go to the `myApp/.tmp/uploads/` directory.  This can be overridden using the `dirname` option.  Note that you'll need to specify this option both when you call the `.upload()` function and when you invoke the skipper-disk adapter (so that you are uploading to and downloading from the same place).
 
+> Any Node.js app (or other server-side app) that receives untrusted file uploads and stores them on disk should never upload those files into paths within a Java server web root or any directory that a legacy web server might automatically dive into recursively to execute arbitrary code files that it finds.  For best results, upload files to S3 or a safe directory on disk.  Always assume any request coming into your server could be malicious or misrepresent itself.
 
 #### Uploading to a custom folder
 In the example above we upload the file to .tmp/uploads, but how can we configure it with a custom folder, say `assets/images`? We can achieve this by adding options to the upload function as shown below.
@@ -185,6 +187,10 @@ module.exports = {
 
 };
 ```
+
+### Notes
+> While loading untrusted JavaScript as an `<img src="…">` [is not an XSS vulnerability in modern browsers](https://stackoverflow.com/a/46041031), the MIME type in the request headers of file uploads should never be relied upon.  Always assume any request coming into your server could be malicious or misrepresent itself.
+
 
 ## Read more
 
