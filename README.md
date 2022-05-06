@@ -91,7 +91,7 @@ Please read the [submission guidelines](http://sailsjs.com/documentation/contrib
 ## Contribute
 There are many different ways you can contribute to Sails:
 - answering questions on [StackOverflow](http://stackoverflow.com/questions/tagged/sails.js), [Gitter](https://gitter.im/balderdashy/sails), [Facebook](https://www.facebook.com/sailsjs), or [Twitter](https://twitter.com/search?f=tweets&vertical=default&q=%40sailsjs%20OR%20%23sailsjs%20OR%20sails.js%20OR%20sailsjs&src=typd)
-- improving the [documentation](https://github.com/balderdashy/sails-docs#contributing-to-the-docs) or [website](https://github.com/balderdashy/www.sailsjs.com/issues)
+- improving the [documentation](https://github.com/balderdashy/sails-docs#contributing-to-the-docs)
 - translating the [documentation](https://github.com/balderdashy/sails-docs/issues/580) to your native language
 - writing [tests](https://github.com/balderdashy/sails/blob/master/test/README.md)
 - writing a [tutorial](https://github.com/sails101/contribute-to-sails101), giving a [talk](https://speakerdeck.com/mikermcneil), or supporting [your local Sails meetup](https://www.meetup.com/find/?allMeetups=false&keywords=node.js&radius=Infinity&sort=default)
