@@ -86,7 +86,7 @@ return exits.success();
 
 
 > ### Note
-> Remember that, while we used `checkPermissions.with(…,…)` here, we could have
+> Remember that, while we used `checkPermissions(…,…)` here, we could have
 > also used `.with()` and switched to named parameters:
 >
 > ```js
