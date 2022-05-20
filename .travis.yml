@@ -15,7 +15,7 @@ node_js:
   - "10"
   - "12"
   - "14"
-  - "node"
+  - "16"
 
 branches:
   only:
