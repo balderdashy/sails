@@ -17,6 +17,7 @@ Modify a [query instance](https://sailsjs.com/documentation/reference/waterline-
 
 > **Important:** Both the basic join polyfill (cross-datastore populate, or populate between models whose configured adapter does not provide a `.join()` implementation) and the subcriteria argument to `.populate()` are fully supported in Sails **individually**. However, using the subcriteria argument to `.populate()` at the same time as the join polyfill is experimental. This means that, if an association spans multiple datastores or its datastore's configured adapter does not support a physical layer join, then you should not rely on the subcriteria argument to `.populate()`. If you try that in production, you will see a warning logged to the console. SQL adapters such as [sails-postgresql](https://github.com/balderdashy/sails-postgresql) and [sails-mysql](https://github.com/balderdashy/sails-mysql) support native joins and should be okay to use the subcriteria argument.
 
+> **Note:** If you are using `schema: false`, only defined attributes will be populated.
 
 ### Example
 
