@@ -51,6 +51,23 @@ The recommended production session store for Sails.js is Redis... but we realize
 
 The built-in session integration in Sails works by using a session ID cookie.  This cookie is [HTTP-only](https://www.owasp.org/index.php/HttpOnly) (as safeguard against [XSS exploits](https://sailsjs.com/documentation/concepts/security/xss)), and by default, is set with the name "sails.sid".
 
+
+##### The "__Host-" prefix.
+
+By default, cookies have no integrity against same-site attackers.
+
+In production enviroments, we recommend that you prefix the "name" of your cookie (`sails.config.session.name`) with "__Host-" to limit the scope of your cookie to a single origin.
+
+You can read more about the "__Host-" prefix [here](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#attributes).
+
+```js
+session: {
+  name: '__Host-sails.sid'
+}
+```
+
+> Note: Adding this prefix requires the ["secure" flag](#the-secure-flag) to be set to `true`.
+
 ##### Expiration
 
 The maximum age / expiration of your app's session ID cookie can be set as a number of milliseconds.
