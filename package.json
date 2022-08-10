@@ -36,7 +36,7 @@
     "cookie-parser": "1.4.4",
     "cookie-signature": "1.1.0",
     "csurf": "1.10.0",
-    "ejs": "2.5.7",
+    "ejs": "3.1.7",
     "express": "4.17.1",
     "express-session": "1.17.0",
     "flaverr": "^1.10.0",
