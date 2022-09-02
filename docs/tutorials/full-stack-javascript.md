@@ -4,7 +4,7 @@ This video tutorial is an in-depth guide to building your first Node.js/Sails.js
 
 
 #### Links
-+ [Take the course](https://courses.platzi.com/classes/sails-js/)
++ [Take the course](https://platzi.com/cursos/sails-js/)
 + [Try out the demo app (Ration)](https://ration.io)
 + [Download the source code](https://github.com/mikermcneil/ration) for the demo app
 
