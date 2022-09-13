@@ -165,6 +165,12 @@ sails.log('Ok it worked!  The result is:', result);
 
 > This is roughly the same usage you might already be familiar with from [model methods](sailsjs.com/documentation/concepts/models-and-orm/models) like `.create()`.
 
+Additionally, you can add two different chainable methods on helper invocation: `.timeout()` and `.retry()`:
+
+```javascript
+var result = await sails.hellpers.formatWelcomeMessage('Dolly').timeout(5000).retry();
+```
+
 ##### Synchronous usage
 
 If a helper declares the `sync` property, you can also call it without `await`:
