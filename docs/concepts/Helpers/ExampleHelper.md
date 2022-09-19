@@ -52,7 +52,7 @@ module.exports = {
   fn: async function (inputs, exits) {
 
     // Run the query
-    var users = await User.find({
+    const users = await User.find({
       active: true,
       lastLogin: { '>': inputs.activeSince }
     })
@@ -77,13 +77,13 @@ module.exports = {
 To call this helper from app code using the default options (in an action, for example), we would use:
 
 ```javascript
-var users = await sails.helpers.getRecentUsers();
+const users = await sails.helpers.getRecentUsers();
 ```
 
 To alter the criteria for the returned users, we could pass in some values:
 
 ```javascript
-var users = await sails.helpers.getRecentUsers(50);
+const users = await sails.helpers.getRecentUsers(50);
 ```
 
 Or, to get the 10 most recent users who have logged in since St. Patrick's Day, 2017:
@@ -109,7 +109,7 @@ await sails.helpers.getRecentUsers.with({
 Finally, to handle the `noUsersFound` exit explicitly rather than simply treating it like any other error, we can use [`.intercept()`](https://sailsjs.com/documentation/reference/waterline-orm/queries/intercept) or [`.tolerate()`](https://sailsjs.com/documentation/reference/waterline-orm/queries/tolerate):
 
 ```javascript
-var users = await sails.helpers.getRecentUsers(10)
+const users = await sails.helpers.getRecentUsers(10)
 .tolerate('noUsersFound', ()=>{
   // ... handle the case where no users were found. For example:
   sails.log.verbose(
@@ -121,7 +121,7 @@ var users = await sails.helpers.getRecentUsers(10)
 ```
 
 ```javascript
-var users = await sails.helpers.getRecentUsers(10)
+const users = await sails.helpers.getRecentUsers(10)
 .intercept('noUsersFound', ()=>{
   return new Error('Inconceivably, no active users were found for that timeframe.');
 });
