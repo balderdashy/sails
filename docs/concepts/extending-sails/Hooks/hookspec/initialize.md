@@ -17,6 +17,7 @@ initialize: async function() {
 }
 ```
 `initialize` Can either be a `function`, `()=>{}`, or `()=>` we recommend using an arrow function.
+
 _Note that not all arrow function syntax is supported for this parameter to ensure compatibility with existing apps._
 
 
