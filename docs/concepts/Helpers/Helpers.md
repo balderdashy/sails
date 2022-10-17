@@ -168,7 +168,7 @@ sails.log('Ok it worked!  The result is:', result);
 Additionally, you can add two different chainable methods on helper invocation: `.timeout()` and `.retry()`:
 
 ```javascript
-var result = await sails.hellpers.formatWelcomeMessage('Dolly').timeout(5000).retry();
+var result = await sails.helpers.formatWelcomeMessage('Dolly').timeout(5000).retry();
 ```
 
 ##### Synchronous usage
