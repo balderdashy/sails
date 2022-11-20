@@ -9,7 +9,7 @@ In Sails, helpers are the recommended approach for pulling repeated code into a 
 For example, in the course of creating the actions that your Node.js/Sails app uses to respond to client requests, you will sometimes find yourself repeating code in several places.  That can be pretty bug-prone, of course, not to mention annoying.  Fortunately, there's a neat solution: replace the duplicate code with a call to a custom helper:
 
 ```javascript
-var greeting = await sails.helpers.formatWelcomeMessage('Bubba');
+const greeting = await sails.helpers.formatWelcomeMessage('Bubba');
 sails.log(greeting);
 // => "Hello, Bubba!"
 ```
@@ -44,7 +44,7 @@ module.exports = {
 
 
   fn: async function (inputs, exits) {
-    var result = `Hello, ${inputs.name}!`;
+    const result = `Hello, ${inputs.name}!`;
     return exits.success(result);
   }
 
@@ -77,7 +77,7 @@ So, as you might expect, you can provide a default value for an input by setting
 The arguments you pass in when calling a helper correspond with the order of keys in that helper's declared `inputs`.  Alternatively, if you'd rather pass in argins by name, use `.with()`:
 
 ```javascript
-var greeting = await sails.helpers.formatWelcomeMessage.with({ name: 'Bubba' });
+const greeting = await sails.helpers.formatWelcomeMessage.with({ name: 'Bubba' });
 ```
 
 ##### Exits
@@ -96,7 +96,7 @@ Imagine a helper called &ldquo;inviteNewUser&rdquo; which exposes a custom `emai
 For example, if this helper was called from within an action that has its own "badRequest" exit:
 
 ```javascript
-var newUserId = sails.helpers.inviteNewUser('bubba@hawtmail.com')
+const newUserId = sails.helpers.inviteNewUser('bubba@hawtmail.com')
 .intercept('emailAddressInUse', 'badRequest');
 ```
 
@@ -141,7 +141,7 @@ inputs: {
 Then, to use your helper in your actions, you might write code like this:
 
 ```javascript
-var headers = await sails.helpers.parseMyHeaders(req);
+const headers = await sails.helpers.parseMyHeaders(req);
 ```
 
 ### Generating a helper
@@ -159,7 +159,7 @@ This will create a file `api/helpers/foo-bar.js` that can be accessed in your co
 Whenever a Sails app loads, it finds all of the files in `api/helpers/`, compiles them into functions, and stores them in the `sails.helpers` dictionary using the camel-cased version of the filename.  Any helper can then be invoked from your code, simply by calling it with `await`, and providing some argin values:
 
 ```javascript
-var result = await sails.helpers.formatWelcomeMessage('Dolly');
+const result = await sails.helpers.formatWelcomeMessage('Dolly');
 sails.log('Ok it worked!  The result is:', result);
 ```
 
@@ -170,11 +170,26 @@ sails.log('Ok it worked!  The result is:', result);
 If a helper declares the `sync` property, you can also call it without `await`:
 
 ```javascript
-var greeting = sails.helpers.formatWelcomeMessage('Timothy');
+const greeting = sails.helpers.formatWelcomeMessage('Timothy');
 ```
 
 But before you remove `await`, make sure the helper is actually synchronous. Without `await` an asynchronous helper will never execute!
 
+##### Organizing helpers
+If your application uses many helpers, you might find it helpful to group related helpers into subdirectories. For example, imagine you had a number of `user` helpers and several `item` helpers, organized in the following directory structure
+
+```
+api/
+ helpers/
+  user/
+   find-by-username.js
+   toggle-admin-role.js
+   validate-username.js
+  item/
+   set-price.js
+   apply-coupon.js
+```
+When calling these helpers, each subfolder name (e.g. `user` and `item`) becomes an additional property layer in the `sails.helpers` object, so you can call `find-by-username.js` using `sails.helpers.user.findByUsername()` and you can call `set-price.js` with `sails.helpers.item.setPrice()`.
 
 ### Handling exceptions
 
