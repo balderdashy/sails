@@ -191,6 +191,8 @@ api/
 ```
 When calling these helpers, each subfolder name (e.g. `user` and `item`) becomes an additional property layer in the `sails.helpers` object, so you can call `find-by-username.js` using `sails.helpers.user.findByUsername()` and you can call `set-price.js` with `sails.helpers.item.setPrice()`.
 
+> For more information, you can read a [conversation between Ryan Emberling and Mike McNeil](https://www.linkedin.com/feed/update/urn:li:activity:6998946887701565440?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A6998946887701565440%2C7000154787505668096%29) which goes into more detail about this use case, including some general tips and tricks for working with custom helpers and organics.
+
 ### Handling exceptions
 
 For more granular error handling (and even for those exceptional cases that aren't _quite_ errors) you may be used to setting some kind of error code, then sniffing out the error.  This approach works fine, but it can be time-consuming and hard to track.
