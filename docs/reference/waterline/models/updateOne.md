@@ -17,6 +17,8 @@ var updatedRecord = await Something.updateOne(criteria)
 | 1 | criteria            | ((dictionary))    | The [Waterline criteria](https://sailsjs.com/documentation/concepts/models-and-orm/query-language) to use for matching the record in the database.
 | 2 | valuesToSet         | ((dictionary))    | A dictionary (plain JavaScript object) of values that all matching records should be updated to have.  _(Note that if this model is in ["schemaful" mode](https://sailsjs.com/documentation/concepts/models-and-orm/model-settings#?schema), then any extraneous keys will be silently omitted.)_
 
+> **Note**: For performance reasons, as of Sails v1.0 / Waterline 0.13, the `valuesToSet` object passed into this model method will be mutated in-place in most situations (whereas in Sails/Waterline v0.12, this was not necessarily the case).
+
 ##### Result
 
 | Type                | Description      |
