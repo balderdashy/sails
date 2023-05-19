@@ -109,7 +109,6 @@ _Please carefully read our [contribution guide](http://sailsjs.com/documentation
 - [Roadmap](https://trello.com/b/s9zEnyG7/sails-v1)
 - [Twitter (@sailsjs)](https://twitter.com/sailsjs)
 - [Facebook](https://www.facebook.com/sailsjs)
-- [Newsgroup](https://groups.google.com/forum/#!forum/sailsjs)
 
 ## Team
 Sails is actively maintained with the help of many amazing [contributors](https://github.com/balderdashy/sails/graphs/contributors).  Our core team consists of:
