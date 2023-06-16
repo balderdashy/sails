@@ -16,6 +16,8 @@ or
 |---|:--------------------|------------------------------|:--------------------------------------|
 | 1 | initialValues       | ((dictionary))               | The initial values for the new record.  _(Note that, if this model is in ["schemaful" mode](https://sailsjs.com/documentation/concepts/models-and-orm/model-settings#?schema), then any extraneous keys will be silently omitted.)_
 
+> **Note**: For performance reasons, as of Sails v1.0 / Waterline 0.13, the `initialValues` dictionary passed into this model method will be mutated in-place in most situations (whereas in Sails/Waterline v0.12, this was not necessarily the case).
+
 ##### Result
 
 | Type                | Description      |

@@ -17,6 +17,7 @@ or
 |---|:--------------------|----------------------------------------------|:-----------------------------------|
 | 1 |  initialValues      | ((array?))                                   | An array of dictionaries with attributes for the new records.
 
+> **Note**: For performance reasons, as of Sails v1.0 / Waterline 0.13, the dictionaries in the `initialValues` array passed into this model method will be mutated in-place in most situations (whereas in Sails/Waterline v0.12, this was not necessarily the case).
 
 
 ##### Result
