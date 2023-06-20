@@ -255,13 +255,13 @@ describe('blueprints :: ', function() {
           force: true,
           destination: 'api/controllers/NoController.js',
           string: 'module.exports = { _config: { actions: false }, test: function (req, res) { return res.ok(); } }'
-        }).execSync();
+        }).now();
 
         Filesystem.writeSync({
           force: true,
           destination: 'api/controllers/YesController.js',
           string: 'module.exports = { test: function (req, res) { return res.ok(); } }'
-        }).execSync();
+        }).now();
 
         (new Sails()).load({
           hooks: {

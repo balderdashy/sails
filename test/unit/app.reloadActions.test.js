@@ -33,7 +33,7 @@ describe('sails.reloadActions ::', function() {
         force: true,
         destination: 'api/controllers/TopLevelController.js',
         string: 'module.exports = { fnAction: function (req, res) { res.send(\'fn controller action!\'); } };'
-      }).execSync();
+      }).now();
 
       // Load the Sails app.
       (new Sails()).load({
@@ -66,12 +66,12 @@ describe('sails.reloadActions ::', function() {
         force: true,
         destination: 'api/controllers/TopLevelController.js',
         string: 'module.exports = { fnAction: function (req, res) { res.send(\'fn controller action!\'); }, machineAction: { fn: function (inputs, exits) { exits.success(\'machine!\'); } } };'
-      }).execSync();
+      }).now();
       Filesystem.writeSync({
         force: true,
         destination: 'api/controllers/nested/standalone-action.js',
         string: 'module.exports = function (req, res) { res.send(\'standalone action!\'); };'
-      }).execSync();
+      }).now();
       sailsApp.reloadActions(function(err) {
         if (err) {return done(err);}
         assert(sailsApp._actions['toplevel/fnaction'], 'Expected to find a `toplevel/fnaction` action, but didn\'t.');

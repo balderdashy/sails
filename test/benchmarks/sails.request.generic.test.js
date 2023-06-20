@@ -8,8 +8,6 @@ var tmp = require('tmp');
 var _ = require('@sailshq/lodash');
 var request = require('request');
 
-var Filesystem = require('machinepack-fs');
-
 var appHelper = require('../integration/helpers/appHelper');
 var Sails = require('../../lib').constructor;
 var benchmarx = require('./helpers/benchmarx');
