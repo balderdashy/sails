@@ -60,7 +60,7 @@
     "rttc": "^10.0.0-0",
     "sails-generate": "^2.0.3",
     "sails-stringfile": "^0.3.3",
-    "semver": "4.3.6",
+    "semver": "7.5.2",
     "serve-favicon": "2.4.5",
     "serve-static": "1.13.1",
     "skipper": "^0.9.0-0",
