@@ -41,6 +41,33 @@ will match all paths that *start* with **/user/foo**.
 
 > **Note:** When using a route with a wildcard, such as `'/*'`, be aware that this will also match requests to static assets (i.e. `/js/dependencies/sails.io.js`) and override them. To prevent this, consider using the `skipAssets` option [described below](https://sailsjs.com/documentation/concepts/routes/custom-routes#?route-target-options).
 
+To receive the runtime value corresponding with this wildcard (`*`) in a [modern Sails action](https://sailsjs.com/documentation/concepts/actions-and-controllers#?what-does-an-action-file-look-like), use `urlWildcardSuffix` at the top level of your action definition to indicate the name of the input you would like to use to represent the dynamic value:
+
+
+```javascript
+urlWildcardSuffix: 'template',
+inputs: {
+  template: {
+    description: 'The relative path to an EJS template within our `views/emails/` folder -- WITHOUT the file extension.',
+    extendedDescription: 'Use strings like "foo" or "foo/bar", but NEVER "foo/bar.ejs" or "/foo/bar".  For example, '+
+      '"internal/email-contact-form" would send an email using the "views/emails/internal/email-contact-form.ejs" template.',
+    example: 'email-reset-password',
+    type: 'string',
+    required: true
+  },
+},
+fn: async function({ template }) {
+  // …
+}
+```
+
+
+### Notes
+> - Alternatively, in a classic (req,res) action, you can use `req.param('0')` to access the dynamic value of a route's URL wildcard suffix (`*`).
+> - For more background, see https://www.npmjs.com/package/machine-as-action
+
+
+
 Another way to capture parts of the address is to use **pattern variables**.  This lets a route match special named parameters which _never contain any `/` characters_ by using the `:paramName` pattern variable syntax instead of the `*`:
 
 ```js
@@ -56,6 +83,19 @@ Or for an optional path parameter, add `?` to the end of the pattern variable:
 This will match _almost_ the same requests as `/user/foo/bar/*`, but will provide the value of the dynamic portions of the route URL to the route handler as parameter values (e.g. `req.param('name')`).
 
 > Note that the wildcard (`*`) syntax matches slashes, where the URL pattern variable (`:`) syntax does not.  So in the example above, given the route address `GET /user/foo/bar/*`, incoming requests with URLs like `/user/foo/bar/baz/bing/bong/bang` would match (whereas if you used the `:name` syntax, the same URL would not match.)
+
+# URL slugs
+A common use case for explicit routes is the design of slugs or [vanity URLs](http://en.wikipedia.org/wiki/Clean_URL#Slug).  For example, consider the URL of a repository on Github, [`http://www.github.com/balderdashy/sails`](http://www.github.com/balderdashy/sails).  In Sails, we might define this route at the **bottom of our `config/routes.js` file** like so:
+
+```javascript
+'get /:account/:repo': {
+  controller: 'RepoController',
+  action: 'show',
+  skipAssets: true
+}
+```
+
+In your `RepoController`'s `show` action, we'd use `req.param('account')` and `req.param('repo')` to look up the data for the appropriate repository, then pass it in to the appropriate [view](https://sailsjs.com/documentation/concepts/Views) as [locals](https://sailsjs.com/documentation/concepts/views/locals).  The [`skipAssets` option](https://sailsjs.com/documentation/concepts/routes/custom-routes#?route-target-options) ensures that the vanity route doesn't accidentally match any of our [assets](https://sailsjs.com/documentation/concepts/assets) (e.g. `/images/logo.png`), so they are still accessible.
 
 ### Regular expressions in addresses
 
@@ -218,7 +258,7 @@ In addition to the options discussed in the various route target syntaxes above,
 
 | Property    | Applicable Target Types       | Data Type | Details |
 |-------------|:----------:|-----------|-----------|
-|`skipAssets`|all|((boolean))|Set to `true` if you *don't* want the route to match URLs with dots in them (e.g. **myImage.jpg**).  This will keep your routes with [wildcard notation](https://sailsjs.com/documentation/concepts/routes/custom-routes#?wildcards-and-dynamic-parameters) from matching URLs of static assets.  Useful when creating [URL slugs](https://sailsjs.com/documentation/concepts/routes/url-slugs).|
+|`skipAssets`|all|((boolean))|Set to `true` if you *don't* want the route to match URLs with dots in them (e.g. **myImage.jpg**).  This will keep your routes with [wildcard notation](https://sailsjs.com/documentation/concepts/routes/custom-routes#?wildcards-and-dynamic-parameters) from matching URLs of static assets.  Useful when creating [URL slugs](https://sailsjs.com/documentation/concepts/routes#url-slugs).|
 |`skipRegex`|all|((regexp))|If skipping every URL containing a dot is too permissive, or you need a route's handler to be skipped based on different criteria entirely, you can use `skipRegex`.  This option allows you to specify a regular expression or array of regular expressions to match the request URL against; if any of the matches are successful, the handler is skipped.  Note that unlike the syntax for binding a handler with a regular expression, `skipRegex` expects *actual [RegExp objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp)*, not strings.|
 |`locals`|[controller](https://sailsjs.com/documentation/concepts/routes/custom-routes#?controller-action-target-syntax), [view](https://sailsjs.com/documentation/concepts/routes/custom-routes#?view-target-syntax), [blueprint](https://sailsjs.com/documentation/concepts/routes/custom-routes#?routing-to-blueprint-actions), [response](https://sailsjs.com/documentation/concepts/routes/custom-routes#?response-target-syntax)|((dictionary))|Sets default [local variables](https://sailsjs.com/documentation/reference/response-res/res-view?q=arguments) to pass to any view that is rendered while handling the request.|
 |`cors`|all|((dictionary)) or ((boolean)) or ((string))|Specifies how to handle requests for this route from a different origin.  See the [main CORS documentation](https://sailsjs.com/documentation/concepts/security/cors) for more info.|
