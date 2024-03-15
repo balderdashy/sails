@@ -14,7 +14,7 @@ The Sails.js core runs when an app is fired up with `sails.load` or `sails.lift`
 
 ## Stability Index
 
-See the [Sails Project Stability Index](https://github.com/balderdashy/sails-docs/blob/master/contributing/stability-index.md) for more information.  We use a slight variation of the [stability index] used by [Node.js core](http://nodejs.org/api/documentation.html#documentation_stability_index); partially out of allegiance, but mostly for consistency.
+See the [Sails Project Stability Index](https://github.com/balderdashy/sails/blob/master/docs/contributing/stability-index.md) for more information.  We use a slight variation of the [stability index] used by [Node.js core](http://nodejs.org/api/documentation.html#documentation_stability_index); partially out of allegiance, but mostly for consistency.
 
 
 ## FAQ
