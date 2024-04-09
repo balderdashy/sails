@@ -71,7 +71,7 @@ url: 'postgresql://user:password@host:port/database',
 
 > + The default port for PostgreSQL is `5432`.
 > + In addition to `adapter` and `url`, you might also need to set `ssl: true`.  This depends on where your PostgreSQL database server is hosted.  For example, `ssl: true` is required when connecting to Heroku's hosted PostgreSQL service.
-> + Note that in `pg@8.0` the syntax was updated to `ssl: { rejectUnauthorized: false }`.
+> + Note that in `pg` version 8.0, the syntax was updated to `ssl: { rejectUnauthorized: false }`.
 > + Compatible with most versions of Postgres. See [this issue](https://github.com/balderdashy/sails/issues/6957) to learn more about compatability with Postgres >12
 
 ### sails-mongo
@@ -91,6 +91,8 @@ url: 'mongodb://user:password@host:port/database',
 
 > + The default port for MongoDB is `27017`.
 > + If your Mongo deployment keeps track of its internal credentials in a separate database, then you may need to name that database by tacking on [`?authSource=theotherdb`](https://stackoverflow.com/a/40608735/486547) to the end of the connection URL.
+> + Other [Mongo configuration settings](https://github.com/balderdashy/sails-mongo/blob/master/lib/private/constants/config-whitelist.constant.js) provided via querystring in the connection URL are passed through to the underlying Mongo driver.
+
 
 
 ### sails-disk
