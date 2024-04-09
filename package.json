@@ -58,7 +58,7 @@
     "rc": "1.2.8",
     "router": "1.3.2",
     "rttc": "^10.0.0-0",
-    "sails-generate": "^2.0.3",
+    "sails-generate": "^2.0.11",
     "sails-stringfile": "^0.3.3",
     "semver": "7.5.2",
     "serve-favicon": "2.4.5",
