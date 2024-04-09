@@ -24,7 +24,7 @@
     "npm": ">= 1.4.0"
   },
   "dependencies": {
-    "@sailshq/lodash": "^3.10.2",
+    "@sailshq/lodash": "^3.10.6",
     "async": "2.6.4",
     "captains-log": "^2.0.5",
     "chalk": "2.3.0",
