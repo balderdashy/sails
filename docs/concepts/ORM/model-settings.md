@@ -75,7 +75,7 @@ customToJSON: function() { /*...*/ }
 | ------------ |:------------------------|:--------------|
 | ((function)) | _See below._            | _n/a_         |
 
-Adding the `customToJSON` setting to a model changes the way that the model&rsquo;s records are _stringified_.  In other words, it allows you to inject custom logic that runs any time one of these records are passed into `JSON.stringify()`.  This is most commonly used to implement a failsafe, making sure sensitive data like user passwords aren't accidentally included in a response (since [`res.send()`](https://sailsjs.com/documentation/reference/response-res/res-send) and actions2 may stringify data before sending).
+Adding the `customToJSON` setting to a model changes the way that the model&rsquo;s records are _stringified_.  In other words, it allows you to inject custom logic that runs any time one of these records are passed into `JSON.stringify()`.  This is most commonly used to implement a failsafe, making sure sensitive data like user passwords aren't accidentally included in a response (since [`res.send()`](https://sailsjs.com/documentation/reference/response-res/res-send) and actions may stringify data before sending).
 
 The `customToJSON` function takes no arguments, but provides access to the record as the `this` variable.  This allows you to omit sensitive data and return the sanitized result, which is what `JSON.stringify()` will actually use when generating a JSON string.  For example:
 
