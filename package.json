@@ -79,7 +79,7 @@
     "mocha": "3.0.2",
     "nunjucks": "3.0.1",
     "portfinder": "1.0.13",
-    "request": "2.83.0",
+    "@sailshq/request": "2.83.3",
     "root-require": "0.3.1",
     "sails-hook-orm": "^4.0.2",
     "sails-hook-sockets": "^3.0.0",
