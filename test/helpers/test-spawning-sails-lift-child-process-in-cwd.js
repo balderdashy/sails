@@ -4,7 +4,7 @@
 
 var path = require('path');
 var _ = require('@sailshq/lodash');
-var request = require('request');
+var request = require('@sailshq/request');
 var MProcess = require('machinepack-process');
 var testSpawningSailsChildProcessInCwd = require('./test-spawning-sails-child-process-in-cwd');
 

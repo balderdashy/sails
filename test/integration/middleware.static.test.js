@@ -3,11 +3,11 @@
  */
 
 var _ = require('@sailshq/lodash');
-var request = require('request');
+var request = require('@sailshq/request');
 var Sails = require('../../lib').Sails;
 var assert = require('assert');
 var fs = require('fs-extra');
-var request = require('request');
+var request = require('@sailshq/request');
 var appHelper = require('./helpers/appHelper');
 var path = require('path');
 
