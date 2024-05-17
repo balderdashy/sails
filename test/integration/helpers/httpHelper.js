@@ -1,4 +1,4 @@
-var request = require('request');
+var request = require('@sailshq/request');
 var fs = require('fs');
 
 

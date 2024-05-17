@@ -1,6 +1,6 @@
 var assert = require('assert');
 var fs = require('fs');
-var request = require('request');
+var request = require('@sailshq/request');
 var appHelper = require('./helpers/appHelper');
 var path = require('path');
 

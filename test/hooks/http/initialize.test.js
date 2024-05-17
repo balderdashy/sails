@@ -6,7 +6,7 @@ var assert = require('assert');
 var util = require('util');
 var Sails = require('../../../lib').Sails;
 var $Router = require('../../helpers/router');
-var request = require('request');
+var request = require('@sailshq/request');
 
 describe('HTTP hook', function (){
 
