@@ -55,12 +55,12 @@ describe('Starting sails server with `sails lift`, `sails console` or `node app.
         force: true,
         destination: 'api/controllers/getconf.js',
         string: 'module.exports = function (req, res) { return res.json(sails.config); }'
-      }).execSync();
+      }).now();
       Filesystem.writeSync({
         force: true,
         destination: 'config/routes.js',
         string: 'module.exports.routes = { \'get /getconf\': \'getconf\' };'
-      }).execSync();
+      }).now();
 
     });
 
