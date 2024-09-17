@@ -91,7 +91,7 @@ describe('middleware :: ', function() {
           },
           function(err, response, body) {
             assert.equal(test_file.toString('utf-8'), body);
-            assert.equal(response.headers['content-type'], 'application/font-woff');
+            assert.equal(response.headers['content-type'], 'font/woff');
             return done();
           }
         );
