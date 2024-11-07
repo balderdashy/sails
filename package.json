@@ -36,7 +36,7 @@
     "cookie": "0.7.2",
     "cookie-parser": "1.4.7",
     "cookie-signature": "1.1.0",
-    "csurf": "1.10.0",
+    "@sailshq/csurf": "1.11.1",
     "ejs": "3.1.10",
     "express": "4.21.1",
     "express-session": "1.18.1",
