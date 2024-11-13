@@ -1,5 +1,9 @@
 # Sails Changelog
 
+## master
+
+- Switch from an exclude list to an allow list for file extensions when loading services and the like
+
 ## 1.2.0
 
 - Added `sails migrate` for quickly running auto-migrations by hand
