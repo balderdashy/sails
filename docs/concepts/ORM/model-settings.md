@@ -86,7 +86,7 @@ customToJSON: function() {
 }
 ```
 
-The customToJSON function is deisgned not to support async capabilities. This allows synchronous bits in core to stay synchronous and provide better stability to the system as a whole.
+The customToJSON function is designed not to support async capabilities. This allows synchronous bits in core to stay synchronous and provide better stability to the system as a whole.
 
 > Note that the `this` variable available in `customToJSON` is a _direct reference to the actual record object_, so be careful not to modify it.  In other words, avoid writing code like `delete this.password`.  Instead, use methods like `_.omit()` or `_.pick()` to get a _copy_ of the record.  Or just construct a new dictionary and return that (e.g. `return { foo: this.foo }`).
 
