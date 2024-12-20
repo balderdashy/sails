@@ -9,7 +9,7 @@ A hook is a Node module that adds functionality to the Sails core.  The [hook sp
 There are three types of hooks available in Sails:
 
 1. **Core hooks** are built in and provide many of the common features essential to a Sails app, such as request handling, blueprint route creation, and database integration via [Waterline](https://sailsjs.com/documentation/concepts/models-and-orm).  Core hooks are bundled with the Sails core and are thus available to every app.  You will rarely need to call core hook methods in your code.
-2. **App-level hooks** live in the `api/hooks/` folder of a Sails app.  Project hooks let you take advantage of the features of the hook system for code that doesn&rsquo;t need to be shared between apps.
+2. **Project-level hooks** live in the `api/hooks/` folder of a Sails app.  Project hooks let you take advantage of the features of the hook system for code that doesn&rsquo;t need to be shared between apps.
 3. **Installable hooks** are plugins, installed into an app&rsquo;s `node_modules` folder using `npm install`.  Installable hooks allow developers in the Sails community to create &ldquo;plug-in&rdquo;-like modules for use in Sails apps.
 
 ### Read more
