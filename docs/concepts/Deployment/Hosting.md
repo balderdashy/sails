@@ -129,6 +129,11 @@ More 2013:
  + [Install Sails.js on Ubuntu (2014)](https://www.rosehosting.com/blog/install-the-sails-js-framework-on-an-ubuntu-vps/)
 
 
+### Cleavr.io
+
+ + [Deploying a Sails.js application to popular VPS hosting providers using Cleavr.io](https://docs.cleavr.io/guides/sails)
+
+
 ### More options
 
 + Like [Heroku](https://stackshare.io/heroku), there are many [other Platform as a Service (PaaS) solutions that support Node.js/Sails.js](https://stackshare.io/heroku/alternatives).
