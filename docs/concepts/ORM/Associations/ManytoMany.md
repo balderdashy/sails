@@ -61,13 +61,13 @@ To associate records together, the Model method [.addToCollection()](https://sai
 ```javascript
 // To add a Pet to a user's `pets` collection where the User has an id of
 // 10 and the Pet has an id of 300.
-await User.addToCollection(10, 'pets', 300);
+await User.addToCollection(10, 'pets').members(300);
 ```
 
 You can also add multiple pets at once:
 
 ```javascript
-await User.addToCollection(10, 'pets', [300, 301]);
+await User.addToCollection(10, 'pets').members([300, 301]);
 ```
 
 Removing associations is just as easy using the [.removeFromCollection()](https://sailsjs.com/documentation/reference/waterline-orm/models/remove-from-collection) method. It works the same way as  `addToCollection`:
@@ -75,13 +75,13 @@ Removing associations is just as easy using the [.removeFromCollection()](https:
 ```javascript
 // To remove a User from a pet's collection of owners where the User has an id of
 // 10 and the Pet has an id of 300.
-await Pet.removeFromCollection(300, 'owners', 10);
+await Pet.removeFromCollection(300, 'owners').members(10);
 ```
 
 And you can remove multiple owners at once:
 
 ```javascript
-await Pet.removeFromCollection(300, 'owners', [10, 12]);
+await Pet.removeFromCollection(300, 'owners').members([10, 12]);
 ```
 
 Note that adding or removing associated records from one side of a many-to-many relationship will automatically affect the other side.  For example, adding records to the `pets` attribute of a `User` model record with `.addToCollection()` will immediately affect the `owners` attributes of the linked `Pet` records.
