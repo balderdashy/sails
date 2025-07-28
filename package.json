@@ -31,7 +31,7 @@
     "chalk": "2.3.0",
     "commander": "2.11.0",
     "common-js-file-extensions": "1.0.2",
-    "compression": "1.7.1",
+    "compression": "1.8.1",
     "connect": "3.6.5",
     "cookie": "0.7.2",
     "cookie-parser": "1.4.7",
