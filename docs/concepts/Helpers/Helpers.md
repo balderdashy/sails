@@ -165,6 +165,58 @@ sails.log('Ok it worked!  The result is:', result);
 
 > This is roughly the same usage you might already be familiar with from [model methods](sailsjs.com/documentation/concepts/models-and-orm/models) like `.create()`.
 
+##### `.timeout(ms)`
+
+The `.timeout()` method sets a maximum number of milliseconds to wait for the helper to complete. If execution takes longer than the specified time, it will throw a `TimeoutError`.
+
+```javascript
+// Throws TimeoutError if the helper takes longer than 5 seconds
+var result = await sails.helpers.someLongRunningTask()
+  .timeout(5000);
+```
+
+You can use `0` to disable any timeout that may have been set by the helper's implementation.
+
+##### `.retry(negotiationRule, retryDelaySeries)`
+
+The `.retry()` method attaches an exponential backoff and retry strategy to the helper invocation. When the helper fails, it will automatically retry after a delay.
+
+| Argument | Type | Description |
+|----------|------|-------------|
+| `negotiationRule` | String, Object, or Array | _(Optional)_ Specifies which errors should trigger a retry. Can be an error code string (e.g. `'TimeoutError'`), a dictionary (e.g. `{code: 'E_TIMEOUT'}`), or an array of rules. If omitted, retries on any error. |
+| `retryDelaySeries` | Array of Numbers | _(Optional)_ An array of milliseconds to wait between each retry attempt. The length of the array determines the number of retries. Defaults to `[250, 500, 1000]` (3 retries with increasing delays). |
+
+```javascript
+// Retry up to 3 times with default delays (250ms, 500ms, 1000ms)
+var result = await sails.helpers.riskyOperation()
+  .retry();
+
+// Retry only on TimeoutError
+var result = await sails.helpers.externalApiCall()
+  .retry('TimeoutError');
+
+// Retry with custom exponential backoff (4 retries: 1s, 2s, 4s, 8s)
+var result = await sails.helpers.flakyService()
+  .retry('TimeoutError', [1000, 2000, 4000, 8000]);
+```
+
+##### Chaining `.timeout()` and `.retry()`
+
+These methods are fully chainable with each other and with other helper modifiers like `.intercept()` and `.tolerate()`:
+
+```javascript
+var data = await sails.helpers.externalApiCall(apiPayload)
+  .timeout(10000)
+  .retry('TimeoutError', [1000, 2000, 5000])
+  .intercept('serviceUnavailable', 'backboneError')
+  .intercept((err) => {
+    sails.log.error('API call failed:', err);
+    return err;
+  });
+```
+
+When combining `.timeout()` with `.retry()`, the timeout applies to each individual attempt, not the total elapsed time across all retries.
+
 ##### Synchronous usage
 
 If a helper declares the `sync` property, you can also call it without `await`:
