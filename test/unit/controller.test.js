@@ -48,55 +48,55 @@ describe('controllers :: ', function() {
         force: true,
         destination: 'api/controllers/TopLevelLegacyController.js',
         string: 'module.exports = { fnAction: function (req, res) { res.send(\'legacy fn action!\'); }, machineAction: { exits: {success: {outputExample: \'abc123\'} }, fn: function (inputs, exits) { exits.success(\'legacy machine action!\'); } }, underscore_action: function(req, res) { return res.send(); }, \'action-with-dashes\': function(req, res) {  return res.send(); } };'
-      }).execSync();
+      }).now();
       // Create a top-level action file with a req/res function.
       Filesystem.writeSync({
         force: true,
         destination: 'api/controllers/top-level-standalone-fn.js',
         string: 'module.exports = function (req, res) { res.send(\'top level standalone fn!\'); };'
-      }).execSync();
+      }).now();
       // Create a top-level action file with a machine.
       Filesystem.writeSync({
         force: true,
         destination: 'api/controllers/top-level-standalone-machine.js',
         string: 'module.exports = { exits: {success: {outputExample: \'abc123\'} },  fn: function (inputs, exits) { exits.success(\'top level standalone machine!\'); } };'
-      }).execSync();
+      }).now();
       // Create a nested legacy controller file.
       Filesystem.writeSync({
         force: true,
         destination: 'api/controllers/someFolder/someOtherFolder/NestedLegacyController.js',
         string: 'module.exports = { fnAction: function (req, res) { res.send(\'nested legacy fn action!\'); }, machineAction: { exits: {success: {outputExample: \'abc123\'} },  fn: function (inputs, exits) { exits.success(\'nested legacy machine action!\'); } } };'
-      }).execSync();
+      }).now();
       // Create a nested legacy controller file, with dots in the subdirectory.
       Filesystem.writeSync({
         force: true,
         destination: 'api/controllers/some.folder/some.other.folder/NestedLegacyController.js',
         string: 'module.exports = { fnAction: function (req, res) { res.send(\'nested legacy fn action!\'); }, machineAction: { exits: {success: {outputExample: \'abc123\'} },  fn: function (inputs, exits) { exits.success(\'nested legacy machine action!\'); } } };'
-      }).execSync();
+      }).now();
       // Create a nested action file with a machine.
       Filesystem.writeSync({
         force: true,
         destination: 'api/controllers/someFolder/someOtherFolder/nested-standalone-machine.js',
         string: 'module.exports = { exits: {success: {outputExample: \'abc123\'} },  fn: function (inputs, exits) { exits.success(\'nested standalone machine!\'); } };'
-      }).execSync();
+      }).now();
       // Create an invalid legacy controller (doesn't contain a dictionary)
       Filesystem.writeSync({
         force: true,
         destination: 'api/controllers/LegacyControllerWithFn.js',
         string: 'module.exports = function (req, res) { return res.send(\'garbage\'); };'
-      }).execSync();
+      }).now();
       // Create an invalid action (doesn't contain a machine)
       Filesystem.writeSync({
         force: true,
         destination: 'api/controllers/invalid-action.js',
         string: 'module.exports = {};'
-      }).execSync();
+      }).now();
       // Create an invalid file (doesn't conform to naming conventions)
       Filesystem.writeSync({
         force: true,
         destination: 'api/controllers/invalidLyNamed-fileController.js',
         string: 'module.exports = {};'
-      }).execSync();
+      }).now();
 
       // Write a routes.js file
       Filesystem.writeSync({
@@ -141,7 +141,7 @@ describe('controllers :: ', function() {
           },
 
         })
-      }).execSync();
+      }).now();
 
       // Load the Sails app.
       (new Sails()).load({hooks: {security: false, grunt: false, views: false, blueprints: false, policies: false, pubsub: false}, log: {level: 'error'}}, function(err, _sails) {
@@ -320,13 +320,13 @@ describe('controllers :: ', function() {
         force: true,
         destination: 'api/controllers/TopLevelController.js',
         string: 'module.exports = { fnAction: function (req, res) { res.send(\'fn controller action!\'); } };'
-      }).execSync();
+      }).now();
       // Create a top-level action file with a req/res function.
       Filesystem.writeSync({
         force: true,
         destination: 'api/controllers/toplevel/fnaction.js',
         string: 'module.exports = function (req, res) { res.send(\'standalone fn!\'); };'
-      }).execSync();
+      }).now();
 
       return done();
 
@@ -371,7 +371,7 @@ describe('controllers :: ', function() {
         force: true,
         destination: 'api/controllers/MicroControllerController.js',
         string: 'module.exports = { \'check\': function(req, res) {  return res.send(\'mate\'); } };'
-      }).execSync();
+      }).now();
 
       // Write a routes.js file
       Filesystem.writeSync({
@@ -382,7 +382,7 @@ describe('controllers :: ', function() {
           'GET /microcontroller/:id/check2': { controller: 'MicroControllerController', action: 'check' },
           'GET /microcontroller/:id/check3': 'microcontroller/check'
         })
-      }).execSync();
+      }).now();
 
       // Load the Sails app.
       (new Sails()).load({hooks: {security: false, grunt: false, views: false, blueprints: false, policies: false, pubsub: false}, log: {level: 'error'}}, function(err, _sails) {
