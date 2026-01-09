@@ -19,7 +19,7 @@ Shipwright is the modern asset pipeline for Sails.js, powered by [Rsbuild](https
 ### Installation
 
 ```bash
-npm install sails-hook-shipwright --save
+npm install sails-hook-shipwright --save-dev
 ```
 
 Disable the grunt hook in `.sailsrc`:
