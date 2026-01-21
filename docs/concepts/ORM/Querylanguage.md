@@ -235,9 +235,29 @@ _For performance reasons, case-sensitivity of `endsWith` depends on the database
 Query options allow you refine the results that are returned from a query. They are used
 in conjunction with a `where` key. The current options available are:
 
+* `select`
+* `omit`
 * `limit`
 * `skip`
 * `sort`
+
+#### Select
+
+Chooses which attributes to return from a query. Note that `id` is always
+returned, even if not included in the `select` list.
+
+```usage
+Model.find({ select: ['name'] })
+```
+
+#### Omit
+
+Chooses which attributes to omit from a query. All attributes except for the
+given attributes will be returned.
+
+```usage
+Model.find({ omit: ['middleName'] })
+```
 
 #### Limit
 
