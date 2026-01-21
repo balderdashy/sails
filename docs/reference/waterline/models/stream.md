@@ -25,6 +25,8 @@ _Use one of the following:_
 + `.eachRecord(async (record)=>{ ... })`
 + `.eachBatch(async (records)=>{ ... })`
 
+`eachRecord` and `eachBatch` can be provided either a `function`, `()=>{}`, or `()=>` we recommend using an arrow function. _Note that not all arrow function syntax is supported for this parameter to ensure compatibility with existing apps._ 
+
 _The custom function you provide to `eachRecord()` or `eachBatch()` will receive the following arguments:_
 
 <br/>
