@@ -38,7 +38,7 @@
     "cookie-signature": "1.1.0",
     "@sailshq/csurf": "1.11.1",
     "ejs": "3.1.10",
-    "express": "4.21.2",
+    "express": "4.22.0",
     "express-session": "1.18.2",
     "flaverr": "^1.10.0",
     "glob": "7.1.2",
