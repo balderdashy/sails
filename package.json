@@ -56,7 +56,6 @@
     "path-to-regexp": "1.9.0",
     "pluralize": "1.2.1",
     "prompt": "1.2.1",
-    "rc": "1.2.8",
     "rttc": "^10.0.0-0",
     "sails-generate": "^2.0.11",
     "sails-stringfile": "^0.3.3",
