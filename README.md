@@ -41,8 +41,6 @@ cd my-app
 sails lift
 ```
 
-[![Screenshot from the original Sails video](http://i.imgur.com/Ii88jlhl.png)](https://sailsjs.com/get-started)
-
 For the most up-to-date introduction to Sails, [get started here](https://sailsjs.com/get-started).
 
 ## Compatibility
