@@ -6,6 +6,14 @@ Lifecycle callbacks are functions that are called before or after certain model 
 
 Sails exposes a handful of lifecycle callbacks by default:
 
+##### Lifecycle callbacks on `.find()`
+
+  - afterFind: fn(populatedRecords, proceed)
+
+##### Lifecycle callbacks on `.findOne()`
+
+  - afterFindOne: fn(thePopulatedRecord, proceed)
+
 ##### Lifecycle callbacks on `.create()`
 
 The `afterCreate` lifecycle callback will only be run on queries that have the `fetch` meta flag set to `true`. For more information on using the `meta` flags, see [Waterline Queries](https://sailsjs.com/documentation/reference/waterline-orm/queries/meta).
