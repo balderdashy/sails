@@ -30,6 +30,7 @@ Feature                                          | Proposal                     
  :---------------------------------------------- | :------------------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------
  Allow select/omit clauses when populating a singular association | https://trello.com/c/yM9WPxzr/107-waterline-fs2q-tolerate-a-subcriteria-being-provided-to-populate-for-a-singular-associations-but-only-if-it-exclusively-contains | Don't throw an error if these clauses are included in a `populate` for a singular association (but still error if actual "where" criteria are used)
  Generate `test/` folder in new Sails apps       | [#2499](https://github.com/balderdashy/sails/pull/2499#issuecomment-171556544)        | Generate a generic setup for mocha tests in all new Sails apps.  Originally suggested by [@jedd-ahyoung](https://github.com/jedd-ahyoung).
+ Add support for Vuejs templates | | Since consolidate doesn't support Vuejs templates, I think it should be useful for a lot of web developers to be able to use this templates as it makes it much easier to work on the client-side while using Sails global variables inside. The express-vue module can solve that, but it uses a .renderVue() function which is not native .view() Sail's function and so we can't use Sail's globale variables inside Vuejs templates.
 
 
 
