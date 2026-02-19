@@ -41,6 +41,7 @@ url: 'mysql://user:password@host:port/database',
 > + If you plan on saving special characters&mdash;like emojis&mdash;in your data, you may need to set the [`charset`](https://dev.mysql.com/doc/refman/5.7/en/charset-charsets.html) configuration option for your datastore.  To allow emojis, use `charset: 'utf8mb4'`.  You may use the [`columnType` setting](https://sailsjs.com/documentation/concepts/models-and-orm/attributes#?columntype) in a model attribute to set the character set.
 > + For relational database servers like MySQL and PostgreSQL, you may have to create a "database" first using a free tool like [SequelPro](https://www.sequelpro.com/) or in the MySQL REPL on the command-line (if you're an experience SQL user). It's customary to make a database specifically for your app to use.
 > + The sails-mysql adapter is also 100% compatible with [Amazon Aurora](https://aws.amazon.com/rds/aurora/) databases.
+> + The sails-mysql adapter is also 100% compatible with MariaDB
 
 ##### Handshake inactivity timeout errors
 If you find yourself encountering a "Handshake inactivity timeout" error when your Sails app interacts with MySQL, you can increase the timeout using the `connectTimeout` option.  This is [usually only necessary](https://github.com/mysqljs/mysql/issues/1434) when queries are running side-by-side with computationally expensive operations (for example, compiling client-side typescript files or running webpack during development).
