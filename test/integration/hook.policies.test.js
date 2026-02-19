@@ -33,7 +33,7 @@ describe('policies :: ', function() {
         force: true,
         destination: 'api/policies/err.js',
         string: 'module.exports = function(req, res, next) {return res.serverError(\'Test Error\');}'
-      }).execSync();
+      }).now();
 
     });
 
@@ -735,7 +735,7 @@ describe('policies :: ', function() {
           force: true,
           destination: 'api/policies/err.js',
           string: 'module.exports = {"foo": "bar"}'
-        }).execSync();
+        }).now();
 
         return done();
       });

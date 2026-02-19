@@ -33,7 +33,7 @@ describe('helpers :: ', function() {
         force: true,
         destination: 'api/helpers/greet.js',
         string: 'module.exports = { inputs: { name: { example: \'bob\', required: true } }, exits: { success: { outputExample: \'Hi, Bob!\'} }, fn: function (inputs, exits) { return exits.success(\'Hi, \' + inputs.name + \'!\'); } }'
-      }).execSync();
+      }).now();
 
       (new Sails()).load({
         hooks: {
