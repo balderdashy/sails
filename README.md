@@ -57,12 +57,10 @@ Community adapters exist for [CouchDB](https://github.com/search?q=sails+couch&n
 [Amazon RDS](https://github.com/TakenPilot/sails-rds), [DynamoDB](https://github.com/TakenPilot/sails-dynamodb), [Azure Tables](https://github.com/azuqua/sails-azuretables), [RethinkDB](https://github.com/gutenye/sails-rethinkdb) and [Solr](https://github.com/sajov/sails-solr); for various 3rd-party REST APIs like Quickbooks, Yelp, and Twitter, including a configurable generic [REST API adapter](https://github.com/zohararad/sails-rest); plus some [eclectic projects](https://www.youtube.com/watch?v=OmcQZD_LIAE).
 
 <!-- Core adapter logos -->
-<a target="_blank" href="http://www.mysql.com">
-  <img width="75" src="http://www.mysql.com/common/logos/powered-by-mysql-125x64.png" alt="Powered by MySQL" title="sails-mysql: MySQL adapter for Sails"/>
-</a>&nbsp; &nbsp; &nbsp; &nbsp;
-<a target="_blank" href="http://www.postgresql.org/"><img width="50" title="PostgreSQL" src="http://i.imgur.com/OSlDDKv.png"/></a>&nbsp; &nbsp; &nbsp; &nbsp;
-<a target="_blank" href="http://www.mongodb.org/"><img width="100" title="MongoDB" src="http://i.imgur.com/bC2j13z.png"/></a>&nbsp; &nbsp; &nbsp; &nbsp;
-<a target="_blank" href="http://redis.io/"><img width="75" title="Redis" src="http://i.imgur.com/dozv0ub.jpg"/></a>&nbsp; &nbsp; &nbsp; &nbsp;
+<a target="_blank" href="http://www.mysql.com/"><img width="55" title="MySQL" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original-wordmark.svg" alt="MySQL"/></a>&nbsp; &nbsp; &nbsp; &nbsp;
+<a target="_blank" href="http://www.postgresql.org/"><img width="45" title="PostgreSQL" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original-wordmark.svg"/></a>&nbsp; &nbsp; &nbsp; &nbsp;
+<a target="_blank" href="http://www.mongodb.org/"><img width="50" title="MongoDB" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original-wordmark.svg"/></a>&nbsp; &nbsp; &nbsp; &nbsp;
+<a target="_blank" href="http://redis.io/"><img width="40" title="Redis" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original-wordmark.svg"/></a>&nbsp; &nbsp; &nbsp; &nbsp;
 <!-- /core adapter logos -->
 
 > For the latest core adapters and notable community adapters, see [Available Adapters](http://sailsjs.com/documentation/concepts/extending-sails/adapters/available-adapters).
