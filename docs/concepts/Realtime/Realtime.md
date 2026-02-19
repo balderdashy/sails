@@ -42,7 +42,7 @@ Sails exposes a rich API on both the client and the server for sending custom re
 
 ##### Example
 
-Here's the client-side code to connect a socket to the Sails/Node.js server and listen for an socket event named "hello":
+Here's the client-side code to connect a socket to the Sails/Node.js server and listen for a socket event named "hello":
 
 ```html
 <!-- Simply include the sails.io.js script, and a client socket will be created and auto-connected for you -->
