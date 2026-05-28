@@ -4,7 +4,7 @@ Like most Node packages, Sails respects [semantic versioning](http://semver.org/
 
 ### Version notes
 
-For details about changes between versions, as well as a migration guide to assist you in making an necessary changes to your app, please refer to the appropriate page:
+For details about changes between versions, as well as a migration guide to assist you in making a necessary change to your app, please refer to the appropriate page:
 
 - [v1.x](https://sailsjs.com/documentation/upgrading/to-v-1-0)
 - [v0.12.x](https://sailsjs.com/documentation/concepts/upgrading/to-v-0-12)
