@@ -91,4 +91,43 @@ describe('HTTP hook', function (){
 
   });
 
+  describe('with custom queryParser config', function() {
+
+    var app;
+    before(function(done) {
+      app = Sails();
+      app.lift({
+        globals: false,
+        loadHooks: [
+          'moduleloader',
+          'userconfig',
+          'http'
+        ],
+        log: {level: 'silent'},
+        http: {
+          queryParser: false
+        },
+        routes: {
+          'get /': function(req, res) {return res.send(req.query);}
+        },
+        port: 1343
+      }, done);
+    });
+
+    it('should be able to respond to requests using the custom queryParser', function(done) {
+      request.get('http://localhost:1343?test=123', function(err, res, body) {
+        if (err) { return done(err); }
+        try {
+          assert.deepEqual(JSON.parse(body), {});
+        }
+        catch (e) {return done(e);}
+        return done();
+      });
+    });
+
+    after(function(done) {
+      app.lower(done);
+    });
+  });
+
 });
