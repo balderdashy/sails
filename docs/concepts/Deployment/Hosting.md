@@ -128,11 +128,18 @@ More 2013:
  + [Install Sails.js with Apache as a reverse proxy on CentOS 7 (2016)](https://www.rosehosting.com/blog/install-sails-js-with-apache-as-a-reverse-proxy-on-centos-7/)
  + [Install Sails.js on Ubuntu (2014)](https://www.rosehosting.com/blog/install-the-sails-js-framework-on-an-ubuntu-vps/)
 
+### Scalingo
++ Scalingo is a european Platform as a service that offers easy and fast deployment for developers and tech team. Scalingo takes care of all the devops and server jobs with his cloud hosting solution. Moreover the platform provides high availability (99,5% SLA). 
++ Scalingo also provides expert support with fast response time (Average : 5 minute response time).
++ Discover more on [Scalingo com](https://scalingo.com/runtimes/sails-js-hosting)
+
 
 ### More options
 
 + Like [Heroku](https://stackshare.io/heroku), there are many [other Platform as a Service (PaaS) solutions that support Node.js/Sails.js](https://stackshare.io/heroku/alternatives).
 + Like [Microsoft Azure](https://stackshare.io/microsoft-azure) and [EC2](https://stackshare.io/amazon-ec2), there are many [other Node.js/Sails.js-compatible "bare-metal"/IaaS cloud servers](https://stackshare.io/amazon-ec2/alternatives).
 + Like [Cloudflare](https://stackshare.io/cloudflare), there are [other great CDNs for optimized hosting of your static assets](https://stackshare.io/cloudflare/alternatives).
+
+
 
 <docmeta name="displayName" value="Hosting">
