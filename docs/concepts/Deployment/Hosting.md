@@ -128,6 +128,9 @@ More 2013:
  + [Install Sails.js with Apache as a reverse proxy on CentOS 7 (2016)](https://www.rosehosting.com/blog/install-sails-js-with-apache-as-a-reverse-proxy-on-centos-7/)
  + [Install Sails.js on Ubuntu (2014)](https://www.rosehosting.com/blog/install-the-sails-js-framework-on-an-ubuntu-vps/)
 
+### Atlantic.net Cloud
+
++ [How to Install Sails.js Framework with Nginx as a Reverse Proxy on Ubuntu 20.04 (2021)](https://www.atlantic.net/dedicated-server-hosting/how-to-install-sails-js-framework-with-nginx-as-a-reverse-proxy-on-ubuntu-20-04/)
 
 ### More options
 
