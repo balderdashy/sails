@@ -14,7 +14,7 @@ The main responsibility of `sails.io.js` is to provide a familiar, Ajax-like int
 
 ### Basic usage (browser)
 
-In the browser, all that is required to use `sails.io.js` is to include the library in a `<SCRIPT>` tag.  Sails adds the library to the `assets/js/dependencies` folder of all new apps, so you can write:
+In the browser, all that is required to use `sails.io.js` is to include the library in a `<SCRIPT>` tag.  Sails adds the library to the `assets/dependencies` folder of all new apps, so you can write:
 
 ```html
 <!--
@@ -23,7 +23,7 @@ In the browser, all that is required to use `sails.io.js` is to include the libr
   One tick of the event loop after importing this script, a new "eager" socket
   will automatically be created begin connecting unless you configure it not to.
 -->
-<script type="text/javascript" src="/js/dependencies/sails.io.js"></script>
+<script type="text/javascript" src="/dependencies/sails.io.js"></script>
 ```
 
 and then use `io.socket` as a global variable in subsequent inline or external scripts.  For detailed instructions and examples of everyday usage, see [`io.socket`](https://sailsjs.com/documentation/reference/web-sockets/socket-client/io-socket).
@@ -56,7 +56,7 @@ There are two ways to configure Sails' socket client in the browser: using HTML 
 The easiest way to configure the four most common settings for the socket client (`autoConnect`, `environment`, `headers`, and `url`) is by sticking one or more HTML attributes on the script tag:
 
 ```html
-<script src="/js/dependencies/sails.io.js"
+<script src="/dependencies/sails.io.js"
   autoConnect="false"
   environment="production"
   headers='{ "x-csrf-token": "<%= typeof _csrf !== 'undefined' ? _csrf : '' %>" }'
@@ -81,7 +81,7 @@ As of Sails v0.12.x, only the most basic configuration options may be set using 
 When you load it on the page in a `<script>` tag, the `sails.io.js` library waits for one cycle of the event loop before _automatically connecting_ a socket (if `io.sails.autoConnect` is enabled, [see below](https://sailsjs.com/documentation/reference/web-sockets/socket-client/io-sails#?autoconnect)).  This allows any properties that you specify on `io.sails` to be set before the socket begins connecting.  However, in order to ensure that the `io.sails` properties are read before connection, you should put the code setting those properties immediately after the `<script>` tag that includes `sails.io.js`:
 
 ```html
-<script src="/js/dependencies/sails.io.js"></script>
+<script src="/dependencies/sails.io.js"></script>
 <script type="text/javascript">
   io.sails.url = 'https://myapp.com';
 </script>
@@ -120,7 +120,7 @@ Yes.  The Sails socket client can be used to great effect with any front-end fra
 
 No. The Sails socket client is extremely helpful when building realtime/chat features in a browser-based UI, but like the rest of the `assets/` directory, it is probably not particularly useful if you are building a [native Android app](https://stackoverflow.com/questions/25081188/sending-socket-request-from-client-ios-android-to-sails-js-server/25081189#25081189) or an API with no user interface at all.
 
-Fortunately, like every other boilerplate file and folder in Sails, the socket client is completely optional. To remove it, just delete `assets/js/dependencies/sails.io.js`.
+Fortunately, like every other boilerplate file and folder in Sails, the socket client is completely optional. To remove it, just delete `assets/dependencies/sails.io.js`.
 
 
 ##### How does this work?
@@ -132,7 +132,7 @@ Under the hood, the socket client (`sails.io.js`) emits Socket.IO messages with 
 By default, a socket connection will be linked to the current browser session (if any) using the `cookie` header that is sent with the initial socket handshake.  In order to turn off this behavior, add `nosession=true` to the [`query` property](https://sailsjs.com/documentation/reference/web-sockets/socket-client/sails-socket/properties#?advanced-properties) of the socket before it connects. For example:
 
 ```
-<script src="/js/dependencies/sails.io.js"></script>
+<script src="/dependencies/sails.io.js"></script>
 <script type="text/javascript">io.sails.query='nosession=true';</script>
 ```
 
