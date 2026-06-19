@@ -56,10 +56,52 @@ This approach has many advantages:
  - Content negotiation (JSON vs HTML) is taken care of
  - API tweaks can be done in one quick edit to the appropriate generic response file
 
-
 ### Response methods and files
 
 Any `.js` file saved in the `api/responses/` folder can be executed by calling `res.thatFileName()`.  For example, `api/responses/insufficientFunds.js` can be executed with a call to `res.insufficientFunds()`.
+
+
+### Using custom responses in actions2 controllers
+
+If you are using the new, recommended modern standard for controllers "actions2", using custom responses is as easy as defining an input:
+
+```javascript
+module.exports = {
+    friendlyName: 'Create Account',
+
+    description: 'Create a new account',
+    
+    inputs: {
+        page: {...},
+
+        limit: {...}
+    },
+
+    exits: {
+        newAccount: {
+            description: "A custom response, which is defined in api/responses as `newAccountCreated.js`",
+            responseType: 'newAccountCreated'
+        },
+        badRequest: {
+            // this does not need to be defined, Sails will handle `exits.badRequest()` automatically
+            description: "Points to either `api/responses/badRequest.js` or the built-in version",
+            responseType: 'badRequest'
+        },
+        serverError: {
+            // this does not need to be defined, Sails will handle `exits.serverError()` automatically
+            description: "Points to either `api/responses/serverError.js` or the built-in version",
+            responseType: 'serverError'
+        }
+    },
+    
+    fn: (inputs, exits) => {...}
+};
+```
+
+Then, you can use `exits.newAccount()` to trigger the custom response. 
+
+See: [actions2](https://sailsjs.com/documentation/concepts/actions-and-controllers#actions2) for more details.
+
 
 ##### Accessing `req`, `res`, and `sails`
 
@@ -94,6 +136,13 @@ module.exports = function insufficientFunds(err, extraInfo){
 ### Built-in responses
 
 All Sails apps have several pre-configured responses like [`res.serverError()`](https://sailsjs.com/documentation/reference/response-res/res-server-error) and [`res.notFound()`](https://sailsjs.com/documentation/reference/response-res/res-not-found) that can be used even if they don&rsquo;t have corresponding files in `api/responses/`.
+
+The built-in responses are:
+  - ok (200)
+  - badRequest (400)
+  - forbidden (403)
+  - notFound (404)
+  - serverError (500)
 
 Any of the default responses may be overridden by adding a file with the same name to `api/responses/` in your app (e.g. `api/responses/serverError.js`).
 
