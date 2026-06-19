@@ -40,6 +40,7 @@ More 2013:
 <a title="Deploy a Sails.js web app to Azure App Service" href="https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-nodejs-sails"><img style="width:350px;" src="https://sailsjs.com/images/deployment_azure.png" alt="Azure logo"/></a>
 
 + [Deploy a Sails.js web app to Azure App Service (2017)](https://docs.microsoft.com/en-us/azure/app-service-web/app-service-web-nodejs-sails)
++ [Using Sails to create an imap email-api & host with Azure (2021)](https://medium.com/swlh/using-sails-js-to-create-an-imap-email-api-1cd3bbfed9f1?sk=891343ca29a737da68207904d3ecf328#1ac1)
 
 <!--
 + [Deploying Sails.js to Azure Web Apps (2015)](https://blogs.msdn.microsoft.com/partnercatalystteam/2015/07/16/y-combinator-collaboration-deploying-sailsjs-to-azure-web-apps/)
