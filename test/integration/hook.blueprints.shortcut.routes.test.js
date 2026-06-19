@@ -126,7 +126,7 @@ describe('blueprints :: ', function() {
           force: true,
           destination: 'api/controllers/UserController.js',
           string: 'module.exports = { _config: { shortcuts: false } }'
-        }).execSync();
+        }).now();
 
         (new Sails()).load({
           hooks: {

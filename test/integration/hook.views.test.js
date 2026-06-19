@@ -44,14 +44,14 @@ describe('hooks :: ', function() {
         force: true,
         destination: 'views/layout.ejs',
         string: '<!DOCTYPE html><html><head><!-- default layout --></head><body><%- body %></body></html>'
-      }).execSync();
+      }).now();
       // Write out any files specific to this test.
       _.each(filesToWrite, function(data, filename) {
         Filesystem.writeSync({
           force: true,
           destination: filename,
           string: data
-        }).execSync();
+        }).now();
       });
       // Merge the default config with any config specific to this test.
       var _config = _.merge({
@@ -424,7 +424,7 @@ describe('hooks :: ', function() {
                 force: true,
                 destination: filename,
                 string: data
-              }).execSync();
+              }).now();
             });
             httpHelper.testRoute('get', 'partials', function(err, response) {
               if (err) {
@@ -474,7 +474,7 @@ describe('hooks :: ', function() {
                 force: true,
                 destination: filename,
                 string: data
-              }).execSync();
+              }).now();
             });
             httpHelper.testRoute('get', 'partials', function(err, response) {
               if (err) {
