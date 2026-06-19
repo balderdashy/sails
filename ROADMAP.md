@@ -30,6 +30,7 @@ Feature                                          | Proposal                     
  :---------------------------------------------- | :------------------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------
  Allow select/omit clauses when populating a singular association | https://trello.com/c/yM9WPxzr/107-waterline-fs2q-tolerate-a-subcriteria-being-provided-to-populate-for-a-singular-associations-but-only-if-it-exclusively-contains | Don't throw an error if these clauses are included in a `populate` for a singular association (but still error if actual "where" criteria are used)
  Generate `test/` folder in new Sails apps       | [#2499](https://github.com/balderdashy/sails/pull/2499#issuecomment-171556544)        | Generate a generic setup for mocha tests in all new Sails apps.  Originally suggested by [@jedd-ahyoung](https://github.com/jedd-ahyoung).
+ Emit an event on model's error | | Emit an event on create/update/find/delete queries if there'is an error.
 
 
 
