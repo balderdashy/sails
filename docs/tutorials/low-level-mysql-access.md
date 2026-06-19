@@ -24,7 +24,7 @@ var rdi = Product.getDatastore();
 
 ```javascript
 rdi.leaseConnection(function(connection, proceed) {
-  db.query('SELECT * from `user`;', function(err, results, fields) {
+  connection.query('SELECT * from `user`;', function(err, results, fields) {
     if (err) {
       return proceed(err);
     }
