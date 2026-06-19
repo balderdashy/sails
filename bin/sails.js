@@ -42,7 +42,7 @@ program
 
 program
   .unknownOption = NOOP;
-program.usage('[command]');
+program.usage('[command] [options]');
 
 
 // $ sails lift
