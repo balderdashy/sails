@@ -6,6 +6,7 @@ var assert = require('assert');
 var tmp = require('tmp');
 var path = require('path');
 var util = require('util');
+var fs = require('fs');
 var _ = require('@sailshq/lodash');
 var appHelper = require('./helpers/appHelper');
 var Filesystem = require('machinepack-fs');
@@ -127,10 +128,17 @@ describe('globals :: ', function() {
         appHelper.linkAsync(pathToTestApp);
 
         MProcess.executeCommand({
-          command: util.format('node expose_globals.js'),
+          command: 'node expose_globals.js',
         }).exec(function(err, output) {
           if (err) {return done(err);}
-          if (output.stderr) {return done(output.stderr);}
+          if (output.stderr) {
+            return done(new Error(
+              'Running node expose_globals.js resulted in unexpected output on stderr:\n'+
+              output.stderr+'\n\n'+
+              'Contents of `generated` expose_globals.js file:\n'+
+              fs.readFileSync(path.resolve('expose_globals.js'), 'utf8')
+            ));
+          }
           try {
             result = JSON.parse(output.stdout);
           } catch (e) {
