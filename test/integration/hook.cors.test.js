@@ -266,6 +266,18 @@ describe('CORS config ::', function() {
             'vary': 'Origin'
           }
         },
+        {
+          route: 'PUT /cors-false',
+          request_headers: {origin: 'http://example.com'},
+          response_status: 200,
+          response_headers: null
+        },
+        {
+          route: 'OPTIONS /cors-false',
+          request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
+          response_status: 200,
+          response_headers: null
+        },
 
       ]
     },
@@ -318,6 +330,18 @@ describe('CORS config ::', function() {
             'access-control-allow-methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
             'access-control-allow-headers': 'content-type',
           }
+        },
+        {
+          route: 'PUT /cors-false',
+          request_headers: {origin: 'http://example.com'},
+          response_status: 200,
+          response_headers: null
+        },
+        {
+          route: 'OPTIONS /cors-false',
+          request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
+          response_status: 200,
+          response_headers: null
         },
       ],
     },
@@ -388,6 +412,21 @@ describe('CORS config ::', function() {
             'access-control-exposed-headers': undefined,
             'vary': 'Origin'
           }
+        },
+        {
+          route: 'PUT /cors-false',
+          request_headers: {origin: 'http://example.com'},
+          response_status: 200,
+          response_headers: {
+            // (`Vary: Origin` is left alone, since it is harmless and other headers may be listed in it)
+            'vary': 'Origin'
+          }
+        },
+        {
+          route: 'OPTIONS /cors-false',
+          request_headers: {origin: 'http://example.com', 'access-control-request-method': 'PUT'},
+          response_status: 200,
+          response_headers: null
         },
       ]
     },
@@ -659,6 +698,7 @@ describe('CORS config ::', function() {
             routes: {
               'PUT /no-cors-config': function(req, res){return res.ok();},
               'PUT /cors-true': {cors: true, target: function(req, res){return res.ok();}},
+              'PUT /cors-false': {cors: false, target: function(req, res){return res.ok();}},
               'PUT /origin-example-com': {cors: {allowOrigins: 'http://example.com'}, target: function(req, res){return res.ok();}},
               'PUT /origin-example-com-somewhere-com': {cors: {allowOrigins: 'http://example.com, http://somewhere.com'}, target: function(req, res){return res.ok();}},
               'PUT /origin-example-com-somewhere-com-array': {cors: {allowOrigins: ['http://example.com', 'http://somewhere.com']}, target: function(req, res){return res.ok();}},
@@ -728,6 +768,7 @@ describe('CORS config ::', function() {
                 return res.ok();
               },
               'PUT /cors-true': {cors: true, target: function(req, res){return res.ok();}},
+              'PUT /cors-false': {cors: false, target: function(req, res){return res.ok();}},
               'PUT /origin-example-com': {cors: {origin: 'http://example.com'}, target: function(req, res){return res.ok();}},
               'PUT /origin-example-com-somewhere-com': {cors: {origin: 'http://example.com, http://somewhere.com'}, target: function(req, res){return res.ok();}},
               'PUT /origin-example-com-somewhere-com-array': {cors: {origin: ['http://example.com', 'http://somewhere.com']}, target: function(req, res){return res.ok();}},
