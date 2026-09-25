@@ -881,6 +881,57 @@ describe('pubsub :: ', function() {
 
       });
 
+      describe('destroying a pet with DELETE /pet/1 where the pet has an owner (pets->owner is a many-to-one relationship) and a `bestFriend` (a singular association with no reverse association)', function () {
+
+        before(function() {
+          bootstrapModels = {
+            user: [{ name: 'bert' }, { name: 'ernie' }],
+            pet: [{ name: 'alice', owner: 1, bestFriend: 2 }]
+          };
+        });
+
+        it('should cause a `removedFrom` notification to be received by all subscribers to the owner, and no notification to be received by subscribers to the best friend', function(done) {
+
+          // Wait a moment after the expected notifications arrive, to make sure that no
+          // unexpected notifications (e.g. about user #2) arrive afterwards.
+          var timer;
+          var finished = false;
+          expectNotifications({
+            pet: {
+              destroyed: {
+                verb: 'destroyed',
+                id: 1
+              }
+            },
+            user: {
+              removedFrom: {
+                verb: 'removedFrom',
+                id: 1,
+                attribute: 'pets',
+                removedId: 1
+              }
+            }
+          }, function(err) {
+            if (finished) { return; }
+            if (err) {
+              finished = true;
+              clearTimeout(timer);
+              return done(err);
+            }
+            timer = setTimeout(function() {
+              finished = true;
+              return done();
+            }, 500);
+          });
+
+          socket2.delete('/pet/1', {}, function (body, jwr) {
+            if (jwr.error) { return done(jwr.error); }
+            // Otherwise, the event handler above should fire (or this test will time out and fail).
+          });
+        });
+
+      });
+
       function expectNotifications(notifications, done) {
         var checklist = {};
         var errored = false;
