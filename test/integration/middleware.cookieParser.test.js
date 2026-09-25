@@ -172,6 +172,126 @@ describe('middleware :: ', function() {
 
       });
 
+      describe('when lifting again with the same `sails.config.http` dictionary (e.g. `require(\'./config/http\').http` in a test suite)', function() {
+
+        var httpConfig = { middleware: {} };
+        var liftOpts = function() {
+          return {
+            globals: false,
+            port: 1535,
+            environment: 'development',
+            log: {level: 'silent'},
+            session: {
+              secret: 'abc123'
+            },
+            hooks: {grunt: false, pubsub: false},
+            http: httpConfig,
+            routes: {
+              '/test': function(req, res) {
+                res.json({
+                  cookies: req.cookies,
+                  signedCookies: req.signedCookies
+                });
+              }
+            }
+          };
+        };
+
+        var app;
+        before(function (done){
+          var firstApp = Sails();
+          firstApp.lift(liftOpts(), function(err) {
+            if (err) { return done(err); }
+            firstApp.lower(function(err) {
+              if (err) { return done(err); }
+              app = Sails();
+              app.lift(liftOpts(), done);
+            });
+          });
+        });
+
+        it('should lift, and req.cookies and req.signedCookies should be populated', function(done) {
+          request(
+            {
+              method: 'GET',
+              uri: 'http://localhost:1535/test',
+              headers: {
+                'cookie': 'foo=bar; owl=s%3Ahoot.v0ELGJM%2B8t4aP0YeUpcC31OKnAQ%2BqUTf%2F4WaLaaosJg; abc=123',
+              }
+            },
+            function(err, response, body) {
+              if(err){ return done(err); }
+              body = JSON.parse(body);
+              assert.equal(body.cookies.foo, 'bar');
+              assert.equal(body.signedCookies.owl, 'hoot');
+              return done();
+            }
+          );
+        });
+
+        after(function(done) {
+          if (!app) { return done(); }
+          app.lower(done);
+        });
+
+      });
+
+      describe('with a custom `cookieParser` middleware', function() {
+
+        var app = Sails();
+        before(function (done){
+          app.lift({
+            globals: false,
+            port: 1535,
+            environment: 'development',
+            log: {level: 'silent'},
+            session: {
+              secret: 'abc123'
+            },
+            hooks: {grunt: false, pubsub: false},
+            http: {
+              middleware: {
+                cookieParser: function customCookieParser(req, res, next) {
+                  req.cookies = { custom: 'yes' };
+                  req.signedCookies = {};
+                  return next();
+                }
+              }
+            },
+            routes: {
+              '/test': function(req, res) {
+                res.json({
+                  cookies: req.cookies
+                });
+              }
+            }
+          }, done);
+        });
+
+        it('should lift, and use the custom middleware', function(done) {
+          request(
+            {
+              method: 'GET',
+              uri: 'http://localhost:1535/test',
+              headers: {
+                'cookie': 'foo=bar',
+              }
+            },
+            function(err, response, body) {
+              if(err){ return done(err); }
+              body = JSON.parse(body);
+              assert.deepEqual(body.cookies, { custom: 'yes' });
+              return done();
+            }
+          );
+        });
+
+        after(function(done) {
+          app.lower(done);
+        });
+
+      });
+
     });
 
     describe('virtual requests :: ', function() {
