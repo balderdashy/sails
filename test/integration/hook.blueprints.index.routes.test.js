@@ -133,3 +133,85 @@ describe('blueprints :: ', function() {
 
 });
 
+
+
+describe('blueprints :: index routes with a prefix :: ', function() {
+
+  var sailsApp;
+
+  before(function(done) {
+    (new Sails()).load({
+      hooks: {
+        grunt: false, views: false, policies: false, pubsub: false,
+        i18n: false, orm: false, sockets: false
+      },
+      blueprints: {
+        actions: true,
+        shortcuts: false,
+        rest: false,
+        prefix: '/api/v1'
+      },
+      log: {level: 'error'},
+      controllers: {
+        moduleDefinitions: {
+          'index': function(req, res) { res.send('top-level index!'); },
+          'test/index': function(req, res) { res.send('test index!'); },
+          'test/nested/index': function(req, res) { res.send('nested index!'); }
+        }
+      }
+    }, function(err, _sails) {
+      if (err) { return done(err); }
+      sailsApp = _sails;
+      return done();
+    });
+  });
+
+  after(function(done) {
+    sailsApp.lower(done);
+  });
+
+  it('should bind the top-level index under the prefix', function(done) {
+    sailsApp.request('GET /api/v1', function(err, resp, data) {
+      assert(!err, err);
+      assert.equal(data, 'top-level index!');
+      done();
+    });
+  });
+
+  it('should bind a controller index under the prefix for all methods', function(done) {
+    sailsApp.request('GET /api/v1/test', function(err, resp, data) {
+      assert(!err, err);
+      assert.equal(data, 'test index!');
+      sailsApp.request('POST /api/v1/test', {}, function(err, resp, data) {
+        assert(!err, err);
+        assert.equal(data, 'test index!');
+        done();
+      });
+    });
+  });
+
+  it('should bind a nested index under the prefix', function(done) {
+    sailsApp.request('GET /api/v1/test/nested', function(err, resp, data) {
+      assert(!err, err);
+      assert.equal(data, 'nested index!');
+      done();
+    });
+  });
+
+  it('should preserve the ordinary prefixed action route', function(done) {
+    sailsApp.request('GET /api/v1/test/index', function(err, resp, data) {
+      assert(!err, err);
+      assert.equal(data, 'test index!');
+      done();
+    });
+  });
+
+  it('should not expose unprefixed index aliases', function(done) {
+    sailsApp.request('GET /test', function(err, resp) {
+      assert(err);
+      assert.equal(err.status, 404);
+      done();
+    });
+  });
+
+});
